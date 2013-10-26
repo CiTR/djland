@@ -3,12 +3,13 @@ DJLAND
 This is CiTR's system for managing various community radio business matters, including:
 
 - DJ playsheets
-chart view
-music catalog
-membership management
-show management
-ad scheduling and tracking
-CRTC report generation
+- chart view
+- music catalog
+- membership management
+- show management
+- ad scheduling and tracking
+- CRTC / SOCAN report generation
+
 
 SPECS
 
