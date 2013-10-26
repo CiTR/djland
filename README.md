@@ -2,7 +2,7 @@ DJLAND
 
 This is CiTR's system for managing various community radio business matters, including:
 
-DJ playsheets
+- DJ playsheets
 chart view
 music catalog
 membership management
