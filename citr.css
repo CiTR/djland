@@ -1,0 +1,1608 @@
+/*PLAYSHEET TEST */
+body { 
+background-color: #3366ff;
+background-image: url('./images/wallpaper.jpg');
+background-repeat: repeat;
+font-family: Helvetica,Arial;
+color:white;
+}
+
+h1,h2,h3,h4{
+	text-align: center;
+}
+
+.header-left{
+	text-align:left;
+}
+input, select, textarea{ 
+	background-color: #000977;
+	background-color: rgba(6,6,6,.4);
+
+	color:white;
+	border-style: solid;
+	border-width: 0;
+}
+.ie select, .ie input, .ie textarea {
+	background-color: #000977;
+}
+
+
+
+
+td.menu a:link{ color: #000000; text-decoration: underline; }
+td.menu a:visited { color: #000000; text-decoration: underline;}
+td.menu a:hover { color: #000000; text-decoration: underline; background-color: #CCCCFF; }
+a:active { color: #660000; text-decoration: underline; }
+a:link { color: #FFFFFF; text-decoration: underline; }
+a:visited { color: #FFFFFF; text-decoration: underline;}
+a:hover { color: #000000; text-decoration: underline; background-color: #CCCCFF; }
+a:active { color: #660000; text-decoration: underline; }
+
+
+#ps_header td, #ps_header input, #ps_header select{
+	font-size: 15px;
+}
+#ps_header table, #ps_header table tr{
+margin:10px;
+}
+
+#ps-loading-image{
+display:none;
+}
+    
+    
+#login{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 200px;
+	width:300px;
+}
+
+table, td, tr{
+text-align:left;
+}
+
+
+
+table.menu { border-collapse: separate; border-color: #6666CC; background-color: #000000; }
+td.menu { background-color: #FF9999; font-weight: bold; }
+td.reqmeet {  }
+td.reqfail { background-color: #CC9999; }
+
+
+
+div.playsheet { background-color:rgba(30,30,30,.3);
+				width:920px; 
+				border-color:#c3c3c3; 
+				border-style:ridge;
+				margin-left: auto;
+				margin-right: auto;
+			/*	text-align:center;*/
+				}
+
+div.playsheetSOCAN { background-color:rgba(30,30,30,.3);
+				width:1024px; 
+				border-color:#c3c3c3; 
+				border-style:ridge;
+				margin-left: auto;
+				margin-right: auto;
+			/*	text-align:center;*/
+				}
+				
+				
+				form{
+	/*				text-align:center;*/
+					}
+				
+table#playsheet-table { 
+	width:880px; 
+	margin-left: auto;
+	margin-right: auto;
+	}
+	
+table#playsheet-table tr, table#playsheet_table td{
+	border-width: 0;
+}
+table#playsheet-table button{
+	width:23px;
+}
+table.box { padding: 15px; border-color: #c3c3c3;; border-style:ridge;  }
+table.report { border-collapse: collapse; border: none; border-color: #000000; padding: 100px;}
+table { border-collapse: collapse; }
+
+/*----------------------------*/
+/*--------CHARTING------------*/
+/*----------------------------*/
+.chartBanner
+*{
+	background-color: #004080;
+}
+
+.chartSong
+{ 
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartArtist
+{ 
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartAlbum
+{ 
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartShow
+{ 
+	float: left;
+	width: 300px;
+	position:relative;
+}
+.chartDate
+{ 
+	float: left;
+	width: 150px;
+	position:relative;
+}
+.chartCC
+{
+	float: left;
+	width:35px;
+	position:relative;
+}
+
+/*----------------------------*/
+/*----PLAYLIST TABLE RULES----*/
+/*----------------------------*/
+	.bannerforsort
+	{
+	/*top:15px;*/
+	width:920px;
+	background-color: #333399;
+	position:relative;
+	height:21px;
+	padding-top:1px;
+ 	border-style:solid;
+	border-width: 1px 0px 1px 0px;
+	border-color:black; 
+	}
+	.sortable
+	{ 	
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	width:914px; 
+	position:relative;
+	}
+
+	li.playsheetrow
+	{	
+		top:-15px;
+		left:-38px;
+		float:left;
+		width:914px;
+		position:relative;
+		border-style:solid;
+		border-width: 1px;
+		border-color:black;
+		background-color: #333399;
+		height:25px;
+		list-style-type: none;
+		margin: 1px 0px 1px 0px;
+	}
+
+
+	
+
+	.inputboxes
+	{	
+		float: left;
+		text-align: center;
+		position: relative;
+		width: 175px;
+		
+
+	}
+
+	
+	.inputboxesinner	{	
+		float: left;
+		top:2px;
+		position: relative;
+		width: 170px;
+		text-align: left;
+		
+	}
+
+	.mousedragclick
+	{
+	position: relative;
+	top:3px;
+	}
+	.CRTCicons
+	{
+		width:20px;
+		height:25px;
+		float: left;
+		position: relative;
+		text-align: center;
+		padding-left: 1px;
+		padding-right: 1px;
+		
+	}
+		.CRTCicons2
+	{
+		
+		width:20px;
+		float: left;
+		position: relative;
+		text-align: center;
+		padding-left: 1px;
+		padding-right: 1px;
+				
+	}
+	.CRTCicons3
+	{
+		top:3px;
+		width:15px;
+		float: left;
+		position: relative;
+		
+		}
+	.CRTCtools
+	{
+		
+		width:60px;
+		float: left;
+		position: relative;
+		text-align: center;
+		}	
+		
+	.CRTCtext
+	{
+		float: left;
+		width: 50px;
+		position: relative;
+		text-align: center;
+			
+
+	}
+	.summaryspacer{
+		border-color:white;
+		background-color:lightgray;
+		height:0.3em;
+		line-height:0.3em;
+		
+	}
+	.langInput
+	{
+	position: relative;
+	top:2px;
+	}
+	.CRTCradios
+	{
+		float: left;
+		width: 80px;
+		position: relative;
+		text-align: center;
+		
+	}
+	.CRTCradios2
+	{
+		float: left;
+		width: 40px;
+		position: relative;
+		text-align: center;
+		
+	}
+
+
+	.numbering
+	{	
+		
+		left:0px;
+		float: left;
+		top:2px;
+		position: relative;
+		width:25px;
+		text-align: center;
+		
+	}
+	/* SOCAN playsheet classes */
+	
+	.bannerforsortSOCAN
+	{
+	/*top:15px;*/
+	width:1024px;
+	background-color: #333399;
+	position:relative;
+	height:21px;
+	padding-top:1px;
+ 	border-style:solid;
+	border-width: 1px 0px 1px 0px;
+	border-color:black; 
+	}
+	.sortableSOCAN
+	{ 
+	display: inline-block;
+	float:left;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	width:1018px; 
+	position:relative;
+	}
+
+	li.playsheetrowSOCAN
+	{
+		/*left:-38px;*/
+		
+		width:1018px;
+		position:relative;
+		border-style:solid;
+		border-width: 1px;
+		border-color:black;
+		background-color: #333399;
+		height:25px;
+		list-style-type: none;
+		margin: 1px 0px 1px 0px;
+	}
+	
+	
+	.inputboxesinnerSOCAN{
+		float: left;
+		top:2px;
+		position: relative;
+		width: 87px;
+		text-align: left;
+	
+	}
+		.inputboxesSOCAN	{	
+		float: left;
+		text-align: center;
+		position: relative;
+		width: 92px;
+	}
+	
+	.timeBox{
+	text-align: center;
+	float:left;
+	position: relative;
+	width: 240px;	
+	}
+	.timeBoxHalf{
+	text-align: center;
+	float:left;
+	position: relative;
+	width: 120px;
+	}
+	.timeInner{
+	top:2px;
+	position: relative;
+	float:left;
+	width: 40px;
+	}
+	.nowButton
+	{
+	float:left;
+	position: relative;
+	top:2px;
+	font-size:0.6em;
+	width:39px;	
+	height:20px;
+	}
+	.delRow
+	{
+	position: relative;
+	top:2px;
+	height:20px;
+	font-size:0.9em;
+	width:25px;
+
+	}
+	.addRow
+	{
+	position: relative;
+	top:2px;
+	height:20px;
+	font-size:0.9em;
+	width:25px;
+
+	}
+/* Area below playsheet li area */	
+	
+	
+	
+	.topChart
+	{
+	position:relative;
+	width:300px;
+	height:150px;
+	color: white;
+	float:right;
+	}
+	.bugs
+	{
+	position:relative;
+	float:left;
+	width:300px;
+	height:150px;
+	color: white;
+	
+	}
+	.bugsAndTopChart{
+	width:600px;
+	margin-left:auto;
+	margin-right:auto;
+	}
+	
+
+
+
+/* */
+
+/* QA STYLINGS */
+ 
+#qalist
+{
+ position:relative;
+ width: 700px;
+ margin-left:-20px;
+ }
+ .QAicon{
+ position:relative;
+ width:10px;
+ display:inline-block;
+ }
+ .collapsed{
+ display:inline-block;
+ }
+ .expanded{
+ display:none;
+ }
+ .QAcontainer
+ {
+ display:inline-block;
+ padding-top:5px;
+ position:relative;
+ width:750px;
+ margin-left:10px;
+ color:white;
+ text-decoration:underline;
+ background-color:#111144;
+ }
+.QAelement{
+width:750px;
+margin-left:10px;
+position:relative;
+padding-top:5px;
+padding-bottom:5px;
+background-color:#000000;
+}
+.QAanswer{
+position:relative;
+left:10px;
+right:10px;
+
+width:705px;
+background-color:#222266;
+color:#BEBEBE;
+}
+.QAquestion
+{
+position:relative;
+left:10px;
+right:10px;
+width:705px;
+background-color:#111144;
+color:#F0F0F0;
+height:20px;
+
+}
+ 
+
+ /*--------------------------------------------------*/
+ /*--------------------------------------------------*/
+ /*-----------SOCAN SET PAGE CSS---------------------*/
+ /*--------------------------------------------------*/
+ /*--------------------------------------------------*/
+ .socanTable{
+ width:100%;
+ background-color:blue;
+display:inline-block;
+ }
+ 
+ .socanTable*{
+ color:white;
+}
+ 
+ .socanRow{
+ height: 20px;
+ position: relative;
+ padding-bottom:5px;
+}
+
+.idSOCAN{
+width: 30px;
+ float:left;
+ 
+ position: relative;
+}
+
+.socanField{
+width: 200px;
+ float:left;
+ position: relative;
+}
+.socanField2{
+width: 80px;
+ float:left;
+ position: relative;
+}
+.socanButton{
+width: 70px;
+ position: relative;
+ color:black;
+ height:20px;
+ margin:0px;
+}
+
+
+
+#rowHeader{
+background-color:black;
+}
+ 
+ 
+ 
+ 
+
+table.rawdata{
+	background-color: rgba(10,10,10,.65);
+border-color: black;
+border-style: solid;
+padding: 50px;
+margin: 25px;
+margin-left: auto;
+margin-right: auto;
+}
+
+td.rawdata {
+padding-left: 15px;
+    padding-right: 15px;
+    border-color: darkblue;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+border-bottom-width: 1px;
+}
+
+tr.playlisted {
+    background-color:darkblue;    
+}
+
+div.editform {
+	width: 640px;
+	margin: 0 auto 0 auto;
+	border-style:ridge;
+	border-color: #c3c3c3;
+	padding: 0 50px 40px 50px;
+}
+
+.editform h1 {
+	text-align: center;
+	margin-bottom: 0px;
+}
+
+.editform p {
+	margin-bottom: 10px;
+}
+
+.table {
+	display: table;
+	margin-bottom: 5px;
+}
+.table p, .table div {
+	display: table-row;
+}
+.table select, .table span, .table textarea {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
+#sam-box{
+	display:none;
+}
+
+.current{
+	border-width: 3px;
+	border-style: solid;
+}
+
+
+#SamListouter, div#loadtimes{
+	color:black;
+/*	display:block;*/
+	display:none;
+	background-color:beige;
+	border-width:3;
+	border-style:solid;
+	border-color:#BBB;
+	height:80%;
+	width:400px;
+	position:fixed;
+	right:8%;
+	top:0;
+	overflow: auto;
+	z-index:20;
+}
+div#loadtimes *{
+	cursor: default;
+	text-align: left;
+}
+
+div.closeButton{
+position:absolute;
+top:0;
+right:25px;
+z-index:40;
+}
+
+button.closeButton{
+position:fixed;
+background-color: white;
+color:red;
+}
+
+
+
+#SamListouter *{
+color:black;
+	cursor:default;
+
+}
+
+div#loadtimes{
+	top:auto;
+	height:200px;
+	bottom:30px;
+}
+
+
+
+/* #SamList, #loaderButtons{
+	display:inline;
+	position:absolute;
+	overflow-x: hidden;
+	width:220px;
+} */
+#SamList{
+	position: relative;
+	float:left;
+	width:345px;
+
+	padding-left:0px;
+	z-index:3;
+	overflow-y: hidden;
+}
+
+
+
+#loaderButtons{
+/*	top:40px;*/
+	position: relative;
+	float:left;
+	width:35px;
+	z-index:2;
+	overflow-y: hidden;
+
+}
+
+.loaderButton, .samsong{
+
+	position: relative;
+	float:left;
+	margin:1px 0 0 0;
+	padding:1px;
+	font-size:1em;
+	display:block;
+	height:19px;
+	text-align:left;
+	width:320px;
+}
+
+.loaderButton{
+	
+	
+	z-index:15;
+	width:30px;
+	background-color: #8F8;
+}
+
+.loaderButtonHover{
+	background-color:#7C7;
+}
+
+.samsong{
+	background-color: #CFC;
+	margin-left:0px;
+	z-index:2;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	padding-left:10px;
+/*	width:200px;*/
+}
+
+.date{
+/*	position:absolute;*/
+	font-size: 0.7em;
+	float:right;
+	z-index:5;
+}
+.panel-button{
+	position:fixed;
+	background-color: beige;
+	z-index:10;
+/*	border-width: 2px;
+	border-color: black;
+	border-style: solid;
+*/	
+}
+
+.panel-button:hover{
+	background-color: lime;
+}
+
+#SamTab{
+	position: fixed;
+	top:50px;
+	right:15px;
+}
+#buttonLoadTimes{
+	top:75px;
+	right:15px;
+}
+
+#autosaver{
+/*display:none;*/
+top:102px;
+right:15px;
+width:75px;
+height:50px;
+}
+
+#thisDate{
+font-family: Arial;	
+float:right;
+}
+
+.tDnD_whileDrag{
+	background-color: #ccc !important;
+}
+
+#table-headers, .adhead{
+	background-color: rgba(10,10,10,.4);
+}
+
+span#ads{
+	border:none;
+border-width:0;
+}
+
+li#table-headers, tr.playsheetRow{
+	border-style:solid;
+	border-width: 1px;
+	border-color:black;
+	background-color: blue;
+	top:0px;
+	
+	/*max-height:20px !important;*/
+	padding:2px;
+}
+
+
+li.playsheetRow input{
+}
+.draghandle{
+ cursor:hand;
+cursor:grab!important;
+cursor:-moz-grab;
+cursor: url(https://mail.google.com/mail/images/2/openhand.cur), pointer!important;
+cursor:-webkit-grab;
+cursor:move;
+}
+.draghandle:active {
+cursor:hand;
+cursor:grabbing!important;
+cursor:-moz-grabbing;
+cursor:-webkit-grabbing;
+cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), pointer!important;
+cursor: move;
+}
+
+.dragrows{
+	
+}
+.scroll-pane{
+background-color:green;
+height:500px;
+	width:600px;
+overflow:auto;
+}
+
+#inputbox
+{
+width: 55px;	
+}
+#checkbox
+{
+	width: 22px;
+}
+
+
+#debug{
+	position:fixed;
+	top:0;
+	left:0;
+	font-size: 10px;
+	background-color: rgba(200,200,200,0.75);
+	display:none;
+}
+
+.crtcdropdown{
+	width:45px;
+}
+
+
+div#ui-datepicker-div, div#up-datepicker-div * {
+	position:relative;
+	margin-top:-150px;
+}
+
+.invisible *{
+display:none;
+}
+
+.invisible{
+display:none;
+}
+
+.inlineradio {
+margin:0px;
+width:30px;
+display:inline;
+
+
+}
+
+
+.inlineradio-td  {
+	display:inline-block;
+	width:80px;
+ }
+
+.radio .ie{
+	position:relative;
+	left:-40px;
+}
+
+ table.sw-table tr, table.se-table td{
+	border:solid;
+	border-width:2px;
+	margin-top: 0;
+}
+
+div#crtcdiv{
+	white-space: nowrap;
+	position:relative;	/*position:absolute;*/
+	left: 0px;
+	width:70px;
+}
+
+div#crtcdiv *{
+
+
+	
+	
+}
+
+.bad{
+/*	color:red;*/
+}
+
+
+table#ads, table#ads, table#spokenwordtable, table#spokenwordtable *{
+	
+/*	background-color: #DFF;*/
+
+}
+
+table#ads{
+	width:450px;
+	display:inline;
+	margin-right:50px;
+	table-layout: auto;
+	position:relative;
+	top:0px;
+	cellspacing:0;
+	padding: 0;
+}
+
+
+table#ads td{
+	text-align: left;
+	padding:0;
+}
+
+tr.adsHeader{
+	text-align: center;
+}
+
+
+div.adstime{
+}
+
+div.adDescription{
+	width:200px;
+}
+
+div#spokenword{
+	height:300px;
+}
+
+textarea#spokenword{
+	height:150px;
+}
+span#ads, span#swcontent{
+/*	border-style:solid;
+	border-width:1px;
+	border-color: black;
+*/	margin-left: 0;
+	margin-right: 0;
+}
+span#swcontent{
+	width:280px;
+}
+table#spokenwordtable {
+	width:50px;
+	display:inline;
+	position: relative;
+	top:20px;
+}
+
+#sw-content, #sw-content-td{
+	height:150px;
+	vertical-align:top;
+}
+
+#addfive{
+	display:inline-block;
+	padding-bottom: 30px;
+	position:relative;
+    float:right;
+	text-decoration: underline;
+	padding-right: 30px;
+	width:150px;
+}
+
+#addfive:hover{
+	color:yellow;
+	cursor: default;
+}
+
+#submitMsg{
+	position:relative;
+	top:50px;
+	background-color: rgba(10,10,10,0.85);
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	width:400px;
+}
+
+#submit{
+height:60px;
+width:300px;
+}
+
+div#helpbox{
+	font-size: 0.8em;
+display:none;
+width:200px;
+height:100px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+
+div#copybox{
+font-size: 0.8em;
+display:none;
+width:40px;
+height:20px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+}
+/* HELP BOX CODE */
+div#helpboxARTIST{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:15px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxALBUM{
+font-size: 0.8em;
+display:none;
+width:300px;
+height:150px;
+top:-50px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxSONG{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:15px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxPL{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:50px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxCC{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:100px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxFE{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:100px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxINST{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:30px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxPART{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:60px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxHIT{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:60px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxCRTC{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:90px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxLANG{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:15px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxTOOLS{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:50px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxGUEST{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:50px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+div#helpboxAD{
+font-size: 0.8em;
+display:none;
+width:200px;
+height:50px;
+position:absolute;
+background-color: beige;
+color:black;
+border-style: solid;
+border-width: 2px;
+border-color: grey;
+text-align: left;
+z-index: 11;
+padding:6px;
+}
+
+
+span.popup{
+cursor:default;
+}
+
+.popup img{
+height:20px;
+width:20px;
+}
+
+.playedYes{
+	background-color: green;
+}
+
+.playedNo{
+	background-color: red;
+}
+
+
+#cancon {
+/*	display:block;*/
+	text-align: center;
+	background-color:beige;
+	border-width:3;
+	border-style:solid;
+	border-color:#BBB;
+	position:fixed;
+
+	bottom:0;
+	left:0px;
+	height:40px;
+	width:100%;
+	overflow: auto;
+	color:black;
+}
+
+#autosave{
+	position:absolute;
+	top:0px; 
+	left:0px; 
+	z-index:10;
+/*	display:none;*/
+}
+
+span.left{
+/*width:750px;*/
+display:inline;
+float:left;
+}
+
+span.right{
+	width:200px;
+	display:inline;
+	float:right;
+}
+
+
+.adSelectGroup{
+margin:20px;
+background-color:#333399;
+width:750px;
+padding:10px;
+display:table;
+}
+
+.adSelect, .adRow, .adHead{
+/*background-color: #EEF;*/	
+margin:20px;
+padding:3px;
+display:table-row;
+}
+.adSelect *, .adRow *{
+padding:3px;
+border-style:solid;
+border-width: 1px;
+display: inline;
+/*border-color: #DDE; */
+}
+
+div.adTime, div.adTime input{
+max-width:120px;
+}
+
+div.adType, div.adType input{
+max-width:110px;
+}
+input.adInput{
+
+padding:0;
+border-width: 0;
+background-color: transparent;
+overflow-x: visible;
+}
+
+div.adName, div.adName input{
+
+background-color:transparent;
+width:270px;
+}
+
+.adName input{
+	
+border-width:0;
+}
+
+.adType, .adTime, .adName, .adPlay{
+text-align:left;
+display:table-cell;
+overflow-x: visible;
+}
+
+div.adreport{
+	display:inline-block;
+	width:350px;
+	background-color: #88EE88;
+	color:black;
+	margin:7px;
+	padding:7px;
+}
+
+span#previous{
+float:left;
+}
+
+span#next{
+
+float:right;
+}
+
+span#draft{
+	position:relative;
+color:red;	
+font-size: 15px;
+}
+
+.stars{
+font-size: 1.1em;
+}
+div#reportShow{
+	width:830px;
+background-color: white;	
+padding:10px;
+margin-bottom:15px;
+color:black;
+border-width:0 0 2px 2px;
+border-color:black;
+border-style:solid;
+}
+
+
+
+div#report-summary{
+width:800px;
+background-color: white;	
+padding:10px;
+margin-bottom:15px;
+color:black;
+border-width:1px 1px 1px 1px;
+border-color:black;
+border-style:solid;
+}
+div#report-summarySOCAN{
+width:830px;
+background-color: white;	
+padding:10px;
+margin-bottom:15px;
+color:black;
+border-width:1px 1px 1px 1px;
+border-color:black;
+border-style:solid;
+}
+.report-table{
+	border-size: 1px 1px 1px 1px;
+}
+.report-table *{
+	color:black;
+	padding:7px;
+	border-style:solid;
+	border-color:black;
+}
+
+.report-header{
+	font-weight: bold;
+	border-width: 2px;
+	background-color:lightgray;
+}
+
+.summarybold{
+font-weight:bold;
+}
+
+.entry-lang{
+	font-size: 0.70em;
+}
+.report-entry{
+	margin:2;
+	padding:0;
+	width:600px;
+	z-index: 2;
+}
+.report-icons{
+	height:18px;
+	display:inline;
+	left:640px;
+	position:absolute;
+	left:670px;
+	z-index:3;
+}
+
+.dotted-underline{
+	
+	border-style: dotted;
+	border-color:gray;
+	border-width: 0 0 1px 0;
+}
+
+.report-icons img, .report-icons a{
+
+position:relative;
+top:-20px;
+text-decoration: none;
+color:black;
+font-size: 0.85em;
+}
+.report-icons a{
+	position: relative;
+	top:-28px;
+	background-color: white;
+}
+
+
+div#nothing{
+display:inline;
+width:20px;
+height:20px;
+background-color: blue;
+}
+
+span#show-percent{
+	position:absolute;
+	left:215px;
+}
+
+#report-show-compliance{
+	margin-left: 30px;
+	font-style: italic;
+}
+
+/* CSS for general page layout */
+
+#wrapper {
+  background-color: rgba(0,0,0,.2);
+  width: 800px;
+  height: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-right-color: #FFFFFF;
+  border-left-color: #FFFFFF;
+}
+
+
+.lib-delete{
+color:black;
+}
+
+.yesdelete{
+	color:red;
+	font-weight:bold;
+}
+.lib-delete, .yesdelete{
+	background-color: white;
+margin-left: 30px;
+cursor:default;
+font-size: 0.75em;
+}
+
+.lib-delete:hover, .yesdelete:hover{
+background-color: white;
+font-weight: bold;
+cursor:default;
+font-size: 0.75em;
+}
+
+#nukem{
+background-color:yellow;
+color:red;
+font-weight: bold;
+font-size: 1.5em;
+padding:5px;
+cursor: default;
+}
+
+#nukem:hover{
+background-color: red;
+color:yellow;
+}
+
+
+div.dupeSection{
+	background-color: rgba(100,100,100,0.8);
+	margin-bottom:15px;
+	width:500px;
+	padding:4px;
+	
+}
+div.dupeSection span{
+position:absolute;
+left:110px;
+}
+
+#ad-select-template{
+	display:none;
+}
+.adbuttons, .ad-select-button{
+cursor:default;	
+font-size:0.8em;
+border-width:0;
+}
+.adbuttons:hover, .ad-select-button:hover{
+	
+	color:red;
+}
+
+
+.selectanad{
+	background-color: transparent;
+	border-width:1;
+}
+
+.selectanad option{
+background-color:black;
+}
+
+invisible-tempalate{
+		
+}
+
+#adcount{
+	position:absolute;
+	top:120px;
+	left:40%;
+	background-color:green;
+}
+
+
+.report_img{
+	
+width:20px;
+height:20px;
+}
+
