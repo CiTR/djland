@@ -77,24 +77,24 @@ print_menu();
 			$count = 0;
 			while($count < $num_rows) {
 						// for each show, no need to load the show's CRTC requirements
-				$show_id = mysqli_result($result,$count,"id");
-				$show_cc_req_regular = 35; // mysqli_result($result,$count,"cc_req");
+				$show_id = mysqli_result_dep($result,$count,"id");
+				$show_cc_req_regular = 35; // mysqli_result_dep($result,$count,"cc_req");
 				$show_cc_req_specialty = 7;
-				$show_pl_req = 60;// mysqli_result($result,$count,"pl_req");
-				$show_in_req = 70;// mysqli_result($result,$count,"indy_req");
-				$show_fe_req = 35;// mysqli_result($result,$count,"fem_req");
+				$show_pl_req = 60;// mysqli_result_dep($result,$count,"pl_req");
+				$show_in_req = 70;// mysqli_result_dep($result,$count,"indy_req");
+				$show_fe_req = 35;// mysqli_result_dep($result,$count,"fem_req");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE show_date >= '$start_date' AND show_date <= '$end_date' AND show_id='$show_id'";
-				$total_items += $count_items = mysqli_result(mysqli_query($db, $the_query),0);
-				$total_pl += $count_pl = mysqli_result(mysqli_query( $db,$the_query." AND is_playlist"),0);
-				$total_cc_reg += $count_cc_reg = mysqli_result(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
-				$total_cc_spec += $count_cc_spec = mysqli_result(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
-				$total_yo += $count_yo = mysqli_result(mysqli_query($db,$the_query." AND is_yourown"),0);
-				$total_in += $count_in = mysqli_result(mysqli_query($db, $the_query." AND is_indy"),0);
-				$total_fe += $count_fe = mysqli_result(mysqli_query($db, $the_query." AND is_fem"),0);
+				$total_items += $count_items = mysqli_result_dep(mysqli_query($db, $the_query),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query( $db,$the_query." AND is_playlist"),0);
+				$total_cc_reg += $count_cc_reg = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
+				$total_cc_spec += $count_cc_spec = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
+				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db,$the_query." AND is_yourown"),0);
+				$total_in += $count_in = mysqli_result_dep(mysqli_query($db, $the_query." AND is_indy"),0);
+				$total_fe += $count_fe = mysqli_result_dep(mysqli_query($db, $the_query." AND is_fem"),0);
 				
 				//new ones for new compliant cancon totals
-				$count_regular = mysqli_result(mysqli_query($db, $the_query." AND crtc_category DIV 10 = 2"),0);
-				$count_specialty = mysqli_result(mysqli_query($db, $the_query." AND crtc_category DIV 10 = 3"),0);
+				$count_regular = mysqli_result_dep(mysqli_query($db, $the_query." AND crtc_category DIV 10 = 2"),0);
+				$count_specialty = mysqli_result_dep(mysqli_query($db, $the_query." AND crtc_category DIV 10 = 3"),0);
 							
 				
 				
@@ -127,35 +127,35 @@ print_menu();
 			printf("<table cellpadding=5 border=1 class=report align=center><tr><td>Playsheet Date</td><td>Playlist</td><td>Canadian (reg)</td><td>Canadian (spec)</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
 			$show_id = $fshow_id[$_POST['showtitle']];
 			$result = mysqli_query($db, "SELECT * FROM shows WHERE id='$show_id'");
-			$show_cc_req_regular = 35; // mysqli_result($result,$count,"cc_req");
+			$show_cc_req_regular = 35; // mysqli_result_dep($result,$count,"cc_req");
 			$show_cc_req_specialty = 7;
-			$show_pl_req = 60;// mysqli_result($result,$count,"pl_req");
-			$show_in_req = 70;// mysqli_result($result,$count,"indy_req");
-			$show_fe_req = 35;// mysqli_result($result,$count,"fem_req");
+			$show_pl_req = 60;// mysqli_result_dep($result,$count,"pl_req");
+			$show_in_req = 70;// mysqli_result_dep($result,$count,"indy_req");
+			$show_fe_req = 35;// mysqli_result_dep($result,$count,"fem_req");
 			$result = mysqli_query($db, "SELECT * FROM playlists WHERE start_time >= '$start_time' AND start_time <= '$end_time' AND show_id='$show_id'");
 			$num_rows = mysqli_num_rows($result);
 			$count = 0;
 			while($count < $num_rows) {
-				$playsheet_id = mysqli_result($result,$count,"id");
+				$playsheet_id = mysqli_result_dep($result,$count,"id");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE playsheet_id='$playsheet_id'";
-				$total_items += $count_items = mysqli_result(mysqli_query($db,$the_query),0);
-				$total_pl += $count_pl = mysqli_result(mysqli_query($db,$the_query." AND is_playlist"),0);
-				$total_cc_reg += $count_cc_reg = mysqli_result(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
-				$total_cc_spec += $count_cc_spec = mysqli_result(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
-				$total_yo += $count_yo = mysqli_result(mysqli_query($db,$the_query." AND is_yourown"),0);
-				$total_in += $count_in = mysqli_result(mysqli_query($db,$the_query." AND is_indy"),0);
-				$total_fe += $count_fe = mysqli_result(mysqli_query($db,$the_query." AND is_fem"),0);
+				$total_items += $count_items = mysqli_result_dep(mysqli_query($db,$the_query),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query($db,$the_query." AND is_playlist"),0);
+				$total_cc_reg += $count_cc_reg = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
+				$total_cc_spec += $count_cc_spec = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
+				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db,$the_query." AND is_yourown"),0);
+				$total_in += $count_in = mysqli_result_dep(mysqli_query($db,$the_query." AND is_indy"),0);
+				$total_fe += $count_fe = mysqli_result_dep(mysqli_query($db,$the_query." AND is_fem"),0);
 				
 				//new ones for new compliant cancon totals
-				$total_regular += $count_regular = mysqli_result(mysqli_query($db,$the_query." AND crtc_category DIV 10 = 2"),0);
-				$total_specialty += $count_specialty = mysqli_result(mysqli_query($db,$the_query." AND crtc_category DIV 10 = 3"),0);
+				$total_regular += $count_regular = mysqli_result_dep(mysqli_query($db,$the_query." AND crtc_category DIV 10 = 2"),0);
+				$total_specialty += $count_specialty = mysqli_result_dep(mysqli_query($db,$the_query." AND crtc_category DIV 10 = 3"),0);
 //printf("total regular: %d", $total_regular);
 //printf("total specialty: %d", $total_specialty);
 				if($count_items) {
 					$count_items = $count_items / 100;
 					$count_regular = $count_regular / 100;
 					$count_specialty = $count_specialty / 100;
-					printf("<tr><td>%s</td>", mysqli_result($result,$count,"start_time"));
+					printf("<tr><td>%s</td>", mysqli_result_dep($result,$count,"start_time"));
 					printf("<td class=%s>%2.0f%% / %2.0f%%</td>", (($count_pl/$count_items >= $show_pl_req) ? "reqmeet" : "reqfail"), $count_pl/$count_items, $show_pl_req);
 					printf("<td class=%s>%d / %d = %2.0f%%</td>", ((($count_regular==0) || ($count_cc_reg/$count_regular >= $show_cc_req_regular)) ? "reqmeet" : "reqfail"), $count_cc_reg, 100*$count_regular, $count_cc_reg/$count_regular);
 					printf("<td class=%s>%d / %d = %2.0f%%</td>", ((($count_specialty==0) || ($count_cc_spec/$count_specialty >= $show_cc_req_specialty)) ? "reqmeet" : "reqfail"), $count_cc_spec, 100*$count_specialty, $count_cc_spec/$count_specialty);
@@ -166,7 +166,7 @@ print_menu();
 				}
 				
 				else {
-					printf("<tr><td>%s</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>", mysqli_result($result,$count,"start_time"));
+					printf("<tr><td>%s</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>", mysqli_result_dep($result,$count,"start_time"));
 				}
 				$count++;
 			}

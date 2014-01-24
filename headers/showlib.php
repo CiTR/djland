@@ -13,14 +13,14 @@ class ShowLib {
 	
 	// Private helper functions
 	/*
-	private function mysqli_result($res, $row, $field=0) { 
+	private function mysqli_result_dep($res, $row, $field=0) {
     $res->data_seek($row); 
     $datarow = $res->fetch_array(); 
     return $datarow[$field]; 
 } */
 	private function prepareShow($show_r) {
 		$host_q = mysqli_query($this->mysqli_link,"SELECT * FROM hosts WHERE id={$show_r['host_id']}");
-		$show_r["host"] = mysqli_result($host_q, 0, "name");
+		$show_r["host"] = mysqli_result_dep($host_q, 0, "name");
 		$time_q = mysqli_query($this->mysqli_link,"SELECT * FROM show_times WHERE show_id={$show_r['id']}");
 		$all_times = array();
 		while($time_r = mysqli_fetch_assoc($time_q)) { // Get times

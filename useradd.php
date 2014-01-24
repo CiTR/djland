@@ -72,9 +72,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'add') {
 					$num_rows = mysqli_num_rows($result);
 					$count = 0;
 					while ($count < $num_rows) { 
-						$cgi_group = "group_" . mysqli_result($result,$count,"name");
+						$cgi_group = "group_" . mysqli_result_dep($result,$count,"name");
 						if(test_cgi($cgi_group)) {
-							$result2 = mysqli_query($db, "INSERT INTO group_members (username, groupname) VALUES ('".fas($_POST['username'])."','".fas(mysqli_result($result,$count,"name"))."')");
+							$result2 = mysqli_query($db, "INSERT INTO group_members (username, groupname) VALUES ('".fas($_POST['username'])."','".fas(mysqli_result_dep($result,$count,"name"))."')");
 						}
 						$count++;
 					}
@@ -112,7 +112,7 @@ else if(isset($_GET['action']) && $_GET['action'] == 'list') {
 	printf("<SELECT NAME=\"edit\" SIZE=15>\n");
 
 	while($count < $num_rows) {
-		$user_name = mysqli_result($result,$count,"username");
+		$user_name = mysqli_result_dep($result,$count,"username");
 		printf("<OPTION>%s\n", $user_name);
 		$count++;
 	}
@@ -143,13 +143,13 @@ else {
 
 		printf("<FORM METHOD=post ACTION=\"useradd.php?action=add\" name=\"the_form\" OnSubmit=\"javascript:if(document.the_form.password.value == document.the_form.password2.value) return true; else {alert('Passwords do not match'); return false;}\">");
 
-		$user_name = $ed ? mysqli_result($result, 0, "username") : "";
-		$user_status = $ed ? mysqli_result($result, 0, "status") : "";
-		$user_login_fails = $ed ? mysqli_result($result, 0, "login_fails") : 0;
+		$user_name = $ed ? mysqli_result_dep($result, 0, "username") : "";
+		$user_status = $ed ? mysqli_result_dep($result, 0, "status") : "";
+		$user_login_fails = $ed ? mysqli_result_dep($result, 0, "login_fails") : 0;
 		$is_in_group = 0;
 
 		if($user_login_fails) {
-			printf("<tr><td colspan=2>WARNING!!! User has had %s consecutive login failures.<BR><br></td></tr>\n", $user_login_fails);
+			printf("<tr><td colspan=2>WARNING!!! User has had %s consecutive login failures. User might be a hacker if this number is large<BR><br></td></tr>\n", $user_login_fails);
 		}
 
 		if($ed) {
@@ -176,9 +176,18 @@ else {
 			$count = 0;
 			$num_rows = mysqli_num_rows($result);
 			while ($count < $num_rows) { 
-				printf("<option>%s</option>\n", mysqli_result($result,$count,"name"));
+			//	printf("<option>%s</option>\n", mysqli_result_dep($result,$count,"name"));
 				$count++;
 			}
+            if ($user_status == 'Disabled'){
+            printf("<option>Enabled</option>");
+            } else if ($user_status == 'Enabled'){
+            printf("<option>Disabled</option>");
+            } else {
+                printf("<option>Enabled</option>");
+                printf("<option>Disabled</option>");
+
+            }
 			printf("</select></td></tr>\n");
 
 			printf("<tr><td align=right valign=top>Groups:</td><td>\n");
@@ -186,11 +195,11 @@ else {
 			$count = 0;
 			$num_rows = mysqli_num_rows($result);
 			while ($count < $num_rows) {
-				$group_name = mysqli_result($result,$count,"name");
+				$group_name = mysqli_result_dep($result,$count,"name");
 				if($ed) {
 					$is_in_group = mysqli_num_rows(mysqli_query($db,"SELECT * FROM group_members WHERE username='".fas($_GET['edit'])."' AND groupname='".fas($group_name)."'"));
 				}
-				printf("<input type=checkbox name=\"group_%s\"%s> %s - %s<br>", $group_name, (($group_name == "member" && !$ed) || ($ed && $is_in_group)) ? " checked" : "", $group_name, mysqli_result($result,$count,"description"));
+				printf("<input type=checkbox name=\"group_%s\"%s> %s - %s<br>", $group_name, (($group_name == "member" && !$ed) || ($ed && $is_in_group)) ? " checked" : "", $group_name, mysqli_result_dep($result,$count,"description"));
 				$count++;
 			}
 			printf("</td></tr>");

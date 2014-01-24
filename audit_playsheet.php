@@ -50,7 +50,7 @@ else if(isset($_GET['action']) && $_GET['action'] == 'list' ) {
 	$count = 0;
 	while($count < $num_rows) {
 
-		printf("<OPTION VALUE=\"%s\">[%s] - %s\n", mysqli_result($result,$count,"id"), mysqli_result($result,$count,"start_time"), $fshow_name[mysqli_result($result,$count,"show_id")]);
+		printf("<OPTION VALUE=\"%s\">[%s] - %s\n", mysqli_result_dep($result,$count,"id"), mysqli_result_dep($result,$count,"start_time"), $fshow_name[mysqli_result_dep($result,$count,"show_id")]);
 		$count++;
 	}
 	printf("</SELECT><BR><INPUT TYPE=submit VALUE=\"View Playsheet\">\n");
@@ -120,18 +120,18 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 			$num_rows = mysqli_num_rows($result);
 			$count = 0;
 			while($count < $num_rows) {
-				$show_id = mysqli_result($result,$count,"id");
-				$show_cc_req = mysqli_result($result,$count,"cc_req");
-				$show_pl_req = mysqli_result($result,$count,"pl_req");
-				$show_in_req = mysqli_result($result,$count,"indy_req");
-				$show_fe_req = mysqli_result($result,$count,"fem_req");
+				$show_id = mysqli_result_dep($result,$count,"id");
+				$show_cc_req = mysqli_result_dep($result,$count,"cc_req");
+				$show_pl_req = mysqli_result_dep($result,$count,"pl_req");
+				$show_in_req = mysqli_result_dep($result,$count,"indy_req");
+				$show_fe_req = mysqli_result_dep($result,$count,"fem_req");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE show_date >= '$start_date' AND show_date <= '$end_date' AND show_id='$show_id'";
-				$total_items += $count_items = mysqli_result(mysqli_query($db,$the_query),0);
-				$total_pl += $count_pl = mysqli_result(mysqli_query($db,$the_query." AND is_playlist"),0);
-				$total_cc += $count_cc = mysqli_result(mysqli_query($db,$the_query." AND is_canadian"),0);
-				$total_yo += $count_yo = mysqli_result(mysqli_query($db, $the_query." AND is_yourown"),0);
-				$total_in += $count_in = mysqli_result(mysqli_query($db, $the_query." AND is_indy"),0);
-				$total_fe += $count_fe = mysqli_result(mysqli_query($db, $the_query." AND is_fem"),0);
+				$total_items += $count_items = mysqli_result_dep(mysqli_query($db,$the_query),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query($db,$the_query." AND is_playlist"),0);
+				$total_cc += $count_cc = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian"),0);
+				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db, $the_query." AND is_yourown"),0);
+				$total_in += $count_in = mysqli_result_dep(mysqli_query($db, $the_query." AND is_indy"),0);
+				$total_fe += $count_fe = mysqli_result_dep(mysqli_query($db, $the_query." AND is_fem"),0);
 				if($count_items) {
 					$count_items = $count_items / 100;
 					printf("<tr><td>%s</td>", $fshow_name[$show_id]);
@@ -156,26 +156,26 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 			printf("<table cellpadding=5 border=1 class=report align=center><tr><td>Playsheet Date</td><td>Playlist</td><td>Canadian</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
 			$show_id = $fshow_id[$_POST['showtitle']];
 			$result = mysqli_query( $db,"SELECT * FROM shows WHERE id='$show_id'");
-			$show_cc_req = mysqli_result($result,0,"cc_req");
-			$show_pl_req = mysqli_result($result,0,"pl_req");
-			$show_in_req = mysqli_result($result,0,"indy_req");
-			$show_fe_req = mysqli_result($result,0,"fem_req");
+			$show_cc_req = mysqli_result_dep($result,0,"cc_req");
+			$show_pl_req = mysqli_result_dep($result,0,"pl_req");
+			$show_in_req = mysqli_result_dep($result,0,"indy_req");
+			$show_fe_req = mysqli_result_dep($result,0,"fem_req");
 			$result = mysqli_query($db, "SELECT * FROM playlists WHERE start_time >= '$start_time' AND start_time <= '$end_time' AND show_id='$show_id'");
 			$num_rows = mysqli_num_rows($result);
 			$count = 0;
 			while($count < $num_rows) {
-				$playsheet_id = mysqli_result($result,$count,"id");
+				$playsheet_id = mysqli_result_dep($result,$count,"id");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE playsheet_id='$playsheet_id'";
-				$total_items += $count_items = mysqli_result(mysqli_query($db, $the_query),0);
-				$total_pl += $count_pl = mysqli_result(mysqli_query($db,$the_query." AND is_playlist"),0);
-				$total_cc += $count_cc = mysqli_result(mysqli_query($db,$the_query." AND is_canadian"),0);
-				$total_yo += $count_yo = mysqli_result(mysqli_query($db, $the_query." AND is_yourown"),0);
-				$total_in += $count_in = mysqli_result(mysqli_query($db,$the_query." AND is_indy"),0);
-				$total_fe += $count_fe = mysqli_result(mysqli_query($db,$the_query." AND is_fem"),0);
+				$total_items += $count_items = mysqli_result_dep(mysqli_query($db, $the_query),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query($db,$the_query." AND is_playlist"),0);
+				$total_cc += $count_cc = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian"),0);
+				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db, $the_query." AND is_yourown"),0);
+				$total_in += $count_in = mysqli_result_dep(mysqli_query($db,$the_query." AND is_indy"),0);
+				$total_fe += $count_fe = mysqli_result_dep(mysqli_query($db,$the_query." AND is_fem"),0);
 
 				if($count_items) {
 					$count_items = $count_items / 100;
-					printf("<tr><td>%s</td>", mysqli_result($result,$count,"start_time"));
+					printf("<tr><td>%s</td>", mysqli_result_dep($result,$count,"start_time"));
 					printf("<td class=%s>%2.0f%% / %2.0f%%</td>", (($count_pl/$count_items >= $show_pl_req) ? "reqmeet" : "reqfail"), $count_pl/$count_items, $show_pl_req);
 					printf("<td class=%s>%2.0f%% / %2.0f%%</td>", (($count_cc/$count_items >= $show_cc_req) ? "reqmeet" : "reqfail"), $count_cc/$count_items, $show_cc_req);
 					printf("<td class=%s>%2.0f%%</td>", "reqmeet", $count_yo/$count_items);
@@ -184,7 +184,7 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 					printf("</tr>");
 				}
 				else {
-					printf("<tr><td>%s</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>", mysqli_result($result,$count,"start_time"));
+					printf("<tr><td>%s</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>", mysqli_result_dep($result,$count,"start_time"));
 				}
 				$count++;
 			}
@@ -213,16 +213,16 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 	while($count < $num_rows) {
 
 		//Y-m-d H:i:s
-		$pl_date_year = $ed ? date('Y', mysqli_result($result, $count, "good_date")) : date('Y');
-		$pl_date_month = $ed ? date('m', mysqli_result($result, $count, "good_date")) : date('m');
-		$pl_date_day = $ed ? date('d', mysqli_result($result, $count, "good_date")) : date('d');
-		$pl_date_hour = $ed ? date('H', mysqli_result($result, $count, "good_date")) : date('H');
-		$pl_date_min = $ed ? date('i', mysqli_result($result, $count, "good_date")) : date('i');
-		$end_date_hour = $ed ? mysqli_result($result, $count, "end_hour") : date('H');
-		$end_date_min = $ed ? mysqli_result($result, $count, "end_min") : date('i');
-		$host_name = $ed ? $fhost_name[mysqli_result($result, $count, "host_id")] : "";
-		$show_name = $ed ? $fshow_name[mysqli_result($result, $count, "show_id")] : "";
-		$playsheet_id = mysqli_result($result, $count, "id");
+		$pl_date_year = $ed ? date('Y', mysqli_result_dep($result, $count, "good_date")) : date('Y');
+		$pl_date_month = $ed ? date('m', mysqli_result_dep($result, $count, "good_date")) : date('m');
+		$pl_date_day = $ed ? date('d', mysqli_result_dep($result, $count, "good_date")) : date('d');
+		$pl_date_hour = $ed ? date('H', mysqli_result_dep($result, $count, "good_date")) : date('H');
+		$pl_date_min = $ed ? date('i', mysqli_result_dep($result, $count, "good_date")) : date('i');
+		$end_date_hour = $ed ? mysqli_result_dep($result, $count, "end_hour") : date('H');
+		$end_date_min = $ed ? mysqli_result_dep($result, $count, "end_min") : date('i');
+		$host_name = $ed ? $fhost_name[mysqli_result_dep($result, $count, "host_id")] : "";
+		$show_name = $ed ? $fshow_name[mysqli_result_dep($result, $count, "show_id")] : "";
+		$playsheet_id = mysqli_result_dep($result, $count, "id");
 
 		$cur_dow = date('w');
 		$cur_time = date('H:i:s');
@@ -241,19 +241,19 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 		$num_rows2 = mysqli_num_rows($result2);
 		for($i=0; $i < $num_rows2; $i++) {
 
-			$result3 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result2,$i,"song_id")."'");
-			echo "<tr><td>" . $fformat_name[mysqli_result($result2,$i,"format_id")] . "</td><td>";
-			echo mysqli_result($result3,0,"artist") . "</td><td>";
-			echo mysqli_result($result3,0,"title") . "</td><td>";
-			echo (mysqli_result($result2,$i,"is_playlist") ? "X" : "") . "</td><td>";
-			echo (mysqli_result($result2,$i,"is_canadian") ? "X" : "") . "</td><td>";
-			echo (mysqli_result($result2,$i,"is_yourown") ? "X" : "") . "</td><td>";
-			echo (mysqli_result($result2,$i,"is_indy") ? "X" : "") . "</td><td>";
-			echo (mysqli_result($result2,$i,"is_fem") ? "X" : "") . "</td><td>";;
-			echo (mysqli_result($result2,$i,"is_theme") ? "X" : "") . "</td><td>";;
-			echo (mysqli_result($result2,$i,"is_background") ? "X" : "") . "</td><td>";;
-			echo mysqli_result($result2,$i,"duration") . "</td><td>";;
-			echo mysqli_result($result3,0,"song") . "</td></tr>";
+			$result3 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result2,$i,"song_id")."'");
+			echo "<tr><td>" . $fformat_name[mysqli_result_dep($result2,$i,"format_id")] . "</td><td>";
+			echo mysqli_result_dep($result3,0,"artist") . "</td><td>";
+			echo mysqli_result_dep($result3,0,"title") . "</td><td>";
+			echo (mysqli_result_dep($result2,$i,"is_playlist") ? "X" : "") . "</td><td>";
+			echo (mysqli_result_dep($result2,$i,"is_canadian") ? "X" : "") . "</td><td>";
+			echo (mysqli_result_dep($result2,$i,"is_yourown") ? "X" : "") . "</td><td>";
+			echo (mysqli_result_dep($result2,$i,"is_indy") ? "X" : "") . "</td><td>";
+			echo (mysqli_result_dep($result2,$i,"is_fem") ? "X" : "") . "</td><td>";;
+			echo (mysqli_result_dep($result2,$i,"is_theme") ? "X" : "") . "</td><td>";;
+			echo (mysqli_result_dep($result2,$i,"is_background") ? "X" : "") . "</td><td>";;
+			echo mysqli_result_dep($result2,$i,"duration") . "</td><td>";;
+			echo mysqli_result_dep($result3,0,"song") . "</td></tr>";
 			echo "\n";
 		}
 
@@ -275,26 +275,26 @@ else if(is_member("dj")){
 	}
 	
 	//Y-m-d H:i:s
-	$pl_date_year = $ed ? date('Y', mysqli_result($result, 0, "good_date")) : date('Y');
-	$pl_date_month = $ed ? date('m', mysqli_result($result, 0, "good_date")) : date('m');
-	$pl_date_day = $ed ? date('d', mysqli_result($result, 0, "good_date")) : date('d');
-	$pl_date_hour = $ed ? date('H', mysqli_result($result, 0, "good_date")) : date('H');
-	$pl_date_min = $ed ? date('i', mysqli_result($result, 0, "good_date")) : date('i');
-	$end_date_hour = $ed ? mysqli_result($result, 0, "end_hour") : date('H');
-	$end_date_min = $ed ? mysqli_result($result, 0, "end_min") : date('i');
-	$host_name = $ed ? $fhost_name[mysqli_result($result, 0, "host_id")] : "";
-	$show_name = $ed ? $fshow_name[mysqli_result($result, 0, "show_id")] : "";
+	$pl_date_year = $ed ? date('Y', mysqli_result_dep($result, 0, "good_date")) : date('Y');
+	$pl_date_month = $ed ? date('m', mysqli_result_dep($result, 0, "good_date")) : date('m');
+	$pl_date_day = $ed ? date('d', mysqli_result_dep($result, 0, "good_date")) : date('d');
+	$pl_date_hour = $ed ? date('H', mysqli_result_dep($result, 0, "good_date")) : date('H');
+	$pl_date_min = $ed ? date('i', mysqli_result_dep($result, 0, "good_date")) : date('i');
+	$end_date_hour = $ed ? mysqli_result_dep($result, 0, "end_hour") : date('H');
+	$end_date_min = $ed ? mysqli_result_dep($result, 0, "end_min") : date('i');
+	$host_name = $ed ? $fhost_name[mysqli_result_dep($result, 0, "host_id")] : "";
+	$show_name = $ed ? $fshow_name[mysqli_result_dep($result, 0, "show_id")] : "";
 
 	$cur_dow = date('w');
 	$cur_time = date('H:i:s');
 	if(!$ed && mysqli_num_rows($result2 = mysqli_query($db,"SELECT *,HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min, HOUR(start_time) AS start_hour, MINUTE(start_time) AS start_min FROM shows WHERE weekday='$cur_dow' AND start_time < '$cur_time' AND (end_time > '$cur_time' OR end_time < start_time) ORDER BY last_show DESC") )) {
 
-		$pl_date_hour = mysqli_result($result2, 0, "start_hour");
-		$pl_date_min = mysqli_result($result2, 0, "start_min");
-		$end_date_hour = mysqli_result($result2, 0, "end_hour");
-		$end_date_min = mysqli_result($result2, 0, "end_min");
-		$host_name = $fhost_name[mysqli_result($result2, 0, "host_id")];
-		$show_name =  mysqli_result($result2, 0, "name");
+		$pl_date_hour = mysqli_result_dep($result2, 0, "start_hour");
+		$pl_date_min = mysqli_result_dep($result2, 0, "start_min");
+		$end_date_hour = mysqli_result_dep($result2, 0, "end_hour");
+		$end_date_min = mysqli_result_dep($result2, 0, "end_min");
+		$host_name = $fhost_name[mysqli_result_dep($result2, 0, "host_id")];
+		$show_name =  mysqli_result_dep($result2, 0, "name");
 
 	}
 ?>
@@ -353,16 +353,16 @@ else if(is_member("dj")){
 		for($i=0; $i < $num_rows; $i++) {
 
 
-			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result,$i,"song_id")."'");
-			echo mysqli_result($result2,0,"artist") . ", ";
-			echo mysqli_result($result2,0,"title") . ", ";
-			echo mysqli_result($result2,0,"song") . ", ";
-			echo $fformat_name[mysqli_result($result,$i,"format_id")] . ", ";
-			echo (mysqli_result($result,$i,"is_playlist") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_canadian") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_yourown") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_indy") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_fem") ? "true" : "false");
+			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
+			echo mysqli_result_dep($result2,0,"artist") . ", ";
+			echo mysqli_result_dep($result2,0,"title") . ", ";
+			echo mysqli_result_dep($result2,0,"song") . ", ";
+			echo $fformat_name[mysqli_result_dep($result,$i,"format_id")] . ", ";
+			echo (mysqli_result_dep($result,$i,"is_playlist") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_canadian") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_yourown") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_indy") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_fem") ? "true" : "false");
 			echo "\n";
 		}
 		echo "</pre>";
@@ -427,21 +427,21 @@ else if(is_member("dj")){
 		for($i=0; $i < $playlist_entries; $i++) {
 			printf("<tr><td><select name=format%s onkeydown=\"EnterToTab(event)\">", $i);
 			if($i < $num_rows) {
-				printf("<option>%s", $fformat_name[mysqli_result($result,$i,"format_id")]);
-				$set_pl = mysqli_result($result,$i,"is_playlist") ? " checked" : "";
-				$set_cc = mysqli_result($result,$i,"is_canadian") ? " checked" : "";
-				$set_yo = mysqli_result($result,$i,"is_yourown") ? " checked" : "";
-				$set_indy = mysqli_result($result,$i,"is_indy") ? " checked" : "";
-				$set_fem = mysqli_result($result,$i,"is_fem") ? " checked" : "";
+				printf("<option>%s", $fformat_name[mysqli_result_dep($result,$i,"format_id")]);
+				$set_pl = mysqli_result_dep($result,$i,"is_playlist") ? " checked" : "";
+				$set_cc = mysqli_result_dep($result,$i,"is_canadian") ? " checked" : "";
+				$set_yo = mysqli_result_dep($result,$i,"is_yourown") ? " checked" : "";
+				$set_indy = mysqli_result_dep($result,$i,"is_indy") ? " checked" : "";
+				$set_fem = mysqli_result_dep($result,$i,"is_fem") ? " checked" : "";
 
-				$set_theme = mysqli_result($result,$i,"is_theme") ? " checked" : "";
-				$set_background = mysqli_result($result,$i,"is_background") ? " checked" : "";
-				$set_duration = mysqli_result($result,$i,"duration");
+				$set_theme = mysqli_result_dep($result,$i,"is_theme") ? " checked" : "";
+				$set_background = mysqli_result_dep($result,$i,"is_background") ? " checked" : "";
+				$set_duration = mysqli_result_dep($result,$i,"duration");
 
-				$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result,$i,"song_id")."'");
-				$set_artist = mysqli_result($result2,0,"artist");
-				$set_title = mysqli_result($result2,0,"title");
-				$set_song = mysqli_result($result2,0,"song");
+				$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
+				$set_artist = mysqli_result_dep($result2,0,"artist");
+				$set_title = mysqli_result_dep($result2,0,"title");
+				$set_song = mysqli_result_dep($result2,0,"song");
 			}
 			else {
 				$set_pl = "";

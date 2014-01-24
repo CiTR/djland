@@ -322,21 +322,21 @@ else if($actionSet && $action == 'list' ) {
 	$count = 0;
 	while($count < $min) {
 		
-		if(mysqli_result($result,$count,"status")==1) 
+		if(mysqli_result_dep($result,$count,"status")==1)
 			$draft = "(draft)";
 		else
 			$draft = "";
 		
-		if(mysqli_result($result,$count,"star")==1)
+		if(mysqli_result_dep($result,$count,"star")==1)
 			$star_ = "&#9733;";
 		else
 			$star_ = "";
-		$date_unix = strtotime(mysqli_result($result,$count,"start_time")); 
+		$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time"));
 		$theDate = 	date ( 'Y: M j, g:ia', $date_unix);
 
 
-//		printf("<OPTION VALUE=\"%s\">%s - %s %s\n", mysqli_result($result,$count,"id"), $theDate, $fshow_name[mysqli_result($result,$count,"show_id")], $draft);
-		print("<option value='".mysqli_result($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result($result,$count,"show_id")].$star_." ".$draft);
+//		printf("<OPTION VALUE=\"%s\">%s - %s %s\n", mysqli_result_dep($result,$count,"id"), $theDate, $fshow_name[mysqli_result_dep($result,$count,"show_id")], $draft);
+		print("<option value='".mysqli_result_dep($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result_dep($result,$count,"show_id")].$star_." ".$draft);
 		$count++;
 	}
 	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" >View Playsheet</button>\n");
@@ -380,32 +380,32 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$ps_id = fas($_GET['id']);
 //		echo " you are editing playsheet id number ".$ps_id;
 		if ($result = mysqli_query($db,"SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playlists WHERE id='$ps_id'")){
-		$curr_id = mysqli_result($result,0,"show_id");
+		$curr_id = mysqli_result_dep($result,0,"show_id");
 		$currshow = $showlib->getShowByID($curr_id);
 		
-		$pl_date_year = date('Y', mysqli_result($result, 0, "good_date"));
-		$pl_date_month = date('m', mysqli_result($result, 0, "good_date"));
-		$pl_date_day = date('d', mysqli_result($result, 0, "good_date"));
-		$pl_date_hour = date('H', mysqli_result($result, 0, "good_date"));
-		$pl_date_min = date('i', mysqli_result($result, 0, "good_date"));
-		$end_date_hour = mysqli_result($result, 0, "end_hour");
-		$end_date_min = mysqli_result($result, 0, "end_min");
+		$pl_date_year = date('Y', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_month = date('m', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_day = date('d', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_hour = date('H', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_min = date('i', mysqli_result_dep($result, 0, "good_date"));
+		$end_date_hour = mysqli_result_dep($result, 0, "end_hour");
+		$end_date_min = mysqli_result_dep($result, 0, "end_min");
 		
 		$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
 	
 		//dog
 //		echo "my unix: ".$unix_start_time."<br/>";
-//		echo "their unix: ".mysqli_result($result, 0, "UNIX_TIMESTAMP(start_time)")."<br/>";
+//		echo "their unix: ".mysqli_result_dep($result, 0, "UNIX_TIMESTAMP(start_time)")."<br/>";
 		
-		$host_name = $fhost_name[mysqli_result($result, 0, "host_id")];
-		$show_name = $fshow_name[mysqli_result($result, 0, "show_id")];
-		$show_id = mysqli_result($result, 0, "show_id");
+		$host_name = $fhost_name[mysqli_result_dep($result, 0, "host_id")];
+		$show_name = $fshow_name[mysqli_result_dep($result, 0, "show_id")];
+		$show_id = mysqli_result_dep($result, 0, "show_id");
 
-		$loaded_spokenword = mysqli_result($result,0,"spokenword");
-		$loaded_sw_duration = mysqli_result($result, 0, "spokenword_duration");
-		$loaded_status = mysqli_result($result, 0, "status");
-		$loaded_crtc = mysqli_result($result, 0, "crtc");
-		$loaded_lang = mysqli_result($result, 0, "lang");
+		$loaded_spokenword = mysqli_result_dep($result,0,"spokenword");
+		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
+		$loaded_status = mysqli_result_dep($result, 0, "status");
+		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
+		$loaded_lang = mysqli_result_dep($result, 0, "lang");
 		
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
@@ -573,20 +573,20 @@ if (count($matches)>1){
         /*
 		for($i=0; $i < $num_rows; $i++) {
 
-			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result,$i,"song_id")."'");
-//			echo htmlentities(mysqli_result($result2,0,"artist"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result($result2,0,"title"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result($result2,0,"song"), ENT_QUOTES) . ", ";
-			echo mysqli_result($result2,0,"artist") . ", ";
-			echo mysqli_result($result2,0,"title") . ", ";
-			echo mysqli_result($result2,0,"song") . ", ";
-//abcd		echo $fformat_name[mysqli_result($result,$i,"format_id")] . ", ";
-			echo (mysqli_result($result,$i,"is_playlist") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_canadian") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_fem") ? "true" : "false"). ", ";
-			echo (mysqli_result($result,$i,"is_inst") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_part") ? "true" : "false") . ", ";
-			echo (mysqli_result($result,$i,"is_hit") ? "true" : "false");
+			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
+//			echo htmlentities(mysqli_result_dep($result2,0,"artist"), ENT_QUOTES) . ", ";
+//			echo htmlentities(mysqli_result_dep($result2,0,"title"), ENT_QUOTES) . ", ";
+//			echo htmlentities(mysqli_result_dep($result2,0,"song"), ENT_QUOTES) . ", ";
+			echo mysqli_result_dep($result2,0,"artist") . ", ";
+			echo mysqli_result_dep($result2,0,"title") . ", ";
+			echo mysqli_result_dep($result2,0,"song") . ", ";
+//abcd		echo $fformat_name[mysqli_result_dep($result,$i,"format_id")] . ", ";
+			echo (mysqli_result_dep($result,$i,"is_playlist") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_canadian") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_fem") ? "true" : "false"). ", ";
+			echo (mysqli_result_dep($result,$i,"is_inst") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_part") ? "true" : "false") . ", ";
+			echo (mysqli_result_dep($result,$i,"is_hit") ? "true" : "false");
 			echo "\n";
 		}
 		*/
@@ -606,19 +606,19 @@ if (count($matches)>1){
 		}
 		for($i=0; $i < $num_rows; $i++) {
             
-			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result,$i,"song_id")."'");
+			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
             echo "<tr>";
             echo "<td class=\"rawdata\">";
-			echo html_entity_decode(mysqli_result($result2,0,"artist"));
+			echo html_entity_decode(mysqli_result_dep($result2,0,"artist"));
 			echo " - ";
-			echo html_entity_decode(mysqli_result($result2,0,"song"));
+			echo html_entity_decode(mysqli_result_dep($result2,0,"song"));
 			echo " (";
-			echo html_entity_decode(mysqli_result($result2,0,"title"));
+			echo html_entity_decode(mysqli_result_dep($result2,0,"title"));
 			echo ")<br/>";
 			if($SOCAN_FLAG)
 			{
 			echo " - ";
-			echo html_entity_decode(mysqli_result($result2,0,"composer"));
+			echo html_entity_decode(mysqli_result_dep($result2,0,"composer"));
 			echo "<br/>";}
            echo "</td></tr>";
             
@@ -822,8 +822,8 @@ if (count($matches)>1){
 		for($i=0; $i <= ($num_rows); $i++) {		
 
 				if($ps_id){ // if $ps_id is set then it's a loaded playsheet
-//				$set_lang = htmlentities(mysqli_result($result,$i,"lang"), ENT_QUOTES);
-				$set_lang = mysqli_result($result,$i,"lang");
+//				$set_lang = htmlentities(mysqli_result_dep($result,$i,"lang"), ENT_QUOTES);
+				$set_lang = mysqli_result_dep($result,$i,"lang");
 				}
 
 							//otherwise, it's a saved playsheet
@@ -832,30 +832,30 @@ if (count($matches)>1){
 				//$set_lang = "eng";
 				
 
-				$set_part = mysqli_result($result,$i,"is_part") ? " checked" : "";
-				$set_inst = mysqli_result($result,$i,"is_inst") ? " checked" : "";			
-				$set_hit = mysqli_result($result,$i,"is_hit") ? " checked" : "";
+				$set_part = mysqli_result_dep($result,$i,"is_part") ? " checked" : "";
+				$set_inst = mysqli_result_dep($result,$i,"is_inst") ? " checked" : "";
+				$set_hit = mysqli_result_dep($result,$i,"is_hit") ? " checked" : "";
 				
 // the following queries are from playitems
 
-				$set_pl = mysqli_result($result,$i,"is_playlist") ? " checked" : "";
-				$set_cc = mysqli_result($result,$i,"is_canadian") ? " checked" : "";
-				$set_yo = mysqli_result($result,$i,"is_yourown") ? " checked" : "";
-				$set_indy = mysqli_result($result,$i,"is_indy") ? " checked" : "";
-				$set_fem = mysqli_result($result,$i,"is_fem") ? " checked" : "";
+				$set_pl = mysqli_result_dep($result,$i,"is_playlist") ? " checked" : "";
+				$set_cc = mysqli_result_dep($result,$i,"is_canadian") ? " checked" : "";
+				$set_yo = mysqli_result_dep($result,$i,"is_yourown") ? " checked" : "";
+				$set_indy = mysqli_result_dep($result,$i,"is_indy") ? " checked" : "";
+				$set_fem = mysqli_result_dep($result,$i,"is_fem") ? " checked" : "";
 			
 				if($SOCAN_FLAG){
-				$set_theme = mysqli_result($result,$i,"is_theme") ? " checked" : "";
-				$set_background = mysqli_result($result,$i,"is_background") ? " checked" : "";	
+				$set_theme = mysqli_result_dep($result,$i,"is_theme") ? " checked" : "";
+				$set_background = mysqli_result_dep($result,$i,"is_background") ? " checked" : "";
 				
-				$set_song_start_hour = mysqli_result($result,$i,"insert_song_start_hour");
-				$set_song_start_minute = mysqli_result($result,$i,"insert_song_start_minute");
-				$set_song_length_minute = mysqli_result($result,$i,"insert_song_length_minute");
-				$set_song_length_second = mysqli_result($result,$i,"insert_song_length_second");
+				$set_song_start_hour = mysqli_result_dep($result,$i,"insert_song_start_hour");
+				$set_song_start_minute = mysqli_result_dep($result,$i,"insert_song_start_minute");
+				$set_song_length_minute = mysqli_result_dep($result,$i,"insert_song_length_minute");
+				$set_song_length_second = mysqli_result_dep($result,$i,"insert_song_length_second");
 			
 				}
 				
-				$crtc_num = mysqli_result($result,$i,"crtc_category");
+				$crtc_num = mysqli_result_dep($result,$i,"crtc_category");
 				
 				if(!isset($crtc_num))
 					{	$crtc_num = $crtc_pl;
@@ -868,18 +868,18 @@ if (count($matches)>1){
 //				if (!$ps_id && $lang_default) $crtc_num = $crtc_default;
 			
 				// the following queries are from songs
-				$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result($result,$i,"song_id")."'");
+				$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
 
-//				$set_artist = htmlentities(mysqli_result($result2,0,"artist"), ENT_QUOTES);
-//				$set_title = htmlentities(mysqli_result($result2,0,"title"), ENT_QUOTES);
-//				$set_song = htmlentities(mysqli_result($result2,0,"song"), ENT_QUOTES);
+//				$set_artist = htmlentities(mysqli_result_dep($result2,0,"artist"), ENT_QUOTES);
+//				$set_title = htmlentities(mysqli_result_dep($result2,0,"title"), ENT_QUOTES);
+//				$set_song = htmlentities(mysqli_result_dep($result2,0,"song"), ENT_QUOTES);
 
-				$set_artist = html_entity_decode(mysqli_result($result2,0,"artist"));
-				$set_title = html_entity_decode(mysqli_result($result2,0,"title"));
-				$set_song = html_entity_decode(mysqli_result($result2,0,"song"));
+				$set_artist = html_entity_decode(mysqli_result_dep($result2,0,"artist"));
+				$set_title = html_entity_decode(mysqli_result_dep($result2,0,"title"));
+				$set_song = html_entity_decode(mysqli_result_dep($result2,0,"song"));
 				if($SOCAN_FLAG)
 				{
-				$set_composer = html_entity_decode(mysqli_result($result2,0,"composer"));
+				$set_composer = html_entity_decode(mysqli_result_dep($result2,0,"composer"));
 				}
 				
 				

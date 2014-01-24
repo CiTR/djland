@@ -146,7 +146,7 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 //				foreach($dbarray as $i => $row)
 ////////////////////////////////////////////////////
 // step 3:	change all instances of:
-//				mysqli_result($sresult,$scount,"FIELDNAME")
+//				mysqli_result_dep($sresult,$scount,"FIELDNAME")
 //			into:
 //				$row["FIELDNAME"]
 ////////////////////////////////////////////////////
@@ -238,28 +238,28 @@ foreach($dbarray as $i => $row){
 /*
 	while($scount < $snum_rows) {
 		if(is_member("editlibrary")) {
-			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], mysqli_result($sresult,$scount,"id"), mysqli_result($sresult,$scount,"catalog") ? mysqli_result($sresult,$scount,"catalog") : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".mysqli_result($sresult,$scount,"id")."\" name=id".$scount."><input type=hidden value=\"".mysqli_result($sresult,$scount,"catalog")."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
+			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,$scount,"id"), mysqli_result_dep($sresult,$scount,"catalog") ? mysqli_result_dep($sresult,$scount,"catalog") : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".mysqli_result_dep($sresult,$scount,"id")."\" name=id".$scount."><input type=hidden value=\"".mysqli_result_dep($sresult,$scount,"catalog")."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
 		}
 		else {
-			printf("<tr><td align=right>[%s]</td><td>", mysqli_result($sresult,$scount,"catalog"));
+			printf("<tr><td align=right>[%s]</td><td>", mysqli_result_dep($sresult,$scount,"catalog"));
 		}
-		$title = "Catalog: " . htmlspecialchars(mysqli_result($sresult,$scount,"catalog"));
-		$title .= "\nFormat: " . htmlspecialchars(mysqli_result($sresult,$scount,"format"));
-		$title .= "\nStatus: " . htmlspecialchars(mysqli_result($sresult,$scount,"status"));
-		$title .= "\nArtist: " . htmlspecialchars(mysqli_result($sresult,$scount,"artist"));
-		$title .= "\nTitle: " . htmlspecialchars(mysqli_result($sresult,$scount,"title"));
-		$title .= "\nLabel: " . htmlspecialchars(mysqli_result($sresult,$scount,"label"));
-		$title .= "\nGenre: " . htmlspecialchars(mysqli_result($sresult,$scount,"genre"));
-		$title .= "\nAdded: " . htmlspecialchars(mysqli_result($sresult,$scount,"added"));
-		$title .= "\nModified: " . htmlspecialchars(mysqli_result($sresult,$scount,"modified"));
-		$title .= "\nCancon: " . (htmlspecialchars(mysqli_result($sresult,$scount,"cancon") ? "Yes" : "No"));
-		$title .= "\nFemcon: " . (htmlspecialchars(mysqli_result($sresult,$scount,"femcon") ? "Yes" : "No"));
-		$title .= "\nLocal: " . (htmlspecialchars(mysqli_result($sresult,$scount,"local") ? "Yes" : "No"));
-		$title .= "\nPlaylist: " . (htmlspecialchars(mysqli_result($sresult,$scount,"playlist") ? "Yes" : "No"));
-		$title .= "\nCompilation: " . (htmlspecialchars(mysqli_result($sresult,$scount,"compilation") ? "Yes" : "No"));
+		$title = "Catalog: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"catalog"));
+		$title .= "\nFormat: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"format"));
+		$title .= "\nStatus: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"status"));
+		$title .= "\nArtist: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"artist"));
+		$title .= "\nTitle: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"title"));
+		$title .= "\nLabel: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"label"));
+		$title .= "\nGenre: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"genre"));
+		$title .= "\nAdded: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"added"));
+		$title .= "\nModified: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"modified"));
+		$title .= "\nCancon: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"cancon") ? "Yes" : "No"));
+		$title .= "\nFemcon: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"femcon") ? "Yes" : "No"));
+		$title .= "\nLocal: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"local") ? "Yes" : "No"));
+		$title .= "\nPlaylist: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"playlist") ? "Yes" : "No"));
+		$title .= "\nCompilation: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"compilation") ? "Yes" : "No"));
 
 
-		printf("<center>|%s|</center></td><td><a href=%s?action=view&id=%s title=\"%s\">(%s) - %s</a></td></tr>", mysqli_result($sresult,$scount,"format"), $_SERVER['SCRIPT_NAME'], mysqli_result($sresult,$scount,"id"), $title, mysqli_result($sresult,$scount,"artist"), mysqli_result($sresult,$scount,"title"));
+		printf("<center>|%s|</center></td><td><a href=%s?action=view&id=%s title=\"%s\">(%s) - %s</a></td></tr>", mysqli_result_dep($sresult,$scount,"format"), $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,$scount,"id"), $title, mysqli_result_dep($sresult,$scount,"artist"), mysqli_result_dep($sresult,$scount,"title"));
 		$scount++;
 
 	}
@@ -308,20 +308,20 @@ else if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "vi
 	printf("<center><br><h1>Library Record</h1></center>");
 	if(mysqli_num_rows($sresult)) {
 			printf("<table align=center border=0>");
-			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"catalog"));
-			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"format"));
-			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"status"));
-			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"artist"));
-			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"title"));
-			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"label"));
-			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"genre"));
-			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"added"));
-			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result($sresult,0,"modified"));
-			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result($sresult,0,"cancon") ? "Yes" : "No");
-			printf("<td>Femcon: %s</td></tr>", mysqli_result($sresult,0,"femcon") ? "Yes" : "No");
-			printf("<td>Local: %s</td></tr>", mysqli_result($sresult,0,"local") ? "Yes" : "No");
-			printf("<tr align=right><td>Playlist: %s</td><td>", mysqli_result($sresult,0,"playlist") ? "Yes" : "No");
-			printf("Compilation: %s</td></tr>", mysqli_result($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+			printf("<td>Local: %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<tr align=right><td>Playlist: %s</td><td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+			printf("Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
 			printf("</table><br>");
 	}
 	else {
@@ -359,22 +359,22 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 			$thisCDid = $ed;
 
 			printf("<table border=0 width=50%%>");
-			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"catalog"));
-			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"format"));
-			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"status"));
-			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"artist"));
-			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"title"));
-			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"label"));
-			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"genre"));
-			//printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"added"));
-			//printf("<tr><td align=right>Modified:</td><td align=left> %s</td></tr>", mysqli_result($sresult,0,"modified"));
-			//printf("<tr align=right><td>Cancon: %s</td><td>", mysqli_result($sresult,0,"cancon") ? "Yes" : "No");
-			//printf("Femcon: %s</td></tr>", mysqli_result($sresult,0,"femcon") ? "Yes" : "No");
-			//printf("<tr align=right><td>Playlist: %s</td><td>", mysqli_result($sresult,0,"playlist") ? "Yes" : "No");
-			//printf("Compilation: %s</td></tr>", mysqli_result($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			//printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+			//printf("<tr><td align=right>Modified:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			//printf("<tr align=right><td>Cancon: %s</td><td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+			//printf("Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+			//printf("<tr align=right><td>Playlist: %s</td><td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+			//printf("Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
 			printf("</table>");
 			if(is_member("editlibrary")) {
-//				printf("[<a href=%s?action=edit&id=%s>edit</a>] ", $_SERVER['SCRIPT_NAME'], mysqli_result($sresult,0,"id"));
+//				printf("[<a href=%s?action=edit&id=%s>edit</a>] ", $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,0,"id"));
 				printf("[<a href=%s?action=edit&id=%s>edit</a>] ", $_SERVER['SCRIPT_NAME'], $thisCDid);
 				
 			}
@@ -405,19 +405,19 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 		if($ed) {
 			printf("<INPUT type=hidden name=id value=%s>", $ed);
 		}
-		$catalog = $ed ? mysqli_result($result,0,"catalog") : "";
-		$format = $ed ? mysqli_result($result,0,"format") : "";
-		$format_id = $ed ? mysqli_result($result,0,"format_id") : "";
-		$cancon = ($ed && mysqli_result($result,0,"cancon")) ? " checked" : "";
-		$femcon = ($ed && mysqli_result($result,0,"femcon")) ? " checked" : "";
-		$local = ($ed && mysqli_result($result,0,"local")) ? " checked" : "";
-		$playlist = ($ed && mysqli_result($result,0,"playlist")) ? " checked" : "";
-		$compilation = ($ed && mysqli_result($result,0,"compilation")) ? " checked" : "";
-		$status =  $ed ? mysqli_result($result,0,"status") : "";
-		$artist =  $ed ? mysqli_result($result,0,"artist") : "";
-		$title =  $ed ? mysqli_result($result,0,"title") : "";
-		$label =  $ed ? mysqli_result($result,0,"label") : "";
-		$genre =  $ed ? mysqli_result($result,0,"genre") : "";
+		$catalog = $ed ? mysqli_result_dep($result,0,"catalog") : "";
+		$format = $ed ? mysqli_result_dep($result,0,"format") : "";
+		$format_id = $ed ? mysqli_result_dep($result,0,"format_id") : "";
+		$cancon = ($ed && mysqli_result_dep($result,0,"cancon")) ? " checked" : "";
+		$femcon = ($ed && mysqli_result_dep($result,0,"femcon")) ? " checked" : "";
+		$local = ($ed && mysqli_result_dep($result,0,"local")) ? " checked" : "";
+		$playlist = ($ed && mysqli_result_dep($result,0,"playlist")) ? " checked" : "";
+		$compilation = ($ed && mysqli_result_dep($result,0,"compilation")) ? " checked" : "";
+		$status =  $ed ? mysqli_result_dep($result,0,"status") : "";
+		$artist =  $ed ? mysqli_result_dep($result,0,"artist") : "";
+		$title =  $ed ? mysqli_result_dep($result,0,"title") : "";
+		$label =  $ed ? mysqli_result_dep($result,0,"label") : "";
+		$genre =  $ed ? mysqli_result_dep($result,0,"genre") : "";
 ?>
 		<table border=0>
 		<tr align=right><td>Catalog #: </td><td align=left><INPUT SIZE=10 TYPE=text NAME=catalog value="<?=$catalog?>"></td></tr>

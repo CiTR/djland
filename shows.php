@@ -229,30 +229,30 @@ if(is_member("addshow")) {
 		$socials = mysqli_query($db,"SELECT * FROM `social` WHERE show_id=$ed");
 		$socialRows = mysqli_num_rows($socials);
 
-		$show_name = $ed ? mysqli_result($result, 0, "name") : "";
-		$host_name = $ed ? $fhost_name[mysqli_result($result, 0, "host_id")] : "";
-		$pl_req = $ed ? mysqli_result($result, 0, "pl_req") : "60";
-		$cc_req = $ed ? mysqli_result($result, 0, "cc_req") : "35";
-		$indy_req = $ed ? mysqli_result($result, 0, "indy_req") : "70";
-		$fem_req = $ed ? mysqli_result($result, 0, "fem_req") : "30";
-		$weekday = $ed ? mysqli_result($result, 0, "weekday") : date('w');
+		$show_name = $ed ? mysqli_result_dep($result, 0, "name") : "";
+		$host_name = $ed ? $fhost_name[mysqli_result_dep($result, 0, "host_id")] : "";
+		$pl_req = $ed ? mysqli_result_dep($result, 0, "pl_req") : "60";
+		$cc_req = $ed ? mysqli_result_dep($result, 0, "cc_req") : "35";
+		$indy_req = $ed ? mysqli_result_dep($result, 0, "indy_req") : "70";
+		$fem_req = $ed ? mysqli_result_dep($result, 0, "fem_req") : "30";
+		$weekday = $ed ? mysqli_result_dep($result, 0, "weekday") : date('w');
 //		echo "weekday is ".$weekday;
-		$start_hour = $ed ? mysqli_result($result, 0, "start_hour") : date('H');
-		$start_min = $ed ? mysqli_result($result, 0, "start_min") : date('i');
-		$end_hour = $ed ? mysqli_result($result, 0, "end_hour") : date('H');
-		$end_min = $ed ? mysqli_result($result, 0, "end_min") : date('i');
-		$active = $ed ? mysqli_result($result, 0, "active") : 1;
-		$crtc_num = $ed ? mysqli_result($result, 0, "crtc_default") : "";
+		$start_hour = $ed ? mysqli_result_dep($result, 0, "start_hour") : date('H');
+		$start_min = $ed ? mysqli_result_dep($result, 0, "start_min") : date('i');
+		$end_hour = $ed ? mysqli_result_dep($result, 0, "end_hour") : date('H');
+		$end_min = $ed ? mysqli_result_dep($result, 0, "end_min") : date('i');
+		$active = $ed ? mysqli_result_dep($result, 0, "active") : 1;
+		$crtc_num = $ed ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
-		$lang_default = $ed ? mysqli_result($result, 0, "lang_default") : "";
-		$genre = ($ed && !is_null(mysqli_result($result, 0, "genre"))) ? mysqli_result($result, 0, "genre") : "";
-		$website = ($ed && !is_null(mysqli_result($result, 0, "website"))) ? mysqli_result($result, 0, "website") : "";
-		$rss = ($ed && !is_null(mysqli_result($result, 0, "rss"))) ? mysqli_result($result, 0, "rss") : "";
-		$show_desc = ($ed && !is_null(mysqli_result($result, 0, "show_desc"))) ? mysqli_result($result, 0, "show_desc") : "";
-		$sponsor_name = ($ed && !is_null(mysqli_result($result, 0, "sponsor_name"))) ? mysqli_result($result, 0, "sponsor_name") : "";
-		$sponsor_url = ($ed && !is_null(mysqli_result($result, 0, "sponsor_url"))) ? mysqli_result($result, 0, "sponsor_url") : "";
-		$notes = ($ed && !is_null(mysqli_result($result, 0, "notes"))) ? mysqli_result($result, 0, "notes") : "";
-		$show_img = ($ed && !is_null(mysqli_result($result, 0, "show_img"))) ? mysqli_result($result, 0, "show_img") : "";
+		$lang_default = $ed ? mysqli_result_dep($result, 0, "lang_default") : "";
+		$genre = ($ed && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
+		$website = ($ed && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
+		$rss = ($ed && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
+		$show_desc = ($ed && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
+		$sponsor_name = ($ed && !is_null(mysqli_result_dep($result, 0, "sponsor_name"))) ? mysqli_result_dep($result, 0, "sponsor_name") : "";
+		$sponsor_url = ($ed && !is_null(mysqli_result_dep($result, 0, "sponsor_url"))) ? mysqli_result_dep($result, 0, "sponsor_url") : "";
+		$notes = ($ed && !is_null(mysqli_result_dep($result, 0, "notes"))) ? mysqli_result_dep($result, 0, "notes") : "";
+		$show_img = ($ed && !is_null(mysqli_result_dep($result, 0, "show_img"))) ? mysqli_result_dep($result, 0, "show_img") : "";
 		
 		// Special HTML head (for javascript functions)
 		$weeks_elapsed = floor((time() - 1341100800)/(7*24*60*60));
@@ -469,7 +469,7 @@ if(is_member("addshow")) {
 		$num_rows = mysqli_num_rows($result);
 		$count = 0;
 		while($count < $num_rows) {
-			printf("<OPTION VALUE=\"%s\">%s\n", mysqli_result($result,$count,"id"), $fshow_name[mysqli_result($result,$count,"id")]);
+			printf("<OPTION VALUE=\"%s\">%s\n", mysqli_result_dep($result,$count,"id"), $fshow_name[mysqli_result_dep($result,$count,"id")]);
 			$count++;
 		}
 		echo "</SELECT><BR><INPUT TYPE=submit VALUE=\"Edit Show\">\n
@@ -489,7 +489,7 @@ if(is_member("addshow")) {
 		$num_rows = mysqli_num_rows($result);
 		$count = 0;
 		while($count < $num_rows) {
-			printf("<OPTION VALUE=\"%s\">%s\n", mysqli_result($result,$count,"id"), $fshow_name[mysqli_result($result,$count,"id")]);
+			printf("<OPTION VALUE=\"%s\">%s\n", mysqli_result_dep($result,$count,"id"), $fshow_name[mysqli_result_dep($result,$count,"id")]);
 			$count++;
 		}
 		echo "</SELECT><BR><INPUT TYPE=submit VALUE=\"Edit Show\">\n

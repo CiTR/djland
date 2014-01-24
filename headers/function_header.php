@@ -6,8 +6,8 @@ $fresult = mysqli_query($db,"SELECT * FROM membership_status ORDER BY 'sort', 'n
 $fnum_rows = mysqli_num_rows($fresult);
 $fcount = 0;
 while($fcount < $fnum_rows) {
-	$fmembership_status_name[mysqli_result($fresult,$fcount,"id")] = mysqli_result($fresult,$fcount,"name");
-	$fmembership_status_id[mysqli_result($fresult,$fcount,"name")] = mysqli_result($fresult,$fcount,"id");
+	$fmembership_status_name[mysqli_result_dep($fresult,$fcount,"id")] = mysqli_result_dep($fresult,$fcount,"name");
+	$fmembership_status_id[mysqli_result_dep($fresult,$fcount,"name")] = mysqli_result_dep($fresult,$fcount,"id");
 	$fcount++;
 }
 
@@ -19,8 +19,8 @@ $fnum_rows = mysqli_num_rows($fresult);
 $fcount = 0;
 
 while($fcount < $fnum_rows) {
-	$fformat_name[mysqli_result($fresult,$fcount,"id")] = mysqli_result($fresult,$fcount,"name");
-	$fformat_id[mysqli_result($fresult,$fcount,"name")] = mysqli_result($fresult,$fcount,"id");
+	$fformat_name[mysqli_result_dep($fresult,$fcount,"id")] = mysqli_result_dep($fresult,$fcount,"name");
+	$fformat_id[mysqli_result_dep($fresult,$fcount,"name")] = mysqli_result_dep($fresult,$fcount,"id");
 	$fcount++;
 }
 
@@ -66,7 +66,7 @@ function fget_id($name, $table, $do_insert) {
 	$name = fas($name);
 
 	if(mysqli_num_rows($result = mysqli_query($db,"SELECT * FROM `$table` WHERE (name = '$name')" ))) {
-		return mysqli_result($result,0,"id");
+		return mysqli_result_dep($result,0,"id");
 	}
 	else if($do_insert){
 		mysqli_query($db,"INSERT INTO `$table` (name) VALUES ('$name')");
@@ -85,7 +85,7 @@ function fget_song_id($artist, $title, $song) {
 	$song = fas($song);
 
 	if(mysqli_num_rows($result = mysqli_query($db,"SELECT * FROM `songs` WHERE (artist='$artist' AND title='$title' AND song='$song')"))) {
-		return mysqli_result($result,0,"id");
+		return mysqli_result_dep($result,0,"id");
 	}
 	else {
 		mysqli_query($db,"INSERT INTO `songs` (artist, title, song) VALUES ('$artist', '$title', '$song')");

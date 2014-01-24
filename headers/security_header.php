@@ -73,8 +73,8 @@ function cleanArray($array){
 	if(is_array($array)){
 		foreach($array as $key=>$value){
 
-			$value = eregi_replace("script","scrip t",$value); //no easy javascript injection
-			$value = eregi_replace("union","uni on",$value); //no easy common mysql temper
+			$value = preg_replace("/script/i","scrip t",$value); //no easy javascript injection
+			$value = preg_replace("/union/i","uni on",$value); //no easy common mysql temper
 
 			$value = htmlentities($value, ENT_QUOTES); //encodes the string nicely
 			$value = addslashes($value); //mysql_real_escape_string() //htmlentities

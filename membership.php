@@ -79,34 +79,34 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 	$scount = 0;
 	printf("<center><table border=1 width=90%%><tr><td><b>Name</b></td><td><b>Email</b></td><td nowrap><b>Home Phone</b></td></tr>");
 	while($scount < $snum_rows) {
-		$title = "Name: " . htmlspecialchars(mysqli_result($sresult,$scount,"firstname") . " " . mysqli_result($sresult,$scount,"lastname"));
-		$title .= "\nStatus: " . htmlspecialchars(mysqli_result($sresult,$scount,"status"));
-		$title .= "\nGender: " . htmlspecialchars(mysqli_result($sresult,$scount,"gender"));
-		$title .= "\nJoined: " . htmlspecialchars(mysqli_result($sresult,$scount,"joined"));
-		$title .= "\nShow: " . htmlspecialchars(mysqli_result($sresult,$scount,"show"));
-		$title .= "\nProgrammers: " . (htmlspecialchars(mysqli_result($sresult,$scount,"djs") ? "Yes" : "No"));
-		$title .= "\nMobile Sound DJ: " . (htmlspecialchars(mysqli_result($sresult,$scount,"mobile") ? "Yes" : "No"));
-		$title .= "\nNews Dept: " . (htmlspecialchars(mysqli_result($sresult,$scount,"newsdept") ? "Yes" : "No"));
-		$title .= "\nSports Dept: " . (htmlspecialchars(mysqli_result($sresult,$scount,"sportsdept") ? "Yes" : "No"));
-		$title .= "\nBoard: " . (htmlspecialchars(mysqli_result($sresult,$scount,"board") ? "Yes" : "No"));
-		$title .= "\nDiscorder: " . (htmlspecialchars(mysqli_result($sresult,$scount,"discorder") ? "Yes" : "No"));
-		$title .= "\nExecutive: " . (htmlspecialchars(mysqli_result($sresult,$scount,"executive") ? "Yes" : "No"));
-		$title .= "\nWomen: " . (htmlspecialchars(mysqli_result($sresult,$scount,"women") ? "Yes" : "No"));
-		$title .= "\nFill In: " . (htmlspecialchars(mysqli_result($sresult,$scount,"fill_in") ? "Yes" : "No"));
-		$title .= "\nMusic Dept: " . (htmlspecialchars(mysqli_result($sresult,$scount,"dept") ? "Yes" : "No"));
-		$title .= "\nAdded: " . htmlspecialchars(mysqli_result($sresult,$scount,"added"));
-		$title .= "\nModified: " . htmlspecialchars(mysqli_result($sresult,$scount,"modified"));
+		$title = "Name: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"firstname") . " " . mysqli_result_dep($sresult,$scount,"lastname"));
+		$title .= "\nStatus: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"status"));
+		$title .= "\nGender: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"gender"));
+		$title .= "\nJoined: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"joined"));
+		$title .= "\nShow: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"show"));
+		$title .= "\nProgrammers: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"djs") ? "Yes" : "No"));
+		$title .= "\nMobile Sound DJ: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"mobile") ? "Yes" : "No"));
+		$title .= "\nNews Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"newsdept") ? "Yes" : "No"));
+		$title .= "\nSports Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"sportsdept") ? "Yes" : "No"));
+		$title .= "\nBoard: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"board") ? "Yes" : "No"));
+		$title .= "\nDiscorder: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"discorder") ? "Yes" : "No"));
+		$title .= "\nExecutive: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"executive") ? "Yes" : "No"));
+		$title .= "\nWomen: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"women") ? "Yes" : "No"));
+		$title .= "\nFill In: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"fill_in") ? "Yes" : "No"));
+		$title .= "\nMusic Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"dept") ? "Yes" : "No"));
+		$title .= "\nAdded: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"added"));
+		$title .= "\nModified: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"modified"));
 
-		$bulkmail .= mysqli_result($sresult,$scount,"email") ? (mysqli_result($sresult,$scount,"email") . "; ") : "";
+		$bulkmail .= mysqli_result_dep($sresult,$scount,"email") ? (mysqli_result_dep($sresult,$scount,"email") . "; ") : "";
 ?>
-		<tr><td align=left><a href=<?=$_SERVER['SCRIPT_NAME']?>?action=edit&id=<?=mysqli_result($sresult,$scount,"id")?> title="<?=$title?>"><?=mysqli_result($sresult,$scount,"lastname")?>, <?=mysqli_result($sresult,$scount,"firstname")?></a></td>
-		<td><a href="mailto:<?=mysqli_result($sresult,$scount,"email")?>"><?=mysqli_result($sresult,$scount,"email")?></a></td><td><?=mysqli_result($sresult,$scount,"home")?></td></tr>
+		<tr><td align=left><a href=<?=$_SERVER['SCRIPT_NAME']?>?action=edit&id=<?=mysqli_result_dep($sresult,$scount,"id")?> title="<?=$title?>"><?=mysqli_result_dep($sresult,$scount,"lastname")?>, <?=mysqli_result_dep($sresult,$scount,"firstname")?></a></td>
+		<td><a href="mailto:<?=mysqli_result_dep($sresult,$scount,"email")?>"><?=mysqli_result_dep($sresult,$scount,"email")?></a></td><td><?=mysqli_result_dep($sresult,$scount,"home")?></td></tr>
 <?php
 		$scount++;
 	}
 	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
 	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
-	$bulkmail = ((isset($bulkmail) && bulkmail) ? ("<a href=\"mailto:" . $bulkmail . "\">Bulk Email</a> | ") : "");
+	$bulkmail = ((isset($bulkmail) && $bulkmail) ? ("<a href=\"mailto:" . $bulkmail . "\">Bulk Email</a> | ") : "");
 	printf("</table></center><center>%s %s %s</center>", $prev_url, $bulkmail, $next_url);
 ?>
 	<br></td></tr></table>
@@ -151,7 +151,7 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 		$scount = 0;
 		$years_paid = "";
 		while($scount < $snum_rows) {
-			$years_paid .= mysqli_result($sresult,$scount,"paid_year") . "\n"; 
+			$years_paid .= mysqli_result_dep($sresult,$scount,"paid_year") . "\n";
 			$scount++;
 		}
 
@@ -170,40 +170,40 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 		if($ed) {
 			printf("<INPUT type=hidden name=id value=%s>", $ed);
 		}
-		$lastname = $ed ? mysqli_result($result,0,"lastname") : "";
-		$firstname = $ed ? mysqli_result($result,0,"firstname") : "";
-		$gender = $ed ? mysqli_result($result,0,"gender") : "";
-		$address = $ed ? mysqli_result($result,0,"address") : "";
-		$city = $ed ? mysqli_result($result,0,"city") : "";
-		$postal = $ed ? mysqli_result($result,0,"postal") : "";
-		$cell = $ed ? mysqli_result($result,0,"cell") : "";
-		$home = $ed ? mysqli_result($result,0,"home") : "";
-		$work = $ed ? mysqli_result($result,0,"work") : "";
-		$email = $ed ? mysqli_result($result,0,"email") : "";
-		$status = $ed ? mysqli_result($result,0,"status") : "";
-		$status_id = $ed ? mysqli_result($result,0,"status_id") : "";
-		$joined = $ed ? mysqli_result($result,0,"joined") : "";
-		$comments = $ed ? mysqli_result($result,0,"comments") : "";
-		$show = $ed ? mysqli_result($result,0,"show") : "";
+		$lastname = $ed ? mysqli_result_dep($result,0,"lastname") : "";
+		$firstname = $ed ? mysqli_result_dep($result,0,"firstname") : "";
+		$gender = $ed ? mysqli_result_dep($result,0,"gender") : "";
+		$address = $ed ? mysqli_result_dep($result,0,"address") : "";
+		$city = $ed ? mysqli_result_dep($result,0,"city") : "";
+		$postal = $ed ? mysqli_result_dep($result,0,"postal") : "";
+		$cell = $ed ? mysqli_result_dep($result,0,"cell") : "";
+		$home = $ed ? mysqli_result_dep($result,0,"home") : "";
+		$work = $ed ? mysqli_result_dep($result,0,"work") : "";
+		$email = $ed ? mysqli_result_dep($result,0,"email") : "";
+		$status = $ed ? mysqli_result_dep($result,0,"status") : "";
+		$status_id = $ed ? mysqli_result_dep($result,0,"status_id") : "";
+		$joined = $ed ? mysqli_result_dep($result,0,"joined") : "";
+		$comments = $ed ? mysqli_result_dep($result,0,"comments") : "";
+		$show = $ed ? mysqli_result_dep($result,0,"show") : "";
 
-		$djs = ($ed && mysqli_result($result,0,"djs")) ? " checked" : "";
-		$mobile = ($ed && mysqli_result($result,0,"mobile")) ? " checked" : "";
-		$newsdept = ($ed && mysqli_result($result,0,"newsdept")) ? " checked" : "";
-		$sportsdept = ($ed && mysqli_result($result,0,"sportsdept")) ? " checked" : "";
-		$board = ($ed && mysqli_result($result,0,"board")) ? " checked" : "";
-		$discorder = ($ed && mysqli_result($result,0,"discorder")) ? " checked" : "";
-		$executive = ($ed && mysqli_result($result,0,"executive")) ? " checked" : "";
-		$women = ($ed && mysqli_result($result,0,"women")) ? " checked" : "";
-		$fill_in = ($ed && mysqli_result($result,0,"fill_in")) ? " checked" : "";
-		$dept = ($ed && mysqli_result($result,0,"dept")) ? " checked" : "";
-		$int_music = ($ed && mysqli_result($result,0,"int_music")) ? " checked" : "";
-		$int_arts = ($ed && mysqli_result($result,0,"int_arts")) ? " checked" : "";
-		$int_spoken = ($ed && mysqli_result($result,0,"int_spoken")) ? " checked" : "";
-		$int_magazine = ($ed && mysqli_result($result,0,"int_magazine")) ? " checked" : "";
-		$int_promotions = ($ed && mysqli_result($result,0,"int_promotions")) ? " checked" : "";
-		$int_other = $ed ? mysqli_result($result,0,"int_other") : "";
-		$added = $ed ? mysqli_result($result,0,"added") : "";
-		$modified = $ed ? mysqli_result($result,0,"modified") : "";
+		$djs = ($ed && mysqli_result_dep($result,0,"djs")) ? " checked" : "";
+		$mobile = ($ed && mysqli_result_dep($result,0,"mobile")) ? " checked" : "";
+		$newsdept = ($ed && mysqli_result_dep($result,0,"newsdept")) ? " checked" : "";
+		$sportsdept = ($ed && mysqli_result_dep($result,0,"sportsdept")) ? " checked" : "";
+		$board = ($ed && mysqli_result_dep($result,0,"board")) ? " checked" : "";
+		$discorder = ($ed && mysqli_result_dep($result,0,"discorder")) ? " checked" : "";
+		$executive = ($ed && mysqli_result_dep($result,0,"executive")) ? " checked" : "";
+		$women = ($ed && mysqli_result_dep($result,0,"women")) ? " checked" : "";
+		$fill_in = ($ed && mysqli_result_dep($result,0,"fill_in")) ? " checked" : "";
+		$dept = ($ed && mysqli_result_dep($result,0,"dept")) ? " checked" : "";
+		$int_music = ($ed && mysqli_result_dep($result,0,"int_music")) ? " checked" : "";
+		$int_arts = ($ed && mysqli_result_dep($result,0,"int_arts")) ? " checked" : "";
+		$int_spoken = ($ed && mysqli_result_dep($result,0,"int_spoken")) ? " checked" : "";
+		$int_magazine = ($ed && mysqli_result_dep($result,0,"int_magazine")) ? " checked" : "";
+		$int_promotions = ($ed && mysqli_result_dep($result,0,"int_promotions")) ? " checked" : "";
+		$int_other = $ed ? mysqli_result_dep($result,0,"int_other") : "";
+		$added = $ed ? mysqli_result_dep($result,0,"added") : "";
+		$modified = $ed ? mysqli_result_dep($result,0,"modified") : "";
 
 ?>
 		<table border=0>

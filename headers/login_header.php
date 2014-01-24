@@ -23,7 +23,7 @@ function login ($the_username, $the_md5, $set_cookie) {
 
 	//if they are logging in with an id, change it to username.
 	if(mysqli_num_rows($result = mysqli_query($db,"SELECT * FROM user WHERE userid = '".$the_username."' AND password = '".$the_md5."'"))) {
-		$the_username = mysqli_result($result,0,"username");
+		$the_username = mysqli_result_dep($result,0,"username");
 	}
 
 	//Operator accounts cannot be disabled...	
@@ -38,11 +38,11 @@ function login ($the_username, $the_md5, $set_cookie) {
 	//if match found, log in, clear login failures
 	if(mysqli_num_rows($result)) {
 		if($set_cookie) {		
-			setcookie($cookiename_id, mysqli_result($result,0,"userid"), time() + 2678400);
-			setcookie($cookiename_pass, mysqli_result($result,0,"password"), time() + 2678400);
+			setcookie($cookiename_id, mysqli_result_dep($result,0,"userid"), time() + 2678400);
+			setcookie($cookiename_pass, mysqli_result_dep($result,0,"password"), time() + 2678400);
 		}
-		$_SESSION['sv_username'] = mysqli_result($result,0,"username");
-		$_SESSION['sv_login_fails'] = mysqli_result($result,0,"login_fails");
+		$_SESSION['sv_username'] = mysqli_result_dep($result,0,"username");
+		$_SESSION['sv_login_fails'] = mysqli_result_dep($result,0,"login_fails");
 		$result = mysqli_query($db,"UPDATE user SET login_fails='0' WHERE username = '".$the_username."'");
 		return true;
 	}
@@ -53,7 +53,7 @@ function login ($the_username, $the_md5, $set_cookie) {
 		}
 		$result = mysqli_query($db,"SELECT * FROM user WHERE username = '".$the_username."'");
 		if(mysqli_num_rows($result)) {
-			$login_fails = mysqli_result($result,0,"login_fails") + 1;
+			$login_fails = mysqli_result_dep($result,0,"login_fails") + 1;
 			if($login_fails > 20) {
 				$result = mysqli_query($db,"UPDATE user SET login_fails='$login_fails', status='Disabled' WHERE username = '".$the_username."'");
 			}

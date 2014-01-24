@@ -4,13 +4,13 @@
 //***********      REQUIREMENTS       ***************
 //***************************************************
 
-$cc_reg_req = 35; // mysqli_result($result,$count,"cc_req");
+$cc_reg_req = 35; // mysqli_result_dep($result,$count,"cc_req");
 $cc_spec_req = 12;
 $cc_spec_ethnic_req = 7;
-$pl_req = 60;// mysqli_result($result,$count,"pl_req");
-$fe_req = 35;// mysqli_result($result,$count,"fem_req");
-$inst_req = 35;// mysqli_result($result,$count,"fem_req");
-$hit_req = 10;// mysqli_result($result,$count,"fem_req");
+$pl_req = 60;// mysqli_result_dep($result,$count,"pl_req");
+$fe_req = 35;// mysqli_result_dep($result,$count,"fem_req");
+$inst_req = 35;// mysqli_result_dep($result,$count,"fem_req");
+$hit_req = 10;// mysqli_result_dep($result,$count,"fem_req");
 $locally_produced_req = 15; // (spoken word)
 $max_ad_mins_per_week = 504;
 
@@ -169,7 +169,7 @@ $total_hit = 0;
 
 foreach($plays as $i => $play){
 			// for each show, no need to load the show's CRTC requirements
-	$show_id = mysqli_result($result,$count,"id");
+	$show_id = mysqli_result_dep($result,$count,"id");
 	
 	if($play['is_playlist']==1) $total_pl++;
 	if(($play['is_canadian']==1)&&($play['crtc_category']==20)) $total_cc_reg++;
