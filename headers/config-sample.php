@@ -11,10 +11,10 @@
 // playsheet logging
 // enter your database credentials here
 
-$djland_db_address = 'p:localhost'; // p means persistant connection (good idea)
-$djland_db_username = 'djland';
-$djland_db_password = 'djland';
-$djland_db_dbname = 'djland';
+$djland_db_address = 'p:ip address'; // p means persistant connection (good idea)
+$djland_db_username = 'db username';
+$djland_db_password = 'password for that user';
+$djland_db_dbname = 'database name';
 
 $using_sam = false; // <- change to true if you want to integrate SAM with djland
 
