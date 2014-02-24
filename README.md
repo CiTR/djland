@@ -45,10 +45,11 @@ INSTALLATION STEPS
 
 
 Developed by CiTR - www.citr.ca
+
 Working admin demo: http://demo.djland.info
 
 --Contributors--
-Brad Winter
-Evan Friday
-Sandy Fang
+Brad Winter,
+Evan Friday,
+Sandy Fang,
 Henry Chee
