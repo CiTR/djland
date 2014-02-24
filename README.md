@@ -1,27 +1,45 @@
 DJLAND
 
-This is CiTR's system for managing various community radio business matters, including:
+This is a free and open source web application that can be used for managing various community radio matters.  The installation process is very similar to Wordpress - just specify your server's database credentials and everything else is built automatically.  Optionally, DJLAND can also integrate with SAM Broadcaster (http://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
 
-- DJ playsheets
-- chart view
-- music catalog
-- membership management
-- show management
-- ad scheduling and tracking
-- CRTC / SOCAN report generation
+Requires a server with PHP and MySQL.
+
+Features:
+
+Playsheets
+	DJLAND features a flexible and easy to use playsheet tool that has been designed primarily for humans, not robots.  As an optional feature, it can connect to an instance of SAM Broadcaster and import plays from its history.  These plays can be edited and re-ordered amongst plays from physical media that have been manually entered.You can also bulk-add a time period where only SAM was DJing.
+
+	DJland playsheets have all the required fields for a community radio station licensed in Canada, and it displays percentage-levels of compliance that are updated live while new entries are added to the playsheet.  DJs can save a draft if they are not finished in the on-air booth and resume at a later time by accessing the website from home or the station lounge.
+
+Chart View
+	A seperate view built for the Music Director automatically collects plays according to the latest Charting Week.
+
+Music Catalog
+	DJLand has a searchable Music Database for managing physical CDs, at the release level.
+	Can search and organize by Canadian Content, Local Content, Playlist, Female Content, and Compilation, as well as Media Format.
+
+Membership Management
+	Keep track of station membership and search by volunteer interest, department, and other fields.
+
+Show Management
+	Maintain show and schedule info in DJLand to enable automatically pre-populating playsheets during the show air-time.
+
+Ad Scheduling and tracking
+	[still under development] - Ad scheduler that allows a staff member to select ads for individual shows.  A show's Ad Schedule is loaded into a playsheet while the show info is populated.  If SAM integration is enabled, DJLand can automatically import a list of Ads based on a SAM category.
+
+CRTC / SOCAN report generation
+	Pre-formatted reporting including a concise compliance summary for the CRTC and/or SOCAN.
+	SOCAN periods can be set to automatically add Composer and time fields to Playsheets.
 
 
-SPECS
+INSTALLATION STEPS
 
-This is a web application that must be installed on a server with PHP and MySQL capabilities.
+1) Download the latest version from https://github.com/citrtech/djland and copy the files to your server's public web directory ('www', 'public_html', or something similar)
 
-It is maintained and used from within a browser, which allows for easy access from any location on any platform for administrators, volunteers, and DJs
+2) Copy the file in the 'headers' folder called config-sample.php to a new file in the same location called 'config.php'
 
+3) Edit config.php to enter your station info, database credentials, and enabled feature list
 
-INSTALLATION
+4) open djland-example.com/setup.php to run the database setup script.
 
-1) copy to your server's 'www' or 'inetpub' or similar directory
-
-2) Specify Database credentials in headers/db_header.php
-
-3) [Currently no database generation script is present.] TBA :)
+5) open djland-example.com. See the config file for the default username and password
