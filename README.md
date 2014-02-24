@@ -4,31 +4,31 @@ This is a free and open source web application that can be used for managing var
 
 Requires a server with PHP and MySQL.
 
-Features:
+--DJLAND Features--
 
 Playsheets:
-	DJLAND features a flexible and easy to use playsheet tool that has been designed primarily for humans, not robots.  As an optional feature, it can connect to an instance of SAM Broadcaster and import plays from its history.  These plays can be edited and re-ordered amongst plays from physical media that have been manually entered.  You can also bulk-add a time period where only SAM was DJing.
-	DJland playsheets have all the required fields for a community radio station licensed in Canada, and it displays percentage-levels of compliance that are updated live while new entries are added to the playsheet.  DJs can save a draft if they are not finished in the on-air booth and resume at a later time by accessing the website from home or the station lounge.
+DJLAND features a flexible and easy to use playsheet tool that has been designed primarily for humans, not robots.  As an optional feature, it can connect to an instance of SAM Broadcaster and import plays from its history.  These plays can be edited and re-ordered amongst plays from physical media that have been manually entered.  You can also bulk-add a time period where only SAM was DJing.
+DJland playsheets have all the required fields for a community radio station licensed in Canada, and it displays percentage-levels of compliance that are updated live while new entries are added to the playsheet.  DJs can save a draft if they are not finished in the on-air booth and resume at a later time by accessing the website from home or the station lounge.
 
 Chart View:
-	A seperate view built for the Music Director automatically collects plays according to the latest Charting Week.
+A seperate view built for the Music Director automatically collects plays according to the latest Charting Week.
 
 Music Catalog:
-	DJLand has a searchable Music Database for managing physical CDs, at the release level.
-	Can search and organize by Canadian Content, Local Content, Playlist, Female Content, and Compilation, as well as Media Format.
+DJLand has a searchable Music Database for managing physical CDs, at the release level.
+Can search and organize by Canadian Content, Local Content, Playlist, Female Content, and Compilation, as well as Media Format.
 
 Membership Management:
-	Keep track of station membership and search by volunteer interest, department, and other fields.
+Keep track of station membership and search by volunteer interest, department, and other fields.
 
 Show Management:
-	Maintain show and schedule info in DJLand to enable automatically pre-populating playsheets during the show air-time.
+Maintain show and schedule info in DJLand to enable automatically pre-populating playsheets during the show air-time.
 
 Ad Scheduling and tracking:
-	[still under development] - Ad scheduler that allows a staff member to select ads for individual shows.  A show's Ad Schedule is loaded into a playsheet while the show info is populated.  If SAM integration is enabled, DJLand can automatically import a list of Ads based on a SAM category.
+[still under development] - Ad scheduler that allows a staff member to select ads for individual shows.  A show's Ad Schedule is loaded into a playsheet while the show info is populated.  If SAM integration is enabled, DJLand can automatically import a list of Ads based on a SAM category.  Currently, this only works if SAM integration is enabled.
 
 CRTC / SOCAN report generation:
-	Pre-formatted reporting including a concise compliance summary for the CRTC and/or SOCAN.
-	SOCAN periods can be set to automatically add Composer and time fields to Playsheets.
+Pre-formatted reporting including a concise compliance summary for the CRTC and/or SOCAN.
+SOCAN periods can be set to automatically add Composer and time fields to Playsheets.
 
 
 INSTALLATION STEPS
@@ -42,3 +42,13 @@ INSTALLATION STEPS
 4) open djland-example.com/setup.php to run the database setup script.
 
 5) open djland-example.com. See the config file for the default username and password
+
+
+Developed by CiTR - www.citr.ca
+Working admin demo: http://demo.djland.info
+
+--Contributors--
+Brad Winter
+Evan Friday
+Sandy Fang
+Henry Chee
