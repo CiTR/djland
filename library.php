@@ -6,7 +6,7 @@ require("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=citr.css type=text/css>");
-printf("<title>CD library</title>");
+printf("<title>DJLAND | music library</title>");
 
 echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="js/library-js.js"></script>';

@@ -9,7 +9,7 @@ require("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=citr.css type=text/css>");
-printf("<title>CiTR 101.9</title></head><body>");
+printf("<title>DJLAND | Report</title></head><body>");
 
 print_menu();
 

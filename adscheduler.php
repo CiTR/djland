@@ -53,7 +53,12 @@ print_menu();
 
 //$adLib->sayHello();
 $showlib = new Showlib($db);
-$adLib = new AdLib($mysqli_sam,$db, $showlib);
+
+if($using_sam){
+	$adLib = new AdLib($mysqli_sam,$db);
+} else {
+	$adLib = new AdLib(false, $db );
+}
 
 echo '<h1>ad scheduler';
 echo '</h1>';
@@ -113,8 +118,9 @@ foreach ( $showBlocks as $i => $block ) {
 		
 }
 
-
-$mysqli_sam->close();
+if($using_sam){
+	$mysqli_sam->close();
+}
 
 $db->close();
 

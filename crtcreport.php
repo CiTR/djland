@@ -18,11 +18,21 @@ require("headers/menu_header.php");
 
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=style.css type=text/css>");
 
 ?>
 
-<title>CiTR 101.9fm, Vancouver, British Columbia, Canada - www.citr.ca</title>
+<title><?php
+
+      echo $station_info['call_letters']." ";
+      echo $station_info['frequency'].", ";
+      echo $station_info['city'].", ";
+      echo $station_info['province'].", ";
+      echo $station_info['country']." - ";
+      echo $station_info['website'];
+ ?>
+
+ CiTR 101.9fm, Vancouver, British Columbia, Canada - www.citr.ca</title>
 
  
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

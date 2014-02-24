@@ -22,11 +22,6 @@ $db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $
 if($using_sam){
 
     global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
-    $samDB_ip = 'ip address of computer running SAM mysql database';
-    $samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-    $samDB_pass = 'password for that user';
-    $samDB_dbname = 'name of SAM table in the db (probably should be SAMDB)';
-
 
     $mysqli_sam = new mysqli($samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname);
 

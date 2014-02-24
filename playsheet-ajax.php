@@ -1,5 +1,6 @@
 <?php 
 
+if($using_sam){
 ?>
 			
 
@@ -138,6 +139,10 @@ if (count($matches)>1){
 				<button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div> ");
   }
 
+} // end of if(sam enabled) block
+
+echo "<div align='right'> <button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div>";
+
 ?>
 <!--<button id="SamTab" class="panel-button">SAM plays</button>
 <button id="buttonLoadTimes" class="panel-button">SAM period </button>
@@ -146,31 +151,6 @@ if (count($matches)>1){
 <!---- END OF BODY TAG -->
 
 
-<script type="text/javascript" src="./js/playsheet-functions.js"></script> 
-<script type="text/javascript" src="./js/playsheet-setup.js"></script> 
-<script type="text/javascript" src="./js/playsheet-initialize.js"> </script>
 
-<script type="text/javascript" src="js/tablednd.js"></script>
-<script type="text/javascript">
-
-$(document).ready(function() {
-     $("#debug").append(" ok drag rows about to be enabled <br/>");
-     
-     
-      $(".dragrows").tableDnD({
-    		onDrop: function(table, row) {
-    			// on drop (when a row is dropped into a new location)
-    			// sort through the rows and re-assign id numbers
-    			//	$playsheetData = $.tableDnD.serialize();
-    			//	//hahadebug.prepend($playsheetData);
-   //					refreshRowIDs();
-					refreshRows();
-    		},
-    		dragHandle: ".draghandle"
-    });
-});
-
-
-</script>
 
 

@@ -379,6 +379,7 @@ if($worked || !$worked){
     $init_query['make membership status unknown'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (5,'Unknown',0)";
     $init_query['make example show'] = "INSERT INTO `shows` SET name='smoothness hour', host_id='1', active=1";
     $init_query['make example host'] = "INSERT INTO `hosts` SET name='joe smooth'";
+    $init_query['set up format: cd'] = "INSERT INTO `types_format` (`id`,`name`,`sort`) VALUES (1, 'CD', 1), (2, 'LP',2), (3, '7inch', 2), (4,'CASS',3), (5, 'CART', 3), (6, 'MP3', 2), (7, 'FLAC',3), (8, 'WAV',3), (9, 'MD',3),(10,'??',3)";
 
     foreach($init_query as $i => $query){
         if ($db->query($query)){

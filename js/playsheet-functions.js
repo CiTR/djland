@@ -68,10 +68,12 @@
 		
 //		showUnix = $('#unixTime').attr('value');
 		var show_block_data;
+
+
 				
 			$.ajax({
 				type:"POST",
-				url: "form-handlers/futureAdLoader.php",
+				url: "form-handlers/show_info_loader.php",
 				data: {"showid":targetShow, "unixTime":targetShowUnix},
 				dataType: "json"
 			}).success(function(text) {

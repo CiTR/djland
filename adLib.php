@@ -11,9 +11,15 @@ class AdLib {
 	public $ad_dict;
 	private $showlib;
 	private $availableAds;
-	function __construct($samLink, $citrLink) {
 
-		$this->sam_link = $samLink;
+	private $using_sam;
+	function __construct($samLink, $citrLink) {
+		if($samLink){
+			$this->sam_link = $samLink;
+			$this->using_sam = true;
+		} else {
+			$this->using_sam = false;
+		}
 		$this->citr_link = $citrLink;
 		$this->curr_time = time();
 		$this->ad_dict = 	array(
@@ -84,16 +90,18 @@ class AdLib {
 
 	function getAdNameFromID($id){
 
-		$ad_q = "SELECT artist, title FROM songlist WHERE ID = '".$id."'";
-		if( $result = mysqli_query($this->sam_link,$ad_q)){
-			$ad = $result->fetch_array();
-			if (is_array($ad)) {
-			//	echo 'loaded an ad name: '.$ad['artist'].' - '.$ad['title'];
-			return $ad['artist'].' - '.$ad['title'];
-			} else { return false; }
-		}
-		else return false;
+		if($this->using_sam){
 
+			$ad_q = "SELECT artist, title FROM songlist WHERE ID = '".$id."'";
+			if( $result = mysqli_query($this->sam_link,$ad_q)){
+				$ad = $result->fetch_array();
+				if (is_array($ad)) {
+				//	echo 'loaded an ad name: '.$ad['artist'].' - '.$ad['title'];
+				return $ad['artist'].' - '.$ad['title'];
+				} else { return false; }
+			}
+			else return false;
+		} else return false;
 	}
 	
 	
@@ -436,6 +444,9 @@ class AdLib {
 	}
 	
 	function generateAdSelector($ad_id = false,$ad_name = false){
+
+		if($this->using_sam){
+
 		$string = '<select id="name'.$p.'" class="selectanad">';
 		
 				if($ad_name&&$ad_id){ // only ad_name will be something if it's a blank ad slot
@@ -444,7 +455,7 @@ class AdLib {
 					$string .= '<option value="0">select an AD</option>';
 				}	// whether there are ads or not, we need an option
 					// to select scheduling no ad.
-					$string .= '<option value="noad"> -- </option>';
+					$string .= '<option value="no ad"> -- </option>';
 					
 					foreach($this->availableAds as $i => $ad){
 						$string .= '<option value="'.$ad['id'].'">'.$ad['artist'].' - '.$ad['title'].'</option>';
@@ -452,6 +463,10 @@ class AdLib {
 				$string .= '</select>';
 				
 				return $string;
+		} else {
+			return '<input class=selectanad></input>';
+		}
+
 	}
 	
 
@@ -460,7 +475,7 @@ class AdLib {
 		
 		$addys = array();
 			
-		if ($result_sam = mysqli_query($this->sam_link,"SELECT id, artist, title FROM songlist WHERE songtype = 'A' ")) 
+		if ($this->using_sam && $result_sam = mysqli_query($this->sam_link,"SELECT id, artist, title FROM songlist WHERE songtype = 'A' ")) 
 		{		
 		//	echo 'loadAvailableAds succeeded';
 				while($row = $result_sam->fetch_array())
@@ -552,54 +567,6 @@ function loadAdsForReport($playsheet_id){
 
 // DO NOT DEFINE FUNCTIONS IN HERE ( you won't have access to the class private vars )
 
-
-
-//old - unused
-/*
-function getAdsFromTimeBlock($unixTime){
-		
-		$load_query = "SELECT * FROM scheduled_ads WHERE time_block = '".$unixTime."'";
-//		if ($result_load = $this->citr_link->query($load_query)){
-		if ($result_load = mysqli_query($this->citr_link,$load_query)){
-			
-			$loadedAdSelect = $result_load->fetch_array();
-			
-			if(count($loadedAdSelect)<=0){
-				//there are no ads!
-				
-				return 0;
-			}
-			$adIDList = explode(';',$loadedAdSelect[sam_song_id_list]);
-//			echo 'loaded ad select:<br/>';
-//			print_r($loadedAdSelect);
-			$adStringList = array();
-			
-			$result_load->close();
-			
-		}
-	
-		foreach($adIDList as $i => $adID){
-			if($adID!='noad'){
-				//	echo 'adID: '.$adID.'<br/>';
-				$ad_q = "SELECT artist, title FROM songlist WHERE ID = '".$adID."'";
-	//			if( $result_ads = $this->sam_link->query($ad_q)){
-				if( $result_ads = mysqli_query($this->sam_link,$ad_q)){
-					$adArray = $result_ads->fetch_array();
-				$adStringList []= $adArray[artist].' - '.$adArray[title];
-	
-				}
-			}
-			else{
-			$adStringList []= '--';
-			}
-			
-		}
-		
-	//		echo $load_query;
-		return array($adIDList,$adStringList);
-//		return 0;
 	
 	
-	}
-	*/
 ?>

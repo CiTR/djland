@@ -49,7 +49,7 @@ var socan=<?php echo json_encode($SOCAN_FLAG); ?>;
 <meta charset="utf-8">
 <link rel=stylesheet href='citr.css' type='text/css'>
 
-<title>Playsheet</title>
+<title>DJLAND | Playsheet</title>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script> 
@@ -70,8 +70,6 @@ if(oldIE())
       echo " <body class='ie'> ";
 else
      echo "<body>";
-
-//echo "<div id='linkOld'><a href='http://137.82.188.13'>&lt;--Back to the Old Playlist</a></div>";
 
 
 //
@@ -146,6 +144,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 } 
 	else {
 		 echo "<h3>sorry, there was a database problem :(</h3><br/>";
+// uncomment to help DEBUG mysql queries
 //		 echo "<h3>This playsheet needs to be repaired.  Please copy and paste the following text".
 //		 " and email to technicalservices@citr.ca: </h3><hr> problematic query: ".
 //		 $update_show_query ."<hr>";
@@ -285,7 +284,8 @@ $insert_query = "INSERT INTO `playitems` ".
 	}
 	
 	echo "</div>";
-	echo "<br/><br/>format:<br/> artist - title (album) <br/> <font color=red>red means cancon</font> <br/><br/> feedback? email technicalservices@citr.ca<br/><br/>";
+	echo "<br/><br/>format:<br/> artist - title (album) <br/> <font color=red>red means cancon</font> <br/><br/> ";
+	if (isset($station_info['tech_email'])) echo "feedback? email technicalservices@citr.ca<br/><br/>";
 	
 	
 //	echo 'spoken word description:<br/> '.$spokenword.'<br/>';
@@ -1050,6 +1050,8 @@ echo "Total Overall Duration:<br/>";
 
 </div>
 <br/><br/><br/><br/><br/><br/><hr/>
+
+<?php if($enabled['podcast_tools']){ ?>
 <div id='podcast-tools'>
 <h2>Podcast Tools</h2>
 <center>
@@ -1059,7 +1061,8 @@ echo "Total Overall Duration:<br/>";
 <hr>
 </div>
 
-	<?php
+	<?php 
+		}// end of podcast tools creation block
 		
 			if(!$ps_id || is_member("editdj")) {
 			printf("<center><br/><span id='submitMsg'>This is an incomplete playsheet. <br/>Please fill in all music fields: <b>artist</b>, <b>album</b> (release title), and <b>song</b>. Also delete all empty rows by clicking the '-' button.<br/>You may temporarily save a draft and resume at another time by clicking 'Save draft' in the top right corner</span><br/><button id=submit type=submit value=\"Save Playsheet\">Submit Playsheet</button></center><br/><br/><br/>
@@ -1067,7 +1070,12 @@ echo "Total Overall Duration:<br/>";
 		}
 		printf("</FORM>");
 		// echo'
-		print("<div class='bugsAndTopChart'><div class='bugs'>For bug reporting, troubleshooting, and question-answering email:<br/> <a href='mailto:technicalservices@citr.ca,mailto:technicalassistant@citr.ca'>technicalservices@citr.ca</a><br/><br/> Or visit the<a href='QA.php' target='_blank'> Q&A </a>page</div>");
+
+	
+		print("<div class='bugsAndTopChart'>");
+		if (isset($station_info['tech_email'])){
+			echo "<div class='bugs'>For support, email:<br/> <a href='mailto:".$station_info['tech_email']."'>.".$station_info['tech_email']."</a><br/><br/> Or visit the<a href='QA.php' target='_blank'> Q&A </a>page</div>";
+		}
 		print("<div class='topChart'>");
 		print("Note: a song is a 'hit' if it has ever been in the top 40 of any of these charts:<br/>");
 		print("<a target='none' href='http://www.billboard.com/charts/hot-100'>Billboard Hot 100</a><br/>");
@@ -1123,6 +1131,13 @@ require_once('playsheet-ajax.php');
 
 <div id='highlightoverlay'></div>
 
+<script type="text/javascript" src="./js/playsheet-functions.js"></script> 
+<script type="text/javascript" src="./js/playsheet-setup.js"></script> 
+<script type="text/javascript" src="./js/playsheet-initialize.js"> </script>
+<script type="text/javascript">
+var enabled = {};
+enabled = <?php echo json_encode($enabled);?>;
+</script>
 </body>
 
 <?php

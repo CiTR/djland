@@ -7,14 +7,14 @@ require("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=citr.css type=text/css>");
-printf("<title>CiTR 101.9</title></head><body>");
+printf("<title>DJLAND | Membership</title></head><body>");
 
 print_menu();
 
 if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "search") {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
-	printf("<center><h1>Search Results</h1></center>");
+	echo "<br><table align=center class=playsheet><tr><td>";
+	echo "<center><h1>Search Results</h1></center>";
 
 	//record range
 	$record_limit = 50;
@@ -77,45 +77,49 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 
 	$bulkmail = "";
 	$scount = 0;
-	printf("<center><table border=1 width=90%%><tr><td><b>Name</b></td><td><b>Email</b></td><td nowrap><b>Home Phone</b></td></tr>");
-	while($scount < $snum_rows) {
-		$title = "Name: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"firstname") . " " . mysqli_result_dep($sresult,$scount,"lastname"));
-		$title .= "\nStatus: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"status"));
-		$title .= "\nGender: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"gender"));
-		$title .= "\nJoined: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"joined"));
-		$title .= "\nShow: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"show"));
-		$title .= "\nProgrammers: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"djs") ? "Yes" : "No"));
-		$title .= "\nMobile Sound DJ: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"mobile") ? "Yes" : "No"));
-		$title .= "\nNews Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"newsdept") ? "Yes" : "No"));
-		$title .= "\nSports Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"sportsdept") ? "Yes" : "No"));
-		$title .= "\nBoard: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"board") ? "Yes" : "No"));
-		$title .= "\nDiscorder: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"discorder") ? "Yes" : "No"));
-		$title .= "\nExecutive: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"executive") ? "Yes" : "No"));
-		$title .= "\nWomen: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"women") ? "Yes" : "No"));
-		$title .= "\nFill In: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"fill_in") ? "Yes" : "No"));
-		$title .= "\nMusic Dept: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"dept") ? "Yes" : "No"));
-		$title .= "\nAdded: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"added"));
-		$title .= "\nModified: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"modified"));
+	echo "<center><table border=1 width=90%%><tr><td><b>Name</b></td><td><b>Email</b></td><td nowrap><b>Home Phone</b></td></tr>";
+	
+	while ($row = mysqli_fetch_array( $sresult )){
+		$title = "Name: " . htmlspecialchars($row["firstname"])." ".htmlspecialchars($row["lastname"]);
+		$title .= "\nStatus: " . htmlspecialchars($row["status"]);
+		$title .= "\nGender: " . htmlspecialchars($row["gender"]);
+		$title .= "\nJoined: " . htmlspecialchars($row["joined"]);
+		$title .= "\nShow: " . htmlspecialchars($row["show"]);
+		$title .= "\nProgrammers: " . (htmlspecialchars($row["djs"]) ? "Yes" : "No");
+		$title .= "\nMobile Sound DJ: " . (htmlspecialchars($row["mobile"]) ? "Yes" : "No");
+		$title .= "\nNews Dept: " . (htmlspecialchars($row["newsdept"]) ? "Yes" : "No");
+		$title .= "\nSports Dept: " . (htmlspecialchars($row["sportsdept"]) ? "Yes" : "No");
+		$title .= "\nBoard: " . (htmlspecialchars($row["board"]) ? "Yes" : "No");
+		$title .= "\nDiscorder: " . (htmlspecialchars($row["discorder"]) ? "Yes" : "No");
+		$title .= "\nExecutive: " . (htmlspecialchars($row["executive"]) ? "Yes" : "No");
+		$title .= "\nWomen: " . (htmlspecialchars($row["women"]) ? "Yes" : "No");
+		$title .= "\nFill In: " . (htmlspecialchars($row["fill_in"]) ? "Yes" : "No");
+		$title .= "\nMusic Dept: " . (htmlspecialchars($row["dept"]) ? "Yes" : "No");
+		$title .= "\nAdded: " . htmlspecialchars($row["added"]);
+		$title .= "\nModified: " . htmlspecialchars($row["modified"]);
 
-		$bulkmail .= mysqli_result_dep($sresult,$scount,"email") ? (mysqli_result_dep($sresult,$scount,"email") . "; ") : "";
-?>
-		<tr><td align=left><a href=<?=$_SERVER['SCRIPT_NAME']?>?action=edit&id=<?=mysqli_result_dep($sresult,$scount,"id")?> title="<?=$title?>"><?=mysqli_result_dep($sresult,$scount,"lastname")?>, <?=mysqli_result_dep($sresult,$scount,"firstname")?></a></td>
-		<td><a href="mailto:<?=mysqli_result_dep($sresult,$scount,"email")?>"><?=mysqli_result_dep($sresult,$scount,"email")?></a></td><td><?=mysqli_result_dep($sresult,$scount,"home")?></td></tr>
-<?php
-		$scount++;
+		$bulkmail .= $row["email"] ? ($row["email"] . "; ") : "";
+
+	echo	'<tr><td align=left><a href='.$_SERVER["SCRIPT_NAME"].'?action=edit&id='.$row["id"].' title="'.$title.'">';
+	echo 	$row["lastname"].', '.$row["firstname"].'</a></td>';
+	echo 	'<td><a href="mailto:'.$row["email"].'">'.$row["email"].'</a></td><td>'.$row["home"].'</td></tr>';
+
+
 	}
+
+
 	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
 	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
 	$bulkmail = ((isset($bulkmail) && $bulkmail) ? ("<a href=\"mailto:" . $bulkmail . "\">Bulk Email</a> | ") : "");
 	printf("</table></center><center>%s %s %s</center>", $prev_url, $bulkmail, $next_url);
-?>
-	<br></td></tr></table>
-<?php
+
+	echo '<br></td></tr></table>';
+
 
 }
 else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	echo "<br><table align=center class=playsheet><tr><td>";
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'submit') {
 		$current_date = date('Y-m-d');
@@ -138,7 +142,7 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 			}
 		}
 
-		mysqli_query($db,"UPDATE `membership` SET `last_paid`='$last_paid', `lastname`='".fas($_POST['lastname'])."', `firstname`='".fas($_POST['firstname'])."', `gender`='".fas($_POST['gender'])."', `address`='".fas($_POST['address'])."', `city`='".fas($_POST['city'])."', `postal`='".fas($_POST['postal'])."', `cell`='".fas($_POST['cell'])."', `home`='".fas($_POST['home'])."', `work`='".fas($_POST['work'])."', `email`='".fas($_POST['email'])."', `status_id`='".fas($_POST['status_id'])."', `joined`='".fas($_POST['joined'])."', `comments`='".fas($_POST['comments'])."', `show`='".fas($_POST['show'])."', `djs`='".(isset($_POST['djs'])?1:0)."', `mobile`='".(isset($_POST['mobile'])?1:0)."', `newsdept`='".(isset($_POST['newsdept'])?1:0)."', `sportsdept`='".(isset($_POST['sportsdept'])?1:0)."', `board`='".(isset($_POST['board'])?1:0)."', `discorder`='".(isset($_POST['discorder'])?1:0)."', `executive`='".(isset($_POST['executive'])?1:0)."', `women`='".(isset($_POST['women'])?1:0)."', `fill_in`='".(isset($_POST['fill_in'])?1:0)."', `dept`='".(isset($_POST['dept'])?1:0)."', `int_music`='".(isset($_POST['int_music'])?1:0)."', `int_arts`='".(isset($_POST['int_arts'])?1:0)."', `int_spoken`='".(isset($_POST['int_spoken'])?1:0)."', `int_magazine`='".(isset($_POST['int_magazine'])?1:0)."', `int_promotions`='".(isset($_POST['int_promotions'])?1:0)."', `int_other`='".fas($_POST['int_other'])."', `modified`='$current_date' WHERE id='$ed'", $db);
+		mysqli_query($db,"UPDATE `membership` SET `last_paid`='$last_paid', `lastname`='".fas($_POST['lastname'])."', `firstname`='".fas($_POST['firstname'])."', `gender`='".fas($_POST['gender'])."', `address`='".fas($_POST['address'])."', `city`='".fas($_POST['city'])."', `postal`='".fas($_POST['postal'])."', `cell`='".fas($_POST['cell'])."', `home`='".fas($_POST['home'])."', `work`='".fas($_POST['work'])."', `email`='".fas($_POST['email'])."', `status_id`='".fas($_POST['status_id'])."', `joined`='".fas($_POST['joined'])."', `comments`='".fas($_POST['comments'])."', `show`='".fas($_POST['show'])."', `djs`='".(isset($_POST['djs'])?1:0)."', `mobile`='".(isset($_POST['mobile'])?1:0)."', `newsdept`='".(isset($_POST['newsdept'])?1:0)."', `sportsdept`='".(isset($_POST['sportsdept'])?1:0)."', `board`='".(isset($_POST['board'])?1:0)."', `discorder`='".(isset($_POST['discorder'])?1:0)."', `executive`='".(isset($_POST['executive'])?1:0)."', `women`='".(isset($_POST['women'])?1:0)."', `fill_in`='".(isset($_POST['fill_in'])?1:0)."', `dept`='".(isset($_POST['dept'])?1:0)."', `int_music`='".(isset($_POST['int_music'])?1:0)."', `int_arts`='".(isset($_POST['int_arts'])?1:0)."', `int_spoken`='".(isset($_POST['int_spoken'])?1:0)."', `int_magazine`='".(isset($_POST['int_magazine'])?1:0)."', `int_promotions`='".(isset($_POST['int_promotions'])?1:0)."', `int_other`='".fas($_POST['int_other'])."', `modified`='$current_date' WHERE id='$ed'");
 
 		//Display just added entry...
 		printf("<center><br><h1>Member %s</h1><hr width=90%%>", $submit_edit ? "Updated" : "Added");
@@ -162,13 +166,15 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 	}
 
 	if(!isset($submit_edit)) {
-?>		
+	
 		
-		<center><h1><?= $ed ? "Update" : "Add New"; ?> Member</h1>
-<?php
-		printf("<FORM METHOD=\"POST\" ACTION=\"%s?action=submit\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+		echo '<center><h1>';
+		echo $ed ? "Update" : "Add New";
+		echo 'Member</h1>';
+
+		echo '<FORM METHOD="POST" ACTION="'.$_SERVER['SCRIPT_NAME'].'?action=submit" name="the_form">\n';
 		if($ed) {
-			printf("<INPUT type=hidden name=id value=%s>", $ed);
+			echo "<INPUT type=hidden name=id value=".$ed.">";
 		}
 		$lastname = $ed ? mysqli_result_dep($result,0,"lastname") : "";
 		$firstname = $ed ? mysqli_result_dep($result,0,"firstname") : "";
@@ -205,56 +211,59 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 		$added = $ed ? mysqli_result_dep($result,0,"added") : "";
 		$modified = $ed ? mysqli_result_dep($result,0,"modified") : "";
 
-?>
-		<table border=0>
-		<tr align=right><td>First Name: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=firstname value="<?=$firstname?>"></td></tr>
-		<tr align=right><td>Last Name: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=lastname value="<?=$lastname?>"></td></tr>
-		<tr align=right><td>Membership Status: </td><td align=left><select name=status_id>
-<?php 
+
+echo	'<table border=0>';
+echo 	'<tr align=right><td>First Name: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=firstname value="'.$firstname.'"></td></tr>'.
+		'<tr align=right><td>Last Name: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=lastname value="'.$lastname.'"></td></tr>'.
+		'<tr align=right><td>Membership Status: </td><td align=left><select name=status_id>';
+
 		if($ed) {
-			printf("<option value=%s>%s", $status_id, $status);
+			echo "<option value=".$status_id.">".$status;
 		}
 		foreach($fmembership_status_name as $var_key => $var_name) {
-			printf("<option value=%s>%s", $var_key, $var_name);
+			echo "<option value=".$var_key.">".$var_name;
 		}
+
+		echo '</select></td></tr>'.
+		'<tr align=right><td>Gender: </td><td align=left><INPUT SIZE=1 TYPE=text NAME=gender value="'.$gender.'"></td></tr>'.
+		'<tr align=right><td>Address: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=address value="'.$address.'"></td></tr>'.
+		'<tr align=right><td>City: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=city value="'.$city.'"></td></tr>'.
+		'<tr align=right><td>Postal Code: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=postal value="'.$postal.'"></td></tr>'.
+		'<tr align=right><td>Cell Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=cell value="'.$cell.'"></td></tr>'.
+		'<tr align=right><td>Home Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=home value="'.$home.'"></td></tr>'.
+		'<tr align=right><td>Work Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=work value="'.$work.'"></td></tr>'.
+		'<tr align=right><td>Email: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=email value="'.$email.'"></td></tr>'.
+		'<tr align=right><td>Year Joined: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=joined value="'.$joined.'"></td></tr>'.
+		'<tr align=right><td valign=top>Years Paid: </td><td align=left><TEXTAREA COLS=8 ROWS=4 NAME=years_paid>'.$years_paid.'</TEXTAREA></td></tr>'.
+		'<tr align=right><td>Show: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=show value="'.$show.'"></td></tr>'.
+		'<tr align=right><td valign=top>Comments: </td><td align=left><TEXTAREA COLS=40 ROWS=4 NAME=comments>'.$comments.'</TEXTAREA></td></tr>';
+
+		echo '<tr><td colspan=2><hr></td></tr>'.
+		'<tr align=right><td>Programmers: <input type=checkbox name="djs"'.$djs.'></td><td>'.
+		'Mobile Sound DJ: <input type=checkbox name="mobile"'.$mobile.'></td></tr>'.
+		'<tr align=right><td>News Dept: <input type=checkbox name="newsdept"'.$newsdept.'></td><td>'.
+		'Sports Dept: <input type=checkbox name="sportsdept"'.$sportsdept.'></td></tr>'.
+		'<tr align=right><td>Board: <input type=checkbox name="board"'.$board.'></td><td>'.
+		'Discorder: <input type=checkbox name="discorder"'.$discorder.'></td></tr>'.
+		'<tr align=right><td>Executive: <input type=checkbox name="executive"'.$executive.'></td><td>'.
+		'Women: <input type=checkbox name="women"'.$women.'></td></tr>'.
+		'<tr align=right><td>Fill In: <input type=checkbox name="fill_in"'.$fill_in.'></td><td>'.
+		'Music Dept: <input type=checkbox name="dept"'.$dept.'></td></tr>';
+
+		echo '<tr><td colspan=2><hr><center><b>Interests</b></center></td></tr>'.
+		'<tr align=right><td>Music Dept: <input type=checkbox name="int_music"'.$int_music.'></td><td>'.
+		'Arts Dept: <input type=checkbox name="int_arts"'.$int_arts.'></td></tr>'.
+		'<tr align=right><td>Show Hosting: <input type=checkbox name="int_spoken"'.$int_spoken.'></td><td>'.
+		'Discorder: <input type=checkbox name="int_magazine"'.$int_magazine.'></td></tr>'.
+		'<tr align=right><td>Promotions+Outreach: <input type=checkbox name="int_promotions"'.$int_promotions.'></td><td>'.
+		'</td></tr>'.
+		'<tr align=right><td valign=top>Other: </td><td align=left><TEXTAREA COLS=40 ROWS=4 NAME=int_other>'.$int_other.'</TEXTAREA></td></tr>'.
+		'</table>'.
+		'<br><INPUT TYPE=submit VALUE="';
+		echo $ed ? "Update Member" : "Add Member";
+		echo '">'.
+		'</FORM>';
 ?>
-		</select></td></tr>
-		<tr align=right><td>Gender: </td><td align=left><INPUT SIZE=1 TYPE=text NAME=gender value="<?=$gender?>"></td></tr>
-		<tr align=right><td>Address: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=address value="<?=$address?>"></td></tr>
-		<tr align=right><td>City: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=city value="<?=$city?>"></td></tr>
-		<tr align=right><td>Postal Code: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=postal value="<?=$postal?>"></td></tr>
-		<tr align=right><td>Cell Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=cell value="<?=$cell?>"></td></tr>
-		<tr align=right><td>Home Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=home value="<?=$home?>"></td></tr>
-		<tr align=right><td>Work Phone: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=work value="<?=$work?>"></td></tr>
-		<tr align=right><td>Email: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=email value="<?=$email?>"></td></tr>
-		<tr align=right><td>Year Joined: </td><td align=left><INPUT SIZE=20 TYPE=text NAME=joined value="<?=$joined?>"></td></tr>
-		<tr align=right><td valign=top>Years Paid: </td><td align=left><TEXTAREA COLS=8 ROWS=4 NAME=years_paid><?=$years_paid?></TEXTAREA></td></tr>
-		<tr align=right><td>Show: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=show value="<?=$show?>"></td></tr>
-		<tr align=right><td valign=top>Comments: </td><td align=left><TEXTAREA COLS=40 ROWS=4 NAME=comments><?=$comments?></TEXTAREA></td></tr>
-
-		<tr><td colspan=2><hr></td></tr>
-		<tr align=right><td>Programmers: <input type=checkbox name="djs"<?=$djs?>></td><td>
-		Mobile Sound DJ: <input type=checkbox name="mobile"<?=$mobile?>></td></tr>
-		<tr align=right><td>News Dept: <input type=checkbox name="newsdept"<?=$newsdept?>></td><td>
-		Sports Dept: <input type=checkbox name="sportsdept"<?=$sportsdept?>></td></tr>
-		<tr align=right><td>Board: <input type=checkbox name="board"<?=$board?>></td><td>
-		Discorder: <input type=checkbox name="discorder"<?=$discorder?>></td></tr>
-		<tr align=right><td>Executive: <input type=checkbox name="executive"<?=$executive?>></td><td>
-		Women: <input type=checkbox name="women"<?=$women?>></td></tr>
-		<tr align=right><td>Fill In: <input type=checkbox name="fill_in"<?=$fill_in?>></td><td>
-		Music Dept: <input type=checkbox name="dept"<?=$dept?>></td></tr>
-
-		<tr><td colspan=2><hr><center><b>Interests</b></center></td></tr>
-		<tr align=right><td>Music Dept: <input type=checkbox name="int_music"<?=$int_music?>></td><td>
-		Arts Dept: <input type=checkbox name="int_arts"<?=$int_arts?>></td></tr>
-		<tr align=right><td>Show Hosting: <input type=checkbox name="int_spoken"<?=$int_spoken?>></td><td>
-		Discorder: <input type=checkbox name="int_magazine"<?=$int_magazine?>></td></tr>
-		<tr align=right><td>Promotions+Outreach: <input type=checkbox name="int_promotions"<?=$int_promotions?>></td><td>
-		</td></tr>
-		<tr align=right><td valign=top>Other: </td><td align=left><TEXTAREA COLS=40 ROWS=4 NAME=int_other><?=$int_other?></TEXTAREA></td></tr>
-		</table>
-		<br><INPUT TYPE=submit VALUE="<?= $ed ? "Update" : "Add"; ?> Member">
-		</FORM>
 		</center></td></tr></table>
 		<script language=javascript>
 			document.the_form.firstname.focus();
