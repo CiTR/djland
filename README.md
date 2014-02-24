@@ -33,7 +33,7 @@ SOCAN periods can be set to automatically add Composer and time fields to Playsh
 
 INSTALLATION STEPS
 
-1) Download the latest version from https://github.com/citrtech/djland and copy the files to your server's public web directory ('www', 'public_html', or something similar)
+1) Download the latest version from https://github.com/citrtech/djland/archive/master.zip and copy the files to your server's public web directory ('www', 'public_html', or something similar)
 
 2) Copy the file in the 'headers' folder called config-sample.php to a new file in the same location called 'config.php'
 
