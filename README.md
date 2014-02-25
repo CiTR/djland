@@ -51,7 +51,7 @@ INSTALLATION STEPS
 
 Developed by CiTR - www.citr.ca
 
-Contributors
+Contributors: 
 Brad Winter,
 Evan Friday,
 Sandy Fang,

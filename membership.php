@@ -80,9 +80,9 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 	echo "<center><table border=1 width=90%%><tr><td><b>Name</b></td><td><b>Email</b></td><td nowrap><b>Home Phone</b></td></tr>";
 	
 	while ($row = mysqli_fetch_array( $sresult )){
-		echo '<pre>';
-		print_r($row);
-		echo '</pre>';
+//		echo '<pre>';
+//		print_r($row);
+//		echo '</pre>';
 		$title = "Name: " . htmlspecialchars($row["firstname"])." ".htmlspecialchars($row["lastname"]);
 		$title .= "\nStatus: " . htmlspecialchars($row["status"]);
 		$title .= "\nGender: " . htmlspecialchars($row["gender"]);
