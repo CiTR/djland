@@ -1,10 +1,14 @@
 DJLAND
 
-This is a free and open source web application that can be used for managing various community radio matters.  The installation process is very similar to Wordpress - just specify your server's database credentials and everything else is built automatically.  Optionally, DJLAND can also integrate with SAM Broadcaster (http://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
+A free and open source web application built for community radio.
+
+Optionally, DJLAND can also integrate with SAM Broadcaster (http://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
+
+The installation process is very similar to Wordpress - just specify your server's database credentials and everything else is built automatically.
 
 Requires a server with PHP and MySQL.
 
---DJLAND Features--
+DJLAND Features...
 
 Playsheets:
 DJLAND features a flexible and easy to use playsheet tool that has been designed primarily for humans, not robots.  As an optional feature, it can connect to an instance of SAM Broadcaster and import plays from its history.  These plays can be edited and re-ordered amongst plays from physical media that have been manually entered.  You can also bulk-add a time period where only SAM was DJing.
@@ -35,18 +39,19 @@ INSTALLATION STEPS
 
 1) Download the latest version from https://github.com/citrtech/djland/archive/master.zip and copy the files to your server's public web directory ('www', 'public_html', or something similar)
 
-2) Copy the file in the 'headers' folder called config-sample.php to a new file in the same location called 'config.php'
+2) Create a MySQL database for DJland and a username / password for this database.
 
-3) Edit config.php to enter your station info, database credentials, and enabled feature list
+3) Copy the file in the 'headers' folder called config-sample.php to a new file in the same location called 'config.php'
 
-4) open djland-example.com/setup.php to run the database setup script.
+4) Edit config.php to enter your station info, database credentials, and enabled feature list
 
-5) open djland-example.com. See the config file for the default username and password
+5) open djland-example.com/setup.php to run the database setup script.
 
+6) open djland-example.com. See the config file for the default username and password
 
 Developed by CiTR - www.citr.ca
 
---Contributors--
+Contributors
 Brad Winter,
 Evan Friday,
 Sandy Fang,
