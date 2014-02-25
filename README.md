@@ -4,9 +4,9 @@ This is a free and open source web application that can be used for managing var
 
 Requires a server with PHP and MySQL.
 
-Features:
+--DJLAND Features--
 
-Playsheets:
+--Playsheets--
 	DJLAND features a flexible and easy to use playsheet tool that has been designed primarily for humans, not robots.  As an optional feature, it can connect to an instance of SAM Broadcaster and import plays from its history.  These plays can be edited and re-ordered amongst plays from physical media that have been manually entered.  You can also bulk-add a time period where only SAM was DJing.
 	DJland playsheets have all the required fields for a community radio station licensed in Canada, and it displays percentage-levels of compliance that are updated live while new entries are added to the playsheet.  DJs can save a draft if they are not finished in the on-air booth and resume at a later time by accessing the website from home or the station lounge.
 
