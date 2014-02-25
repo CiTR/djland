@@ -25,12 +25,12 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 
 	if(isset($_GET['searchdesc']) && $_GET['searchdesc']) {
 		$search_term = fas($_GET['searchdesc']);
-		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status FROM membership,membership_status WHERE MATCH(membership.lastname,membership.firstname,membership.address,membership.city,membership.postal,membership.cell,membership.home,membership.work,membership.email,membership.comments,membership.show,membership.int_other) AGAINST ('$search_term' IN BOOLEAN MODE) AND membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status, membership.id AS member_id FROM membership,membership_status WHERE MATCH(membership.lastname,membership.firstname,membership.address,membership.city,membership.postal,membership.cell,membership.home,membership.work,membership.email,membership.comments,membership.show,membership.int_other) AGAINST ('$search_term' IN BOOLEAN MODE) AND membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
 
 
 		$snum_rows = mysqli_num_rows($sresult);
 		if(!$snum_rows) {
-			$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status FROM membership,membership_status WHERE (membership.lastname LIKE '%".$search_term."%' OR membership.firstname LIKE '%".$search_term."%' OR membership.address LIKE '%".$search_term."%' OR membership.city LIKE '%".$search_term."%' OR membership.postal LIKE '%".$search_term."%' OR membership.cell LIKE '%".$search_term."%' OR membership.home LIKE '%".$search_term."%' OR membership.work LIKE '%".$search_term."%' OR membership.email LIKE '%".$search_term."%' OR membership.comments LIKE '%".$search_term."%' OR membership.show LIKE '%".$search_term."%' OR membership.int_other  LIKE '%".$search_term."%') AND membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
+			$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status, membership.id AS member_id FROM membership,membership_status WHERE (membership.lastname LIKE '%".$search_term."%' OR membership.firstname LIKE '%".$search_term."%' OR membership.address LIKE '%".$search_term."%' OR membership.city LIKE '%".$search_term."%' OR membership.postal LIKE '%".$search_term."%' OR membership.cell LIKE '%".$search_term."%' OR membership.home LIKE '%".$search_term."%' OR membership.work LIKE '%".$search_term."%' OR membership.email LIKE '%".$search_term."%' OR membership.comments LIKE '%".$search_term."%' OR membership.show LIKE '%".$search_term."%' OR membership.int_other  LIKE '%".$search_term."%') AND membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
 			$snum_rows = mysqli_num_rows($sresult);
 		}
 	}
@@ -67,11 +67,11 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 		$search_query .= (isset($_GET['asmodified']) && $_GET['asmodified']) ? "membership.modified LIKE '" . fas($_GET['asmodified']) . "%' AND " : "";
 		$search_order = "ORDER BY ". fas($_GET['asorder']) . (isset($_GET['asdescending']) ? " DESC " : " ");
 
-		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status FROM membership,membership_status WHERE ". $search_query ."membership_status.id = membership.status_id ".$search_order."LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status, membership.id AS member_id FROM membership,membership_status WHERE ". $search_query ."membership_status.id = membership.status_id ".$search_order."LIMIT $record_start, $record_limit");
 		$snum_rows = mysqli_num_rows($sresult);
 	}
 	else {
-		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status FROM membership,membership_status WHERE membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db,"SELECT *,membership_status.name AS status, membership.id AS member_id FROM membership,membership_status WHERE membership_status.id = membership.status_id ORDER BY membership.lastname LIMIT $record_start, $record_limit");
 		$snum_rows = mysqli_num_rows($sresult);
 	}
 
@@ -80,6 +80,9 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 	echo "<center><table border=1 width=90%%><tr><td><b>Name</b></td><td><b>Email</b></td><td nowrap><b>Home Phone</b></td></tr>";
 	
 	while ($row = mysqli_fetch_array( $sresult )){
+		echo '<pre>';
+		print_r($row);
+		echo '</pre>';
 		$title = "Name: " . htmlspecialchars($row["firstname"])." ".htmlspecialchars($row["lastname"]);
 		$title .= "\nStatus: " . htmlspecialchars($row["status"]);
 		$title .= "\nGender: " . htmlspecialchars($row["gender"]);
@@ -100,7 +103,7 @@ if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "sear
 
 		$bulkmail .= $row["email"] ? ($row["email"] . "; ") : "";
 
-	echo	'<tr><td align=left><a href='.$_SERVER["SCRIPT_NAME"].'?action=edit&id='.$row["id"].' title="'.$title.'">';
+	echo	'<tr><td align=left><a href='.$_SERVER["SCRIPT_NAME"].'?action=edit&id='.$row["member_id"].' title="'.$title.'">';
 	echo 	$row["lastname"].', '.$row["firstname"].'</a></td>';
 	echo 	'<td><a href="mailto:'.$row["email"].'">'.$row["email"].'</a></td><td>'.$row["home"].'</td></tr>';
 
@@ -169,10 +172,10 @@ else if(is_member("membership") && isset($_GET['action']) && ($_GET['action'] ==
 	
 		
 		echo '<center><h1>';
-		echo $ed ? "Update" : "Add New";
+		echo $ed ? "Update " : "Add New ";
 		echo 'Member</h1>';
 
-		echo '<FORM METHOD="POST" ACTION="'.$_SERVER['SCRIPT_NAME'].'?action=submit" name="the_form">\n';
+		echo '<FORM METHOD="POST" ACTION="'.$_SERVER['SCRIPT_NAME'].'?action=submit" name="the_form">';
 		if($ed) {
 			echo "<INPUT type=hidden name=id value=".$ed.">";
 		}
