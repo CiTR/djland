@@ -1,6 +1,8 @@
 <?php
 //FUNCTION HEADER - playlist.citr.ca
 
+
+date_default_timezone_set($station_info['timezone']);
 //Membership status, index by Name/ID
 $fresult = mysqli_query($db,"SELECT * FROM membership_status ORDER BY 'sort', 'name'");
 $fnum_rows = mysqli_num_rows($fresult);

@@ -1,5 +1,3 @@
-
-
 <?php		///	 playsheet.php - playlist.citr.ca
 session_start();
 require("headers/showlib.php");
