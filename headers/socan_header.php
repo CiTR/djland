@@ -7,6 +7,7 @@ function socanCheck($db) {
 	
 	if($socanPeriods = $db->query("SELECT * FROM socan ORDER BY socanStart DESC")){
 		
+
 		while($socanrow = $socanPeriods->fetch_array())
 		{
 		$socanrows[] = $socanrow;
@@ -14,7 +15,7 @@ function socanCheck($db) {
 			
 			//$db->close();
 			$index = 0;
-			
+		if(!count($socanrows) ) return false;
 			
 		foreach($socanrows as $socanrow)
 		{
