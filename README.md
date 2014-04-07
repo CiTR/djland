@@ -49,7 +49,7 @@ INSTALLATION STEPS
 
 6) open djland-example.com. See the config file for the default username and password
 
-Developed by CiTR - www.citr.ca
+Developed and maintained by CiTR - www.citr.ca
 
 Contributors: 
 Brad Winter,
