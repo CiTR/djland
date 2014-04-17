@@ -47,12 +47,7 @@ INSTALLATION STEPS
 
 5) open djland-example.com/setup.php to run the database setup script.
 
-6) open djland-example.com. See the config file for the default username and password
+6) open djland-example.com. If all goes well, you will see the DJLand login screen. See the config file for the default username and password.  You should change this
 
 Developed and maintained by CiTR - www.citr.ca
 
-Contributors: 
-Brad Winter,
-Evan Friday,
-Sandy Fang,
-Henry Chee
