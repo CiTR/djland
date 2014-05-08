@@ -85,6 +85,7 @@
 	});
 	
 	$('#autosaver').click(function(){
+		console.log('ding dong');
 		autosave();	
 	});
 	

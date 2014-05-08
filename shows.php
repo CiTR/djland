@@ -92,7 +92,7 @@ foreach($dow as $key_name => $var_name) { // Generates days of week
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-<link rel=\"stylesheet\" href=\"citr.css\" type=\"text/css\">
+<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body>";
@@ -146,6 +146,9 @@ if(is_member("addshow")) {
 		$show_img = fas($_POST['t_show_img']);
 		$sponsor_name = fas($_POST['t_sponsor_name']);
 		$sponsor_url = fas($_POST['t_sponsor_url']);
+	//	echo '<pre>';
+	//	print_r($_POST);
+	//	echo '</pre>';
 		
 		$times = processFields(array("sd","sh","sm","ed","eh","em","alt"));
 		$socials = processFields(array("socialName","socialURL"));
@@ -167,6 +170,11 @@ if(is_member("addshow")) {
 		else {
 			mysqli_query($db,"DELETE FROM `show_times` WHERE show_id=$ed");
 			foreach ($times as $s_arr) {
+
+				if($s_arr['sh'] > $s_arr['eh']){
+				 	echo "<h3>the show's start hour is later than the end hour.  I hope it spans midnight, otherwise you should correct this or else it can cause problems.</h3>";
+				}
+
 				$sd = $s_arr['sd'];
 				$st = $s_arr['sh'].":".$s_arr['sm'].":00";
 				$endd = $s_arr['ed'];

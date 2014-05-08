@@ -261,6 +261,17 @@
 			
 	}
 	
+	function showStatus(status, delay){
+		$('#ps_status').remove();
+		$('body').append('<div id="ps_status" >'+status+'</div>');
+
+		if(delay){
+			setTimeout(function(){
+					$('#ps_status').remove();
+				},
+				4000);
+		}
+	}
 			
 	
 	function autosave(){
@@ -268,6 +279,8 @@
 		$('#star').val(0);
 		
 		$('#autosaver').css('background-color','lightblue');
+
+		showStatus('saving... please wait', false);
 
 		console.log('autosaving');	
 
@@ -290,6 +303,8 @@
 							});	
 						
 						$('#autosaver').removeAttr('style');
+
+						showStatus('draft saved', true);
 						$('#draft').html('(draft)');
 						
 						});	
@@ -301,6 +316,7 @@
 					$('#playsheetForm').ajaxSubmit( function(){
 					
 						$('#autosaver').removeAttr('style');
+						showStatus('draft saved', true);
 						$('#draft').html('(draft)');
 					}
 					);

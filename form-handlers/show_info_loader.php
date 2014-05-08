@@ -12,6 +12,9 @@ $adLib = new AdLib($mysqli_sam,$db);
 $showid = $_POST["showid"];
 $unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
 
+//echo 'looking for show id '.$showid.'</br>';
+//echo 'looking for unix time '.$unixTime.'</br>';
+
 if(!$showid && !$unixTime)
 {
 	$showid = 76;
@@ -22,15 +25,22 @@ if(!$showid && !$unixTime)
 
 $targetShow = $showlib->getShowById($showid);
 
+
 $showname = $targetShow->name;
 
 $showsInDay = $showlib->getBetterBlocksInSameDay($unixTime);
 
+
+
 $send_fail_msg = true;
 $array = array();
 foreach( $showsInDay as $betterBlock ){
+//		echo 'is it in here?';
+//		print_r($betterBlock);
 
 	if( $betterBlock['show_obj']->id == $showid ) {
+
+//		echo 'found it';
 		
 		$end_unix = $betterBlock['unix_end'];
 		$start_unix = $betterBlock['unix_start'];

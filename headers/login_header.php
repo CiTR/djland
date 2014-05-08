@@ -3,7 +3,6 @@
 
 //$sv_username = "";
 //$sv_login_fails = 0;
-
 $cookiename_id = "login";
 $cookiename_pass = "md5";
 

@@ -16,7 +16,7 @@ require("adLib.php");
 
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=style.css type=text/css>");
 //printf("<title>CiTR 101.9</title></head><body>");
 
 ?>

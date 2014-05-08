@@ -5,10 +5,45 @@ class ShowLib {
 	private $mysqli_link; // mysql link identifier
 	private $curr_week;
 	private $curr_time;
+	private $all_times; 
+	private $all_socials;
+	private $all_hosts;
+	private $all_shows;
+	private $all_shows_inactive;
+
 	function __construct($link) {
 		$this->mysqli_link = $link;
 		$this->curr_time = time();
 		$this->curr_week = ShowTime::getWeekNum($this->curr_time);
+
+		// list of each show's time info
+		$time_q = mysqli_query($this->mysqli_link,"SELECT * FROM show_times");
+		$this->all_times = array();
+		while($time_r = mysqli_fetch_assoc($time_q)) { // Get times
+			$this->all_times[] = $time_r;
+		}
+
+		$social_q = mysqli_query( $this->mysqli_link,"SELECT * FROM social");
+		$this->all_socials = array();
+		while($social_r = mysqli_fetch_assoc($social_q)) { // Get socials
+			$this->all_socials[] = $social_r;
+		}
+
+		$this->all_hosts = array();
+		$hosts_q = "SELECT * FROM hosts";
+		$hosts_result = mysqli_query($this->mysqli_link, $hosts_q);
+		while($hosts_rows = mysqli_fetch_assoc($hosts_result)){
+			$this->all_hosts []= $hosts_rows;
+		}
+
+		$this->all_shows = $this->initializeShows(false);
+		$this->all_shows_inactive = $this->initializeShows(true);
+
+
+
+
+
+
 	}
 	
 	// Private helper functions
@@ -17,28 +52,76 @@ class ShowLib {
     $res->data_seek($row); 
     $datarow = $res->fetch_array(); 
     return $datarow[$field]; 
-} */
-	private function prepareShow($show_r) {
-		$host_q = mysqli_query($this->mysqli_link,"SELECT * FROM hosts WHERE id={$show_r['host_id']}");
-		$show_r["host"] = mysqli_result_dep($host_q, 0, "name");
-		$time_q = mysqli_query($this->mysqli_link,"SELECT * FROM show_times WHERE show_id={$show_r['id']}");
-		$all_times = array();
-		while($time_r = mysqli_fetch_assoc($time_q)) { // Get times
-			$all_times[] = $time_r;
+} */private function initializeShows($include_inactive){
+
+
+		if ($include_inactive) {
+		//	$show_q = mysqli_query($this->mysqli_link,"SELECT * FROM shows ORDER BY name");
+			$query = "SELECT * FROM shows ORDER BY name";
 		}
-		$social_q = mysqli_query( $this->mysqli_link,"SELECT * FROM social WHERE show_id={$show_r['id']}");
-		$all_socials = array();
-		while($social_r = mysqli_fetch_assoc($social_q)) { // Get socials
-			$all_socials[] = $social_r;
-		}		
-		//TODO add duration as a new field in all $times arrays created with show objects
-				$wdt = ShowTime::createWeekdayTime($all_times[0]['start_time'],$all_times[0]['start_day']);
-				$wdt_end = ShowTime::createWeekdayTime($all_times[0]['end_time'],$all_times[0]['end_day']);
+		else {
+		//	$show_q = mysqli_query( $this->mysqli_link,"SELECT * FROM shows WHERE active=1 ORDER BY name");
+			$query = "SELECT * FROM shows WHERE active=1 ORDER BY name";
+		}
+		$shows = array();
+		
+		if ($rows = mysqli_query( $this->mysqli_link,$query )){
+		/*	while ($show = mysqli_fetch_assoc($show_q)) {
+				$shows[] = $this->prepareShow($show);
+			}
+			*/
+			while ($show_row = mysqli_fetch_assoc($rows)){
+				
+				$shows[$show_row['id']]= $this->prepareShow($show_row);
+				
+			
+				}
+				
+				
+		} else {
+		echo 'database query error';
+		}
+
+		return $shows;
+
+}
+	private function prepareShow($show_r) {
+	//	$host_q = mysqli_query($this->mysqli_link,"SELECT name FROM hosts WHERE id={$show_r['host_id']}");
+	//	$show_r["host"] = mysqli_result_dep($host_q, 0, "name");
+		
+		foreach($this->all_hosts as $i => $host_info){
+			if($host_info['id'] == $show_r['host_id']){
+				$show_r["host"] = $host_info['name'];
+			}
+		}
+		
+		$show_times = array();
+
+		foreach($this->all_times as $i => $one_time_list){
+			if ($one_time_list['show_id'] == $show_r['id']){
+
+						//TODO add duration as a new field in all $times arrays created with show objects
+				$wdt = ShowTime::createWeekdayTime($one_time_list['start_time'],$one_time_list['start_day']);
+				$wdt_end = ShowTime::createWeekdayTime($one_time_list['end_time'],$one_time_list['end_day']);
 				$duration = ($wdt_end - $wdt)/3600; // 3600 seconds in an hour
 
-		 // 	$all_times['duration'] = $duration;
+		 	 	$one_time_list['duration'] = $duration;
+				$show_times []= $one_time_list;
+			}
+		}
+
+//
+		$show_socials = array();
+
+		foreach($this->all_socials as $i => $one_socials_list){
+			if($one_socials_list['show_id'] == $show_r['id']){
+				$show_socials []= $one_socials_list;
+			}
+			
+		}
+
 		
-		return new Show($show_r, $all_times, $all_socials);
+		return new Show($show_r, $show_times, $show_socials);
 	}
 	
 	// Public functions ----------------------------------------
@@ -56,31 +139,43 @@ class ShowLib {
 	// Args: $id - a valid show id number
 	// Returns: show (obj) - the show represented by the id
 	function getShowById($id) {
-		$show_q = mysqli_query( $this->mysqli_link,"SELECT * FROM shows WHERE id=$id");
+		return $this->all_shows[$id];
+/*		$show_q = mysqli_query( $this->mysqli_link,"SELECT * FROM shows WHERE id=$id");
 		if ($show = mysqli_fetch_assoc($show_q)) {
 			return $this->prepareShow($show);
 		}
 		else { // No show found
 			return null;
 		}
+		*/
 	}
 
 	// Args: $time - a valid Unix timestamp (eg. time() )
 	// Returns: show (obj) - the show represented by the time
 	function getShowByTime($time) {
+//		echo 'finding show for time '.$time.' ('.date("H:i:s", $time).')';
 		$target_wdt = ShowTime::createWeekdayTime(date("H:i:s", $time),date("w", $time));
 		$target_weeknum = ShowTime::getWeekNum($time);
 		// Retrieve all active shows
 		$shows = $this->getAllShows();
 		foreach ($shows as $show) {
 			foreach ($show->times as $time_r) {
+
+
 				if ($time_r['alternating'] == 0 || $time_r['alternating'] == $target_weeknum) {
 					$start_wdt = ShowTime::createWeekdayTime($time_r['start_time'],$time_r['start_day']);
 					$end_wdt = ShowTime::createWeekdayTime($time_r['end_time'],$time_r['end_day']);
-					if ($start_wdt > $end_wdt) { // if start time later than end time, week wrap-around
+					if ($start_wdt > $end_wdt)  {
+						// fixme 
+						// if start time later than end time, week wrap-around
+						// UNLESS there is human error in show info
+						// can only be wrap-around case if show start day is on saturday
 						$end_wdt = ShowTime::addWeek($end_wdt);
 					}
 					if ($target_wdt >= $start_wdt && $target_wdt < $end_wdt) { // a match
+//						echo ' target: '.$target_wdt;
+//						echo ' start:'.$start_wdt;
+//						echo ' end:'.$end_wdt;
 						return $show;
 					}
 				}
@@ -213,34 +308,15 @@ class ShowLib {
 	// Arg: $inactive (optional) - set true to also show inactive shows (false by default)
 	// Returns: an array of all shows in the database sorted alphabetically (only active by default)
 	function getAllShows($inactive=false) {
-		if ($inactive) {
-		//	$show_q = mysqli_query($this->mysqli_link,"SELECT * FROM shows ORDER BY name");
-			$query = "SELECT * FROM shows ORDER BY name";
-		}
-		else {
-		//	$show_q = mysqli_query( $this->mysqli_link,"SELECT * FROM shows WHERE active=1 ORDER BY name");
-			$query = "SELECT * FROM shows WHERE active=1 ORDER BY name";
-		}
-		$shows = array();
-		
-		if ($rows = mysqli_query( $this->mysqli_link,$query )){
-		/*	while ($show = mysqli_fetch_assoc($show_q)) {
-				$shows[] = $this->prepareShow($show);
-			}
-			*/
-			while ($show_row = mysqli_fetch_assoc($rows)){
-				
-				$shows[]= $this->prepareShow($show_row);
-				
+
+		if($inactive){
+			return $this->all_shows_inactive;
 			
-				}
-				
-				
 		} else {
-		echo 'database query error';
+			return $this->all_shows;
+			
 		}
 
-		return $shows;
 	}
 	
 	// Returns: the current unix time
@@ -339,7 +415,7 @@ class Show {
 	// Constructors
 	// Args: $show_r - an array of show info ($show_r["attr"] = val)
 	//		 $times - an array of time rows ($times[0] = array("attr"=>val))
-	//				- each row contains (show_id, start_day, start_time, end_day, end_time, alternating(0,1,2))
+	//				- each row contains (show_id, start_day, start_time, end_day, end_time, alternating(0,1,2), duration)
 	//		 $socials - an array of social rows ($socials[0] = array("attr"=>val))
 	// 				  - each row contains (show_id, social_name, social_url, unlink (bool 0/1))
 	function __construct($show_r, $times, $socials) {

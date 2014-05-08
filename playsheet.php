@@ -1,5 +1,3 @@
-
-
 <?php		///	 playsheet.php - playlist.citr.ca
 session_start();
 require("headers/showlib.php");
@@ -11,7 +9,13 @@ $SOCAN_FLAG;
 $showlib = new Showlib($db);
 
 print_menu();
-$SOCAN_FLAG=socanCheck($db);
+
+if (socanCheck($db) || $_GET['socan']=='true' ){
+
+	$SOCAN_FLAG = true;
+} else {
+	$SOCAN_FLAG = false;
+}
 
 if($SOCAN_FLAG)
 {
@@ -47,7 +51,7 @@ var socan=<?php echo json_encode($SOCAN_FLAG); ?>;
 <head>
 <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <meta charset="utf-8">
-<link rel=stylesheet href='citr.css' type='text/css'>
+<link rel=stylesheet href='style.css' type='text/css'>
 
 <title>DJLAND | Playsheet</title>
 
@@ -306,7 +310,10 @@ else if($actionSet && $action == 'list' ) {
 //echo ('list playsheets');
 
 
-	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+//	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+
+	echo "<CENTER><FORM METHOD='GET' name='the_form'>";
+	
 	printf("<INPUT type=hidden name=action value=edit>");
 	
 	printf("<SELECT NAME=\"id\" SIZE=25>\n");
@@ -339,8 +346,14 @@ else if($actionSet && $action == 'list' ) {
 		print("<option value='".mysqli_result_dep($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result_dep($result,$count,"show_id")].$star_." ".$draft);
 		$count++;
 	}
-	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" >View Playsheet</button>\n");
-	printf("</FORM></CENTER>\n");
+
+//	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" class='bigbutton'>View Playsheet</button>\n");
+//	printf("</FORM></CENTER>\n");
+
+	echo "</SELECT><BR><button TYPE=submit VALUE='View Playsheet' class='bigbutton' >View Playsheet</button>";
+	echo "<br/><br/><button type=submit name=socan value='true' >Load as SOCAN playsheet</button>";
+	echo "</FORM></CENTER>";
+
 
 	if((is_member("addshow"))){
 	echo '<a href="setSocan.php">Set a Socan Period Here</a>';
@@ -463,9 +476,6 @@ $adLib = new AdLib($mysqli_sam,$db);
 			$pl_date_min = date('i', $unix_start_time);
 			
 			$show_end = strtotime($currshow->times[0]['end_time']);
-//			echo"<hr/>";
-//			print_r($currshow->times[0]);
-//			echo"<hr/>";
 			$end_date_hour = date('H', $show_end);
 			$end_date_min = date('i', $show_end);
 			
@@ -475,6 +485,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 			// MAKING NEW PS THAT IS RIGHT NOW (default)
 			
 			$currshow = $showlib->getCurrentShow();
+
 			
 			$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
 		
@@ -512,6 +523,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 			$loaded_sw_duration =  "";
 			
 //			echo 'unix start time: '.$unix_start_time;
+			
 			$adTable = $adLib->generateTable($unix_start_time,'dj');
 	}
 	
@@ -641,9 +653,13 @@ if (count($matches)>1){
 //
 //		echo ('playsheet edit view. ID is '.$ps_id.'<br/>timestamp: '.$unix_start_time);
 //		echo '.  Date: '.date( 'D, M j, g:ia', $unix_start_time);
-		
-		printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
+		if($SOCAN_FLAG){
+				printf("<FORM METHOD=POST ACTION=\"%s?action=submit&socan=true\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
+		} else {
+				printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 
+
+		}
 		//if($ps_id) {
 			printf("<INPUT type=hidden id='psid' name=id value=%s>", $ps_id);
 		//}
