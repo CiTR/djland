@@ -104,9 +104,9 @@ foreach ( $showBlocks as $i => $block ) {
 		$thisShow = $showlib->getShowByID($block['show_id']);
 		$uniqueTime = $showBlocks[$i][wdt] + $lastSunday;
 
-		echo '<pre> info for id'.$block['show_id'].'<br/>';
-		print_r($thisShow);
-		echo '</pre>';
+//		echo '<pre> info for id'.$block['show_id'].'<br/>';
+//		print_r($thisShow);
+//		echo '</pre>';
 				
 		echo '<br/>';
 		echo '<h3>'.$thisShow->name.'</h3>';

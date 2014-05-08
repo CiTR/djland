@@ -44,9 +44,9 @@ class AdLib {
 		$recent_minimum = $this->curr_time - $onemonth;
 		$recent_maximum = $this->curr_time + $onemonth;
 
-		echo 'max:'.$recent_maximum.' min:'.$recent_minimum;
+//		echo 'max:'.$recent_maximum.' min:'.$recent_minimum;
 		$load_query = "SELECT id, time, type, name, time_block FROM adlog WHERE time_block >= '".$recent_minimum."' AND time_block <= '".$recent_maximum."'";
-		echo 'query: '.$load_query;
+//		echo 'query: '.$load_query;
 		if($result_loading = mysqli_query($this->citr_link, $load_query)){
 
 			while($loady = $result_loading->fetch_array()){
@@ -107,7 +107,7 @@ class AdLib {
 		if( empty($results_from_recent) ){
 		//	echo 'WAS EMPTY';
 		
-		
+
 					
 				$load_query = "SELECT id, time, type, name FROM adlog WHERE time_block = '".$unixTime."'";
 				
