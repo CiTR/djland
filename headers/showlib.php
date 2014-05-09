@@ -39,7 +39,9 @@ class ShowLib {
 		$this->all_shows = $this->initializeShows(false);
 		$this->all_shows_inactive = $this->initializeShows(true);
 
-
+		mysqli_free_result($time_q);
+		mysqli_free_result($social_q);
+		mysqli_free_result($hosts_result);
 
 
 
@@ -56,7 +58,8 @@ class ShowLib {
 
 
 		if ($include_inactive) {
-		//	$show_q = mysqli_query($this->mysqli_link,"SELECT * FROM shows ORDER BY name");
+		//	$show_q = 
+		mysqli_query($this->mysqli_link,"SELECT * FROM shows ORDER BY name");
 			$query = "SELECT * FROM shows ORDER BY name";
 		}
 		else {

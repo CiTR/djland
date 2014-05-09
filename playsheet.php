@@ -523,8 +523,8 @@ $adLib = new AdLib($mysqli_sam,$db);
 			$loaded_sw_duration =  "";
 			
 //			echo 'unix start time: '.$unix_start_time;
-			
-			$adTable = $adLib->generateTable($unix_start_time,'dj');
+
+			$adTable = $adLib->generateTable($unix_start_time,'dj', false);
 	}
 	
 		if($loaded_crtc)
