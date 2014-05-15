@@ -51,12 +51,12 @@ var socan=<?php echo json_encode($SOCAN_FLAG); ?>;
 <head>
 <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <meta charset="utf-8">
-<link rel=stylesheet href='style.css' type='text/css'>
+<link rel=stylesheet href='css/style.css' type='text/css'>
 
 <title>DJLAND | Playsheet</title>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="js/jquery.form.js"></script> 
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
@@ -719,7 +719,7 @@ if (count($matches)>1){
 		
 		print("<td/><tr/></table>");
 		
-		echo "<img src='loading.gif' id='ps-loading-image'>";
+		echo "<img src='images/loading.gif' id='ps-loading-image'>";
 		echo "</span>";		
 		
 		//main interface table
@@ -1090,7 +1090,7 @@ echo "Total Overall Duration:<br/>";
 	
 		print("<div class='bugsAndTopChart'>");
 		if (isset($station_info['tech_email'])){
-			echo "<div class='bugs'>For support, email:<br/> <a href='mailto:".$station_info['tech_email']."'>.".$station_info['tech_email']."</a><br/><br/> Or visit the<a href='QA.php' target='_blank'> Q&A </a>page</div>";
+			echo "<div class='bugs'>For support, email:<br/> <a href='mailto:".$station_info['tech_email']."'>.".$station_info['tech_email']."</a><br/><br/> Or visit the<a href='help.php' target='_blank'> Q&A </a>page</div>";
 		}
 		print("<div class='topChart'>");
 		print("Note: a song is a 'hit' if it has ever been in the top 40 of any of these charts:<br/>");

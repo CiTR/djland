@@ -1,7 +1,7 @@
 /*PLAYSHEET TEST */
 body { 
 background-color: #3366ff;
-background-image: url('./images/wallpaper.jpg');
+background-image: url('../images/wallpaper.jpg');
 background-repeat: repeat;
 font-family: Helvetica,Arial;
 color:white;
@@ -829,7 +829,7 @@ li.playsheetRow input{
  cursor:hand;
 cursor:grab!important;
 cursor:-moz-grab;
-cursor: url(https://mail.google.com/mail/images/2/openhand.cur), pointer!important;
+cursor: url('../images/openhand.cur'), pointer!important;
 cursor:-webkit-grab;
 cursor:move;
 }
@@ -838,7 +838,7 @@ cursor:hand;
 cursor:grabbing!important;
 cursor:-moz-grabbing;
 cursor:-webkit-grabbing;
-cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), pointer!important;
+cursor: url('../images/closedhand.cur'), pointer!important;
 cursor: move;
 }
 

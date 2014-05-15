@@ -153,6 +153,7 @@ class AdLib {
 // LOADS ADS FROM DATABASE IF THEY HAVE BEEN SCHEDULED
 
 	function getAdNameFromID($id){
+//		echo 'looking for id '.$id;
 
 		if($this->using_sam){
 
@@ -493,7 +494,8 @@ class AdLib {
 			$samIDs = array();
 			$db_ids = array();
 			$playeds = array();
-			
+		
+		if(empty($adTable)) return '<br/><br/>no ads were found';
 			foreach( $adTable as $i => $row ){
 	//			print_r($row);
 				$times []= $row['time'];
@@ -584,29 +586,30 @@ function loadAdsForReport($playsheet_id){
 			$db_ids = array();
 			$playeds = array();
 			
-			foreach( $adTable as $i => $row ){
-				$times []= $row['time'];
-				$types []= $row['type'];
+			if(!empty($adTable)){
+						foreach( $adTable as $i => $row ){
+							$times []= $row['time'];
+							$types []= $row['type'];
+							
+							if( is_numeric($row['name']) ){
+								$names []= $this->getAdNameFromID($row['name']);
+							} else {				
+								$names []= $row['name'];
+							}
+			//				$samIDs []= $row['sam_id'];
+			//				$db_ids []=$row['id'];
+							$playeds []= $row['played'];
+							
+							
+						}
+				//		$string.="<br/>query: ".$adload_query."<br/>";
+				//		print_r($adload_result);
 				
-				if( is_numeric($row['name']) ){
-					$names []= $this->getAdNameFromID($row['name']);
-				} else {				
-					$names []= $row['name'];
-				}
-//				$samIDs []= $row['sam_id'];
-//				$db_ids []=$row['id'];
-				$playeds []= $row['played'];
+					
+			
 				
-				
-			}
-	//		$string.="<br/>query: ".$adload_query."<br/>";
-	//		print_r($adload_result);
-	
-		
-
-	
-		return array($times,$types,$names,$playeds);
-		
+					return array($times,$types,$names,$playeds);
+					}
 		
 	
 	}

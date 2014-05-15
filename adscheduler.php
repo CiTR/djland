@@ -14,10 +14,7 @@ require("headers/showlib.php");
 require('adLib.php');
 
 echo '<html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">';
-echo "<link rel=stylesheet href='style.css' type='text/css' />";
-
-
-//printf("<title>CiTR 101.9</title></head><body>");
+echo "<link rel=stylesheet href='css/style.css' type='text/css' />";
 
 ?>
 

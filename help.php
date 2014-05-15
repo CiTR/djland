@@ -9,13 +9,13 @@ $SOCAN_FLAG;
 
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=style.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 print("<title>DJland help</title>");
 print("<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>");
 print("<link rel='stylesheet' href='http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css' />");
 print("  <script src='http://code.jquery.com/ui/1.10.2/jquery-ui.js'></script>");
 print("<script type='text/javascript' src='./js/QA.js'></script>");
-print("<script src='http://malsup.github.com/jquery.form.js'></script> ");
+print("<script src='js/jquery.form.js'></script> ");
 print("</head>");
 
 //Data Setup

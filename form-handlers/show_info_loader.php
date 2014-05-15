@@ -53,7 +53,7 @@ foreach( $showsInDay as $betterBlock ){
 		$end_hour = sprintf('%02d', $end_info['hours']);
 		$end_min = sprintf('%02d', $end_info['minutes']);
 		
-		$ads = $adLib->generateTable($start_unix,'dj');
+		$ads = $adLib->generateTable($start_unix,'dj',$betterBlock);
 		
 		$crtc = $betterBlock['show_obj']->crtc_default;
 		$lang = $betterBlock['show_obj']->lang_default;
@@ -74,7 +74,8 @@ foreach( $showsInDay as $betterBlock ){
 						'crtc'=>$crtc,
 						'lang'=>$lang,
 						'ads'=>$ads,
-						'unixTime'=>$start_unix
+						'unixTime'=>$start_unix,
+						'showID'=>$targetShow->id
 						));
 						
 		$send_fail_msg = false;
@@ -95,7 +96,8 @@ echo json_encode(array(
 				'host'=>'',
 				'crtc'=>'',
 				'lang'=>'',
-				'ads'=>''
+				'ads'=>'',
+				'showID'=>''
 				));
 }
 

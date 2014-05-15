@@ -16,7 +16,7 @@ require("adLib.php");
 
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=style.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 //printf("<title>CiTR 101.9</title></head><body>");
 
 ?>
@@ -25,7 +25,7 @@ printf("<link rel=stylesheet href=style.css type=text/css>");
 
  
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="js/jquery.form.js"></script> 
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>

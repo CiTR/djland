@@ -4,7 +4,7 @@
 function print_menu() {
 
 require('config.php');
-printf("<link rel=stylesheet href=style.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 	printf("<table class=menu border=0 align=center><tr>");
 

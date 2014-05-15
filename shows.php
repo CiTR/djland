@@ -92,7 +92,7 @@ foreach($dow as $key_name => $var_name) { // Generates days of week
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\">
+<link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body>";
