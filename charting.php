@@ -18,8 +18,16 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 <title>DJLAND | Charting</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<!--
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"> 
+--->
+<title>Charting</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="js/bootstrap.min.js"></script>
   
  
 </head>
@@ -27,7 +35,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 <?php
 
-		print_menu();
+		print_menu2();
        
        
        

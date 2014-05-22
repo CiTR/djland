@@ -14,7 +14,7 @@ print("<title>DJland help</title>");
 print("<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>");
 print("<link rel='stylesheet' href='http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css' />");
 print("  <script src='http://code.jquery.com/ui/1.10.2/jquery-ui.js'></script>");
-print("<script type='text/javascript' src='./js/QA.js'></script>");
+print("<script type='text/javascript' src='js/QA.js'></script>");
 print("<script src='js/jquery.form.js'></script> ");
 print("</head>");
 

@@ -887,19 +887,9 @@ if (count($matches)>1){
 //				$set_lang = htmlentities(mysqli_result_dep($result,$i,"lang"), ENT_QUOTES);
 				$set_lang = mysqli_result_dep($result,$i,"lang");
 				}
-
-							//otherwise, it's a saved playsheet
-			/*	if (!$ps_id && $lang_default) $set_lang = $lang_default;
-				else $set_lang = $pl_lang;*/
-				//$set_lang = "eng";
-				
-
 				$set_part = mysqli_result_dep($result,$i,"is_part") ? " checked" : "";
 				$set_inst = mysqli_result_dep($result,$i,"is_inst") ? " checked" : "";			
 				$set_hit = mysqli_result_dep($result,$i,"is_hit") ? " checked" : "";
-				
-// the following queries are from playitems
-
 				$set_pl = mysqli_result_dep($result,$i,"is_playlist") ? " checked" : "";
 				$set_cc = mysqli_result_dep($result,$i,"is_canadian") ? " checked" : "";
 				$set_yo = mysqli_result_dep($result,$i,"is_yourown") ? " checked" : "";
