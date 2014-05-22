@@ -93,7 +93,7 @@ else
 //
 if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet && $action == "submit") {
 
-//	print_r($_POST);
+//	//print_r($_POST);
 
 //	$show_id = fget_id($_POST['showtitle'], "shows", false);
 	$show_id = $_POST['showtitle'];
