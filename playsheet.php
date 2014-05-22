@@ -1,4 +1,7 @@
+
+
 <?php		///	 playsheet.php - playlist.citr.ca
+
 session_start();
 require("headers/showlib.php");
 require("headers/security_header.php");
@@ -7,8 +10,10 @@ require("headers/menu_header.php");
 require("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
+//
 
 print_menu();
+$SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
 
@@ -75,6 +80,10 @@ if(oldIE())
 else
      echo "<body>";
 
+	 
+	 
+//echo "<div id='linkOld'><a href='http://137.82.188.13'>&lt;--Back to the Old Playlist</a></div>";
+
 
 //
 //
@@ -112,6 +121,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	$star = $_POST['star'];
 	$pl_crtc = $_POST['pl_crtc'];
 	$pl_lang = $_POST['pl_lang'];
+	$type = $_POST['type'];
 	
 	
 	
@@ -140,7 +150,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 		$unix_time = 'NULL';
 	}
 	mysqli_query($db, "UPDATE `shows` SET last_show='$start_time' WHERE id='$show_id' AND last_show < '$start_time'");
-	$update_show_query = "UPDATE `playlists` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=".$unix_time.", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang' WHERE id='$ps_id'";
+	$update_show_query = "UPDATE `playlists` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=".$unix_time.", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang', type='$type' WHERE id='$ps_id'";
 
 	if (mysqli_query($db, $update_show_query)){
 		echo "save was successful<br/> ";
@@ -288,8 +298,8 @@ $insert_query = "INSERT INTO `playitems` ".
 	}
 	
 	echo "</div>";
-	echo "<br/><br/>format:<br/> artist - title (album) <br/> <font color=red>red means cancon</font> <br/><br/> ";
-	if (isset($station_info['tech_email'])) echo "feedback? email technicalservices@citr.ca<br/><br/>";
+	echo "<br/><br/>format:<br/> artist - title (album) <br/> <font color=red>red means cancon</font> <br/><br/> feedback? email technicalservices@citr.ca<br/><br/>";
+
 	
 	
 //	echo 'spoken word description:<br/> '.$spokenword.'<br/>';
@@ -310,7 +320,7 @@ else if($actionSet && $action == 'list' ) {
 //echo ('list playsheets');
 
 
-//	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 
 	echo "<CENTER><FORM METHOD='GET' name='the_form'>";
 	
@@ -329,7 +339,7 @@ else if($actionSet && $action == 'list' ) {
 	$count = 0;
 	while($count < $min) {
 		
-		if(mysqli_result_dep($result,$count,"status")==1)
+		if(mysqli_result_dep($result,$count,"status")==1) 
 			$draft = "(draft)";
 		else
 			$draft = "";
@@ -338,7 +348,7 @@ else if($actionSet && $action == 'list' ) {
 			$star_ = "&#9733;";
 		else
 			$star_ = "";
-		$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time"));
+		$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time")); 
 		$theDate = 	date ( 'Y: M j, g:ia', $date_unix);
 
 
@@ -346,7 +356,6 @@ else if($actionSet && $action == 'list' ) {
 		print("<option value='".mysqli_result_dep($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result_dep($result,$count,"show_id")].$star_." ".$draft);
 		$count++;
 	}
-
 //	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" class='bigbutton'>View Playsheet</button>\n");
 //	printf("</FORM></CENTER>\n");
 
@@ -391,7 +400,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 
 	//LOADING A SAVED PS
 		$ps_id = fas($_GET['id']);
-//		echo " you are editing playsheet id number ".$ps_id;
+		//echo " you are editing playsheet id number ".$ps_id;
 		if ($result = mysqli_query($db,"SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playlists WHERE id='$ps_id'")){
 		$curr_id = mysqli_result_dep($result,0,"show_id");
 		$currshow = $showlib->getShowByID($curr_id);
@@ -419,6 +428,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$loaded_status = mysqli_result_dep($result, 0, "status");
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
+		$loaded_type = mysqli_result_dep($result, 0, "type");
 		
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
@@ -485,7 +495,6 @@ $adLib = new AdLib($mysqli_sam,$db);
 			// MAKING NEW PS THAT IS RIGHT NOW (default)
 			
 			$currshow = $showlib->getCurrentShow();
-
 			
 			$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
 		
@@ -503,6 +512,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 			$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
 	
 			}
+			$showtype = $currshow->showtype; 
 			
 			$ps_id = 0;			
 			$host_name = $currshow->host;
@@ -653,20 +663,56 @@ if (count($matches)>1){
 //
 //		echo ('playsheet edit view. ID is '.$ps_id.'<br/>timestamp: '.$unix_start_time);
 //		echo '.  Date: '.date( 'D, M j, g:ia', $unix_start_time);
+		
+
+
+
 		if($SOCAN_FLAG){
-				printf("<FORM METHOD=POST ACTION=\"%s?action=submit&socan=true\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
+			printf("<FORM METHOD=POST ACTION=\"%s?action=submit&socan=true\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		} else {
-				printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
-
-
+			printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		}
+
+
 		//if($ps_id) {
 			printf("<INPUT type=hidden id='psid' name=id value=%s>", $ps_id);
 		//}
-		
+
 		printf("<center><h1>DJ PLAYSHEET</h1></center>");
+		echo "<table border=0 align=center width=100%%><tr><td>Show Type: ";
+		if( isset($loaded_type) && ($loaded_type != null) ){
+		echo "<select id='type' name='type' value=".$loaded_type."><option>".$loaded_type."</option>";
+		} else {
+		echo "<select id='type' name='type' value=".$showtype."><option>".$showtype."</option>";		
+		}
+		
+		echo	"<option>Live</option>
+				<option>Syndicated</option>
+				<option>Rebroadcast</option>
+				<option>Simulcast</option>
+				<option>Pre-Recorded</option>
+				<option>Other</option>
+				</select>";
+		
+		
+		$playsheet_list = getRecentPlaylists($db,500);
+		
+		echo "<br/><select style='height:25px' class=invisible id='select-playsheet' >" ;
+		foreach($playsheet_list as $i => $a_playsheet){
+	 
+			$ps_list_date_unix = strtotime($a_playsheet['start_time']); 
+			$ps_list_Date = date ( 'M j, g:ia', $ps_list_date_unix);
+		 
+			echo '<option value='.$a_playsheet['id'].' data='.$ps_list_Date.' name='.$fshow_name[$a_playsheet['show_id']].' >'.$ps_list_Date.' - '.$fshow_name[$a_playsheet['show_id']].'</option>';
+			
+	 
+		}
+		echo '</select>';
+		echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
+		
 		echo 	"<span id='ps_header'>";
-		printf("<table border=0 align=center width=100%%><tr><td> Show: <select id='showSelector' name=\"showtitle\"  >");
+		
+		printf("<tr><td> Show: <select id='showSelector' name=\"showtitle\">");
 
 		if ($ps_id || $show_name) printf("<option value='%s' selected='selected'>%s",$show_id, $show_name);
 		
@@ -849,7 +895,7 @@ if (count($matches)>1){
 				
 
 				$set_part = mysqli_result_dep($result,$i,"is_part") ? " checked" : "";
-				$set_inst = mysqli_result_dep($result,$i,"is_inst") ? " checked" : "";
+				$set_inst = mysqli_result_dep($result,$i,"is_inst") ? " checked" : "";			
 				$set_hit = mysqli_result_dep($result,$i,"is_hit") ? " checked" : "";
 				
 // the following queries are from playitems
@@ -862,7 +908,7 @@ if (count($matches)>1){
 			
 				if($SOCAN_FLAG){
 				$set_theme = mysqli_result_dep($result,$i,"is_theme") ? " checked" : "";
-				$set_background = mysqli_result_dep($result,$i,"is_background") ? " checked" : "";
+				$set_background = mysqli_result_dep($result,$i,"is_background") ? " checked" : "";	
 				
 				$set_song_start_hour = mysqli_result_dep($result,$i,"insert_song_start_hour");
 				$set_song_start_minute = mysqli_result_dep($result,$i,"insert_song_start_minute");
@@ -1047,15 +1093,15 @@ echo "Total Overall Duration:<br/>";
 			$hours = floor($loaded_sw_duration/60);
 			$minutes = $loaded_sw_duration%60;
 			echo $hours;
-			} else echo "0";
-		for($i=1; $i <= 24; $i++) printf("<OPTION>%02d", $i);
-		printf("</SELECT>hr");
+			} else echo "00";
+		for($i=0; $i < 24; $i++) printf("<OPTION>%02d", $i);
+		printf("</SELECT> Hours <br/>");
 		printf("<SELECT NAME='sw-time-min' id='sw-time-min'  >\n<OPTION>");
 		if($loaded_sw_duration>0){
 		echo $minutes;
 		} else echo "00";
-		for($i=0; $i <= 59; $i++) printf("<OPTION>%02d", $i);
-		printf("</SELECT>min");
+		for($i=0; $i < 60; $i++) printf("<OPTION>%02d", $i);
+		printf("</SELECT> Minutes");
 	?>
 <!--		</td>
 			
@@ -1077,7 +1123,7 @@ echo "Total Overall Duration:<br/>";
 <hr>
 </div>
 
-	<?php 
+	<?php
 		}// end of podcast tools creation block
 		
 			if(!$ps_id || is_member("editdj")) {
@@ -1087,10 +1133,13 @@ echo "Total Overall Duration:<br/>";
 		printf("</FORM>");
 		// echo'
 
+
+
+
 	
 		print("<div class='bugsAndTopChart'>");
 		if (isset($station_info['tech_email'])){
-			echo "<div class='bugs'>For support, email:<br/> <a href='mailto:".$station_info['tech_email']."'>.".$station_info['tech_email']."</a><br/><br/> Or visit the<a href='help.php' target='_blank'> Q&A </a>page</div>";
+		echo "<div class='bugs'>For support, email:<br/> <a href='mailto:".$station_info['tech_email']."'>".$station_info['tech_email']."</a><br/><br/> Or visit the<a href='help.php' target='_blank'> Q&A </a>page</div>";
 		}
 		print("<div class='topChart'>");
 		print("Note: a song is a 'hit' if it has ever been in the top 40 of any of these charts:<br/>");

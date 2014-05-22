@@ -11,18 +11,28 @@ $adLib = new AdLib($mysqli_sam,$db);
 
 $showid = $_POST["showid"];
 $unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
+$psid = $_POST["psid"];
 
-//echo 'looking for show id '.$showid.'</br>';
-//echo 'looking for unix time '.$unixTime.'</br>';
+
+
 
 if(!$showid && !$unixTime)
 {
 	$showid = 76;
 	$unixTime = time();
 }
-	
-	
 
+if($psid){
+	$query = "SELECT show_id, unix_time FROM playlists WHERE id ='".$psid."'";
+	if($result = $db->query($query)){
+		$showinfo=mysqli_fetch_array($result);
+		$unixTime = $showinfo["unix_time"];
+		$showid = $showinfo["show_id"];
+		
+		
+	}
+	$result->close();
+}
 $targetShow = $showlib->getShowById($showid);
 
 
@@ -35,13 +45,13 @@ $showsInDay = $showlib->getBetterBlocksInSameDay($unixTime);
 $send_fail_msg = true;
 $array = array();
 foreach( $showsInDay as $betterBlock ){
-//		echo 'is it in here?';
-//		print_r($betterBlock);
 
-	if( $betterBlock['show_obj']->id == $showid ) {
 
-//		echo 'found it';
+
+	if( $betterBlock['show_obj']->id == $showid) {
 		
+
+
 		$end_unix = $betterBlock['unix_end'];
 		$start_unix = $betterBlock['unix_start'];
 		
@@ -58,6 +68,7 @@ foreach( $showsInDay as $betterBlock ){
 		$crtc = $betterBlock['show_obj']->crtc_default;
 		$lang = $betterBlock['show_obj']->lang_default;
 		$host = $betterBlock['show_obj']->host;
+		$showtype = $betterBlock['show_obj']->showtype;
 		
 		if(!$lang) $lang = "eng";
 		if(!$crtc) $crtc = "20";
@@ -75,7 +86,8 @@ foreach( $showsInDay as $betterBlock ){
 						'lang'=>$lang,
 						'ads'=>$ads,
 						'unixTime'=>$start_unix,
-						'showID'=>$targetShow->id
+						'showtype'=>$showtype,
+						'showID' => $targetShow->id
 						));
 						
 		$send_fail_msg = false;

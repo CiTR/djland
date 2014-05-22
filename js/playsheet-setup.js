@@ -276,10 +276,6 @@
 				// }
 		// });
 		
-		
-				console.log('Yo dawg, you just called the Setup Function');
-
-   
 	}
 	var allFilledIn;
 	function checkBlocking(){

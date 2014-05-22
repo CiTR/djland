@@ -1,1 +1,3 @@
 headers/config.php
+*.sublime-project
+*.sublime-workspace

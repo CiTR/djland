@@ -213,6 +213,86 @@ return 0;
 
 
 
+}
+
+
+
+
+
+// $numrows is the number of recent playlists you want
+// $filter (optional) show id to filter by
+function getRecentPlaylists($db, $numrows,$filter){
+	//if we are filtering by a showname then filter our query.
+	
+	$playlists = array();
+	
+	if($filter)
+	{
+	//query playlists for saved playlists with show id = to show we are filtering
+	$query="SELECT id, show_id, start_time, status, star FROM playlists WHERE show_id =".$filter." ORDER BY start_time DESC LIMIT ".$numrows;
+	
+	}
+	else
+	{
+	//query playlists database for ALL saved playlists
+	$query = "SELECT id, show_id, start_time, status, star FROM playlists ORDER BY start_time DESC LIMIT ".$numrows;
+	}
+	
+	if ($result = mysqli_query($db,$query)){
+	
+			while($row = $result->fetch_array()){
+			
+				$playlists []= $row;
+		
+	
+	
+			}
+	} else {
+	return ' there was a  problem in the db';
+	}
+//	print_r($playlists);
+	return $playlists;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
