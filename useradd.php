@@ -9,7 +9,7 @@ printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJ LAND | users</title></head><body>");
 
-print_menu();
+print_menu2();
 
 if(isset($_GET['action']) && $_GET['action'] == 'add') {
 

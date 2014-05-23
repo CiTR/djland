@@ -39,66 +39,78 @@ input, select, textarea{
 	padding:3px 15px 3px 15px;
 
 }
-.nav ul ul{
-	display:none;
-}
-.nav ul li: hover > ul{
-	display:block;
+.nav{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+	min-height:35px;
 }
 .nav ul{
-	padding: 0 20px;
 	position:relative;
 	display: inline-block;
-	box-shadow: 0px 0px 9px rgba(0,0,0,0,0.15);
+	padding-top:auto;
+	padding-bottom:auto;
+	padding: 0;
 }
+.nav li {
+	position: relative;
+	list-style: none;
+	float:left;
+}
+
 .nav ul li{
-float:left;
+	position: relative;
+	list-style: none;
+	background-color: #FFFFFF;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.nav ul li ul{
+	padding:0;
+	margin:0;
 }
 
 .nav ul li a{
-	padding: 5px 10px 5px 10px;
-	display: block;
+	text-align:center;
+	text-decoration:none;
+	min-width: 80px;
+	min-height:25px;
+	display: inline-block;
 	color: #757575;
 }
-.nav ul li:hover{
-	background: #3333FF;
+
+.nav ul ul {
+	position:absolute;
+	display:none;
 }
-.nav ul li:hover a{
-	color: #000;
-}
-.nav ul li:hover > li{
-	margin:0px; 
-	padding: 0px;
-}
-.nav ul li:hover > ul li {
-	float: none;
+
+.nav ul li:hover ul {
+	z-index:99;
 	display: block;
+	background-color: white;
+	text-align:center;
 }
-.nav ul li:hover > ul li a{
-	color: #006;
-	min-width:150px;
-}
-.nav ul li:hover ul li a:hover{
-	color: #FFF;
-}
-.nav ul li{
+.nav-left{
 	position:relative;
+	float:left;
 }
-.nav ul li ul {
-	position: absolute;
-	top:30px;
-	left: 0px;
+.nav-right{
+	position:relative;
+	float:right;
+
 }
+
 .container{
-	margin-left:auto; 
-	margin-right: auto; 
-	padding:0; 
-	margin:8px; 
+	background-color: #FFFFFF;
+	margin-left:auto;
+	margin-right:auto;
 	color: #000000; 
-	width:100%; 
-	border:1px;  
-	clear:both; 
-	text-align: center
+	width:90%;
+	min-height:50px;
+	display:block;
+	text-align: center;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 	
 }
 
@@ -109,7 +121,7 @@ td.menu a:hover { color: #000000; text-decoration: underline; background-color: 
 a:active { color: #660000; }
 a:link { color: #FFFFFF;  }
 a:visited { color: #FFFFFF; }
-a:hover { color: #000000; background-color: #CCCCFF; }
+a:hover { color: #000000; background-color: #BEBEBE; }
 a:active { color: #660000; }
 
 

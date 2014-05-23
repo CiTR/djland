@@ -50,10 +50,8 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 function print_menu2(){
 ?>
 	<div class="container">
-		<div class=nav role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-collapse collapse">
-					<ul>
+		<div class=nav>
+					<ul class="nav-left">
 					<?php if(is_member("member") && get_username() != "citrdjs"): ?>
 						<li><a href=useradd.php?action=list>Users</a></li>
 					<?php endif; 
@@ -68,19 +66,18 @@ function print_menu2(){
 					<?php endif;
 					if(is_member("addshow")) : ?>
 						<li><a href="shows.php?action=list">Shows</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Ads<b class="caret"></b></a>
-							<ul class="dropdown-menu">
+						<li>
+							<a href="#">Manage Ads</a>
+							<ul>
 								<li><a href="adscheduler.php">Ad Scheduler</a></li>
-								<li class="divider"></li>
 								<li><a href="adreport.php">Ad Reporting</a></li>
 							</ul>
 						</li>
 						<li><a href="charting.php">Charts</a></li>
 					<?php endif; ?>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
-							<ul class="dropdown-menu">
+						<li>
+							<a href="#">Reports<b class="caret"></b></a>
+							<ul>
 								<?php if(is_member("dj")) : ?> 
 									<li><a href="report.php">Show Report</a></li> 
 								<?php endif;
@@ -90,9 +87,9 @@ function print_menu2(){
 								<?php endif; ?>
 							</ul>
 						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Playsheets<b class="caret"></b></a>
-							<ul class="dropdown-menu">
+						<li>
+							<a href="#">Playsheets<b class="caret"></b></a>
+							<ul>
 								<?php if(is_member("dj")) : ?> 
 									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
 									<li><a href="playsheet.php">New Playsheet</a></li> 
@@ -105,9 +102,8 @@ function print_menu2(){
 					<?php if(is_member("dj")) : ?>
 						<li><a href="help.php" target="_blank"> Help </a></li>
 					<?php endif; ?>
-				
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav-right">
 					<li><a href="index.php?action=logout">Log Out</a></td>
 					</ul>
 				</div>

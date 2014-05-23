@@ -38,7 +38,7 @@ require("headers/menu_header.php");
         $weekday = date("w");
         $month = date("m");
         $day = date("d");
-       //	echo "<center>";
+       echo "<center>";
         echo "<table>";
 //        echo "<tr><td colspan=3 class=\"rawdata\"><br/>formatted song view with counts - from ".$START_DATE." to ".$END_DATE.".  Showing top ".$NUM_DISPLAYED." results. <br/><br/>";
          echo "<tr><td><span><br/>Album view by show weekday - from ".$two_fridays_ago." to ".$last_thursday." <br/>
@@ -150,6 +150,6 @@ require("headers/menu_header.php");
         echo"</td></tr>";
             $counter++;
         }
-    echo "</table></body>";
+    echo "</table></center></body>";
     
 ?>

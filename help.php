@@ -19,7 +19,7 @@ print("<script src='js/jquery.form.js'></script> ");
 print("</head>");
 
 //Data Setup
-print_menu();
+print_menu2();
 $SOCAN_FLAG=socanCheck($db);
 
 

@@ -12,7 +12,7 @@ $SOCAN_FLAG;
 $showlib = new Showlib($db);
 //
 
-print_menu();
+print_menu2();
 $SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){

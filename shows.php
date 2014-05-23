@@ -96,7 +96,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body>";
-	print_menu();
+	print_menu2();
 }
 
 // -------- POST handling code ---------------------------------
@@ -317,7 +317,7 @@ if(is_member("addshow")) {
 		return output;}";
 		echo '</script>';
 		echo "</head><body>";
-		print_menu();
+		print_menu2();
 		// End of head
 
 		printf("<br><div class=\"editform\"><h1>%s Show</h1>", ($ed ? "Edit" : "Add New"));

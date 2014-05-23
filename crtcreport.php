@@ -51,7 +51,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 <?php
 
-print_menu();
+print_menu2();
 $today = date('m/d/Y');
 
 echo '<h1>CRTC Report</h1>';;
