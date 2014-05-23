@@ -76,8 +76,6 @@
 			show_block_data = text;
 			
 			if(show_block_data.ads) {
-			//	window.location.href = 'playsheet.php?time='+show_block_data.last.unix;
-
 				jsDate = new Date(show_block_data.time*1000);
 				dur = show_block_data.duration*60*60*1000;
 				jsDateEnd = new Date(show_block_data.time*1000 + dur);

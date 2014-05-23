@@ -322,17 +322,11 @@ else if($actionSet && $action == 'list' ) {
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 
-	echo "<CENTER><FORM METHOD='GET' name='the_form'>";
+	//echo "<CENTER><FORM METHOD='GET' name='the_form'>";
 	
 	printf("<INPUT type=hidden name=action value=edit>");
-	
-	printf("<SELECT NAME=\"id\" SIZE=25>\n");
-
-//	$result = mysqli_query($db,"SELECT * FROM playlists WHERE show_id!='".$fshow_id['!DELETED']."' ORDER BY start_time DESC");
-
+	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
 	$result = mysqli_query($db,"SELECT * FROM playlists  ORDER BY start_time DESC");
-
-//	print_r($result);
 	$num_rows = mysqli_num_rows($result);
 
 	$min = min($num_rows,2500);
@@ -547,13 +541,13 @@ $adLib = new AdLib($mysqli_sam,$db);
 			
 	if($ps_id && $_GET['action'] != 'datadump') {
 		// VIEW IS NOT RAW DATA
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></td></tr></table>",$ps_id);
+		printf("<br><div class=containerTracklist>");
+		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 	else if ($ps_id){
 		// VIEW IS RAW DATA
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></td></tr></table>",$ps_id);
+		printf("<br><div class=containerTracklist>");
+		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 
 
