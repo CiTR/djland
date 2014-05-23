@@ -452,11 +452,11 @@ function showStatus(status, delay){
 					// CRTC category
 					if( playitem_data[$j].crtc == 30 ){
 						$(targetCrtc3Id).attr('checked','checked');
-						$(targetCrtc2Id).replaceWith("inputinput class='radio mousedragclick CRTCicons3' type='radio' id='crtcTwo" + emptyRow + "' name='crtc" + emptyRow + "' value='20'>");
+						$(targetCrtc2Id).replaceWith("<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcTwo" + emptyRow + "' name='crtc" + emptyRow + "' value='20'>");
 					}
 					else{
 						$(targetCrtc2Id).attr('checked','checked');
-						$(targetCrtc3Id).replaceWith("inputinput class='radio mousedragclick CRTCicons3' type='radio' id='crtcThree" + emptyRow + "' name='crtc" + emptyRow + "' value='30'>");
+						$(targetCrtc3Id).replaceWith("<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcThree" + emptyRow + "' name='crtc" + emptyRow + "' value='30'>");
 					}					
 				}	
 			}
