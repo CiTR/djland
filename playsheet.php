@@ -11,8 +11,9 @@ require("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 //
-
+echo "<center>";
 print_menu2();
+echo "</center>";
 $SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){

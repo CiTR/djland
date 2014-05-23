@@ -40,31 +40,49 @@ input, select, textarea{
 
 }
 .nav{
-	margin-left:auto;
-	margin-right:auto;
-	width:95%;
-	min-height:20px;
+	width:100%;
+	min-height:30px;
 }
+.nav-element{ 
+	background-color: #FFFFFF;
+	width:90%;
+	height:auto;
+	overflow:visible;
+	text-align:center;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	overflow:visible;
+	text-align:center;
+}
+
 .nav ul{
-	position:relative;
+	list-style:none;
 	display: inline-block;
-	padding-top:auto;
+	padding-top:auto;
 	padding-bottom:auto;
 	padding: 0;
+	text-align:center;
+}
+
+.dropdown ul{
+	display: none;
+	background: black;
+	position: absolute;
+	z-index:2;
 }
 .nav li {
 	position: relative;
 	list-style: none;
 	float:left;
+	display:block;
 }
 
 .nav ul li{
-	position: relative;
 	list-style: none;
-	background-color: #FFFFFF;
 	padding-left: 10px;
 	padding-right: 10px;
 }
+
 .nav ul li ul{
 	padding:0;
 	margin:0;
@@ -73,45 +91,18 @@ input, select, textarea{
 .nav ul li a{
 	text-align:center;
 	text-decoration:none;
-	min-width: 80px;
+	min-width: 60px;
+	width:auto;
 	min-height:25px;
 	display: inline-block;
 	color: #757575;
 }
-
-.nav ul ul {
-	position:absolute;
-	display:none;
-}
-
 .nav ul li:hover ul {
-	z-index:99;
 	display: block;
 	background-color: white;
 	text-align:center;
 }
-.nav-left{
-	position:relative;
-	float:left;
-}
-.nav-right{
-	position:relative;
-	float:right;
 
-}
-
-.container{
-	background-color: #FFFFFF;
-	margin-left:auto;
-	margin-right:auto;
-	color: #000000; 
-	width:90%;
-	min-height:50px;
-	display:block;
-	text-align: center;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-}
 .containerTracklist{
 	background-color: #FFFFFF;
 	margin-left:auto;
