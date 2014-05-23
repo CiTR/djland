@@ -8,15 +8,18 @@ require("headers/menu_header.php");
 <head>
 <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJLAND | Charting</title>
-<link rel="stylesheet" href="css/bootstrap.css">
-<!--
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
 <link rel=stylesheet href=css/style.css type=text/css>
+<!--
+
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"> 
+<script src="js/bootstrap.min.js"></script>
+
 --->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<script src="/js/bootstrap.min.js"></script>
 
   
  

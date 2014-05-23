@@ -39,6 +39,69 @@ input, select, textarea{
 	padding:3px 15px 3px 15px;
 
 }
+.nav ul ul{
+	display:none;
+}
+.nav ul li: hover > ul{
+	display:block;
+}
+.nav ul{
+	padding: 0 20px;
+	position:relative;
+	display: inline-block;
+	box-shadow: 0px 0px 9px rgba(0,0,0,0,0.15);
+}
+.nav ul li{
+float:left;
+}
+
+.nav ul li a{
+	padding: 5px 10px 5px 10px;
+	display: block;
+	color: #757575;
+}
+.nav ul li:hover{
+	background: #3333FF;
+}
+.nav ul li:hover a{
+	color: #000;
+}
+.nav ul li:hover > li{
+	margin:0px; 
+	padding: 0px;
+}
+.nav ul li:hover > ul li {
+	float: none;
+	display: block;
+}
+.nav ul li:hover > ul li a{
+	color: #006;
+	min-width:150px;
+}
+.nav ul li:hover ul li a:hover{
+	color: #FFF;
+}
+.nav ul li{
+	position:relative;
+}
+.nav ul li ul {
+	position: absolute;
+	top:30px;
+	left: 0px;
+}
+.container{
+	margin-left:auto; 
+	margin-right: auto; 
+	padding:0; 
+	margin:8px; 
+	color: #000000; 
+	width:100%; 
+	border:1px;  
+	clear:both; 
+	text-align: center
+	
+}
+
 
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}

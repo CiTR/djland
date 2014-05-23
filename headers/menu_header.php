@@ -50,10 +50,10 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 function print_menu2(){
 ?>
 	<div class="container">
-		<div class="navbar navbar-default" role="navigation">
+		<div class=nav role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
+					<ul>
 					<?php if(is_member("member") && get_username() != "citrdjs"): ?>
 						<li><a href=useradd.php?action=list>Users</a></li>
 					<?php endif; 
