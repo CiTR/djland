@@ -48,33 +48,42 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 <?php
 function print_menu2(){
+require('config.php');
 ?>
+
 	<div class="container">
 		<div class=nav>
 					<ul class="nav-left">
-					<?php if(is_member("member") && get_username() != "citrdjs"): ?>
+					<?php if(is_member("member") && get_username() != $station_wide_login_name): ?>
 						<li><a href=useradd.php?action=list>Users</a></li>
 					<?php endif; 
-					if(is_member("membership")) : ?>
+					if(is_member("membership") && $enabled['membership']) : ?>
 						<li><a href="membership.php">Membership</a></li>	
 					<?php endif; 
-					if(is_member("library")) : ?>
+					if(is_member("library") && $enabled['library']) : ?>
 						<li><a href="library.php"> View Library</a></li>
 					<?php endif;
-					if(is_member("editlibrary")) : ?>
+					if(is_member("editlibrary") && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 					<?php endif;
-					if(is_member("addshow")) : ?>
-						<li><a href="shows.php?action=list">Shows</a></li>
-						<li>
-							<a href="#">Manage Ads</a>
-							<ul>
-								<li><a href="adscheduler.php">Ad Scheduler</a></li>
-								<li><a href="adreport.php">Ad Reporting</a></li>
-							</ul>
-						</li>
-						<li><a href="charting.php">Charts</a></li>
-					<?php endif; ?>
+					if(is_member("addshow")) : 
+						if($enabled['shows']) :?>
+							<li><a href="shows.php?action=list">Shows</a></li>
+						<?php endif; 
+						if($enabled['adscheduler']) : ?>
+							<li>
+								<a href="#">Manage Ads</a>
+								<ul>
+									<li><a href="adscheduler.php">Ad Scheduler</a></li>
+									<li><a href="adreport.php">Ad Reporting</a></li>
+								</ul>
+							</li>
+						<?php endif; 
+						if($enabled['charts']) :?>
+							<li><a href="charting.php">Charts</a></li>
+						<?php endif;
+					endif; 
+					if($enabled['report']): ?>
 						<li>
 							<a href="#">Reports<b class="caret"></b></a>
 							<ul>
@@ -87,12 +96,14 @@ function print_menu2(){
 								<?php endif; ?>
 							</ul>
 						</li>
+						<? endif; ?>
 						<li>
 							<a href="#">Playsheets<b class="caret"></b></a>
 							<ul>
-								<?php if(is_member("dj")) : ?> 
+								<?php if(is_member("dj") && ($enabled['playsheets'])) : ?> 
 									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
-									<li><a href="playsheet.php">New Playsheet</a></li> 
+									<li><a href="playsheet.php">New Playsheet</a></li>
+									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 								<?php endif; ?>
 							</ul>
 						</li>

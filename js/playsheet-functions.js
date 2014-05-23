@@ -447,8 +447,6 @@ function showStatus(status, delay){
 					else{
 						$(targetBGId).replaceWith('<input class="mousedragclick" type="checkbox" id="background'+ emptyRow +'" name="background'+ emptyRow +'">');	
 					}
-					
-					
 					// CRTC category
 					if( playitem_data[$j].crtc == 30 ){
 						$(targetCrtc3Id).attr('checked','checked');
