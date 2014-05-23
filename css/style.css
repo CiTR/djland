@@ -43,11 +43,11 @@ input, select, textarea{
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}
 td.menu a:hover { color: #000000; text-decoration: underline; background-color: #CCCCFF; }
-a:active { color: #660000; text-decoration: underline; }
-a:link { color: #FFFFFF; text-decoration: underline; }
-a:visited { color: #FFFFFF; text-decoration: underline;}
-a:hover { color: #000000; text-decoration: underline; background-color: #CCCCFF; }
-a:active { color: #660000; text-decoration: underline; }
+a:active { color: #660000; }
+a:link { color: #FFFFFF;  }
+a:visited { color: #FFFFFF; }
+a:hover { color: #000000; background-color: #CCCCFF; }
+a:active { color: #660000; }
 
 
 #ps_header td, #ps_header input, #ps_header select{

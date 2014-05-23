@@ -1,33 +1,23 @@
 <?php
-
-
 session_start();
-
 require("headers/security_header.php");
-
 require("headers/function_header.php");
-
 require("headers/menu_header.php");
-
-
-printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=css/style.css type=text/css>");
-
 ?>
-
+<html>
+<head>
+<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJLAND | Charting</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap.css">
 <!--
-<link rel="stylesheet" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link rel=stylesheet href=css/style.css type=text/css>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"> 
 --->
-<title>Charting</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
   
  
 </head>
@@ -36,12 +26,6 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 <?php
 
 		print_menu2();
-       
-       
-       
-       
-       
-        
         $START_DATE = "2012/01/01";
         $END_DATE = "2012/02/08";
         $two_fridays_ago = date("l, F j, Y",strtotime('-1 week last friday'));

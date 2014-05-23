@@ -214,11 +214,6 @@ return 0;
 
 
 }
-
-
-
-
-
 // $numrows is the number of recent playlists you want
 // $filter (optional) show id to filter by
 function getRecentPlaylists($db, $numrows,$filter){
@@ -252,51 +247,6 @@ function getRecentPlaylists($db, $numrows,$filter){
 	}
 //	print_r($playlists);
 	return $playlists;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 //END FUNCTION HEADER

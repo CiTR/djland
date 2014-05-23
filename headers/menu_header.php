@@ -49,8 +49,6 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 <?php
 function print_menu2(){
 ?>
-
-
 	<div class="container">
 		<div class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
@@ -79,7 +77,6 @@ function print_menu2(){
 							</ul>
 						</li>
 						<li><a href="charting.php">Charts</a></li>
-						
 					<?php endif; ?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
