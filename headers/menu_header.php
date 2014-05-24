@@ -85,7 +85,7 @@ require('config.php');
 				endif; 
 				if($enabled['report']): ?>
 					<li class = dropdown>
-						<a href="#">Reports<b class="caret"></b></a>
+						<a href="#">Reports</a>
 						<ul>
 							<?php if(is_member("dj")) : ?> 
 								<li><a href="report.php">Show Report</a></li> 
@@ -98,7 +98,7 @@ require('config.php');
 					</li>
 					<? endif; ?>
 					<li class = dropdown>
-						<a href="#">Playsheets<b class="caret"></b></a>
+						<a href="#">Playsheets</a>
 						<ul>
 							<?php if(is_member("dj") && ($enabled['playsheets'])) : ?> 
 								<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
@@ -107,13 +107,15 @@ require('config.php');
 							<?php endif; ?>
 						</ul>
 					</li>
-				
-				
-				
-				<?php if(is_member("dj")) : ?>
-					<li><a href="help.php" target="_blank"> Help </a></li>
-				<?php endif; ?>
-				<li><a href="index.php?action=logout">Log Out</a></td>
+					<li class=dropdown >
+						<a href="#"><img src=images/gear.png style="width:20px;"></a>
+						<ul class=align-right>
+							<?php if(is_member("dj")) : ?>
+								<li><a href="help.php" target="_blank"> Help </a></li>
+							<?php endif; ?>
+							<li><a href="index.php?action=logout">Log Out</a></td>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>

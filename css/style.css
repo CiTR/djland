@@ -41,67 +41,100 @@ input, select, textarea{
 }
 .nav{
 	width:100%;
-	min-height:30px;
 }
 .nav-element{ 
-	background-color: #FFFFFF;
-	width:90%;
-	height:auto;
-	overflow:visible;
-	text-align:center;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	overflow:visible;
-	text-align:center;
+	list-style:none;
+    width:940px;
+    margin:30px auto 0px auto;
+    height:43px;
+    padding:0px 20px 0px 20px;
+ 
+    /* Rounded Corners */
+     
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+ 
+    /* Background color and gradients */
+     
+    background: #FFFFFF;
+    background: -moz-linear-gradient(top, #FFFFFF, #BEBEBE);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#BEBEBE));
+     
+    /* Borders */
+     
+    border: 1px solid #002232;
+ 
+    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-
-.nav ul{
+	margin:0px;
 	list-style:none;
 	display: inline-block;
-	padding-top:auto;
-	padding-bottom:auto;
 	padding: 0;
 	text-align:center;
 }
+.nav-element li {
+    float:left;
+    display:block;
+    text-align:center;
+    position:relative;
+    padding: 4px 10px 4px 10px;
+    margin-right:30px;
+    margin-top:7px;
+    border:none;
+}
+.nav-element li:hover{
+	border: 1px solid #777777;
+    padding: 4px 9px 4px 9px;
+     
+    /* Background color and gradients */
+     
+    background: #FFFFFF;
+    background: -moz-linear-gradient(top, #FFFFFF, #BEBEBE);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#BEBEBE));
+     
+    /* Rounded corners */
+     
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+.nav-element li a { 
+    color: #EEEEEE;
+    display:block;
+    outline:0;
+    text-decoration:none;
+    text-shadow: 1px 1px 1px #000;
+}
+.nav-element li:hover a {
+    color:#161616;
+    text-shadow: 1px 1px 1px #FFFFFF;
+}
+.dropdown {
+    margin:4px auto;
+    position:absolute;
+    left:-999em; /* Hides the drop down */
+    text-align:left;
+    padding:10px 5px 10px 5px;
+    border:1px solid #777777;
+    border-top:none;
+     
+    /* Gradient background */
+    background:#F4F4F4;
+    background: -moz-linear-gradient(top, #EEEEEE, #BBBBBB);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEEEEE), to(#BBBBBB));
+ 
+    /* Rounded Corners */
+    -moz-border-radius: 0px 5px 5px 5px;
+    -webkit-border-radius: 0px 5px 5px 5px;
+    border-radius: 0px 5px 5px 5px;
+}
+.align-right{
+	right:-1px;
+}
 
-.dropdown ul{
-	display: none;
-	background: black;
-	position: absolute;
-	z-index:2;
-}
-.nav li {
-	position: relative;
-	list-style: none;
-	float:left;
-	display:block;
-}
-
-.nav ul li{
-	list-style: none;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.nav ul li ul{
-	padding:0;
-	margin:0;
-}
-
-.nav ul li a{
-	text-align:center;
-	text-decoration:none;
-	min-width: 60px;
-	width:auto;
-	min-height:25px;
-	display: inline-block;
-	color: #757575;
-}
-.nav ul li:hover ul {
-	display: block;
-	background-color: white;
-	text-align:center;
-}
 
 .containerTracklist{
 	background-color: #FFFFFF;
