@@ -345,10 +345,29 @@ function showStatus(status, delay){
 			 */
 			playitem_data=text;
 			$('#test-text').val(playitem_data.toString());
-			for(var i = 0; i <= num_rows; i++){
-				$("#row"+i).remove();					
+			if(playitem_data.length==0){
+				for(var i = 0; i <= num_rows-1; i++){
+					$("#row"+i).remove();
+					num_rows--;
+					refreshRows();				
+				}
+				num_rows=1;
+				var j = '#row0';
+				$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton,' +j+ '.timerBox,' + j + '.timeBox').val("");
 			}
-			num_rows=0;
+			else{
+				for(var i = 0; i <= num_rows; i++){
+					$("#row"+i).remove();
+					num_rows--;
+					refreshRows();					
+				}
+				num_rows=0;
+			}
+			
+			
+				
+			
+	
 			refreshRowIDs();
 			if(playitem_data){
 				for( $j = 0; $j < Object.keys(playitem_data).length; $j++ ){
