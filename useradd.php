@@ -97,8 +97,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'add') {
 else if(isset($_GET['action']) && $_GET['action'] == 'list') {
 
 	if(is_member("adduser")) {
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=useradd.php>&nbsp;Add New User&nbsp;</a></td></tr></table>");
+		?>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=useradd.php>Add New User</a></li>
+				</ul>
+			</div>
+		</div>
+		<?
 	}	
 
 	if(is_member("adduser")) {

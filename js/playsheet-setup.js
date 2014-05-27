@@ -61,11 +61,12 @@
 					} else {
 						noRows = true;
 						var j = '#row'+$thisDelRowNum;
-						if(socan==true){
-							$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton,' +j+ 'span').remove();
+						if(socan==1){
+							$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ ' .nowButton,' +j+ ' .timeInner,' +j+ ' .CRTCicons,' + j + '.inputBoxesSocan').remove();
+							console.log("remove socan");
 						}
 						else{
-							$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton').remove();
+							$(j + ' input,' + j + ' .inputBoxes,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton').remove();
 						}
 						num_rows = 0;
 					}

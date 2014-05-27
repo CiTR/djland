@@ -281,8 +281,7 @@ function showStatus(status, delay){
 				tempRowNum=i;
 				emptyRowAvail=true;
 				break;
-			}
-								
+			}					
 		}
 		if(emptyRowAvail==false){ //if there are no rows avalable, make one!
 			addPlaysheetRow();
@@ -293,6 +292,7 @@ function showStatus(status, delay){
 			addPlaysheetRow();
 			refreshRows();
 		}
+		console.log("Empty Row = " + tempRowNum);
    		return tempRowNum;	
     }
 	//Allows javascript to handle HTML entities
@@ -345,29 +345,18 @@ function showStatus(status, delay){
 			 */
 			playitem_data=text;
 			$('#test-text').val(playitem_data.toString());
-			if(playitem_data.length==0){
-				for(var i = 0; i <= num_rows-1; i++){
+				console.log("Numrows " + num_rows);
+				var count = num_rows;
+				for(var i = 0; i < count; i++){
 					$("#row"+i).remove();
+					console.log("Removing Row "+i);
 					num_rows--;
-					refreshRows();				
 				}
-				num_rows=1;
-				var j = '#row0';
-				$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton,' +j+ '.timerBox,' + j + '.timeBox').val("");
-			}
-			else{
-				for(var i = 0; i <= num_rows; i++){
-					$("#row"+i).remove();
-					num_rows--;
-					refreshRows();					
-				}
-				num_rows=0;
-			}
+				refreshRows();
+				noRows=true;
+				console.log("Numrows After Remove " + num_rows); 
+
 			
-			
-				
-			
-	
 			refreshRowIDs();
 			if(playitem_data){
 				for( $j = 0; $j < Object.keys(playitem_data).length; $j++ ){
