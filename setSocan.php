@@ -32,7 +32,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 <?php
 
-print_menu();
+print_menu2();
 
 
 
