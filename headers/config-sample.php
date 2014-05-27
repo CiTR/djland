@@ -24,7 +24,6 @@ $station_info['website'] = 'CiTR.ca';
 $station_info['tech_email'] = 'tech_person@station.ca';
 
 $station_info['timezone'] = 'America/Vancouver'; 
-
 // for a list of valid timezones, visit 
 // http://ca1.php.net/manual/en/timezones.php
 
