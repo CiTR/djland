@@ -11,27 +11,47 @@ $adLib = new AdLib($mysqli_sam,$db);
 
 $showid = $_POST["showid"];
 $unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
+$psid = $_POST["psid"];
+
+
+
 
 if(!$showid && !$unixTime)
 {
 	$showid = 76;
 	$unixTime = time();
 }
-	
-	
 
+if($psid){
+	$query = "SELECT show_id, unix_time FROM playlists WHERE id ='".$psid."'";
+	if($result = $db->query($query)){
+		$showinfo=mysqli_fetch_array($result);
+		$unixTime = $showinfo["unix_time"];
+		$showid = $showinfo["show_id"];
+		
+		
+	}
+	$result->close();
+}
 $targetShow = $showlib->getShowById($showid);
+
 
 $showname = $targetShow->name;
 
 $showsInDay = $showlib->getBetterBlocksInSameDay($unixTime);
 
+
+
 $send_fail_msg = true;
 $array = array();
 foreach( $showsInDay as $betterBlock ){
 
-	if( $betterBlock['show_obj']->id == $showid ) {
+
+
+	if( $betterBlock['show_obj']->id == $showid) {
 		
+
+
 		$end_unix = $betterBlock['unix_end'];
 		$start_unix = $betterBlock['unix_start'];
 		
@@ -43,11 +63,12 @@ foreach( $showsInDay as $betterBlock ){
 		$end_hour = sprintf('%02d', $end_info['hours']);
 		$end_min = sprintf('%02d', $end_info['minutes']);
 		
-		$ads = $adLib->generateTable($start_unix,'dj');
+		$ads = $adLib->generateTable($start_unix,'dj',$betterBlock);
 		
 		$crtc = $betterBlock['show_obj']->crtc_default;
 		$lang = $betterBlock['show_obj']->lang_default;
 		$host = $betterBlock['show_obj']->host;
+		$showtype = $betterBlock['show_obj']->showtype;
 		
 		if(!$lang) $lang = "eng";
 		if(!$crtc) $crtc = "20";
@@ -64,7 +85,9 @@ foreach( $showsInDay as $betterBlock ){
 						'crtc'=>$crtc,
 						'lang'=>$lang,
 						'ads'=>$ads,
-						'unixTime'=>$start_unix
+						'unixTime'=>$start_unix,
+						'showtype'=>$showtype,
+						'showID' => $targetShow->id
 						));
 						
 		$send_fail_msg = false;
@@ -85,7 +108,8 @@ echo json_encode(array(
 				'host'=>'',
 				'crtc'=>'',
 				'lang'=>'',
-				'ads'=>''
+				'ads'=>'',
+				'showID'=>''
 				));
 }
 

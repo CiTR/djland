@@ -12,6 +12,9 @@ define ("HISTORY_COUNT", 50);
 
 require_once("headers/db_header.php");
 
+require_once('headers/config.php');
+date_default_timezone_set($station_info['timezone']);
+
 
 if ($result_sam = $mysqli_sam->query("SELECT * FROM historylist WHERE songtype='S' order by date_played desc LIMIT ".HISTORY_COUNT)) {
  //   printf("Select returned %d rows.\n", $result->num_rows);
@@ -80,10 +83,8 @@ echo '</div>';
 
 
 }
-    /* free result set */
-    $result_sam->close();
-}
 
+}
 $mysqli_sam->close();
 $db->close();
 ?>

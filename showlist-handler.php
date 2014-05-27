@@ -8,7 +8,9 @@ include_once('headers/config.php');
 include_once('headers/db_header.php');
 include_once('headers/showlib.php'); 
 
-function mysqli_result($res, $row, $field=0) { 
+
+function mysqli_result_dep($res, $row, $field=0) { 
+
 	if(is_object($res))    
 		$res->data_seek($row); 
 	else 	return false;
