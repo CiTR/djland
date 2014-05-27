@@ -14,13 +14,13 @@ if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
 //if logged in send them on their merry way
 else if(is_logged_in()) {
 	//header("Location: main.php"); //Stupid IIS Bug
-	printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=style.css type=text/css></head></html>");
+	printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 }
 //check for cookies or logging in...
 else if(isset($_POST['login']) && isset($_POST['password'])) {
 	if(login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']) ? true : false)) {
 		//header("Location: main.php"); //Stupid IIS Bug
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=style.css type=text/css></head></html>");
+		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 	else {
 		$message = "Login (Failed) ".login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']));
@@ -29,7 +29,7 @@ else if(isset($_POST['login']) && isset($_POST['password'])) {
 else if(isset($_COOKIE[$cookiename_id]) && isset($_COOKIE[$cookiename_pass]) && $_COOKIE[$cookiename_pass] && $_COOKIE[$cookiename_id]) {
 	if(cookie_login()) {
 		//header("Location: main.php"); //Stupid IIS Bug
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=style.css type=text/css></head></html>");
+		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 	else {
 		logout();
@@ -47,7 +47,7 @@ if (is_logged_in()) {
 else {
 
 	printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-	printf("<link rel=stylesheet href=style.css type=text/css>");
+	printf("<link rel=stylesheet href=css/style.css type=text/css>");
 	printf("<title>DJ Land</title></head>");
 	
 preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);

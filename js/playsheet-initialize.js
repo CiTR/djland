@@ -19,17 +19,17 @@
 	refreshRowIDs();
 	if (num_rows==0) noRows = true; 
 	else noRows = false;
-	
-	if(noRows) console.log('there are no rows');
-	else console.log('there are '+num_rows+' rows');
-	    
+
+
+
+
 	setup();
 
 	var star;
 	$('.reqtemplate').val('template');
 	checkBlocking();
 
-	debug.prepend('finished setup <br/>');
+
 //	$samBox = $('#sam-box');
 	$songList = $('#song-list');
 
@@ -38,10 +38,30 @@
 	targetShow = $('.showTitle').attr('id');
 //	generateShowLinks('default',targetShow);
 
-	$('#showSelector').change( ajaxLoadPlaysheet );
-	$('#playsheet-year').change( ajaxLoadPlaysheet );
-	$('#playsheet-month').change( ajaxLoadPlaysheet );
-	$('#playsheet-day').change( ajaxLoadPlaysheet );
+	$('#showSelector').change( function(){ if($('#type').val() !="Rebroadcast") ajaxLoadPlaysheet();} );
+	$('#playsheet-year').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
+	$('#playsheet-month').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
+	$('#playsheet-day').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
+	
+	
+	$('#type').change( function(){
+		console.log('type value is '+$('#type').val());
+		if ($('#type').val() == 'Rebroadcast'){
+		$('#select-playsheet').show();
+		$('#select-playsheet').children().show();
+		$('#load-playsheet').show();
+		} else {
+		$('#select-playsheet').hide();
+		$('#load-playsheet').hide();
+		}		
+	
+	});
+	
+	$('#load-playsheet').click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+		inputPlaysheetRows();
+	});
 	// POPULATE LOAD BUTTONS
 	var numLoaderButtons = 50;//<?php echo HISTORY_COUNT; ?>;
 	
@@ -85,6 +105,7 @@
 	});
 	
 	$('#autosaver').click(function(){
+
 		autosave();	
 	});
 	

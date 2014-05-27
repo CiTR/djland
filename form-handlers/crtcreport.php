@@ -37,18 +37,23 @@ if(isset($_POST['min_time']) && isset($_POST['max_time'])){
 $min_time = $_POST['min_time'];
 $max_time = $_POST['max_time'];
 } else { // uncomment when know post loading works
-// $min_time = 6;
-// $max_time = 24;
+ $min_time = 6;
+ $max_time = 24;
 }
-
 
 if(isset($_POST['from'])){
-$from = $_POST['from'];
-$to = $_POST['to'] ;
-}
-$from = strtotime($from);
-$to = strtotime($to)+ 24*60*60; //add one day to make the request include last day in range
+	$from = $_POST['from'];
+	$to = $_POST['to'] ;
 
+	$from = strtotime($from);
+	$to = strtotime($to)+ 24*60*60; //add one day to make the request include last day in range
+
+} else {
+//	$from = new Date(1397631600);
+//	$to =  new Date(1398322800);
+	$from = 1397631600;
+	$to =  1398322800;
+}
 $total_hours = ($max_time-$min_time)*($to-$from)/(24*60*60);
 
 $max_ad_mins = round(($max_ad_mins_per_week * ($total_hours / 126)) , 1);
@@ -64,6 +69,10 @@ $adsLogged = array();
 $showList = grabPlaylists($from,$to, $db);
 $plays = grabPlayitems($from,$to, $db);
 echo 'FROM: '.$from.', TO: '.$to;
+
+// if no data, return and print 'no data for this period'
+
+
 
 // filter out shows that didn't air during broadcast day hours
 // make two windows out of max and min to represent nighttime non-broadcast day hours
@@ -185,6 +194,11 @@ $total_cc_spec = 0;
 $total_fe = 0;
 $total_inst = 0;
 $total_hit = 0;
+
+if ( $total_items <= 0 ){
+	echo ' <br/><br/> no data found for this date period ';
+	return;
+}
 
 foreach($plays as $i => $play){
 			// for each show, no need to load the show's CRTC requirements
@@ -351,12 +365,19 @@ foreach($showList as $i => $v){
 								}	else{
 										$output_body .= "(".round((100*$total_cc_spec_show/$total_spec_show),2)."%)</span> <br/>";
 								}
-							$output_body .= "playlist: &nbsp;&nbsp;&nbsp;&nbsp;".$total_pl_show." / ".$count_show." <span id='show-percent'>(".round((100*$total_pl_show/$count_show),2)."%)</span> <br/>
-								femcon: &nbsp;&nbsp;&nbsp;".$total_fe_show." / ".$count_show." <span id='show-percent'>(".round((100*$total_fe_show/$count_show),2)."%)</span> <br/>
-								hits:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								".$total_hit_show." / ".$count_show." <span id='show-percent'>(".round((100*$total_hit_show/$count_show),2)."%)</span> <br/>
-					</div>
-				</div>";
+							$output_body .= "playlist: &nbsp;&nbsp;&nbsp;&nbsp;".$total_pl_show." / ".$count_show." <span id='show-percent'>(";
+
+								if($count_show!=0)	{
+									$output_body .= round((100*$total_pl_show/$count_show),2);
+									$output_body .= "%)</span> <br/>
+									femcon: &nbsp;&nbsp;&nbsp;".$total_fe_show." / ".$count_show." <span id='show-percent'>(".round((100*$total_fe_show/$count_show),2)."%)</span> <br/>
+									hits:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									".$total_hit_show." / ".$count_show." <span id='show-percent'>(".round((100*$total_hit_show/$count_show),2)."%)</span> <br/>";
+									}
+									$output_body .="
+													</div>
+												</div>";
+											
 				if($using_sam){
 					$output_body .= "<div class='crtcadreport'><h4 class=header-left>Spoken Word:</h4>";
 						$output_body .= 'Tracked Plays:<br/>';
@@ -393,13 +414,14 @@ foreach($showList as $i => $v){
 					$names_list = $jackson[2];
 					$playeds = $jackson[3];
 					
-						
-					foreach( $times_list as $x => $time_val){
-						
-						if( $playeds[$x] && $types_list[$x]=='Station ID'){
-							$output_body .= $times_list[$x].': Station ID<br/>';
-						}
-					}
+					if(!empty($times_list))	{
+										foreach( $times_list as $x => $time_val){
+											
+											if( $playeds[$x] && $types_list[$x]=='Station ID'){
+												$output_body .= $times_list[$x].': Station ID<br/>';
+											}
+										}
+									}
 				}
 				
 				

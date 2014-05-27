@@ -1,7 +1,7 @@
 /*PLAYSHEET TEST */
 body { 
 background-color: #3366ff;
-background-image: url('./images/wallpaper.jpg');
+background-image: url('../images/wallpaper.jpg');
 background-repeat: repeat;
 font-family: Helvetica,Arial;
 color:white;
@@ -27,7 +27,18 @@ input, select, textarea{
 }
 
 
+#ps_status{
+	position:fixed;
+	top:0;
+	left:35%;
+	width:15%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: lightyellow;
+	color:black;
+	padding:3px 15px 3px 15px;
 
+}
 
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}
@@ -105,6 +116,11 @@ table#playsheet-table tr, table#playsheet_table td{
 }
 table#playsheet-table button{
 	width:23px;
+}
+.bigbutton{
+	height:50px;
+	width:150px;
+	font-size: 1em;
 }
 table.box { padding: 15px; border-color: #c3c3c3;; border-style:ridge;  }
 table.report { border-collapse: collapse; border: none; border-color: #000000; padding: 100px;}
@@ -207,7 +223,10 @@ table { border-collapse: collapse; }
 		
 
 	}
-
+	.inputboxes input{
+		height:1.5em;
+		font-size: 15;
+	}
 	
 	.inputboxesinner	{	
 		float: left;
@@ -810,7 +829,7 @@ li.playsheetRow input{
  cursor:hand;
 cursor:grab!important;
 cursor:-moz-grab;
-cursor: url(https://mail.google.com/mail/images/2/openhand.cur), pointer!important;
+cursor: url('../images/openhand.cur'), pointer!important;
 cursor:-webkit-grab;
 cursor:move;
 }
@@ -819,7 +838,7 @@ cursor:hand;
 cursor:grabbing!important;
 cursor:-moz-grabbing;
 cursor:-webkit-grabbing;
-cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), pointer!important;
+cursor: url('../images/closedhand.cur'), pointer!important;
 cursor: move;
 }
 

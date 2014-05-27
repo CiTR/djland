@@ -1,6 +1,8 @@
 <?php 
 
 if($using_sam){
+
+  
 ?>
 			
 
@@ -141,7 +143,7 @@ if (count($matches)>1){
 
 } // end of if(sam enabled) block
 
-echo "<div align='right'> <button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div>";
+//echo "<div align='right'> <button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div>";
 
 ?>
 <!--<button id="SamTab" class="panel-button">SAM plays</button>

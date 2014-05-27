@@ -4,7 +4,7 @@
 function print_menu() {
 
 require('config.php');
-printf("<link rel=stylesheet href=style.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 	printf("<table class=menu border=0 align=center><tr>");
 
@@ -43,9 +43,82 @@ printf("<link rel=stylesheet href=style.css type=text/css>");
 		printf("<br>");
 		printf("<BR><center>WARNING!<BR>%s Login Failures</center>\n", $_SESSION['sv_login_fails']);
 	}
+}
+?>
+
+<?php
+function print_menu2(){
+?>
 
 
+	<div class="container">
+		<div class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+					<?php if(is_member("member") && get_username() != "citrdjs"): ?>
+						<li><a href=useradd.php?action=list>Users</a></li>
+					<?php endif; 
+					if(is_member("membership")) : ?>
+						<li><a href="membership.php">Membership</a></li>	
+					<?php endif; 
+					if(is_member("library")) : ?>
+						<li><a href="library.php"> View Library</a></li>
+					<?php endif;
+					if(is_member("editlibrary")) : ?>
+						<li><a href="library.php?action=add">Update Library</a></li>
+					<?php endif;
+					if(is_member("addshow")) : ?>
+						<li><a href="shows.php?action=list">Shows</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Ads<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="adscheduler.php">Ad Scheduler</a></li>
+								<li class="divider"></li>
+								<li><a href="adreport.php">Ad Reporting</a></li>
+							</ul>
+						</li>
+						<li><a href="charting.php">Charts</a></li>
+						
+					<?php endif; ?>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<?php if(is_member("dj")) : ?> 
+									<li><a href="report.php">Show Report</a></li> 
+								<?php endif;
+								if(is_member("addshow")) : ?>
+									<li class="divider"></li>
+									<li><a href="crtcreport.php">CRTC Report</a></li> 
+								<?php endif; ?>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Playsheets<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<?php if(is_member("dj")) : ?> 
+									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
+									<li><a href="playsheet.php">New Playsheet</a></li> 
+								<?php endif; ?>
+							</ul>
+						</li>
+					
+					
+					
+					<?php if(is_member("dj")) : ?>
+						<li><a href="help.php" target="_blank"> Help </a></li>
+					<?php endif; ?>
+				
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					<li><a href="index.php?action=logout">Log Out</a></td>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php
 }
 
-//END MENU HEADER
+
 ?>
