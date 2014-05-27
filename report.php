@@ -11,7 +11,7 @@ printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJLAND | Report</title></head><body>");
 
-print_menu();
+print_menu2();
 
 	printf("<br><table align=center class=playsheet><tr><td>");
 	printf("<center>");

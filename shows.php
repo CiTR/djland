@@ -96,7 +96,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body>";
-	print_menu();
+	print_menu2();
 }
 
 // -------- POST handling code ---------------------------------
@@ -317,7 +317,7 @@ if(is_member("addshow")) {
 		return output;}";
 		echo '</script>';
 		echo "</head><body>";
-		print_menu();
+		print_menu2();
 		// End of head
 
 		printf("<br><div class=\"editform\"><h1>%s Show</h1>", ($ed ? "Edit" : "Add New"));
@@ -464,10 +464,24 @@ if(is_member("addshow")) {
 		echo "</div>";
 	}
 	// LISTING INACTIVE SHOWS --------
-	else if(isset($_GET['action']) && $_GET['action'] == 'listi' ) {
-		echo "<br><table class=menu border=0 align=center><tr>
-		<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr></tr><tr><td class=\"menu\"><a href=\"?action=list\">&nbsp;Hide Inactive Shows&nbsp;</a></td></tr></table>";
-
+	else if(isset($_GET['action']) && $_GET['action'] == 'list' ) {
+	?>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=?action=add>Add New Show</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=?action=list>Hide Inactive Shows</a></li>
+				</ul>
+			</div>
+		</div>
+		
+	<?
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
 		<INPUT type=hidden name=action value=edit>
 		<h2>All Shows:</h2>

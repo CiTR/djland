@@ -9,8 +9,9 @@ require("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 //
-
-print_menu();
+echo "<center>";
+print_menu2();
+echo "</center>";
 $SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
@@ -320,17 +321,11 @@ else if($actionSet && $action == 'list' ) {
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 
-	echo "<CENTER><FORM METHOD='GET' name='the_form'>";
+	//echo "<CENTER><FORM METHOD='GET' name='the_form'>";
 	
 	printf("<INPUT type=hidden name=action value=edit>");
-	
-	printf("<SELECT NAME=\"id\" SIZE=25>\n");
-
-//	$result = mysqli_query($db,"SELECT * FROM playlists WHERE show_id!='".$fshow_id['!DELETED']."' ORDER BY start_time DESC");
-
+	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
 	$result = mysqli_query($db,"SELECT * FROM playlists  ORDER BY start_time DESC");
-
-//	print_r($result);
 	$num_rows = mysqli_num_rows($result);
 
 	$min = min($num_rows,2500);
@@ -545,13 +540,13 @@ $adLib = new AdLib($mysqli_sam,$db);
 			
 	if($ps_id && $_GET['action'] != 'datadump') {
 		// VIEW IS NOT RAW DATA
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></td></tr></table>",$ps_id);
+		printf("<br><div class=containerTracklist>");
+		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 	else if ($ps_id){
 		// VIEW IS RAW DATA
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></td></tr></table>",$ps_id);
+		printf("<br><div class=containerTracklist>");
+		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 
 
@@ -885,19 +880,9 @@ if (count($matches)>1){
 //				$set_lang = htmlentities(mysqli_result_dep($result,$i,"lang"), ENT_QUOTES);
 				$set_lang = mysqli_result_dep($result,$i,"lang");
 				}
-
-							//otherwise, it's a saved playsheet
-			/*	if (!$ps_id && $lang_default) $set_lang = $lang_default;
-				else $set_lang = $pl_lang;*/
-				//$set_lang = "eng";
-				
-
 				$set_part = mysqli_result_dep($result,$i,"is_part") ? " checked" : "";
 				$set_inst = mysqli_result_dep($result,$i,"is_inst") ? " checked" : "";			
 				$set_hit = mysqli_result_dep($result,$i,"is_hit") ? " checked" : "";
-				
-// the following queries are from playitems
-
 				$set_pl = mysqli_result_dep($result,$i,"is_playlist") ? " checked" : "";
 				$set_cc = mysqli_result_dep($result,$i,"is_canadian") ? " checked" : "";
 				$set_yo = mysqli_result_dep($result,$i,"is_yourown") ? " checked" : "";
