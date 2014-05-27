@@ -7,8 +7,6 @@ $RSS_url = 'http://www.citr.ca/images/rss.gif'; // change if you want to use you
 include_once('headers/config.php');
 include_once('headers/db_header.php');
 include_once('headers/showlib.php'); 
-
-
 function mysqli_result_dep($res, $row, $field=0) { 
 
 	if(is_object($res))    
