@@ -83,6 +83,7 @@ require('config.php');
 						<ul>
 							<li><a href="adscheduler.php">Ad Scheduler</a></li>
 							<li><a href="adreport.php">Ad Reporting</a></li>
+							<li><a href="samAds.php">Sam Ad History</a></li>
 						</ul>
 					</div>
 				</div>
