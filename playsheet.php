@@ -584,28 +584,7 @@ if (count($matches)>1){
 		else {
 			$num_rows = 0;
 		}
-        
-        /*
-		for($i=0; $i < $num_rows; $i++) {
-
-			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
-//			echo htmlentities(mysqli_result_dep($result2,0,"artist"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result_dep($result2,0,"title"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result_dep($result2,0,"song"), ENT_QUOTES) . ", ";
-			echo mysqli_result_dep($result2,0,"artist") . ", ";
-			echo mysqli_result_dep($result2,0,"title") . ", ";
-			echo mysqli_result_dep($result2,0,"song") . ", ";
-//abcd		echo $fformat_name[mysqli_result_dep($result,$i,"format_id")] . ", ";
-			echo (mysqli_result_dep($result,$i,"is_playlist") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_canadian") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_fem") ? "true" : "false"). ", ";
-			echo (mysqli_result_dep($result,$i,"is_inst") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_part") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_hit") ? "true" : "false");
-			echo "\n";
-		}
-		*/
-        
+     
         
 
         echo "<table >";
@@ -632,9 +611,10 @@ if (count($matches)>1){
 			echo ")<br/>";
 			if($SOCAN_FLAG)
 			{
-			echo " - ";
-			echo html_entity_decode(mysqli_result_dep($result2,0,"composer"));
-			echo "<br/>";}
+				echo " - ";
+				echo html_entity_decode(mysqli_result_dep($result2,0,"composer"));
+				echo "<br/>";
+			}
            echo "</td></tr>";
             
 		}
