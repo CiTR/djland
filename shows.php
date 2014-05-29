@@ -146,9 +146,6 @@ if(is_member("addshow")) {
 		$show_img = fas($_POST['t_show_img']);
 		$sponsor_name = fas($_POST['t_sponsor_name']);
 		$sponsor_url = fas($_POST['t_sponsor_url']);
-	//	echo '<pre>';
-	//	print_r($_POST);
-	//	echo '</pre>';
 		
 		$times = processFields(array("sd","sh","sm","ed","eh","em","alt"));
 		$socials = processFields(array("socialName","socialURL"));
@@ -170,10 +167,6 @@ if(is_member("addshow")) {
 		else {
 			mysqli_query($db,"DELETE FROM `show_times` WHERE show_id=$ed");
 			foreach ($times as $s_arr) {
-
-				if($s_arr['sh'] > $s_arr['eh']){
-				 	echo "<h3>the show's start hour is later than the end hour.  I hope it spans midnight, otherwise you should correct this or else it can cause problems.</h3>";
-				}
 
 				$sd = $s_arr['sd'];
 				$st = $s_arr['sh'].":".$s_arr['sm'].":00";
@@ -525,12 +518,20 @@ echo "</body></html>";
 
 function write_new_showlist_file(){
 
-
-	$showList = file_get_contents('http://djland.citr.ca/showlist-handler.php');
-
-	file_put_contents ( 'static/theShowList.html' , $showList );
-
-
-
+	$showlist = " ";
+	for($count = 0; $count < 3; $count++){
+		$showList = file_get_contents('http://djland.citr.ca/showlist-handler.php');
+		if(strlen($showList) > 1000){
+			file_put_contents ('static/theShowList.html' , $showList, LOCK_EX );
+			sleep(5);
+			break;
+		}
+	}
+	if(strlen($showList) < 1000){
+		echo "<br/>Error updating the show list";
+	}
+	else{
+		echo "<br/>Show list successfully updated";
+	}
 }
 ?>

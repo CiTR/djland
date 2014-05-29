@@ -1,14 +1,14 @@
-// TODO test this file ( should print out an HTML document that is a list of all station shows )
-
 <?php
 
-$RSS_url = 'http://www.citr.ca/images/rss.gif'; // change if you want to use your own RSS image
-
-include_once('headers/config.php');
-include_once('headers/db_header.php');
 include_once('headers/showlib.php'); 
-function mysqli_result_dep($res, $row, $field=0) { 
-
+include_once('headers/db_header.php');
+function mysqli_result($res, $row, $field=0) { 
+//	echo 'called mysqli result';
+//	echo '<br/>';
+//	echo 'res:'.'<br/>';
+//	print_r($res);
+//	echo 'row:'.$row.'<br/>';
+//	echo 'field:'.$field.'<br/>';
 	if(is_object($res))    
 		$res->data_seek($row); 
 	else 	return false;
@@ -20,8 +20,6 @@ function mysqli_result_dep($res, $row, $field=0) {
 	else 	return false;
 	        
 } 
-
-
 $showlib = new ShowLib($db);
 //$showlib-> sayHi();
 $allshows =  $showlib->getAllShows();
@@ -39,9 +37,7 @@ usort($allshows, "cmp");
 $numshows = count($allshows);
 $numletters = 26;
 $letters = array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
-
-echo '<html><head><meta http-equiv="Access-Control-Allow-Origin" content="*"></head><body>';
-
+echo '<html><head><meta http-equiv="Access-Control-Allow-Origin" content="www.citr.ca"></head><body>';
 function printShow($show) {
 	
 //	if (!is_null($show->show_desc)) {
@@ -50,7 +46,7 @@ function printShow($show) {
 //		$anchorvalue = $anchorvalue.replace(/\s+/, "");
 		echo "<a href='#".$anchorvalue."'></a>";
 		if (!is_null($show->podcast)) {
-			echo " <a href='{$show->podcast}'><img src='{$RSS_url}' alt='RSS'/></a>";
+			echo " <a href=\"{$show->podcast}\"><img src=\"http://www.citr.ca/images/rss.gif\" alt=\"RSS\"/></a>";
 		}
 		echo "</h4>";
 		if (!is_null($show->img_url)) {
@@ -156,5 +152,7 @@ for ($lpos++; $lpos<$numletters; $lpos++) { // Print rest of letters
 
 echo '</body></html>';
 
+mysqli_close($db);
+//mysqli_select_db("citrwordpress", $db);
 ?>
 
