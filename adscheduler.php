@@ -14,10 +14,7 @@ require("headers/showlib.php");
 require('adLib.php');
 
 echo '<html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">';
-echo "<link rel=stylesheet href='citr.css' type='text/css' />";
-
-
-//printf("<title>CiTR 101.9</title></head><body>");
+echo "<link rel=stylesheet href='css/style.css' type='text/css' />";
 
 ?>
 
@@ -47,7 +44,7 @@ background-color: lime;
 <?php
 
 
-print_menu();
+print_menu2();
 
 //global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
 
@@ -94,26 +91,32 @@ $lastSunday = strtotime("last Sunday");
 //	$block = $showBlocks[$i];
 		
 foreach ( $showBlocks as $i => $block ) {
-
+//		echo '<pre>';
+//		print_r($block);
+//		echo '</pre>';
 		
 		$startTime = $block['start_time'];
 		$endTime = $block['end_time'];
 
 		$thisShow = $showlib->getShowByID($block['show_id']);
 		$uniqueTime = $showBlocks[$i][wdt] + $lastSunday;
+
+//		echo '<pre> info for id'.$block['show_id'].'<br/>';
+//		print_r($thisShow);
+//		echo '</pre>';
 				
 		echo '<br/>';
 		echo '<h3>'.$thisShow->name.'</h3>';
 		echo date ( 'D, M j, g:ia', $uniqueTime);
 
-		$duration = showBlock::getShowBlockLength($showBlocks[$i]);
+		$duration = $block['duration'];//showBlock::getShowBlockLength($showBlocks[$i]);
 
 		echo '<br/>show duration: '.$duration.' hr(s)<br/>';
 //		echo 'starts at '.$showBlocks[$i]['start_time'].'</br/>';
 
 		echo '<div class="adSelectGroup" id="'.$uniqueTime.'" name="'.$thisShow->name.'">';
 		
-		echo $adLib->generateTable($uniqueTime,'prog', $thisShow);
+		echo $adLib->generateTable($uniqueTime,'prog', $block);
 		echo '</div>';
 		
 }

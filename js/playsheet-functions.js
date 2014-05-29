@@ -24,157 +24,117 @@
 	
 	// this function inserts a new blank row in the playsheet after row number [position]
 	function insertPlaysheetRow(position){
-	debug.prepend("insert a row at position:" + position +"<br/>");
 		var socan=$('#socancheck').val();
 		if(socan==1)
 		{
-		$row = "<li id='row420' name='row420' class='playsheetRow playsheetRowSOCAN' >"+
+			$row = "<li id='row420' name='row420' class='playsheetRow playsheetRowSOCAN' >"+
 				$('#rowtemplate').html()+
 				"</li>";
 		}
 		else{
-		$row = "<li id='row420' name='row420' class='playsheetRow' >"+
+			$row = "<li id='row420' name='row420' class='playsheetRow' >"+
 				$('#rowtemplate').html()+
 				"</li>";
 		}
 		$row = $row.replace(/template/g,420);
-				
-		$('#row'+position).after($row);
-//		$("tr[data-rownumber='+position+']").after($row);
+		if(position<0){
+			$('#rowtemplate').before($row);
+		}
+		else{
+			$('#row'+position).after($row);
+		}
 		num_rows++;
 
-		
-	//console.log("num rows is "+num_rows +"  after insert.");
-	
 		if(noRows){
-		$('#row0').remove();
-		noRows = false;
+			$('#row0').remove();
+			noRows = false;
 		}
-	
 		refreshRowIDs();
-		
-		}
+	}
 	
-	function ajaxLoadPlaysheet(){
-				$('#ps-loading-image').show();
+	function ajaxLoadPlaysheet(psid){
+		var playsheetID;
+		if(psid){
+			playsheetID = psid;
+		}
+		
+		$('#ps-loading-image').show();
 		targetShow = $('#showSelector').val();
 		targetShowYear = $('#playsheet-year').val();
 		targetShowMonth = parseInt($('#playsheet-month').val()) - 1;
 		targetShowDay = $('#playsheet-day').val();
 		targetShowDate = new Date(targetShowYear, targetShowMonth, targetShowDay);
 		targetShowUnix = targetShowDate.getTime()/1000.0;
-		
-		console.log('show unix you want: '+targetShowUnix);
-		
-//		showUnix = $('#unixTime').attr('value');
 		var show_block_data;
-
-
-				
-			$.ajax({
-				type:"POST",
-				url: "form-handlers/show_info_loader.php",
-				data: {"showid":targetShow, "unixTime":targetShowUnix},
-				dataType: "json"
-			}).success(function(text) {
-				show_block_data = text;
-				
-				if(show_block_data.ads) {
-				//	window.location.href = 'playsheet.php?time='+show_block_data.last.unix;
-				
-					jsDate = new Date(show_block_data.time*1000);
-					dur = show_block_data.duration*60*60*1000;
-					jsDateEnd = new Date(show_block_data.time*1000 + dur);
-					
-					show_h = jsDate.getHours();
-					show_m = jsDate.getMinutes();
-					
-					show_h_end = jsDateEnd.getHours();
-					show_m_end = jsDateEnd.getMinutes();
-					
-		//			$('#pl_date_hour').attr('value',show_h);
-					$('#pl_date_hour').val(show_block_data.start_hour);
-					$('#end_date_hour').val(show_block_data.end_hour);
-					$('#pl_date_min').val(show_block_data.start_min);
-					$('#end_date_min').val(show_block_data.end_min);
-					$('#pl_crtc').val(show_block_data.crtc);
-					$('#pl_lang').val(show_block_data.lang);
-					$('#host').val(show_block_data.host);
-					$('#ads').html(show_block_data.ads);
-					$('#unixTime').val(show_block_data.unixTime);
-					
-				} else {
-					$('#ads').html(' No ad schedule found. Please mention station ID'+
-					' at the top of every hour ');
-				}
-				console.log('show_block_data obj: '+show_block_data);
-				console.log(show_block_data);
-				$('#ps-loading-image').hide();
+		
+		$.ajax({
+			type:"POST",
+			url: "form-handlers/show_info_loader.php",
+			data: {"showid":targetShow, "unixTime":targetShowUnix, "psid":playsheetID},
+			dataType: "json"
+		}).success(function(text) {
+			show_block_data = text;
 			
-			}).fail(function(){
-				$('#showOutput').html('connection error');
-				});
-			}	
-	
+			if(show_block_data.ads) {
+				jsDate = new Date(show_block_data.time*1000);
+				dur = show_block_data.duration*60*60*1000;
+				jsDateEnd = new Date(show_block_data.time*1000 + dur);
+				
+				show_h = jsDate.getHours();
+				show_m = jsDate.getMinutes();
+				
+				show_h_end = jsDateEnd.getHours();
+				show_m_end = jsDateEnd.getMinutes();
+				if(!playsheetID){
+					$('#type').val(show_block_data.showtype);
+					$('#unixTime').val(show_block_data.unixTime);
+				}
+				
+				$('#showSelector').val(show_block_data.showID);
+				$('#pl_date_hour').val(show_block_data.start_hour);
+				$('#end_date_hour').val(show_block_data.end_hour);
+				$('#pl_date_min').val(show_block_data.start_min);
+				$('#end_date_min').val(show_block_data.end_min);
+				$('#pl_crtc').val(show_block_data.crtc);
+				$('#pl_lang').val(show_block_data.lang);
+				$('#host').val(show_block_data.host);
+				$('#ads').html(show_block_data.ads);
+			} else {
+				$('#ads').html(' No ad schedule found. Please mention station ID'+
+				' at the top of every hour ');
+			}
+			console.log('show_block_data obj: '+show_block_data);
+			console.log(show_block_data);
+			$('#ps-loading-image').hide();
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	//	$('#showOutput').html(targetShow);
-	
-
+		}).fail(function(){
+			$('#showOutput').html('connection error');
+		});
+	}	
 	// CRTC HELPERS
 	function getCRTC(position){
-		
 			if($('#crtcThree'+position).prop('checked')){ 
-			return 3;	}
+				return 3;	
+			}
 			else{ 
-			return 2;	}
+				return 2;	
+			}
 	}
 	
 	function setCRTC(val,position){
 		
 			if(val==3 || val==30){
-			$('#crtcThree'+position).prop('checked','checked');	
+				$('#crtcThree'+position).prop('checked','checked');	
 			}
 			else{
-			$('#crtcTwo'+position).prop('checked','checked');		
+				$('#crtcTwo'+position).prop('checked','checked');		
 			}	
 	}
-	
+
 	function getIDFromString(stringID){
-		
 		id_num = stringID.replace(/\D/g,'');
 		return parseInt(id_num);
 	}
-	
-	// function get_time_difference(laterDate) {
-
-	// var earlierDate = new Date(); //Now
-	// var oDiff = new Object();
-
-	// oDiff.days = laterDate.getDate() - earlierDate.getDate();
-	// oDiff.hours = laterDate.getHours() - earlierDate.getHours();
-	// oDiff.minutes = laterDate.getMinutes() - earlierDate.getMinutes();
-	// oDiff.seconds = laterDate.getSeconds() - earlierDate.getSeconds();
-
-	// if (0 ===oDiff.minutes && 0 === oDiff.hours) {
-	// //Do Something
-	// }
-	   // return oDiff.minutes;
-	// }
-
 
 	// LANGUAGE HELPERS
 	function getLang(position){
@@ -185,127 +145,103 @@
 			$('#lang'+position).val(getLang(position));
 			}
 			
-	
 	// Copies the current row, and adds it to the bottom	
 	function copyPlaysheetRow(position){					
-			checkedCRTC = getCRTC(position);
-			
-			$('#row'+position).after($('#row'+position).clone(true));
-			refreshRows();
-			
-			setCRTC(checkedCRTC,position);
-			setCRTC(checkedCRTC,position+1);
-	}
+		checkedCRTC = getCRTC(position);
+		$('#row'+position).after($('#row'+position).clone(true));
+		refreshRows();
+		setCRTC(checkedCRTC,position);
+		setCRTC(checkedCRTC,position+1);
+		}
 
 
 // this function adds a row to the end of the table
 	function addPlaysheetRow(){
-    console.log("num rows is "+num_rows +"  before insert.");
-		
 		insertPlaysheetRow(num_rows-1);	
-		}
+	}
 	
 
 	function refreshRowIDs(){
-		
-		
-	//	debug.prepend("refreshing IDs...</br>");
 		// row numbers go from 0 to [num rows-1]
-			$(".playsheetRow").each(function(actualRowNum){
-					////haha debug.prepend("<br/>rownum is "+actualRowNum+"<br/>");
-					
-					$(this).attr("id","row"+actualRowNum);
-					$(this).attr("name","row"+actualRowNum);
+		$(".playsheetRow").each(function(actualRowNum){
+			$(this).attr("id","row"+actualRowNum);
+			$(this).attr("name","row"+actualRowNum);
 
-					$allDescendents = $(this).find('*');
-					$allDescendents.filter(function(){
-								return this.id.match(/[0-9]/);			
-								}).each( function(){
-									oldID = $(this).attr("id");
-								//	debug.prepend("oldID found: "+oldID+"<br/>");
-									newID = oldID.replace(/\d/g,'')+actualRowNum;
-								//	debug.prepend(oldID + " (id) became " + newID + ".  ");
-									$(this).attr("id",newID);
-									if ( $(this).attr("name")!==undefined )
-									{
-										var na = $(this).attr("name");
-										if(na!==null && na.match(/crtc./g))
-										{
-											$(this).attr("name","crtc"+actualRowNum+"temp");
-										}
-										else
-										{
-											$(this).attr("name",newID);
-										}
-									}
-									
-									
-								
-								});
-				num_rows=actualRowNum+1;
-				//console.log('refresh rows says:' + num_rows);
+			$allDescendents = $(this).find('*');
+			$allDescendents.filter( function(){ 
+				return this.id.match(/[0-9]/); 
+				}).each( function(){							
+					oldID = $(this).attr("id");
+					newID = oldID.replace(/\d/g,'')+actualRowNum;
+					$(this).attr("id",newID);
+					if ( $(this).attr("name") !== undefined )
+					{
+						var na = $(this).attr("name");
+						if(na!==null && na.match(/crtc./g)){
+							$(this).attr("name","crtc"+actualRowNum+"temp");
+						}
+						else{
+							$(this).attr("name",newID);
+						}
+					}
 				});
-			
-			
+			num_rows=actualRowNum+1;
+		});
 			// fix the labels for the inputs - just set the "for" to the next sibling's "id"
 			$('label.CRTCicons3').each( function(n){
-					forWhat = $(this).next().attr('id');
-					$(this).attr('for',forWhat);	
+				forWhat = $(this).next().attr('id');
+				$(this).attr('for',forWhat);	
 			});
-			
+
 			$(".playsheetRow").each(function(actualRowNum){
 				$('#crtcTwo'+actualRowNum).attr("name","crtc"+actualRowNum);
 				$('#crtcThree'+actualRowNum).attr("name","crtc"+actualRowNum);
 			});
-			debug.prepend('just refreshed row ids <br/>');
-			
 	}
 	
-			
+function showStatus(status, delay){
+		$('#ps_status').remove();
+		$('body').append('<div id="ps_status" >'+status+'</div>');
+
+		if(delay){
+			setTimeout(function(){
+				$('#ps_status').remove();
+			},4000);
+		}
+	}
 	
+
 	function autosave(){
-		
+
 		$('#star').val(0);
-		
 		$('#autosaver').css('background-color','lightblue');
-
+		showStatus('saving... please wait', false);
 		console.log('autosaving');	
-
 		$('#status').val(1);
-
 		playsheetID = parseInt($hiddenInput.attr('value'),10);
 
-				//  first, submit the form, then get the id of the form created
-				//  needs to be a check to see if this is a new form or not
-					console.log('playsheet id is '+ playsheetID);
+		//  first, submit the form, then get the id of the form created
+		//  needs to be a check to see if this is a new form or not
+		console.log('Saving playsheet id is '+ playsheetID);
 		
 		if(playsheetID === 0){
-
-			
-					$('#playsheetForm').ajaxSubmit( function(){
-						
-						$hiddenInput.load('getLatestPlaysheetID.php', function(){
-						
-							$hiddenInput.attr('value',$hiddenInput.text());
-							});	
-						
-						$('#autosaver').removeAttr('style');
-						$('#draft').html('(draft)');
-						
-						});	
-
-		} else {
-			
-					// we are making edits to an existing playsheet
-					console.log('an existing playsheet');
-					$('#playsheetForm').ajaxSubmit( function(){
-					
-						$('#autosaver').removeAttr('style');
-						$('#draft').html('(draft)');
-					}
-					);
-					
-					
+			$('#playsheetForm').ajaxSubmit( function(){
+				$hiddenInput.load('getLatestPlaysheetID.php', function(){
+					$hiddenInput.attr('value',$hiddenInput.text());
+				});	
+				$('#autosaver').removeAttr('style');
+				showStatus('draft saved', true);
+				$('#draft').html('(draft)');
+			});	
+		}
+		else{
+			// we are making edits to an existing playsheet
+			console.log('an existing playsheet');
+			$('#playsheetForm').ajaxSubmit( function(){
+				$('#autosaver').removeAttr('style');
+				showStatus('draft saved', true);
+				$('#draft').html('(draft)');
+			});	
 		}
 	}
 			
@@ -316,7 +252,6 @@
 					container.css('left',mouseX);
 					container.css('top',mouseY-yOffset);
 					container.stop().fadeTo(200,1);
-					
 					container.css('display','block');
 				}
 	
@@ -328,35 +263,219 @@
 				//	debug.prepend('stopPop true<br/>');
 					// disable future hoverovers in the same region
 				}
-				
+	
+	
 	function refreshRows(){
 				refreshRowIDs();	
 				setup();
-			
 				refreshCCRatios();
-				updateCCcolour();
 			}
 			
+//checks the playsheet rows for the first empty row.
+    function checkForEmptyRow(){
+		var emptyRowNum=-1;
+		var emptyRowAvail=false;
+		var tempRowNum=0;
+		for(var i=0; i<num_rows; i++){ //check to see if there is an empty row, if there is... shove our values in there!
+			if(( !$.trim($('#artist'+i).val() ) && !$.trim($('#album'+i).val()) && !$.trim($('#song'+i).val()) ) || !$('#artist'+i).val() && !$('#album'+i).val() && !$('#song'+i).val()){		
+				tempRowNum=i;
+				emptyRowAvail=true;
+				break;
+			}					
+		}
+		if(emptyRowAvail==false){ //if there are no rows avalable, make one!
+			addPlaysheetRow();
+			refreshRows();
+			tempRowNum=num_rows-1;
+		}
+		if(tempRowNum==num_rows-1){ //if we are taking up the last visible row, add a new one!
+			addPlaysheetRow();
+			refreshRows();
+		}
+		console.log("Empty Row = " + tempRowNum);
+   		return tempRowNum;	
+    }
+	//Allows javascript to handle HTML entities
+	function htmlDecode(string) {
+		$str = string;
+		var ta=document.createElement("textarea");
+		ta.innerHTML=$str;
+		return ta.value;
+	};
 	
-	//Code for changing colour of row if it is Cancon!
-	$("[name*='cc']").change(function(){
-					updateCCcolour();
-				});	
+	function inputPlaysheetRows(){
+		var socan=$('#socancheck').val();
+		var emptyRowNum;
+		$('#ps-loading-image').show();
+		var e = document.getElementById("select-playsheet");
+		var playsheetID = e.options[e.selectedIndex].value;
+		var playsheetDate = e.options[e.selectedIndex].data;
+		var emptyRow;
+		var playitem_data;
+		var targetArtistId;
+		var targetSongId;
+		var targetAlbumId;
+		var targetCanconId;
+		var targetFemconId;
+		var targetPlaylistId;
+		var targetInstId;
+		var targetPartId;
+		var targetHitId;
+		var targetThemeId;
+		var targetBGId;
+		var targetCrtc2Id;
+		var targetCrtc3Id;
+		if(socan == 1){
+			var targetComposerId;
+			var targetStartHourId;
+			var targetStartMinId;
+			var targetDurMinId;
+			var targetDurSecId;
+		}
+		
+		
+		$.ajax({
+			type:"POST",
+			url: "form-handlers/update-playsheet.php",
+			data: {"psid":playsheetID,"socan":socan},
+			dataType: "json"
+		}).success(function(text) {
+			/* Format of playitem_data:
+			 * id (Playitem ID) , artist , album, track, composer is_pl , is_can , is_fem, is_theme, is_background, song_start_h, song_start_m, song_dur_m, song_dur_s
+			 */
+			playitem_data=text;
+			$('#test-text').val(playitem_data.toString());
+				console.log("Numrows " + num_rows);
+				var count = num_rows;
+				for(var i = 0; i < count; i++){
+					$("#row"+i).remove();
+					console.log("Removing Row "+i);
+					num_rows--;
+				}
+				refreshRows();
+				noRows=true;
+				console.log("Numrows After Remove " + num_rows); 
 
-	function updateCCcolour(){
-				// $('.playsheetRow').each( function(actualRowNum){
 			
-				// if( $("#cc"+actualRowNum).prop("checked"))
-				// { $(this).css("background-color","#BB0000");	}
-				// else
-				// { $(this).css("background-color","#333399");}
-			
-			// });
-			}				
+			refreshRowIDs();
+			if(playitem_data){
+				for( $j = 0; $j < Object.keys(playitem_data).length; $j++ ){
+					emptyRow = checkForEmptyRow();
+					targetArtistId = '#artist' + emptyRow;
+					targetSongId = '#song' + emptyRow;
+					targetAlbumId = '#album' + emptyRow;
+					targetCanconId = '#cc' + emptyRow;
+					targetFemconId = '#fem' + emptyRow;
+					targetPlaylistId = '#pl' + emptyRow;
+					targetInstId = '#inst' + emptyRow;
+					targetPartId = '#part' + emptyRow;
+					targetHitId = '#hit' + emptyRow;
+					targetThemeId = '#theme' + emptyRow;
+					targetBGId = '#background' + emptyRow;
+					targetCrtc2Id = '#crtcTwo' + emptyRow;
+					targetCrtc3Id = '#crtcThree' + emptyRow;
+					if(socan == 1){
+						targetComposerId='#composer' + emptyRow;
+						targetStartHourId= '#set_song_start_hour' + emptyRow;
+						targetStartMinId= '#set_song_start_minute' + emptyRow;
+						targetPmCheckId= '#pmCheck' + emptyRow;
+						targetDurMinId= '#set_song_length_minute' + emptyRow;
+						targetDurSecId= '#set_song_length_second' + emptyRow;
+					}
+					
+					/*
+					 * Setting Values
+					 */
+					$(targetArtistId).val(htmlDecode(playitem_data[$j].artist));
+					$(targetSongId).val(htmlDecode(playitem_data[$j].track));
+					$(targetAlbumId).val(htmlDecode(playitem_data[$j].album));
+					if(socan==1){
+						$(targetComposerId).val(htmlDecode(playitem_data[$j].composer));
+						$(targetStartHourId).val(playitem_data[$j].song_start_h);
+						$(targetStartMinId).val(playitem_data[$j].song_start_m);
+						$(targetDurMinId).val(playitem_data[$j].song_dur_m);
+						$(targetDurSecId).val(playitem_data[$j].song_dur_s);
+					}
+					// Is it Cancon?
+					if(playitem_data[$j].is_can == 1) {
+						$(targetCanconId).attr('checked', 'checked');
+					}
+					else{
+						$(targetCanconId).replaceWith('<input class="mousedragclick" type="checkbox" id="cc'+ emptyRow +'" name="cc'+ emptyRow +'">');	
+					}
+					// Is if Femcon?
+					if( playitem_data[$j].is_fem == 1) {
+						$(targetFemconId).attr('checked', 'checked');
+					} 
+					else {
+						$(targetFemconId).replaceWith('<input class="mousedragclick" type="checkbox" id="fem'+ emptyRow +'" name="fem'+ emptyRow +'">');	
+					}
+					// Is it playlisted?
+					if( playitem_data[$j].is_pl == 1 ) {
+						$(targetPlaylistId).attr('checked', 'checked');
+					}
+					else{
+						$(targetPlaylistId).replaceWith('<input class="mousedragclick" type="checkbox" id="pl'+ emptyRow +'" name="pl'+ emptyRow +'">');	
+					}
+					// Is it Instrumental?
+					if( playitem_data[$j].is_inst == 1 ) {
+						$(targetInstId).attr('checked', 'checked');
+					}
+					else{
+						$(targetInstId).replaceWith('<input class="mousedragclick" type="checkbox" id="inst'+ emptyRow +'" name="inst'+ emptyRow +'">');	
+					}
+					// Is it partial?
+					if( playitem_data[$j].is_part == 1 ) {
+						$(targetPartId).attr('checked', 'checked');
+					}
+					else{
+						$(targetPartId).replaceWith('<input class="mousedragclick" type="checkbox" id="part'+ emptyRow +'" name="part'+ emptyRow +'">');	
+					}
+					
+					// Is it a hit? (Boooo!)
+					if( playitem_data[$j].is_hit == 1 ) {
+						$(targetHitId).attr('checked', 'checked');
+					}
+					else{
+						$(targetHitId).replaceWith('<input class="mousedragclick" type="checkbox" id="hit'+ emptyRow +'" name="hit'+ emptyRow +'">');	
+					}
+					// Is it a themesong?
+					if( playitem_data[$j].is_theme == 1 ) {
+						$(targetThemeId).attr('checked', 'checked');
+					}
+					else{
+						$(targetThemeId).replaceWith('<input class="mousedragclick" type="checkbox" id="theme'+ emptyRow +'" name="theme'+ emptyRow +'">');	
+					}
+					// Is it a background?
+					if( playitem_data[$j].is_background == 1 ) {
+						$(targetBGId).attr('checked', 'checked');
+					}
+					else{
+						$(targetBGId).replaceWith('<input class="mousedragclick" type="checkbox" id="background'+ emptyRow +'" name="background'+ emptyRow +'">');	
+					}
+					// CRTC category
+					if( playitem_data[$j].crtc == 30 ){
+						$(targetCrtc3Id).attr('checked','checked');
+						$(targetCrtc2Id).replaceWith("<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcTwo" + emptyRow + "' name='crtc" + emptyRow + "' value='20'>");
+					}
+					else{
+						$(targetCrtc2Id).attr('checked','checked');
+						$(targetCrtc3Id).replaceWith("<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcThree" + emptyRow + "' name='crtc" + emptyRow + "' value='30'>");
+					}					
+				}	
+			}
+			$('#ps-loading-image').hide();
+		}).fail(function(){
+			$('#showOutput').html('connection error');
+			});
+			ajaxLoadPlaysheet(playsheetID);
+		}
+		
+
 	
-			
 			
 	// sourceList specifies the location from which to pull a SAM song into the playsheet
+	// sourceList can be:
 	// "SamListRecent" refers to the last 50 played songs
 	// "SamListRange" refers to the results of the Load Times command
 	function SAMtoPlaysheet(sourceList,srcRowNum,destRowNum){
@@ -364,116 +483,82 @@
 		var emptyRowAvail=false;
 		var tempRowNum=destRowNum;
 		var sourceDivName = 'div#'+sourceList;
-		//Move Empty Row check to here
-		var $sourceRowId = sourceDivName+' > #song-'+srcRowNum;
+		var sourceRowId = sourceDivName+' > #song-'+srcRowNum;
 		refreshRows();
-			for(var i=0; i<num_rows; i++) //check to see if there is an empty row, if there is... shove our values in there!
-			{
-				var check=0;
-
-				if(( !$.trim($('#artist'+i).val() ) && !$.trim($('#album'+i).val()) && !$.trim($('#song'+i).val()) ) || !$('#artist'+i).val() && !$('#album'+i).val() && !$('#song'+i).val()  )
-				{			
-				tempRowNum=i;
-				emptyRowAvail=true;
-				break;
-				}
-								
+		tempRowNum = checkForEmptyRow();
+		if(tempRowNum == -1){
+			tempRowNum = checkForEmptyRow();
 			}
-				if(emptyRowAvail==false) //if there are no rows avalable, make one!
-				{
-				addPlaysheetRow();
-				refreshRows();
-				tempRowNum=num_rows-1;
-				
-				}
-			if(tempRowNum==num_rows-1) //if we are taking up the last visible row, add a new one!
-			{
-			addPlaysheetRow();
-			refreshRows();
-			}
+			
+		var targetArtistId= '#artist'+tempRowNum;
+		var targetSongId= '#song'+tempRowNum;
+		var targetAlbumId= '#album'+tempRowNum;
+		var targetCanconId= '#cc'+tempRowNum;
+		var targetFemconId= '#fem'+tempRowNum;
+		var targetPlaylistId = '#pl'+tempRowNum;
 		
+		var artist = $(sourceRowId).children('#thisArtist').html();
+		var song = $(sourceRowId).children('#thisSong').html();
+		var album = $(sourceRowId).children('#thisAlbum').html();
+		var cancon = $(sourceRowId).children('#cancon').html();
+		var femcon = $(sourceRowId).children('#femcon').html();
+		var songType = $(sourceRowId).children('#songType').html();
+		var songCategory = $(sourceRowId).children('#songCategory').html();
 		
-		var $targetArtistId= '#artist'+tempRowNum;
-		var $targetSongId= '#song'+tempRowNum;
-		var $targetAlbumId= '#album'+tempRowNum;
-		var $targetCanconId= '#cc'+tempRowNum;
-		var $targetFemconId= '#fem'+tempRowNum;
-		var $targetPlaylistId = '#pl'+tempRowNum;
-		
-		
-		
-		
-		var $artist = $($sourceRowId).children('#thisArtist').html();
-		var $song = $($sourceRowId).children('#thisSong').html();
-		var $album = $($sourceRowId).children('#thisAlbum').html();
-		var $cancon = $($sourceRowId).children('#cancon').html();
-		var $femcon = $($sourceRowId).children('#femcon').html();
-		var $songType = $($sourceRowId).children('#songType').html();
-		
-		
-		
-		//socan
+		//Socan Attributes
 		if(socan==1){
-		var $targetComposerId='#composer'+tempRowNum;
-		var $targetStartHourId= '#set_song_start_hour'+tempRowNum;
-		var $targetStartMinId= '#set_song_start_minute'+tempRowNum;
-		var $targetPmCheckId= '#pmCheck'+tempRowNum;
-		var $targetDurMinId= '#set_song_length_minute'+tempRowNum;
-		var $targetDurSecId= '#set_song_length_second'+tempRowNum;
-		
-		var $composer = $($sourceRowId).children('#thisComposer').html();
-		var $hour = $($sourceRowId).children('#thisHour').html();
-		var $minute = $($sourceRowId).children('#thisMinute').html();
-		var $pmCheck = $($sourceRowId).children('#pmCheck').html();
-		var $durMin = $($sourceRowId).children('#durMin').html();
-		var $durSec = $($sourceRowId).children('#durSec').html();
+		var targetComposerId='#composer'+tempRowNum;
+		var targetStartHourId= '#set_song_start_hour'+tempRowNum;
+		var targetStartMinId= '#set_song_start_minute'+tempRowNum;
+		var targetPmCheckId= '#pmCheck'+tempRowNum;
+		var targetDurMinId= '#set_song_length_minute'+tempRowNum;
+		var targetDurSecId= '#set_song_length_second'+tempRowNum;
+		var composer = $(sourceRowId).children('#thisComposer').html();
+		var hour = $(sourceRowId).children('#thisHour').html();
+		var minute = $(sourceRowId).children('#thisMinute').html();
+		var pmCheck = $(sourceRowId).children('#pmCheck').html();
+		var durMin = $(sourceRowId).children('#durMin').html();
+		var durSec = $(sourceRowId).children('#durSec').html();
 		}
-		$minute=parseInt($minute);
-		console.log($pmCheck);
-		if(($pmCheck=='pm')&($hour != 12))
+		minute=parseInt(minute);
+		if((pmCheck=='pm')&(hour != 12))
 		{
-		$hourtemp= parseInt($hour);
-		$hourtemp= $hourtemp+12;
-		$hour=$hourtemp;
-		console.log($hour);
+			hourtemp= parseInt(hour);
+			hourtemp= hourtemp+12;
+			hour=hourtemp;
 		}
-		
-		console.log($minute);
 
+		$(targetArtistId).attr('value', htmlDecode(artist));
+		$(targetSongId).attr('value', htmlDecode(song));
+		$(targetAlbumId).attr('value', htmlDecode(album));
 		
-		//debug.prepend('source row#: '+$sourceRowId+' artist: '+$artist+' song: '+$song+'. </br>');
-		debug.prepend('destination elements: '+$targetArtistId+'  '+$targetSongId+'</br>');
-
-		$($targetArtistId).attr('value', $artist);
-		$($targetSongId).attr('value', $song);
-		$($targetAlbumId).attr('value', $album);
-	
-
-		
-		if( $cancon==1) {
-		$($targetCanconId).attr('checked', 'checked');
+		if( cancon==1) {
+			$(targetCanconId).attr('checked', 'checked');
 		} else {
-		$($targetCanconId).replaceWith('<input class="mousedragclick" type="checkbox" id="cc'+tempRowNum+'" name="cc'+tempRowNum+'">');	
+			$(targetCanconId).replaceWith('<input class="mousedragclick" type="checkbox" id="cc'+tempRowNum+'" name="cc'+tempRowNum+'">');	
 		}
 		
-		if( $femcon==1) {
-		$($targetFemconId).attr('checked', 'checked');
+		if( femcon==1) {
+			$(targetFemconId).attr('checked', 'checked');
 		} else {
-		$($targetFemconId).replaceWith('<input class="mousedragclick" type="checkbox" id="fem'+tempRowNum+'" name="fem'+tempRowNum+'">');	
+			$(targetFemconId).replaceWith('<input class="mousedragclick" type="checkbox" id="fem'+tempRowNum+'" name="fem'+tempRowNum+'">');	
 		}
 		
-		if( $songType=='PL' ) {
-		$($targetPlaylistId).attr('checked', 'checked');
+		if( songType=='PL' ) {
+			$(targetPlaylistId).attr('checked', 'checked');
 		}
-		
 		if(socan==1){
-		$($targetComposerId).val($composer);
-		$($targetStartHourId).val($hour);
-		$($targetStartMinId).val($minute);
-		$($targetDurMinId).val($durMin);
-		$($targetDurSecId).val($durSec);
+			$(targetComposerId).val(composer);
+			$(targetStartHourId).val(hour);
+			$(targetStartMinId).val(minute);
+			$(targetDurMinId).val(durMin);
+			$(targetDurSecId).val(durSec);
 		}
-	
+		
+		if ( songCategory.indexOf("ategory") !== -1){ // only if the string contains 'ategory' (don't want to worry about capital C or not
+			songCategory = songCategory.replace(/\D/g,''); // strip all non numeric digits
+			setCRTC(songCategory,tempRowNum);
+		} 
 }
 
 	function loadTheRange(){
@@ -538,7 +623,8 @@
 			
 			if ($('#' + cctype3id).prop('checked') & !$('#' + ccid).hasClass('canconLocked')) {
 			//if it is partial, it does not add it to the cancon total
-			console.log("here two");
+			
+
 			crtc3total++;
 			}
 			else if( $('#' + cctype3id).prop('checked') & !$('#' + ccid).prop('checked') )

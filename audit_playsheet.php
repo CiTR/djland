@@ -6,10 +6,10 @@ require("headers/function_header.php");
 require("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>CiTR 101.9</title></head><body>");
 
-print_menu();
+print_menu2();
 
 if( (is_member("dj") || (is_member("editdj") && isset($_POST['id']) ) ) && isset($_GET['action']) && $_GET['action'] == "submit") {
 

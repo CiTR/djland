@@ -6,10 +6,10 @@ require("headers/function_header.php");
 require("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJLAND | Membership</title></head><body>");
 
-print_menu();
+print_menu2();
 
 if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "search") {
 
@@ -274,25 +274,25 @@ echo 	'<tr align=right><td>First Name: </td><td align=left><INPUT SIZE=20 TYPE=t
 <?php
 	}	
 }
-else if(is_member("membership")){
-	printf("<br><table class=menu border=0 align=center><tr>");
-	printf("<td class=menu><a href=membership.php?action=add>&nbsp;Add New Member&nbsp;</a></td></tr></table>");
+else if(is_member("membership")){?>
+	<br>
+	<div class=containerTracklist>
+		<div class=nav><ul><li><a href=membership.php?action=add>Add New Member</a></li></ul></div></div>
 
-	printf("<br><table align=center class=playsheet><tr><td><center><br><h1>Search Membership</h1></center>");
+	<br><table align=center class=playsheet><tr><td><center><br><h1>Search Membership</h1></center>
+	<? 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+	<INPUT TYPE=hidden NAME=action VALUE=search>
+	<INPUT TYPE=text NAME=searchdesc>
+	<INPUT TYPE=submit VALUE=\"Basic Search\">
+	</FORM></CENTER>
 
-	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
-	printf("<INPUT TYPE=text NAME=searchdesc>");
-	printf(" <INPUT TYPE=submit VALUE=\"Basic Search\">\n");
-	printf("</FORM></CENTER>\n");
+	<? printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+	<INPUT TYPE=hidden NAME=action VALUE=search>
+	<INPUT TYPE=submit VALUE=\"All Members\">
+	</FORM></CENTER>
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
-	printf("<INPUT TYPE=submit VALUE=\"All Members\">\n");
-	printf("</FORM></CENTER>\n");
+	<? printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-?>
 	<table border=0 align=center><tr><td align=left nowrap>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
 	<table border=0><tr><td align=right nowrap>Last Name: <INPUT TYPE=text NAME=aslastname size=10>

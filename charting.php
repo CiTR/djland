@@ -1,25 +1,26 @@
 <?php
-
-
 session_start();
-
 require("headers/security_header.php");
-
 require("headers/function_header.php");
-
 require("headers/menu_header.php");
-
-
-printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=style.css type=text/css>");
-
 ?>
-
+<html>
+<head>
+<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJLAND | Charting</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<link rel=stylesheet href=css/style.css type=text/css>
+<!--
+
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"> 
+<script src="js/bootstrap.min.js"></script>
+
+--->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
   
  
 </head>
@@ -27,13 +28,7 @@ printf("<link rel=stylesheet href=style.css type=text/css>");
 
 <?php
 
-		print_menu();
-       
-       
-       
-       
-       
-        
+		print_menu2();
         $START_DATE = "2012/01/01";
         $END_DATE = "2012/02/08";
         $two_fridays_ago = date("l, F j, Y",strtotime('-1 week last friday'));
@@ -43,7 +38,7 @@ printf("<link rel=stylesheet href=style.css type=text/css>");
         $weekday = date("w");
         $month = date("m");
         $day = date("d");
-       //	echo "<center>";
+       echo "<center>";
         echo "<table>";
 //        echo "<tr><td colspan=3 class=\"rawdata\"><br/>formatted song view with counts - from ".$START_DATE." to ".$END_DATE.".  Showing top ".$NUM_DISPLAYED." results. <br/><br/>";
          echo "<tr><td><span><br/>Album view by show weekday - from ".$two_fridays_ago." to ".$last_thursday." <br/>
@@ -155,6 +150,6 @@ printf("<link rel=stylesheet href=style.css type=text/css>");
         echo"</td></tr>";
             $counter++;
         }
-    echo "</table></body>";
+    echo "</table></center></body>";
     
 ?>

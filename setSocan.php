@@ -8,7 +8,7 @@ require("headers/menu_header.php");
 require("headers/socan_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 $now = date("m/d/Y",strtotime('now'));
 $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
 
@@ -16,7 +16,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 <title>Set Socan</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="js/jquery.form.js"></script> 
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
@@ -32,7 +32,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 <?php
 
-print_menu();
+print_menu2();
 
 
 

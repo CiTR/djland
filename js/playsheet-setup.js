@@ -52,6 +52,7 @@
 				// DELETE ROW 
 				$('.delRow').unbind('click');
 				$('.delRow').click(function(){
+					var socan=$('#socancheck').val();
 					$thisDelRowNum = $(this).attr("id").replace(/\D/g,'');
 					if (num_rows>1){
 						$("#row"+$thisDelRowNum).remove();
@@ -59,8 +60,13 @@
 					refreshRows();
 					} else {
 						noRows = true;
-						j = '#row'+$thisDelRowNum;
-						$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton,' +j+ '.timerBox').remove();
+						var j = '#row'+$thisDelRowNum;
+						if(socan==1){
+							$(j + ' input,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ ' .nowButton,' +j+ ' .timeInner,' +j+ ' .CRTCicons,' + j + '.inputBoxesSocan').remove();
+						}
+						else{
+							$(j + ' input,' + j + ' .inputBoxes,'+j+' .delrow, '+j+' .copyRow, '+j+ ' .dragHandle,'+j+' label,' +j+ ' div,' +j+ '.nowButton').remove();
+						}
 						num_rows = 0;
 					}
 
@@ -276,10 +282,6 @@
 				// }
 		// });
 		
-		
-				console.log('Yo dawg, you just called the Setup Function');
-
-   
 	}
 	var allFilledIn;
 	function checkBlocking(){

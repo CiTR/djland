@@ -55,7 +55,6 @@ if( $result = $db->query($query)){
 echo "citr database problem :(";	
 }
 
-
 $query = "SELECT songID, artist, title, date_played FROM historylist WHERE date_played >= '$samFrom' AND date_played <= '$samTo' AND songtype = 'A' ";
 
 if($filtering) {
@@ -129,7 +128,7 @@ foreach($showList as $i => $v){
 			
 			//SHOW LENGTH:
 			//		$duration = showBlock::getShowBlockLength($showBlocks[$i]);
-	 
+	 		echo $thisID;
 				foreach($adsLogged[$thisID] as $x => $y){
 					
 					if (is_numeric($y['name']) ){

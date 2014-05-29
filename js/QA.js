@@ -20,9 +20,7 @@
 					console.log('collapsing');
 					}
 				}
-
-		
-				});
+			});
 				
 		$('.QAelement').each(function(){
 				if($(this).attr("id")=='QAelement'+container)
