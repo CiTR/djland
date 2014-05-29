@@ -37,7 +37,10 @@ usort($allshows, "cmp");
 $numshows = count($allshows);
 $numletters = 26;
 $letters = array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
-echo '<html><head><meta http-equiv="Access-Control-Allow-Origin" content="www.citr.ca"></head><body>';
+echo '<html><body>';
+/* NOTE: Set Access-Control-Allow-Origin headers in IIS for domain hosting DJland. 
+ * <head><meta http-equiv="Access-Control-Allow-Origin" content="www.citr.ca"></head> will not work, as IIS intercepts it.
+ */
 function printShow($show) {
 	
 //	if (!is_null($show->show_desc)) {
