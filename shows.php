@@ -92,11 +92,11 @@ foreach($dow as $key_name => $var_name) { // Generates days of week
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-<link rel=\"stylesheet\" href=\"citr.css\" type=\"text/css\">
+<link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body>";
-	print_menu();
+	print_menu2();
 }
 
 // -------- POST handling code ---------------------------------
@@ -167,6 +167,7 @@ if(is_member("addshow")) {
 		else {
 			mysqli_query($db,"DELETE FROM `show_times` WHERE show_id=$ed");
 			foreach ($times as $s_arr) {
+
 				$sd = $s_arr['sd'];
 				$st = $s_arr['sh'].":".$s_arr['sm'].":00";
 				$endd = $s_arr['ed'];
@@ -309,7 +310,7 @@ if(is_member("addshow")) {
 		return output;}";
 		echo '</script>';
 		echo "</head><body>";
-		print_menu();
+		print_menu2();
 		// End of head
 
 		printf("<br><div class=\"editform\"><h1>%s Show</h1>", ($ed ? "Edit" : "Add New"));
@@ -456,10 +457,24 @@ if(is_member("addshow")) {
 		echo "</div>";
 	}
 	// LISTING INACTIVE SHOWS --------
-	else if(isset($_GET['action']) && $_GET['action'] == 'listi' ) {
-		echo "<br><table class=menu border=0 align=center><tr>
-		<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr></tr><tr><td class=\"menu\"><a href=\"?action=list\">&nbsp;Hide Inactive Shows&nbsp;</a></td></tr></table>";
-
+	else if(isset($_GET['action']) && $_GET['action'] == 'list' ) {
+	?>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=?action=add>Add New Show</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=?action=list>Hide Inactive Shows</a></li>
+				</ul>
+			</div>
+		</div>
+		
+	<?
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
 		<INPUT type=hidden name=action value=edit>
 		<h2>All Shows:</h2>
@@ -503,12 +518,20 @@ echo "</body></html>";
 
 function write_new_showlist_file(){
 
-
-	$showList = file_get_contents('http://djland.citr.ca/showlist-handler.php');
-
-	file_put_contents ( 'static/theShowList.html' , $showList );
-
-
-
+	$showlist = " ";
+	for($count = 0; $count < 3; $count++){
+		$showList = file_get_contents('http://djland.citr.ca/showlist-handler.php');
+		if(strlen($showList) > 1000){
+			file_put_contents ('static/theShowList.html' , $showList, LOCK_EX );
+			sleep(5);
+			break;
+		}
+	}
+	if(strlen($showList) < 1000){
+		echo "<br/>Error updating the show list";
+	}
+	else{
+		echo "<br/>Show list successfully updated";
+	}
 }
 ?>

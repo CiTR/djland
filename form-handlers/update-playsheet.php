@@ -42,6 +42,5 @@
 		echo json_encode($rows);
 	 } 
 	 $playitems->close();
-	 
- 
+	
  ?>

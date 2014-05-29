@@ -1,13 +1,15 @@
 <?php
 session_start();
+require("headers/config.php");
 require("headers/security_header.php");
 require("headers/menu_header.php");
+require("headers/function_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJ LAND | users</title></head><body>");
 
-print_menu();
+print_menu2();
 
 if(isset($_GET['action']) && $_GET['action'] == 'add') {
 
@@ -95,8 +97,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'add') {
 else if(isset($_GET['action']) && $_GET['action'] == 'list') {
 
 	if(is_member("adduser")) {
-		printf("<br><table class=menu border=0 align=center><tr>");
-		printf("<td class=menu><a href=useradd.php>&nbsp;Add New User&nbsp;</a></td></tr></table>");
+		?>
+		<div class=containerTracklist>
+			<div class=nav>
+				<ul>
+					<li><a href=useradd.php>Add New User</a></li>
+				</ul>
+			</div>
+		</div>
+		<?
 	}	
 
 	if(is_member("adduser")) {

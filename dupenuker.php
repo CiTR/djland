@@ -13,13 +13,13 @@ require("headers/menu_header.php");
 
 if(is_member("editlibrary")){
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=citr.css type=text/css>");
+printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>dupe nukem!</title>");
 
 echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
 
 echo '</head>';
-print_menu();
+print_menu2();
 echo '<body><h1>dupe nuke-em!</h1>';
 
 echo '<p>select from the options and then click LOAD to load some duplicate albums that can be nuked! (It will take a couple minutes to load the dupes)</p>';
@@ -45,7 +45,7 @@ echo '</body>';
 
 	
 ?>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="js/jquery.form.js"></script> 
 <script>
  $(function() {
  	
