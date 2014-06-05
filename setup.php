@@ -220,6 +220,7 @@ CREATE TABLE IF NOT EXISTS `playlists` (
   `star` tinyint(4) DEFAULT NULL,
   `crtc` int(11) DEFAULT NULL,
   `lang` text,
+  `type` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
