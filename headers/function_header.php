@@ -1,7 +1,7 @@
 <?php
 //FUNCTION HEADER - playlist.citr.ca
 
-//error_reporting(0);
+error_reporting(0);
 
 date_default_timezone_set($station_info['timezone']);
 //Membership status, index by Name/ID
