@@ -165,10 +165,10 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 		$log_me = 'playsheet.php - there was a problem with the update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
 		$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';
 
-
-		$log_file = 'logs/log.html';
-		$log_file_contents = file_get_contents($log_file);
-		file_put_contents ( 'logs/log.html' , $log_me.$log_file_contents );
+		echo $log_me;
+//		$log_file = 'logs/log.html';
+//		$log_file_contents = file_get_contents($log_file);
+//		file_put_contents ( 'logs/log.html' , $log_me.$log_file_contents );
 
 	//	 echo $update_show_query;
 		 }

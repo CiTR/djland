@@ -1,4 +1,4 @@
-<? 	
+<?php 	
 	session_start();
 	require("headers/security_header.php");
 	require("headers/function_header.php");
@@ -24,7 +24,7 @@
 		</script>
 	</head>
 	<body>
-		<? print_menu2(); 
+		<?php print_menu2(); 
 		$today = date('m/d/Y');?>
 		<center><br/><br/><br/><br/>
 		<label for="from">Start Date: </label>
