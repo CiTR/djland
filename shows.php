@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require("headers/security_header.php");
 require("headers/function_header.php");
@@ -474,7 +475,7 @@ if(is_member("addshow")) {
 			</div>
 		</div>
 		
-	<?
+	<?php 
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
 		<INPUT type=hidden name=action value=edit>
 		<h2>All Shows:</h2>
