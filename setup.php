@@ -391,8 +391,17 @@ if($worked || !$worked){
     }
 
 }
-/*
-echo "<pre>";
-print_r($setup_query);
-echo "<pre>";*/
+$content = "Empty";
+mkdir('/static','0766');
+$fp = fopen('static/theShowList.html','w');
+fwrite($fp,$content);
+fclose($fp);
+chmod('static/theShowList.html','0766');
+
+mkdir('/logs','0766');
+$fp = fopen('logs/log.html','w');
+fwrite($fp,$content);
+fclose($fp);
+chmod('static/theShowList.html','0766');
+
 ?>
