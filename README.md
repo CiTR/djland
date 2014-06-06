@@ -49,5 +49,7 @@ INSTALLATION STEPS
 
 6) open djland-example.com. If all goes well, you will see the DJLand login screen. See the config file for the default username and password.  You should change this
 
+Note: theShowList.html, and log.html must be writable by your hosting service (IUSR for IIS) or they will always be empty.
+
 Developed and maintained by CiTR - www.citr.ca
 
