@@ -267,7 +267,7 @@ $insert_query = "INSERT INTO `playitems` ".
 	$ad_query = "UPDATE adlog SET playsheet_id = '".$ps_id."', played='0' WHERE time_block = '".$_POST['unixTime']."'"; // assume the ad is not played - set to 0
 	if (	mysqli_query($db, $ad_query)){		
 			} else {
-				echo "ad query didn't work: <br/>";
+				echo "ad query didn't work: ".$ad_query."<br/>";
 			}
 	
 	foreach($_POST as $postID => $postVal){
