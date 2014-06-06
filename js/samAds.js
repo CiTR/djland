@@ -27,7 +27,9 @@ $(document).ready ( function() {
 });
 function loadSamAds(from,to){
 		$('#loadbar').show();
-		
+		$('.samrow').each( function(){
+			$(this).remove();
+		});
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/samAds-handler.php",
