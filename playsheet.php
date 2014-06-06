@@ -624,12 +624,12 @@ if (count($matches)>1){
 		<?
 		}
 		?>
-			<option value='1'>Live</option>
-			<option value='2'>Syndicated</option>
-			<option value='3'>Rebroadcast</option>
-			<option value='4'>Simulcast</option>
-			<option value='5'>Pre-Recorded</option>
-			<option value='6'>Other</option>
+			<option>Live</option>
+			<option>Syndicated</option>
+			<option>Rebroadcast</option>
+			<option>Simulcast</option>
+			<option>Pre-Recorded</option>
+			<option>Other</option>
 		</select>
 		<?
 		
