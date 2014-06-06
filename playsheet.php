@@ -165,8 +165,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 		$log_me = 'playsheet.php - there was a problem with the update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
 		$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';
 		$log_file = 'logs/log.html';
-		$log_file_contents = file_get_contents($log_file);
-		file_put_contents ( 'logs/log.html' , $log_me.$log_file_contents);
+		file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
 
 	//	 echo $update_show_query;
 		 }
@@ -254,8 +253,7 @@ $insert_query = "INSERT INTO `playitems` ".
 			$log_me = 'playsheet.php - there was a problem with the insert query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
 			$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>insert_query:'.$insert_query.'<hr>';
 			$log_file = 'logs/log.html';
-			$log_file_contents = file_get_contents($log_file);
-			file_put_contents ( 'logs/log.html' , $log_me. $log_file_contents);
+			file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
 		}
 
 	}
@@ -268,7 +266,11 @@ $insert_query = "INSERT INTO `playitems` ".
 	if (	mysqli_query($db, $ad_query)){		
 			} else {
 				echo "ad query didn't work: ".$ad_query."<br/>";
-			}
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
+				$log_file = 'logs/log.html';
+				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+	}
 	
 	foreach($_POST as $postID => $postVal){
 		if ( substr($postID,0,10) == "adplaydbid" ) {
@@ -279,11 +281,10 @@ $insert_query = "INSERT INTO `playitems` ".
 
 			}else{
 				echo "ad query didn't work: <br/>".$ad_query."<br/>";
-				$log_me = 'playsheet.php - there was a problem with the ad update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
 				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
 				$log_file = 'logs/log.html';
-				$log_file_contents = file_get_contents($log_file);
-				file_put_contents ( 'logs/log.html' , $log_me. $log_file_contents);
+				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
 			} 
 		}
 	}
@@ -706,7 +707,7 @@ if (count($matches)>1){
 		<br><table class='dragrows' id='playsheet-table'>
 		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?=$playlist_entries?>'>
 		<input type='text' id='numberOfAdRows' name='numberOfAdRows' class='invisible'>
-		<input type='text' id='unixTime' name='unixTime' class='invisible' value='"<?=$unix_start_time?>'>
+		<input type='text' id='unixTime' name='unixTime' class='invisible' value='<?=$unix_start_time?>'>
 		<input type='text' id='status' name='status' class='invisible' >
 		<input type='text' id='star' name='star' class='invisible' >	
 		<h2>Music</h2>	
