@@ -217,30 +217,24 @@
 
 	// activate mass loader form
 	
-	$('#podcastMarker').click(function(){
+	$('#podcastMarker').click( function(){
 		console.log('podcast marker');						
 					
 			var text = $.ajax({
-			type: "POST",
-			url: "./addmarker.php",
-			data: { gonsho2433456: 'kurbleziac_q3289476b30894276'},
-			
-			success: function(text){
-			//  alert("success!");
-			console.log("<br/> success? sent data:<br/>"+text+"<br/> ");
-			$('span#podcastTime').html(text);
-			}  
+				type: "POST",
+				url: "./addmarker.php",
+				data: { gonsho2433456: 'kurbleziac_q3289476b30894276'},
+				
+				success: function(text){
+				//  alert("success!");
+				console.log("<br/> success? sent data:<br/>"+text+"<br/> ");
+				$('span#podcastTime').html(text);
+				},
+	    		error: function(XMLHttpRequest, textStatus, errorThrown) { 
+	        		console.log("Status: " + textStatus); alert("Error: " + errorThrown); 
+
+	    		}  
 			});
-			
-			// callback handler that will be called on failure
-   			request.fail(function (jqXHR, textStatus, errorThrown){
-      		  // log the error to the console
-        			console.error(
-         		   "The following error occured: "+
-          		  textStatus, errorThrown
-       		);
-    		});
-			
 	});
 
 // Fetch data and fill in all fields accordingly
