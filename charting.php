@@ -16,7 +16,7 @@ require("headers/menu_header.php");
 </head>
 <body>
 
-<?	print_menu2(); ?>
+<?php	print_menu2(); ?>
     <center>
         <div id='charting-container' style='display:none;'>
             <div id='charting-title'>
@@ -34,7 +34,7 @@ require("headers/menu_header.php");
             </div>
         </div>
     </center>
-        <?
+        <?php
         
 
   //       $START_DATE = "2012/01/01";

@@ -613,15 +613,15 @@ if (count($matches)>1){
 		<INPUT type=hidden id='psid' name=id value= <?=$ps_id ?>>
 		<center><h1>DJ PLAYSHEET</h1></center>
 		<table border=0 align=center width=100%%><tr><td>Show Type:
-		<?if( isset($loaded_type) && ($loaded_type != null) ){ ?>
+		<?php if( isset($loaded_type) && ($loaded_type != null) ){ ?>
 		<select id='type' name='type' value=".$loaded_type."><option selected><?=$loaded_type ?></option>
-		<?} 
+		<?php } 
 		else if(isset($showtype) && ($showtype != null)){ ?>
 		<select id='type' name='type' value=".$showtype."><option selected> <?=$showtype ?> </option>		
-		<? }
+		<?php }
 		else{ ?>
 		<select id='type' name='type' value="1"><option selected>Live</option>
-		<?
+		<?php
 		}
 		?>
 			<option>Live</option>
@@ -631,7 +631,7 @@ if (count($matches)>1){
 			<option>Pre-Recorded</option>
 			<option>Other</option>
 		</select>
-		<?
+		<?php
 		
 		$playsheet_list = getRecentPlaylists($db,500);
 		
@@ -712,11 +712,11 @@ if (count($matches)>1){
 		<input type='text' id='star' name='star' class='invisible' >	
 		<h2>Music</h2>	
 		
-		<? if($SOCAN_FLAG): ?>
+		<?php if($SOCAN_FLAG): ?>
 			<td >Time</td>
 			<td >Duration</td>
 			<td>Composer</td>
-		<? endif; ?>
+		<?php endif; ?>
 		<!-- helpboxes declaration -->
 		<div id='helpboxARTIST'></div>
 		<div id=helpboxSONG></div>
