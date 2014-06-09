@@ -130,10 +130,17 @@ foreach($showList as $i => $v){
 			//		$duration = showBlock::getShowBlockLength($showBlocks[$i]);
 	 		echo $thisID;
 				foreach($adsLogged[$thisID] as $x => $y){
-					
+					echo '<pre>';
+					print_r($y);
+					echo '</pre>';
+
 					if (is_numeric($y['name']) ){
 						echo "&nbsp;&nbsp;&nbsp;";
-						echo $adLib->getAdNameFromID($y['name']);
+						if ($ad_name = $adLib->getAdNameFromID($y['name']) ){
+							echo $ad_name;
+						} else {
+							echo 'ad name not found';
+						}
 						if ($y['played']==1) echo " &#10004;"; // html entity for a checkmark
 						echo "<br/>";
 					}
