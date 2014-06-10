@@ -27,6 +27,6 @@
 		<?php print_menu2();
 		membership_menu(); ?>
 		<div id='membership' >
-		</div></center>
+		</div>
 	</body>
 </html>
