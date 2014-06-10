@@ -53,9 +53,6 @@ input, select, textarea, option{
     margin:30px auto 0px auto;
     height:43px;
     padding:0px 20px 0px 20px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
     background: #A4A4A4;
     background: -moz-linear-gradient(top, #3434A4, #1030BE);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
@@ -64,21 +61,48 @@ input, select, textarea, option{
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-#nav li{
+#nav{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+#tab-nav{
+	list-style:none;
+    width:940px;
+    margin:0px auto 0px auto;
+    min-height:35px;
+    height:auto;
+}
+
+
+#nav li, #tab-nav li{
 	float:left;
 	position:relative;
 	padding: 4px 10px 4px 10px;
-	}
-	
-#nav li{
-	float:left;
-	position:relative;
 	text-align:center;
-	
 	margin-right:30px;
 	margin-top:7px;
 	border:none;
 }
+
+#tab-nav li{
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+   	border-radius: 5px 5px 0px 0px;
+
+}
+.active-tab{
+    background: #A4A4A4;
+    background: -moz-linear-gradient(top, #A4A4A4, grey);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#A4A4A4), to(grey));
+    border-width: 0px 0px 0px 0px;
+}
+.inactive-tab{
+	background: #A4A4A4;
+    background: -moz-linear-gradient(top, #3434A4, #1030BE);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
+}
+	
 #nav li:hover{
 	border: 1px solid #555555;
     padding: 4px 9px 4px 9px;
@@ -87,7 +111,7 @@ input, select, textarea, option{
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
 }
-#nav .nodrop,.drop {
+#nav .nodrop,.drop, #tab-nav .nodrop,.drop {
 	right:8px;
 }
 #nav .nodrop:hover {
@@ -98,13 +122,12 @@ input, select, textarea, option{
 	top:auto;
 	left:auto;
 }
-#nav .drop:hover {
+#nav .drop:hover{
 	right: 7px;
 	top:auto;
 	left:auto;
 }
-#nav li a{ 
-    color: #EEEEEE;
+#nav li a, #tab-nav li a{ 
     display:block;
     outline:0;
     text-decoration:none;
@@ -113,6 +136,11 @@ input, select, textarea, option{
 #nav li:hover a {
     color:#161616;
     text-shadow: 1px 1px 1px #FFFFFF;
+	background:none;
+}
+#tab-nav li:hover a{
+	color:white;
+	text-decoration: none;
 	background:none;
 }
 
@@ -173,12 +201,12 @@ input, select, textarea, option{
     top:auto;
 }
 
-#nav li ul {
+#nav li ul, #tab-nav li ul {
     list-style:none;
     padding:0;
     margin:0 0 12px 0;
 }
-#nav li ul li {
+#nav li ul li, #tab-nav li ul li {
     font-size:12px;
     line-height:24px;
     position:relative;
@@ -189,7 +217,7 @@ input, select, textarea, option{
     text-align:left;
     width:130px;
 }
-#nav li ul li:hover {
+#nav li ul li:hover, #tab-nav li ul li:hover {
     background:none;
     border:none;
     padding:0;
@@ -391,6 +419,17 @@ table { border-collapse: collapse; }
 }
 
 
+/*----------------------------*/
+/*----MEMBERSHIP CSS RULES----*/
+/*----------------------------*/
+#membership{
+	width:916px;
+	background-color: grey;
+	min-height:300px;
+	margin-left: auto;
+	margin-right:auto;
+	margin-top:-1px;
+}
 
 
 /*----------------------------*/

@@ -46,36 +46,36 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 }
 ?>
 
-<?
+<?php
 function print_menu2(){
 require('config.php');
 ?>
 	<ul id=nav>
-		<? if(is_member("member") && get_username() != $station_wide_login_name): ?>
+		<?php if(is_member("member") && get_username() != $station_wide_login_name): ?>
 		<li class=nodrop><a href=useradd.php?action=list>Users</a></li>
-		<? endif; ?>
-		<? if(is_member("membership") && $enabled['membership']) : ?>
+		<?php endif; ?>
+		<?php if(is_member("membership") && $enabled['membership']) : ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
-		<? endif; ?>
+		<?php endif; ?>
 		<li class=drop><a href='#'>Library</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
-						<? if(is_member("library") && $enabled['library']) : ?>
+						<?php if(is_member("library") && $enabled['library']) : ?>
 						<li><a href="library.php"> View Library</a></li>
-						<? endif; ?>
-						<? if(is_member("editlibrary") && $enabled['library']) : ?>
+						<?php endif; ?>
+						<?php if(is_member("editlibrary") && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
-						<? endif; ?>
+						<?php endif; ?>
 					</ul>
 				</div>
 			</div>
 		</li>
 
-	<? if(is_member("addshow")) : 
+	<?php if(is_member("addshow")) : 
 		if($enabled['shows']) :?>
 			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
-		<? endif; 
+		<?php endif; 
 		if($enabled['adscheduler']) : ?>
 			<li class=drop><a href="#">Manage Ads</a>
 				<div class=dropdown_small>
@@ -88,10 +88,10 @@ require('config.php');
 					</div>
 				</div>
 			</li>
-		<? endif; 
+		<?php endif; 
 		if($enabled['charts']) :?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
-		<? endif;
+		<?php endif;
 	endif; 
 	if($enabled['report']): ?>
 		<li class=drop ><a href="#">Reports</a>
@@ -108,7 +108,7 @@ require('config.php');
 				</div>
 			</div>
 		</li>
-		<? endif; ?>
+		<?php endif; ?>
 		<li class=drop><a href="#">Playsheets</a>
 			<div class=dropdown_small>
 				<div class=small>
@@ -135,4 +135,18 @@ require('config.php');
 			</div>
 		</li>
 	</ul>
-<? } ?>
+<?php } 
+
+function membership_menu(){
+require('config.php');
+?>
+<ul id ='tab-nav'>
+	<li class = "nodrop active-tab"><a href='#' value='1'>Manage Members</a></li>
+	<li class = 'nodrop inactive-tab'><a href='#' value='2'>Search Members</a></li>
+	<li class = 'nodrop inactive-tab'><a href='#' value='3'>Send Emails</a></li>
+</ul> 
+
+
+
+
+<?php } ?>
