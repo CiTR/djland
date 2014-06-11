@@ -156,7 +156,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 		echo "<h3>thanks for submitting a playsheet!  Here is the music you played:</h3>";
 } 
 	else {
-		 echo "<h3>sorry, there was a database problem :(</h3><br/>";
+		 echo "<h3>sorry, there was a database problem, please contact technical services.</h3><br/>";
 // uncomment to help DEBUG mysql queries
 //		 echo "<h3>This playsheet needs to be repaired.  Please copy and paste the following text".
 //		 " and email to technicalservices@citr.ca: </h3><hr> problematic query: ".
@@ -164,11 +164,8 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 		 // LOG THE PROBLEM ( see http://djland.citr.ca/logs/log.html)
 		$log_me = 'playsheet.php - there was a problem with the update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
 		$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';
-
-
 		$log_file = 'logs/log.html';
-		$log_file_contents = file_get_contents($log_file);
-		file_put_contents ( 'logs/log.html' , $log_me.$log_file_contents );
+		file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
 
 	//	 echo $update_show_query;
 		 }
@@ -219,9 +216,8 @@ $insert_composer = $_POST['composer'.$i];
 $update_query = "UPDATE songs SET composer = '$insert_composer' WHERE id='$insert_songID'";
 if(mysqli_query($db, $update_query))
 {
-// echo "Update Composer Success";
-} else echo 'update composer unsuccessful<br/>';
-//echo $update_query;
+} else 
+echo 'update composer unsuccessful<br/>';
 }
 
 
@@ -236,73 +232,65 @@ $insert_query = "INSERT INTO `playitems` ".
 				"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)".
 		"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit')";
 }
-//			echo "<hr>".$insert_query."<hr>";
-//			print_r($_POST);
-			if(	mysqli_query($db, $insert_query) ){
-			
+
+		if(	mysqli_query($db, $insert_query) ){
 			if($insert_cc==1) {
-			echo "<font color=red>";
+				echo "<font color=red>";
 			}
 			else {
-			echo "<font color=white>";
+				echo "<font color=white>";
 			}
-			if($SOCAN_FLAG)
-			{
-			echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) . "-" . html_entity_decode($insert_composer) ;
+			if($SOCAN_FLAG){
+				echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) . "-" . html_entity_decode($insert_composer) ;
 			}
 			else{
-			echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) ;
+				echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) ;
 			}
-			
 			echo "</font><br/>";
-		
-			} else { 
-				echo "sorry, song was not saved :(";
-			}
 	
+		} else { 
+			echo "A database error occurred, please contact technical services.";
+			$log_me = 'playsheet.php - there was a problem with the insert query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+			$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>insert_query:'.$insert_query.'<hr>';
+			$log_file = 'logs/log.html';
+			file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+		}
+
 	}
 	
-//	'".$_POST['crtc'.$i]."',
 	
 	$ad_entries = $_POST["numberOfAdRows"];
-//	echo "there are ".$ad_entries." ads.";
-/*
-	for($i=0; $i < $ad_entries; $i++){
-		
-		$ad_query = "INSERT INTO adlog (playsheet_id, num, time, type, name, played, sam_id) VALUES ('$ps_id', '$i', '".$_POST['adTime'.$i]."', '".$_POST['adType'.$i]."', '".$_POST['adName'.$i]."','".(isset($_POST['adPlayCheck'.$i])?1:0)."', '6')";
-		if (	mysqli_query($db, $ad_query)){
-		} else echo "ad query didn't work: <br/>".$ad_query."<br/>";
-	}
-	*/
+
 	
 	$ad_query = "UPDATE adlog SET playsheet_id = '".$ps_id."', played='0' WHERE time_block = '".$_POST['unixTime']."'"; // assume the ad is not played - set to 0
-	if (	mysqli_query($db, $ad_query)){
-		
+	if (	mysqli_query($db, $ad_query)){		
 			} else {
-				 echo "ad query didn't work: <br/>";
-			//	echo $ad_query."<br/>";
-			}
-//	echo "<hr/>this was the ad query: ".$ad_query."<hr/>";
+				echo "ad query didn't work: ".$ad_query."<br/>";
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
+				$log_file = 'logs/log.html';
+				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+	}
 	
 	foreach($_POST as $postID => $postVal){
-	//	echo '<hr>'.$postID;
 		if ( substr($postID,0,10) == "adplaydbid" ) {
 			$brian = explode("_",$postID);
 			$ad_row_db_id = $brian[1];
 			$ad_query = "UPDATE adlog SET played = '1', playsheet_id = '".$ps_id."' WHERE id='".$ad_row_db_id."'"; // set the row to played
-			if (	mysqli_query($db, $ad_query)){
-			} else echo "ad query didn't work: <br/>".$ad_query."<br/>";
-		}	
-	//	echo '<hr>';
+			if (mysqli_query($db, $ad_query)){
+
+			}else{
+				echo "ad query didn't work: <br/>".$ad_query."<br/>";
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
+				$log_file = 'logs/log.html';
+				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+			} 
+		}
 	}
 	
 	echo "</div>";
 	echo "<br/><br/>format:<br/> artist - title (album) <br/> <font color=red>red means cancon</font> <br/><br/> feedback? email technicalservices@citr.ca<br/><br/>";
-
-	
-	
-//	echo 'spoken word description:<br/> '.$spokenword.'<br/>';
-//	echo 'total overall spoken word duration:<br/>'.$spokenword_h.'h '.$spokenword_m.'m';
 }
 
 //
@@ -397,7 +385,6 @@ $adLib = new AdLib($mysqli_sam,$db);
 		if ($result = mysqli_query($db,"SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playlists WHERE id='$ps_id'")){
 		$curr_id = mysqli_result_dep($result,0,"show_id");
 		$currshow = $showlib->getShowByID($curr_id);
-		
 		$pl_date_year = date('Y', mysqli_result_dep($result, 0, "good_date"));
 		$pl_date_month = date('m', mysqli_result_dep($result, 0, "good_date"));
 		$pl_date_day = date('d', mysqli_result_dep($result, 0, "good_date"));
@@ -405,24 +392,16 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$pl_date_min = date('i', mysqli_result_dep($result, 0, "good_date"));
 		$end_date_hour = mysqli_result_dep($result, 0, "end_hour");
 		$end_date_min = mysqli_result_dep($result, 0, "end_min");
-		
 		$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
-	
-		//dog
-//		echo "my unix: ".$unix_start_time."<br/>";
-//		echo "their unix: ".mysqli_result_dep($result, 0, "UNIX_TIMESTAMP(start_time)")."<br/>";
-		
 		$host_name = $fhost_name[mysqli_result_dep($result, 0, "host_id")];
 		$show_name = $fshow_name[mysqli_result_dep($result, 0, "show_id")];
 		$show_id = mysqli_result_dep($result, 0, "show_id");
-
 		$loaded_spokenword = mysqli_result_dep($result,0,"spokenword");
 		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
 		$loaded_status = mysqli_result_dep($result, 0, "status");
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
 		$loaded_type = mysqli_result_dep($result, 0, "type");
-		
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
 			// db query didn't work :|
@@ -443,77 +422,65 @@ $adLib = new AdLib($mysqli_sam,$db);
 				$loaded_crtc = "";
 				$loaded_lang = "";
 		}
-
 	}
 	else {
 		// making a new PS
 		
-			if(isset($_GET['time'])){
-				
-			$unix_start_time = $_GET['time'];	
+			if(isset($_GET['time'])){	
+				$unix_start_time = $_GET['time'];	
 			
-			//check to see if this unix time already has a playsheet saved - if so, load that one with action=edit
-			
-			$check_query = "SELECT id FROM playlists WHERE unix_time='".$unix_start_time."'";
-			if ($check = mysqli_query($db, $check_query)){
+				//check to see if this unix time already has a playsheet saved - if so, load that one with action=edit
 				
-				$checked = mysqli_fetch_assoc($check);
-				
-				
-				if($yesnumber = $checked['id']){
-					header( "Location: ./playsheet.php?action=edit&id=".$yesnumber);
+				$check_query = "SELECT id FROM playlists WHERE unix_time='".$unix_start_time."'";
+				if ($check = mysqli_query($db, $check_query)){
+					$checked = mysqli_fetch_assoc($check);
+					if($yesnumber = $checked['id']){
+						header( "Location: ./playsheet.php?action=edit&id=".$yesnumber);
+					}
+				} else{
 				}
 				
-			} else{
-			}
+				//MAKING A NEW PS THAT IS IN PAST (OR FUTURE)
+				$currshow = $showlib->getShowByTime($unix_start_time);
 				
-			//MAKING A NEW PS THAT IS IN PAST (OR FUTURE)
-//			echo "hi you are making a new playsheet from the past (or future?)";
-
-			$currshow = $showlib->getShowByTime($unix_start_time);
-			
-			$pl_date_year = date('Y',$unix_start_time);
-			$pl_date_month = date('m',$unix_start_time);
-			$pl_date_day = date('d',$unix_start_time);
-			$pl_date_hour = date('H', $unix_start_time);
-			$pl_date_min = date('i', $unix_start_time);
-			
-			$show_end = strtotime($currshow->times[0]['end_time']);
-			$end_date_hour = date('H', $show_end);
-			$end_date_min = date('i', $show_end);
-			
+				$pl_date_year = date('Y',$unix_start_time);
+				$pl_date_month = date('m',$unix_start_time);
+				$pl_date_day = date('d',$unix_start_time);
+				$pl_date_hour = date('H', $unix_start_time);
+				$pl_date_min = date('i', $unix_start_time);
+				
+				$show_end = strtotime($currshow->times[0]['end_time']);
+				$end_date_hour = date('H', $show_end);
+				$end_date_min = date('i', $show_end);
+				
 			}
 			else{
 				
-			// MAKING NEW PS THAT IS RIGHT NOW (default)
+				// MAKING NEW PS THAT IS RIGHT NOW (default)
+				$currshow = $showlib->getCurrentShow();
+				$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
 			
-			$currshow = $showlib->getCurrentShow();
-			
-			$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
+				if (count($showtime)) {
+					$pl_date_hour = date('H', strtotime($showtime['start_time']));
+					$pl_date_min = date('i', strtotime($showtime['start_time']));
+					$end_date_hour = date('H', strtotime($showtime['end_time']));
+					$end_date_min = date('i', strtotime($showtime['end_time']));
+				//	echo "  ".$pl_date_hour.":".$pl_date_min;
+				}
+				$pl_date_year =  date('Y');
+				$pl_date_month =  date('m');
+				$pl_date_day =  date('d');
+				
+				$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
 		
-			if (count($showtime)) {
-				$pl_date_hour = date('H', strtotime($showtime['start_time']));
-				$pl_date_min = date('i', strtotime($showtime['start_time']));
-				$end_date_hour = date('H', strtotime($showtime['end_time']));
-				$end_date_min = date('i', strtotime($showtime['end_time']));
-			//	echo "  ".$pl_date_hour.":".$pl_date_min;
-			}
-			$pl_date_year =  date('Y');
-			$pl_date_month =  date('m');
-			$pl_date_day =  date('d');
-			
-			$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
-	
 			}
 			$showtype = $currshow->showtype; 
-			
 			$ps_id = 0;			
 			$host_name = $currshow->host;
 			$show_name = $currshow->name;
 			$show_id = $currshow->id;
 			$lang_default = $currshow->lang_default;
 			$crtc_default = $currshow->crtc_default;
-			
 			
 			if($lang_default == ''){
 				$lang_default = 'eng';
@@ -524,9 +491,6 @@ $adLib = new AdLib($mysqli_sam,$db);
 						
 			$loaded_spokenword =  "";
 			$loaded_sw_duration =  "";
-			
-//			echo 'unix start time: '.$unix_start_time;
-
 			$adTable = $adLib->generateTable($unix_start_time,'dj', false);
 	}
 	
@@ -584,28 +548,7 @@ if (count($matches)>1){
 		else {
 			$num_rows = 0;
 		}
-        
-        /*
-		for($i=0; $i < $num_rows; $i++) {
-
-			$result2 = mysqli_query($db,"SELECT * FROM songs WHERE id='".mysqli_result_dep($result,$i,"song_id")."'");
-//			echo htmlentities(mysqli_result_dep($result2,0,"artist"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result_dep($result2,0,"title"), ENT_QUOTES) . ", ";
-//			echo htmlentities(mysqli_result_dep($result2,0,"song"), ENT_QUOTES) . ", ";
-			echo mysqli_result_dep($result2,0,"artist") . ", ";
-			echo mysqli_result_dep($result2,0,"title") . ", ";
-			echo mysqli_result_dep($result2,0,"song") . ", ";
-//abcd		echo $fformat_name[mysqli_result_dep($result,$i,"format_id")] . ", ";
-			echo (mysqli_result_dep($result,$i,"is_playlist") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_canadian") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_fem") ? "true" : "false"). ", ";
-			echo (mysqli_result_dep($result,$i,"is_inst") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_part") ? "true" : "false") . ", ";
-			echo (mysqli_result_dep($result,$i,"is_hit") ? "true" : "false");
-			echo "\n";
-		}
-		*/
-        
+     
         
 
         echo "<table >";
@@ -632,9 +575,10 @@ if (count($matches)>1){
 			echo ")<br/>";
 			if($SOCAN_FLAG)
 			{
-			echo " - ";
-			echo html_entity_decode(mysqli_result_dep($result2,0,"composer"));
-			echo "<br/>";}
+				echo " - ";
+				echo html_entity_decode(mysqli_result_dep($result2,0,"composer"));
+				echo "<br/>";
+			}
            echo "</td></tr>";
             
 		}
@@ -665,28 +609,29 @@ if (count($matches)>1){
 		} else {
 			printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		}
-
-
-		//if($ps_id) {
-			printf("<INPUT type=hidden id='psid' name=id value=%s>", $ps_id);
-		//}
-
-		printf("<center><h1>DJ PLAYSHEET</h1></center>");
-		echo "<table border=0 align=center width=100%%><tr><td>Show Type: ";
-		if( isset($loaded_type) && ($loaded_type != null) ){
-		echo "<select id='type' name='type' value=".$loaded_type."><option>".$loaded_type."</option>";
-		} else {
-		echo "<select id='type' name='type' value=".$showtype."><option>".$showtype."</option>";		
+		?>
+		<INPUT type=hidden id='psid' name=id value= <?=$ps_id ?>>
+		<center><h1>DJ PLAYSHEET</h1></center>
+		<table border=0 align=center width=100%%><tr><td>Show Type:
+		<?php if( isset($loaded_type) && ($loaded_type != null) ){ ?>
+		<select id='type' name='type' value=".$loaded_type."><option selected><?=$loaded_type ?></option>
+		<?php } 
+		else if(isset($showtype) && ($showtype != null)){ ?>
+		<select id='type' name='type' value=".$showtype."><option selected> <?=$showtype ?> </option>		
+		<?php }
+		else{ ?>
+		<select id='type' name='type' value="1"><option selected>Live</option>
+		<?php
 		}
-		
-		echo	"<option>Live</option>
-				<option>Syndicated</option>
-				<option>Rebroadcast</option>
-				<option>Simulcast</option>
-				<option>Pre-Recorded</option>
-				<option>Other</option>
-				</select>";
-		
+		?>
+			<option>Live</option>
+			<option>Syndicated</option>
+			<option>Rebroadcast</option>
+			<option>Simulcast</option>
+			<option>Pre-Recorded</option>
+			<option>Other</option>
+		</select>
+		<?php
 		
 		$playsheet_list = getRecentPlaylists($db,500);
 		
@@ -743,57 +688,37 @@ if (count($matches)>1){
 		for($i=0; $i <= 23; $i++) printf("<OPTION value=%02d >%02d", $i, $i); 
 		printf("</SELECT>:");
 		printf("<SELECT id=end_date_min NAME=end_date_min  >\n<OPTION>%02d", $end_date_min);
-		for($i=0; $i <= 59; $i++) printf("<OPTION value=%02d>%02d", $i, $i); 
-		printf("</SELECT>]");
-
-		printf("</td></tr><tr align=center width=400px><td>");
+		for($i=0; $i <= 59; $i++)printf("<OPTION value=%02d>%02d", $i, $i); 
+		?>
+		</SELECT>]
+		</td></tr><tr align=center width=400px>
+		<td>CRTC Category:<input type='text' id=pl_crtc name=pl_crtc value=<?=$crtc_pl?>>
+		</td>
 		
+		<td align=right colspan=2>Language:<input type='text' id=pl_lang name=pl_lang value=<?=$lang_pl?>>		
+		<td/><tr/></table>
 		
-		echo "CRTC Category:<input type='text' id=pl_crtc name=pl_crtc value=".$crtc_pl.">";
-		echo "</td>";
+		<img src='images/loading.gif' id='ps-loading-image'>
+		</span>
 		
-		echo "<td align=right colspan=2>";
-		echo "Language:<input type='text' id=pl_lang name=pl_lang value=".$lang_pl.">";
-
-		
-		print("<td/><tr/></table>");
-		
-		echo "<img src='images/loading.gif' id='ps-loading-image'>";
-		echo "</span>";		
-		
-		//main interface table
-//		echo "<h1 class='showTitle' id='".$show_id."'>".$show_name;
-		echo "<span id='draft'>";
-		if($loaded_status==1) echo "(draft)";
-		echo "</span>";
-//		echo "</h1>";
-//		echo "<span id='previous' class='episodeLink'></span>" ;
-//		echo "<span id='now' class='episodeLink'></span>" ;
-//		echo "<span id='next' class='episodeLink'></span>" ;
-		
-		print("<br><table class='dragrows' id='playsheet-table'>");
-		print("<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='". $playlist_entries."'>");
-		print("<input type='text' id='numberOfAdRows' name='numberOfAdRows' class='invisible'>");
-		print("<input type='text' id='unixTime' name='unixTime' class='invisible' value='".$unix_start_time."'>");
-		print("<input type='text' id='status' name='status' class='invisible' >");
-		print("<input type='text' id='star' name='star' class='invisible' >");
-
-?>		
+		<!-- main interface table -->
+		<span id='draft'><?if($loaded_status==1):?>(draft)<?endif;?></span>
+	
+		<br><table class='dragrows' id='playsheet-table'>
+		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?=$playlist_entries?>'>
+		<input type='text' id='numberOfAdRows' name='numberOfAdRows' class='invisible'>
+		<input type='text' id='unixTime' name='unixTime' class='invisible' value='<?=$unix_start_time?>'>
+		<input type='text' id='status' name='status' class='invisible' >
+		<input type='text' id='star' name='star' class='invisible' >	
 		<h2>Music</h2>	
 		
-		<?php 
-	
-		
-		if($SOCAN_FLAG){
-					echo"
-					<td >Time</td>
-					<td >Duration</td>
-					<td>Composer</td>
-					";
-					}
-		?>
+		<?php if($SOCAN_FLAG): ?>
+			<td >Time</td>
+			<td >Duration</td>
+			<td>Composer</td>
+		<?php endif; ?>
 		<!-- helpboxes declaration -->
-		<div id=helpboxARTIST></div>
+		<div id='helpboxARTIST'></div>
 		<div id=helpboxSONG></div>
 		<div id=helpboxALBUM></div>
 		<div id=helpboxPL></div>

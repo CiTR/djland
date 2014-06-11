@@ -318,47 +318,80 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 /*--------CHARTING------------*/
 /*----------------------------*/
-.chartBanner
-*{
-	background-color: #004080;
+
+.charting-container{
+	width:80%;
+	margin-left: auto;
+	margin-right: auto;
+	-moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+.charting-body
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:100%;
+	height:auto;
+	min-height:30px;
+	overflow:visible;
+	position:relative;
 }
 
-.chartSong
-{ 
-	float: left;
+#charting-title, .charting-row{
+	z-index:-1;
+	display:inline-block;
+	position:relative;
+	width:960px;
+	padding-top:5px;
+}
+#charting-title{
+	background-color: #1030BE;
+	-moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+.charting-row{
+	background-color: rgba(10,10,10,.30);
+	border: 1px solid black;
+	border-width:1px 0px 0px 0px;
+	font-size: 90%;
+}
+.charting-artist,
+.charting-song,
+.charting-album,
+.charting-showname,
+.charting-date,
+.charting-cancon,
+.charting-playlist,
+.charting-status{
+	position:relative;
+	float:left;
+	display:inline-block;
+	min-width:25px;
+	min-height:25px;
+}
+.charting-artist,
+.charting-song,
+.charting-album{
+	width:175px;
+}
+.charting-showname{
 	width: 200px;
-	position:relative;
 }
-.chartArtist
-{ 
-	float: left;
-	width: 200px;
-	position:relative;
+.charting-cancon,
+.charting-playlist{
+	width:25px;
 }
-.chartAlbum
-{ 
-	float: left;
-	width: 200px;
-	position:relative;
+.charting-date{
+	width:110px;
 }
-.chartShow
-{ 
-	float: left;
-	width: 300px;
-	position:relative;
+.charting-status{
+	width:30px;
 }
-.chartDate
-{ 
-	float: left;
-	width: 150px;
-	position:relative;
-}
-.chartCC
-{
-	float: left;
-	width:35px;
-	position:relative;
-}
+
+
+
 
 /*----------------------------*/
 /*----PLAYLIST TABLE RULES----*/
@@ -431,53 +464,36 @@ table { border-collapse: collapse; }
 	position: relative;
 	top:3px;
 	}
-	.CRTCicons
-	{
+
+	.CRTCicons, 
+	.CRTCicons2,
+	.CRTCicons3,
+	.CRTCtools,
+	.CRTCtext,
+	.CRTCradios,
+	.CRTCradios2,
+	.numbering{
+		float: left;
+		position: relative;
+		text-align: center;
+	}
+	.CRTCicons, .CRTCicons2{
 		width:20px;
 		height:25px;
-		float: left;
-		position: relative;
-		text-align: center;
 		padding-left: 1px;
 		padding-right: 1px;
 		
 	}
-		.CRTCicons2
-	{
-		
-		width:20px;
-		float: left;
-		position: relative;
-		text-align: center;
-		padding-left: 1px;
-		padding-right: 1px;
-				
-	}
-	.CRTCicons3
-	{
+	.CRTCicons3{
 		top:3px;
 		width:15px;
-		float: left;
-		position: relative;
-		
-		}
-	.CRTCtools
-	{
-		
+	}
+	.CRTCtools{
 		width:60px;
-		float: left;
-		position: relative;
-		text-align: center;
-		}	
+	}	
 		
-	.CRTCtext
-	{
-		float: left;
+	.CRTCtext{
 		width: 50px;
-		position: relative;
-		text-align: center;
-			
-
 	}
 	.summaryspacer{
 		border-color:white;
@@ -486,39 +502,24 @@ table { border-collapse: collapse; }
 		line-height:0.3em;
 		
 	}
-	.langInput
-	{
-	position: relative;
-	top:2px;
-	}
-	.CRTCradios
-	{
-		float: left;
-		width: 80px;
+	.langInput{
 		position: relative;
-		text-align: center;
-		
+		top:2px;
 	}
-	.CRTCradios2
-	{
+	.CRTCradios{
+		width: 80px;
+	}
+	.CRTCradios2{
 		float: left;
 		width: 40px;
 		position: relative;
 		text-align: center;
 		
 	}
-
-
-	.numbering
-	{	
-		
+	.numbering{	
 		left:0px;
-		float: left;
 		top:2px;
-		position: relative;
 		width:25px;
-		text-align: center;
-		
 	}
 	/* SOCAN playsheet classes */
 	
@@ -575,51 +576,45 @@ table { border-collapse: collapse; }
 		position: relative;
 		width: 92px;
 	}
+	.timeBox,
+	.timeBoxHalf,
+	.timeInner,
+	.nowButton,
+	.delRow,
+	.addRow{
+		text-align: center;
+		float:left;
+		position: relative;
+	}
 	
+
 	.timeBox{
-	text-align: center;
-	float:left;
-	position: relative;
-	width: 240px;	
+		width: 240px;	
 	}
 	.timeBoxHalf{
-	text-align: center;
-	float:left;
-	position: relative;
-	width: 120px;
+		width: 120px;
 	}
 	.timeInner{
-	top:2px;
-	position: relative;
-	float:left;
-	width: 40px;
+		top:2px;
+		width: 40px;
 	}
-	.nowButton
-	{
-	float:left;
-	position: relative;
-	top:2px;
-	font-size:0.6em;
-	width:39px;	
-	height:20px;
+	.nowButton{
+		top:2px;
+		font-size:0.6em;
+		width:39px;	
+		height:20px;
 	}
-	.delRow
-	{
-	position: relative;
-	top:2px;
-	height:20px;
-	font-size:0.9em;
-	width:25px;
-
+	.delRow{
+		top:2px;
+		height:20px;
+		font-size:0.9em;
+		width:25px;
 	}
-	.addRow
-	{
-	position: relative;
-	top:2px;
-	height:20px;
-	font-size:0.9em;
-	width:25px;
-
+	.addRow{
+		top:2px;
+		height:20px;
+		font-size:0.9em;
+		width:25px;
 	}
 /* Area below playsheet li area */	
 	
@@ -1215,248 +1210,99 @@ table#spokenwordtable {
 height:60px;
 width:300px;
 }
+#samAds{
+	display:inline-block;
+	margin-left:auto;
+	margin-right:auto;
+	width:70%;
+	height:auto;
+	min-height:30px;
+	overflow:visible;
+	position:relative;
+}
+.samrow{
+	display:inline-block;
+	width:100%;
+	height:25px;
+	padding:5px;
+	background-color: rgba(10,10,10,.30);
+}
+.samtitleh,.samplayedh{
+	font-size:2em;
+	position:relative;
+	display:inline-block;
+	float:left;
+	width:50%;
+}
+.samtitle,.samplayed{
+	position:relative;
+	display:inline-block;
+	float:left;
+	width:50%;
+}
 
-div#helpbox{
-	font-size: 0.8em;
-display:none;
-width:200px;
-height:100px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+	#helpbox,
+	#copybox,
+	#helpboxARTIST,
+	#helpboxALBUM,
+	#helpboxSONG,
+	#helpboxPL,
+	#helpboxCC,
+	#helpboxFE,
+	#helpboxINST,
+	#helpboxPART,
+	#helpboxHIT,
+	#helpboxCRTC,
+	#helpboxLANG,
+	#helpboxTOOLS,
+	#helpboxGUEST,
+	#helpboxAD{	
+		font-size: 0.8em;
+		display:none;
+		position:absolute;
+		background-color: beige;
+		color:black;
+		border-style: solid;
+		border-width: 2px;
+		border-color: grey;
+		text-align: left;
+		z-index: 11;
+		padding:6px;
+	}
+div#helpbox,div#helpboxCC,div#helpboxFE{
+	width:200px;
+	height:100px;
 }
 
 div#copybox{
-font-size: 0.8em;
-display:none;
-width:40px;
-height:20px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
+	width:40px;
+	height:20px;
 }
 /* HELP BOX CODE */
-div#helpboxARTIST{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:15px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+div#helpboxARTIST,div#helpboxSONG,div#helpboxLANG{
+	width:200px;
+	height:15px;
 }
 div#helpboxALBUM{
-font-size: 0.8em;
-display:none;
-width:300px;
-height:150px;
-top:-50px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+	width:300px;
+	height:150px;
+	top:-50px;
 }
-div#helpboxSONG{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:15px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxPL{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:50px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxCC{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:100px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxFE{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:100px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+div#helpboxPL,div#helpboxTOOLS,div#helpboxGUEST,div#helpboxAD{
+	width:200px;
+	height:50px;
 }
 div#helpboxINST{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:30px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+	width:200px;
+	height:30px;
 }
-div#helpboxPART{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:60px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxHIT{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:60px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+div#helpboxPART,div#helpboxHIT{
+	width:200px;
+	height:60px;
 }
 div#helpboxCRTC{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:90px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxLANG{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:15px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxTOOLS{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:50px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxGUEST{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:50px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
-}
-div#helpboxAD{
-font-size: 0.8em;
-display:none;
-width:200px;
-height:50px;
-position:absolute;
-background-color: beige;
-color:black;
-border-style: solid;
-border-width: 2px;
-border-color: grey;
-text-align: left;
-z-index: 11;
-padding:6px;
+	width:200px;
+	height:90px;
 }
 
 
