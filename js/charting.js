@@ -5,11 +5,17 @@ $(document).ready ( function() {
 function loadCharts(){
 		$('#loadbar').show();
 		var today = new Date(); //get the current day
-		var from_ = today.getDate() - today.getDay() + 4 -14; //two fridays ago
+		var from_ = today.getDate() - today.getDay() + 5 -14; //two fridays ago
 		
-		var to_ = today.getDate() - today.getDay() + 3 - 7; //last thursday
-		if(today.getDay() >= 4){
-			to_ = today.getDate() - today.getDay() +3;
+		var to_; 
+		if(today.getDay() == 4){
+			to_ = today.getDate(); //today is thursday
+		}
+		else if(today.getDay > 4){
+			to_ = today.getDate() - today.getDay() + 4; //last thursday in this week 
+		}
+		else{
+			to_ = today.getDate() - today.getDay() + 4 - 7; //last thursday
 		}
 		var from = new Date(today.setDate(from_)).toUTCString();
 		today = new Date(); //get the current day
