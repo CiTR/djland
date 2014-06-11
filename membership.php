@@ -283,12 +283,12 @@ else if(is_member("membership")){?>
 	<?php 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
 	<INPUT TYPE=text NAME=searchdesc>
-	<INPUT TYPE=submit VALUE=\"Basic Search\">
+	<INPUT TYPE=submit VALUE="Basic Search">
 	</FORM></CENTER>
 
 	<?php printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
-	<INPUT TYPE=submit VALUE=\"All Members\">
+	<INPUT TYPE=submit VALUE="All Members">
 	</FORM></CENTER>
 
 	<?php printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
