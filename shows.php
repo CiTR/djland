@@ -156,7 +156,7 @@ if(is_member("addshow")) {
 		}
 		else {
 			$insert_q = "INSERT INTO `shows` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
-			if (mysqli_query($db,$insert_q) ) echo "show created";
+			if (mysqli_query($db,$insert_q) ) echo "show created <br/>";
 				else echo "there was an error";
 //			echo "inserted: ".$insert_q;
 			$ed = mysqli_insert_id($db);
@@ -460,17 +460,17 @@ if(is_member("addshow")) {
 	// LISTING INACTIVE SHOWS --------
 	else if(isset($_GET['action']) && $_GET['action'] == 'list' ) {
 	?>
-		<div class=containerTracklist>
+		<div class=buttonContainer>
 			<div class=nav>
 				<ul>
 					<li><a href=?action=add>Add New Show</a></li>
 				</ul>
 			</div>
 		</div>
-		<div class=containerTracklist>
+		<div class=buttonContainer>
 			<div class=nav>
 				<ul>
-					<li><a href=?action=list>Hide Inactive Shows</a></li>
+					<li><a href=shows.php>Hide Inactive Shows</a></li>
 				</ul>
 			</div>
 		</div>
@@ -493,8 +493,26 @@ if(is_member("addshow")) {
 	}
 	// DEFAULT ACTION: LISTING ONLY ACTIVE SHOWS --------
 	else {
-		echo "<br><table class=menu border=0 align=center><tr>
-		<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr><tr><td class=\"menu\"><a href=\"?action=listi\">&nbsp;Show Inactive Shows&nbsp;</a></td></tr></table>";
+	//	echo "<br><table class=menu border=0 align=center><tr>
+	//	<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr><tr><td class=\"menu\"><a href=\"?action=listi\">&nbsp;Show Inactive Shows&nbsp;</a></td></tr></table>";
+
+		echo "<div class=buttonContainer>
+					<div class=nav>
+						<ul>
+							<li><a href=?action=add>Add New Show</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class=buttonContainer>
+					<div class=nav>
+						<ul>
+							<li><a href=?action=list>Show Inactive Shows</a></li>
+						</ul>
+					</div>
+				</div>";
+
+
+
 
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
 		<INPUT type=hidden name=action value=edit>

@@ -504,12 +504,12 @@ $adLib = new AdLib($mysqli_sam,$db);
 			
 	if($ps_id && $_GET['action'] != 'datadump') {
 		// VIEW IS NOT RAW DATA
-		printf("<br><div class=containerTracklist>");
+		printf("<br><div class=buttonContainer>");
 		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 	else if ($ps_id){
 		// VIEW IS RAW DATA
-		printf("<br><div class=containerTracklist>");
+		printf("<br><div class=buttonContainer>");
 		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>",$ps_id);
 	}	
 
