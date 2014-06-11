@@ -1,4 +1,6 @@
+
 <?php
+
 session_start();
 require("headers/config.php");
 require("headers/security_header.php");
@@ -105,7 +107,7 @@ else if(isset($_GET['action']) && $_GET['action'] == 'list') {
 				</ul>
 			</div>
 		</div>
-		<?
+		<?php 
 	}	
 
 	if(is_member("adduser")) {
@@ -226,3 +228,4 @@ else {
 printf("</body></html>");
 
 ?>
+

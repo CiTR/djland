@@ -149,7 +149,6 @@ class AdLib {
 		
 	}
 	
-	
 // LOADS ADS FROM DATABASE IF THEY HAVE BEEN SCHEDULED
 
 	function getAdNameFromID($id){
@@ -168,8 +167,6 @@ class AdLib {
 			else return false;
 		} else return false;
 	}
-	
-	
 	
 	function playAd($ad){
 		

@@ -3,3 +3,5 @@ headers/config.php
 *.sublime-workspace
 static
 web.config
+logs/log.html
+
