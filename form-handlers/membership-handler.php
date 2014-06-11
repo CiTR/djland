@@ -1,11 +1,32 @@
 <?
 require("../headers/db_header.php");
 require("../headers/function_header.php");
-if(isset($_POST['submenu_value'])){
-	$submenu = $_POST['submenu_value'];
+$value = null;
+$filter = null;
+
+if(isset($_POST['value'])){
+	$value = $_POST['value'];
+	if(isset($_POST['filter'])){
+		$filter = $_POST['filter'];
+	}
 }
 
-$query = "SELECT * FROM membership WHERE last_paid >= '2011' ORDER BY lastname DESC" ;
+switch($value){
+	case 'search':
+		if($filter!= null){
+			$query = "SELECT * FROM membership WHERE lastname LIKE '%".$filter."%' OR firstname LIKE '%".$filter."%' ORDER BY lastname DESC";
+		}
+		else{
+			$query = "SELECT * FROM membership ORDER BY lastname DESC";
+		}
+		break;
+	default:
+		break;
+}
+
+
+
+
 if($result = $db->query($query)){
 	$members=array();
 	while($row = mysqli_fetch_array($result)){
