@@ -15,8 +15,8 @@ require_once("headers/db_header.php");
 require_once('headers/config.php');
 date_default_timezone_set($station_info['timezone']);
 
-
 if ($result_sam = $mysqli_sam->query("SELECT * FROM historylist WHERE songtype='S' order by date_played desc LIMIT ".HISTORY_COUNT)) {
+
  //   printf("Select returned %d rows.\n", $result->num_rows);
 
 	
@@ -59,10 +59,10 @@ echo '<span id="durSec" class="invisible">'.$durSec.'</span>';
 echo '<span id="pmCheck" class="invisible">'.$pmCheck.'</span>';
 //if ($result_citr = $db->query("SELECT cancon,femcon FROM library WHERE catalog=".$catalog)) {
 
-if ($result_citr = $db->query("SELECT cancon,femcon FROM library WHERE catalog=".$catalog)) {	
+if ($result_citr = $db->query("SELECT cancon,femcon,info FROM library WHERE catalog=".$catalog)) {	
 	
 $content = $result_citr->fetch_array();
-echo '<span id="cancon" class="invisible">'.$content['cancon'].'</span><span id="femcon" class="invisible">'.$content['femcon'].'</span>';
+echo '<span id="cancon" class="invisible">'.$content['cancon'].'</span><span id="femcon" class="invisible">'.$content['femcon'].'</span><span id="songCategory" class="invisible">'.$content['info'].'</span>';
 $result_citr->close();
 }
 
