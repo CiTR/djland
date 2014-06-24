@@ -6,7 +6,12 @@ function loadCharts(){
 		$('#loadbar').show();
 		var today = new Date(); //get the current day
 		var from_ = today.getDate() - today.getDay() + 5 -14; //two fridays ago
-		
+		var start = today.getDate() - today.getDay();
+		var friday = today.getDate() - today.getDay() + 5;
+		var last_friday = today.getDate() - today.getDay() + 5 -7;
+		console.log("start of week is: "+ start);
+		console.log("this friday is: "+ friday);
+		console.log("one friday ago is: "+ last_friday);
 		var to_; 
 		if(today.getDay() == 4){
 			to_ = today.getDate(); //today is thursday
@@ -46,7 +51,7 @@ function loadCharts(){
 				if(data[$j].is_pl==true){
 					$('#charting-playlist'+$j).append('<img src=images/PL.png>');
 				}
-				if(data[$j].status==2){
+				if(data[$j].status==1){
 					$('#charting-status'+$j).append('Draft')
 				}
 			}
