@@ -30,10 +30,11 @@ function loadSamAds(from,to){
 		$('.samrow').each( function(){
 			$(this).remove();
 		});
+		var adname = $('#adname').val();
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/samAds-handler.php",
-			data: {"from":from,"to":to},
+			data: {"from":from,"to":to,"adname":adname},
 			dataType: "json"
 		}).success(function(data) {
 			$('#samAds').show();
