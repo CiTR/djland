@@ -27,6 +27,7 @@
 		<?php print_menu2(); 
 		$today = date('m/d/Y');?>
 		<center><br/><br/><br/><br/>
+		<input id='adname' onfocus="this.value=''" value='Enter an ad name' maxlength='15'></input>
 		<label for="from">Start Date: </label>
 		<input type="text" id="from" name="from" value="<?=$today ?>"/>
 			
