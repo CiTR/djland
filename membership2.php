@@ -25,7 +25,8 @@
 	</head>
 	<body>
 		<?php print_menu2();
-		membership_menu(); ?>
+		membership_menu(); 
+		 ?>
 		<div id='membership' >
 		</div>
 	</body>

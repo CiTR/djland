@@ -142,8 +142,8 @@ require('config.php');
 ?>
 <ul id ='tab-nav'>
 	<li class = 'nodrop active-tab member_action' value='init'>Search Members</li>
-	<li class = 'nodrop inactive-tab member_action' value='add'>Add Member</li>
-	<li class = 'nodrop inactive-tab member_action' value='remove'>Remove Member</li>
+	<li class = 'nodrop inactive-tab member_action' value='view'>View Member</li>
+	<li class = 'nodrop inactive-tab member_action' value='report'>Report</li>
 	<li class = 'nodrop inactive-tab member_action' value='email'>Send Emails</li>
 </ul> 
 

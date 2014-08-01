@@ -4,10 +4,11 @@ $(document).ready ( function() {
 	manage_members('init');
 	add_handlers();
 	
+	
 });
 
 function add_handlers(){
-	$('.member_action').click( function () {
+	$('.member_action').unbind().click( function () {
 		console.log("member_action");
 		var action = $(this).attr('value');
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
@@ -15,13 +16,13 @@ function add_handlers(){
 		manage_members(action);
 	});
 	
-	$('.member_submit').click( function () {
+	$('.member_submit').unbind().click( function () {
 		console.log("member_submit");
 		var action = $(this).attr('name');
 		switch(action){
 			case 'search':
 				var filter= document.getElementById("search_value").value;
-				manage_members(action,filter);
+				manage_members(action,null,filter);
 				break;
 			case 'add':
 				var submit_name= document.getElementById("submit_name").value;
@@ -42,15 +43,18 @@ function add_handlers(){
 		}
 	});
 }
-function manage_members(value_,filter_){
+function manage_members(value_,type_,filter_){
 		
 		//Values: 1 => Search Members, 2 => Add Member, 3 => Delete Member, 4=> Email Members 
 		var value = null;
+		var type = null;
 		var filter = "";
 		if(value_){
 			value = value_;
 		}
-		
+		if(type_){
+			type = type_;
+		}
 		if(filter_){
 			filter = filter_;
 		}		
@@ -64,6 +68,7 @@ function manage_members(value_,filter_){
 			case 'search':
 				console.log('Search');
 				document.getElementById("member_result").innerHTML = " ";
+				
 				$.ajax({
 				type:"POST",
 				url: "form-handlers/membership-handler.php",
@@ -76,17 +81,18 @@ function manage_members(value_,filter_){
 				}).fail(function(){
 					$('#membership').html('connection error');
 				});
+				
 				add_handlers();
 				break;
 				
-			case 'add': // Add Member
-				console.log('Add Member');
+			case 'view': // Add Member
+				console.log('View Member');
 				document.getElementById("membership").innerHTML = " ";
 				$('#membership').append('<input id="submit_name" type="text" value="Enter a name" ></input><button class="member_submit" name="add">Add Member</button>');
 				add_handlers();
 				break;
-			case 'remove':
-				console.log('Remove Member');
+			case 'report':
+				console.log('Report Member');
 				document.getElementById("membership").innerHTML = " ";
 				$('#membership').append('<input  id="submit_name" type="text" value = "Enter a name"></input><button class="member_submit" name="remove">Remove Member</button>');
 				add_handlers();
