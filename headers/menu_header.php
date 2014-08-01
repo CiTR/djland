@@ -135,6 +135,7 @@ require('config.php');
 			</div>
 		</li>
 	</ul>
+
 <?php } 
 
 function membership_menu(){

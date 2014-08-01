@@ -128,7 +128,6 @@ foreach($showList as $i => $v){
 			
 			//SHOW LENGTH:
 			//		$duration = showBlock::getShowBlockLength($showBlocks[$i]);
-	 		echo $thisID;
 				foreach($adsLogged[$thisID] as $x => $y){
 					
 					if (is_numeric($y['name']) ){

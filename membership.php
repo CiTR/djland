@@ -280,18 +280,18 @@ else if(is_member("membership")){ ?>
 		<div class=nav><ul><li><a href=membership.php?action=add>Add New Member</a></li></ul></div></div>
 
 	<br><table align=center class=playsheet><tr><td><center><br><h1>Search Membership</h1></center>
-	<? 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+	<?php 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
 	<INPUT TYPE=text NAME=searchdesc>
 	<INPUT TYPE=submit VALUE="Basic Search">
 	</FORM></CENTER>
 
-	<? printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+	<?php printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
 	<INPUT TYPE=submit VALUE="All Members">
 	</FORM></CENTER>
 
-	<? printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+	<?php printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
 
 	<table border=0 align=center><tr><td align=left nowrap>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
