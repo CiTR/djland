@@ -183,78 +183,79 @@ if(!isset($show_id)){
 }
 
 	for($i=0; $i < $playlist_entries; $i++) {
-//		mysqli_query($db, "INSERT INTO `playitems` (playsheet_id, show_id, song_id, format_id, is_playlist, is_canadian, is_yourown, is_indy, is_fem, show_date) VALUES ('$ps_id', '$show_id', '".fget_song_id($_POST['artist'.$i], $_POST['title'.$i], $_POST['song'.$i])."', '".$fformat_id[$_POST['format'.$i]]."', '".(isset($_POST['pl'.$i])?1:0)."', '".(isset($_POST['cc'.$i])?1:0)."', '".(isset($_POST['yo'.$i])?1:0)."', '".(isset($_POST['indy'.$i])?1:0)."', '".(isset($_POST['fem'.$i])?1:0)."', '$show_date')");
-/*abcd*/		$cat = 12;	
-if($SOCAN_FLAG)
-{
-//$insert_song_start_day = $_POST['set_song_start_day'.$i];
-$insert_song_start_hour = $_POST['set_song_start_hour'.$i];
-$insert_song_start_minute = $_POST['set_song_start_minute'.$i];
-//$insert_song_start_second = $_POST['set_song_start_second'.$i];
-$insert_song_length_minute = $_POST['set_song_length_minute'.$i];
-$insert_song_length_second = $_POST['set_song_length_second'.$i];
-$insert_background = isset($_POST['background'.$i])?1:0;
-$insert_theme = isset($_POST['theme'.$i])?1:0;
-}
+		//		mysqli_query($db, "INSERT INTO `playitems` (playsheet_id, show_id, song_id, format_id, is_playlist, is_canadian, is_yourown, is_indy, is_fem, show_date) VALUES ('$ps_id', '$show_id', '".fget_song_id($_POST['artist'.$i], $_POST['title'.$i], $_POST['song'.$i])."', '".$fformat_id[$_POST['format'.$i]]."', '".(isset($_POST['pl'.$i])?1:0)."', '".(isset($_POST['cc'.$i])?1:0)."', '".(isset($_POST['yo'.$i])?1:0)."', '".(isset($_POST['indy'.$i])?1:0)."', '".(isset($_POST['fem'.$i])?1:0)."', '$show_date')");
+		/*abcd*/		$cat = 12;	
+		if($SOCAN_FLAG)
+		{
+		//$insert_song_start_day = $_POST['set_song_start_day'.$i];
+		$insert_song_start_hour = $_POST['set_song_start_hour'.$i];
+		$insert_song_start_minute = $_POST['set_song_start_minute'.$i];
+		//$insert_song_start_second = $_POST['set_song_start_second'.$i];
+		$insert_song_length_minute = $_POST['set_song_length_minute'.$i];
+		$insert_song_length_second = $_POST['set_song_length_second'.$i];
+		$insert_background = isset($_POST['background'.$i])?1:0;
+		$insert_theme = isset($_POST['theme'.$i])?1:0;
+		}
 
- 
-$insert_artist = $_POST['artist'.$i];
-$insert_album = $_POST['album'.$i];
-$insert_song = $_POST['song'.$i];
-$insert_songID = fget_song_id($insert_artist,$insert_album,$insert_song);
-$insert_pl = isset($_POST['pl'.$i])?1:0;
-$insert_cc = isset($_POST['cc'.$i])?1:0;
-$insert_fem = isset($_POST['fem'.$i])?1:0;
-$insert_crtc = $_POST['crtc'.$i];
-$insert_lang = addslashes($_POST['lang'.$i]);
-$insert_part = isset($_POST['part'.$i])?1:0;
-$insert_inst = isset($_POST['inst'.$i])?1:0;
-$insert_hit = isset($_POST['hit'.$i])?1:0;
+		 
+		$insert_artist = $_POST['artist'.$i];
+		$insert_album = $_POST['album'.$i];
+		$insert_song = $_POST['song'.$i];
+		$insert_songID = fget_song_id($insert_artist,$insert_album,$insert_song);
+		$insert_pl = isset($_POST['pl'.$i])?1:0;
+		$insert_cc = isset($_POST['cc'.$i])?1:0;
+		$insert_fem = isset($_POST['fem'.$i])?1:0;
+		$insert_crtc = $_POST['crtc'.$i];
+		$insert_lang = addslashes($_POST['lang'.$i]);
+		$insert_part = isset($_POST['part'.$i])?1:0;
+		$insert_inst = isset($_POST['inst'.$i])?1:0;
+		$insert_hit = isset($_POST['hit'.$i])?1:0;
 
-if($SOCAN_FLAG)
-{
-$insert_composer = $_POST['composer'.$i];
-$update_query = "UPDATE songs SET composer = '$insert_composer' WHERE id='$insert_songID'";
-if(mysqli_query($db, $update_query))
-{
-} else 
-echo 'update composer unsuccessful<br/>';
-}
+		if($SOCAN_FLAG)
+		{
+		$insert_composer = $_POST['composer'.$i];
+		$update_query = "UPDATE songs SET composer = '$insert_composer' WHERE id='$insert_songID'";
+		if(mysqli_query($db, $update_query))
+		{
+		} else 
+		echo 'update composer unsuccessful<br/>';
+		}
 
-
-if($SOCAN_FLAG){
-$insert_query = "INSERT INTO `playitems` ".
-				"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit, is_background, is_theme, insert_song_start_hour, insert_song_start_minute,  insert_song_length_minute, insert_song_length_second)".
-		"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit', '$insert_background','$insert_theme','$insert_song_start_hour',  '$insert_song_start_minute', '$insert_song_length_minute',  '$insert_song_length_second')";
-}
-else
-{
-$insert_query = "INSERT INTO `playitems` ".
-				"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)".
-		"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit')";
-}
-
-		if(	mysqli_query($db, $insert_query) ){
-			if($insert_cc==1) {
-				echo "<font color=red>";
-			}
-			else {
-				echo "<font color=white>";
-			}
+		if( isset($_POST['artist'.$i]) && isset($_POST['album'.$i]) && isset( $_POST['song'.$i])){
 			if($SOCAN_FLAG){
-				echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) . "-" . html_entity_decode($insert_composer) ;
+			$insert_query = "INSERT INTO `playitems` ".
+							"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit, is_background, is_theme, insert_song_start_hour, insert_song_start_minute,  insert_song_length_minute, insert_song_length_second)".
+					"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit', '$insert_background','$insert_theme','$insert_song_start_hour',  '$insert_song_start_minute', '$insert_song_length_minute',  '$insert_song_length_second')";
 			}
-			else{
-				echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) ;
+			else
+			{
+			$insert_query = "INSERT INTO `playitems` ".
+							"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)".
+					"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit')";
 			}
-			echo "</font><br/>";
-	
-		} else { 
-			echo "A database error occurred, please contact technical services.";
-			$log_me = 'playsheet.php - there was a problem with the insert query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
-			$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>insert_query:'.$insert_query.'<hr>';
-			$log_file = 'logs/log.html';
-			file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+
+			if(	mysqli_query($db, $insert_query) ){
+				if($insert_cc==1) {
+					echo "<font color=red>";
+				}
+				else {
+					echo "<font color=white>";
+				}
+				if($SOCAN_FLAG){
+					echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) . "-" . html_entity_decode($insert_composer) ;
+				}
+				else{
+					echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) ;
+				}
+				echo "</font><br/>";
+		
+			} else { 
+				echo "A database error occurred, please contact technical services.";
+				$log_me = 'playsheet.php - there was a problem with the insert query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>insert_query:'.$insert_query.'<hr>';
+				$log_file = 'logs/log.html';
+				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+			}
 		}
 
 	}

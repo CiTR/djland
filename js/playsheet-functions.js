@@ -554,11 +554,17 @@ function showStatus(status, delay){
 			$(targetDurMinId).val(durMin);
 			$(targetDurSecId).val(durSec);
 		}
-		
-		if ( songCategory.indexOf("ategory") !== -1){ // only if the string contains 'ategory' (don't want to worry about capital C or not
+		if(songCategory != null){
+			if ( songCategory.indexOf("ategory") != -1){ // only if the string contains 'ategory' (don't want to worry about capital C or not
 			songCategory = songCategory.replace(/\D/g,''); // strip all non numeric digits
+			console.log(songCategory);
 			setCRTC(songCategory,tempRowNum);
-		} 
+			}
+		}
+		else{
+			console.log("category was null for: " + htmlDecode(song));
+		}
+		
 }
 
 	function loadTheRange(){
