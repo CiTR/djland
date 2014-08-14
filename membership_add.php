@@ -1,10 +1,3 @@
-<?php
-session_start();
-require("headers/config.php");
-require("headers/security_header.php");
-require("headers/function_header.php");
-
-?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -136,10 +129,10 @@ require("headers/function_header.php");
 				</div>
 
 				<div id='row3 'class='containerrow'>
-					<div class='col5'>Home Phone Number:</div>
-					<div class='col5'><input id='phone' name='phone' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
-					<div class='col5'>Cell Phone Number:</div>
-					<div class='col5'><input id='cellphone' name='cellphone0' placeholder='Cell Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col5'>Primary Phone Number:</div>
+					<div class='col5'><input id='phone' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col5'>Other Phone Number:</div>
+					<div class='col5'><input id='cellphone' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 				</div>
 
 				<hr>

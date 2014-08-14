@@ -41,4 +41,7 @@
 	$about = getPost('about');
 	$skills = getPost('skills');
 
+	$insert_membership = "INSERT INTO membership ('firstname','lastname','canadian_citizen','address','city')
+	$insert_user = "INSERT INTO user ('username','".password_hash('password',PASSWORD_DEFAULT)."',
+
 ?>
