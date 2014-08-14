@@ -39,7 +39,7 @@ $(document).ready ( function() {
 	var firstname = getVal('firstname');
 	var lastname = getVal('lastname');
 	var email = getVal('email');
-	var phone = getVal('phone');
+	var phone1 = getVal('phone1');
 	var faculty = getSelect('faculty');
 	var member_type = getSelect('member_type');
 	var gender = getSelect('gender');
@@ -50,7 +50,7 @@ $(document).ready ( function() {
 	$.ajax({
 			type:"POST",
 			url: "form-handlers/membership-add-handler.php",
-			data: {"username":getVal('username'),"password":getVal('password'),"firstname":getVal('firstname'),"lastname":getVal('lastname'),"email":getVal('email'),"phone":getVal("phone"),"cellphone":getVal('cellphone'),"member_type":getSelect("member_type")},
+			data: {"username":getVal('username'),"password":getVal('password'),"firstname":getVal('firstname'),"lastname":getVal('lastname'),"email":getVal('email'),"primary_phone":getVal("phone1"),"secondary_phone":getVal('phone2'),"member_type":getSelect("member_type")},
 			dataType: "json"
 		}).success(function(data) {
 			
