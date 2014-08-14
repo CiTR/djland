@@ -274,7 +274,7 @@ echo 	'<tr align=right><td>First Name: </td><td align=left><INPUT SIZE=20 TYPE=t
 <?php
 	}	
 }
-else if(is_member("membership")){?>
+else if(is_member("membership")){ ?>
 	<br>
 	<div class=containerTracklist>
 		<div class=nav><ul><li><a href=membership.php?action=add>Add New Member</a></li></ul></div></div>

@@ -16,6 +16,7 @@ $SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
 
+
 	$SOCAN_FLAG = true;
 } else {
 	$SOCAN_FLAG = false;
@@ -611,17 +612,17 @@ if (count($matches)>1){
 			printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		}
 		?>
-		<INPUT type=hidden id='psid' name=id value= <?=$ps_id ?>>
+		<INPUT type=hidden id='psid' name=id value= <?php echo $ps_id; ?>>
 		<center><h1>DJ PLAYSHEET</h1></center>
 		<table border=0 align=center width=100%%><tr><td>Show Type:
 		<?php if( isset($loaded_type) && ($loaded_type != null) ){ ?>
-		<select id='type' name='type' value=".$loaded_type."><option selected><?=$loaded_type ?></option>
+		<select id='type' name='type' value=".$loaded_type."><option selected><?php echo $loaded_type; ?></option>
 		<?php } 
 		else if(isset($showtype) && ($showtype != null)){ ?>
-		<select id='type' name='type' value=".$showtype."><option selected> <?=$showtype ?> </option>		
+		<select id='type' name='type' value=".$showtype."><option selected> <?php echo $showtype; ?> </option>		
 		<?php }
 		else{ ?>
-		<select id='type' name='type' value="1"><option selected>Live</option>
+		<select id='type' name='type' ><option selected>Live</option>
 		<?php
 		}
 		?>
@@ -693,22 +694,22 @@ if (count($matches)>1){
 		?>
 		</SELECT>]
 		</td></tr><tr align=center width=400px>
-		<td>CRTC Category:<input type='text' id=pl_crtc name=pl_crtc value=<?=$crtc_pl?>>
+		<td>CRTC Category:<input type='text' id=pl_crtc name=pl_crtc value=<?php echo $crtc_pl; ?>>
 		</td>
 		
-		<td align=right colspan=2>Language:<input type='text' id=pl_lang name=pl_lang value=<?=$lang_pl?>>		
+		<td align=right colspan=2>Language:<input type='text' id=pl_lang name=pl_lang value=<? echo $lang_pl ?>>		
 		<td/><tr/></table>
 		
 		<img src='images/loading.gif' id='ps-loading-image'>
 		</span>
 		
 		<!-- main interface table -->
-		<span id='draft'><?if($loaded_status==1):?>(draft)<?endif;?></span>
+		<span id='draft'><?php if($loaded_status==1):?>(draft)<?php endif;?></span>
 	
 		<br><table class='dragrows' id='playsheet-table'>
-		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?=$playlist_entries?>'>
+		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?php echo $playlist_entries; ?>'>
 		<input type='text' id='numberOfAdRows' name='numberOfAdRows' class='invisible'>
-		<input type='text' id='unixTime' name='unixTime' class='invisible' value='<?=$unix_start_time?>'>
+		<input type='text' id='unixTime' name='unixTime' class='invisible' value='<?php echo $unix_start_time; ?>'>
 		<input type='text' id='status' name='status' class='invisible' >
 		<input type='text' id='star' name='star' class='invisible' >	
 		<h2>Music</h2>	

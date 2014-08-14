@@ -53,9 +53,6 @@ input, select, textarea, option{
     margin:30px auto 0px auto;
     height:43px;
     padding:0px 20px 0px 20px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
     background: #A4A4A4;
     background: -moz-linear-gradient(top, #3434A4, #1030BE);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
@@ -64,21 +61,48 @@ input, select, textarea, option{
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-#nav li{
+#nav{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+#tab-nav{
+	list-style:none;
+    width:940px;
+    margin:0px auto 0px auto;
+    min-height:35px;
+    height:auto;
+}
+
+
+#nav li, #tab-nav li{
 	float:left;
 	position:relative;
 	padding: 4px 10px 4px 10px;
-	}
-	
-#nav li{
-	float:left;
-	position:relative;
 	text-align:center;
-	
 	margin-right:30px;
 	margin-top:7px;
 	border:none;
 }
+
+#tab-nav li{
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+   	border-radius: 5px 5px 0px 0px;
+
+}
+.active-tab{
+    background: #A4A4A4;
+    background: -moz-linear-gradient(top, #A4A4A4, grey);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#A4A4A4), to(grey));
+    border-width: 0px 0px 0px 0px;
+}
+.inactive-tab{
+	background: #A4A4A4;
+    background: -moz-linear-gradient(top, #3434A4, #1030BE);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
+}
+	
 #nav li:hover{
 	border: 1px solid #555555;
     padding: 4px 9px 4px 9px;
@@ -87,7 +111,7 @@ input, select, textarea, option{
     -webkit-border-radius: 5px 5px 0px 0px;
     border-radius: 5px 5px 0px 0px;
 }
-#nav .nodrop,.drop {
+#nav .nodrop,.drop, #tab-nav .nodrop,.drop {
 	right:8px;
 }
 #nav .nodrop:hover {
@@ -98,13 +122,12 @@ input, select, textarea, option{
 	top:auto;
 	left:auto;
 }
-#nav .drop:hover {
+#nav .drop:hover{
 	right: 7px;
 	top:auto;
 	left:auto;
 }
-#nav li a{ 
-    color: #EEEEEE;
+#nav li a, #tab-nav li a{ 
     display:block;
     outline:0;
     text-decoration:none;
@@ -113,6 +136,11 @@ input, select, textarea, option{
 #nav li:hover a {
     color:#161616;
     text-shadow: 1px 1px 1px #FFFFFF;
+	background:none;
+}
+#tab-nav li:hover a{
+	color:white;
+	text-decoration: none;
 	background:none;
 }
 
@@ -173,12 +201,12 @@ input, select, textarea, option{
     top:auto;
 }
 
-#nav li ul {
+#nav li ul, #tab-nav li ul {
     list-style:none;
     padding:0;
     margin:0 0 12px 0;
 }
-#nav li ul li {
+#nav li ul li, #tab-nav li ul li {
     font-size:12px;
     line-height:24px;
     position:relative;
@@ -189,7 +217,7 @@ input, select, textarea, option{
     text-align:left;
     width:130px;
 }
-#nav li ul li:hover {
+#nav li ul li:hover, #tab-nav li ul li:hover {
     background:none;
     border:none;
     padding:0;
@@ -391,7 +419,116 @@ table { border-collapse: collapse; }
 }
 
 
-
+/*----------------------------*/
+/*----MEMBERSHIP CSS RULES----*/
+/*----------------------------*/
+div#username_ok.green,div#password_ok.green,button#submit_user.green{
+	background-color:#00FF00;
+	color:black;
+}
+button#submit_user.red{
+	background-color:#FF0000;
+	color:black;
+}
+#username_ok,#password_ok{
+	position:absolute;
+	padding-left:-10px;
+	display:inline;
+	width:150px;
+	z-index:2;
+	background-color:#FF0000;
+	color:white;
+	overflow:hidden;
+	text-align:left;
+}
+#membership{
+	width:916px;
+	background-color: grey;
+	height:auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:-1px;
+	margin-bottom:25px;
+}
+#member_result{
+	overflow: auto;
+	max-height:570px;
+}
+#container{
+	height:auto;
+	padding-left:10px;
+	width:95%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:25px;
+}
+#row6{
+	display:inline-block;
+}
+.containerrow{
+	display:inline-block;
+	width:100%;
+	overflow:visible;
+	margin-bottom:2px;
+}
+.col1,.col2,.col3,.col4,.col5,.col6,.col7{
+	display:inline-block;
+	position:relative;
+	float:left;
+	text-align:right;
+	height:auto;
+	left:2px;
+	overflow:visible;
+}
+div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
+	max-width:140px;
+}
+.col1{
+	width:100%;
+}
+.col2{
+	width:50%;
+}
+.col3{
+	width:33%;
+}
+.col4{
+	width:25%;
+}
+.col5{
+	width:20%;
+}
+.col6{
+	width:16.66%;
+}
+.col7{
+	width:14.28%;
+}
+.span5col6{
+	width:83.33%;
+	float:right;
+}
+.smalltext{
+	top:3px;
+	font-size:70%;
+}
+.largeinput{
+	width:66.4%;
+	max-width:83%;
+	height:100px;
+	max-height:100px;
+}
+.memlabel{
+	padding-left:15px;
+}
+#submit_user{
+	height:30px;
+	width:150px;
+	color:black;
+    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
+}
 
 /*----------------------------*/
 /*----PLAYLIST TABLE RULES----*/
@@ -442,8 +579,6 @@ table { border-collapse: collapse; }
 		text-align: center;
 		position: relative;
 		width: 175px;
-		
-
 	}
 	.inputboxes input{
 		height:1.5em;

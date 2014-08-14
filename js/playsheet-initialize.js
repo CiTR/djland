@@ -47,12 +47,12 @@
 	$('#type').change( function(){
 		console.log('type value is '+$('#type').val());
 		if ($('#type').val() == 'Rebroadcast'){
-		$('#select-playsheet').show();
-		$('#select-playsheet').children().show();
-		$('#load-playsheet').show();
+			$('#select-playsheet').show();
+			$('#select-playsheet').children().show();
+			$('#load-playsheet').show();
 		} else {
-		$('#select-playsheet').hide();
-		$('#load-playsheet').hide();
+			$('#select-playsheet').hide();
+			$('#load-playsheet').hide();
 		}		
 	
 	});
