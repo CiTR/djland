@@ -1,6 +1,5 @@
 <?php
 //SECURITY HEADER
-
 require("db_header.php");
 require("login_header.php");
 
