@@ -13,14 +13,14 @@ if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
 }
 //if logged in send them on their merry way
 else if(is_logged_in()) {
-	//header("Location: main.php"); //Stupid IIS Bug
-	printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+	header("Location: main.php"); //Stupid IIS Bug
+	//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 }
 //check for cookies or logging in...
 else if(isset($_POST['login']) && isset($_POST['password'])) {
 	if(login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']) ? true : false)) {
-		//header("Location: main.php"); //Stupid IIS Bug
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+		header("Location: main.php"); //Stupid IIS Bug
+		//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 	else {
 		$message = "Login (Failed) ".login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']));
@@ -28,8 +28,8 @@ else if(isset($_POST['login']) && isset($_POST['password'])) {
 }
 else if(isset($_COOKIE[$cookiename_id]) && isset($_COOKIE[$cookiename_pass]) && $_COOKIE[$cookiename_pass] && $_COOKIE[$cookiename_id]) {
 	if(cookie_login()) {
-		//header("Location: main.php"); //Stupid IIS Bug
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+		header("Location: main.php"); //Stupid IIS Bug
+		//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 	else {
 		logout();
@@ -72,17 +72,25 @@ if (count($matches)>1){
 
 
 
-	printf("<FORM METHOD=POST ACTION=\"%s\" name=site_login>", $_SERVER['SCRIPT_NAME']);
+	
 
 	printf("<div id='login'>");
+	printf("<FORM METHOD=POST ACTION=\"%s\" name=site_login>", $_SERVER['SCRIPT_NAME']);
 	echo "<h3>DJ Land!</h3>";
 	printf("Login: <input type=text name=login size=8><br/><br/>");
 	printf("Password: <input type=password name=password size=8>");
 //	printf("<tr><td align=right>Stay logged in: </td><td><input type=checkbox name=permanent_cookie> 
 	echo "<br/><br/><input type=submit value=Login>";
-	printf("</div>");
 	printf("</FORM>");
-
+	//print_r($_SERVER);
+	?>
+		<a href="<?php echo $_SERVER['HTTP_REFERER']; ?>membership_add.php">Sign Up</a>
+		
+	
+	<?php
+	printf("</div>");
+	
+	
 	if($message) {
 		printf("<h2>%s</h2>", $message);
 	}
