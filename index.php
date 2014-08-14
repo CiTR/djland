@@ -72,17 +72,26 @@ if (count($matches)>1){
 
 
 
-	printf("<FORM METHOD=POST ACTION=\"%s\" name=site_login>", $_SERVER['SCRIPT_NAME']);
+	
 
 	printf("<div id='login'>");
+	printf("<FORM METHOD=POST ACTION=\"%s\" name=site_login>", $_SERVER['SCRIPT_NAME']);
 	echo "<h3>DJ Land!</h3>";
 	printf("Login: <input type=text name=login size=8><br/><br/>");
 	printf("Password: <input type=password name=password size=8>");
 //	printf("<tr><td align=right>Stay logged in: </td><td><input type=checkbox name=permanent_cookie> 
 	echo "<br/><br/><input type=submit value=Login>";
-	printf("</div>");
 	printf("</FORM>");
-
+	?>
+		
+		<FORM method="get" name='signup' action="membership_add.php">
+		<input  type='submit' value='Sign Up'/>
+		</FORM>
+	
+	<?php
+	printf("</div>");
+	
+	
 	if($message) {
 		printf("<h2>%s</h2>", $message);
 	}

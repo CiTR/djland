@@ -8,6 +8,7 @@
 	$lastname = getPost('lastname');
 	$email = getPost('email');
 	$phone = getPost('phone');
+	$cellphone = getPost('cellphone');
 	$member_type = getPost('member_type');
 	if($member_type = 'Student'){
 		$faculty = getPost('faculty');

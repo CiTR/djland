@@ -6,6 +6,7 @@ require("headers/config.php");
 require("headers/security_header.php");
 require("headers/menu_header.php");
 require("headers/function_header.php");
+require("headers/password.php")
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
@@ -43,7 +44,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'add') {
 					if(test_cgi('password')) {
 						//Make sure it's not an operator...
 						if(!mysqli_num_rows(mysqli_query($db, "SELECT * FROM group_members WHERE username='".fas($_POST['edit'])."' AND groupname='operator'")) || $_POST['edit'] == $_SESSION['sv_username']) {
-							$result = mysqli_query($db, "UPDATE user SET password='".md5($_POST['password'])."' WHERE username='".fas($_POST['edit'])."'");
+							$result = mysqli_query($db, "UPDATE user SET password='".password_hash($_POST['password'])."' WHERE username='".fas($_POST['edit'])."'");
 						}
 					}
 					//set fields for edit name field...
@@ -57,7 +58,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'add') {
 						printf("<A href=\"javascript:history.go(-1)\">go back</A>");
 					}
 					else {
-						$result = mysqli_query($db,"INSERT INTO user (username, password, status, login_fails, create_date, create_name) VALUES ('".fas($_POST['username'])."','".md5($_POST['password'])."','Enabled','0','".date('Y-m-d H:i:s')."','".fas($_SESSION['sv_username'])."')");
+						$result = mysqli_query($db,"INSERT INTO user (username, password, status, login_fails, create_date, create_name) VALUES ('".fas($_POST['username'])."','".password_hash($_POST['password'])."','Enabled','0','".date('Y-m-d H:i:s')."','".fas($_SESSION['sv_username'])."')");
 					}
 				}
 		
