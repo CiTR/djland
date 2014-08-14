@@ -71,7 +71,14 @@ echo '<span id="pmCheck" class="invisible">'.$pmCheck.'</span>';
 if ($result_citr = $db->query("SELECT cancon,femcon FROM library WHERE catalog=".$catalog)) {
 	
 $content = $result_citr->fetch_array();
-echo '<span id="cancon" class="invisible">'.$content['cancon'].'</span><span id="femcon" class="invisible">'.$content['femcon'].'</span>';
+echo '<span id="cancon" class="invisible">'.$content['cancon'].'</span><span id="femcon" class="invisible">'.$content['femcon'].'</span><span id="songCategory" class="invisible">';
+if($content['info']!= 'Category 3'){
+	echo 'Category 2</span>';
+}
+else{
+	echo 'Category 3</span>';
+}
+
 $result_citr->close();
 } else echo 'content not available';
 
