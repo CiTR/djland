@@ -41,7 +41,7 @@ INSTALLATION STEPS
 
 2) Create a MySQL database for DJland and a username / password for this database.
 
-3) Copy the file in the 'headers' folder called config-sample.php to a new file in the same location called 'config.php'
+3) Copy the file called config-sample.php to a new file in the same location called 'config.php'
 
 4) Edit config.php to enter your station info, database credentials, and enabled feature list
 
