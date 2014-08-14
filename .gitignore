@@ -1,7 +1,12 @@
 headers/config.php
+config.php
 *.sublime-project
 *.sublime-workspace
 static
 web.config
 logs/log.html
 
+.buildpath
+.project
+org.eclipse.php.core.prefs
+org.eclipse.wst.common.project.facet.core.xml

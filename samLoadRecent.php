@@ -12,7 +12,7 @@ define ("HISTORY_COUNT", 50);
 
 require_once("headers/db_header.php");
 
-require_once('headers/config.php');
+require_once('config.php');
 date_default_timezone_set($station_info['timezone']);
 
 
