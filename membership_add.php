@@ -14,7 +14,7 @@ require("headers/function_header.php");
 		<title>DJLAND | Sign Up</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
-		
+		<script type='text/javascript' src='js/membership-add.js'></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	</head>
@@ -23,27 +23,65 @@ require("headers/function_header.php");
 			<h1> CiTR Member Signup </h1>
 			<hr>
 			<div class = 'container'>
-				<div class='containerrow'>
+				<div id='row1' class='containerrow'>
 					<div class='col5'> Username: </div>
-					<div class='col5'><input id='username' onfocus="this.value=''" value='Enter a username' maxlength='15'></input></div>
+					<div id="username_check" class='col5'><input id='username' class='required' name='username' placeholder='Enter a username' maxlength='15'></input></div>
 					<div class='col5'>Password:</div>
-					<div class='col5'><input id='password1' onfocus="this.value=''" value='Enter a password' maxlength='15'></input></div>
-					<div class='col6'><input id='password2' onfocus="this.value=''" value='Enter again' maxlength='15'></input></div>
-						
+					<div class='col5'><input id='password1' class='required' placeholder='Enter a password' maxlength='15'></input></div>
+					<div id="password_check" class='col6'><input id='password2' class='required' placeholder='Enter again' onkeyup="passwordCheck();" maxlength='15'></input></div>
 				</div>
-				<div class='containerrow'>
+				
+				<div id='row2' class='containerrow'>
 					<div class='col5'>First Name: </div>
-					<div class='col5'><input id='firstname' onfocus="this.value=''" value='First name' maxlength='30'></input></div>
+					<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
 					<div class='col5'>Last Name: </div>
-					<div class='col5'><input id='lastname' onfocus="this.value=''" value='Last name' maxlength='30'></input></div>					
+					<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>					
 				</div>
-				<div class='containerrow'>
-					<div class='col5'>Email Address: </div>
-					<div class='col5'><input id='email' onfocus="this.value=''" value='Email Address' maxlength='40'></input></a></div>
-					<div class='col5'>Phone Number:</div>
-					<div class='col5'><input id='phone' onfocus="this.value=''" value='Phone Number' maxlength='10'></input></div>
+				
+				<div id='row3 'class='containerrow'>
+					<div class='col5'>Address: </div>
+					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='40'></input></div>
+					<div class='col5'>City:</div>
+					<div class='col5'><input id='city' class='required' placeholder='City' maxlength='25'></input></div>
 				</div>
-				<div class='containerrow'>
+				<div id='row4 'class='containerrow'>
+					<div class='col5'>Province: </div>
+					<div class='col5'><select id='province'>
+							<option value='BC'>BC</option>
+							<option value='AB'>AB</option>
+							<option value='SASK'>SASK</option>
+							<option value='WIN'>WIN</option>
+							<option value='ON'>ON</option>
+							<option value='QC'>QC</option>
+							<option value='NB'>NB</option>
+							<option value='NS'>NS</option>
+							<option value='NFL'>NFL</option>
+							<option value='NU'>NU</option>
+							<option value='NWT'>NWT</option>
+							<option value='YUK'>YUK</option>
+						</select></div>
+					<div class='col5'>Postal Code:</div>
+					<div class='col5'><input id='postal_code' class='required' placeholder='Postal Code' maxlength='6'></input></div>
+				</div>
+
+				<div id='row5' class='containerrow'>
+					<div class='col5'>Immigration status:</div>
+					<div class='col5'>
+						<select id='can_status'>
+							<option value='citizen'>Canadian Citizen</option>
+							<option value='immigrant'>Landed Immigrant</option>
+							<option value='visitor'>Visitor</option>
+						</select>
+					</div>
+					<div class='col5'>Member Type:</div>
+					<div class='col5'>
+						<select id='member_type'>
+							<option value='student'>Student</option>
+							<option value='community_member'>Community member</option>
+						</select>
+					</div>
+				</div>
+				<div id='row6' class='containerrow'>
 					<div class='col5'>Faculty: </div>
 					<div class='col5'>
 						<select id='faculty' style='z-position=10;'>
@@ -74,34 +112,36 @@ require("headers/function_header.php");
 							<option value='Social Work'>Social Work</option>
 						</select>
 					</div>
-					<div class='col5'>Member Type:</div>
+					<div class='col5'>Year:</div>
 					<div class='col5'>
-						<select id='member_type'>
-							<option value='student'>Student</option>
-							<option value='alumni'>Alumni</option>
-							<option value='community_member'>Community member</option>
+						<select id='year' style='z-position=10;'>
+							<option value='1'>1</option>
+							<option value='2'>2</option>
+							<option value='3'>3</option>
+							<option value='4'>4</option>
+							<option value='5'>5+</option>
 						</select>
 					</div>
 				</div>
-				<div class='containerrow'>
-					<div class='col5'>I associate as a:</div>
-					<div class='col5'>
-						<select id='gender'>
-							<option value='male'>Male</option>
-							<option value='female'>Female</option>
-							<option value='f2m'>Female to Male Trans</option>
-							<option value='m2f'>Male to Female Trans</option>
-						</select>
+
+				<div id='row4' class='containerrow'>
+					<div id='student_no_container'>
+						<div class='col5'>Student Number:</div>
+						<div class='col5'>
+							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input>
+						</div>
 					</div>
-					<div class='col5'>Immigration status:</div>
-					<div class='col5'>
-						<select id='can_status'>
-							<option value='citizen'>Canadian Citizen</option>
-							<option value='immigrant'>Landed Immigrant</option>
-							<option value='visitor'>Visitor</option>
-						</select>
-					</div>
+					<div class='col5'>Email Address: </div>
+					<div class='col5'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input></div>
 				</div>
+
+				<div id='row3 'class='containerrow'>
+					<div class='col5'>Home Phone Number:</div>
+					<div class='col5'><input id='phone' name='phone' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col5'>Cell Phone Number:</div>
+					<div class='col5'><input id='cellphone' name='cellphone0' placeholder='Cell Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+				</div>
+
 				<hr>
 				<div class='containerrow'>
 					<div class='col6'>I am interested in:</div>
@@ -124,16 +164,19 @@ require("headers/function_header.php");
 					<div class='col6'>About me:</div>
 					<textarea id='about' class='largeinput' rows="5"></textarea>
 				</div>
-				<br>
+				<br/>
 				<div class='containerrow'>
 					<div class='col6'>My Skills:</div>
 					<textarea id='skills' class='largeinput' rows="5"></textarea>
 				</div>
-				<hr>
+				
 				<div class='contanerrow'>
 					<center>
-						<button id='submit_user'>Submit</button>
+						<button id='submit_user' class='red' disabled='true'>Form Not Complete</button>
 					</center>
+				</div>
+				<div class='contanerrow'>
+					<br/>
 				</div>
 			</div>	
 			

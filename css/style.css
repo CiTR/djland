@@ -422,27 +422,54 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
 /*----------------------------*/
+div#username_ok.green,div#password_ok.green,button#submit_user.green{
+	background-color:#00FF00;
+	color:black;
+}
+button#submit_user.red{
+	background-color:#FF0000;
+	color:black;
+}
+#username_ok,#password_ok{
+	position:absolute;
+	padding-left:-10px;
+	display:inline;
+	width:150px;
+	z-index:2;
+	background-color:#FF0000;
+	color:white;
+	overflow:hidden;
+	text-align:left;
+}
 #membership{
 	width:916px;
 	background-color: grey;
-	height:600px;
+	height:auto;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top:-1px;
+	margin-bottom:25px;
 }
 #member_result{
 	overflow: auto;
 	max-height:570px;
 }
 #container{
+	height:auto;
 	padding-left:10px;
 	width:95%;
 	margin-left:auto;
 	margin-right:auto;
+	margin-bottom:25px;
+}
+#row6{
+	display:inline-block;
 }
 .containerrow{
 	display:inline-block;
 	width:100%;
+	overflow:visible;
+	margin-bottom:2px;
 }
 .col1,.col2,.col3,.col4,.col5,.col6,.col7{
 	display:inline-block;
@@ -451,6 +478,7 @@ table { border-collapse: collapse; }
 	text-align:right;
 	height:auto;
 	left:2px;
+	overflow:visible;
 }
 div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 	max-width:140px;
@@ -495,7 +523,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 }
 #submit_user{
 	height:30px;
-	width:100px;
+	width:150px;
 	color:black;
     -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;

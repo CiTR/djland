@@ -30,6 +30,6 @@ if($result = $db->query($query)){
 	}
 }
 echo json_encode($charting);
-$result->close
+$result->close();
 
 ?>
