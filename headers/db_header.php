@@ -1,7 +1,13 @@
 <?php
 //DB HEADER
-require_once('config.php');
-
+if (file_exists('config.php')){ 
+// this check is because sometimes this script is accessed from the root 
+// and sometimes from a subfolder (like with an AJAX handler inside form-handlers)
+	require_once('config.php');
+} else {
+	require_once('../config.php');
+}
+date_default_timezone_set($station_info['timezone']);
 //*******************************************
 //*******************************************
 //*******************************************

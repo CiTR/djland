@@ -2,7 +2,7 @@
 <?php
 
 session_start();
-require("headers/config.php");
+require("config.php");
 require("headers/security_header.php");
 require("headers/menu_header.php");
 require("headers/function_header.php");

@@ -2,6 +2,7 @@
 
 require_once('headers/db_header.php');
 
+date_default_timezone_set($station_info['timezone']);
 $setup_queries = array();
 $setup_query ['adlog']= "
 
@@ -32,21 +33,21 @@ CREATE TABLE IF NOT EXISTS `djs` (
   `email` text NOT NULL,
   `website` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['group_members']= "
 CREATE TABLE IF NOT EXISTS `group_members` (
   `username` varchar(20) NOT NULL DEFAULT '0',
   `groupname` varchar(20) NOT NULL DEFAULT '0',
   KEY `username` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ";
 $setup_query ['groups']= "
 CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(20) NOT NULL DEFAULT '0',
   `description` varchar(100) NOT NULL DEFAULT '0',
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ";
 $setup_query ['hosts']= "
 CREATE TABLE IF NOT EXISTS `hosts` (
@@ -55,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `hosts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['library']= "
 CREATE TABLE IF NOT EXISTS `library` (
@@ -77,13 +78,13 @@ CREATE TABLE IF NOT EXISTS `library` (
   `modified` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `text_desc` (`artist`,`title`,`label`,`genre`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['login_status']= "
 CREATE TABLE IF NOT EXISTS `login_status` (
   `name` varchar(20) NOT NULL DEFAULT '0',
   KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ";
 $setup_query ['membership']= "
 CREATE TABLE IF NOT EXISTS `membership` (
@@ -130,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `membership` (
   `modified` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `text_desc` (`lastname`,`firstname`,`address`,`city`,`postal`,`cell`,`home`,`work`,`email`,`comments`,`show`,`int_other`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['membership_status']= "
 CREATE TABLE IF NOT EXISTS `membership_status` (
@@ -138,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `membership_status` (
   `name` tinytext NOT NULL,
   `sort` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['membership_years']= "
 CREATE TABLE IF NOT EXISTS `membership_years` (
@@ -146,31 +147,7 @@ CREATE TABLE IF NOT EXISTS `membership_years` (
   `membership_id` int(11) NOT NULL DEFAULT '0',
   `paid_year` year(4) NOT NULL DEFAULT '0000',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
-";
-$setup_query ['ncrcdata']= "
-CREATE TABLE IF NOT EXISTS `ncrcdata` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(32) NOT NULL,
-  `lname` varchar(32) NOT NULL,
-  `address` varchar(128) NOT NULL,
-  `city` varchar(32) NOT NULL,
-  `province` varchar(32) NOT NULL,
-  `postal` varchar(8) NOT NULL,
-  `station` varchar(16) NOT NULL,
-  `phone1` varchar(16) NOT NULL,
-  `phone2` varchar(16) DEFAULT NULL,
-  `fax` varchar(16) DEFAULT NULL,
-  `email` varchar(64) NOT NULL,
-  `emailupdates` int(1) NOT NULL,
-  `members` varchar(32) NOT NULL,
-  `dates` varchar(64) NOT NULL,
-  `transportation` varchar(32) NOT NULL,
-  `accomodation` int(2) NOT NULL,
-  `dietary` varchar(255) NOT NULL,
-  `comments` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['playitems']= "
 CREATE TABLE IF NOT EXISTS `playitems` (
@@ -200,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `playitems` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['playlists']= "
 CREATE TABLE IF NOT EXISTS `playlists` (
@@ -220,11 +197,10 @@ CREATE TABLE IF NOT EXISTS `playlists` (
   `star` tinyint(4) DEFAULT NULL,
   `crtc` int(11) DEFAULT NULL,
   `lang` text,
-  `type` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['scheduled_ads']= "
 CREATE TABLE IF NOT EXISTS `scheduled_ads` (
@@ -313,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `songs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 $setup_query ['types_format']= "
 CREATE TABLE IF NOT EXISTS `types_format` (
@@ -322,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `types_format` (
   `sort` int(11) DEFAULT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 ";
 $setup_query ['user']= "
 CREATE TABLE IF NOT EXISTS `user` (
@@ -338,14 +314,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`userid`),
   UNIQUE KEY `userid` (`userid`),
   KEY `userid_2` (`userid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8
 ";
 
 $worked = false;
  foreach($setup_query as $i => $query) {
     if ($db->query($query) ){
         $worked = true;
-        echo '<h4>table was created: '.$i;
+        echo '<h4>table was created (or already existed): '.$i;
 
     }else {
         $worked = false;
@@ -359,7 +335,9 @@ if($worked || !$worked){
 
     $md5pass = md5('pass');
 //    $init_query['create example disabled user'] = "INSERT INTO user SET username='example', password='{$md5pass}', status = 'Disabled' ";
-    $init_query['create admin user'] = "INSERT INTO user SET username='admin', password='{$md5pass}', status = 'Enabled' ";
+  
+    $init_query['create admin user'] = "INSERT IGNORE INTO user SET userid = 1, username='admin', password='{$md5pass}', status = 'Enabled'";
+    
     $init_query['init group admin'] = "INSERT INTO groups SET name='administrator', description='full site powers' ";
     $init_query['init group dj'] = "INSERT INTO groups SET name='dj', description='can view and post playlists' ";
 
@@ -371,34 +349,122 @@ if($worked || !$worked){
     $init_query['init group membership'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('membership','Can view and edit CITR Membership')";
     $init_query['init group editlibrary'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('editlibrary','Can edit records in the music library')";
 
-    $init_query['put admin user in admin group'] = "INSERT INTO group_members SET username='admin', groupname='administrator' ";
-    $init_query['make example member'] = "INSERT INTO membership SET lastname='smooth', firstname='joe', gender='M', address='123 example street', status_id='2', joined='2013', last_paid='2013', comments='example comment' ";
     $init_query['make membership status alumni'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (1,'Alumni',1)";
     $init_query['make membership status community'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (2,'Community',1)";
     $init_query['make membership status lifetime'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (3,'Lifetime',1)";
     $init_query['make membership status student'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (4,'Student',1)";
     $init_query['make membership status unknown'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (5,'Unknown',0)";
-    $init_query['make example show'] = "INSERT INTO `shows` SET name='smoothness hour', host_id='1', active=1";
-    $init_query['make example host'] = "INSERT INTO `hosts` SET name='joe smooth'";
     $init_query['set up format: cd'] = "INSERT INTO `types_format` (`id`,`name`,`sort`) VALUES (1, 'CD', 1), (2, 'LP',2), (3, '7inch', 2), (4,'CASS',3), (5, 'CART', 3), (6, 'MP3', 2), (7, 'FLAC',3), (8, 'WAV',3), (9, 'MD',3),(10,'??',3)";
 
+
+
+    $check_admin_group_q = "SELECT COUNT(*) FROM group_members WHERE username='admin' and groupname='administrator'";
+    $check_admin_group_r = $db->query($check_admin_group_q);
+    $check_admin_group = $check_admin_group_r->fetch_all()[0][0];
+    echo 'ADMIN GROUP: '.$check_admin_group;
+    if ($check_admin_group == 0){
+
+            $db->query("INSERT INTO group_members SET username='admin', groupname='administrator' ");
+
+    } else {
+
+    }
+
+//    $init_query['put admin user in admin group'] = 
+
+
+
+
+
+
+	// TABLE ALTERATIONS GO HERE
+	$init_query['adding type column to playlists'] = "ALTER TABLE `playlists` ADD COLUMN `type` TINYTEXT";
+	
+
+
+
+	
     foreach($init_query as $i => $query){
-        if ($db->query($query)){
-            echo '<h4>initialization task successful: '.$i;
+    	echo '<hr/>';
+        if ($db->query($query)  ){
+            echo '<h4>initialization task successful:'.$i;
+            
         } else {
-            echo '<h2>initialization task did not work: '.$i;
+        // there was an error, but if the error was "Duplicate entry..."
+        // so it doesn't matter
+        
+        	if ( strpos($db->error,'uplicate') == 1 ){
+            	echo '<h3>initialization task successful (already done): '.$i;
+            } else {
+            	echo '<h3>initalization task failed:'.$i;
+              echo '</br>the error is: '.$db->error;
+            }
         }
     }
 
+      $count_result = $db->query('SELECT COUNT(*) as numrows FROM shows');
+      $num_shows = $count_result->fetch_all()[0][0];
+      if ( $num_shows == 0 ){
+        // if there are no show rows, make an example show, member, and host
+
+            $example_show_query['make example member'] = "INSERT IGNORE INTO membership SET id = 1, lastname='example', firstname='joe', gender='M', address='123 example street', status_id='2', joined='2013', last_paid='2013', comments='example comment' ";
+            $example_show_query['make example show'] = "INSERT IGNORE INTO `shows` SET id = 1, name='example hour', host_id='1', active=1, end_time='01:00:00'";
+            $example_show_query['make example host'] = "INSERT IGNORE INTO `hosts` SET id = 1, name='joe example'";
+
+            foreach($example_show_query as $i => $query){
+                    if ($db->query($query)  ){
+                        echo '<h4>created example: '.$i;
+                        
+                    } else {
+                        echo '<h4>example creation failed: '.$i;
+
+                        }
+            }
+
+      } else {
+          echo ' <h4>there are already some shows, so not creating example';
+
+      }
+
 }
 $content = "Empty";
-mkdir('/static','0766');
+if ( !file_exists("static") ){
+  if (mkdir('./static','0766')){
+    echo '<h4>successfully created the static directory.<br/>';
+  } else {
+    echo '<h4>creating the static directory did not work. Perhaps this is a permissions issue.<br/>';
+    echo 'I will now try to guess the user that needs permission to write to this web directory: ';
+      $processUser = posix_getpwuid(posix_geteuid());
+      print $processUser['name'];
+
+//get_current_user();
+  }
+} else {
+    echo '<h4>static directory already exists<br/>';
+}
+
 $fp = fopen('static/theShowList.html','w');
-fwrite($fp,$content);
+
+if(fwrite($fp,$content)){
+  echo '<h4>initialized the static show list file';
+} 
 fclose($fp);
 chmod('static/theShowList.html','0766');
 
-mkdir('/logs','0766');
+if ( !file_exists("logs")){
+
+  if (mkdir('./logs','0766')){
+    echo '<h4>successfully created log directory';
+  } else {
+    echo '<h4>unable to create log directory. Probably a permissions problem.<br/>';
+    echo 'I will now try to guess the user that needs permission to write to this web directory: ';
+      $processUser = posix_getpwuid(posix_geteuid());
+      print $processUser['name'];
+
+  }
+} else {
+  echo '<h4>the log directory already exists';
+}
 $fp = fopen('logs/log.html','w');
 fwrite($fp,$content);
 fclose($fp);
