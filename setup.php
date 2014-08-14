@@ -2,6 +2,7 @@
 
 require_once('headers/db_header.php');
 
+date_default_timezone_set($station_info['timezone']);
 $setup_queries = array();
 $setup_query ['adlog']= "
 
@@ -360,7 +361,7 @@ if($worked || !$worked){
     $check_admin_group_q = "SELECT COUNT(*) FROM group_members WHERE username='admin' and groupname='administrator'";
     $check_admin_group_r = $db->query($check_admin_group_q);
     $check_admin_group = $check_admin_group_r->fetch_all()[0][0];
-    echo 'ADMIN GROUPY '.$check_admin_group;
+    echo 'ADMIN GROUP: '.$check_admin_group;
     if ($check_admin_group == 0){
 
             $db->query("INSERT INTO group_members SET username='admin', groupname='administrator' ");
@@ -427,13 +428,43 @@ if($worked || !$worked){
 
 }
 $content = "Empty";
-mkdir('/static','0766');
+if ( !file_exists("static") ){
+  if (mkdir('./static','0766')){
+    echo '<h4>successfully created the static directory.<br/>';
+  } else {
+    echo '<h4>creating the static directory did not work. Perhaps this is a permissions issue.<br/>';
+    echo 'I will now try to guess the user that needs permission to write to this web directory: ';
+      $processUser = posix_getpwuid(posix_geteuid());
+      print $processUser['name'];
+
+//get_current_user();
+  }
+} else {
+    echo '<h4>static directory already exists<br/>';
+}
+
 $fp = fopen('static/theShowList.html','w');
-fwrite($fp,$content);
+
+if(fwrite($fp,$content)){
+  echo '<h4>initialized the static show list file';
+} 
 fclose($fp);
 chmod('static/theShowList.html','0766');
 
-mkdir('/logs','0766');
+if ( !file_exists("logs")){
+
+  if (mkdir('./logs','0766')){
+    echo '<h4>successfully created log directory';
+  } else {
+    echo '<h4>unable to create log directory. Probably a permissions problem.<br/>';
+    echo 'I will now try to guess the user that needs permission to write to this web directory: ';
+      $processUser = posix_getpwuid(posix_geteuid());
+      print $processUser['name'];
+
+  }
+} else {
+  echo '<h4>the log directory already exists';
+}
 $fp = fopen('logs/log.html','w');
 fwrite($fp,$content);
 fclose($fp);
