@@ -716,13 +716,13 @@ function manage_members(action_,type_,value_){
 			case 'report':
 				console.log('Report Member');
 				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<input  id="submit_name" type="text" value = "Enter a name"></input><button class="member_submit" name="remove">Remove Member</button>');
+				$('#membership').append('Reporting coming soon!');
 				add_handlers();
 				break;
-			case 'email':
+			case 'mail':
 				console.log('Email Members');
 				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<input  id="submit_name" type="text" value ="Enter a name"></input><input id="message" type="text" value="Enter a message"></input><button class="member_submit" name = "email">Email Members</button>');
+				$('#membership').append('Emailing Lists Coming soon!');
 				add_handlers();
 				break;
 			default:
