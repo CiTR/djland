@@ -28,19 +28,29 @@ function test_cgi($test_var) {
 //function to check group permissions, administrators and operators are in all groups...
 function is_member($test_group) {
 
-	global $group_memberships, $db;
+	global $group_memberships,$db;
 
 
 	if(!isset($_SESSION['sv_username'])) {
 		return false;
 	}
-
-	if(!isset($group_memberships)) {
+	$query = "SELECT * FROM group_members INNER JOIN user on user.userid = group_members.userid WHERE username='".$_SESSION['sv_username']."'";
+	$result = mysqli_query($db,$query);
+	$members=array();
+	$row = mysqli_fetch_array($result);
+	if( $row[$test_group] == '1' || $row['operator'] == '1' || $row['administrator'] == '1'){
+		return true;
+	}
+	else{
+		return false;
+	}
+	//OLD CODE
+	/*if(!isset($group_memberships)) {
 		//check for group matches...
-		$result = mysqli_query($db,"SELECT * FROM group_members WHERE username = '".$_SESSION['sv_username']."' ORDER BY 'groupname'");
+		$result = mysqli_query($db,"SELECT * FROM group_members INNER JOIN WHERE username = '".$_SESSION['sv_username']."' ORDER BY 'groupname'");
 
 		//set group membership variable array with each group type
-		while ($myrow = mysqli_fetch_row($result)) { 
+		while ($myrow = mysqli_fetch_row($result)) {
 			$group_memberships[$myrow[1]] = true;
 		}
 	}
@@ -58,7 +68,7 @@ function is_member($test_group) {
 	}
 	else {
 		return false; //non group checked...
-	}
+	}*/
 }
 
 

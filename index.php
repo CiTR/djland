@@ -1,104 +1,87 @@
 <?php
 session_start();
-require("headers/db_header.php");
-require("headers/login_header.php");
-
+require('headers/login_header.php');
+require('headers/db_header.php');
+require("headers/password.php");
+//echo '<p>after password';
 //header("HTTP/1.0 302 Redirect\r\n");
-
-//if logged in, log out...
-if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
-	//logout of the sysem
+if( isset($_POST['action']) && $_POST['action'] == "signup"){
+	header("Location: membership_add.php");
+	//echo "signing up"; 
+	//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=membership_add.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+	}
+else if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
 	logout();
 	$message = "Logged Out";
-}
-//if logged in send them on their merry way
+	}
 else if(is_logged_in()) {
-	header("Location: main.php"); //Stupid IIS Bug
-	//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
-}
-//check for cookies or logging in...
-else if(isset($_POST['login']) && isset($_POST['password'])) {
-	if(login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']) ? true : false)) {
-		header("Location: main.php"); //Stupid IIS Bug
-		//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+	//header("Location: main.php");
+	printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+	}	
+else if(isset($_POST['action']) && $_POST['action'] == "login") {
+	//isset($_POST['login']) && isset($_POST['password'])
+	if(login ($_POST['username'], $_POST['password'], isset( $_POST['permanent_cookie'] ) ) ) {
+		//header("Location: main.php");
+		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+
+		}
+	else{
+		$message = "Login (Failed) ".login($_POST['username'], $_POST['password'], isset($_POST['permanent_cookie']) );
+		}
 	}
-	else {
-		$message = "Login (Failed) ".login($_POST['login'], md5($_POST['password']), isset($_POST['permanent_cookie']));
-	}
-}
 else if(isset($_COOKIE[$cookiename_id]) && isset($_COOKIE[$cookiename_pass]) && $_COOKIE[$cookiename_pass] && $_COOKIE[$cookiename_id]) {
 	if(cookie_login()) {
-		header("Location: main.php"); //Stupid IIS Bug
-		//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
-	}
-	else {
+		//header("Location: main.php");
+		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
+
+		}
+	else{
 		logout();
 		$message = "Login (Bad Cookie)";
+		}
 	}
-}
 else {
 	logout();
-	$message = "";
-}
+	$message = " ";
+	}
+
+
 
 
 if (is_logged_in()) {
+	//header("Location: main.php");
 }
 else {
-
-	printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-	printf("<link rel=stylesheet href=css/style.css type=text/css>");
-	printf("<title>DJ Land</title></head>");
-	
-preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
-
-if (count($matches)>1){
-  //Then we're using IE
-  $version = $matches[1];
-
-  switch(true){
-    case ($version<=8):
-      print(" <body class='ie'> ");
-      break;
-
-    default:
-      print("<body>");
-  }
-}
-
-
-
-//	printf("<table width=100%% height=100%%><tr><td align=center>");
-
-
-
-	
-
-	printf("<div id='login'>");
-	printf("<FORM METHOD=POST ACTION=\"%s\" name=site_login>", $_SERVER['SCRIPT_NAME']);
-	echo "<h3>DJ Land!</h3>";
-	printf("Login: <input type=text name=login size=8><br/><br/>");
-	printf("Password: <input type=password name=password size=8>");
-//	printf("<tr><td align=right>Stay logged in: </td><td><input type=checkbox name=permanent_cookie> 
-	echo "<br/><br/><input type=submit value=Login>";
-	printf("</FORM>");
-	//print_r($_SERVER);
-	?>
-		<a href="<?php echo $_SERVER['HTTP_REFERER']; ?>membership_add.php">Sign Up</a>
-		
-	
-	<?php
-	printf("</div>");
-	
-	
-	if($message) {
-		printf("<h2>%s</h2>", $message);
-	}
-//printf("<br/><br/><br/><br/><a href=\"http://playlist.citr.ca/podcasting/phpadmin/edit.php\"><font size=\"3\">link to podcast editor</font></a>");
-	
-	printf("</td></tr></table>");
-	
-	printf("</body></html>");
-}
-
 ?>
+	<html>
+		<head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+		<link rel=stylesheet href=css/style.css type=text/css>
+		<title>DJ Land</title></head>
+<?php
+	preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
+	if (count($matches)>1){
+		$version = $matches[1];
+		if($version <= 8 ){
+			echo "<body class='ie'>";
+		}
+		else{
+			echo "<body>";
+		}
+	}
+?>
+	<div id = 'login'>
+		<FORM METHOD=POST ACTION= <?php echo "'".$_SERVER['SCRIPT_NAME']."'"; ?> name='site_login' >
+			<h3>Welcome to DJ Land</h3>
+			<label for='username'>Login: </label><input type=text name='username'/><br/>
+			<label for='password'>Password: </label><input type=password name='password'/><br/>
+			<input type='submit' name='action' value='login'/>
+			<input type='submit' name='action' value='signup'/>
+		</FORM>
+	</div>
+	<div id = 'message' >
+		<?php echo $message; ?>
+	</div>	
+	</body>
+</html>
+
+<?php } ?>

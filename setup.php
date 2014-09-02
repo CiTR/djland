@@ -1,7 +1,7 @@
 <?php
 
 require_once('headers/db_header.php');
-
+require_once('headers/password.php');
 date_default_timezone_set($station_info['timezone']);
 $setup_queries = array();
 $setup_query ['adlog']= "
@@ -333,22 +333,10 @@ $init_query = array();
 
 if($worked || !$worked){
 
-    $md5pass = md5('pass');
+    $pass = password_hash('pass',PASSWORD_DEFAULT);
 //    $init_query['create example disabled user'] = "INSERT INTO user SET username='example', password='{$md5pass}', status = 'Disabled' ";
   
-    $init_query['create admin user'] = "INSERT IGNORE INTO user SET userid = 1, username='admin', password='{$md5pass}', status = 'Enabled'";
-    
-    $init_query['init group admin'] = "INSERT INTO groups SET name='administrator', description='full site powers' ";
-    $init_query['init group dj'] = "INSERT INTO groups SET name='dj', description='can view and post playlists' ";
-
-    $init_query['init group member'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('member','A regular member')";
-    $init_query['init group adduser'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('adduser','Can create new user accounts in the \'member\' group')";
-    $init_query['init group addshow'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('addshow','Can create and edit shows')";
-    $init_query['init group editdj'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('editdj','Can edit playsheets')";
-    $init_query['init group library'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('library','Can search and view music library records')";
-    $init_query['init group membership'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('membership','Can view and edit CITR Membership')";
-    $init_query['init group editlibrary'] = "INSERT INTO `groups` (`name`,`description`) VALUES ('editlibrary','Can edit records in the music library')";
-
+    $init_query['create admin user'] = "INSERT IGNORE INTO user SET userid = 1, username='admin', password='{$pass}', status = 'Enabled'";
     $init_query['make membership status alumni'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (1,'Alumni',1)";
     $init_query['make membership status community'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (2,'Community',1)";
     $init_query['make membership status lifetime'] = "INSERT INTO `membership_status` (`id`,`name`,`sort`) VALUES (3,'Lifetime',1)";
@@ -358,13 +346,13 @@ if($worked || !$worked){
 
 
 
-    $check_admin_group_q = "SELECT COUNT(*) FROM group_members WHERE username='admin' and groupname='administrator'";
+    $check_admin_group_q = "SELECT COUNT(*) FROM group_members INNER JOIN user on user.userid = group_members.userid WHERE username='admin'";
     $check_admin_group_r = $db->query($check_admin_group_q);
     $check_admin_group = $check_admin_group_r->fetch_all()[0][0];
     echo 'ADMIN GROUP: '.$check_admin_group;
     if ($check_admin_group == 0){
 
-            $db->query("INSERT INTO group_members SET username='admin', groupname='administrator' ");
+            $db->query("INSERT INTO group_members SET username='admin', member='1',operator='1',administrator='1' ");
 
     } else {
 
