@@ -250,13 +250,6 @@ function getRecentPlaylists($db, $numrows,$filter){
 	return $playlists;
 
 }
-// function getPost($varname){
-	// if(isset($_POST($varname)){
-		// return = $_POST($varname);
-	// }
-	// else{
-		// return = null;
-	// }
-// }
+
 //END FUNCTION HEADER
 ?>

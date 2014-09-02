@@ -60,6 +60,7 @@ input, select, textarea, option{
     -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
+    z-index:5;
 }
 #nav{
 	border-radius: 10px;
@@ -72,6 +73,7 @@ input, select, textarea, option{
     margin:0px auto 0px auto;
     min-height:35px;
     height:auto;
+    z-index:1;
 }
 
 
@@ -84,7 +86,9 @@ input, select, textarea, option{
 	margin-top:7px;
 	border:none;
 }
-
+#nav li{
+	z-index:50;
+}
 #tab-nav li{
     -moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
@@ -422,7 +426,7 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
 /*----------------------------*/
-div#username_ok.green,div#password_ok.green,button#submit_user.green{
+div#username_ok.green,div#password_ok.green,div#student_no_ok.green,button#submit_user.green{
 	background-color:#00FF00;
 	color:black;
 }
@@ -430,7 +434,7 @@ button#submit_user.red{
 	background-color:#FF0000;
 	color:black;
 }
-#username_ok,#password_ok{
+#username_ok,#password_ok,#student_no_ok{
 	position:absolute;
 	padding-left:-10px;
 	display:inline;
@@ -441,6 +445,21 @@ button#submit_user.red{
 	overflow:hidden;
 	text-align:left;
 }
+#container{
+	height:auto;
+	padding-left:10px;
+	width:95%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:25px;
+}
+
+.containerrow{
+	display:inline-block;
+	width:100%;
+	overflow:visible;
+	margin-bottom:2px;
+}
 #membership{
 	width:916px;
 	background-color: grey;
@@ -450,28 +469,53 @@ button#submit_user.red{
 	margin-top:-1px;
 	margin-bottom:25px;
 }
+#membership_header{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width:100%;
+	}
 #member_result{
-	overflow: auto;
-	max-height:570px;
-}
-#container{
-	height:auto;
-	padding-left:10px;
-	width:95%;
+	width:100%;
+	overflow-y: auto;
+	overflow-x:hidden;
+	max-height:700px;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom:25px;
 }
-#row6{
+.member_result_row{
 	display:inline-block;
-}
-.containerrow{
-	display:inline-block;
+	margin-left:auto;
+	margin-right:auto;
 	width:100%;
-	overflow:visible;
-	margin-bottom:2px;
+	text-align:left;
+
 }
-.col1,.col2,.col3,.col4,.col5,.col6,.col7{
+#headerrow{
+	background-color: #a4a4a4;
+}
+#membership_table{
+	position:relative;
+	margin-left:30px;
+}
+.member_row:hover{
+	cursor: pointer; cursor: hand;
+	background-color:blue;
+}
+#membership_year{
+	margin-left:auto;
+	margin-right:auto;
+}
+.membership_year_row td{
+	padding-left:10px;
+	padding-right:10px;
+}
+.data_set{
+	padding-left:5px;
+	padding-right:10px;
+}
+
+.col1,.col2,.col3,.col4,.col5,.col6,.col7,.col8{
 	display:inline-block;
 	position:relative;
 	float:left;
@@ -484,6 +528,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	max-width:140px;
 }
 .col1{
+	text-align:center;
 	width:100%;
 }
 .col2{
@@ -504,6 +549,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .col7{
 	width:14.28%;
 }
+.col8{
+	width:12.5%;
+}
 .span5col6{
 	width:83.33%;
 	float:right;
@@ -513,10 +561,13 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	font-size:70%;
 }
 .largeinput{
-	width:66.4%;
+	width:550px;
 	max-width:83%;
 	height:100px;
-	max-height:100px;
+	max-height:75px;
+}
+.padded{
+	padding-top:5px;
 }
 .memlabel{
 	padding-left:15px;
@@ -529,6 +580,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
+
 
 /*----------------------------*/
 /*----PLAYLIST TABLE RULES----*/

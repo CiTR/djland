@@ -142,10 +142,10 @@ function membership_menu(){
 require('config.php');
 ?>
 <ul id ='tab-nav'>
-	<li class = 'nodrop active-tab member_action' value='init'>Search Members</li>
-	<li class = 'nodrop inactive-tab member_action' value='view'>View Member</li>
-	<li class = 'nodrop inactive-tab member_action' value='report'>Report</li>
-	<li class = 'nodrop inactive-tab member_action' value='email'>Send Emails</li>
+	<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
+	<li class = 'nodrop inactive-tab member_action' id='view' name='1' value='view'>View Member</li>
+	<li class = 'nodrop inactive-tab member_action' id='report' value='report'>Report</li>
+	<li class = 'nodrop inactive-tab member_action' id='mail' value='mail'>Send Emails</li>
 </ul> 
 
 

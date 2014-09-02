@@ -8,7 +8,7 @@ require("headers/menu_header.php");
 require("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
-//
+
 echo "<center>";
 print_menu2();
 echo "</center>";
