@@ -515,7 +515,7 @@ button#submit_user.red{
 	padding-right:10px;
 }
 
-.col1,.col2,.col3,.col4,.col5,.col6,.col7,.col8{
+.col1,.col2,.col3,.col4,.col5,.col6,.col7,.col8,.col15,.col20,.span5col6,.span3col4,.span3col5{
 	display:inline-block;
 	position:relative;
 	float:left;
@@ -552,9 +552,21 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .col8{
 	width:12.5%;
 }
+.col15{
+	width:6.66%;
+}
+.col20{
+	width:5%;
+}
 .span5col6{
 	width:83.33%;
 	float:right;
+}
+.span3col5{
+	width:60%;
+}
+.span3col4{
+	width:75%;
 }
 .smalltext{
 	top:3px;

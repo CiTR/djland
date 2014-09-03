@@ -22,8 +22,8 @@
 					<div class='col5'>Username*: </div>
 					<div id="username_check" class='col5'><input id='username' class='required' name='username' placeholder='Enter a username' maxlength='15' tabindex=1></input></div>
 					<div class='col5'>Password*: </div>
-					<div class='col5'><input id='password1' class='required' type="password" placeholder='Enter a password' maxlength='15' tabindex=2></input></div>
-					<div id="password_check" class='col6'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" maxlength='15' tabindex=3></input></div>
+					<div class='col5'><input id='password1' class='required' type="password" placeholder='Enter a password' tabindex=2></input></div>
+					<div id="password_check" class='col6'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
 				</div>
 				
 				<div id='row2' class='containerrow'>
@@ -35,9 +35,9 @@
 				
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
-					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='40'></input></div>
+					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
 					<div class='col5'>City*:</div>
-					<div class='col5'><input id='city' class='required' placeholder='City' maxlength='25'></input></div>
+					<div class='col5'><input id='city' class='required' placeholder='City' maxlength='45'></input></div>
 				</div>
 				<div id='row4 'class='containerrow'>
 					<div class='col5'>Province*: </div>
@@ -142,18 +142,18 @@
 				</div>
 
 				<div id='row7' class='containerrow'>
-					<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.):
-					<input id='integrate'  name='integrate' type='checkbox' />
-					<div class='col5'>Year*:</div>
-					<div class='col8'>
-						<select id='schoolyear' style='z-position=10;'>
+						<div class='col5'>Year*: </div>					
+						<div class='col20'><select id='schoolyear'>
 							<option value='1'>1</option>
 							<option value='2'>2</option>
 							<option value='3'>3</option>
 							<option value='4'>4</option>
 							<option value='5'>5+</option>
-						</select>
-					</div></div>
+						</select></div>
+					<div class='span3col5'>I would like to incorporate CiTR into my courses(projects, practicums, etc.):
+					<input id='integrate'  name='integrate' type='checkbox' /></div>
+
+					
 					
 				</div>
 				<div class='containerrow'>
