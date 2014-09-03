@@ -178,7 +178,7 @@
 				<hr>
 				<div class='containerrow'>
 					<div class='col6'>I am interested in:</div>
-					<div class='span5col6'>
+					<div class='span3col4'>
 						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music'></div>
 						<div class='col3'><label for='discorder'>Discorder:</label><input type=checkbox id='discorder'></div>
 						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting'></div>
