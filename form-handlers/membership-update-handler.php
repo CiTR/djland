@@ -111,9 +111,8 @@
 				}
 			}
 		}
-		
 	}
-	$result->close();
+	
 	if(!$_POST){
 		$error [1] = "This is not the page you're looking for";
 		$error [2] = "<img src = http://i.imgur.com/to4ZTET.gif>";
@@ -133,4 +132,5 @@
 		}
 		else echo json_encode($update_membership.$update_membership_year.$update_user.$update_group_member);
 	}
+	$db->close();
 ?>
