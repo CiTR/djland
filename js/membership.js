@@ -631,7 +631,7 @@ function manage_members(action_,type_,value_){
 								$('#row7').append("<div class='col5' >Yes<input id='show1' class='show_select' type='radio' /> \
 								No<input id='show2' class='show_select' type='radio' checked='checked'/></div>");
 							}
-							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name!=null ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
+							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
