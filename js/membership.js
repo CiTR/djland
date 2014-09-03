@@ -679,7 +679,7 @@ function manage_members(action_,type_,value_){
 						load_member_year(value,year);
 						$('#row21').append("<hr/>");
 						$('#row22').append("<div class='col5'>User Priveleges:</div>");
-						
+						var username;
 						$.ajax({
 						type:"POST",
 						url: "form-handlers/membership-handler.php",
@@ -698,12 +698,12 @@ function manage_members(action_,type_,value_){
 							$('#row24').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
-							
+							username = data[0].username;
 						}).fail(function(){
 							
 						});
-							$('#row25').append("<hr>");
-						$('#member_result').append("<center>New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
+							$('#row25').append("<hr>"); 
+						$('#member_result').append("<center>Username: "+username+"New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center>");
 
 
@@ -716,13 +716,13 @@ function manage_members(action_,type_,value_){
 			case 'report':
 				console.log('Report Member');
 				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<input  id="submit_name" type="text" value = "Enter a name"></input><button class="member_submit" name="remove">Remove Member</button>');
+				$('#membership').append('Reports Coming soon!');
 				add_handlers();
 				break;
 			case 'email':
 				console.log('Email Members');
 				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<input  id="submit_name" type="text" value ="Enter a name"></input><input id="message" type="text" value="Enter a message"></input><button class="member_submit" name = "email">Email Members</button>');
+				$('#membership').append('Email Lists coming soon!');
 				add_handlers();
 				break;
 			default:
