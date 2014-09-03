@@ -122,7 +122,7 @@ function add_handlers(){
 					"outreach"			:getCheckbox("promos"),
 					"show_hosting" 		:getCheckbox("show_hosting" ),
 					"arts"				:getCheckbox( "arts"),
-					"prog_comm"			:getCheckbox("programming"),
+					"prog_comm"			:getCheckbox("prog_comm"),
 					"digital_library"	:getCheckbox("digital_library"),
 					"photography"		:getCheckbox("photography"),
 					"other"				:getVal("other"),
@@ -322,26 +322,24 @@ function load_member_year(id,year){
 						dataType: "json",
 						async: false
 						}).success(function(data){
-							 
-							
 							if( !$('#paid').length ){
-								$('#row16').append("<div class='col2'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
-								$('#row17').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Show Hosting:<input type=checkbox id=show_hosting "+(data[0].show_hosting==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Sports:<input type=checkbox id=sports "+(data[0].sports==1 ? "checked=checked" : "")+"/></div>");
+								$('#row16').append("<div class='col5'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
+								$('#row17').append("<div class='col5'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
+								$('#row17').append("<div class='col5'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");
+								$('#row17').append("<div class='col5'> Show Hosting:<input type=checkbox id=show_hosting "+(data[0].show_hosting==1 ? "checked=checked" : "")+"/></div>");
+								$('#row17').append("<div class='col5'> Sports:<input type=checkbox id=sports "+(data[0].sports==1 ? "checked=checked" : "")+"/></div>");
 								
-								$('#row18').append("<div class='col4'> News 101.9:<input type=checkbox id=news "+(data[0].news==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Arts Report:<input type=checkbox id=arts "+(data[0].arts==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col5'> News 101.9:<input type=checkbox id=news "+(data[0].news==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col5'> Arts Report:<input type=checkbox id=arts "+(data[0].arts==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col5'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col5'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
 								
-								$('#row19').append("<div class='col4'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col5'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col5'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col5'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col5'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
 								
-								$('#row20').append("<div class='col4'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
+								$('#row20').append("<div class='col5'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
 								$('#row20').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value="+data[0].other) : "")+"/></div>");
 							}else{
 								console.log('editing');
@@ -508,11 +506,11 @@ function manage_members(action_,type_,value_){
 								}							
 							}
 							//BASIC INFO
-							$('#row0').append("<br><div class=col5>First Name:</div><div class=col5><input id='firstname' name='firstname' value="+data[0].firstname+"></div>");
-							$('#row0').append("<div class=col5>Last Name:</div><div class=col5><input id='lastname' name='lastname' value="+data[0].lastname+"></div>");
+							$('#row0').append("<br><div class=col5>First Name:</div><div class=col5><input id='firstname' name='firstname' value='"+data[0].firstname+"''></div>");
+							$('#row0').append("<div class=col5>Last Name:</div><div class=col5><input id='lastname' name='lastname' value='"+data[0].lastname+"''></div>");
 							//ADDRESS
-							$('#row1').append("<div class=col5>Address:</div><div class=col5><input id='address' name='address' value="+data[0].address+"></div>");
-							$('#row1').append("<div class=col5> City:</div><div class=col5><input id='city' name='city' value="+data[0].city+"></div>");
+							$('#row1').append("<div class=col5>Address:</div><div class=col5><input id='address' name='address' value='"+data[0].address+"''></div>");
+							$('#row1').append("<div class=col5> City:</div><div class=col5><input id='city' name='city' value='"+data[0].city+"''></div>");
 							$('#row2').append("<div class=col5> Province:</div><div class=col5><select id='province'> \
 							<option value='"+data[0].province+"'>"+data[0].province+"</option> \
 							<option value='BC'>BC</option> \
@@ -542,7 +540,7 @@ function manage_members(action_,type_,value_){
 							//MEMBER TYPE
 							$('#row3').append("<div class='col5'>Member Type:</div><div id=membertype class='col5'> \
 							<select id='is_new'></select></div>");
-							if(data[0].is_new == 1){
+							if(data[0].is_new == "0"){
 								$('#is_new').append("<option value='returning'>Returning</option><option value='new'>New</option>");
 								
 							}else{
@@ -633,7 +631,7 @@ function manage_members(action_,type_,value_){
 								$('#row7').append("<div class='col5' >Yes<input id='show1' class='show_select' type='radio' /> \
 								No<input id='show2' class='show_select' type='radio' checked='checked'/></div>");
 							}
-							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].showname ? ("value="+data[0].showname):"placeholder='Show name(s)'")+"</div>");
+							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name!=null ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
@@ -702,11 +700,9 @@ function manage_members(action_,type_,value_){
 						}).fail(function(){
 							
 						});
-							$('#row25').append("<hr>"); 
-						$('#member_result').append("<center>Username: "+username+"New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
+							$('#row25').append("<hr>");
+						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center>");
-
-
 					default:
 						break;
 				}
@@ -719,7 +715,7 @@ function manage_members(action_,type_,value_){
 				$('#membership').append('Reports Coming soon!');
 				add_handlers();
 				break;
-			case 'email':
+			case 'mail':
 				console.log('Email Members');
 				document.getElementById("membership").innerHTML = " ";
 				$('#membership').append('Email Lists coming soon!');
