@@ -59,7 +59,7 @@ $(document).ready ( function() {
 		faculty = getVal('faculty2');
 	}
 	var is_new = getVal('is_new');
-	if(is_new == 'new'){
+	if(is_new == 'new' || is_new == 'New'){
 		is_new = 1;
 	}
 	else{
@@ -75,8 +75,8 @@ $(document).ready ( function() {
 		prompt += "not a ";
 	}
 	prompt += "canadian citizen, who is a " + getVal('is_new') + " ";
-	if(getSelect('member_type')=='student'){
-		prompt += "student in";
+	if(getSelect('member_type')=='Student'){
+		prompt += "student in ";
 		
 		switch(getVal('year')){
 			case '1':
