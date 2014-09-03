@@ -8,9 +8,9 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 	printf("<table class=menu border=0 align=center><tr>");
 
-	if(is_member("member") && get_username() != $station_wide_login_name) {
+	/*if(is_member("member") && get_username() != $station_wide_login_name) {
 		printf("<td class=menu><a href=useradd.php?action=list>Users</a></td>");
-	}
+	}*/
 	if(is_member("membership") && $enabled['membership']) {
 
 		 echo '<td class=menu><a href="membership.php">Membership</a></td>';
@@ -51,9 +51,7 @@ function print_menu2(){
 require('config.php');
 ?>
 	<ul id=nav>
-		<?php if(is_member("member") && get_username() != $station_wide_login_name): ?>
-		<li class=nodrop><a href=useradd.php?action=list>Users</a></li>
-		<?php endif; ?>
+		
 		<?php if(is_member("membership") && $enabled['membership']) : ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
