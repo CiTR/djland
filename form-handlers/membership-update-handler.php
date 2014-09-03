@@ -113,6 +113,7 @@
 		}
 		
 	}
+	$result->close();
 	if(!$_POST){
 		$error [1] = "This is not the page you're looking for";
 		$error [2] = "<img src = http://i.imgur.com/to4ZTET.gif>";
