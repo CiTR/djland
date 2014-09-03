@@ -569,6 +569,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .span3col4{
 	width:75%;
 }
+.span9col10{
+	width:90%;
+}
 .smalltext{
 	top:3px;
 	font-size:70%;
