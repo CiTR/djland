@@ -538,7 +538,7 @@ function manage_members(action_,type_,value_){
 								No<input id='can2' class='can_status' type='radio' checked='checked' /></div>");
 							}
 							//MEMBER TYPE
-							$('#row3').append("<div class='col5'>Member Type:</div><div id=membertype class='col5'> \
+							$('#row3').append("<div class='col5'>Member Type:</div><div id=membertype class='col4'> \
 							<select id='is_new'></select></div>");
 							if(data[0].is_new == "0"){
 								$('#is_new').append("<option value='returning'>Returning</option><option value='new'>New</option>");
