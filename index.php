@@ -77,6 +77,7 @@ else {
 			<input type='submit' name='action' value='login'/>
 			<input type='submit' name='action' value='signup'/>
 		</FORM>
+		If you forget your password, please email Hugo at volunteer@citr.ca
 	</div>
 	<div id = 'message' >
 		<?php echo $message; ?>

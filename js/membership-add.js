@@ -75,7 +75,7 @@ $(document).ready ( function() {
 		prompt += "not a ";
 	}
 	prompt += "canadian citizen, who is a " + getVal('is_new') + " ";
-	if(getSelect('member_type')=='Student'){
+	if(getSelect('member_type') =='Student'){
 		prompt += "student in ";
 		
 		switch(getVal('year')){

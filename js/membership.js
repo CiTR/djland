@@ -334,13 +334,13 @@ function load_member_year(id,year){
 								$('#row18').append("<div class='col5'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
 								$('#row18').append("<div class='col5'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
 								
-								$('#row19').append("<div class='col5'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col5'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
 								$('#row19').append("<div class='col5'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
 								$('#row19').append("<div class='col5'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
 								$('#row19').append("<div class='col5'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
 								
-								$('#row20').append("<div class='col5'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
-								$('#row20').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value="+data[0].other) : "")+"/></div>");
+								$('#row20').append("<div class='col4'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
+								$('#row20').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div>");
 							}else{
 								console.log('editing');
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
