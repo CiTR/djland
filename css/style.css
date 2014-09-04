@@ -479,7 +479,7 @@ button#submit_user.red{
 	width:100%;
 	overflow-y: auto;
 	overflow-x:hidden;
-	max-height:700px;
+	max-height:500px;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
