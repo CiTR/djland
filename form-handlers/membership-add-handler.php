@@ -4,10 +4,10 @@
 	require("../headers/password.php");
 	
 
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
+	$username = htmlentities($_POST['username'],ENT_QUOTES);
+	$password = htmlentities($_POST['password'],ENT_QUOTES);
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
 	$address = htmlentities($_POST['address'],ENT_QUOTES);
 	$city = htmlentities($_POST['city'],ENT_QUOTES);
 	$province = $_POST['province'];
