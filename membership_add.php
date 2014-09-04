@@ -22,7 +22,7 @@
 					<div class='col5'>Username*: </div>
 					<div id="username_check" class='col5'><input id='username' class='required' name='username' placeholder='Enter a username' maxlength='15' tabindex=1></input></div>
 					<div class='col5'>Password*: </div>
-					<div class='col5'><input id='password1' class='required' type="password" placeholder='Enter a password' tabindex=2></input></div>
+					<div class='col5'><input id='password1' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();" tabindex=2></input></div>
 					<div id="password_check" class='col6'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
 				</div>
 				
