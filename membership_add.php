@@ -1,4 +1,5 @@
 <?php require("headers/db_header.php"); ?>
+
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
