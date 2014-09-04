@@ -1,4 +1,4 @@
-<?php require("/headers/db_header.php"); ?>
+<?php require("headers/db_header.php"); ?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -184,7 +184,7 @@
 						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting'></div>
 						<div class='col3'><label for='sports'>Sports:</label><input type=checkbox id='sports'></div>
 						<div class='col3'><label for='news'>News 101.9:</label><input type=checkbox id='news'></div>
-						<div class='col3'><label for='arts_report'>Arts Report:</label><input type=checkbox id='arts_report'></div>
+						<div class='col3'><label for='arts'>Arts Report:</label><input type=checkbox id='arts'></div>
 						<div class='col3'><label for='live_broadcast'>Live Broadcasting:</label><input type=checkbox id='live_broadcast'></div>
 						<div class='col3'><label for='tech'>Web and Tech:</label><input type=checkbox id='tech'></div>
 						<div class='col3'><label for='programming'>Programming Committee:</label><input type=checkbox id='programming'></div>
