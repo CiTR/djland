@@ -324,6 +324,7 @@ function load_member_year(id,year){
 						}).success(function(data){
 							if( !$('#paid').length ){
 								console.log('first load membership year');
+
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
 								$('#row17').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
 								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");
