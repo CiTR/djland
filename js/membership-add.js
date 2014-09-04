@@ -320,7 +320,7 @@ $(document).ready ( function() {
 					$('#username_ok').remove();
 						$('#username_check').append("<div id='username_ok'></div>");
 					
-					$('#username_ok').text("username taken");
+					$('#username_ok').text("Username taken");
 
 				}
 				else{
@@ -375,11 +375,11 @@ $(document).ready ( function() {
 			}
 		});
 	
-		if($('#username_ok').text() == 'username not okay'){
+		if($('#username_ok').text() == 'Username taken'){
 			allOkay=false;
 			console.log("username not okay");
 		}
-		if($('#password_ok').text() == 'passwords do not match'){
+		if($('#password_ok').text() == 'Passwords do not match' || $('#password_ok').text() == 'Password must be more than 4 characters'){
 			allOkay=false;
 			console.log("password not okay");
 		}
@@ -406,9 +406,14 @@ $(document).ready ( function() {
 		var password1 = getVal('password1');
 		var password2 = getVal('password2');
 		$('#password_ok').remove();
-		if(password1 != password2){
+		
+		if(password1.length < 4){
 			$('#password_check').append("<div id='password_ok' ></div>");
-			$('#password_ok').text("passwords do not match");
+			$('#password_ok').text("Password must be more than 4 characters");
+		}
+		else if(password1 != password2){
+			$('#password_check').append("<div id='password_ok' ></div>");
+			$('#password_ok').text("Passwords do not match");
 		}
 		else{
 			$('#password_check').append("<div class='green' id='password_ok'></div>");
