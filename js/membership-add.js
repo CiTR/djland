@@ -284,11 +284,16 @@ $(document).ready ( function() {
 			data: {"student_no":student_no},
 			dataType: "json"
 		    }).success( function(data){
-		    	console.log('success');
+		    	
 				if(data == true){
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
 					$('#student_no_ok').text("This student number is already registered!");
+				}
+				else if( student_no.length < 8){
+					$('#student_no_ok').remove();
+					$('#student_no_check').append("<div id='student_no_ok'></div>");
+					$('#student_no_ok').text("Student number must be 8 characters long.");
 				}
 				else{
 					$('#student_no_ok').remove();
@@ -353,6 +358,12 @@ $(document).ready ( function() {
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
 					$('#student_no_ok').text("This student number is already registered!");
 				}
+				else if(student_no.length< 8){
+					
+					$('#student_no_ok').remove();
+					$('#student_no_check').append("<div id='student_no_ok'></div>");
+					$('#student_no_ok').text("Student number must be 8 characters long.");
+				}
 				else{
 					$('#student_no_ok').remove();
 				}
@@ -387,7 +398,7 @@ $(document).ready ( function() {
 			if(!$.trim(getVal('student_no'))){
 				allOkay=false;
 			}
-			if($('#student_no_ok').text() == 'This student number is already registered!'){
+			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
 				allOkay=false;
 			}
 		}
