@@ -1,15 +1,19 @@
 <?
-require("../headers/db_header.php");
-require("../headers/function_header.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
 $action = null;
 $type = null;
 $value = null;
 $paid = null;
 $year = null;
+$sort = null;
 $default = false;
 if(isset($_POST['action'])){
 	$action = $_POST['action'];
 	$type = $_POST['type'];
+	if(isset($_POST['sort'])){
+		$sort = $_POST['sort'];
+	}
 	if(isset($_POST['value'])){
 		$value = $_POST['value'];
 	}
@@ -26,33 +30,48 @@ switch($action){
 		switch($type){
 			case 'name':
 				if($value !=  "" && $value != null){
-					$query = "SELECT * FROM membership INNER JOIN membership_years ON membership_years.member_id = membership.id WHERE membership.lastname LIKE '%".$value."%' OR membership.firstname LIKE '%".$value."%'";
+					$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
 					if($year != 'all'){
 						if($paid == 'both'){
- 							$query.=" and membership_years.membership_year='".$year."'";
+ 							$query.=" and my.membership_year='".$year."'";
 						}else{
-							$query.="and membership_years.membership_year='".$year."' and membership_years.paid='".$paid."'";
+							$query.=" and my.membership_year='".$year."' and my.paid='".$paid."'";
 						}
 					}
 				}else{
-					$query = "SELECT * FROM membership INNER JOIN membership_years ON membership_years.member_id = membership.id";
+					$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
 					if($year != 'all'){
 						if($paid == 'both'){
-							$query.=" WHERE membership_years.membership_year='".$year."'";
+							$query.=" WHERE my.membership_year='".$year."'";
 						}else{
-							$query.=" WHERE membership_years.membership_year='".$year."' and membership_years.paid='".$paid."'";
+							$query.=" WHERE my.membership_year='".$year."' and my.paid='".$paid."'";
 						} 
 					}
 				}
 				break;
-			case interest:
-
+			case 'interest':
+				if($value != "" && $value != null){
+					$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
+					if($year != 'all'){
+						if($paid == 'both'){
+							$query .=" AND my.membership_year='".$year."'";
+						}else{
+							$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
+						}
+					}
+				}
 				break;
 			default: //by default select all members
-				$query = "SELECT * FROM membership INNER JOIN membership_years ON membership.id = membership_years.member_id";
+				$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id";
 				break;
 		}
-		$query.=" GROUP BY membership.id ORDER BY lastname ASC";
+		if($sort == "id"){
+			$query.=" GROUP BY m.id ORDER BY m.id DESC;";
+		}else if($sort == 'lastname'){
+			$query.=" GROUP BY m.id ORDER BY m.lastname ASC;";
+		}
+		
+		
 		break;
 	case 'get':
 		switch($type){
@@ -83,7 +102,22 @@ switch($action){
 			default:
 				break;
 		}
-		break;	
+		break;
+	case 'mail':
+		switch($type){
+			case 'interest':
+				if($value != "" && $value != null){
+					$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
+					if($year != 'all'){
+						if($paid == 'both'){
+							$query .=" AND my.membership_year='".$year."'";
+						}else{
+							$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
+						}
+					}
+				}
+			break;
+		}	
 	default:
 		$default = true;
 		break;

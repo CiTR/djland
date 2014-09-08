@@ -135,7 +135,7 @@
 					<div id='student_no_container'>
 						<div class='col5'>Student Number*:</div>
 						<div class='col5' id='student_no_check'>
-							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input>
+							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='8' onKeyPress="return numbersonly(this, event)"></input>
 						</div>
 					</div>	
 
