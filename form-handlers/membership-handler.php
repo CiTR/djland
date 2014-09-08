@@ -78,6 +78,8 @@ switch($action){
 			$query.=" GROUP BY m.id ORDER BY m.id DESC;";
 		}else if($sort == 'lastname'){
 			$query.=" GROUP BY m.id ORDER BY m.lastname ASC;";
+		}else if($sort == 'email'){
+			$query.=" GROUP BY m.id ORDER BY m.email ASC;";
 		}
 		
 		
