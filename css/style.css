@@ -491,7 +491,7 @@ button#submit_user.red{
 }
 #email_list{
 	height:100px;
-	min-width:300px;
+	min-width:80%;
 	width:auto;
 	padding-bottom:15px;
 }
