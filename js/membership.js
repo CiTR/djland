@@ -749,6 +749,7 @@ function manage_members(action_,type_,value_){
 						console.log('Mail Init');
 						document.getElementById("membership").innerHTML = " ";
 						$("#membership").append("<div id='membership_header'><select id=search_value> \
+							<option value=''>All</option> \
 							<option value='arts'>Arts</option> \
 							<option value='ads_psa'>Ads and PSA's</option> \
 							<option value='digital_library'>Digital Library</option> \
