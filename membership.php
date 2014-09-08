@@ -1,8 +1,8 @@
 <?php
 	session_start();
-	require("headers/security_header.php");
-	require("headers/function_header.php");
-	require("headers/menu_header.php");
+	require_once("headers/security_header.php");
+	require_once("headers/function_header.php");
+	require_once("headers/menu_header.php");
 ?>
 <?php if(is_member('membership')){ ?>
 <html>
@@ -14,7 +14,7 @@
 		<title>DJLAND | Membership</title>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="js/jquery.form.js"></script> 
+		<script src="js/jquery.form.js"></script>
 		<script type='text/javascript' src='js/membership.js'></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
