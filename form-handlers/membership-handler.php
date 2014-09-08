@@ -59,6 +59,15 @@ switch($action){
 							$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
 						}
 					}
+				}else{
+					$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id";
+					if($year != 'all'){
+						if($paid == 'both'){
+							$query .=" AND my.membership_year='".$year."'";
+						}else{
+							$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
+						}
+					}
 				}
 				break;
 			default: //by default select all members
