@@ -54,7 +54,10 @@ function add_handlers(){
 		console.log("member_action="+action);
 		if(action == 'view'){
 			manage_members(action,'init');
-		}else{
+		}else if(action == 'mail'){
+			manage_members(action,'init');
+		}
+		else{
 			manage_members(action);
 		}		
 	});
@@ -173,9 +176,8 @@ function add_handlers(){
 				alert("Report says everything is goo!");
 				break;
 			case 'mail':
-				var submit_name= document.getElementById("submit_name").value;
-				var message= document.getElementById("message").value;
-				alert("Emailed "+submit_name + ": "+ message);
+				var value = getVal('search_value');
+				manage_members(action,'generate',value);
 				break;
 			default:
 				console.log("something went wrong");
@@ -183,7 +185,30 @@ function add_handlers(){
 				break;
 		}
 	});
-	
+	//SEARCH TYPE LISTEN
+	$('#search_type').unbind().change( function(){
+		document.getElementById("search_container").innerHTML="";
+		if(getVal('search_type')=='name'){
+			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
+		}else{
+			$('#search_container').append("<select id=search_value> \
+				<option value='arts'>Arts</option> \
+				<option value='ads_psa'>Ads and PSA's</option> \
+				<option value='digital_library'>Digital Library</option> \
+				<option value='discorder'>Discorder</option> \
+				<option value='live_broadcast'>Live Broadcasting</option> \
+				<option value='music'>Music</option> \
+				<option value='news'>News</option> \
+				<option value='photography'>Photography</option> \
+				<option value='programming_committee'>Programming</option> \
+				<option value='promotions_outreach'>Promos & Outreach</option> \
+				<option value='show_hosting'>Show Hosting</option> \
+				<option value='sports'>Sports</option> \
+			</select>");
+		}
+	});
+
+
 	//PAID SEARCH TOGGLE
 	$('.paid_select').unbind().click( function(){
 		if( this.id =='paid1'){
@@ -373,6 +398,7 @@ function manage_members(action_,type_,value_){
 		var value = null;
 		var paid = null;
 		var year = null;
+		var sort = null;
 		if(action_){
 			action = action_;
 		}
@@ -389,14 +415,18 @@ function manage_members(action_,type_,value_){
 					$('#membership').append("<div id='membership_header'></div>");
 					$('#membership_header').append("Search by \
 						<select id='search_type'> \
-						<option value='name'> name </option> \
-						<option value='interest'> interest </option> \
+						<option value='name'> Name </option> \
+						<option value='interest'> Interest </option> \
+						</select>\
+						<div id='search_container'><input id='search_value' placeholder='Enter a name' /></div>\
+						Order By:<select id='sort_select'> \
+							<option value='id'> Date Added </option>\
+							<option value='lastname'> Last Name </option> \
 						</select> \
-						<input id='search_value' /></div>\
+						Filter by Year: <select id='year_select'><option value='all'>don't filter</option></select><br/> \
 						Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
 						Paid<input id='paid2' class='paid_select' type='radio' /> \
 						Not Paid<input id='paid3' class='paid_select' type='radio' />");
-						
 						actiontemp = 'get';
 						typetemp = 'year';
 					$.ajax({
@@ -406,11 +436,9 @@ function manage_members(action_,type_,value_){
 						dataType: "json",
 						async: false
 					}).success(function(data){
-							$('#membership_header').append("Filter by Year: <select id='year_select'><option value='all'>don't filter</option>");
 							for( $j = 0; $j < Object.keys(data).length; $j++ ){
 								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
 							}
-							$('#membership').append("</select>");
 					}).fail(function(){
 						
 					});
@@ -421,8 +449,6 @@ function manage_members(action_,type_,value_){
 					manage_members('search','name');
 				break;
 			case 'search':
-
-				
 				if(getCheckbox('paid3')){
 					paid='0';
 				}else if(getCheckbox('paid2')){
@@ -431,11 +457,11 @@ function manage_members(action_,type_,value_){
 					paid='both';
 				}
 				year = getVal('year_select');				
-				
+				sort = getVal('sort_select');
 				$.ajax({
 					type:"POST",
 					url: "form-handlers/membership-handler.php",
-					data: {"action":action, "type":type, "value":value, "paid":paid, "year":year},
+					data: {"action":action, "type":type, "sort":sort, "value":value, "paid":paid, "year":year},
 					dataType: "json"
 				}).done(function(data){
 					document.getElementById("member_result").innerHTML = " ";
@@ -455,7 +481,6 @@ function manage_members(action_,type_,value_){
 							$("#row"+$j).append("<td class=data_set>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
 							$("#row"+$j).append("<td class=data_set>"+data[$j].email+"</td>");
 							$("#row"+$j).append("<td class=data_set>"+data[$j].primary_phone+"</td>");
-							
 							if(year != 'all'){
 								if(data[$j].paid == 1){
 									$("#row"+$j).append("<td class=data_set>yes</td>");
@@ -718,10 +743,80 @@ function manage_members(action_,type_,value_){
 				add_handlers();
 				break;
 			case 'mail':
-				console.log('Email Members');
-				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('Email Lists coming soon!');
-				add_handlers();
+				
+				switch(type){
+					case 'init':
+						console.log('Mail Init');
+						document.getElementById("membership").innerHTML = " ";
+						$("#membership").append("<div id='membership_header'><select id=search_value> \
+							<option value='arts'>Arts</option> \
+							<option value='ads_psa'>Ads and PSA's</option> \
+							<option value='digital_library'>Digital Library</option> \
+							<option value='discorder'>Discorder</option> \
+							<option value='live_broadcast'>Live Broadcasting</option> \
+							<option value='music'>Music</option> \
+							<option value='news'>News</option> \
+							<option value='photography'>Photography</option> \
+							<option value='programming_committee'>Programming</option> \
+							<option value='promotions_outreach'>Promos & Outreach</option> \
+							<option value='show_hosting'>Show Hosting</option> \
+							<option value='sports'>Sports</option> \
+						</select> \
+						Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
+						Paid<input id='paid2' class='paid_select' type='radio' /> \
+						Not Paid<input id='paid3' class='paid_select' type='radio' /> \
+						Filter by Year: <select id='year_select'><option value='all'>don't filter</option></select>");
+						var actiontemp = 'get';
+						var typetemp = 'year';
+					$.ajax({
+						type:"POST",
+						url: "form-handlers/membership-handler.php",
+						data: {"action" : actiontemp, "type" : typetemp},
+						dataType: "json",
+						async: false
+					}).success(function(data){
+							for( $j = 0; $j < Object.keys(data).length; $j++ ){
+								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
+							}
+					}).fail(function(){
+						
+					});
+						$('#membership_header').append("<button class='member_submit' name='mail'>Generate Email List</button>");
+						$('#membership').append("<div id='member_result'></div>");
+						add_handlers();
+						break;
+					case 'generate':
+						console.log('mail generate');
+						if(getCheckbox('paid3')){
+						paid='0';
+						}else if(getCheckbox('paid2')){
+							paid='1';
+						}else{
+							paid='both';
+						}
+
+						year = getVal('year_select');				
+						$.ajax({
+							type:"POST",
+							url: "form-handlers/membership-handler.php",
+							data: {"action":'search', "type":'interest', "sort":sort, "value":value, "paid":paid, "year":year},
+							dataType: "json"
+						}).done(function(data){
+							document.getElementById("member_result").innerHTML = " ";
+							$('#member_result').append("<textarea id=email_list></textarea>");
+							if(data){
+								var email_list = "";
+								for( $j = 0; $j < Object.keys(data).length; $j++ ){
+									email_list += data[$j].email + "; ";								
+								}
+								$('#email_list').val(email_list);	
+							}
+						}).fail(function(){
+						});
+
+					break;
+				}
+				
 				break;
 			default:
 				manage_members('init');
