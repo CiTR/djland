@@ -490,8 +490,9 @@ button#submit_user.red{
 	padding-bottom:15px;
 }
 #email_list{
-	height:100px;
-	min-width:300px;
+	min-height:400px;
+	height:auto;
+	min-width:80%;
 	width:auto;
 	padding-bottom:15px;
 }

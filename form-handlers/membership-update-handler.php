@@ -8,7 +8,7 @@
 	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
 	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
 	$address = htmlentities($_POST['address'],ENT_QUOTES);
-	$city =htmlentities ($_POST['city'],ENT_QUOTES);
+	$city = htmlentities($_POST['city'],ENT_QUOTES);
 	$province = $_POST['province'];
 	$postalcode = $_POST['postalcode'];
 	$canadian_citizen = $_POST['canadian_citizen'];
