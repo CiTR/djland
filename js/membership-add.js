@@ -161,7 +161,8 @@ $(document).ready ( function() {
 				"skills"			:getVal('skills'),
 				"exposure"			:getVal('exposure')
 				 },
-				dataType: "json"
+				dataType: "json",
+				asynch: false
 			}).success(function(data) {
 				
 				if(data[0]=="ERROR"){
