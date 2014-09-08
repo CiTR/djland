@@ -796,7 +796,8 @@ function manage_members(action_,type_,value_){
 							paid='both';
 						}
 
-						year = getVal('year_select');				
+						year = getVal('year_select');	
+						sort = 'email';
 						$.ajax({
 							type:"POST",
 							url: "form-handlers/membership-handler.php",
