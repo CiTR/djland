@@ -348,7 +348,8 @@ function load_member_year(id,year){
 						async: false
 						}).success(function(data){
 							if( !$('#paid').length ){
-								console.log('loading membership year');
+								console.log('first load membership year');
+
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
 								$('#row17').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
 								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");
@@ -368,7 +369,7 @@ function load_member_year(id,year){
 								$('#row20').append("<div class='col4'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
 								$('#row20').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div>");
 							}else{
-								console.log('reloading new membership year');
+								console.log('reloading membership year');
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].music == 0){ $('#music').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].discorder == 0){ $('#discorder').removeAttr('checked'); }else{ $('#discorder').prop('checked','checked'); }
@@ -564,7 +565,7 @@ function manage_members(action_,type_,value_){
 								No<input id='can2' class='can_status' type='radio' checked='checked' /></div>");
 							}
 							//MEMBER TYPE
-							$('#row3').append("<div class='col5'>Member Type:</div><div id=membertype class='col5'> \
+							$('#row3').append("<div class='col5'>Member Type:</div><div id=membertype class='col4'> \
 							<select id='is_new'></select></div>");
 							if(data[0].is_new == "0"){
 								$('#is_new').append("<option value='returning'>Returning</option><option value='new'>New</option>");

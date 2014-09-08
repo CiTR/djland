@@ -5,8 +5,8 @@
 	
 	$member_id = $_POST['member_id'];
 	$userid = $_POST['userid'];
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
 	$address = htmlentities($_POST['address'],ENT_QUOTES);
 	$city =htmlentities ($_POST['city'],ENT_QUOTES);
 	$province = $_POST['province'];
