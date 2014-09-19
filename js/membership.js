@@ -768,10 +768,10 @@ function manage_members(action_,type_,value_){
 					case 'init':
 						console.log('Mail Init');
 						var d = new Date();
-						var today = d.getMonth()+1 + "/"+d.getDate() + "/" + d.getFullYear();
+						var today = ('0' + (d.getMonth()+1)).slice(-2) + "/"+('0' + d.getDate()).slice(-2) + "/" + d.getFullYear();
 						var d2 = new Date();
 						d2.setDate(d2.getDate() - 7);
-						var week_ago = d2.getMonth()+1 + "/"+d2.getDate() + "/" + d2.getFullYear();
+						var week_ago = ('0' + (d2.getMonth()+1)).slice(-2) + "/"+('0' + d2.getDate()).slice(-2) + "/" + d2.getFullYear();
 						document.getElementById("membership").innerHTML = " ";
 						$("#membership").append("<div id='membership_header'>Interest: <select id=search_value> \
 							<option value=''>All</option> \
@@ -828,7 +828,7 @@ function manage_members(action_,type_,value_){
 
 						year = getVal('year_select');	
 						sort = 'email';
-						if(getCheckbox('date_filter')!=null){
+						if(getCheckbox('date_filter')){
 							to = getVal('to');
 							from = getVal('from');
 						}

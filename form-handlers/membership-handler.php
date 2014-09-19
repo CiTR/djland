@@ -16,19 +16,19 @@ if(isset($_POST['action'])){
 	if(isset($_POST['sort'])){
 		$sort = $_POST['sort'];
 	}
-	if(isset($_POST['value'])){
+	if(isset($_POST['value']) && $_POST['value'] != null){
 		$value = $_POST['value'];
 	}
-	if(isset($_POST['paid'])){
+	if(isset($_POST['paid']) && $_POST['paid'] != null){
 		$paid = $_POST['paid'];
 	}
-	if(isset($_POST['year'])){
+	if(isset($_POST['year']) && $_POST['year'] != null){
 		$year = $_POST['year'];
 	}
-	if(isset($_POST['to'])){
+	if(isset($_POST['to']) && $_POST['to'] != null){
 		$to = date("Y-m-d",strtotime($_POST['to']));
 	}
-	if(isset($_POST['from'])){
+	if(isset($_POST['from']) && $_POST['from'] != null){
 		$from = date("Y-m-d",strtotime($_POST['from']));
 	}
 }
