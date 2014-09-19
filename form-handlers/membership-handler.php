@@ -7,6 +7,8 @@ $value = null;
 $paid = null;
 $year = null;
 $sort = null;
+$to = null;
+$from = null;
 $default = false;
 if(isset($_POST['action'])){
 	$action = $_POST['action'];
@@ -22,6 +24,12 @@ if(isset($_POST['action'])){
 	}
 	if(isset($_POST['year'])){
 		$year = $_POST['year'];
+	}
+	if(isset($_POST['to'])){
+		$to = date("Y-m-d",strtotime($_POST['to']));
+	}
+	if(isset($_POST['from'])){
+		$from = date("Y-m-d",strtotime($_POST['from']));
 	}
 }
 
@@ -69,6 +77,9 @@ switch($action){
 						}
 					}
 				}
+				if($from != null && $to != null){
+						$query .=" AND m.joined >='".$from."' AND m.joined <='".$to."'";
+					}
 				break;
 			default: //by default select all members
 				$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id";
@@ -126,6 +137,7 @@ switch($action){
 							$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
 						}
 					}
+					
 				}
 			break;
 		}	
