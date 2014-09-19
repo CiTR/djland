@@ -329,6 +329,24 @@ function add_handlers(){
 			console.log("Hide student");
 		}
 	});
+
+	$( "#from" ).datepicker({
+      defaultDate: "+0d",
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#to" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+		
+	$( "#to" ).datepicker({
+      defaultDate: "+0d",
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
 }
 
 function change_view(action,type,value){
@@ -399,6 +417,8 @@ function manage_members(action_,type_,value_){
 		var paid = null;
 		var year = null;
 		var sort = null;
+		var to = null;
+		var from = null;
 		if(action_){
 			action = action_;
 		}
@@ -747,8 +767,13 @@ function manage_members(action_,type_,value_){
 				switch(type){
 					case 'init':
 						console.log('Mail Init');
+						var d = new Date();
+						var today = d.getMonth()+1 + "/"+d.getDate() + "/" + d.getFullYear();
+						var d2 = new Date();
+						d2.setDate(d2.getDate() - 7);
+						var week_ago = d2.getMonth()+1 + "/"+d2.getDate() + "/" + d2.getFullYear();
 						document.getElementById("membership").innerHTML = " ";
-						$("#membership").append("<div id='membership_header'><select id=search_value> \
+						$("#membership").append("<div id='membership_header'>Interest: <select id=search_value> \
 							<option value=''>All</option> \
 							<option value='arts'>Arts</option> \
 							<option value='ads_psa'>Ads and PSA's</option> \
@@ -762,11 +787,16 @@ function manage_members(action_,type_,value_){
 							<option value='promotions_outreach'>Promos & Outreach</option> \
 							<option value='show_hosting'>Show Hosting</option> \
 							<option value='sports'>Sports</option> \
-						</select> \
-						Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
+						</select>");
+						
+						$("#membership_header").append("Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
 						Paid<input id='paid2' class='paid_select' type='radio' /> \
 						Not Paid<input id='paid3' class='paid_select' type='radio' /> \
-						Filter by Year: <select id='year_select'><option value='all'>don't filter</option></select>");
+						Filter by Year: <select id='year_select'><option value='all'>Don't Filter</option></select><br/>");
+						$("#membership_header").append("<laber for='date_filter'>Filter by join date</label><input id='date_filter' type='checkbox'/>");
+						$("#membership_header").append("<label for='from'></label><input type='text' id='from' name='from' value='"+week_ago+"' />");
+						$("#membership_header").append("<label for='to'> to </label><input type=text id='to' name='to' value='"+today+"' />");
+						
 						var actiontemp = 'get';
 						var typetemp = 'year';
 					$.ajax({
@@ -798,10 +828,14 @@ function manage_members(action_,type_,value_){
 
 						year = getVal('year_select');	
 						sort = 'email';
+						if(getCheckbox('date_filter')!=null){
+							to = getVal('to');
+							from = getVal('from');
+						}
 						$.ajax({
 							type:"POST",
 							url: "form-handlers/membership-handler.php",
-							data: {"action":'search', "type":'interest', "sort":sort, "value":value, "paid":paid, "year":year},
+							data: {"action":'search', "type":'interest', "sort":sort, "value":value, "paid":paid, "year":year, "from":from , "to":to },
 							dataType: "json"
 						}).done(function(data){
 							document.getElementById("member_result").innerHTML = " ";
