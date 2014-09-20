@@ -32,8 +32,6 @@ print ('<input type="hidden" id="socancheck" value="0">');
 }
 
 
-
-
 $newPlaysheet = false;
 if (!isset($_POST['id'])) $newPlaysheet = true;
 if (isset($_POST['id']) && $_POST['id']==0)
@@ -305,7 +303,7 @@ if(!isset($show_id)){
 //
 //
 //
-else if($actionSet && $action == 'list' ) {
+else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 //echo ('list playsheets');
 
 
@@ -344,12 +342,30 @@ else if($actionSet && $action == 'list' ) {
 
 	echo "</SELECT><BR><button TYPE=submit VALUE='View Playsheet' class='bigbutton' >View Playsheet</button>";
 	echo "<br/><br/><button type=submit name=socan value='true' >Load as SOCAN playsheet</button>";
-	echo "</FORM></CENTER>";
+
 
 
 	if((is_member("addshow"))){
-	echo '<a href="setSocan.php">Set a Socan Period Here</a>';
+	echo "<br/><br/><button type=delete name=delete value=delete>delete selected playsheet</button>";
+	echo '<br/><br/><a href="setSocan.php">Set a Socan Period Here</a>';
 	
+	}
+	echo "</FORM></CENTER>";
+} else if ( (isset($_GET['delete']) && ( $_GET['delete'] == 'delete') ) && (is_member("addshow"))){
+	
+	$delete_query = "DELETE FROM playlists WHERE id='".$_GET['id']."'";
+	$delete_playitems = "DELETE FROM playitems WHERE playsheet_id = '".$_GET['id']."'";
+
+	if( $result = mysqli_query($db,$delete_query)) {
+
+		if($result2 = mysqli_query($db,$delete_playitems)){
+		
+				echo '<center><br/><br/>you just deleted playsheet id #'.$_GET['id'];
+				echo '<br/><a href="/playsheet.php?action=list">back to list</a></center>';
+		}
+	} else {
+		echo 'could not delete the playsheet';
+		echo '<hr/>'.$delete_query;
 	}
 }
 /* moved to an external file report.php
@@ -370,6 +386,7 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 //
 //
 //
+
 else if(is_member("dj")){
 require_once('adLib.php');
 $adLib = new AdLib($mysqli_sam,$db);
@@ -697,7 +714,7 @@ if (count($matches)>1){
 		<td>CRTC Category:<input type='text' id=pl_crtc name=pl_crtc value=<?php echo $crtc_pl; ?>>
 		</td>
 		
-		<td align=right colspan=2>Language:<input type='text' id=pl_lang name=pl_lang value=<? echo $lang_pl ?>>		
+		<td align=right colspan=2>Language:<input type='text' id=pl_lang name=pl_lang value=<?php echo $lang_pl ?>>		
 		<td/><tr/></table>
 		
 		<img src='images/loading.gif' id='ps-loading-image'>
