@@ -1,5 +1,12 @@
 <?php
-
+// this is a preview of the new version of showlist-handler.php that 
+// includes archived shows.  When the database is edited to have
+// all the right show info, rename this and replace showlist-handler.php
+// to set it up live.  When that's done, in djland edit a show and press save,
+// then the new static html show list will be created and you should see it
+// live in the citr wordpress.  please also remove the archived show list
+// that is in the wordpress page, so it doesn't show up twice
+// showlist
 include_once('headers/showlib.php'); 
 include_once('headers/db_header.php');
 function mysqli_result($res, $row, $field=0) { 
