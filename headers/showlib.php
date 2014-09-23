@@ -89,6 +89,7 @@ class ShowLib {
 
 }
 	private function prepareShow($show_r) {
+
 	//	$host_q = mysqli_query($this->mysqli_link,"SELECT name FROM hosts WHERE id={$show_r['host_id']}");
 	//	$show_r["host"] = mysqli_result_dep($host_q, 0, "name");
 		
@@ -123,7 +124,7 @@ class ShowLib {
 			
 		}
 
-		
+	
 		return new Show($show_r, $show_times, $show_socials);
 	}
 	
@@ -414,6 +415,7 @@ class Show {
 	public $requirements = array();
 	public $times = array();
 	public $contact = array();
+	public $active;
 	
 	// Constructors
 	// Args: $show_r - an array of show info ($show_r["attr"] = val)
@@ -436,6 +438,8 @@ class Show {
 		$this->times = $times;
 		$this->contact = $socials;
 		$this->sponsors = $this->getSponsorPairs($show_r);
+		$this->active = $show_r['active'] ;
+
 	}
 	
 	private function setVar(&$varName, $val) {
