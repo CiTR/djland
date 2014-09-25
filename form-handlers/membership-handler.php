@@ -28,13 +28,19 @@ $default = false;
 		if(isset($_POST['year'])){
 			$year = $_POST['year'];
 		}
-		if(isset($_POST['to'])){
+		if(isset($_POST['to']) && $_POST['to'] != ""){
 			$to = date("Y-m-d",strtotime($_POST['to']));
 		}
-		if(isset($_POST['from'])){
+		if(isset($_POST['from']) && $_POST['from'] != ""){
 			$from = date("Y-m-d",strtotime($_POST['from']));
 		}
 	}
+	/* //DEBUG VALUES
+	$action = 'search';
+	$type = 'interest';
+	$value = 'arts';
+	$year = 'all';
+	$sort = 'email';*/
 	switch($action){
 		case 'search':
 			switch($type){
@@ -79,7 +85,7 @@ $default = false;
 							}
 						}
 					}
-					if($from != null && $to != null){
+					if(($from != null || $from != "") && ($to != null || $to!= "")){
 							$query .=" AND m.joined >='".$from."' AND m.joined <='".$to."'";
 						}
 					break;
