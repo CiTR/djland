@@ -191,20 +191,13 @@ function add_handlers(){
 		if(getVal('search_type')=='name'){
 			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
 		}else{
-			$('#search_container').append("<select id=search_value> \
-				<option value='arts'>Arts</option> \
-				<option value='ads_psa'>Ads and PSA's</option> \
-				<option value='digital_library'>Digital Library</option> \
-				<option value='discorder'>Discorder</option> \
-				<option value='live_broadcast'>Live Broadcasting</option> \
-				<option value='music'>Music</option> \
-				<option value='news'>News</option> \
-				<option value='photography'>Photography</option> \
-				<option value='programming_committee'>Programming</option> \
-				<option value='promotions_outreach'>Promos & Outreach</option> \
-				<option value='show_hosting'>Show Hosting</option> \
-				<option value='sports'>Sports</option> \
-			</select>");
+			$('#search_container').append("<select id=search_value></select>");
+			var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
+			var values =  ['arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+			$searchval = $('#search_value');
+			for($i = 0; $i< title.length; $i++){
+				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
+			}
 		}
 	});
 
@@ -276,36 +269,16 @@ function add_handlers(){
 			console.log("show student");
 		}
 		else if(getVal('member_type') == 'Student' || getVal('member_type') == 'student' ){ 
-			$('#row5').append("<div class='col5'>Faculty*: </div> \
-			<div class='col5'> \
-			<select id='faculty'> \
-				<option value='Arts'>Arts</option> \
-				<option value='Applied Science'>Applied Science</option> \
-				<option value='Architecture'>Architecture</option> \
-				<option value='Archival Studies'>Archival Studies</option> \
-				<option value='Audiology'>Audiology</option> \
-				<option value='Business'>Business</option> \
-				<option value='Community Planning'>Community Planning</option> \
-				<option value='Continuing Studies'>Continuing Studies</option> \
-				<option value='Dentistry'>Dentistry</option> \
-				<option value='Doctoral Studies'>Doctoral Studies</option> \
-				<option value='Education'>Education</option> \
-				<option value='Environmental Health'>Environmental Health</option> \
-				<option value='Forestry'>Forestry</option> \
-				<option value='Graduate Studies'>Graduate Studies</option> \
-				<option value='Journalism'>Journalism</option> \
-				<option value='Kinesiology'>Kinesiology</option> \
-				<option value='Land and Food Systems'>Land and Food Systems</option> \
-				<option value='Law'>Law</option> \
-				<option value='Medicine'>Medicine</option> \
-				<option value='Music'>Music</option> \
-				<option value='Nursing'>Nursing</option> \
-				<option value='Pharmaceutical'>Pharmaceutical</option> \
-				<option value='Public Health'>Public Health</option> \
-				<option value='Science'>Science</option> \
-				<option value='Social Work'>Social Work</option> \
-				<option value='Other'>Other</option> \
-			</select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
+			$('#row5').append("<div class='col5'>Faculty*: </div>");
+			
+			
+			$('#row5').append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
+			var title = ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
+			var values =  ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
+			$searchval = $('#faculty');
+			for($i = 0; $i< title.length; $i++){
+				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
+			}
 			$('#row5').append("<div id='student_no_container'> \
 			<div class='col5'>Student Number*:</div> \
 			<div class='col5'><input id='student_no' name='student_no' maxlength='10' placeholder='Student Number' onKeyPress='return numbersonly(this, event)''></input></div> \
@@ -757,13 +730,34 @@ function manage_members(action_,type_,value_){
 				add_handlers();
 				break;
 			case 'report':
-				console.log('Report Member');
 				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('Reports Coming soon!');
+				$('#membership').append('<div id=membership_result></div>');
+				$.ajax({
+						type:"POST",
+						url: "form-handlers/membership-handler.php",
+						data: {"action" : action},
+						dataType: "json",
+						async: false
+				}).success(function(data){
+					console.log(data);
+					var titles = ['member','student','community','alumni','arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+					for( $j = 0; $j < titles.length; $j++ ){
+
+								$('#membership_result').append(data["num_"+titles[$j]][0] + " (" + data["num_"+titles[$j]][1]);
+								if($j > 0){
+									$('#membership_result').append("/"+data["num_member"][1]+")");
+								}else{
+									$('#membership_result').append(")");
+								}
+								$('#membership_result').append("<br/>");
+					}
+
+				}).fail(function(){
+						
+				});
 				add_handlers();
 				break;
 			case 'mail':
-				
 				switch(type){
 					case 'init':
 						console.log('Mail Init');
@@ -773,21 +767,15 @@ function manage_members(action_,type_,value_){
 						d2.setDate(d2.getDate() - 7);
 						var week_ago = ('0' + (d2.getMonth()+1)).slice(-2) + "/"+('0' + d2.getDate()).slice(-2) + "/" + d2.getFullYear();
 						document.getElementById("membership").innerHTML = " ";
-						$("#membership").append("<div id='membership_header'>Interest: <select id=search_value> \
-							<option value=''>All</option> \
-							<option value='arts'>Arts</option> \
-							<option value='ads_psa'>Ads and PSA's</option> \
-							<option value='digital_library'>Digital Library</option> \
-							<option value='discorder'>Discorder</option> \
-							<option value='live_broadcast'>Live Broadcasting</option> \
-							<option value='music'>Music</option> \
-							<option value='news'>News</option> \
-							<option value='photography'>Photography</option> \
-							<option value='programming_committee'>Programming</option> \
-							<option value='promotions_outreach'>Promos & Outreach</option> \
-							<option value='show_hosting'>Show Hosting</option> \
-							<option value='sports'>Sports</option> \
-						</select>");
+						$("#membership").append("<div id='membership_header'>Interest:");
+
+						$('#search_container').append("<select id=search_value></select>");
+							var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
+							var values =  ['arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+							$searchval = $('#search_value');
+							for($i = 0; $i< title.length; $i++){
+								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
+							}
 						
 						$("#membership_header").append("Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
 						Paid<input id='paid2' class='paid_select' type='radio' /> \
