@@ -769,7 +769,7 @@ function manage_members(action_,type_,value_){
 						document.getElementById("membership").innerHTML = " ";
 						$("#membership").append("<div id='membership_header'>Interest:");
 
-						$('#search_container').append("<select id=search_value></select>");
+						$('#membership_header').append("<select id=search_value></select>");
 							var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
 							var values =  ['arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
 							$searchval = $('#search_value');
