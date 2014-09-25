@@ -10,10 +10,7 @@ $sort = null;
 $to = null;
 $from = null;
 $default = false;
-/*if(!$_POST){
-		echo "This is not the page you're looking for <img src = http://i.imgur.com/to4ZTET.gif>";
-	}
-else{*/
+
 	if(isset($_POST['action'])){
 		$action = $_POST['action'];
 		if(isset($_POST['type'])){

@@ -743,15 +743,12 @@ function manage_members(action_,type_,value_){
 					var titles = ['member','student','community','alumni','arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
 					for( $j = 0; $j < titles.length; $j++ ){
 
-								$('#membership_result').append(data["num_"+titles[$j]][0] + " (" + data["num_"+titles[$j]][1]);
+								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								if($j > 0){
-									$('#membership_result').append("/"+data["num_member"][1]+")");
-								}else{
-									$('#membership_result').append(")");
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member"][1]*100).toFixed(2)+"% )");
 								}
 								$('#membership_result').append("<br/>");
 					}
-
 				}).fail(function(){
 						
 				});
@@ -816,7 +813,7 @@ function manage_members(action_,type_,value_){
 
 						year = getVal('year_select');	
 						sort = 'email';
-						if(getCheckbox('date_filter')!=null){
+						if(getCheckbox('date_filter')){
 							to = getVal('to');
 							from = getVal('from');
 						}
