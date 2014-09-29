@@ -470,33 +470,38 @@ if(is_member("addshow")) {
 		<div class=buttonContainer>
 			<div class=nav>
 				<ul>
-					<li><a href=shows.php>Hide Inactive Shows</a></li>
+					<li><a href=shows.php>Hide Inactive</a></li>
 				</ul>
 			</div>
 		</div>
-		
 	<?php 
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
-		<INPUT type=hidden name=action value=edit>
-		<h2>All Shows:</h2>
-		<SELECT NAME=\"id\" SIZE=18>\n";
+		<INPUT type=hidden name=action value=edit>";
+	?>	
+	<h2>All Shows:</h2>
+	<select name='id'>
+	<?php 
+			$query = "SELECT id,name FROM shows ORDER BY name";
+		if($result = $db->query($query)){
+					while($row = mysqli_fetch_array($result)){
+						echo "<option value='".$row[id]."'>".$row[name]."</option>";
+					}
+				}
+	
+	?>
+	</select>
+	<BR/>
+	<input type=submit value="Edit Show">
+		</FORM></CENTER>
+	<?php
 
-		$result = mysqli_query($db,"SELECT * FROM shows ORDER BY name");
-		$num_rows = mysqli_num_rows($result);
-		$count = 0;
-		while($count < $num_rows) {
-			printf("<OPTION VALUE=\"%s\">%s\n", mysqli_result_dep($result,$count,"id"), $fshow_name[mysqli_result_dep($result,$count,"id")]);
-			$count++;
-		}
-		echo "</SELECT><BR><INPUT TYPE=submit VALUE=\"Edit Show\">\n
-		</FORM></CENTER>\n";
 	}
 	// DEFAULT ACTION: LISTING ONLY ACTIVE SHOWS --------
 	else {
 	//	echo "<br><table class=menu border=0 align=center><tr>
 	//	<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr><tr><td class=\"menu\"><a href=\"?action=listi\">&nbsp;Show Inactive Shows&nbsp;</a></td></tr></table>";
-
-		echo "<div class=buttonContainer>
+		?>
+		<div class=buttonContainer>
 					<div class=nav>
 						<ul>
 							<li><a href=?action=add>Add New Show</a></li>
@@ -509,9 +514,8 @@ if(is_member("addshow")) {
 							<li><a href=?action=list>Show Inactive Shows</a></li>
 						</ul>
 					</div>
-				</div>";
-
-
+				</div>
+		<?php
 
 
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
