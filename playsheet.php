@@ -313,6 +313,22 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 	
 	printf("<INPUT type=hidden name=action value=edit>");
 	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
+	$get_playlists = "SELECT s.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id ORDER BY start_time DESC";
+	if($result = $db->query($get_playlists)){
+
+
+		while($row = mysqli_fetch_array($result)){
+			$time = date( 'Y: M j, g:ia' ,strtotime($row['start_time']));
+			if($row['status']==1)
+			echo "<option value='".$row[id]."'>".$time." - ".$row[name].$row['status'] = 1 ? " - (draft)":"".$row["star"] = 1 ? "&#9733":""."</option>";
+		}
+	}
+	/*$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time")); 
+	$theDate = 	date ( 'Y: M j, g:ia', $date_unix);
+
+
+
+
 	$result = mysqli_query($db,"SELECT * FROM playlists  ORDER BY start_time DESC");
 	$num_rows = mysqli_num_rows($result);
 
@@ -336,7 +352,7 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 //		printf("<OPTION VALUE=\"%s\">%s - %s %s\n", mysqli_result_dep($result,$count,"id"), $theDate, $fshow_name[mysqli_result_dep($result,$count,"show_id")], $draft);
 		print("<option value='".mysqli_result_dep($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result_dep($result,$count,"show_id")].$star_." ".$draft);
 		$count++;
-	}
+	}*/
 //	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" class='bigbutton'>View Playsheet</button>\n");
 //	printf("</FORM></CENTER>\n");
 
