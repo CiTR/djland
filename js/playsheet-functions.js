@@ -60,6 +60,7 @@
 		
 		$('#ps-loading-image').show();
 		targetShow = $('#showSelector').val();
+		
 		targetShowYear = $('#playsheet-year').val();
 		targetShowMonth = parseInt($('#playsheet-month').val()) - 1;
 		targetShowDay = $('#playsheet-day').val();
@@ -70,7 +71,7 @@
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/show_info_loader.php",
-			data: {"showid":targetShow, "unixTime":targetShowUnix, "psid":playsheetID},
+			data: {"showid":targetShow, "psid":playsheetID},
 			dataType: "json"
 		}).success(function(text) {
 			show_block_data = text;

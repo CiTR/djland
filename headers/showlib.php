@@ -42,10 +42,6 @@ class ShowLib {
 		mysqli_free_result($time_q);
 		mysqli_free_result($social_q);
 		mysqli_free_result($hosts_result);
-
-
-
-
 	}
 	
 	// Private helper functions
@@ -54,55 +50,39 @@ class ShowLib {
     $res->data_seek($row); 
     $datarow = $res->fetch_array(); 
     return $datarow[$field]; 
-} */private function initializeShows($include_inactive){
-
-
-		if ($include_inactive) {
-		//	$show_q = 
-		mysqli_query($this->mysqli_link,"SELECT * FROM shows ORDER BY name");
-			$query = "SELECT * FROM shows ORDER BY name";
+} */
+	private function initializeShows($include_inactive){
+		$query = "SELECT * FROM shows"; 
+		
+		if(!$include_inactive){
+			$query.= " WHERE active = '1'";
 		}
-		else {
-		//	$show_q = mysqli_query( $this->mysqli_link,"SELECT * FROM shows WHERE active=1 ORDER BY name");
-			$query = "SELECT * FROM shows WHERE active=1 ORDER BY name";
-		}
+		$query.= " ORDER BY name";
+		
 		$shows = array();
-		
-		if ($rows = mysqli_query( $this->mysqli_link,$query )){
-		/*	while ($show = mysqli_fetch_assoc($show_q)) {
-				$shows[] = $this->prepareShow($show);
+		if($result = $this->mysqli_link->query($query)){
+			while($row = mysqli_fetch_array($result)){
+				$shows[$row['id']] = $this -> prepareShow($row); // Returns Array with each show prepared to specific format.
 			}
-			*/
-			while ($show_row = mysqli_fetch_assoc($rows)){
-				
-				$shows[$show_row['id']]= $this->prepareShow($show_row);
-				
-			
-				}
-				
-				
-		} else {
-		echo 'database query error';
+		}else{
+			echo 'database query error';
 		}
-
 		return $shows;
+	}
 
-}
 	private function prepareShow($show_r) {
-
-	//	$host_q = mysqli_query($this->mysqli_link,"SELECT name FROM hosts WHERE id={$show_r['host_id']}");
-	//	$show_r["host"] = mysqli_result_dep($host_q, 0, "name");
-		
+		//Filling in show host names.
 		foreach($this->all_hosts as $i => $host_info){
 			if($host_info['id'] == $show_r['host_id']){
 				$show_r["host"] = $host_info['name'];
 			}
 		}
-		
+
 		$show_times = array();
 
-		foreach($this->all_times as $i => $one_time_list){
+		foreach($this->all_times as $show => $one_time_list){
 			if ($one_time_list['show_id'] == $show_r['id']){
+				
 
 						//TODO add duration as a new field in all $times arrays created with show objects
 				$wdt = ShowTime::createWeekdayTime($one_time_list['start_time'],$one_time_list['start_day']);

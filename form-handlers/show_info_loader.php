@@ -6,48 +6,121 @@ require_once('../config.php');
 require_once('../adLib.php');
 
 $showlib = new Showlib($db);
-
 $adLib = new AdLib($mysqli_sam,$db);
+$showid = null;
+$unix = null;
+$psid = null;
+$show_start = null;
+$start_hour = null;
+$start_min = null;
+$show_end = null;
+$end_hour = null;
+$end_min = null;
+
 
 if(isset($_POST["showid"])) $showid = $_POST["showid"];
-if(isset($_POST["unixTime"])) $unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
+if(isset($_POST["unixTime"])) $unix = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
 if(isset($_POST["psid"])) $psid = $_POST["psid"];
 
 
-
-
-if(!$showid && !$unixTime){
-	$showid = 76;
-	$unixTime = time();
+if($showid == null){
+	$showid=278;
+}
+if($unix == null){
+//	$unix = time();
+	$unix = time();
+}
+$weekday = getDate();
+$weekday = $weekday['wday'];
+//If we are selecting another show, we want to change the date and time to the next programmed time for that show.
+if(isset($psid)){
+	$query = "SELECT p.show_id AS show_id, p.unix_time AS unix_time, s.name AS show_name, s.start_time AS start_time, s.end_time AS end_time, s.weekday AS weekday, h.name AS host, s.crtc_default AS crtc, s.lang_default AS lang, s.show_type AS type FROM playlists AS p INNER JOIN hosts as h ON p.host_id = h.id INNER JOIN shows AS s ON s.id = p.show_id WHERE p.id='".$psid."'";
+}else{
+	$query = "SELECT s.id AS show_id, s.name AS show_name, st.start_time AS start_time, st.end_time AS end_time, st.start_day AS weekday, h.name AS hostname, s.crtc_default AS crtc, s.lang_default AS lang, s.showtype AS type FROM hosts AS h INNER JOIN shows AS s ON s.host_id = h.id INNER JOIN show_times AS st ON st.show_id = s.id WHERE s.id='".$showid."'";
 }
 
+
+if($result = $db->query($query)){
+	$showinfo = mysqli_fetch_array($result);
+	print_r($showinfo);
+	if(isset($psid)){ $unix = $showinfo['unix_time']; }
+	$show_id = $showinfo['show_id'];
+	$show_name = $showinfo['show_name'];
+	
+	if($weekday == $showinfo['weekday']){
+		$show_start = $showinfo['start_time'];
+		$show_end = $showinfo['end_time'];
+		$start_hour = date("H",strtotime("today ".$show_start));
+		$start_min = date("i",strtotime("today ".$show_start));
+		$end_hour = date("H",strtotime("today ".$show_end));
+		$end_min = date("i",strtotime("today ".$show_end));
+	}
+	$host = $showinfo['hostname'];
+	$crtc = $showinfo['crtc'];
+	if($crtc == null) $crtc = '30';
+	$lang = $showinfo['lang'];
+	if($lang == null) $lang = 'eng';
+	$type = $showinfo['type'];
+	if($type == null) $type = 'Live';
+
+	$show = array ('start_time'=>$show_start); //Fake Show Object.
+	
+	$show_block = array ();
+	$show_block['show_obj'] = $show;
+	$show_block['name'] = $show_name;
+	$show_block['unix_start'] =strtotime("today ".$show_start);
+	$show_block['unix_end'] = strtotime($end_hour, $unix);
+	$ads = $adLib->generateTable($unix,'dj',false);
+
+	echo json_encode(array(
+		'id'=>$show_id,
+		'name'=>$show_name,
+		'start_hour'=>$start_hour,
+		'start_min'=>$start_min,
+		'end_hour'=>$end_hour,
+		'end_min'=>$end_min,
+		'host'=>$host,
+		'crtc'=>$crtc,
+		'lang'=>$lang,
+		'ads'=>$ads,
+		'unixTime'=>$unix,
+		'showtype'=>$type,
+		'showID' => $show_id
+	));
+
+
+
+}else{
+	echo false;
+}
+/*
+
 if(isset($psid)){
-	$query = "SELECT show_id, unix_time FROM playlists WHERE id ='".$psid."'";
+	$query = "SELECT show_id, unix_time FROM playlists  WHERE id ='".$psid."'";
 	if($result = $db->query($query)){
-		$showinfo=mysqli_fetch_array($result);
+		$showinfo = mysqli_fetch_array($result);
 		$unixTime = $showinfo["unix_time"];
-		$showid = $showinfo["show_id"];
-		
-		
+		$showid = $showinfo["show_id"];	
 	}
 	$result->close();
 }
+
+
+
+
+
 $targetShow = $showlib->getShowById($showid);
 $showname = $targetShow->name;
 $showsInDay = $showlib->getBetterBlocksInSameDay($unixTime);
 
 
-
+//Get Better Block Returns Show values for that day including: 'name','unix_start','unix_end'
 $send_fail_msg = true;
 $array = array();
 foreach( $showsInDay as $betterBlock ){
-
-
-
 	if( $betterBlock['show_obj']->id == $showid) {
 		$end_unix = $betterBlock['unix_end'];
 		$start_unix = $betterBlock['unix_start'];
-		
 		$start_info = getdate($start_unix);
 		$end_info = getdate($end_unix);
 		
@@ -92,25 +165,9 @@ foreach( $showsInDay as $betterBlock ){
 
 if( $send_fail_msg ){
 //echo json_encode('did not find show');
+	echo false;
+*/
 
-echo json_encode(array(
-				'start_hour'=>'',
-				'start_min'=>'',
-				'end_hour'=>'',
-				'end_min'=>'',
-				'host'=>'',
-				'crtc'=>'',
-				'lang'=>'',
-				'ads'=>'',
-				'showID'=>''
-				));
-}
-
-//echo json_encode($showsInDay);
-//echo json_encode('failed');
-
-/*
- */
 
 
 
