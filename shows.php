@@ -487,7 +487,6 @@ if(is_member("addshow")) {
 						echo "<option value='".$row[id]."'>".$row[name]."</option>";
 					}
 				}
-	
 	?>
 	</select>
 	<BR/>

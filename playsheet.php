@@ -323,38 +323,6 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 			echo "<option value='".$row[id]."'>".$time." - ".$row[name].$row['status'] = 1 ? " - (draft)":"".$row["star"] = 1 ? "&#9733":""."</option>";
 		}
 	}
-	/*$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time")); 
-	$theDate = 	date ( 'Y: M j, g:ia', $date_unix);
-
-
-
-
-	$result = mysqli_query($db,"SELECT * FROM playlists  ORDER BY start_time DESC");
-	$num_rows = mysqli_num_rows($result);
-
-	$min = min($num_rows,2500);
-	$count = 0;
-	while($count < $min) {
-		
-		if(mysqli_result_dep($result,$count,"status")==1) 
-			$draft = "(draft)";
-		else
-			$draft = "";
-		
-		if(mysqli_result_dep($result,$count,"star")==1)
-			$star_ = "&#9733;";
-		else
-			$star_ = "";
-		$date_unix = strtotime(mysqli_result_dep($result,$count,"start_time")); 
-		$theDate = 	date ( 'Y: M j, g:ia', $date_unix);
-
-
-//		printf("<OPTION VALUE=\"%s\">%s - %s %s\n", mysqli_result_dep($result,$count,"id"), $theDate, $fshow_name[mysqli_result_dep($result,$count,"show_id")], $draft);
-		print("<option value='".mysqli_result_dep($result,$count,"id")."'>".$theDate." - ".$star_.$fshow_name[mysqli_result_dep($result,$count,"show_id")].$star_." ".$draft);
-		$count++;
-	}*/
-//	printf("</SELECT><BR><button TYPE=submit VALUE=\"View Playsheet\" class='bigbutton'>View Playsheet</button>\n");
-//	printf("</FORM></CENTER>\n");
 
 	echo "</SELECT><BR><button TYPE=submit VALUE='View Playsheet' class='bigbutton' >View Playsheet</button>";
 	echo "<br/><br/><button type=submit name=socan value='true' >Load as SOCAN playsheet</button>";
@@ -375,7 +343,6 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 	if( $result = mysqli_query($db,$delete_query)) {
 
 		if($result2 = mysqli_query($db,$delete_playitems)){
-		
 				echo '<center><br/><br/>you just deleted playsheet id #'.$_GET['id'];
 				echo '<br/><a href="/playsheet.php?action=list">back to list</a></center>';
 		}
@@ -671,7 +638,17 @@ if (count($matches)>1){
 		$playsheet_list = getRecentPlaylists($db,500);
 		
 		echo "<br/><select style='height:25px' class=invisible id='select-playsheet' >" ;
-		foreach($playsheet_list as $i => $a_playsheet){
+		$query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playlists AS p ON s.id = p.show_id";
+		if($result = $db->query($query)){
+			while($row = mysqli_fetch_array($result)){
+				echo "<option value='".$row['playsheet_id']."' data='".$row['start_time']."'>".$row['start_time']." - ".$row['name']."</option>";
+			}
+		}
+		$result->close();
+
+
+
+		/*foreach($playsheet_list as $i => $a_playsheet){
 	 
 			$ps_list_date_unix = strtotime($a_playsheet['start_time']); 
 			$ps_list_Date = date ( 'M j, g:ia', $ps_list_date_unix);
@@ -679,7 +656,7 @@ if (count($matches)>1){
 			echo '<option value='.$a_playsheet['id'].' data='.$ps_list_Date.' name='.$fshow_name[$a_playsheet['show_id']].' >'.$ps_list_Date.' - '.$fshow_name[$a_playsheet['show_id']].'</option>';
 			
 	 
-		}
+		}*/
 		echo '</select>';
 		echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
 		
@@ -689,11 +666,17 @@ if (count($matches)>1){
 
 		if ($ps_id || $show_name) printf("<option value='%s' selected='selected'>%s",$show_id, $show_name);
 		
-		foreach($fshow_name_active as $x => $var_name) {
-			if($var_name != '!DELETED' || $ps_id) printf("<option "."value='".$x."'>%s", $var_name);
-			
-			
+		$query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
+		if($result = $db->query($query)){
+			while($row = mysqli_fetch_array($result)){
+				echo "<option value='".$row[id]."'>".$row[name]."</option>";
+			}
 		}
+		$result->close();
+
+		/*foreach($fshow_name_active as $x => $var_name) {
+			if($var_name != '!DELETED' || $ps_id) printf("<option "."value='".$x."'>%s", $var_name);			
+		}*/
 		printf("</select></td>");
 
 		printf("<td align=right>Host/Op: <input id='host' name=\"host\" type=text size=30 value=\"%s\"  ></td></table>", $host_name);
