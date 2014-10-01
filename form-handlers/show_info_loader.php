@@ -9,20 +9,19 @@ $showlib = new Showlib($db);
 
 $adLib = new AdLib($mysqli_sam,$db);
 
-$showid = $_POST["showid"];
-$unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
-$psid = $_POST["psid"];
+if(isset($_POST["showid"])) $showid = $_POST["showid"];
+if(isset($_POST["unixTime"])) $unixTime = $_POST["unixTime"]; //  unix time of midnight of the same day (NOT the start of the show)
+if(isset($_POST["psid"])) $psid = $_POST["psid"];
 
 
 
 
-if(!$showid && !$unixTime)
-{
+if(!$showid && !$unixTime){
 	$showid = 76;
 	$unixTime = time();
 }
 
-if($psid){
+if(isset($psid)){
 	$query = "SELECT show_id, unix_time FROM playlists WHERE id ='".$psid."'";
 	if($result = $db->query($query)){
 		$showinfo=mysqli_fetch_array($result);
@@ -34,10 +33,7 @@ if($psid){
 	$result->close();
 }
 $targetShow = $showlib->getShowById($showid);
-
-
 $showname = $targetShow->name;
-
 $showsInDay = $showlib->getBetterBlocksInSameDay($unixTime);
 
 
@@ -49,9 +45,6 @@ foreach( $showsInDay as $betterBlock ){
 
 
 	if( $betterBlock['show_obj']->id == $showid) {
-		
-
-
 		$end_unix = $betterBlock['unix_end'];
 		$start_unix = $betterBlock['unix_start'];
 		

@@ -4,7 +4,7 @@
 error_reporting(0);
 
 date_default_timezone_set($station_info['timezone']);
-/*//Membership status, index by Name/ID
+//Membership status, index by Name/ID
 $fresult = mysqli_query($db,"SELECT * FROM membership_status ORDER BY 'sort', 'name'");
 $fnum_rows = mysqli_num_rows($fresult);
 $fcount = 0;
@@ -57,7 +57,7 @@ if($result = $db->query($query)) {
 	$fhost_id[$row["name"]] = $row["id"];
 	}
 	$fhost_name = array_flip($fhost_id);
-}*/
+}
 
 
 //gets the id of a name, adds the name if it does not exist.

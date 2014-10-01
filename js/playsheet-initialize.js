@@ -38,10 +38,10 @@
 	targetShow = $('.showTitle').attr('id');
 //	generateShowLinks('default',targetShow);
 
-	$('#showSelector').change( function(){ if($('#type').val() !="Rebroadcast") ajaxLoadPlaysheet();} );
-	$('#playsheet-year').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
-	$('#playsheet-month').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
-	$('#playsheet-day').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet();} );
+	$('#showSelector').change( function(){ if($('#type').val() !="Rebroadcast") ajaxLoadPlaysheet($('#showSelector').val());} );
+	$('#playsheet-year').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet($('#showSelector').val());} );
+	$('#playsheet-month').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet($('#showSelector').val());} );
+	$('#playsheet-day').change( function(){ if($('#type').val()!="Rebroadcast") ajaxLoadPlaysheet($('#showSelector').val());} );
 	
 	
 	$('#type').change( function(){
