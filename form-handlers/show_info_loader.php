@@ -42,7 +42,7 @@ if(isset($psid)){
 
 if($result = $db->query($query)){
 	$showinfo = mysqli_fetch_array($result);
-	print_r($showinfo);
+	//print_r($showinfo);
 	if(isset($psid)){ $unix = $showinfo['unix_time']; }
 	$show_id = $showinfo['show_id'];
 	$show_name = $showinfo['show_name'];
