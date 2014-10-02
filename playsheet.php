@@ -319,7 +319,7 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 
 		while($row = mysqli_fetch_array($result)){
 			$time = date( 'Y: M j, g:ia' ,strtotime($row['start_time']));
-			echo "<option value='".$row[id]."'>".$time." - ".$row[name].$row['status'] = 1 ? " - (draft)":"".$row["star"] = 1 ? "&#9733":""."</option>";
+			echo "<option value='".$row[id]."'>".$time." - ".$row[name].($row['status'] == 1 ? " - (draft)":"").($row["star"] == 1 ? "&#9733":"")."</option>";
 		}
 	}
 
