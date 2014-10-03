@@ -768,7 +768,7 @@ function manage_members(action_,type_,value_){
 
 						$('#membership_header').append("<select id=search_value></select>");
 							var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
-							var values =  ['arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+							var values =  ['arts','ads_psa','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
 								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
@@ -820,7 +820,7 @@ function manage_members(action_,type_,value_){
 						$.ajax({
 							type:"POST",
 							url: "form-handlers/membership-handler.php",
-							data: {"action":'search', "type":'interest', "value":value, "paid":paid, "year":year, "from":from , "to":to },
+							data: {"action":'mail', "type":'interest', "value":value, "paid":paid, "year":year, "from":from , "to":to },
 							dataType: "json"
 						}).done(function(data){
 							document.getElementById("member_result").innerHTML = " ";
