@@ -820,7 +820,7 @@ function manage_members(action_,type_,value_){
 						$.ajax({
 							type:"POST",
 							url: "form-handlers/membership-handler.php",
-							data: {"action":'search', "type":'interest', "sort":sort, "value":value, "paid":paid, "year":year, "from":from , "to":to },
+							data: {"action":'search', "type":'interest', "value":value, "paid":paid, "year":year, "from":from , "to":to },
 							dataType: "json"
 						}).done(function(data){
 							document.getElementById("member_result").innerHTML = " ";
