@@ -143,15 +143,15 @@
 				</div>
 
 				<div id='row7' class='containerrow'>
-						<div class='col5'>Year*: </div>					
-						<div class='col20'><select id='schoolyear'>
+						<div class='col5'>Year*:</div>			
+						<div class='col5'><select id='schoolyear'>
 							<option value='1'>1</option>
 							<option value='2'>2</option>
 							<option value='3'>3</option>
 							<option value='4'>4</option>
 							<option value='5+'>5+</option>
 						</select></div>
-					<div class='span3col5'>I would like to incorporate CiTR into my courses(projects, practicums, etc.):
+					<div class='span3col5'>I would like to incorporate CiTR into my courses(projects,practicums,etc.):
 					<input id='integrate'  name='integrate' type='checkbox' /></div>
 
 					
@@ -181,7 +181,9 @@
 					<div class='col6'>I am interested in:</div>
 					<div class='span3col4'>
 						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music'></div>
-						<div class='col3'><label for='discorder'>Discorder:</label><input type=checkbox id='discorder'></div>
+						<div class='col3'><label for='discorder'>Design for Discorder:</label><input type=checkbox id='discorder'></div>
+						<div class='col3'><label for='discorder_2'>Writing for Discorder:</label><input type=checkbox id='discorder_2'></div>
+						<div class='col3'><label for='dj'>DJ 101.9:</label><input type=checkbox id='dj'></div>
 						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting'></div>
 						<div class='col3'><label for='sports'>Sports:</label><input type=checkbox id='sports'></div>
 						<div class='col3'><label for='news'>News 101.9:</label><input type=checkbox id='news'></div>
@@ -193,6 +195,7 @@
 						<div class='col3'><label for='promos'>Promotions and Outreach:</label><input type=checkbox id='promos'></div>
 						<div class='col3'><label for='photography'>Photography:</label><input type=checkbox id='photography'></div>
 						<div class='col3'><label for='digital_library'>Digital Library:</label><input type=checkbox id='digital_library'></div>
+						<div class='col3'><label for='tabling'>Tabling Events:</label><input type=checkbox id='tabling'></div>
 						<div class='col3'><label for='other'>Other:</label><input type=text id='other'></div>
 					</div>
 				</div>

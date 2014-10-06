@@ -134,7 +134,7 @@ $default = false;
 			switch($type){
 				case 'interest':
 					if($value != "" && $value != null){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
+						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1' AND my.paid ='1'";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -152,25 +152,31 @@ $default = false;
 		case 'report':
 
 			$member = array();
-			$query = "SELECT count(id) AS num FROM membership";
+			$query = "SELECT count(m.id) AS num FROM membership AS m";;
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
 				$arr = array('Number of Members',$row['num']);
+				$member['num_member_all'] = $arr;
+				}
+			$query = "SELECT count(m.id) AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
+			if($result = $db->query($query)){
+				$row = $result->fetch_assoc();
+				$arr = array('Number Paid of Members',$row['num']);
 				$member['num_member'] = $arr;
 				}
-			$query = "SELECT SUM(member_type='Student') AS num FROM membership";
+			$query = "SELECT SUM(member_type='Student') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
 				$arr=array('Number of Student Members',$row['num']);
 				$member['num_student'] = $arr;
 				}
-			$query = "SELECT SUM(member_type='Community') AS num FROM membership";
+			$query = "SELECT SUM(member_type='Community') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
 				$arr=array('Number of Community Members',$row['num']);
 				$member['num_community'] = $arr;
 				}
-			$query = "SELECT SUM(alumni='1') AS num FROM membership";
+			$query = "SELECT SUM(alumni='1') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
 				$arr=array('Number of Alumni Members',$row['num']);
@@ -185,7 +191,7 @@ $default = false;
 			}
 			$max = sizeof($arr);
 			for($i=0; $i< $max; $i++){
-				$query = "SELECT count(member_id) AS num_".$arr[$i]." FROM membership_years WHERE ".$arr[$i]."='1' and membership_year='2014/2015'";	
+				$query = "SELECT count(member_id) AS num_".$arr[$i]." FROM membership_years WHERE ".$arr[$i]."='1' AND paid = '1' and membership_year='2014/2015'";	
 				if($result = $db->query($query)){
 					$row = $result->fetch_assoc();
 					$temp=array($titles[$i],$row['num_'.$arr[$i]]);
