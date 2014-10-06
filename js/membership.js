@@ -192,8 +192,9 @@ function add_handlers(){
 			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
-			var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
-			var values =  ['arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+				var title = ['Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+				var values =  ['arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
+
 			$searchval = $('#search_value');
 			for($i = 0; $i< title.length; $i++){
 				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
@@ -299,7 +300,7 @@ function add_handlers(){
 		}else{
 			$('#row5').hide();
 			$('#row6').hide();
-			console.log("Hide student");
+			console.log("Hide student fields");
 		}
 	});
 
@@ -341,24 +342,31 @@ function load_member_year(id,year){
 							if( !$('#paid').length ){
 								console.log('first load membership year');
 
+
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
-								$('#row17').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Show Hosting:<input type=checkbox id=show_hosting "+(data[0].show_hosting==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Sports:<input type=checkbox id=sports "+(data[0].sports==1 ? "checked=checked" : "")+"/></div>");
 								
+								$('#row17').append("<div class='col4'> Writing for Discorder <input type=checkbox id=discorder_2 "+(data[0].discorder_2==1 ? "checked=checked" : "")+"/></div>");
+								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
+								$('#row17').append("<div class='col4'> DJ101.9:<input type=checkbox id=dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
+								$('#row17').append("<div class='col4'> Tabling:<input type=checkbox id=tabling "+(data[0].tabling==1 ? "checked=checked" : "")+"/></div>");
+
+
+								$('#row18').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col4'> Show Hosting:<input type=checkbox id=show_hosting "+(data[0].show_hosting==1 ? "checked=checked" : "")+"/></div>");
+								$('#row18').append("<div class='col4'> Sports:<input type=checkbox id=sports "+(data[0].sports==1 ? "checked=checked" : "")+"/></div>");
 								$('#row18').append("<div class='col4'> News 101.9:<input type=checkbox id=news "+(data[0].news==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Arts Report:<input type=checkbox id=arts "+(data[0].arts==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
-								
+
+								$('#row19').append("<div class='col4'> Arts Report:<input type=checkbox id=arts "+(data[0].arts==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col4'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
+								$('#row19').append("<div class='col4'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
 								$('#row19').append("<div class='col4'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
 								
+								$('#row20').append("<div class='col4'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
+								$('#row20').append("<div class='col4'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
+								$('#row20').append("<div class='col4'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
 								$('#row20').append("<div class='col4'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
-								$('#row20').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div>");
+								
+								$('#row21').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div><br/>");
 							}else{
 								console.log('reloading membership year');
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
@@ -518,7 +526,7 @@ function manage_members(action_,type_,value_){
 							var fields = Object.keys(data[0]);
 							
 							$('#member_result').append("<div id='idval' value="+data[0][0]+" style='display:none;'></div>");
-							for($j = 0; $j<=25 ; $j++){
+							for($j = 0; $j<=27 ; $j++){
 								if($j>=8 && $j<=16 ){ // pad large text inputs
 									$('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");
 								}else{
@@ -536,7 +544,7 @@ function manage_members(action_,type_,value_){
 							<option value='BC'>BC</option> \
 							<option value='AB'>AB</option> \
 							<option value='SASK'>SASK</option> \
-							<option value='WIN'>WIN</option> \
+							<option value='MAN'>MAN</option> \
 							<option value='ON'>ON</option> \
 							<option value='QC'>QC</option> \
 							<option value='NB'>NB</option> \
@@ -571,6 +579,7 @@ function manage_members(action_,type_,value_){
 								<option value='"+data[0].member_type+"'>"+data[0].member_type+"</option> \
 								<option value='Student'>Student</option> \
 								<option value='Community'>Community</option> \
+								<option value='Staff'>Staff</option> \
 							</select>");
 							//ALUMNI STATUS
 							if(data[0].alumni == 1){
@@ -695,8 +704,8 @@ function manage_members(action_,type_,value_){
 						});
 						$('#member_result').append("<div id=membership_year></div>");
 						load_member_year(value,year);
-						$('#row21').append("<hr/>");
-						$('#row22').append("<div class='col5'>User Priveleges:</div>");
+						$('#row22').append("<hr/>");
+						$('#row23').append("<div class='col5'>User Priveleges:</div>");
 						var username;
 						$.ajax({
 						type:"POST",
@@ -705,22 +714,22 @@ function manage_members(action_,type_,value_){
 						dataType: "json",
 						async: false
 						}).success(function(data){
-							$('#row22').append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
-							$('#row23').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
-							$('#row23').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
-							$('#row23').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
-							$('#row23').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
-							$('#row23').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
-							
-							$('#row24').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].edit_dj==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
+							$('#row23').append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
+							$('#row24').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
+						
+							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].edit_dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
 							username = data[0].username;
 						}).fail(function(){
 							
 						});
-							$('#row25').append("<hr>");
+							$('#row26').append("<hr>");
 						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center>");
 					default:
@@ -769,8 +778,8 @@ function manage_members(action_,type_,value_){
 						$("#membership").append("<div id='membership_header'>Interest:");
 
 						$('#membership_header').append("<select id=search_value></select>");
-							var title = ['Arts','Ads and PSAs','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports'];
-							var values =  ['arts','ads_psa','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+							var title = ['Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+							var values =  ['arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
 								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");

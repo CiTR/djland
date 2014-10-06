@@ -46,7 +46,7 @@
 							<option value='BC'>BC</option>
 							<option value='AB'>AB</option>
 							<option value='SASK'>SASK</option>
-							<option value='WIN'>WIN</option>
+							<option value='MAN'>MAN</option>
 							<option value='ON'>ON</option>
 							<option value='QC'>QC</option>
 							<option value='NB'>NB</option>
@@ -77,6 +77,7 @@
 						<select id='member_type'>
 							<option value='Student'>Student</option>
 							<option value='Community'>Community</option>
+							<option value='Staff'>Staff</option>
 						</select>
 
 					</div>
