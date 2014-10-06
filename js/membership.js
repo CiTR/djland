@@ -740,12 +740,14 @@ function manage_members(action_,type_,value_){
 						async: false
 				}).success(function(data){
 					console.log(data);
-					var titles = ['member','student','community','alumni','arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
+					var titles = ['member_all','member','student','community','alumni','arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports'];
 					for( $j = 0; $j < titles.length; $j++ ){
-
+								console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
-								if($j > 0){
+								if($j > 1){
 									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member"][1]*100).toFixed(2)+"% )");
+								}else if($j == 1){
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_all"][1]*100).toFixed(2)+"% )");
 								}
 								$('#membership_result').append("<br/>");
 					}
@@ -810,8 +812,7 @@ function manage_members(action_,type_,value_){
 						}else{
 							paid='both';
 						}
-
-						year = getVal('year_select');	
+						year = '2014';	
 						sort = 'email';
 						if(getCheckbox('date_filter')){
 							to = getVal('to');

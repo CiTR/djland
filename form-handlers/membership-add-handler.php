@@ -38,6 +38,7 @@
 	$live_broadcast = $_POST['live_broadcast'];
 	$ads_psa = $_POST['ads_psa'];
 	$discorder = $_POST['discorder'];
+	$discorder_2 = $_POST['discorder_2'];
 	$news = $_POST['news'];
 	$tech = $_POST['tech'];
 	$outreach = $_POST['outreach'];
@@ -46,6 +47,8 @@
 	$prog_comm = $_POST['prog_comm'];
 	$digital_library = $_POST['digital_library'];
 	$photography = $_POST['photography'];
+	$tabling = $_POST['tabling'];
+	$dj = $_POST['dj'];
 	$other = htmlentities($_POST['other'],ENT_QUOTES);
 	$about = htmlentities($_POST['about'],ENT_QUOTES);
 	$skills = htmlentities ($_POST['skills'],ENT_QUOTES);
@@ -72,7 +75,7 @@
 	}else{
 		$insert_membership = "INSERT INTO membership (firstname,lastname,address,city,province,postalcode,canadian_citizen,member_type,is_new,alumni,since,faculty,schoolyear,integrate,student_no,has_show,show_name,email,primary_phone,secondary_phone,about,skills,exposure,joined) VALUES ('".$firstname."','".$lastname."','".$address."','".$city."','".$province."','".$postalcode."','".$canadian_citizen."','".$member_type."','".$is_new."','".$alumni."','".$since."','".$faculty."','".$schoolyear."','".$integrate."','".$student_no."','".$has_show."','".$show_name."','".$email."','".$primary_phone."','".$secondary_phone."','".$about."','".$skills."','".$exposure."','".$joined."');";	
 	}
-	$insert_membership_year = "INSERT INTO membership_years (member_id,membership_year,paid,sports,music,arts,show_hosting,live_broadcast,ads_psa,tech,news,programming_committee,promotions_outreach,discorder,digital_library,photography,other) VALUES (LAST_INSERT_ID(),'".$membership_year."','0','".$sports."','".$music."','".$arts."','".$show_hosting."','".$live_broadcast."','".$ads_psa."','".$tech."','".$news."','".$prog_comm."','".$outreach."','".$discorder."','".$digital_library."','".$photography."','".$other."');";
+	$insert_membership_year = "INSERT INTO membership_years (member_id,membership_year,paid,sports,music,arts,show_hosting,live_broadcast,ads_psa,tech,news,programming_committee,promotions_outreach,discorder,discorder_2,digital_library,photography,tabling,dj,other) VALUES (LAST_INSERT_ID(),'".$membership_year."','0','".$sports."','".$music."','".$arts."','".$show_hosting."','".$live_broadcast."','".$ads_psa."','".$tech."','".$news."','".$prog_comm."','".$outreach."','".$discorder."','".$discorder_2."','".$digital_library."','".$photography."','".$tabling."',,'".$dj."''".$other."');";
 	$insert_user = " INSERT INTO user (member_id,username,password,status,create_date) VALUES(LAST_INSERT_ID(),'".$username."','".password_hash($password,PASSWORD_DEFAULT)."','enabled','".$today."');";
 	$insert_group_member = " INSERT INTO group_members (userid,member,dj,administrator,adduser,addshow,editdj,library,membership,editlibrary,operator) VALUES (LAST_INSERT_ID(),'1','0','0','0','0','0','0','0','0','0');";
 	$fail=false;
