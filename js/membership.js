@@ -778,8 +778,8 @@ function manage_members(action_,type_,value_){
 						$("#membership").append("<div id='membership_header'>Interest:");
 
 						$('#membership_header').append("<select id=search_value></select>");
-							var title = ['Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
-							var values =  ['arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
+							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
 								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");

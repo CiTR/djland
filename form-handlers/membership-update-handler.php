@@ -38,6 +38,7 @@
 	$live_broadcast = $_POST['live_broadcast'];
 	$ads_psa = $_POST['ads_psa'];
 	$discorder = $_POST['discorder'];
+	$discorder_2 = $_POST['discorder_2'];
 	$news = $_POST['news'];
 	$tech = $_POST['tech'];
 	$outreach = $_POST['outreach'];
@@ -46,6 +47,8 @@
 	$prog_comm = $_POST['prog_comm'];
 	$digital_library = $_POST['digital_library'];
 	$photography = $_POST['photography'];
+	$dj = $_POST['dj'];
+	$tabling = $_POST['tabling'];
 	$other = htmlentities($_POST['other'],ENT_QUOTES);
 	$about = htmlentities($_POST['about'],ENT_QUOTES);
 	$skills = htmlentities($_POST['skills'],ENT_QUOTES);
@@ -69,7 +72,7 @@
 	}else{
 		$update_membership = "UPDATE membership SET firstname='".$firstname."',lastname='".$lastname."',address='".$address."',city='".$city."',province='".$province."',postalcode='".$postalcode."',canadian_citizen='".$canadian_citizen."',member_type='".$member_type."',is_new='".$is_new."',alumni='".$alumni."',since='".$since."',faculty='".$faculty."', schoolyear='".$schoolyear."',integrate='".$integrate."',student_no='".$student_no."',has_show='".$has_show."',show_name='".$show_name."',email='".$email."',primary_phone='".$primary_phone."',secondary_phone='".$secondary_phone."',about='".$about."',skills='".$skills."',exposure='".$exposure."',comments='".$comments."' WHERE id='".$member_id."';"; 	
 	}
-	$update_membership_year = "UPDATE membership_years SET paid='".$paid."',sports='".$sports."',music='".$music."',arts='".$arts."',show_hosting='".$show_hosting."',live_broadcast='".$live_broadcast."',ads_psa='".$ads_psa."',tech='".$tech."',news='".$news."',programming_committee='".$prog_comm."',promotions_outreach='".$outreach."',discorder='".$discorder."',digital_library='".$digital_library."',photography='".$photography."',other='".$other."' WHERE member_id='".$member_id."' AND membership_year='".$membership_year."';";
+	$update_membership_year = "UPDATE membership_years SET paid='".$paid."',sports='".$sports."',music='".$music."',arts='".$arts."',show_hosting='".$show_hosting."',live_broadcast='".$live_broadcast."',ads_psa='".$ads_psa."',tech='".$tech."',news='".$news."',programming_committee='".$prog_comm."',promotions_outreach='".$outreach."',discorder='".$discorder."',discorder_2='".$discorder_2."',digital_library='".$digital_library."',photography='".$photography."',dj='".$dj."',tabling='".$tabling."',other='".$other."' WHERE member_id='".$member_id."' AND membership_year='".$membership_year."';";
 	if($new_password != null){
 		$update_user = "UPDATE user SET password='".password_hash($new_password,PASSWORD_DEFAULT)."' WHERE userid='".$userid."';";
 	}else{
