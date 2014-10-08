@@ -156,17 +156,20 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 } 
 	else {
 		 echo "<h3>sorry, there was a database problem, please contact technical services.</h3><br/>";
-// uncomment to help DEBUG mysql queries
-//		 echo "<h3>This playsheet needs to be repaired.  Please copy and paste the following text".
-//		 " and email to technicalservices@citr.ca: </h3><hr> problematic query: ".
-//		 $update_show_query ."<hr>";
+
 		 // LOG THE PROBLEM ( see http://djland.citr.ca/logs/log.html)
 		$log_me = 'playsheet.php - there was a problem with the update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
-		$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';
+		$size = $_POST[0].sizeof();
+		for($i=0; $i< $size;i++){
+			$log_me .= print_r($_POST[0][$i]);
+		}
+
+		/*$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';*/
 		$log_file = 'logs/log.html';
 		file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+		//Moving to new logging system created
+		//return $content;
 
-	//	 echo $update_show_query;
 		 }
 	
 	if($SOCAN_FLAG)	{echo "<div class=playsheetSOCAN>";}
@@ -801,7 +804,7 @@ if (count($matches)>1){
 		if($ps_id) {
 			$result = mysqli_query($db,"SELECT * FROM playitems WHERE playsheet_id='$ps_id' ORDER BY id");
 			$num_rows = mysqli_num_rows($result);
-//			echo 'found a ps id, so did a query. here\'s the result:';
+//			echo 'found a ps id, so did a query. here is the result:';
 //			print_r($result);
 		}
 		else {
