@@ -104,14 +104,14 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 
 //	$show_id = fget_id($_POST['showtitle'], "shows", false);
 	$show_id = $_POST['showtitle'];
-	$host_id = fget_id($_POST['host'], "hosts", true);
+	$host_id = htmlentities(fget_id($_POST['host'], "hosts", true));
 	$create_name = get_username();
 	$create_date = date('Y-m-d H:i:s');
 	$edit_name = get_username();
 	$show_date = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day']);
 	$start_time = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day'] . " " . $_POST['pl_date_hour'] . ":" . $_POST['pl_date_min'] . ":" . "00");
 	$end_time = fas($_POST['end_date_hour'] . ":" . $_POST['end_date_min'] . ":" . "00");
-	$spokenword = fas($_POST['spokenword']);
+	$spokenword = htmlentities($_POST['spokenword']);
 	$spokenword_h = $_POST['sw-time-hr'];
 	$spokenword_m = $_POST['sw-time-min'];
 	$unix_time = $_POST['unixTime'];
