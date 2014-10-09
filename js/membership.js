@@ -821,7 +821,7 @@ function manage_members(action_,type_,value_){
 						}else{
 							paid='both';
 						}
-						year = '2014';	
+						year = getVal('year_select');	
 						sort = 'email';
 						if(getCheckbox('date_filter')){
 							to = getVal('to');
