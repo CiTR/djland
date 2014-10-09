@@ -66,7 +66,7 @@ $default = false;
 					}
 					break;
 				case 'interest':
-					if($value != "" && $value != null){
+					if($value != "" && $value != null && $value != 'all'){
 						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
 						if($year != 'all'){
 							if($paid == 'both'){
@@ -191,8 +191,8 @@ $default = false;
 				$member['num_alumni'] = $arr;
 				}
 			
-			$arr = array('arts','digital_library','discorder','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports');
-			$titles = array('Arts','Digital Library','Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports');
+			$arr = array('arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling');
+			$titles = array('Arts','Digital Library','Design for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
 			$max = sizeof($titles);
 			for($i=0;$i<$max;$i++){
 				$titles[$i]="Members interested in ".$titles[$i];
