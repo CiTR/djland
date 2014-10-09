@@ -125,17 +125,14 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	
 	$spokenword_duration = 60*$spokenword_h + $spokenword_m;
 
-	if($newPlaysheet) { // submitting a new playsheet
-	
-		
+	if($newPlaysheet) { // submitting a new playsheet		
 		$ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
 		if (mysqli_query($db,$ps_query))
 			$ps_id = mysqli_insert_id($db);
 		else
 			echo "create playsheet unsuccessful :(<br/>";
-//			echo "query: ".$ps_query;
 	}
-	else {				// submitting a previously loaded playsheet (editing)
+	else {	// submitting a previously loaded playsheet (editing)
 	
 		//Delete all play items and logged ads
 		$ps_id = $_POST['id'];
@@ -147,30 +144,36 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	if(!$unix_time){
 		$unix_time = 'NULL';
 	}
-	mysqli_query($db, "UPDATE `shows` SET last_show='$start_time' WHERE id='$show_id' AND last_show < '$start_time'");
-	$update_show_query = "UPDATE `playlists` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=".$unix_time.", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang', type='$type' WHERE id='$ps_id'";
-
-	if (mysqli_query($db, $update_show_query)){
-		echo "save was successful<br/> ";
-		echo "<h3>thanks for submitting a playsheet!  Here is the music you played:</h3>";
-} 
-	else {
-		 echo "<h3>sorry, there was a database problem, please contact technical services.</h3><br/>";
-
-		 // LOG THE PROBLEM ( see http://djland.citr.ca/logs/log.html)
-		$log_me = 'playsheet.php - there was a problem with the update query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
-		$size = $_POST[0].sizeof();
-		for($i=0; $i< $size;i++){
-			$log_me .= print_r($_POST[0][$i]);
+	$error_occurred = 'false';
+	$query = "UPDATE `shows` SET last_show='$start_time' WHERE id='$show_id' AND last_show < '$start_time'";
+	$result = $db->query($query);
+	
+	if($result){
+		$update_show_query = "UPDATE `playlists` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=".$unix_time.", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang', type='$type' WHERE id='$ps_id'";
+		$result2 = $db->query($update_show_query);
+		if($result2){
+			echo "<h3>thanks for submitting a playsheet!  Here is the music you played:</h3>";
+		}else{
+			$error[0] = mysqli_error($db);
+			echo mysqli_error($db);
+			$error[1] = $update_show_query;
+			$error_occurred = 'true';
 		}
-
-		/*$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>update_show_query:'.$update_show_query.'<hr>';*/
+	}else{
+		$error[0] = mysqli_error($db);
+		$error[1] = $update_show_query;
+		$error_occurred='true';
+	}
+	if(error_occurred=='true'){
+		$log_me = "<hr/> Error Logged at: ".$today."<br> Occured on page: ".$_SERVER['HTTP_REFERER']." <br/> Error: ".$error[0]."<br/>Query: ".$error[1]."<br/>Data: ".json_encode($_POST,true);
 		$log_file = 'logs/log.html';
-		file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
-		//Moving to new logging system created
-		//return $content;
+		if(file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND)){
+			echo "<br/>The Error was Logged Sucessfully";
+		}else{
+			echo "<br/>The error could not be logged";
+		}
+	}
 
-		 }
 	
 	if($SOCAN_FLAG)	{echo "<div class=playsheetSOCAN>";}
 	else {echo "<div class=playsheetSOCAN>";}
@@ -234,8 +237,8 @@ if(!isset($show_id)){
 							"(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)".
 					"VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit')";
 			}
-
-			if(	mysqli_query($db, $insert_query) ){
+			$insert_result = $db->query($insert_query);
+			if($insert_result){
 				if($insert_cc==1) {
 					echo "<font color=red>";
 				}
@@ -249,13 +252,17 @@ if(!isset($show_id)){
 					echo  html_entity_decode($insert_artist) . " - " . html_entity_decode($insert_song) . "-" . html_entity_decode($insert_album) ;
 				}
 				echo "</font><br/>";
-		
-			} else { 
-				echo "A database error occurred, please contact technical services.";
-				$log_me = 'playsheet.php - there was a problem with the insert query'.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
-				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>insert_query:'.$insert_query.'<hr>';
+			}else { 
+				echo "An Error Occurred!";
+				$error[0] = mysqli_error($db);
+				$error[1] = $insert_query;
+				$log_me = "<hr/> Error Logged at: ".$today."<br> Occured on page: ".$_SERVER['HTTP_REFERER']." <br/> Error: ".$error[0]."<br/>Query: ".$error[1]."<br/>Data: ".json_encode($_POST,true);
 				$log_file = 'logs/log.html';
-				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
+				if(file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND)){
+					echo "<br/>The Error was Logged Sucessfully";
+				}else{
+					echo "<br/>The error could not be logged";
+				}
 			}
 		}
 
@@ -404,6 +411,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
 		$loaded_status = mysqli_result_dep($result, 0, "status");
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
+		
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
 		$loaded_type = mysqli_result_dep($result, 0, "type");
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
@@ -505,7 +513,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 		if($loaded_lang)
 			$lang_pl = $loaded_lang;
 		else $lang_pl = $lang_default;
-			
+		echo "<div id=loaded_crtc_test style='display:none'>".$crtc_pl."</div>";	
 	if($ps_id && $_GET['action'] != 'datadump') {
 		// VIEW IS NOT RAW DATA
 		printf("<br><div class=buttonContainer>");
@@ -821,7 +829,7 @@ if (count($matches)>1){
 		
 		for($i=0; $i <= ($num_rows); $i++) {		
 
-				if($ps_id){ // if $ps_id is set then it's a loaded playsheet
+				if($ps_id){ // if $ps_id is set then its a loaded playsheet
 //				$set_lang = htmlentities(mysqli_result_dep($result,$i,"lang"), ENT_QUOTES);
 				$set_lang = mysqli_result_dep($result,$i,"lang");
 				}
@@ -847,8 +855,8 @@ if (count($matches)>1){
 				
 				$crtc_num = mysqli_result_dep($result,$i,"crtc_category");
 				
-				if(!isset($crtc_num))
-					{	$crtc_num = $crtc_pl;
+				if(!(isset($crtc_num) && ($crtc_num=="20" || $crtc_num=="30"))){
+					$crtc_num = $crtc_pl;
 					}
 				if(!isset($set_lang)){
 						$set_lang = $lang_pl;
@@ -959,13 +967,13 @@ if (count($matches)>1){
 					 "<label for='crtcTwo".$i."'class='CRTCicons3' >".
 					 "2".
 					 "</label>".
-					 "<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcTwo".$i."' name='crtc".$i."' value='20' ".($crtc_num == 20 ? "checked='checked'" : "")." />".
+					 "<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcTwo".$i."' name='crtc".$i."' value='20' ".($crtc_num == '20' ? "checked='checked'" : " ")." />".
 					 "</span>".
 					 "<span class='CRTCradios2'>".
 					 "<label for='crtcThree".$i."' class='CRTCicons3' >".
 					 "3".
 					 "</label>".
-					 "<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcThree".$i."' name='crtc".$i."' value='30' ".($crtc_num == 30 ? "checked='checked'" : "")."/>".
+					 "<input class='radio mousedragclick CRTCicons3' type='radio' id='crtcThree".$i."' name='crtc".$i."' value='30' ".($crtc_num == '30' ? "checked='checked'" : " ")."/>".
 					 "</span></span>" );
 			print("<span class='CRTCtext'><input class='langInput' id=lang".$i." name=lang".$i." type=text size=3 value='".$set_lang."'></span>");
 			print("<span class='CRTCicons2'> <button type=button id=del".$i." class=delRow><b>-&nbsp</b></button></span>&nbsp;&nbsp;");
