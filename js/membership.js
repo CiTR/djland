@@ -823,6 +823,7 @@ function manage_members(action_,type_,value_){
 						}
 						year = getVal('year_select');	
 						sort = 'email';
+						console.log("Date Filter "+getCheckbox('date_filter'));
 						if(getCheckbox('date_filter')){
 							to = getVal('to');
 							from = getVal('from');
