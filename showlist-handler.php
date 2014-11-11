@@ -153,7 +153,7 @@ for ($lpos++; $lpos<$numletters; $lpos++) { // Print rest of letters
 	echo "<a name='{$letters[$lpos]}'></a>";
 }
 
-echo '<h2>archive</h2>';
+echo '<h2>Archives (2012 and newer)</h2>';
 
 foreach($allshows as $i => $show){
 	if ($show->active == '0'){
