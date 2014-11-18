@@ -186,7 +186,7 @@ foreach($dbarray as $i => $row){
 	if ($row['cancon']==1) echo '<img src="images/cc.png" title="Canadian Content"  height="15"/>';
 	if ($row['femcon']==1) echo '<img src="images/fe.png" title="Female Content" height="15"/>';
 	if ($row['local']==1) echo '<img src="images/local.png" title="Local Content" height="15"/>';
-	if ($row['digitized']==1) echo '<img src="images/sam.png" title="This record is available to play in SAM" height="15"/>';
+	if ($row['digitized']==1) echo '<img src="images/sam.png" title="Available to play in SAM" height="15"/>';
 		if (isset($_GET['bulkedit'])){
 		echo "<a class='lib-delete' id=".$row['id'].">delete</a>";
 		}
