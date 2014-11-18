@@ -28,7 +28,7 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	printf("<br><table align=center class=playsheet><tr><td>");
 	printf("<center><h1>Search Results</h1></center>");
 
-	$record_limit = 50; // the number of search results to display per page
+	$record_limit = 100; // the number of search results to display per page
 	$record_start = (isset($_GET['start']) && $_GET['start']) ? (int)$_GET['start'] : 0;
 	$record_prev = ($record_start >= $record_limit) ? $record_start - $record_limit : -1;
 
@@ -76,84 +76,49 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	printf("<table border=0>");
 	if(is_member("editlibrary") && isset($_GET['bulkedit'])) {
 
-?>
-<!--JAVASCRIPT HELPER CALLS-->
+		?>
+		<!--JAVASCRIPT HELPER CALLS-->
 		<script language=JavaScript>
-		<!--
-		var isConfirmed = false;
-		//window.onbeforeunload = ConfirmExit;
-		function ExitOkay(setTo) {
-			isConfirmed = setTo;
-			return setTo;
-		}
-		function ConfirmExit() {
-			if(!isConfirmed) {
-				return "CHANGES WILL BE LOST!";
+			<!--
+			var isConfirmed = false;
+			//window.onbeforeunload = ConfirmExit;
+			function ExitOkay(setTo) {
+				isConfirmed = setTo;
+				return setTo;
 			}
-		}
-		function EnterPressed(event)
-		{
-		  if (document.all)
-		  {
-		    if (event.keyCode == 13)
-		      {  // handles IE browsers...
-		        event.keyCode = 9;
-		      }
-		  }
-		  else if (document.getElementById)
-		  { // handles NS and Mozilla browsers...
-		    if (event.which == 13)
-		    {
-		        event.keyCode = 9;
-		      }
-		  }
-		  else if(document.layers)
-		  { // handles NS ver. 4+ browsers...
-		    if(event.which == 13)
-		    {
-		        event.keyCode = 9;
-		    }
-		  }
-		}
-		-->
+			function ConfirmExit() {
+				if (!isConfirmed) {
+					return "CHANGES WILL BE LOST!";
+				}
+			}
+			function EnterPressed(event) {
+				if (document.all) {
+					if (event.keyCode == 13) {  // handles IE browsers...
+						event.keyCode = 9;
+					}
+				}
+				else if (document.getElementById) { // handles NS and Mozilla browsers...
+					if (event.which == 13) {
+						event.keyCode = 9;
+					}
+				}
+				else if (document.layers) { // handles NS ver. 4+ browsers...
+					if (event.which == 13) {
+						event.keyCode = 9;
+					}
+				}
+			}
+			-->
 		</script>
 <?php
 // *** EDIT MODE ***
 		printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return ExitOkay(confirm('Are you sure you want to make these changes?'))\" ACTION=\"%s?action=bulkedit\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-		?><tr><td align=right>New Catalog #</td><td></td></tr><?php
+		?>
+		<tr>
+			<td align=right>New Catalog #</td>
+			<td></td>
+		</tr><?php
 	}
-	
-////////////////////////////////////////////////////
-// NEW LOOP METHOD (please replace all other loops on this site in this way!)
-////////////////////////////////////////////////////
-// step 1: change db query line to look like this:
-//
-//		$query = "SELECT ...";
-//		$dbarray = array();		
-//		if( $result = $db->query($query)){
-//			while($row = $result->fetch_assoc()){
-//				$dbarray []= $row;	///* []= means PUSH()	*/
-//			}
-//		} else {
-//		echo "ERROR MESSAGE";	
-//		}
-//
-//
-//
-////////////////////////////////////////////////////
-// step 2: 	change:
-//				while($scount < $snum_rows)
-//			into:
-//				foreach($dbarray as $i => $row)
-////////////////////////////////////////////////////
-// step 3:	change all instances of:
-//				mysqli_result_dep($sresult,$scount,"FIELDNAME")
-//			into:
-//				$row["FIELDNAME"]
-////////////////////////////////////////////////////
-// step 4:	rinse and repeat
-////////////////////////////////////////////////////
-
 	$dbarray = array();
 	while($r = mysqli_fetch_array($sresult)){
 		$r['id'] = $r[0]; // weird fix
@@ -217,7 +182,11 @@ foreach($dbarray as $i => $row){
 	//	printf("<center>|%s|</center></td><td><a href=%s?action=view&id=%s title=\"%s\">(%s) - %s</a></td></tr>", $row["format"], $_SERVER['SCRIPT_NAME'], $row["id"], $title, $row["artist"], $row["title"]);
 		echo "<center>|".$row['format']."|</center></td><td><a href=".$_SERVER['SCRIPT_NAME'].
 				"?action=view&id=".$row['id']." title='".$title."'>(".$row["artist"].") - ".$row["title"].
-				"</a>";
+				"</a> ";
+	if ($row['cancon']==1) echo '<img src="images/cc.png" title="Canadian Content"  height="15"/>';
+	if ($row['femcon']==1) echo '<img src="images/fe.png" title="Female Content" height="15"/>';
+	if ($row['local']==1) echo '<img src="images/local.png" title="Local Content" height="15"/>';
+	if ($row['digitized']==1) echo '<img src="images/sam.png" title="This record is available to play in SAM" height="15"/>';
 		if (isset($_GET['bulkedit'])){
 		echo "<a class='lib-delete' id=".$row['id'].">delete</a>";
 		}
