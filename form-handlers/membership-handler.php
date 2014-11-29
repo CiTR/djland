@@ -85,9 +85,7 @@ $default = false;
 							}
 						}
 					}
-					if(($from != null || $from != "") && ($to != null || $to!= "")){
-							$query .=" AND m.joined >='".$from."' AND m.joined <='".$to."'";
-						}
+
 					break;
 				default: //by default select all members
 					break;
@@ -152,9 +150,19 @@ $default = false;
 							}
 						}
 					}
+					if(($from != null || $from != "") && ($to != null || $to!= "")){
+						$query .=" AND m.joined >='".$from."' AND m.joined <='".$to."'";
+					}
 					break;
 				default:
 					break;
+			}
+			if($sort == "id"){
+				$query.=" GROUP BY m.id ORDER BY m.id DESC;";
+			}else if($sort == 'lastname'){
+				$query.=" GROUP BY m.id ORDER BY m.lastname ASC;";
+			}else if($sort == 'email'){
+				$query.=" GROUP BY m.id ORDER BY m.email ASC;";
 			}
 			break;
 		case 'report':

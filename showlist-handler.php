@@ -22,7 +22,7 @@ function mysqli_result($res, $row, $field=0) {
 } 
 $showlib = new ShowLib($db);
 //$showlib-> sayHi();
-$allshows =  $showlib->getAllShows();
+$allshows =  $showlib->getAllShows(true);
 
 function cmp($a, $b)
 {
@@ -42,7 +42,7 @@ echo '<html><body>';
  * <head><meta http-equiv="Access-Control-Allow-Origin" content="www.citr.ca"></head> will not work, as IIS intercepts it.
  */
 function printShow($show) {
-	
+	if ($show->active != '1') return;
 //	if (!is_null($show->show_desc)) {
 		echo "<h4>{$show->name}";
 		$anchorvalue = trim($show->name);
@@ -153,6 +153,24 @@ for ($lpos++; $lpos<$numletters; $lpos++) { // Print rest of letters
 	echo "<a name='{$letters[$lpos]}'></a>";
 }
 
+echo '<h2>Archives (2012 and newer)</h2>';
+
+foreach($allshows as $i => $show){
+	if ($show->active == '0'){
+
+		echo $show->name;
+		if (!is_null($show->podcast)) {
+			echo " <a href=\"{$show->podcast}\"><img src=\"http://www.citr.ca/images/rss.gif\" alt=\"RSS\"/></a>";
+		}
+		if (!is_null($show->genre)) {
+			echo " ({$show->genre})";
+		}
+		echo '<br/>';
+	
+
+	}
+
+}
 echo '</body></html>';
 
 mysqli_close($db);

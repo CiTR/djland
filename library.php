@@ -28,7 +28,7 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	printf("<br><table align=center class=playsheet><tr><td>");
 	printf("<center><h1>Search Results</h1></center>");
 
-	$record_limit = 50; // the number of search results to display per page
+	$record_limit = 100; // the number of search results to display per page
 	$record_start = (isset($_GET['start']) && $_GET['start']) ? (int)$_GET['start'] : 0;
 	$record_prev = ($record_start >= $record_limit) ? $record_start - $record_limit : -1;
 
@@ -59,6 +59,7 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 		$search_query .= (isset($_GET['asfemcon'])) ? "library.femcon='1' AND " : "";
 		$search_query .= (isset($_GET['aslocal'])) ? "library.local='1' AND " : "";
 		$search_query .= (isset($_GET['ascompilation'])) ? "library.compilation='1' AND " : "";
+		$search_query .= (isset($_GET['asdigitized'])) ? "library.digitized='1' AND " : "";
 		$search_query .= (isset($_GET['asplaylist'])) ? "library.playlist='1' AND added >'". date('Y-m-d', strtotime("-6 months")) ."' AND " : "";
 
 		$search_order = "ORDER BY ". fas($_GET['asorder']) . (isset($_GET['asdescending']) ? " DESC " : " ");
@@ -75,84 +76,49 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	printf("<table border=0>");
 	if(is_member("editlibrary") && isset($_GET['bulkedit'])) {
 
-?>
-<!--JAVASCRIPT HELPER CALLS-->
+		?>
+		<!--JAVASCRIPT HELPER CALLS-->
 		<script language=JavaScript>
-		<!--
-		var isConfirmed = false;
-		//window.onbeforeunload = ConfirmExit;
-		function ExitOkay(setTo) {
-			isConfirmed = setTo;
-			return setTo;
-		}
-		function ConfirmExit() {
-			if(!isConfirmed) {
-				return "CHANGES WILL BE LOST!";
+			<!--
+			var isConfirmed = false;
+			//window.onbeforeunload = ConfirmExit;
+			function ExitOkay(setTo) {
+				isConfirmed = setTo;
+				return setTo;
 			}
-		}
-		function EnterPressed(event)
-		{
-		  if (document.all)
-		  {
-		    if (event.keyCode == 13)
-		      {  // handles IE browsers...
-		        event.keyCode = 9;
-		      }
-		  }
-		  else if (document.getElementById)
-		  { // handles NS and Mozilla browsers...
-		    if (event.which == 13)
-		    {
-		        event.keyCode = 9;
-		      }
-		  }
-		  else if(document.layers)
-		  { // handles NS ver. 4+ browsers...
-		    if(event.which == 13)
-		    {
-		        event.keyCode = 9;
-		    }
-		  }
-		}
-		-->
+			function ConfirmExit() {
+				if (!isConfirmed) {
+					return "CHANGES WILL BE LOST!";
+				}
+			}
+			function EnterPressed(event) {
+				if (document.all) {
+					if (event.keyCode == 13) {  // handles IE browsers...
+						event.keyCode = 9;
+					}
+				}
+				else if (document.getElementById) { // handles NS and Mozilla browsers...
+					if (event.which == 13) {
+						event.keyCode = 9;
+					}
+				}
+				else if (document.layers) { // handles NS ver. 4+ browsers...
+					if (event.which == 13) {
+						event.keyCode = 9;
+					}
+				}
+			}
+			-->
 		</script>
 <?php
 // *** EDIT MODE ***
 		printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return ExitOkay(confirm('Are you sure you want to make these changes?'))\" ACTION=\"%s?action=bulkedit\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-		?><tr><td align=right>New Catalog #</td><td></td></tr><?php
+		?>
+		<tr>
+			<td align=right>New Catalog #</td>
+			<td></td>
+		</tr><?php
 	}
-	
-////////////////////////////////////////////////////
-// NEW LOOP METHOD (please replace all other loops on this site in this way!)
-////////////////////////////////////////////////////
-// step 1: change db query line to look like this:
-//
-//		$query = "SELECT ...";
-//		$dbarray = array();		
-//		if( $result = $db->query($query)){
-//			while($row = $result->fetch_assoc()){
-//				$dbarray []= $row;	///* []= means PUSH()	*/
-//			}
-//		} else {
-//		echo "ERROR MESSAGE";	
-//		}
-//
-//
-//
-////////////////////////////////////////////////////
-// step 2: 	change:
-//				while($scount < $snum_rows)
-//			into:
-//				foreach($dbarray as $i => $row)
-////////////////////////////////////////////////////
-// step 3:	change all instances of:
-//				mysqli_result_dep($sresult,$scount,"FIELDNAME")
-//			into:
-//				$row["FIELDNAME"]
-////////////////////////////////////////////////////
-// step 4:	rinse and repeat
-////////////////////////////////////////////////////
-
 	$dbarray = array();
 	while($r = mysqli_fetch_array($sresult)){
 		$r['id'] = $r[0]; // weird fix
@@ -210,12 +176,17 @@ foreach($dbarray as $i => $row){
 		$title .= "\nLocal: " . (htmlspecialchars($row["local"] ? "Yes" : "No"));
 		$title .= "\nPlaylist: " . (htmlspecialchars($row["playlist"] ? "Yes" : "No"));
 		$title .= "\nCompilation: " . (htmlspecialchars($row["compilation"] ? "Yes" : "No"));
+		$title .= "\nIn SAM: " . (htmlspecialchars($row["digitized"] ? "Yes" : "No"));
 
 
 	//	printf("<center>|%s|</center></td><td><a href=%s?action=view&id=%s title=\"%s\">(%s) - %s</a></td></tr>", $row["format"], $_SERVER['SCRIPT_NAME'], $row["id"], $title, $row["artist"], $row["title"]);
 		echo "<center>|".$row['format']."|</center></td><td><a href=".$_SERVER['SCRIPT_NAME'].
 				"?action=view&id=".$row['id']." title='".$title."'>(".$row["artist"].") - ".$row["title"].
-				"</a>";
+				"</a> ";
+	if ($row['cancon']==1) echo '<img src="images/cc.png" title="Canadian Content"  height="15"/>';
+	if ($row['femcon']==1) echo '<img src="images/fe.png" title="Female Content" height="15"/>';
+	if ($row['local']==1) echo '<img src="images/local.png" title="Local Content" height="15"/>';
+	if ($row['digitized']==1) echo '<img src="images/sam.png" title="Available to play in SAM" height="15"/>';
 		if (isset($_GET['bulkedit'])){
 		echo "<a class='lib-delete' id=".$row['id'].">delete</a>";
 		}
@@ -232,39 +203,7 @@ foreach($dbarray as $i => $row){
 	
 	
 	}
-////////////////////////////////////////////////////////
-// OLD CRAPPY LOOP METHOD
-////////////////////////////////////////////////////////
-/*
-	while($scount < $snum_rows) {
-		if(is_member("editlibrary")) {
-			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,$scount,"id"), mysqli_result_dep($sresult,$scount,"catalog") ? mysqli_result_dep($sresult,$scount,"catalog") : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".mysqli_result_dep($sresult,$scount,"id")."\" name=id".$scount."><input type=hidden value=\"".mysqli_result_dep($sresult,$scount,"catalog")."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
-		}
-		else {
-			printf("<tr><td align=right>[%s]</td><td>", mysqli_result_dep($sresult,$scount,"catalog"));
-		}
-		$title = "Catalog: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"catalog"));
-		$title .= "\nFormat: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"format"));
-		$title .= "\nStatus: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"status"));
-		$title .= "\nArtist: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"artist"));
-		$title .= "\nTitle: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"title"));
-		$title .= "\nLabel: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"label"));
-		$title .= "\nGenre: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"genre"));
-		$title .= "\nAdded: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"added"));
-		$title .= "\nModified: " . htmlspecialchars(mysqli_result_dep($sresult,$scount,"modified"));
-		$title .= "\nCancon: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"cancon") ? "Yes" : "No"));
-		$title .= "\nFemcon: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"femcon") ? "Yes" : "No"));
-		$title .= "\nLocal: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"local") ? "Yes" : "No"));
-		$title .= "\nPlaylist: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"playlist") ? "Yes" : "No"));
-		$title .= "\nCompilation: " . (htmlspecialchars(mysqli_result_dep($sresult,$scount,"compilation") ? "Yes" : "No"));
 
-
-		printf("<center>|%s|</center></td><td><a href=%s?action=view&id=%s title=\"%s\">(%s) - %s</a></td></tr>", mysqli_result_dep($sresult,$scount,"format"), $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,$scount,"id"), $title, mysqli_result_dep($sresult,$scount,"artist"), mysqli_result_dep($sresult,$scount,"title"));
-		$scount++;
-
-	}
-	*/
-	
 	
 	
 	if(is_member("editlibrary") && isset($_GET['bulkedit'])) {
@@ -319,9 +258,10 @@ else if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "vi
 			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
 			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
 			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-			printf("<td>Local: %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-			printf("<tr align=right><td>Playlist: %s</td><td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-			printf("Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td>Local: %s</td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<td>Playlist: %s</td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+			printf("<tr><td>Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td>in SAM: %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
 			printf("</table><br>");
 	}
 	else {
@@ -344,7 +284,7 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 			mysqli_query($db,"INSERT INTO `library` (id, added) VALUES (NULL, '$current_date')");
 			$ed = mysqli_insert_id($db);
 		}
-		$sresult = mysqli_query($db, "UPDATE `library` SET format_id='".fas($_POST['format'])."', catalog='".fas($_POST['catalog'])."', cancon='".(isset($_POST['cancon'])?1:0)."', femcon='".(isset($_POST['femcon'])?1:0)."', local='".(isset($_POST['local'])?1:0)."', playlist='".(isset($_POST['playlist'])?1:0)."', compilation='".(isset($_POST['compilation'])?1:0)."', status='".fas($_POST['status'])."', artist='".fas($_POST['artist'])."', title='".fas($_POST['title'])."', label='".fas($_POST['label'])."', genre='".fas($_POST['genre'])."', modified='$current_date' WHERE id='$ed'");
+		$sresult = mysqli_query($db, "UPDATE `library` SET format_id='".fas($_POST['format'])."', catalog='".fas($_POST['catalog'])."', cancon='".(isset($_POST['cancon'])?1:0)."', femcon='".(isset($_POST['femcon'])?1:0)."', local='".(isset($_POST['local'])?1:0)."', playlist='".(isset($_POST['playlist'])?1:0)."', compilation='".(isset($_POST['compilation'])?1:0)."', digitized='".(isset($_POST['digitized'])?1:0)."', status='".fas($_POST['status'])."', artist='".fas($_POST['artist'])."', title='".fas($_POST['title'])."', label='".fas($_POST['label'])."', genre='".fas($_POST['genre'])."', modified='$current_date' WHERE id='$ed'");
 
 
 
@@ -366,6 +306,9 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
 			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
 			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+
+//			printf("<tr><td align=right>in SAM:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized"));
+
 			//printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
 			//printf("<tr><td align=right>Modified:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"modified"));
 			//printf("<tr align=right><td>Cancon: %s</td><td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
@@ -413,6 +356,7 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 		$local = ($ed && mysqli_result_dep($result,0,"local")) ? " checked" : "";
 		$playlist = ($ed && mysqli_result_dep($result,0,"playlist")) ? " checked" : "";
 		$compilation = ($ed && mysqli_result_dep($result,0,"compilation")) ? " checked" : "";
+		$digitized = ($ed && mysqli_result_dep($result,0,"digitized")) ? " checked" : "";
 		$status =  $ed ? mysqli_result_dep($result,0,"status") : "";
 		$artist =  $ed ? mysqli_result_dep($result,0,"artist") : "";
 		$title =  $ed ? mysqli_result_dep($result,0,"title") : "";
@@ -432,16 +376,24 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 ?>
 		</select></td></tr>
 
-		<tr><td align=right>Status: </td><td align=left><INPUT SIZE=4 TYPE=text NAME=status value="<?=$status?>"></td></tr>
-		<tr><td align=right>Artist: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=artist value="<?=$artist?>"></td></tr>
-		<tr><td align=right>Title: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=title value="<?=$title?>"></td></tr>
-		<tr><td align=right>Label: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=label value="<?=$label?>"></td></tr>
-		<tr><td align=right>Genre: </td><td align=left><INPUT SIZE=40 TYPE=text NAME=genre value="<?=$genre?>"></td></tr>
-		<tr align=right><td>Cancon: <input type=checkbox name="cancon"<?=$cancon?>></td>
-		<td>Femcon: <input type=checkbox name="femcon"<?=$femcon?>></td>
-		<td>Local: <input type=checkbox name="local"<?=$local?>></td></tr>
-		<tr align=right><td>Playlist: <input type=checkbox name="playlist"<?=$playlist?>></td><td>
-		Compilation: <input type=checkbox name="compilation"<?=$compilation?>></td></tr>
+		<tr><td>Status: </td><td><INPUT SIZE=4 TYPE=text NAME=status value="<?=$status?>"></td></tr>
+		<tr><td>Artist: </td><td><INPUT SIZE=40 TYPE=text NAME=artist value="<?=$artist?>"></td></tr>
+		<tr><td>Title: </td><td ><INPUT SIZE=40 TYPE=text NAME=title value="<?=$title?>"></td></tr>
+		<tr><td>Label: </td><td ><INPUT SIZE=40 TYPE=text NAME=label value="<?=$label?>"></td></tr>
+		<tr><td>Genre: </td><td ><INPUT SIZE=40 TYPE=text NAME=genre value="<?=$genre?>"></td></tr>
+		<tr>
+			<td>Cancon: <input type=checkbox name="cancon"<?=$cancon?>></td>
+			<td>Femcon: <input type=checkbox name="femcon"<?=$femcon?>>
+				Local: <input type=checkbox name="local"<?=$local?>>
+		</td>
+
+		</tr>
+		<tr>
+			<td>Playlist: <input type=checkbox name="playlist"<?=$playlist?>></td>
+			<td>Compilation: <input type=checkbox name="compilation"<?=$compilation?>>
+			in SAM: <input type=checkbox name="digitized"<?=$digitized?>>
+			</td>
+		</tr>
 		</table>
 		<br>
 		<?php
@@ -500,6 +452,7 @@ else if(is_member("library")){
 	Local: <input type=checkbox name="aslocal">
 	</td><td align=right nowrap> Playlist: <input type=checkbox name="asplaylist">
 	Compilation: <input type=checkbox name="ascompliation">
+	in SAM: <input type=checkbox name="asdigitized">
 	</tr><tr><td align=right nowrap>Order by: <select name=asorder>
 	<option value=library.artist>Artist
 	<option value=library.catalog>Catalog #
