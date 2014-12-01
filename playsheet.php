@@ -747,21 +747,21 @@ if (count($matches)>1){
 		<?php endif; ?>
 		<!-- helpboxes declaration -->
 		<div id='helpboxARTIST'></div>
-		<div id=helpboxSONG></div>
-		<div id=helpboxALBUM></div>
-		<div id=helpboxPL></div>
-		<div id=helpboxCC></div>
-		<div id=helpboxFE></div>
-		<div id=helpboxINST></div>
-		<div id=helpboxPART></div>
-		<div id=helpboxHIT></div>
-		<div id=helpboxTHEME></div>
-		<div id=helpboxBACKGROUND></div>
-		<div id=helpboxCRTC></div>
-		<div id=helpboxLANG></div>
-		<div id=helpboxTOOLS></div>
-		<div id=helpboxGUEST></div>
-		<div id=helpboxAD></div>
+		<div id='helpboxSONG'></div>
+		<div id='helpboxALBUM'></div>
+		<div id'=helpboxPL'></div>
+		<div id='helpboxCC'></div>
+		<div id='helpboxFE'></div>
+		<div id='helpboxINST'></div>
+		<div id='helpboxPART'></div>
+		<div id='helpboxHIT'></div>
+		<div id='helpboxTHEME'></div>
+		<div id='helpboxBACKGROUND'></div>
+		<div id='helpboxCRTC'></div>
+		<div id='helpboxLANG'></div>
+		<div id='helpboxTOOLS'></div>
+		<div id='helpboxGUEST'></div>
+		<div id='helpboxAD'></div>
 		<!--Banner with Icons-->
 		
 
