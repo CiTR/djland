@@ -200,7 +200,7 @@ $default = false;
 				}
 			
 			$arr = array('arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling');
-			$titles = array('Arts','Digital Library','Design for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
+			$titles = array('Arts','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
 			$max = sizeof($titles);
 			for($i=0;$i<$max;$i++){
 				$titles[$i]="Members interested in ".$titles[$i];

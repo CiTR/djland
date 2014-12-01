@@ -192,7 +192,7 @@ function add_handlers(){
 			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
-				var title = ['All','Arts','Ads and PSAs','Digital Library','Design for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+				var title = ['All','Arts','Ads and PSAs','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
 				var values =  ['all','arts','ads_psa','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 
 			$searchval = $('#search_value');
@@ -778,7 +778,7 @@ function manage_members(action_,type_,value_){
 						$("#membership").append("<div id='membership_header'>Interest:");
 
 						$('#membership_header').append("<select id=search_value></select>");
-							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
 							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
