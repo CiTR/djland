@@ -821,6 +821,7 @@ function manage_members(action_,type_,value_){
 						}else{
 							paid='both';
 						}
+						//get year
 						year = getVal('year_select');	
 						sort = 'email';
 						console.log("Date Filter "+getCheckbox('date_filter'));

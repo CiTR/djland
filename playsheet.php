@@ -104,14 +104,14 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 
 //	$show_id = fget_id($_POST['showtitle'], "shows", false);
 	$show_id = $_POST['showtitle'];
-	$host_id = fget_id($_POST['host'], "hosts", true);
+	$host_id = htmlentities(fget_id($_POST['host'], "hosts", true));
 	$create_name = get_username();
 	$create_date = date('Y-m-d H:i:s');
 	$edit_name = get_username();
 	$show_date = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day']);
 	$start_time = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day'] . " " . $_POST['pl_date_hour'] . ":" . $_POST['pl_date_min'] . ":" . "00");
 	$end_time = fas($_POST['end_date_hour'] . ":" . $_POST['end_date_min'] . ":" . "00");
-	$spokenword = fas($_POST['spokenword']);
+	$spokenword = htmlentities($_POST['spokenword']);
 	$spokenword_h = $_POST['sw-time-hr'];
 	$spokenword_m = $_POST['sw-time-min'];
 	$unix_time = $_POST['unixTime'];
@@ -747,21 +747,21 @@ if (count($matches)>1){
 		<?php endif; ?>
 		<!-- helpboxes declaration -->
 		<div id='helpboxARTIST'></div>
-		<div id=helpboxSONG></div>
-		<div id=helpboxALBUM></div>
-		<div id=helpboxPL></div>
-		<div id=helpboxCC></div>
-		<div id=helpboxFE></div>
-		<div id=helpboxINST></div>
-		<div id=helpboxPART></div>
-		<div id=helpboxHIT></div>
-		<div id=helpboxTHEME></div>
-		<div id=helpboxBACKGROUND></div>
-		<div id=helpboxCRTC></div>
-		<div id=helpboxLANG></div>
-		<div id=helpboxTOOLS></div>
-		<div id=helpboxGUEST></div>
-		<div id=helpboxAD></div>
+		<div id='helpboxSONG'></div>
+		<div id='helpboxALBUM'></div>
+		<div id'=helpboxPL'></div>
+		<div id='helpboxCC'></div>
+		<div id='helpboxFE'></div>
+		<div id='helpboxINST'></div>
+		<div id='helpboxPART'></div>
+		<div id='helpboxHIT'></div>
+		<div id='helpboxTHEME'></div>
+		<div id='helpboxBACKGROUND'></div>
+		<div id='helpboxCRTC'></div>
+		<div id='helpboxLANG'></div>
+		<div id='helpboxTOOLS'></div>
+		<div id='helpboxGUEST'></div>
+		<div id='helpboxAD'></div>
 		<!--Banner with Icons-->
 		
 
