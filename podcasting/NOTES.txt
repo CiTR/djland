@@ -1,0 +1,27 @@
+endpoints in this directory:
+
+/writexml.php
+
+GET vars:
+channel='id' [or 'all' to update all xml files]
+
+	Write RSS xml files corresponding to the data in djland's podcast channel + episode tables.  Will update (overwrite) one channel's file or every single file if 'all' is given for channel id#
+
+
+************************************
+
+/episode.php
+
+POST vars:
+url: [string: absolute URL of the mp3]
+channel: [integer: channel # of new episode]
+data: {	title: [string indicating title of episode]
+		subtitle: [string]
+		summary: [string]  }
+
+This will add a new episode to a given channel in the DJLAND database.  This does not write to xml
+
+
+
+
+

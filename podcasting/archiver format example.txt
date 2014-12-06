@@ -1,0 +1,24 @@
+http://archive.citr.ca/py-test/archbrad/download?
+archive=%2Fhome%2Frtav%2Faudio_log%2Fv1
+&startTime=04-05-2014+01%3A02%3A03
+&endTime=04-05-2014+01%3A12%3A03
+
+
+&startTime=10-11-2014+16%3A00%3A00
+&endTime=10-11-2014+17%3A00%3A00
+
+
+04-05-2014+01%3A02%3A03
+
+04-05-2014 01:02:03
+
+
+
+
+
+
+
+
+04-05-2014+01%3A12%3A03
+
+04-05-2014 01:12:03

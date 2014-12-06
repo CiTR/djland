@@ -396,6 +396,7 @@ class Show {
 	public $times = array();
 	public $contact = array();
 	public $active;
+	public $pod_chan_id;
 	
 	// Constructors
 	// Args: $show_r - an array of show info ($show_r["attr"] = val)
@@ -414,6 +415,7 @@ class Show {
 		$this->setVar($this->img_url, $show_r['show_img']);
 		$this->setVar($this->website, $show_r['website']);
 		$this->setVar($this->podcast, $show_r['rss']);
+		$this->setVar($this->pod_chan_id, $show_r['podcast_channel_id']);
 		$this->requirements = array("pl" => $show_r["pl_req"], "cc" => $show_r["cc_req"], "indy" => $show_r["indy_req"], "fem" => $show_r["fem_req"]);
 		$this->times = $times;
 		$this->contact = $socials;

@@ -218,25 +218,6 @@
 
 	// activate mass loader form
 	
-	$('#podcastMarker').click( function(){
-		console.log('podcast marker');						
-					
-			var text = $.ajax({
-				type: "POST",
-				url: "./addmarker.php",
-				data: { gonsho2433456: 'kurbleziac_q3289476b30894276'},
-				
-				success: function(text){
-				//  alert("success!");
-				console.log("<br/> success? sent data:<br/>"+text+"<br/> ");
-				$('span#podcastTime').html(text);
-				},
-	    		error: function(XMLHttpRequest, textStatus, errorThrown) { 
-	        		console.log("Status: " + textStatus); alert("Error: " + errorThrown); 
-
-	    		}  
-			});
-	});
 
 // Fetch data and fill in all fields accordingly
 $('#submitDates').click(function(){	

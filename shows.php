@@ -103,7 +103,7 @@ if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == '
 // -------- POST handling code ---------------------------------
 
 if(is_member("addshow")) {
-//	print_r($_POST);
+	
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
 		echo "<center><h1>Show Deleted</h1>";
@@ -126,10 +126,6 @@ if(is_member("addshow")) {
 
 		$show_name = fas($_POST['showtitle']);
 		$host_id = fget_id(fas($_POST['host']), "hosts", true);
-		$pl_req = fas($_POST['pl_req']);
-		$cc_req = fas($_POST['cc_req']);
-		$indy_req = fas($_POST['indy_req']);
-		$fem_req = fas($_POST['fem_req']);
 		$weekday = fas($_POST['weekday']);
 		$create_name = get_username();
 		$create_date = date('Y-m-d H:i:s');
@@ -143,6 +139,7 @@ if(is_member("addshow")) {
 		$rss = fas($_POST['t_rss']);
 		$genre = fas($_POST['t_genre']);
 		$show_desc = fas($_POST['t_show_desc']);
+		echo '<hr/> results<br/>';
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
 		$sponsor_name = fas($_POST['t_sponsor_name']);
@@ -150,16 +147,32 @@ if(is_member("addshow")) {
 		
 		$times = processFields(array("sd","sh","sm","ed","eh","em","alt"));
 		$socials = processFields(array("socialName","socialURL"));
+
+		$p_xml = fas($_POST['t_xml']);
+		$p_subtitle = fas($_POST['t_subtitle']);
+		$p_description = fas($_POST['t_description']);
+		$p_keywords = fas($_POST['t_keywords']);
+		$p_link = fas($_POST['t_link']);
+		$p_image = fas($_POST['t_podcast_img']);
+		$podcast_channel_id = fas($_POST['t_pod_id']);
 		
 		if(isset($_POST['id']) && $_POST['id']) {
 			$ed = $_POST['id'];
 		}
 		else {
-			$insert_q = "INSERT INTO `shows` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
+
+			$insert_channel_q = "INSERT INTO `podcast_channels` (id) VALUES (NULL)";
+			if (mysqli_query($db,$insert_channel_q) ) echo "podcast channel created <br/>";
+				else echo "there was an error creating the podcast channel <br/>";
+//			echo "inserted: ".$insert_q;
+			$podcast_channel_id = mysqli_insert_id($db);
+
+			$insert_q = "INSERT INTO `shows` (id, create_date, create_name, podcast_channel_id) VALUES (NULL, '$create_date', '$create_name', '$podcast_channel_id')";
 			if (mysqli_query($db,$insert_q) ) echo "show created <br/>";
-				else echo "there was an error";
+				else echo "there was an error creating the show <br/>";
 //			echo "inserted: ".$insert_q;
 			$ed = mysqli_insert_id($db);
+
 		}
 		
 		if ($times == -1) { // Error has occured when processing time fields
@@ -201,13 +214,26 @@ if(is_member("addshow")) {
 			}
 		}
 		if (!$weekday) $weekday = 0;
-		$update_q = "UPDATE `shows` SET name='$show_name', host_id='$host_id', weekday='$weekday', pl_req='$pl_req', cc_req='$cc_req', indy_req='$indy_req', fem_req='$fem_req', edit_name='$edit_name', crtc_default=$crtc_default, lang_default='$lang_default', active=$active, genre='$genre', website='$website', rss='$rss', show_desc='$show_desc', notes='$notes', show_img='$show_img', sponsor_name='$sponsor_name', sponsor_url='$sponsor_url' WHERE id='$ed'";
+		$update_q = "UPDATE `shows` SET name='$show_name', host_id='$host_id', weekday='$weekday', edit_name='$edit_name', crtc_default=$crtc_default, lang_default='$lang_default', active=$active, genre='$genre', website='$website', rss='$rss', show_desc='$show_desc', notes='$notes', show_img='$show_img', sponsor_name='$sponsor_name', sponsor_url='$sponsor_url' WHERE id='$ed'";
+		
+		$update_podcast_q = "UPDATE `podcast_channels` SET subtitle='$p_subtitle', summary='$p_description', keywords='$p_keywords', link='$p_link', image_url='$p_image', xml='$p_xml' WHERE id='$podcast_channel_id'";
 		
 		if( mysqli_query($db, $update_q) ) {
-			echo "show successfuly edited";
+			echo "show successfully edited<br/>";
 			write_new_showlist_file();
 		} else {
-			echo "there has been an error";
+			echo "error updating show info<br/>";
+		}
+
+		if( mysqli_query($db, $update_podcast_q)){
+
+			if (mysqli_affected_rows($db) >= 1){
+				echo "show podcast channel successfully edited<br/>";
+			} else {
+				echo 'did not edit a podcast channel';
+			}
+		} else {
+			echo "error updating podcast channel.<br/>query is ".$update_podcast_q;
 		}
 //		echo "updated: $update_q </center>";
 
@@ -217,45 +243,91 @@ if(is_member("addshow")) {
 		
 		
 	}
+
+
+
+
 	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+	// ADD OR EDIT SHOWS -------
+
+
 	else if(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add')) {
 		if($_GET['action'] == 'edit') {
 			$ed = fas($_GET['id']);
+
 			$result = mysqli_query($db,"SELECT *,HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min, HOUR(start_time) AS start_hour, MINUTE(start_time) AS start_min FROM shows WHERE id='$ed'");
+			
+			$show_data = mysqli_fetch_array($result); 
+
+
 		}
 		else {
 			$ed = 0;
 		}
+
 		$times = mysqli_query($db,"SELECT *, HOUR(start_time) AS sh, MINUTE(start_time) AS sm, HOUR(end_time) AS eh, MINUTE(end_time) AS em FROM `show_times` WHERE show_id=$ed");
 		$timeRows = mysqli_num_rows($times);
 		$socials = mysqli_query($db,"SELECT * FROM `social` WHERE show_id=$ed");
 		$socialRows = mysqli_num_rows($socials);
 
-		$show_name = $ed ? mysqli_result_dep($result, 0, "name") : "";
-		$host_name = $ed ? $fhost_name[mysqli_result_dep($result, 0, "host_id")] : "";
-		$pl_req = $ed ? mysqli_result_dep($result, 0, "pl_req") : "60";
-		$cc_req = $ed ? mysqli_result_dep($result, 0, "cc_req") : "35";
-		$indy_req = $ed ? mysqli_result_dep($result, 0, "indy_req") : "70";
-		$fem_req = $ed ? mysqli_result_dep($result, 0, "fem_req") : "30";
-		$weekday = $ed ? mysqli_result_dep($result, 0, "weekday") : date('w');
+//		$show_name = $ed ? mysqli_result_dep($result, 0, "name") : "";
+		$show_name = $ed ? $show_data["name"] : "";
+		$host_name = $ed ? $fhost_name[$show_data["host_id"]] : "";
+		$weekday = $ed ? $show_data["weekday"] : date('w');
 //		echo "weekday is ".$weekday;
-		$start_hour = $ed ? mysqli_result_dep($result, 0, "start_hour") : date('H');
-		$start_min = $ed ? mysqli_result_dep($result, 0, "start_min") : date('i');
-		$end_hour = $ed ? mysqli_result_dep($result, 0, "end_hour") : date('H');
-		$end_min = $ed ? mysqli_result_dep($result, 0, "end_min") : date('i');
-		$active = $ed ? mysqli_result_dep($result, 0, "active") : 1;
-		$crtc_num = $ed ? mysqli_result_dep($result, 0, "crtc_default") : "";
+		$start_hour = $ed ? $show_data["start_hour"] : date('H');
+		$start_min = $ed ? $show_data["start_min"] : date('i');
+		$end_hour = $ed ? $show_data["end_hour"] : date('H');
+		$end_min = $ed ? $show_data["end_min"] : date('i');
+		$active = $ed ? $show_data["active"] : 1;
+		$crtc_num = $ed ? $show_data["crtc_default"] : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
-		$lang_default = $ed ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$genre = ($ed && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
-		$website = ($ed && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
-		$rss = ($ed && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
-		$show_desc = ($ed && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
-		$sponsor_name = ($ed && !is_null(mysqli_result_dep($result, 0, "sponsor_name"))) ? mysqli_result_dep($result, 0, "sponsor_name") : "";
-		$sponsor_url = ($ed && !is_null(mysqli_result_dep($result, 0, "sponsor_url"))) ? mysqli_result_dep($result, 0, "sponsor_url") : "";
-		$notes = ($ed && !is_null(mysqli_result_dep($result, 0, "notes"))) ? mysqli_result_dep($result, 0, "notes") : "";
-		$show_img = ($ed && !is_null(mysqli_result_dep($result, 0, "show_img"))) ? mysqli_result_dep($result, 0, "show_img") : "";
+		$lang_default = $ed ? $show_data["lang_default"] : "";
+		$genre = ($ed && !is_null($show_data["genre"])) ? $show_data["genre"] : "";
+		$website = ($ed && !is_null($show_data["website"])) ? $show_data["website"] : "";
+		$rss = ($ed && !is_null($show_data["rss"])) ? $show_data["rss"] : "";
+		$show_desc = ($ed && !is_null($show_data["show_desc"])) ? $show_data["show_desc"] : "";
+		$sponsor_name = ($ed && !is_null($show_data["sponsor_name"])) ? $show_data["sponsor_name"] : "";
+		$sponsor_url = ($ed && !is_null($show_data["sponsor_url"])) ? $show_data["sponsor_url"] : "";
+		$notes = ($ed && !is_null($show_data["notes"])) ? $show_data["notes"] : "";
+		$show_img = ($ed && !is_null($show_data["show_img"])) ? $show_data["show_img"] : "";
+
+		$podcast_channel_id = $ed ? $show_data['podcast_channel_id'] : "";
 		
+
+
+			$podcast_query = 'SELECT * from podcast_channels where id = "'.$podcast_channel_id.'";';
+			
+			if ($podcast_result = mysqli_query($db, $podcast_query)){
+
+				$podcast_data = mysqli_fetch_array($podcast_result);
+				print_r($podcast_data);
+			} else {
+
+			}
+
+
+		$p_xml = $podcast_channel_id ? $podcast_data['xml'] : "" ;
+		$p_subtitle = $podcast_channel_id ? $podcast_data['subtitle'] : "" ;
+		$p_description = $podcast_channel_id ? $podcast_data['summary'] : "" ;
+		$p_keywords= $podcast_channel_id ? $podcast_data['keywords'] : "" ;
+		$p_link = $podcast_channel_id ? $podcast_data['link'] : "" ;
+		$p_image = $podcast_channel_id ? $podcast_data['image_url'] : "" ;
+
+		$p_episode_default_title = $podcast_channel_id ? $podcast_data['episode_default_title'] : "" ;
+		$p_episode_default_subtitle = $podcast_channel_id ? $podcast_data['episode_default_subtitle'] : "" ;
+		$p_episode_default_author = $podcast_channel_id ? $podcast_data['episode_default_author'] : "CiTR 101.9fm" ;
+
 		// Special HTML head (for javascript functions)
 		$weeks_elapsed = floor((time() - 1341100800)/(7*24*60*60));
 		$week_num = ($weeks_elapsed%2) + 1;
@@ -321,20 +393,21 @@ if(is_member("addshow")) {
 			echo "<INPUT type=hidden name=id value=$ed>";
 		}
 		// Start of table section
-		echo "<div class=\"table\">";
-		printf("<p><span>Show Title: </span><input name=\"showtitle\" type='text' size=35 value=\"%s\"></p>", $show_name);
-		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
+		echo "<div class='table'>";
+		printf("<p><span>Show Title: </span><input name='showtitle' type='text' size=35 value=\"%s\"></p>", $show_name);
+		printf("<p><span>Host/Op: </span><input name='host' type=text size=35 value=\"%s\"></p>", $host_name);
 		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $genre);
 		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
-		printf("<p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $show_img);
+		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $show_img);
 		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $website);
-		printf("<p><span>Podcast: </span><input name=\"t_rss\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $rss);
 		printf("<p><span>Language: </span><input name=\"t_lang_default\" type='text' size='35' value=\"%s\"></p>", $lang_default);
+		
+		
+
+
+
+
 		echo "<p><span>CRTC Default: </span>20<input name=\"r_crtc_default\" type='radio' value=\"20\" ".($crtc_num == 20 ? "checked='checked'" : "")." /> 30<input name=\"r_crtc_default\" type='radio' value=\"30\" ".($crtc_num == 30 ? "checked='checked'" : "")." /></p>";
-		printf("<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value=\"%s\">%%</p>", $pl_req);
-		printf("<p><span>CC Requirement: </span><input name=\"cc_req\" type=text size=3 value=\"%s\">%%</p>", $cc_req);
-		printf("<p><span>Indy Requirement: </span><input name=\"indy_req\" type=text size=3 value=\"%s\">%%</span></p>", $indy_req);
-		printf("<p><span>Female Requirement: </span><input name=\"fem_req\" type=text size=3 value=\"%s\">%%</span></p>", $fem_req);
 		echo "<p><span></span><span style=\"font-size:0.77em\">(Eg. sponsor1; sponsor2 - put sponsors with no links at the end)</span>";
 		printf("<p><span>Sponsor Name(s): </span><input name=\"t_sponsor_name\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $sponsor_name);
 		echo "<p><span></span><span style=\"font-size:0.77em\">(Eg. url1; url2 - separate with semicolons)</span>";
@@ -366,6 +439,66 @@ if(is_member("addshow")) {
 			echo "<p><span>Active: </span><input type='checkbox' name='c_active' value='1' /></p>";
 		}
 		echo "</div>";
+
+
+
+
+		echo '<div id=show_edit_podcast >';
+
+		echo "<p><span>Feedburner: </span><input name='t_rss' type='text' maxlength='255' size='80' value='{$rss}'></p>";
+		echo "<p><span>Local XML: </span><input name='t_xml' type='text' maxlength='255' size='80' value='{$p_xml}'></p>";
+		echo "<p><span>Keywords: </span><input name='t_keywords' type='text' maxlength='255' size='80' value='{$p_keywords}'></p>";
+		echo "<p><span>Subtitle: </span><input name='t_subtitle' type='text' maxlength='255' size='80' value='{$p_subtitle}'></p>";
+		echo "<p><span>Summary: </span><br/><textarea name='t_description' type='text' maxlength='255' rows='15' cols='40' value=''>{$p_description}</textarea></p>";
+		echo "<p><span>Link: </span><input name='t_link' type='text' maxlength='255' size='80' value='{$p_link}'></p>";
+		
+		echo "<p><span>channel id: <input name='t_pod_id' readonly value ='{$podcast_channel_id}'></p>";
+		
+
+		/*
+		if(isset($podcast_channel_id)){
+
+			$pod_query = 'SELECT * from podcast_channels where id = "'.$podcast_channel_id.'";';
+			if ($pod_result = mysqli_query($db, $pod_query) ){
+				
+				$podcast_info = mysqli_fetch_array($pod_result);
+
+				echo "<p><span>Subtitle: </span><input name='p_subtitle' type='text' maxlength='255' size='35' value='subtitle'></p>";
+		
+			}  else {}
+
+		} else {
+
+				echo 'no podcast found';
+				
+				//error
+			}
+*/
+
+		?>
+<!--
+		<pre>
+
+		<span class='custom_button' id='write_rss'>write rss file</span>
+
+		podcast url:
+
+		</pre>
+
+		<script type='text/javascript'>
+
+		$('#write_rss').click(function(){
+				$.ajax('podcasting/writexml.php', {
+
+				});
+		});
+		</script>
+		-->
+		<?php
+
+echo '</div>';
+
+
 		
 		// Times section
 		echo "<p style=\"text-decoration:underline\">Times (current week is Week $week_num):</p>";
@@ -483,10 +616,10 @@ if(is_member("addshow")) {
 	<?php 
 			$query = "SELECT id,name FROM shows ORDER BY name";
 		if($result = $db->query($query)){
-					while($row = mysqli_fetch_array($result)){
-						echo "<option value='".$row[id]."'>".$row[name]."</option>";
-					}
-				}
+			while($row = mysqli_fetch_array($result)){
+				echo "<option value='".$row[id]."'>".$row[name]."</option>";
+			}
+		}
 	?>
 	</select>
 	<BR/>
@@ -550,10 +683,10 @@ function write_new_showlist_file(){
 		}
 	}
 	if(strlen($showList) < 1000){
-		echo "<br/>Error updating the show list";
+		echo "<br/>Error updating the show list <br/>";
 	}
 	else{
-		echo "<br/>Show list successfully updated";
+		echo "<br/>Show list successfully updated <br/>";
 	}
 }
 ?>

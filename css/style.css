@@ -1878,3 +1878,27 @@ width:20px;
 height:20px;
 }
 
+.custom_button{
+	background-color: salmon;
+	color:black;
+	cursor:default;
+	border-style: solid;
+	border-width: 2px;
+	border-color: salmon;
+
+}
+
+.custom_button:hover{
+	background-color: white;
+	color:black;
+	border-style: solid;
+	border-width: 2px;
+	border-color: black;
+}
+
+#show_edit_podcast{
+	background-color: rgba(100,100,100,0.7);
+	width:100%;
+	position:relative;
+	padding:12px;
+}

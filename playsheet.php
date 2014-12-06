@@ -201,7 +201,6 @@ if(!isset($show_id)){
 		$insert_theme = isset($_POST['theme'.$i])?1:0;
 		}
 
-		 
 		$insert_artist = $_POST['artist'.$i];
 		$insert_album = $_POST['album'.$i];
 		$insert_song = $_POST['song'.$i];
@@ -414,6 +413,10 @@ $adLib = new AdLib($mysqli_sam,$db);
 		
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
 		$loaded_type = mysqli_result_dep($result, 0, "type");
+
+		// podcast stuff
+
+
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
 			// db query didn't work :|
@@ -471,7 +474,8 @@ $adLib = new AdLib($mysqli_sam,$db);
 				// MAKING NEW PS THAT IS RIGHT NOW (default)
 				$currshow = $showlib->getCurrentShow();
 				$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
-			
+
+
 				if (count($showtime)) {
 					$pl_date_hour = date('H', strtotime($showtime['start_time']));
 					$pl_date_min = date('i', strtotime($showtime['start_time']));
@@ -670,7 +674,7 @@ if (count($matches)>1){
 		echo '</select>';
 		echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
 		
-		echo 	"<span id='ps_header'>";
+		echo "<span id='ps_header'>";
 		
 		printf("<tr><td> Show: <select id='showSelector' name=\"showtitle\">");
 
@@ -1053,13 +1057,213 @@ echo "Total Overall Duration:<br/>";
 <div id='podcast-tools'>
 <h2>Podcast Tools</h2>
 <center>
-<button id='podcastMarker' type='button' title='Add Time Marker'>Add Time Marker</button>
-<a href="http://playlist.citr.ca/podcasting/phpadmin/edit.php" target="_blank">link to podcast editor</a>
+<span class='custom_button' id='podcastStart' >podcast START</span>
+<span class='custom_button' id='podcastEnd' >podcast END</span>
+
 <span id='podcastTime'></span>	</center>
-<hr>
 </div>
 
+<div id="podcast">
+<pre>
+    START
+    DATE: <input type="datetime" id="start_date"></input> TIME: h:<input type="datetime" id="start_time_h" maxlength="2" size="2"></input> m:<input type="datetime" id="start_time_m" maxlength="2" size="2"></input> s:<input type="datetime" id="start_time_s" maxlength="2" size="2"></input><span class='custom_button' id="prev_start">preview</span>
+
+    END
+    DATE: <input type="datetime" id="end_date"></input> TIME h: <input type="datetime" id="end_time_h" maxlength="2" size="2"></input> m:<input type="datetime" id="end_time_m" maxlength="2" size="2"></input> s:<input type="datetime" id="end_time_s" maxlength="2" size="2"></input><span class='custom_button' id="prev_end">preview</span>
+
+    <input id="showname" value="show name"></input>
+    <span class='custom_button' id="go_podcast">create podcast file</span>
+
+
+    CHANNEL ID: <?php 
+	echo "<input id='channel_id' maxlength='3' size='3' value='{$currshow->pod_chan_id}'></input>"
+?>
+
+    EPISODE TITLE: <input id='title' maxlength='255' size='80'></input>
+    EPISODE SUBTITLE: <input id='subtitle' maxlength='255' size='80'></input>
+    EPISODE SUMMARY: 
+    <textarea id='summary' maxlength='4000' rows='20' cols='80'></textarea> 
+    EPISODE URL: <input id='url' maxlength='255' size='75'></input>
+
+    <span class='custom_button' id="go_podcast_episode">add episode</span>
+</pre>
+    <div id="output"></div>
+
+
+</div>
+
+<!-- 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> -->
+<script>
+
+    var podcaster_url = '<?php echo $podcast_create_file_api; ?>';//'podcasting/create_audio_file.php';
+    var podcast_audio_root = '<?php echo $podcast_media_dir; ?>'+'audio/';
+    var episode_endpoint = 'podcasting/episode.php';
+    var archive_tool_url = '<?php echo $archive_tool_url; ?>';
+
+    $('#start_date').datepicker({ dateFormat: "@" });
+    $('#end_date').datepicker({ dateFormat: "@" });
+
+    // TEST INIT
+
+    $('#start_time_h').val('13');
+    $('#end_time_h').val('14');
+
+    $('#start_time_m,#start_time_s,#end_time_m,#end_time_s,#start_time_h,#end_time_h').change(function(){
+
+        $('#prev_start').click(function(a){
+        	a.preventDefault();
+            var start_unix = parse_start();
+            $('#prev_start').attr('data-audio',start_unix);
+            alert('dingus');
+            return false;
+
+        });
+
+    });    
+
+    $('#start_time_m,#start_time_s,#end_time_m,#end_time_s').val('00');
+
+    $('#podcastStart').click(function(){
+    	updatePodcast('start');
+    });
+
+    $('#podcastEnd').click(function(){
+    	updatePodcast('end');
+    });
+
+
+    function updatePodcast(start_or_end){
+
+    	$.ajax(archive_tool_url+'/time/',{
+    		success:function(time){
+
+    			var timestamp = new Date(time*1000);
+    			var hours = 	timestamp.getHours();
+    			var minutes = 	timestamp.getMinutes();
+    			var seconds = 	timestamp.getSeconds();
+    			var date = 		time - hours*60*60 - minutes*60 - seconds;
+
+    			var target = '#'+start_or_end;
+
+    			$(target+'_date').val(date);
+    			$(target+'_time_h').val(hours);
+    			$(target+'_time_m').val(minutes);
+    			$(target+'_time_s').val(seconds);
+
+    		}
+    	});
+    	if(start_or_end == 'start'){
+
+    	}
+
+    }
+
+    function parse_start(){
+
+        var start_date = parseInt($('#start_date').val());
+        var start_hour = parseInt($('#start_time_h').val());
+        var start_minute = parseInt($('#start_time_m').val());
+        var start_second = parseInt($('#start_time_s').val());
+        return start_date + 60*60*start_hour + 60*start_minute + start_second;
+    }
+
+    function parse_end(){
+        var end_date = parseInt($('#end_date').val());
+        var end_hour = parseInt($('#end_time_h').val());
+        var end_minute = parseInt($('#end_time_m').val());
+        var end_second = parseInt($('#end_time_s').val());
+        return end_date + 60*60*end_hour + 60*end_minute + end_second;
+    }
+
+    $('#go_podcast').click(function(){
+
+        var show_name = $('#showname').val();
+
+        var start_unix = parse_start();
+        var end_unix = parse_end();
+
+
+        $('#output').html('start unix:<br/>'+start_unix+'<br/>end unix:<br/> '+end_unix);
+        $('#output').append('<br/>requested duration: '+ Math.floor((end_unix-start_unix)/60/60)).append(' hours');
+        $('#output').append('<hr/>making audio...please wait...');
+
+        $.ajax(podcaster_url,{
+
+                data:{start:start_unix, end:end_unix, show:show_name},
+                success:function(data){
+                    $('#output').html('audio created successfully. now adding episode to db...');
+                //    $('#output').append('<hr/>did ajax request to '+podcaster_url+'. <hr/>result: '+data);
+
+
+                    var data = JSON.parse(data);
+
+
+                    var channel = $('#channel_id').val();
+			        var title = $('#title').val();
+			        var subtitle = $('#subtitle').val();
+			        var summary = $('#summary').val();
+
+                    $('#url').val(podcast_audio_root + data.filename);
+
+			        var episode_url = podcast_audio_root+data.filename;
+
+                  	$.ajax('podcasting/episode.php', {
+
+                  		type:'POST',
+			            data:{  url:episode_url,
+			                    channel:channel,
+			                    data: {title:title,
+			                            subtitle:subtitle,
+			                            summary:summary
+			                        }
+			                    },
+                  		success:function(ep_data){
+                  			$('#output').append('<hr/>episode added successfully. now writing xml file...');
+                  			$.ajax('podcasting/writexml.php', {
+                  				type:'GET',
+                  				data:{
+                  					channel:channel
+                  				},
+                  				success:function(xml_data){
+                  					$('#output').append('<hr/>xml created successfully. podcast creation complete!');
+                  			
+                  				},
+                  				error:function(xml_data){
+                  					$('#output').html('error creating xml - '+xml_data);
+                  			
+                  				}
+                  			});
+
+                  		},
+
+                  		error:function(ep_data){
+                  			$('#output').html('failed adding episode data to db - '+ep_data);
+                  		}
+
+                  	});
+                },
+                error:function(data){
+                    $('#output').html('audio creation failed - '+data);
+                },
+                complete:function(data){
+                //    $('#output').append('<hr/>request complete');
+                }
+
+
+            });
+
+    });
+</script>
+
+<hr>
 	<?php
+
+
+
+
 		}// end of podcast tools creation block
 		
 			if(!$ps_id || is_member("editdj")) {

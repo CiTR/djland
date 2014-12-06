@@ -94,8 +94,23 @@ $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 
 //*******************************************
-//* 6) Profit! ;)
+//* 6) Podcasting settings
 //*******************************************
+
+$podcast_xml_dir = './podcasting/podcast-rss/';
+
+// the citr podcaster makes a request to the URL specified here.  The
+// file at this location should reside on a server with storage space 
+// dedicated to storing large amounts of audio.
+// right now by default, it is a subdirectory of DJLand
+// for this to work, add the following line to your /etc/hosts file:
+// 127.0.0.1       djland.local
+// also edit your server settings to point djland.local 
+// to the djland root directory
+$podcast_media_dir = 'http://djland.local/podcasting/podcast-media/';
+$podcast_create_file_api = $podcast_media_dir.'create_audio_file.php';
+
+$archive_tool_url = 'http://archive.citr.ca';
 
 // developers visit DJland on GitHUB to check out latest version
 // or contribute to the project and submit a pull request!
