@@ -8,6 +8,8 @@
 
 header('access-control-allow-origin: *');
 
+    error_reporting(1);
+
 require_once('podcast-media-config.php');
 
 
@@ -35,20 +37,20 @@ if(isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show'])){
 
     $new_podcast_audio_file = file_get_contents($archive_url);
 
-/*
-    echo '<hr/>making URL request: '.$archive_url;
-    echo '<hr/>start / end is <pre/>';
-    print_r($start_date);
-    echo '<br/>';
-    print_r($end_date);
-*/
     $audio_dir = 'audio/';
     $file_name = $show.'-'.$start.'-'.$end.'.mp3';
 
-    $num_bytes = file_put_contents($audio_dir.$file_name,$new_podcast_audio_file);
-
-    echo json_encode(['filename' => $file_name, 'size' => $num_bytes]);
-
+    if(strlen($new_podcast_audio_file)>0){
+        $num_bytes = file_put_contents($audio_dir.$file_name,$new_podcast_audio_file);
+    
+        if ($num_bytes > 0){
+                echo json_encode(['filename' => $file_name, 'size' => $num_bytes, 'start' => $start_date, 'end' => $end_date]);
+            } else {
+                echo json_encode(['error' => 'could not write to the podcast directory']);
+            }
+    } else {
+        echo json_encode(['error' => 'cannot retrieve audio from archiver']);
+    }
     //'<hr/>done writing file!';
 #echo $new_podcast_audio_file;
 

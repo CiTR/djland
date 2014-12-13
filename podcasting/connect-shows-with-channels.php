@@ -1,12 +1,5 @@
 
 <?php
-/* single-use script that searches through the show names, matches them with
-podcast channels.  use this after the ingest_xml script.
-This page will show the ones that did not find a match - you must 
-manually do those in the db.  just set the podcast_channel_id field in the shows table
-
-*/
-
 
 require_once('../headers/db_header.php');
 

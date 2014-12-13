@@ -43,8 +43,6 @@ if ($result = mysqli_query($db, $query) ){
 
 		make_podcast($channel,$episode_lists[$i]);
 	}
-} else {
-	echo ' problem with db - '.$query;
 }
 
 
@@ -100,8 +98,11 @@ function make_podcast($channel,$episodes){
 		'<title>'.$episode['title'].'</title>'.
 		'<pubDate>'.$episode['date'].'</pubDate>'.
 		'<description>'.$episode['summary'].'</description>'.
-		'<itunes:subtitle>'.$episode['subtitle'].'</itunes:subtitle>'.
-		'<enclosure url="'.$episode['url'].'" length="'.$episode['length'].'" type="audio/mpeg"/>'.
+		'<itunes:subtitle>'.$episode['subtitle'].'</itunes:subtitle>';
+		$xml .=	($episode['duration'] > 0) ? '<itunes:duration>'.$episode['duration'].'</itunes:duration>':'';
+
+		$xml .=
+			'<enclosure url="'.$episode['url'].'" length="'.$episode['length'].'" type="audio/mpeg"/>'.
 		'<guid isPermaLink="true">'.$episode['url'].'</guid></item>';
 
 

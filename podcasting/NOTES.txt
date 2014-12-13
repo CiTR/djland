@@ -22,6 +22,58 @@ data: {	title: [string indicating title of episode]
 This will add a new episode to a given channel in the DJLAND database.  This does not write to xml
 
 
+migration process:
+
+0) make 2 new db tables: podcast_channel, podcast_episode (see code below for create statements)
+
+CREATE TABLE IF NOT EXISTS `podcast_channels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `subtitle` text,
+  `summary` text,
+  `author` text,
+  `keywords` text,
+  `owner_name` text,
+  `owner_email` text,
+  `episode_default_title` text,
+  `episode_default_subtitle` text,
+  `episode_default_author` text,
+  `link` text,
+  `image_url` text,
+  `audio_url_prefix` text,
+  `keep_n_episodes` int(4) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  `xml` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `podcast_episodes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `subtitle` text,
+  `summary` text,
+  `date` text,
+  `channel_id` int(11) DEFAULT NULL,
+  `url` text,
+  `length` int(11) DEFAULT NULL,
+  `author` text,
+  `active` tinyint(1) DEFAULT '1',
+  `duration` int(7) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
+1) make sure new fields are in db tables:
+	shows: podcast_channel_id
+
+2) put burli xml files in folder 'burli-xml' in djland/podcasting
+
+3) open djland.citr.ca/podcasting/ingest_xml.php in browser
+
+4) open djland.citr.ca/podcasting/write_xml.php?channel=all
+
+5) open djland.citr.ca/podcasting/connect-shows-with-channels.php
+
+6) resume where script left off using manual entering show id's in database

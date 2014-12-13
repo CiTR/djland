@@ -1,10 +1,3 @@
-<?php
-
-$burli_xml_dir = './burli-xml/';
-$max = '1000'; // set to something like 10 if you are just testing the script
-
-?>
-
 <head>
     <style type="text/css">
         body{
@@ -47,13 +40,14 @@ $max = '1000'; // set to something like 10 if you are just testing the script
 
 require_once('../headers/db_header.php');
 
-    $dir = $burli_xml_dir;
+    $dir = './xml/';
     $extension = 'xml';
     $dir_contents = scandir($dir);
+    $maximum_results = 5;
 
     foreach ($dir_contents as $key => $filename) {
 
-        if ($key <= $max){
+        if ($key <= $maximum_results){
 
         // IF ITS A XML FILE, process it
         if (is_file($dir . $filename) && substr($filename, 0, 1) != '.') {
@@ -72,9 +66,6 @@ require_once('../headers/db_header.php');
                echo '<div id=blue><pre>';
 
                print_r($values);
-
-
-
 
                echo '</pre></div>';
                echo '<div id="red"><pre>';
@@ -184,6 +175,14 @@ require_once('../headers/db_header.php');
                             $more++;
                         }
 
+                        //process duration...
+                        $times_arr = explode('/',$episode['url']);
+                        $times_string = $times_arr[5];
+                        $times_arr = explode('-to-',$times_string);
+
+                        $start_time_string = $times_arr[0];
+                        $end_time_string = $times_arr[1];
+
                         $episodes [] = $one_episode;
                     }
 
@@ -221,7 +220,7 @@ function file_extension($filename){
 
 function ingest_episodes($episodes,$channel_id, $db){
     foreach($episodes as $i => $episode){
-        $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,length) ";
+        $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,duration,length) ";
         $episode_insert .= "VALUES ('".
             htmlentities(addslashes($episode['TITLE']))."','".
             htmlentities(addslashes($episode['ITUNES:SUBTITLE']))."','".
@@ -229,6 +228,7 @@ function ingest_episodes($episodes,$channel_id, $db){
             htmlentities(addslashes($episode['PUBDATE']))."','".
             htmlentities(addslashes($channel_id))."','".
             htmlentities(addslashes($episode['URL']))."','".
+            htmlentities(addslashes($episode['duration']))."','".
             $episode['LENGTH']."');";
 
         if ($result = mysqli_query($db,$episode_insert)){

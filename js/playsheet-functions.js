@@ -71,7 +71,7 @@
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/show_info_loader.php",
-			data: {"showid":targetShow, "psid":playsheetID},
+			data: {"showid":targetShow, "psid":playsheetID, "unixTime":targetShowUnix},
 			dataType: "json"
 		}).success(function(text) {
 			show_block_data = text;
