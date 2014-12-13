@@ -1,7 +1,11 @@
 <?php
-$channel_id = $_GET['channel'];
 
-date_default_timezone_set('America/Vancouver')
+if (!isset($_GET['channel'])){
+	echo 'please append podcasting.php with ?channel=CHANNEL# after migrating your database. (For example, <a href="/podcasting.php?channel=12">click here for channel 12</a>) <br/><br/>see <a href="/podcasting/NOTES.txt"> notes.txt </a> for more info about migration</a></a>';
+} else {
+	$channel_id = $_GET['channel'];
+	date_default_timezone_set('America/Vancouver');
+}
 
 ?>
 <html>
