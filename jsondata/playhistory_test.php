@@ -28,13 +28,6 @@ if (isset($_GET['num'])){
 	$num_filter = '100';
 }
 
-//echo "min:".$datemin_filter."<hr/>";
-//echo "max:".$datemax_filter."<hr/>";
-// database info
-$ip = "p:192.168.25.73"; // p: is for persistant connection (better for web apps)
-$dbname = 'citr_live_test';
-$user = 'plays';
-$pass = 'dodecahedron-&^';
 
 
 $db = new mysqli($ip, $user, $pass, $dbname);
