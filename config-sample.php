@@ -42,6 +42,13 @@ $djland_db_username = 'djland-username';
 $djland_db_password = 'djland-password';
 $djland_db_dbname = 'djland-databasename';
 
+//(optional alternate db user - read-only operations)
+
+$optional_db_address = 'probably same as djland_db_address';
+$optional_db_username = 'opt-readonly-username';
+$optional_db_password = 'opt-pass';
+$optional_db_dbname = 'probably same as djland_db_name';
+
 //*******************************************
 //* 3) DJLand Enabled Features
 //*******************************************
