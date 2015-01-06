@@ -694,7 +694,7 @@ if (count($matches)>1){
 		//Playlist Date
 		echo "<table width=100%% border=0 align=center><tr><td>Date: ";
 		echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
-		for($i=2002; $i <= 2013; $i++) echo "<OPTION>".$i; 
+		for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i; 
 		echo "</SELECT>-";
 		echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
 		for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i); 
