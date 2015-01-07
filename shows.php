@@ -479,7 +479,7 @@ if(is_member("addshow")) {
 		<INPUT type=hidden name=action value=edit>";
 	?>	
 	<h2>All Shows:</h2>
-	<select name='id'>
+	<select name='id' size=20>
 	<?php 
 			$query = "SELECT id,name FROM shows ORDER BY name";
 		if($result = $db->query($query)){
@@ -520,7 +520,7 @@ if(is_member("addshow")) {
 		echo "<CENTER><FORM METHOD=\"GET\" ACTION=\"{$_SERVER['SCRIPT_NAME']}\" name=\"the_form\">\n
 		<INPUT type=hidden name=action value=edit>
 		<h2>Active shows:</h2>
-		<SELECT NAME=\"id\" SIZE=18>\n";
+		<SELECT NAME=\"id\" SIZE=20>\n";
 
 		$result = mysqli_query($db,"SELECT * FROM shows WHERE active=1 ORDER BY name");
 		$num_rows = mysqli_num_rows($result);

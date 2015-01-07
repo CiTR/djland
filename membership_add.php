@@ -189,7 +189,7 @@
 					<div class='col6'>I am interested in:</div>
 					<div class='span3col4'>
 						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music'></div>
-						<div class='col3'><label for='discorder'>Design for Discorder:</label><input type=checkbox id='discorder'></div>
+						<div class='col3'><label for='discorder'>Illustrate for Discorder:</label><input type=checkbox id='discorder'></div>
 						<div class='col3'><label for='discorder_2'>Writing for Discorder:</label><input type=checkbox id='discorder_2'></div>
 						<div class='col3'><label for='dj'>DJ 101.9:</label><input type=checkbox id='dj'></div>
 						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting'></div>
