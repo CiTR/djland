@@ -90,10 +90,17 @@
 					<div class='col5'>
 						<select id='since'>
 							<?php 
+							
 							$year = idate('Y');
 							$year_end = 1925;
-							echo $year;
-							echo $year_end;
+							$today = date('m/d/Y',strtotime("today"));
+							$cutoff = date('09/31/'.$year);
+
+							//Check to see if we are in a new school year or not.
+							if(strtotime($today) < strtotime($cutoff)){
+								$year--;
+							}
+
 							for ($i=$year; $i > $year_end ; $i--) { 
 								$next_year = $i+1;
 								echo "<option value='".$i."/".$next_year."''>".$i."/".$next_year."</option>";
