@@ -56,8 +56,8 @@
 	
 	$today = date("Y-m-d H:i:s");
 	$joined = $today;
-	//Check to see if we are before the end of school year or not (end of april)
-	$cutoff = mktime(00,00,00,4,30,date(Y));
+	//Check to see if we are before the end of school year or not (end of August)
+	$cutoff = mktime(00,00,00,9,30,date(Y));
 	if(strtotime($today) < strtotime($cutoff)){
 		//Still within the school year
 		$year = date("Y",strtotime("-1 year"));
