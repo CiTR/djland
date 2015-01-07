@@ -1,5 +1,7 @@
-<?
-require_once("../headers/db_header.php");
+<?php
+session_start();
+require_once("../headers/security_header.php");
+
 //require_once("../headers/function_header.php");
 $action = null;
 $type = null;
@@ -88,6 +90,7 @@ $default = false;
 
 					break;
 				default: //by default select all members
+					$default = true;
 					break;
 			}
 			if($sort == "id"){
@@ -113,6 +116,7 @@ $default = false;
 					$query = "SELECT u.userid AS userid, u.username AS username ,gm.member AS member,gm.dj AS dj,gm.administrator AS administrator,gm.adduser AS adduser,gm.addshow AS addshow,gm.editdj AS editdj,gm.library AS library,gm.membership AS membership,gm.editlibrary AS editlibrary FROM user AS u INNER JOIN membership AS m on u.member_id=m.id INNER JOIN group_members AS gm on u.userid=gm.userid WHERE m.id='".$value."'";
 					break;
 				default:
+					$default = true;
 					break;
 			}
 			break;
@@ -125,6 +129,7 @@ $default = false;
 					$query = "SELECT * FROM membership_years WHERE member_id ='".$value."'";
 					break;
 				default:
+					$default = true;
 					break;
 			}
 			break;
@@ -155,6 +160,7 @@ $default = false;
 					}
 					break;
 				default:
+					$default = true;
 					break;
 			}
 			if($sort == "id"){
@@ -200,7 +206,7 @@ $default = false;
 				}
 			
 			$arr = array('arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling');
-			$titles = array('Arts','Digital Library','Design for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
+			$titles = array('Arts','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
 			$max = sizeof($titles);
 			for($i=0;$i<$max;$i++){
 				$titles[$i]="Members interested in ".$titles[$i];
@@ -221,7 +227,8 @@ $default = false;
 			$default = true;
 			break;
 	}
-	if(!$default AND ($action != 'report')){
+	if(is_member('membership')){
+		if(!$default AND ($action != 'report')){
 		$result = null;
 		$members = null;
 		if($result = $db->query($query)){
@@ -232,7 +239,13 @@ $default = false;
 		}
 		echo json_encode($members);
 		$result->close();
+		}
+	}else{
+		echo "you don't have permission";
 	}
+		
+	
+	
 
 
 /*}*/
