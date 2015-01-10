@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['channel'])){
-	echo 'please append podcasting.php with ?channel=CHANNEL# after migrating your database. (For example, <a href="/podcasting.php?channel=12">click here for channel 12</a>) <br/><br/>see <a href="/podcasting/NOTES.txt"> notes.txt </a> for more info about migration</a></a>';
+	echo 'please append podcasting.php with ?channel=CHANNEL# after migrating your database. (For example, <a href="./podcasting.php?channel=12">click here for channel 12</a>) <br/><br/>see <a href="./podcasting/NOTES.txt"> notes.txt </a> for more info about migration</a></a>';
 } else {
 	$channel_id = $_GET['channel'];
 	date_default_timezone_set('America/Vancouver');
@@ -41,30 +41,33 @@ if (isset($_GET['editall']) && $_GET['editall'] == 'true'){
 
 
 <body ng-app='podcastEditor'>
+<h2>podcast editor demo</h2>
+
+
 
 <div ng-controller='channelCtrl as channel'>
 
-	{{status}}
+            <div loading-indicator></div>
+            
 
 	<div ng-controller='episodeCtrl' ng-repeat="episode in episodes" class=episode >
 		<ng-include src="'podcasting/podcast-episode.html'">
 
 		</ng-include>
+		<!--
 duration: {{episode.duration}}<br/>
 
 episode start obj: {{episode.start_obj | date: 'medium'}}<br/>
 episode end obj: {{episode.end_obj | date: 'medium'}}<br/>
 episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
+-->
 	</div>
-
-	<h3 ng-hide="edit_all">
-	<a ng-href="/podcasting.php?channel={{channel_id}}&editall=true">edit all episodes </a></h3>
 
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<script type='text/javascript' src='js/soundmanager2/script/soundmanager2.js'></script>	
+<script type='text/javascript' src='js/soundmanager2.js'></script>	
 
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
 <script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
@@ -145,7 +148,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 
 			$scope.makeEpisodes = function() {
-				$http.get('/podcasting/list.php?channel='+channel_id)
+				$http.get('./podcasting/list.php?channel='+channel_id)
 					.success(function(data, status, headers, config){
 						$scope.status = '';
 
@@ -220,7 +223,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 				};
 
 				$http({
-					url:'/podcasting/episode.php',
+					url:'./podcasting/episode.php',
 					method:'POST',
 					data:$.param(data_to_post)
 				})
@@ -341,7 +344,40 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 				}
 			}
-		})
+		}).config(function($httpProvider) {
+
+            $httpProvider.interceptors.push(function($q, $rootScope) {
+                return {
+                    'request': function(config) {
+                        $rootScope.$broadcast('loading-started');
+                        return config || $q.when(config);
+                    },
+                    'response': function(response) {
+                        $rootScope.$broadcast('loading-complete');
+                        return response || $q.when(response);
+                    }
+                };
+            });
+
+        })
+
+
+        .directive("loadingIndicator", function() {
+            return {
+                restrict : "A",
+                template: "<div>Loading...</div>",
+                link : function(scope, element, attrs) {
+                    scope.$on("loading-started", function(e) {
+                        element.css({"display" : ""});
+                    });
+
+                    scope.$on("loading-complete", function(e) {
+                        element.css({"display" : "none"});
+                    });
+
+                }
+            };
+        });
 
 </script>
 

@@ -89,7 +89,7 @@ require('config.php');
 
 		<?php
 		if($enabled['podcast_tools'] && is_member("dj")) :?>
-			<li class=nodrop><a href="podcasting.php"> Podcasts </a></li>
+			<li class=nodrop><a href="podcasting.php?channel=124"> Podcast Editor Demo </a></li>
 		<?php endif;?>
 	</ul>
 
