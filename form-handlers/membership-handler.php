@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 require_once("../headers/security_header.php");
 

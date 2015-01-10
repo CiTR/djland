@@ -1,5 +1,7 @@
 <?php
 
+
+$PREFIX = '[new-'.date('yymmdd').'] ';
 require_once('../headers/db_header.php');
 
 if(isset($_GET['channel'])){
@@ -52,6 +54,7 @@ if ($result = mysqli_query($db, $query) ){
 
 
 function make_podcast($channel,$episodes){
+	global $PREFIX;
 
 	foreach($channel as $i => $v){
 		$channel[$i] = htmlspecialchars(html_entity_decode($v));
@@ -65,7 +68,7 @@ function make_podcast($channel,$episodes){
 
 	$xml .= $xml_head;
 	$xml .= '<channel>';
-	$xml .= '<title>'.$channel['title'].'</title>';
+	$xml .= '<title>'.$PREFIX.$channel['title'].'</title>';
 	$xml .= '<description>'.$channel['summary'].'</description>';
 	$xml .= '<itunes:summary>'.$channel['summary'].'</itunes:summary>';
 	$xml .= '<itunes:author>'.$channel['author'].'</itunes:author>';

@@ -1,5 +1,7 @@
 headers/config.php
 config.php
+JSONDATA
+JSONDATA/*
 *.sublime-project
 *.sublime-workspace
 static

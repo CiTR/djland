@@ -1,0 +1,128 @@
+<style type="text/css">
+
+    .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    .timepicker{
+        border-width:1px;
+        border-style: solid;
+
+        display:inline-block;
+        padding:7px;
+
+    }
+
+    .summary{
+        width:80%;
+        min-height:200px;
+        margin-top:5px;
+        margin-bottom:5px;
+        overflow: auto;
+    }
+
+    .subtitle{
+        font-weight:bold;
+    }
+    .episode{
+        width:800px;
+        padding-left:35px;
+        border-style:dotted;
+        border-width:1px 0px 0px 1px;
+    }
+
+    .title{  margin-left:-15px;
+    }/*
+    .episode_wrap input,textarea{
+        border-style:solid;
+        border-color:white;
+        width:70%;
+    }*/
+
+    input.editbutton{
+        width:auto;
+    }
+    .editing{
+        border-color:lightskyblue;
+        border-width:1px;
+        border-style:solid;
+        background-color:#eef6ff;
+    }
+
+    .title-label{
+        /*position:relative;*/
+        /*bottom:-18px;*/
+        display:inline-block;
+    }
+
+    .previews{
+        display:inline-block;
+    }
+</style>
+
+
+    <div class="episode_wrap">
+        <i >title:</i>
+    <h3>
+        <input ng-model="episode.title" ng-readonly="!editing" ng-class="{editing: editing}" class="title"/> ({{episode.id}})
+    <!-- <button class='play_episode' ng-click="episode.sound.togglePause()">&#9658;/ &#10074;&#10074;</button>-->
+        <input type="button" ng-click="editToggle()" ng-class="{editing: editing}" value="edit" class="editbutton"> </input>
+        <button ng-click='save(episode)' ng-hide="!editing">save</button>
+        {{status}}
+    </h3>
+    <i >subtitle:<br/></i>
+    <input ng-model="episode.subtitle" ng-readonly="!editing" ng-class="{editing: editing}" class="subtitle"/><br/>
+    <i >description:<br/></i>
+    <textarea ng-model="episode.summary"
+              ng-readonly="!editing"
+              class='summary'
+              ng-class="{editing: editing}"
+              ng-show="(episode.summary != null) || (editing)">
+    </textarea>{{typeOf(episode.summary)}}<br/>
+    <div ng-hide="!editing" ng-class="{editing: editing}">
+        active: <input type="checkbox"
+                       ng-model="episode.active"
+                       ng-true-value="1"
+                       ng-false-value="0" editable=true/>
+
+	<span ng-controller='datepicker' class='date_pick'>
+	<input class="podcast_date" type="text" datepicker-popup="{{format}}"
+           ng-model="episode.date"  is-open="opened"
+           ng-required="true" close-text="Close" ng-hide="true" ng-change="date_change()" />
+	<br/>
+	<h4 ><i>broadcast on </i><b>{{episode.date | date:'medium'}}</b><i> until </i><b>{{episode.end}}</b> <button type="button" ng-click="open($event)">
+        change date
+    </button>
+    </h4></span>
+
+	</span>
+	<span ng-controller='timepicker'  class='timepicker'>
+	<h4>edit start time</h4>
+	<timepicker ng-model="episode.time" ng-change="start_changed(episode.time)"></timepicker>
+	</span>
+
+	<span ng-controller='timepicker' class='timepicker'>
+	<h4>edit duration:</h4>
+	<timepicker ng-model="episode.duration_obj" ng-change="length_changed(episode.duration_obj)" show-meridian="false" ></timepicker>
+	</span>
+	<span class="previews">
+        <button class='play_start' ng-click="preview_start()" ng-hide="!editing">play beginning</button>
+        <button class='play_end' ng-click="preview_end()" ng-hide="!editing">play end</button>
+        <span ng-class="{playing: playing}"><image src='images/speaker.png'></span>
+        <br/>status: {{sound_status}}
+	</span>
+    </div>
+<!--
+    <pre>
+        episode.date: {{episode.date}}
+        episode.date_unix: {{episode.date_unix}}
+        episode.start_obj: {{episode.start_obj}}
+        episode.time: {{episode.time}}
+        episode.duration: {{episode.duration}}
+        episode.duration_obj: {{episode.duration_obj}}
+        episode.end: {{episode.end}}
+        episode.end_obj: {{episode.end_obj}}
+
+        </pre>-->
+
+
+    <br/>
+    <hr/>
+    </div>

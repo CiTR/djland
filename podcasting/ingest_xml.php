@@ -38,12 +38,13 @@
 
 <?php
 
+error_reporting(1);
 require_once('../headers/db_header.php');
 
-    $dir = './xml/';
+    $dir = './burli-xml/';
     $extension = 'xml';
     $dir_contents = scandir($dir);
-    $maximum_results = 5;
+    $maximum_results = 400;
 
     foreach ($dir_contents as $key => $filename) {
 
@@ -60,17 +61,19 @@ require_once('../headers/db_header.php');
                 $xml_string = file_get_contents($dir . $filename);
                 xml_parse_into_struct($p, $xml_string, $values, $index);
 
-                echo '<h3>'.$filename.'</h3>';
-                echo '<hr> xml parse result:<br/> ';
+                if ($output) {
+                    echo '<h3>' . $filename . '</h3>';
+                    echo '<hr> xml parse result:<br/> ';
 
-               echo '<div id=blue><pre>';
+                    echo '<div id=blue><pre>';
 
-               print_r($values);
+                    print_r($values);
 
-               echo '</pre></div>';
-               echo '<div id="red"><pre>';
-               print_r($index);
-               echo '</pre></div>';
+                    echo '</pre></div>';
+                    echo '<div id="red"><pre>';
+                    print_r($index);
+                    echo '</pre></div>';
+                }
 
 
 
@@ -78,7 +81,7 @@ require_once('../headers/db_header.php');
                 $channel_info = array();
 
                 $target_index = $index['TITLE'][0];
-                echo $values[$target_index]['value'];
+                //echo $values[$target_index]['value'];
 
                 $channel_info['title'] = $values[$index['TITLE'][0]]['value'];
                 $channel_info['subtitle'] = isset($index['ITUNES:SUBTITLE'][0])&&isset($values[$index['ITUNES:SUBTITLE'][0]]['value']) ? $values[$index['ITUNES:SUBTITLE'][0]]['value'] : '';
@@ -122,6 +125,7 @@ require_once('../headers/db_header.php');
                 } else {
                     echo '<h2>could not insert this show into the db. query:'.$channel_q.'</h2>';
                 }
+
                 echo '<pre>';
                 print_r($channel_info);
                 echo '</pre>';
@@ -130,9 +134,12 @@ require_once('../headers/db_header.php');
 
 //IMAGE
                 if(isset($index['ITUNES:IMAGE'])) {
-                    echo '<h3>channel image:</h3>';
                     $target_index = $index['ITUNES:IMAGE'][0];
-                    echo '<img src="' . $values[$target_index]['attributes']['HREF'] . '"/>';
+
+                    if($output) {
+                        echo '<h3>channel image:</h3>';
+                        echo '<img src="' . $values[$target_index]['attributes']['HREF'] . '"/>';
+                    }
                 }
 
 
@@ -176,14 +183,45 @@ require_once('../headers/db_header.php');
                         }
 
                         //process duration...
-                        $times_arr = explode('/',$episode['url']);
+                        $times_arr = explode('/',$one_episode['URL']);
                         $times_string = $times_arr[5];
                         $times_arr = explode('-to-',$times_string);
 
-                        $start_time_string = $times_arr[0];
-                        $end_time_string = $times_arr[1];
+                        $start_time = (int)$times_arr[0];
+                        $end_time = (int) str_replace('.mp3','',$times_arr[1]) ;
+
+                        $start_date = date_parse_from_format('Ymd-His',$times_arr[0]);
+                        $end_date = date_parse_from_format('Ymd-His+',$times_arr[1]);
+
+                        $start_unix = mktime(
+                            $start_date['hour'],
+                            $start_date['minute'],
+                            $start_date['second'],
+                            $start_date['month'],
+                            $start_date['day'],
+                            $start_date['year']
+                        );
+
+                        $end_unix = mktime(
+                            $end_date['hour'],
+                            $end_date['minute'],
+                            $end_date['second'],
+                            $end_date['month'],
+                            $end_date['day'],
+                            $end_date['year']
+                        );
+
+                        $one_episode['duration'] = $end_unix - $start_unix;
+
+
 
                         $episodes [] = $one_episode;
+
+                        if($output) {
+                            echo '<pre>';
+                            print_r($one_episode);
+                            echo '</pre>';
+                        }
                     }
 
                 if($channel_id>=0){

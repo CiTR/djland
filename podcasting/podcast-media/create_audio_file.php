@@ -49,7 +49,7 @@ if(isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show'])){
                 echo json_encode(['error' => 'could not write to the podcast directory']);
             }
     } else {
-        echo json_encode(['error' => 'cannot retrieve audio from archiver']);
+        echo json_encode(['error' => 'cannot retrieve audio from archiver', 'try this url' => $archive_url]);
     }
     //'<hr/>done writing file!';
 #echo $new_podcast_audio_file;
