@@ -63,7 +63,7 @@
 </style>
     <div class="episode_wrap">
     <h3><!--<i ng-hide="!editing" class='title-label'>title:</i>-->
-        <input ng-model="episode.title" ng-readonly="!editing" ng-class="{editing: editing}" class="title"/> ({{episode.id}})
+        <input ng-model="episode.title" ng-readonly="!editing" ng-class="{editing: editing}" class="title"/>
     <!-- <button class='play_episode' ng-click="episode.sound.togglePause()">&#9658;/ &#10074;&#10074;</button>-->
         <input type="button" ng-click="editToggle()" ng-class="{editing: editing}" value="edit" class="editbutton"> </input>
         <button ng-click='save(episode)' ng-hide="!editing">save</button>
