@@ -52,12 +52,9 @@ function add_handlers(){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
 		console.log("member_action="+action);
-		if(action == 'view'){
+		if(action == 'view' || action == 'mail' || action == 'report'){
 			manage_members(action,'init');
-		}else if(action == 'mail'){
-			manage_members(action,'init');
-		}
-		else{
+		}else{
 			manage_members(action);
 		}		
 	});
@@ -172,8 +169,7 @@ function add_handlers(){
 				}
 				break;
 			case 'report':
-				var submit_name= document.getElementById("submit_name").value;
-				alert("Report says everything is goo!");
+				manage_members(action,'generate');
 				break;
 			case 'mail':
 				var value = getVal('search_value');
@@ -739,30 +735,56 @@ function manage_members(action_,type_,value_){
 				add_handlers();
 				break;
 			case 'report':
-				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<div id=membership_result></div>');
-				$.ajax({
-						type:"POST",
-						url: "form-handlers/membership-handler.php",
-						data: {"action" : action},
-						dataType: "json",
-						async: false
-				}).success(function(data){
-					console.log(data);
-					var titles = ['member_all','member','student','community','alumni','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
-					for( $j = 0; $j < titles.length; $j++ ){
+				switch(type){
+					case 'init':
+						document.getElementById("membership").innerHTML = " ";
+						$('#membership').append('<select id="year_select"></select><button class="member_submit" name="report">Get Yearly Report</button><div id="membership_result"></div>');
+						//Populate Dropdown with possible years to report on.
+						actiontemp = 'get';
+						typetemp = 'year';
+						$.ajax({
+							type:"POST",
+							url: "form-handlers/membership-handler.php",
+							data: {"action" : actiontemp, "type" : typetemp},
+							dataType: "json",
+							async: false
+						}).success(function(data){
+							for( $j = 0; $j < Object.keys(data).length; $j++ ){
+								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
+							}
+						}).fail(function(){
+						
+						});
+					break;
+					case 'generate':
+						document.getElementById("membership_result").innerHTML = " ";
+						year = getVal('year_select');	
+						$.ajax({
+							type:"POST",
+							url: "form-handlers/membership-handler.php",
+							data: {"action" : action,"year" : year},
+							dataType: "json",
+							async: false
+						}).success(function(data){
+						console.log(data);
+						var titles = ['member_reg_all','member_reg_year','member_paid','student','community','alumni','staff','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
+						for( $j = 0; $j < titles.length; $j++ ){
 								console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
-								if($j > 1){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member"][1]*100).toFixed(2)+"% )");
-								}else if($j == 1){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_all"][1]*100).toFixed(2)+"% )");
+								if($j > 2){
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_paid"][1]*100).toFixed(2)+"% )");
+								}else if($j == 2){
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_reg_year"][1]*100).toFixed(2)+"% )");
 								}
 								$('#membership_result').append("<br/>");
-					}
-				}).fail(function(){
+						}
+						}).fail(function(){
 						
-				});
+						});
+					break;
+					default:
+					break;
+				}
 				add_handlers();
 				break;
 			case 'mail':
