@@ -56,27 +56,27 @@
 	
 	$today = date("Y-m-d H:i:s");
 	$joined = $today;
+	
 	//Check to see if we are before the end of school year or not (end of August)
-	$cutoff = mktime(00,00,00,9,30,date(Y));
-	if(strtotime($today) < strtotime($cutoff)){
-		//Still within the school year
-		$year = date("Y",strtotime("-1 year"));
-		$next = date("Y");
-		$membership_year = $year."/".$next;
+	$year = idate('Y');
+	$today_date = date('m/d/Y',strtotime("today"));
+	$cutoff_date = date('09/31/'.$year);
+
+	//Check to see if we are in a new school year or not.
+	if(strtotime($today-date) < strtotime($cutoff_date)){
+		$year--;
 	}
-	else{
-		//After school year, renewing for next school year
-		$year = date("Y");
-		$next = date("Y",strtotime("+1 year"));
-		$membership_year = $year."/".$next;
-	}
+	$nextyear = $year +1;
+	$membership_year = $year."/".$nextyear;
+
+
 	if($member_type != 'Student'){
 		$insert_membership = "INSERT INTO membership (firstname,lastname,address,city,province,postalcode,canadian_citizen,member_type,is_new,alumni,since,has_show,show_name,email,primary_phone,secondary_phone,about,skills,exposure,joined) VALUES ('".$firstname."','".$lastname."','".$address."','".$city."','".$province."','".$postalcode."','".$canadian_citizen."','".$member_type."','".$is_new."','".$alumni."','".$since."','".$has_show."','".$show_name."','".$email."','".$primary_phone."','".$secondary_phone."','".$about."','".$skills."','".$exposure."','".$joined."');";	
 	}else{
 		$insert_membership = "INSERT INTO membership (firstname,lastname,address,city,province,postalcode,canadian_citizen,member_type,is_new,alumni,since,faculty,schoolyear,integrate,student_no,has_show,show_name,email,primary_phone,secondary_phone,about,skills,exposure,joined) VALUES ('".$firstname."','".$lastname."','".$address."','".$city."','".$province."','".$postalcode."','".$canadian_citizen."','".$member_type."','".$is_new."','".$alumni."','".$since."','".$faculty."','".$schoolyear."','".$integrate."','".$student_no."','".$has_show."','".$show_name."','".$email."','".$primary_phone."','".$secondary_phone."','".$about."','".$skills."','".$exposure."','".$joined."');";	
 	}
 	$insert_membership_year = "INSERT INTO membership_years (member_id,membership_year,paid,sports,music,arts,show_hosting,live_broadcast,ads_psa,tech,news,programming_committee,promotions_outreach,discorder,discorder_2,digital_library,photography,tabling,dj,other) VALUES (LAST_INSERT_ID(),'".$membership_year."','0','".$sports."','".$music."','".$arts."','".$show_hosting."','".$live_broadcast."','".$ads_psa."','".$tech."','".$news."','".$prog_comm."','".$outreach."','".$discorder."','".$discorder_2."','".$digital_library."','".$photography."','".$tabling."','".$dj."','".$other."');";
-	$insert_user = " INSERT INTO user (member_id,username,password,status,create_date) VALUES(LAST_INSERT_ID(),'".$username."','".password_hash($password,PASSWORD_DEFAULT)."','enabled','".$today."');";
+	$insert_user = " INSERT INTO user (member_id,username,password,status,create_date) VALUES(LAST_INSERT_ID(),'".$username."','".password_hash($password,PASSWORD_DEFAULT)."','enabled','".$joined."');";
 	$insert_group_member = " INSERT INTO group_members (userid,member,dj,administrator,adduser,addshow,editdj,library,membership,editlibrary,operator) VALUES (LAST_INSERT_ID(),'1','0','0','0','0','0','0','0','0','0');";
 	$fail=false;
 	$db->query("START TRANSACTION");
