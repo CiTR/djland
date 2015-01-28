@@ -43,6 +43,7 @@ $default = false;
 	$value = 'arts';
 	$year = 'all';
 	$sort = 'email';*/
+	
 	switch($action){
 		case 'search':
 			switch($type){

@@ -125,9 +125,9 @@ function add_handlers(){
 					"prog_comm"			:getCheckbox("prog_comm"),
 					"digital_library"	:getCheckbox("digital_library"),
 					"photography"		:getCheckbox("photography"),
-					"dj"				:getVal('dj'),
-					"discorder_2"		:getVal('discorder_2'),
-					"tabling"			:getVal('tabling'),
+					"dj"				:getCheckbox('dj'),
+					"discorder_2"		:getCheckbox('discorder_2'),
+					"tabling"			:getCheckbox('tabling'),
 					"other"				:getVal("other"),
 					"about"				:getVal('about'),
 					"skills"			:getVal('skills'),
@@ -640,7 +640,7 @@ function manage_members(action_,type_,value_){
 									<input id='integrate'  name='integrate' type='checkbox'"+ (data[0].integrate==1 ? 'checked=checked' : '' ) +" /> \
 									<div class='col5'>Year*:</div> \
 									<div class='col8'> \
-										<select id='year' style='z-position=10;'> \
+										<select id='schoolyear' style='z-position=10;'> \
 											<option value='"+data[0].schoolyear+"'>"+data[0].schoolyear+"</option> \
 											<option value='1'>1</option> \
 											<option value='2'>2</option> \
@@ -663,7 +663,7 @@ function manage_members(action_,type_,value_){
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
-								<div class='col6'><input id='email' class='required'  name='email' value="+data[0].email+" maxlength='40'></input></div> \
+								<div class='col6'><input id='email' class='required' name='email' value="+data[0].email+" maxlength='40'></input></div> \
 								<div class='col6'>Primary Number*:</div> \
 								<div class='col6'><input id='phone1' class='required' name='phone1' value="+data[0].primary_phone+" maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div> \
 								<div class='col6'>Secondary Number:</div> \
