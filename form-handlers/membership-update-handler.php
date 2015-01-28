@@ -5,10 +5,10 @@
 	
 	$member_id = $_POST['member_id'];
 	$userid = $_POST['userid'];
-	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
-	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
-	$address = htmlentities($_POST['address'],ENT_QUOTES);
-	$city = htmlentities($_POST['city'],ENT_QUOTES);
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES,'UTF-8');
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES,'UTF-8');
+	$address = htmlentities($_POST['address'],ENT_QUOTES,'UTF-8');
+	$city = htmlentities($_POST['city'],ENT_QUOTES,'UTF-8');
 	$province = $_POST['province'];
 	$postalcode = $_POST['postalcode'];
 	$canadian_citizen = $_POST['canadian_citizen'];
@@ -25,11 +25,11 @@
 		$student_no = null;
 	}
 	$has_show = $_POST['has_show'];
-	$show_name = htmlentities($_POST['show_name'],ENT_QUOTES);
+	$show_name = htmlentities($_POST['show_name'],ENT_QUOTES,'UTF-8');
 	$is_new = $_POST['is_new'];
 	$alumni = $_POST['alumni'];
 	$since = $_POST['since'];
-	$email = htmlentities($_POST['email'],ENT_QUOTES);
+	$email = htmlentities($_POST['email'],ENT_QUOTES,'UTF-8');
 	$primary_phone = $_POST['primary_phone'];
 	$secondary_phone = $_POST['secondary_phone'];
 	$paid = $_POST['paid'];
@@ -49,11 +49,11 @@
 	$photography = $_POST['photography'];
 	$dj = $_POST['dj'];
 	$tabling = $_POST['tabling'];
-	$other = htmlentities($_POST['other'],ENT_QUOTES);
-	$about = htmlentities($_POST['about'],ENT_QUOTES);
-	$skills = htmlentities($_POST['skills'],ENT_QUOTES);
-	$exposure = htmlentities($_POST['exposure'],ENT_QUOTES);
-	$comments = htmlentities($_POST['comments'],ENT_QUOTES);
+	$other = htmlentities($_POST['other'],ENT_QUOTES,'UTF-8');
+	$about = htmlentities($_POST['about'],ENT_QUOTES,'UTF-8');
+	$skills = htmlentities($_POST['skills'],ENT_QUOTES,'UTF-8');
+	$exposure = htmlentities($_POST['exposure'],ENT_QUOTES,'UTF-8');
+	$comments = htmlentities($_POST['comments'],ENT_QUOTES,'UTF-8');
 	$membership_year = $_POST['membership_year'];
 	$is_member = $_POST['is_member'];
 	$is_dj = $_POST['is_dj'];
