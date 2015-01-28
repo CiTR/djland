@@ -4,12 +4,12 @@
 	require("../headers/password.php");
 	
 
-	$username = htmlentities($_POST['username'],ENT_QUOTES);
-	$password = htmlentities($_POST['password'],ENT_QUOTES);
-	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
-	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
-	$address = htmlentities($_POST['address'],ENT_QUOTES);
-	$city = htmlentities($_POST['city'],ENT_QUOTES);
+	$username = htmlentities($_POST['username'],ENT_QUOTES,'UTF-8');
+	$password = htmlentities($_POST['password'],ENT_QUOTES,'UTF-8');
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES,'UTF-8');
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES,'UTF-8');
+	$address = htmlentities($_POST['address'],ENT_QUOTES,'UTF-8');
+	$city = htmlentities($_POST['city'],ENT_QUOTES,'UTF-8');
 	$province = $_POST['province'];
 	$postalcode = $_POST['postalcode'];
 	$canadian_citizen = $_POST['canadian_citizen'];
@@ -26,11 +26,11 @@
 		$student_no = null;
 	}
 	$has_show = $_POST['has_show'];
-	$show_name = htmlentities ($_POST['show_name'],ENT_QUOTES);
+	$show_name = htmlentities ($_POST['show_name'],ENT_QUOTES,'UTF-8');
 	$is_new = $_POST['is_new'];
 	$alumni = $_POST['alumni'];
 	$since = $_POST['since'];
-	$email = htmlentities ($_POST['email'],ENT_QUOTES);
+	$email = htmlentities ($_POST['email'],ENT_QUOTES,'UTF-8');
 	$primary_phone = $_POST['primary_phone'];
 	$secondary_phone = $_POST['secondary_phone'];
 	$music = $_POST['music'];
@@ -49,10 +49,10 @@
 	$photography = $_POST['photography'];
 	$tabling = $_POST['tabling'];
 	$dj = $_POST['dj'];
-	$other = htmlentities($_POST['other'],ENT_QUOTES);
-	$about = htmlentities($_POST['about'],ENT_QUOTES);
-	$skills = htmlentities ($_POST['skills'],ENT_QUOTES);
-	$exposure = htmlentities ($_POST['exposure'],ENT_QUOTES);
+	$other = htmlentities($_POST['other'],ENT_QUOTES,'UTF-8');
+	$about = htmlentities($_POST['about'],ENT_QUOTES,'UTF-8');
+	$skills = htmlentities ($_POST['skills'],ENT_QUOTES,'UTF-8');
+	$exposure = htmlentities ($_POST['exposure'],ENT_QUOTES,'UTF-8');
 	
 	$today = date("Y-m-d H:i:s");
 	$joined = $today;
