@@ -81,6 +81,7 @@
 	$update_group_member = "UPDATE group_members  SET member='".$is_member."',dj='".$is_dj."',administrator='".$is_administrator."',adduser='".$is_add_user."',addshow='".$is_add_show."',editdj='".$is_edit_dj."',library='".$is_library."',membership='".$is_membership."',editlibrary='".$is_edit_library."' WHERE userid ='".$userid."';";
 	$fail=false;
 	$db->query("START TRANSACTION");
+	
 	$error[0] = "ERROR";
 	
 	$result = $db -> query($update_membership);
