@@ -4,12 +4,12 @@
 	require("../headers/password.php");
 	
 
-	$username = htmlentities($_POST['username'],ENT_QUOTES);
-	$password = htmlentities($_POST['password'],ENT_QUOTES);
-	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
-	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
-	$address = htmlentities($_POST['address'],ENT_QUOTES);
-	$city = htmlentities($_POST['city'],ENT_QUOTES);
+	$username = htmlentities($_POST['username'],ENT_QUOTES,'UTF-8');
+	$password = htmlentities($_POST['password'],ENT_QUOTES,'UTF-8');
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES,'UTF-8');
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES,'UTF-8');
+	$address = htmlentities($_POST['address'],ENT_QUOTES,'UTF-8');
+	$city = htmlentities($_POST['city'],ENT_QUOTES,'UTF-8');
 	$province = $_POST['province'];
 	$postalcode = $_POST['postalcode'];
 	$canadian_citizen = $_POST['canadian_citizen'];
