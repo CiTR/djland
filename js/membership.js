@@ -83,8 +83,6 @@ function add_handlers(){
 					else{
 						is_new = 0;
 					}
-
-
 					var member_id = $('#view').attr('name');
 					$.ajax({
 					type:"POST",
@@ -345,7 +343,7 @@ function load_member_year(id,year){
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
 								
 								$('#row17').append("<div class='col4'> Writing for Discorder <input type=checkbox id=discorder_2 "+(data[0].discorder_2==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
+								$('#row17').append("<div class='col4'> Illustrate for Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
 								$('#row17').append("<div class='col4'> DJ101.9:<input type=checkbox id=dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
 								$('#row17').append("<div class='col4'> Tabling:<input type=checkbox id=tabling "+(data[0].tabling==1 ? "checked=checked" : "")+"/></div>");
 
@@ -662,10 +660,11 @@ function manage_members(action_,type_,value_){
 							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
+							console.log("Email = "+data[0].email);
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
-								<div class='col6'><input id='email' class='required' name='email' value="+data[0].email+" maxlength='40'></input></div> \
+								<div class='col6'><input id='email' class='required' name='email' value='"+data[0].email+"' maxlength='40'  ></input></div> \
 								<div class='col6'>Primary Number*:</div> \
-								<div class='col6'><input id='phone1' class='required' name='phone1' value="+data[0].primary_phone+" maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div> \
+								<div class='col6'><input id='phone1' class='required' name='phone1' value='"+data[0].primary_phone+"' maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div> \
 								<div class='col6'>Secondary Number:</div> \
 								<div class='col6'><input id='phone2' name='phone2' "+ (data[0].secondary_phone ? ("value='"+data[0].secondary_phone+"'"):"placeholder='Secondary Phone'") +"maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div>");
 							$('#row10').append("<hr/>");
