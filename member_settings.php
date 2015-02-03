@@ -24,7 +24,7 @@
 		?>
 
 		<div id='membership' >
-			<div id='member_id' style='display:none;'><?php echo $_SESSION['sv_id']; ?> </div>
+			<div id='member_id' style='display:none' value = '<?php echo $_SESSION['sv_id']; ?>'><?php echo $_SESSION['sv_id']; ?></div>
 			<h1> CiTR Member Settings </h1>
 			<hr>
 			<div class = 'container'>

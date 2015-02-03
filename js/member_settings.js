@@ -1,13 +1,14 @@
 $(document).ready ( function() {
-	var id = 3;
+	var id = getText('member_id');
 	var member = getMember(id);
-	console.log(member);
+	//console.log(member);
 	var membership_years = getMembershipYears(id);
-	console.log(membership_years);
+	//console.log(membership_years);
 	var membership_year = getMembershipYear(1,membership_years.membership_years[0]);
-	console.log(membership_year);
+	//console.log(membership_year);
 	addListeners(0);
 	displayMemberInfo(member);
+	displayMemberInterests(membership_year);
 
 	
 	
