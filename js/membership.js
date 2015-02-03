@@ -51,7 +51,7 @@ function add_handlers(){
 		var action = $(this).attr('value');
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
-		console.log("member_action="+action);
+		//console.log("member_action="+action);
 		if(action == 'view' || action == 'mail' || action == 'report'){
 			manage_members(action,'init');
 		}else{
@@ -69,8 +69,8 @@ function add_handlers(){
 				manage_members(action,search_type,search_value);
 				break;
 			case 'edit':
-				console.log(getVal('userid'));
-				console.log("text= "+ getText('userid'));
+				//console.log(getVal('userid'));
+				//console.log("text= "+ getText('userid'));
 				if(confirm("Save changes?")){
 					var faculty = getVal('faculty');
 					if(faculty == 'Other'){
@@ -147,7 +147,7 @@ function add_handlers(){
 					dataType: "json"
 					}).success(function(data) {
 						if(data[0]=="ERROR"){
-							console.log(data);
+							//console.log(data);
 							
 							$.ajax({
 							type:"POST",
@@ -165,7 +165,7 @@ function add_handlers(){
 						}
 					}).fail(function(data){
 						alert("An error occurred, please try saving again!");
-						console.log("error occurred" + JSON.stringify(data));
+						//console.log("error occurred" + JSON.stringify(data));
 					});
 				}
 				break;
@@ -177,7 +177,7 @@ function add_handlers(){
 				manage_members(action,'generate',value);
 				break;
 			default:
-				console.log("something went wrong");
+				//console.log("something went wrong");
 				manage_members('init');
 				break;
 		}
@@ -259,29 +259,29 @@ function add_handlers(){
 
 	//MEMBER TYPE: HIDE/SHOW STUDENT
 	$('#member_type').unbind().change( function(){		
-		if($('#row5').hasClass('loaded') && (getVal('member_type') == 'Student' || getVal('member_type') == 'student' )){
+		if( ($('#row5').hasClass('loaded') || $('#row5').css('display') == 'none') && (getVal('member_type') == 'Student' || getVal('member_type') == 'student' )){
 			$('#row5').show();
 			$('#row5').children().show();
 			$('#row6').show();
 			$('#row6').children().show();
-			console.log("show student");
+			//console.log("show student");
 		}
 		else if(getVal('member_type') == 'Student' || getVal('member_type') == 'student' ){ 
-			$('#row5').append("<div class='col5'>Faculty*: </div>");
-			
-			
-			$('#row5').append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
+			var row5 = $('#row5');
+			var row6 = $('#row6');
+			row5.append("<div class='col5'>Faculty*: </div>");
+			row5.append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
 			var title = ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
 			var values =  ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
 			$searchval = $('#faculty');
 			for($i = 0; $i< title.length; $i++){
 				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
 			}
-			$('#row5').append("<div id='student_no_container'> \
+			row5.append("<div id='student_no_container'> \
 			<div class='col5'>Student Number*:</div> \
 			<div class='col5'><input id='student_no' name='student_no' maxlength='10' placeholder='Student Number' onKeyPress='return numbersonly(this, event)''></input></div> \
 			</div>");
-			$('#row6').append("<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.): \
+			row6.append("<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.): \
 				<input id='integrate'  name='integrate' type='checkbox'/> \
 				<div class='col5'>Year*:</div> \
 				<div class='col8'> \
@@ -293,11 +293,11 @@ function add_handlers(){
 						<option value='5'>5+</option> \
 					</select> \
 				</div></div>");
-			console.log("Create student");
+			//console.log("Create student");
 		}else{
 			$('#row5').hide();
 			$('#row6').hide();
-			console.log("Hide student fields");
+			//console.log("Hide student fields");
 		}
 	});
 
@@ -323,7 +323,7 @@ function add_handlers(){
 function change_view(action,type,value){
 	$('.member_action').attr('class','nodrop inactive-tab member_action');
 	$("#"+action).attr('class','nodrop active-tab member_action');
-	console.log('manage_members'+action+type+value);
+	//console.log('manage_members'+action+type+value);
 	manage_members(action,type,value);
 }
 
@@ -337,7 +337,7 @@ function load_member_year(id,year){
 						async: false
 						}).success(function(data){
 							if( !$('#paid').length ){
-								console.log('first load membership year');
+								//console.log('first load membership year');
 
 
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
@@ -365,7 +365,7 @@ function load_member_year(id,year){
 								
 								$('#row21').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div><br/>");
 							}else{
-								console.log('reloading membership year');
+								//console.log('reloading membership year');
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].music == 0){ $('#music').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].discorder == 0){ $('#discorder').removeAttr('checked'); }else{ $('#discorder').prop('checked','checked'); }
@@ -406,7 +406,7 @@ function manage_members(action_,type_,value_){
 		if(value_){
 			value = value_;
 		} 
-		console.log("Manage members called, action="+action);
+		//console.log("Manage members called, action="+action);
 		switch(action){
 			case 'init':
 					document.getElementById("membership").innerHTML = " ";
@@ -660,7 +660,7 @@ function manage_members(action_,type_,value_){
 							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
-							console.log("Email = "+data[0].email);
+							//console.log("Email = "+data[0].email);
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
 								<div class='col6'><input id='email' class='required' name='email' value='"+data[0].email+"' maxlength='40'  ></input></div> \
 								<div class='col6'>Primary Number*:</div> \
@@ -768,10 +768,10 @@ function manage_members(action_,type_,value_){
 							dataType: "json",
 							async: false
 						}).success(function(data){
-						console.log(data);
+						//console.log(data);
 						var titles = ['member_reg_all','member_reg_year','member_paid','student','community','alumni','staff','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 						for( $j = 0; $j < titles.length; $j++ ){
-								console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
+								//console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								if($j > 2){
 									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_paid"][1]*100).toFixed(2)+"% )");
@@ -792,7 +792,7 @@ function manage_members(action_,type_,value_){
 			case 'mail':
 				switch(type){
 					case 'init':
-						console.log('Mail Init');
+						//console.log('Mail Init');
 						var d = new Date();
 						var today = ('0' + (d.getMonth()+1)).slice(-2) + "/"+('0' + d.getDate()).slice(-2) + "/" + d.getFullYear();
 						var d2 = new Date();
@@ -837,7 +837,7 @@ function manage_members(action_,type_,value_){
 						add_handlers();
 						break;
 					case 'generate':
-						console.log('mail generate');
+						//console.log('mail generate');
 						if(getCheckbox('paid3')){
 						paid='0';
 						}else if(getCheckbox('paid2')){
@@ -848,7 +848,7 @@ function manage_members(action_,type_,value_){
 						//get year
 						year = getVal('year_select');	
 						sort = 'email';
-						console.log("Date Filter "+getCheckbox('date_filter'));
+						//console.log("Date Filter "+getCheckbox('date_filter'));
 						if(getCheckbox('date_filter')){
 							to = getVal('to');
 							from = getVal('from');

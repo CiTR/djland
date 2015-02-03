@@ -35,6 +35,14 @@ function getCheckbox($id){
 		return 0;
 	}
 }
+function setCheckbox(value,id){
+	$target = $('#'+id);
+	if(value == true){
+		$target.attr('checked','checked');
+	}else{
+		$target.removeAttr('checked');
+	}
+}
 function setText(value,id){
 	$target = $('#'+id);
 	assertTrue($target != null);
@@ -45,7 +53,7 @@ function setVal(value,id){
 	assertTrue($target != null);
 	$target.val(value);
 }
-function setCheckbox(value,id){
+function setRadio(value,id){
 	//yes
 	$radio1 = $('#'+id+'1');
 	//no
@@ -64,6 +72,7 @@ function setCheckbox(value,id){
 			break; 
 	}
 }
+
 //Returns member data associated with member id
 function getMember(id){
 	assertTrue(id != null,"id is null");
@@ -85,7 +94,7 @@ function getMember(id){
 			member.city = info.city;
 			member.province = info.province;
 			member.postalcode = info.postalcode;
-			member.canadian = info.canadian_citizen;
+			member.canadian_citizen = info.canadian_citizen;
 			member.member_type = info.member_type;
 			if(member.member_type == "Student"){
 				member.faculty = info.faculty;
@@ -115,6 +124,11 @@ function getMember(id){
 			member.email = info.email;
 			member.primary_phone = info.primary_phone;
 			member.secondary_phone = info.secondary_phone;
+			member.about = info.about;
+			member.skills = info.skills;
+			member.exposure = info.exposure;
+			member.comments = info.comments;
+
 		}).fail(function(){
 			console.log("Unable to retrieve member information");
 		});
@@ -163,9 +177,9 @@ function getMembershipYear(id,year){
 			m_y.show_hosting = info.show_hosting;
 			m_y.live_broadcast = info.live_broadcast;
 			m_y.tech = info.tech;
-			m_y.programming_committee = info.programming_committee;
+			m_y.programming = info.programming_committee;
 			m_y.ads_psa = info.ads_psa;
-			m_y.promotions_outreach = info.promotions_outreach;
+			m_y.promos = info.promotions_outreach;
 			m_y.discorder = info.discorder;
 			m_y.discorder_2 = info.discorder_2;
 			m_y.digital_library = info.digital_library;
@@ -215,16 +229,45 @@ function displayMemberInfo(member){
 	setVal(member.city,'city');
 	setVal(member.province,'province');
 	setVal(member.postalcode,'postalcode');
-	setCheckbox(member.canadian_citizen,'can')
-	setCheckbox(member.alumni,'alumni');
+	setRadio(member.canadian_citizen,'can')
+	setRadio(member.alumni,'alumni');
 	setText(member.since,'since');
 	setVal(member.is_new,'is_new');
 	setVal(member.member_type,'member_type');
 	if(member.member_type == "Student"){
 		setVal(member.faculty,'faculty');
 		setVal(member.schoolyear,'schoolyear');
+		setVal(member.integrate,'integrate');
+	}else{
+		$('#row6').hide();
+		$('#row7').hide();
 	}
+	setRadio(member.has_show,'show');
+	setVal(member.email,'email');
+	setVal(member.primary_phone,'primary_phone');
+	setVal(member.secondary_phone,'secondary_phone');
+	setVal(member.about,'about');
+	setVal(member.skills,'skills');
+	setVal(member.exposure,'exposure');
+
 }
-function displayMemberInterests(member,year){
-	
+function displayMemberInterests(membership_year){
+	var m = membership_year;
+	setCheckbox(m.music,'music');
+	setCheckbox(m.discorder,'discorder');
+	setCheckbox(m.discorder_2,'discorder_2');
+	setCheckbox(m.dj,'dj');
+	setCheckbox(m.show_hosting,'show_hosting');
+	setCheckbox(m.sports,'sports');
+	setCheckbox(m.news,'news');
+	setCheckbox(m.arts,'arts');
+	setCheckbox(m.live_broadcast,'live_broadcast');
+	setCheckbox(m.tech,'tech');
+	setCheckbox(m.programming,'programming');
+	setCheckbox(m.ads_psa,'ads_psa');
+	setCheckbox(m.promos,'promos');
+	setCheckbox(m.photography,'photography');
+	setCheckbox(m.digital_library,'digital_library');
+	setCheckbox(m.tabling,'tabling');
+	setVal(m.other,'other');
 }
