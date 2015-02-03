@@ -108,7 +108,7 @@ $default = false;
 					$query = "SELECT DISTINCT membership_year FROM membership_years ORDER BY membership_year DESC";
 					break;
 				case 'member_year': //get all possible years for a member
-					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' ORDER BY membership_year DESC";
+					$query = "SELECT membership_year FROM membership_years WHERE member_id='".$value."' ORDER BY membership_year DESC";
 					break;
 				case 'member_year_content': //get all possible years for a member
 					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' and membership_year='".$year."'ORDER BY membership_year DESC";
