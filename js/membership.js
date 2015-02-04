@@ -719,10 +719,10 @@ function manage_members(action_,type_,value_){
 							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
 						
-							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].edit_dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
 							username = data[0].username;
 						}).fail(function(){
 							
