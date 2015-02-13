@@ -49,7 +49,12 @@ function printShow($show) {
 //		$anchorvalue = $anchorvalue.replace(/\s+/, "");
 		echo "<a href='#".$anchorvalue."'></a>";
 		if (!is_null($show->podcast)) {
-			echo " <a href=\"{$show->podcast}\"><img src=\"http://www.citr.ca/images/rss.gif\" alt=\"RSS\"/></a>";
+			echo " <a href=\"{$show->podcast}\"   ".
+			"onclick=\"trackOutboundLink('".
+			$show->podcast."'".
+			"); return false;\">".
+			"<img src=\"http://www.citr.ca/images/rss.gif\" alt=\"RSS\"/>".
+			"</a>";
 		}
 		echo "</h4>";
 		if (!is_null($show->img_url)) {
