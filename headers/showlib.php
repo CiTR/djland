@@ -13,7 +13,7 @@ class ShowLib {
 
 	function __construct($link) {
 		$this->mysqli_link = $link;
-		$this->curr_time = time();
+		$this->curr_time = get_time();
 		$this->curr_week = ShowTime::getWeekNum($this->curr_time);
 
 		// list of each show's time info

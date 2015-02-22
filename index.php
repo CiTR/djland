@@ -1,8 +1,8 @@
 <?php
 session_start();
-require('headers/login_header.php');
-require('headers/db_header.php');
-require("headers/password.php");
+require_once('headers/login_header.php');
+require_once('headers/db_header.php');
+require_once("headers/password.php");
 //echo '<p>after password';
 //header("HTTP/1.0 302 Redirect\r\n");
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
@@ -67,6 +67,7 @@ else {
 		else{
 			echo "<body>";
 		}
+
 	}
 ?>
 	<div id = 'login'>
@@ -81,8 +82,9 @@ else {
 		<div id = 'message' >
 		<?php echo $message; ?>
 		</div>
+		echo
 	</div>
-		
+
 	</body>
 </html>
 

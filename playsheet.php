@@ -1,22 +1,17 @@
 <?php		///	 playsheet.php - playlist.citr.ca
 
 session_start();
-require("headers/showlib.php");
-require("headers/security_header.php");
-require("headers/function_header.php");
-require("headers/menu_header.php");
-require("headers/socan_header.php");
+require_once("headers/showlib.php");
+require_once("headers/security_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
+require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 
-echo "<center>";
 print_menu2();
-echo "</center>";
-$SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
-
-
 	$SOCAN_FLAG = true;
 } else {
 	$SOCAN_FLAG = false;
@@ -106,7 +101,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	$show_id = $_POST['showtitle'];
 	$host_id = htmlentities(fget_id($_POST['host'], "hosts", true));
 	$create_name = get_username();
-	$create_date = date('Y-m-d H:i:s');
+	$create_date = date('Y-m-d H:i:s', get_time());
 	$edit_name = get_username();
 	$show_date = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day']);
 	$start_time = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day'] . " " . $_POST['pl_date_hour'] . ":" . $_POST['pl_date_min'] . ":" . "00");
@@ -125,8 +120,9 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	
 	$spokenword_duration = 60*$spokenword_h + $spokenword_m;
 
-	if($newPlaysheet) { // submitting a new playsheet		
-		$ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
+	if($newPlaysheet) { // submitting a new playsheet
+
+		$ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (null, '$create_date', '$create_name')";
 		if (mysqli_query($db,$ps_query))
 			$ps_id = mysqli_insert_id($db);
 		else
@@ -276,7 +272,7 @@ if(!isset($show_id)){
 	if (	mysqli_query($db, $ad_query)){		
 			} else {
 				echo "ad query didn't work: ".$ad_query."<br/>";
-				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y',get_time()).' - <b>'.date(' g:i:s a', get_time()).'</b>';
 				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
 				$log_file = 'logs/log.html';
 				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
@@ -291,7 +287,7 @@ if(!isset($show_id)){
 
 			}else{
 				echo "ad query didn't work: <br/>".$ad_query."<br/>";
-				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y',get_time()).' - <b>'.date(' g:i:s a',get_time()).'</b>';
 				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
 				$log_file = 'logs/log.html';
 				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
@@ -323,7 +319,9 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 	
 	printf("<INPUT type=hidden name=action value=edit>");
 	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
-	$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id   ORDER BY start_time DESC";
+
+		$mysql_now_date = date('Y-m-d H:i:s', get_time());
+	$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id  ORDER BY start_time DESC";
 	if($result = $db->query($get_playlists)){
 
 
@@ -417,13 +415,13 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
 			// db query didn't work :|
-				$pl_date_year =  date('Y');
-				$pl_date_month =  date('m');
-				$pl_date_day =  date('d');
-				$pl_date_hour =  date('H');
-				$pl_date_min =  date('i');
-				$end_date_hour = date('H');
-				$end_date_min = date('i');
+				$pl_date_year =  date('Y',get_time());
+				$pl_date_month =  date('m',get_time());
+				$pl_date_day =  date('d',get_time());
+				$pl_date_hour =  date('H',get_time());
+				$pl_date_min =  date('i',get_time());
+				$end_date_hour = date('H',get_time());
+				$end_date_min = date('i',get_time());
 			
 				$host_name =  "";
 				$show_name =  "";
@@ -479,9 +477,9 @@ $adLib = new AdLib($mysqli_sam,$db);
 					$end_date_min = date('i', strtotime($showtime['end_time']));
 				//	echo "  ".$pl_date_hour.":".$pl_date_min;
 				}
-				$pl_date_year =  date('Y');
-				$pl_date_month =  date('m');
-				$pl_date_day =  date('d');
+				$pl_date_year =  date('Y', get_time());
+				$pl_date_month =  date('m', get_time());
+				$pl_date_day =  date('d', get_time());
 				
 				$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
 		
@@ -622,6 +620,11 @@ if (count($matches)>1){
 			printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		}
 		?>
+
+
+
+
+
 		<INPUT type=hidden id='psid' name=id value= <?php echo $ps_id; ?>>
 		<center><h1>DJ PLAYSHEET</h1></center>
 		<table border=0 align=center width=100%%><tr><td>Show Type:
@@ -1127,14 +1130,17 @@ require_once('playsheet-ajax.php');
 
 
 
-</table>
+
+
+<span class="left" id="ads">
+<span class="popup" id="ppAds"><b>Ads / PSA / IDs</b></span>
 
 
 <div id='highlightoverlay'></div>
 
 <script type="text/javascript" src="./js/playsheet-functions.js"></script> 
-<script type="text/javascript" src="./js/playsheet-setup.js"></script> 
-<script type="text/javascript" src="./js/playsheet-initialize.js"> </script>
+<script type="text/javascript" src="./js/playsheet-setup.js"></script>
+
 <script type="text/javascript">
 var enabled = {};
 enabled = <?php echo json_encode($enabled);?>;

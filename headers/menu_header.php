@@ -1,8 +1,10 @@
 <?php
 //MENU HEADER
 
+require_once('config.php');
+
 function print_menu2(){
-require('config.php');
+	global $enabled;
 ?>
 	<ul id=nav>
 		
@@ -84,7 +86,7 @@ require('config.php');
 <?php } 
 
 function membership_menu(){
-require('config.php');
+require_once('config.php');
 ?>
 <ul id ='tab-nav'>
 	<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
@@ -96,4 +98,10 @@ require('config.php');
 
 
 
-<?php } ?>
+<?php }
+
+
+echo date('l jS \of F Y h:i:s A', get_time());
+echo " (".get_time().")";
+
+?>

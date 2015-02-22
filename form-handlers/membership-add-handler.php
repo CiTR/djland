@@ -1,7 +1,7 @@
 <?php
-	require("../headers/db_header.php");
-	require("../headers/function_header.php");
-	require("../headers/password.php");
+	require_once("../headers/db_header.php");
+	require_once("../headers/function_header.php");
+	require_once("../headers/password.php");
 	
 
 	$username = htmlentities($_POST['username'],ENT_QUOTES,'UTF-8');
