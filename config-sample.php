@@ -10,6 +10,10 @@ $enabled = array(); $station_info = array();
 // admin user: 'admin'
 // admin pass: 'pass'
 
+// debug time operations? leave false unless you
+// are developing and need to fake the current time
+// for some reason
+$timedebug = false;
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
