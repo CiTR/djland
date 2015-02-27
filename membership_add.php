@@ -204,7 +204,7 @@
 						<div class='col3'><label for='photography'>Photography:</label><input type=checkbox id='photography'></div>
 						<div class='col3'><label for='digital_library'>Digital Library:</label><input type=checkbox id='digital_library'></div>
 						<div class='col3'><label for='tabling'>Tabling Events:</label><input type=checkbox id='tabling'></div>
-						<div class='col3'><label for='other'>Other:</label><input type=text id='other'></div>
+						<div class='col3'><label for='other'>Other:</label><input type=text id='other' maxlength='40'></div>
 					</div>
 				</div>
 				<hr>

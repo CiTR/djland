@@ -51,6 +51,7 @@ else {
 if (is_logged_in()) {
 	//header("Location: main.php");
 }
+
 else {
 ?>
 	<html>
@@ -61,13 +62,10 @@ else {
 	preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
 	if (count($matches)>1){
 		$version = $matches[1];
-		if($version <= 8 ){
-			echo "<body class='ie'>";
-		}
-		else{
-			echo "<body>";
-		}
-
+		if($version <= 8 ) echo "<body class='ie'>"; else echo "<body>";
+	}
+	else{
+		echo "<body>";
 	}
 ?>
 	<div id = 'login'>
@@ -82,7 +80,6 @@ else {
 		<div id = 'message' >
 		<?php echo $message; ?>
 		</div>
-		echo
 	</div>
 
 	</body>
