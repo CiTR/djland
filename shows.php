@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-require("headers/security_header.php");
-require("headers/function_header.php");
-require("headers/menu_header.php");
+require_once("headers/security_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
 
 function fieldComplete($arr, $curr) {
 	// status codes

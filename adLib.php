@@ -23,7 +23,7 @@ class AdLib {
 			$this->using_sam = false;
 		}
 		$this->citr_link = $citrLink;
-		$this->curr_time = time();
+		$this->curr_time = get_time();
 		$this->ad_dict = 	array(
 							'AD' => 'AD (PRIORITY)',
 						 	'ID'=>'Station ID',
@@ -412,7 +412,8 @@ class AdLib {
 	
 	
 	function generateTable($unixTime,$view, $blockOverride){
-		
+
+		$table = '';
 
 		if( $ad_array = $this->loadAdRows($unixTime)   ){
 //			echo '<hr>loading rows - unix: '.$unixTime.'<hr>';
@@ -438,7 +439,6 @@ class AdLib {
 */		
 //				print_r($showBlock);
 
-		$table = '';
 		
 		$sponsors = $theShow->sponsors;
 		$sponsorName = '';
