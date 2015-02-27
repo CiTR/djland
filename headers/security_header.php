@@ -1,7 +1,7 @@
 <?php
 //SECURITY HEADER
-require("db_header.php");
-require("login_header.php");
+require_once("db_header.php");
+require_once("login_header.php");
 
 //Remove slashes added by stupid magic quotes
 if(get_magic_quotes_gpc()==1) {

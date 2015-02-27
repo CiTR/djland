@@ -1,17 +1,20 @@
 <?php
 
-require("../headers/db_header.php");
-require("../headers/function_header.php");
-require("../adLib.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
+require_once("../adLib.php");
+
 $today = date('Y-m-d');
 $from = strtotime('-1 week last friday');
 $to = strtotime('last thursday');
+
 if(isset($_POST['from'])){
 	$from = $_POST['from'];
 	$to = $_POST['to'];
 	$from = strtotime($from);
 	$to = strtotime($to);
 }
+
 
 $from = date("Y/m/d",$from);
 $to = date("Y/m/d",$to);

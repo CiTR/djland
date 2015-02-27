@@ -16,7 +16,7 @@ if($using_sam){
 <?php
 
 global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
-require( './samLoadRecent.php');
+require_once( './samLoadRecent.php');
 
 ?>
 </div>

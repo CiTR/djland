@@ -1,61 +1,17 @@
 <?php
 //MENU HEADER
 
-function print_menu() {
+require_once('config.php');
 
-require('../config.php');
-printf("<link rel=stylesheet href=css/style.css type=text/css>");
-
-	printf("<table class=menu border=0 align=center><tr>");
-
-	/*if(is_member("member") && get_username() != $station_wide_login_name) {
-		printf("<td class=menu><a href=useradd.php?action=list>Users</a></td>");
-	}*/
-	if(is_member("membership") && $enabled['membership']) {
-
-		 echo '<td class=menu><a href="membership.php">Membership</a></td>';
-	}
-	if(is_member("library") && $enabled['library']) {
-		echo '<td class=menu><a href="library.php">Library</a></td>';
-	}
-	if(is_member("editlibrary") && $enabled['library'] ) {
-		echo '<td class=menu><a href="library.php?action=add">Update Library</a></td>';
-	}
-	if(is_member("addshow") ) {
-	if($enabled['shows'])	echo "<td class=menu><a href='shows.php?action=list'>Shows</a></td>";
-	if($enabled['adscheduler'])	echo "<td class=menu><a href='adscheduler.php'>Ad Scheduler</a></td>";
-	if($enabled['adscheduler'])	echo "<td class=menu><a href='adreport.php'>Ad Report</a></td>";
-	if($enabled['charts'])	echo "<td class=menu><a href='charting.php'>Charts</a></td>";
-	if($enabled['report'])	echo "<td class=menu><a href='crtcreport.php'>CRTC Report</a></td>";
-	}
-	if(is_member("dj")) {
-	if($enabled['playsheets'])	echo "<td class=menu><a href='playsheet.php?action=list'>Playsheets</a></td>";
-	if($enabled['playsheets'])	echo "<td class=menu><a href='playsheet.php'>New Playsheet</a></td>";
-		//printf("<td class=menu><a href='playsheet.php?action=report'>Report</a></td>");
-	if($enabled['report'])	echo "<td class=menu><a href='report.php'> Report (by show) </a></td>";
-		echo "<td class=menu><a href='help.php' target='_blank'> Help </a></td>";
-	}
-	printf("<td class=menu><A HREF='index.php?action=logout'>Log Out</a></td>");
-
-	printf("</tr></table>");
-
-	if(isset($_SESSION['sv_login_fails']) && $_SESSION['sv_login_fails']) {
-		printf("<br>");
-		printf("<BR><center>WARNING!<BR>%s Login Failures</center>\n", $_SESSION['sv_login_fails']);
-	}
-}
-?>
-
-<?php
 function print_menu2(){
-require('config.php');
+	global $enabled;
 ?>
 	<ul id=nav>
 		
 		<?php if(is_member("membership") && $enabled['membership']) : ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
-		<li class=drop><a href='#'>Library</a>
+		<li class=drop><a href="library.php">Library</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -75,7 +31,7 @@ require('config.php');
 			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
 		<?php endif; 
 		if($enabled['adscheduler']) : ?>
-			<li class=drop><a href="#">Manage Ads</a>
+			<li class=drop><a href="adscheduler.php">Manage Ads</a>
 				<div class=dropdown_small>
 					<div class=small>
 						<ul>
@@ -92,7 +48,7 @@ require('config.php');
 		<?php endif;
 	endif; 
 	if($enabled['report']): ?>
-		<li class=drop ><a href="#">Reports</a>
+		<li class=drop ><a href="report.php">Reports</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -107,7 +63,7 @@ require('config.php');
 			</div>
 		</li>
 		<?php endif; ?>
-		<li class=drop><a href="#">Playsheets</a>
+		<li class=drop><a href="playsheet.php">Playsheets</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -116,28 +72,21 @@ require('config.php');
 							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
 						<?php endif; ?>
-					</ul>
+						</ul>
 				</div>
 			</div>
 		</li>
-		<li class="menu_right drop"><a href="#"><img src=images/gear.png style="width:20px;"></a>
-			<div class="dropdown_small align_right">
-				<div class=small>
-					<ul>
-						<?php if(is_member("dj")) : ?>
-							<li><a href="help.php" target="_blank"> Help </a></li>
-						<?php endif; ?>
-							<li><a href="index.php?action=logout">Log Out</a></li>
-					</ul>
-				</div>
-			</div>
-		</li>
+
+		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+		<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
+
+
 	</ul>
 
 <?php } 
 
 function membership_menu(){
-require('config.php');
+require_once('config.php');
 ?>
 <ul id ='tab-nav'>
 	<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
@@ -149,4 +98,10 @@ require('config.php');
 
 
 
-<?php } ?>
+<?php }
+
+
+echo date('l jS \of F Y h:i:s A', get_time());
+echo " (".get_time().")";
+
+?>
