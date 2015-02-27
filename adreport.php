@@ -40,7 +40,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 <?php
 
-print_menu2();
+print_menu();
 
 $adLib = new AdLib($mysqli_sam,$db);
 

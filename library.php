@@ -19,7 +19,7 @@ echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"><
   
 echo "</head><body>";
 
-print_menu2();
+print_menu();
 
 // *** SEARCH MODE ***
 // *** If action=search, get search terms from URL and query database ***

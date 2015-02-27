@@ -3,7 +3,7 @@
 
 require_once('config.php');
 
-function print_menu2(){
+function print_menu(){
 	global $enabled;
 ?>
 	<ul id=nav>
