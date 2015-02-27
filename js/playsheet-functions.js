@@ -146,7 +146,7 @@
 
 				show_h_end = jsDateEnd.getHours();
 				show_m_end = jsDateEnd.getMinutes();
-				if(!playsheetID){
+				if(!playsheetID || playsheetID==="0" || playsheetID===0 || typeof(playsheetID)==undefined || typeof(playsheetID)==null){
 					$('#type').val(show_block_data.showtype);
 					$('#unixTime').val(show_block_data.unixTime);
 				}
