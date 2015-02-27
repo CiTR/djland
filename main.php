@@ -25,7 +25,7 @@ if (count($matches)>1){
 }
 
 
-print_menu2();
+print_menu();
 printf("<table width=100%% height=100%%><tr><td align=center>");
 
 printf("<h1>User: %s<br>Logged In</h1>", get_username());

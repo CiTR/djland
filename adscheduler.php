@@ -44,7 +44,7 @@ background-color: lime;
 <?php
 
 
-print_menu2();
+print_menu();
 
 //global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
 

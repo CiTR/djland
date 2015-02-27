@@ -17,7 +17,7 @@ require_once("headers/menu_header.php");
 </head>
 <body>
 
-<?php	print_menu2(); ?>
+<?php	print_menu(); ?>
     <center>
         <input id="now" type="hidden" value="<?php echo get_time();?>">
         <div id="loadbar">loading charts...</div>

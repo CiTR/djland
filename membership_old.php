@@ -9,7 +9,7 @@ printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJLAND | Membership</title></head><body>");
 
-print_menu2();
+print_menu();
 
 if(is_member("membership") && isset($_GET['action']) && $_GET['action'] == "search") {
 

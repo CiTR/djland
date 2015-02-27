@@ -19,7 +19,7 @@ printf("<title>dupe nukem!</title>");
 echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
 
 echo '</head>';
-print_menu2();
+print_menu();
 echo '<body><h1>dupe nuke-em!</h1>';
 
 echo '<p>select from the options and then click LOAD to load some duplicate albums that can be nuked! (It will take a couple minutes to load the dupes)</p>';
