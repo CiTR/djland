@@ -480,7 +480,7 @@ class AdLib {
 		$view = 'dj';
 		$adload_query = "SELECT * FROM adlog WHERE playsheet_id = '".$playsheet_id."'";
 		if ($adload_result = mysqli_query($this->citr_link, $adload_query)){
-			
+			$adTable = [];
 			while($adRow = $adload_result->fetch_array()){
 				$adTable []= $adRow;
 			}

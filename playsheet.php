@@ -9,7 +9,7 @@ require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 
-print_menu2();
+print_menu();
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
 	$SOCAN_FLAG = true;
@@ -85,7 +85,7 @@ else
 //
 //
 //
-//          Task:   Saving a playsheet - whethere it's a new one or editing an existing one
+//          Task:   Saving a playsheet - whether it's a new one or editing an existing one
 //
 //
 //
@@ -408,6 +408,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$loaded_spokenword = mysqli_result_dep($result,0,"spokenword");
 		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
 		$loaded_status = mysqli_result_dep($result, 0, "status");
+			if($loaded_status==1) $playsheet_is_draft = true; else $playsheet_is_draft = false;
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
 		
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
@@ -674,18 +675,21 @@ if (count($matches)>1){
 		echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
 		
 		echo 	"<span id='ps_header'>";
-		
+
 		printf("<tr><td> Show: <select id='showSelector' name=\"showtitle\">");
 
 		if ($ps_id || $show_name) printf("<option value='%s' selected='selected'>%s",$show_id, $show_name);
-		
-		$query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
-		if($result = $db->query($query)){
-			while($row = mysqli_fetch_array($result)){
-				echo "<option value='".$row[id]."'>".$row[name]."</option>";
+
+
+		if(!$playsheet_is_draft) {
+			$query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
+			if ($result = $db->query($query)) {
+				while ($row = mysqli_fetch_array($result)) {
+					echo "<option value='" . $row[id] . "'>" . $row[name] . "</option>";
+				}
 			}
+			$result->close();
 		}
-		$result->close();
 
 		/*foreach($fshow_name_active as $x => $var_name) {
 			if($var_name != '!DELETED' || $ps_id) printf("<option "."value='".$x."'>%s", $var_name);			
@@ -694,17 +698,34 @@ if (count($matches)>1){
 
 		printf("<td align=right>Host/Op: <input id='host' name=\"host\" type=text size=30 value=\"%s\"  ></td></table>", $host_name);
 
-		//Playlist Date
-		echo "<table width=100%% border=0 align=center><tr><td>Date: ";
-		echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
-		for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i; 
-		echo "</SELECT>-";
-		echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
-		for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i); 
-		echo "</SELECT>-";
-		echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>".sprintf("%02d", $pl_date_day);
-		for($i=1; $i <= 31; $i++) echo "<OPTION>".sprintf("%02d", $i);  
-		echo "</SELECT>) <i>set date and show first</i>";
+		if($playsheet_is_draft){
+
+			// Playlist Date (READONLY if draft)
+
+			echo "<table width=100%% border=0 align=center><tr><td>Date: ";
+			echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-day NAME=pl_date_day   >\n<OPTION>".sprintf("%02d", $pl_date_day);
+			echo "</SELECT>) ";
+
+		} else {
+
+			// Playlist Date (able to change causing ads and show info to load via ajax if NOT a draft)
+
+			echo "<table width=100%% border=0 align=center><tr><td>Date: ";
+			echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
+			for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i;
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
+			for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i);
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>".sprintf("%02d", $pl_date_day);
+			for($i=1; $i <= 31; $i++) echo "<OPTION>".sprintf("%02d", $i);
+			echo "</SELECT>) <i>set date and show first</i>";
+
+		}
 
 		printf("</td><td align=right>Start Time: [");
 		printf("<SELECT id=pl_date_hour NAME=pl_date_hour  >\n<OPTION>%02d", $pl_date_hour);
@@ -733,7 +754,7 @@ if (count($matches)>1){
 		</span>
 		
 		<!-- main interface table -->
-		<span id='draft'><?php if($loaded_status==1):?>(draft)<?php endif;?></span>
+		<span id='draft'><?php if($playsheet_is_draft):?>(draft)<?php endif;?></span>
 	
 		<br><table class='dragrows' id='playsheet-table'>
 		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?php echo $playlist_entries; ?>'>
