@@ -48,7 +48,7 @@ if ($result = mysqli_query($db, $query) ) {
 
         while ($row = mysqli_fetch_assoc($result2)){
           foreach($row as $i => $v){
-            $row[$i] = html_entity_decode($v, ENT_HTML5);
+            $row[$i] = html_entity_decode($v, ENT_QUOTES);
           }
           $plays [] = $row;
         }
