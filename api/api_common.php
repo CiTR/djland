@@ -22,7 +22,7 @@ function finish(){
 
     foreach($data as $i => $v){
 
-      if(!is_array($v)) $data[$i] = html_entity_decode(html_entity_decode($v, ENT_QUOTES), ENT_HTML5);
+      if(!is_array($v)) $data[$i] = html_entity_decode($v, ENT_QUOTES); // TODO add ENT_HTML5 additional surrounding function when on server running modern php
     }
 
 
