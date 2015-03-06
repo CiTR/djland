@@ -29,7 +29,7 @@ function finish(){
 //    echo $query.'<hr>';
 //    echo '<pre>';
     header("Content-Type:application/json; charset=utf-8");
-    echo json_encode( $data, JSON_PRETTY_PRINT );
+    echo json_encode( $data );
   }
 
 }
