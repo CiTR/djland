@@ -96,7 +96,7 @@ if ($result = mysqli_query($db, $query) ) {
 
 } else {
 
-  $error = 'database error: problem query: '.$query.' <br/>'.mysqli_error($db);
+  $error .= '<br/> database error: problem query: '.$query.' <br/>'.mysqli_error($db);
 
 }
 
