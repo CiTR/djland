@@ -7,7 +7,7 @@
  */
 require_once('headers/db_header.php');
 
-$queries = [
+$queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
 
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
@@ -50,7 +50,7 @@ $queries = [
     'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL'
 
 
-    ];
+);
 
 foreach($queries as $description => $query){
   echo '<hr/>';
