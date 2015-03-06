@@ -107,12 +107,13 @@ $data = $rawdata[0];
 $social_array = array();
 
 foreach($rawdata as $i => $show){
-
+  if (isset($show['social_name'])){
   $social_array []= [
       'type'  =>  html_entity_decode($show['social_name'],ENT_QUOTES),
       'url'   =>  html_entity_decode($show['social_url'],ENT_QUOTES),
       'name'  =>  html_entity_decode($show['short_name'],ENT_QUOTES)
                             ];
+  }
 }
 
 
