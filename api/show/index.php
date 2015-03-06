@@ -9,7 +9,7 @@
 
 require_once('../api_common.php');
 
-$rawdata = [];
+$rawdata = array();
 $error = '';
 $query = 'SELECT '.
     "shows.id as show_id,
@@ -104,7 +104,7 @@ if ($result = mysqli_query($db, $query) ) {
 
 $data = $rawdata[0];
 
-$social_array = [];
+$social_array = array();
 
 foreach($rawdata as $i => $show){
 

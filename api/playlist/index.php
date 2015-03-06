@@ -28,7 +28,7 @@ $query = 'SELECT
           LEFT JOIN podcast_episodes on podcast_episodes.id = playlists.podcast_episode
           WHERE playlists.status = 2 AND playlists.id ='.$id;
 
-$rawdata = [];
+$rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
 
@@ -37,7 +37,7 @@ if ($result = mysqli_query($db, $query) ) {
 
   }
 
-  $plays = [];
+  $plays = array();
 
   $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id;
 

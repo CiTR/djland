@@ -14,7 +14,7 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 999999999;
 
 $query = 'SELECT id, edit_date FROM shows ORDER BY edit_date DESC limit '.$limit.' OFFSET '.$offset;
 
-$rawdata = [];
+$rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
 
