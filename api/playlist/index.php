@@ -68,7 +68,7 @@ if ($result = mysqli_query($db, $query) ) {
 
 
 } else {
-  $error = mysqli_error($db);
+  $error .= '<br/>'.mysqli_error($db);
 }
 
 
