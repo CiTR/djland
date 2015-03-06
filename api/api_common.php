@@ -12,6 +12,7 @@ function finish(){
   global $error;
   global $data;
   global $query;
+  global $db;
 
   if($error != ''){
     echo $error;
@@ -31,5 +32,7 @@ function finish(){
     header("Content-Type:application/json; charset=utf-8");
     echo json_encode( $data );
   }
+
+  mysqli_close($db);
 
 }
