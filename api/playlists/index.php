@@ -9,7 +9,7 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 $query = 'SELECT id, edit_date FROM playlists WHERE status = 2 ORDER BY edit_date DESC limit '.$limit.' OFFSET '.$offset;
 
-$rawdata = [];
+$rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
 

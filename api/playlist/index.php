@@ -28,7 +28,7 @@ $query = 'SELECT
           LEFT JOIN podcast_episodes on podcast_episodes.id = playlists.podcast_episode
           WHERE playlists.status = 2 AND playlists.id ='.$id;
 
-$rawdata = [];
+$rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
 
@@ -37,7 +37,7 @@ if ($result = mysqli_query($db, $query) ) {
 
   }
 
-  $plays = [];
+  $plays = array();
 
   $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id;
 
@@ -48,7 +48,7 @@ if ($result = mysqli_query($db, $query) ) {
 
         while ($row = mysqli_fetch_assoc($result2)){
           foreach($row as $i => $v){
-            $row[$i] = html_entity_decode($v, ENT_HTML5);
+            $row[$i] = html_entity_decode($v, ENT_QUOTES);
           }
           $plays [] = $row;
         }
@@ -57,7 +57,7 @@ if ($result = mysqli_query($db, $query) ) {
 
       }
   } else {
-    $error = mysqli_error($db);
+    $error .= '<br/>'.mysqli_error($db);
   }
 
 
@@ -68,7 +68,7 @@ if ($result = mysqli_query($db, $query) ) {
 
 
 } else {
-  $error = mysqli_error($db);
+  $error .= '<br/>'.mysqli_error($db);
 }
 
 
