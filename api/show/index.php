@@ -9,7 +9,7 @@
 
 require_once('../api_common.php');
 
-$rawdata = [];
+$rawdata = array();
 $error = '';
 $query = 'SELECT '.
     "shows.id as show_id,
@@ -96,7 +96,7 @@ if ($result = mysqli_query($db, $query) ) {
 
 } else {
 
-  $error = 'database error: problem query: '.$query;
+  $error .= '<br/> database error: problem query: '.$query.' <br/>'.mysqli_error($db);
 
 }
 
@@ -104,15 +104,16 @@ if ($result = mysqli_query($db, $query) ) {
 
 $data = $rawdata[0];
 
-$social_array = [];
+$social_array = array();
 
 foreach($rawdata as $i => $show){
-
-  $social_array []= [
+  if (isset($show['social_name'])){
+  $social_array []= array(
       'type'  =>  html_entity_decode($show['social_name'],ENT_QUOTES),
       'url'   =>  html_entity_decode($show['social_url'],ENT_QUOTES),
       'name'  =>  html_entity_decode($show['short_name'],ENT_QUOTES)
-                            ];
+  );
+  }
 }
 
 
