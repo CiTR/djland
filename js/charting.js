@@ -32,7 +32,7 @@ function loadCharts(){
 		console.log("To: "+to);
 		$.ajax({
 			type:"POST",
-			url: "get/charts-data.php",
+			url: "api/charts-data.php",
 			data: {"from":from,"to":to},
 			dataType: "json"
 		}).success(function(data){

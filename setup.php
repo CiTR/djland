@@ -458,4 +458,6 @@ fwrite($fp,$content);
 fclose($fp);
 chmod('static/theShowList.html','0766');
 
+require_once('db_migrations.php');
+
 ?>
