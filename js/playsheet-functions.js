@@ -176,7 +176,7 @@
 
 		$.ajax({
 			type:"GET",
-			url: "get/ads.php?playsheet="+playsheetID
+			url: "api/ads.php?playsheet="+playsheetID
 
 
 		}).success(function(text) {
