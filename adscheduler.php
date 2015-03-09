@@ -86,7 +86,7 @@ echo '<p>"Ad" button template:</p>'.
 $showBlocks = $showlib->getAllCurrentShowBlocks();
 
 $lastSunday = strtotime("last Sunday");
-	
+$lastSunday -= 3600;
 //for($i=0; $i<105; $i++){	
 //	$block = $showBlocks[$i];
 		
