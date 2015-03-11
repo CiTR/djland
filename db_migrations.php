@@ -50,13 +50,13 @@ $queries = array(
     'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL',
     'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
                                 `id` INT NOT NULL AUTO_INCREMENT,
-                                `name` VARCHAR(45) NULL,
+                                `name` VARCHAR(455) NULL,
                                 `show_id` INT NULL,
                                 `description` TEXT NULL,
                                 `start` INT NULL,
                                 `end` INT NULL,
-                                `image` VARCHAR(45) NULL,
-                                `url` VARCHAR(45) NULL,
+                                `image` VARCHAR(455) NULL,
+                                `url` VARCHAR(455) NULL,
                                 PRIMARY KEY (`id`));'
 
 
