@@ -8,6 +8,8 @@ if (file_exists('config.php')){
 	require_once('../config.php');
 } else if (file_exists('../../config.php')){
 	require_once('../../config.php');
+} else if (file_exists('../../../config.php')){
+	require_once('../../../config.php');
 }
 date_default_timezone_set($station_info['timezone']);
 //*******************************************
