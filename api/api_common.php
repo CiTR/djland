@@ -36,3 +36,16 @@ function finish(){
   mysqli_close($db);
 
 }
+
+
+// used to retreive podcast audio
+$archive_tool_url = 'http://archive.citr.ca';
+$archive_access_url = $archive_tool_url.
+    "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
+
+// use this to put files on freeNas - eg podcast audio (and xml??)
+$ftp_url = '192.168.25.79';
+$ftp_user = 'podcast';  $ftp_pass = 'podNAScast007';
+//$ftp_user = 'root';  $ftp_pass = 'nas101.9';
+$ftp_path = '/mnt/Audio/audio/';
+
