@@ -11,13 +11,13 @@ require_once('../api_common.php');
 $times = array();
 
 for ($i = 0; $i < 20; $i ++){
-  $times []= ['start'=>time() + $i*604800,
+  $times []= array('start'=>time() + $i*604800,
               'end' => time() + $i*604800 + 10800,
               'name' => 'sample special event',
               'show_id' => 50+ $i*4,
               'description' => 'description for sample special event',
               'image' => 'http://static.timetobreak.com/wp-content/uploads/2015/02/bill-murray4.jpg',
-              'url' => 'http://citr.ca/event-post'];
+              'url' => 'http://citr.ca/event-post');
 }
 
 echo '<pre>';
