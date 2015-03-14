@@ -4,10 +4,16 @@
 
 <?php
 
+// switch off if in future we find catastrophically missing data because of incorrect duplicate cleaning
+
+$CLEANING_FOR_DUPLICATES = true;
+
+
 require_once('../api_common.php');
 
     $extension = 'xml';
     $maximum_results = 100000000;
+    $big_count = 0;
 
 error_reporting(E_ALL & ~ E_NOTICE);
 
@@ -23,28 +29,12 @@ error_reporting(E_ALL & ~ E_NOTICE);
 
         if ($key <= $maximum_results){
 
-//            echo '<div id=section>';
             if (file_extension($xml_url) == $extension) {
 
                 $p = xml_parser_create();
 
               $xml_string = file_get_contents($xml_url);
                 xml_parse_into_struct($p, $xml_string, $values, $index);
-/*
-                echo '<h3>'.$xml_url.'</h3>';
-                echo '<hr> xml parse result:<br/> ';
-
-               echo '<div id=blue><pre>';
-
-               print_r($values);
-
-               echo '</pre></div>';
-               echo '<div id="red"><pre>';
-               print_r($index);
-               echo '</pre></div>';
-
-
-*/
 
                 $channel_info = array();
 
@@ -89,19 +79,10 @@ error_reporting(E_ALL & ~ E_NOTICE);
 
                 if ($result = mysqli_query($db,$channel_q)){
                     $channel_id = mysqli_insert_id($db);
-                    echo '<h2>channel inserted! (id is '.$channel_id.')</h2>';
-
-
-
+//                    echo '<h2>channel inserted! (id is '.$channel_id.')</h2>';
                 } else {
                     echo '<h2>could not insert this show into the db. query:'.$channel_q.'</h2>';
                 }
-				/*
-                echo '<pre>';
-                print_r($channel_info);
-                echo '</pre>';
-*/
-
 
 //IMAGE
                 if(isset($index['ITUNES:IMAGE'])) {
@@ -164,40 +145,36 @@ error_reporting(E_ALL & ~ E_NOTICE);
                 if($channel_id>=0){
                     ingest_episodes($episodes,$channel_id,$db);
                 } else {
-                    echo '<br/>no channel id found<br/>';
+//                    echo '<br/>no channel id found<br/>';
                 }
 
                 } else {
                     echo 'no episodes in this channel';
                 }
 
-
-
                 xml_parser_free($p);
-/*
-                echo 'episodes:<br/><pre>';
-                print_r($episodes);
-                echo '</pre>';*/
-
 
             }
 
-
-            echo '</div>';
     }
     }
 
-
-
-
+echo $big_count.' episodes inserted.';
 
 function file_extension($xml_url){
     $array = explode('.',$xml_url);
     return $array[count($array)-1];
 }
 
-
 function ingest_episodes($episodes,$channel_id, $db){
+  global $big_count;
+  global $CLEANING_FOR_DUPLICATES;
+
+  if($CLEANING_FOR_DUPLICATES) {
+    $episodes = remove_same_url($episodes);
+    $episodes = remove_same_day($episodes);
+  }
+
     foreach($episodes as $i => $episode){
         $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,duration,length) ";
         $episode_insert .= "VALUES ('".
@@ -212,10 +189,84 @@ function ingest_episodes($episodes,$channel_id, $db){
             $episode['LENGTH']."');";
 
         if ($result = mysqli_query($db,$episode_insert)){
-            echo '<br/>episode inserted<br/>';
+//            echo '<br/>episode inserted<br/>';
+            $big_count = $big_count +1;
         } else {
             echo '<br/>problem inserting episode. Query:<br/>'.$episode_insert;
         }
 
     }
 }
+
+function remove_same_url($episodes){
+
+    foreach($episodes as $j => $episode){
+      foreach($episodes as $k => $otherepisode){
+
+        if( ( $j != $k) && ($episode['URL'] == $otherepisode['URL']) ){
+
+          // found two episodes with same URL...
+
+          // first delete one of they are completely identical in every field
+          $identical = true;
+          foreach($episode as $key => $value){
+            if( ($value != $otherepisode[$key]) ) $identical = false;
+          }
+          if($identical && (isset($episodes[$j])) && (isset($episodes[$k]))) {
+            unset($episodes[$j]);
+          }
+
+          // now check to see if one has more characters then the other (bias towards larger description / summary )
+          $chars_in_j = 0; $chars_in_k = 0;
+
+          foreach($episode as $key => $value){
+            $chars_in_j += strlen($value);
+            $chars_in_k += strlen($otherepisode[$key]);
+          }
+
+          if ($chars_in_j > $chars_in_k ){
+            if( (isset($episodes[$j])) && (isset($episodes[$k]))) {
+              unset($episodes[$k]);
+            }
+          } else {
+            if( (isset($episodes[$j])) && (isset($episode[$k]))) {
+              unset($episodes[$j]);
+            }
+          }
+        }
+      }
+    }
+
+  return $episodes;
+}
+
+function remove_same_day($episodes){
+
+
+    foreach($episodes as $j => $episode){
+
+      foreach($episodes as $k => $otherepisode){
+
+        if( ( $j != $k) &&
+            (date('Y-m-d',strtotime($episode['PUBDATE']))  == date('Y-m-d',strtotime($otherepisode['PUBDATE'])) ) &&
+            ($episode['ITUNES:SUMMARY']  == $otherepisode['ITUNES:SUMMARY'] ) &&
+            (strlen($episode['ITUNES:SUMMARY']) >1 ) &&
+            ($episode['ITUNES:SUBTITLE'] == $otherepisode['ITUNES:SUBTITLE']) &&
+            (strlen($episode['ITUNES:SUBTITLE']) >1)
+        ){
+//          print_r($episode);
+//          echo "\n is same day as \n";
+//          print_r($otherepisode);
+//          echo "\n\n\n\n~~~\n\n\n\n";
+            if( (isset($episodes[$j])) && (isset($episodes[$k]))) {
+              unset($episodes[$k]);
+            }
+
+        }
+      }
+    }
+
+
+  return $episodes;
+}
+
