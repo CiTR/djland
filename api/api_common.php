@@ -6,6 +6,7 @@
 
 require_once('../../headers/db_header.php');
 
+date_default_timezone_set('America/Vancouver');
 
 function finish(){
 
@@ -30,7 +31,13 @@ function finish(){
 //    echo $query.'<hr>';
 //    echo '<pre>';
     header("Content-Type:application/json; charset=utf-8");
-    echo json_encode( $data );
+
+    if( defined('JSON_PRETTY_PRINT') ){
+      echo json_encode( $data, JSON_PRETTY_PRINT );
+
+    } else {
+      echo json_encode( $data );
+    }
   }
 
   mysqli_close($db);
