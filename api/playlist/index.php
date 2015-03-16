@@ -21,7 +21,9 @@ $query = 'SELECT
           playlists.spokenword as transcript,
           playlists.podcast_episode as pid,
           hosts.name as host_name,
-          podcast_episodes.summary as description
+          podcast_episodes.summary as description,
+          podcast_episodes.title as title,
+          podcast_episodes.url as audio
           FROM playlists
           JOIN shows on shows.id = playlists.show_id
           LEFT JOIN hosts on hosts.id = playlists.host_id
@@ -31,7 +33,9 @@ $query = 'SELECT
 $rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
-
+  if (mysqli_num_rows($result) == 0) {
+    $error = "no finished playlist found with that ID ";
+  }
   while ($row = mysqli_fetch_assoc($result)) {
     $rawdata = $row;
 
@@ -71,8 +75,12 @@ if ($result = mysqli_query($db, $query) ) {
   $error .= '<br/>'.mysqli_error($db);
 }
 
-
-
+if($rawdata['audio'] == ""){
+  $rawdata['description'] = 'sample podcast description';
+  $rawdata['subtitle'] = 'sample podcast subtitle';
+  $rawdata['title'] = 'sample podcast title';
+  $rawdata['audio'] = 'http://citr.ca/podcasting/podcast.mp3';
+}
 
 $data = $rawdata;
 
