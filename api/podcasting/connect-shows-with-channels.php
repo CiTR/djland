@@ -38,9 +38,6 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
         foreach($pod_chans as $j => $pod){
 
-            if($pod['id'] == 43 && $show['id'] == '51'){
-                xdebug_break();
-            }
 
             $pod_name_arr = explode('-- ', $pod['title']);
 
