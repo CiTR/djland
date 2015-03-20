@@ -31,6 +31,7 @@ $query = 'SELECT '.
         podcast_channels.keywords as podcast_keywords,
         podcast_channels.image_url as podcast_image_url,
         podcast_channels.xml as podcast_xml,
+        podcast_channels.edit_date as podcast_edit_date,
        social.social_name,
        social.social_url,
        social.short_name,
@@ -75,7 +76,8 @@ if ($result = mysqli_query($db, $query) ) {
         podcast_channels.summary as podcast_summary,
         podcast_channels.keywords as podcast_keywords,
         podcast_channels.image_url as podcast_image_url,
-        podcast_channels.xml as podcast_xml ".
+        podcast_channels.xml as podcast_xml,
+        podcast_channels.edit_date as podcast_edit_date ".
 
         "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id
                     LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
@@ -133,6 +135,10 @@ foreach($rawdata as $i => $show){
 
 
 $data['social_links'] = $social_array;
+
+$data['edit_date'] = max($data['edit_date'], $data['podcast_edit_date']);
+
+unset($data['podcast_edit_date']);
 
 unset($data['social_name']);
 unset($data['social_url']);
