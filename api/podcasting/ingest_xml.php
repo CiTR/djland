@@ -235,10 +235,7 @@ function ingest_episodes($episodes,$channel_id, $db){
 function remove_same_url($episodes){
 
     foreach($episodes as $j => $episode){
-
-      if($episode['URL'] == 'http://playlist.citr.ca/podcasting/audio/20140722-113000-to-20140722-130200.mp3'){
-        xdebug_break();
-      }
+      
 
       foreach($episodes as $k => $otherepisode){
 
