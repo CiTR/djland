@@ -19,8 +19,7 @@ $old_playsheets = explode(';',$old_playsheets);
 foreach($old_playsheets as $i => $sql){
   $result = mysqli_query($db,$sql);
   if(!$result) {
-    echo mysqli_error($db);
-    return;
+    echo mysqli_error($db).'<br/>tried: '.$sql.'<hr/>';
   }
 }
 
