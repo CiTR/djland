@@ -1,4 +1,5 @@
 <?php
+header('access-control-allow-origin: *');
 
 require_once('../api_common.php');
 
