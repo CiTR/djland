@@ -57,7 +57,9 @@ $queries = array(
                                 `end` INT NULL,
                                 `image` VARCHAR(455) NULL,
                                 `url` VARCHAR(455) NULL,
-                                PRIMARY KEY (`id`));'
+                                PRIMARY KEY (`id`));',
+    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;'
 
 
 );
