@@ -19,10 +19,6 @@ $query ="
     `podcast_episodes`.`date`,
     `podcast_episodes`.`channel_id`,
     `podcast_episodes`.`url`,
-    `podcast_episodes`.`length`,
-    `podcast_episodes`.`author`,
-    `podcast_episodes`.`active`,
-    `podcast_episodes`.`duration`,
     `podcast_episodes`.`edit_date`
 FROM `podcast_episodes`
 WHERE podcast_episodes.id = ".$id.";";
@@ -83,6 +79,7 @@ if ($result = mysqli_query($db, $query) ) {
 } else {
   $error .= '<br/>'.mysqli_error($db);
 }
+
 
 $data = $rawdata;
 
