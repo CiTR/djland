@@ -210,7 +210,7 @@ function ingest_episodes($episodes,$channel_id, $db){
   }
 
     foreach($episodes as $i => $episode){
-        $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,duration,length) ";
+        $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,duration,length,active) ";
         $episode_insert .= "VALUES ('".
             htmlentities(addslashes($episode['TITLE']))."','".
             htmlentities(addslashes($episode['ITUNES:SUBTITLE']))."','".
@@ -220,7 +220,7 @@ function ingest_episodes($episodes,$channel_id, $db){
             htmlentities(addslashes($episode['URL']))."',".
 //            htmlentities(addslashes($episode['duration']))."','".
 			"0,'".
-            $episode['LENGTH']."');";
+            $episode['LENGTH']."','1');";
 
         if ($result = mysqli_query($db,$episode_insert)){
 //            echo '<br/>episode inserted<br/>';
@@ -235,7 +235,6 @@ function ingest_episodes($episodes,$channel_id, $db){
 function remove_same_url($episodes){
 
     foreach($episodes as $j => $episode){
-
 
       foreach($episodes as $k => $otherepisode){
 
