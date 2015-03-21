@@ -235,7 +235,7 @@ function ingest_episodes($episodes,$channel_id, $db){
 function remove_same_url($episodes){
 
     foreach($episodes as $j => $episode){
-      
+
 
       foreach($episodes as $k => $otherepisode){
 
