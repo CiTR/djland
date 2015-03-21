@@ -7,7 +7,7 @@ require_once('../api_common.php');
 if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
 if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
-$query = 'SELECT id, edit_date FROM podcast_episodes WHERE active = 1 ORDER BY edit_date DESC limit '.$limit.' OFFSET '.$offset;
+$query = 'SELECT id, edit_date FROM podcast_episodes ORDER BY edit_date DESC limit '.$limit.' OFFSET '.$offset;
 
 $rawdata = array();
 
