@@ -24,7 +24,7 @@ $query ="
     `podcast_episodes`.`active`,
     `podcast_episodes`.`duration`,
     `podcast_episodes`.`edit_date`
-FROM `citr_live_late_march`.`podcast_episodes`
+FROM `podcast_episodes`
 WHERE podcast_episodes.id = ".$id.";";
 
 $rawdata = array();
