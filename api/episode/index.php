@@ -8,8 +8,8 @@
 
 
 require_once('../api_common.php');
-$error = '';
-if (isset($_GET['ID'])) $id = $_GET['ID']; else $error .= 'no id specified';
+
+if (isset($_GET['ID'])) $id = $_GET['ID']; else $error .= 'no id specified. ';
 
 $query ="
     SELECT `podcast_episodes`.`id`,
@@ -46,8 +46,6 @@ if ($result = mysqli_query($db, $query) ) {
       while ($row = mysqli_fetch_assoc($result2)){
         $rawdata['playlist_id'] = $row['playlist_id'];
       }
-
-
 
     }
   } else {
