@@ -2,6 +2,7 @@
 //MENU HEADER
 
 require_once('config.php');
+require_once('headers/function_header.php');
 
 function print_menu(){
 	global $enabled;
@@ -100,8 +101,8 @@ require_once('config.php');
 
 <?php }
 
-
-echo date('l jS \of F Y h:i:s A', get_time());
-echo " (".get_time().")";
+// useful when testing time-related things while faking time
+//echo date('l jS \of F Y h:i:s A', get_time());
+//echo " (".get_time().")";
 
 ?>
