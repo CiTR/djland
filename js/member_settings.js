@@ -1,21 +1,19 @@
 $(document).ready ( function() {
 	var id = getText('member_id');	
 	var member = queryMember(id);
-	//console.log(member);
+	//Query membership years associated with the member
 	var membership_years = queryMembershipYears(id);
-	//console.log(membership_years);
+	//Query the most recent year found for the member
 	var membership_year = queryMembershipYear(id,membership_years.membership_years[0]);
-	//console.log(membership_year);
+	
 	addListeners();
+	
+	//Display the information on the page
 	displayMemberInfo(member);
 	displayMemberInterests(membership_year);
-	//member = getMemberInfoFromPage();
 
-	//membership_year = getMemberInterestsFromPage();
+	//periodically check if the user has filled out all fields
 	window.setInterval(checkBlocking,1000);
-
-	
-	
 });
 
 function addListeners(){
@@ -54,6 +52,7 @@ function addListeners(){
 	});
 
 	$('#submit_user').click( function() {
+		//TODO: updateMemberInfo(getMemberInfoFromPage());
 		updateMemberInterests(getMemberInterestsFromPage());
 	});
 	
