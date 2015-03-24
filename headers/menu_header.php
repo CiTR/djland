@@ -50,15 +50,9 @@ function print_menu(){
 		<?php endif;
 	endif; 
 	if($enabled['report']): ?>
-<<<<<<< HEAD
-		<li class=drop ><a href="#">Reports</a>
-			<div class='dropdown_small'>
-				<div class='small'>
-=======
 		<li class=drop ><a href="report.php">Reports</a>
 			<div class=dropdown_small>
 				<div class=small>
->>>>>>> fe00fbe5637e85cbaec216fdae7a4587d38db354
 					<ul>
 						<?php if(is_member("dj")) : ?> 
 							<li><a href="report.php">Show Report</a></li> 
@@ -71,13 +65,8 @@ function print_menu(){
 			</div>
 		</li>
 		<?php endif; ?>
-<<<<<<< HEAD
-		<li class=drop><a href="#">Playsheets</a>
-			<div class='dropdown_small'>
-=======
 		<li class=drop><a href="playsheet.php">Playsheets</a>
 			<div class=dropdown_small>
->>>>>>> fe00fbe5637e85cbaec216fdae7a4587d38db354
 				<div class=small>
 					<ul>
 						<?php if(is_member("dj") && ($enabled['playsheets'])) : ?> 
@@ -85,7 +74,6 @@ function print_menu(){
 							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
 						<?php endif; ?>
-<<<<<<< HEAD
 					</ul>
 				</div>
 			</div>
@@ -100,17 +88,9 @@ function print_menu(){
 							<li><a href="member_settings.php">Member Settings</a></li>
 							<li><a href="index.php?action=logout">Log Out</a></li>
 					</ul>
-=======
-						</ul>
->>>>>>> fe00fbe5637e85cbaec216fdae7a4587d38db354
 				</div>
 			</div>
 		</li>
-
-		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
-		<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
-
-
 	</ul>
 
 <?php } 
