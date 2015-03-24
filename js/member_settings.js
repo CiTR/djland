@@ -1,14 +1,18 @@
 $(document).ready ( function() {
-	var id = getText('member_id');
-	var member = getMember(id);
+	var id = getText('member_id');	
+	var member = queryMember(id);
 	//console.log(member);
-	var membership_years = getMembershipYears(id);
+	var membership_years = queryMembershipYears(id);
 	//console.log(membership_years);
-	var membership_year = getMembershipYear(1,membership_years.membership_years[0]);
+	var membership_year = queryMembershipYear(id,membership_years.membership_years[0]);
 	//console.log(membership_year);
-	addListeners(0);
+	addListeners();
 	displayMemberInfo(member);
 	displayMemberInterests(membership_year);
+	//member = getMemberInfoFromPage();
+
+	//membership_year = getMemberInterestsFromPage();
+	window.setInterval(checkBlocking,1000);
 
 	
 	
@@ -48,5 +52,31 @@ function addListeners(){
 			$('#faculty2').hide();
 		}	
 	});
+
+	$('#submit_user').click( function() {
+		updateMemberInterests(getMemberInterestsFromPage());
+	});
+	
 }
+function checkBlocking(){
+		var allOkay = true;
+		if(getVal('member_type')=='Student'){
+			if(!$.trim(getVal('student_no'))){
+				allOkay=false;
+			}
+			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
+				allOkay=false;
+			}
+		}
+		if (allOkay){
+		$('#submit_user').attr('disabled',false);
+		$('#submit_user').text("Submit");
+		$('#submit_user').removeClass("red");
+		}else{
+			$('#submit_user').attr('disabled',true);
+			$('#submit_user').text("Form Not Complete");
+			$('#submit_user').addClass("red");
+		}
+	}
+	
 	
