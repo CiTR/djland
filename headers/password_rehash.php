@@ -1,5 +1,5 @@
 <?php 
-	require("../headers/password.php");
+	require_once("../headers/password.php");
 	$password = '101.9';
 	$hash = password_hash($password,PASSWORD_DEFAULT); 
 	$verify = password_verify($password,$hash);

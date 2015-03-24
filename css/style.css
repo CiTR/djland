@@ -892,9 +892,11 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
  position:relative;
  width:750px;
  margin-left:10px;
+	 margin-bottom:10px;
  color:white;
  text-decoration:underline;
- background-color:#111144;
+	 cursor:default;
+	 font-size:1.7em;
  }
 .QAelement{
 width:750px;
@@ -902,16 +904,18 @@ margin-left:10px;
 position:relative;
 padding-top:5px;
 padding-bottom:5px;
-background-color:#000000;
+	cursor:default;
 }
 .QAanswer{
 position:relative;
 left:10px;
 right:10px;
-
+margin-left: 30px;
 width:705px;
 background-color:#222266;
 color:#BEBEBE;
+	cursor:default;
+	line-height:1.6em;
 }
 .QAquestion
 {
@@ -919,10 +923,17 @@ position:relative;
 left:10px;
 right:10px;
 width:705px;
-background-color:#111144;
 color:#F0F0F0;
-height:20px;
+height:auto;
+	margin-bottom:15px;
+	cursor:help;
 
+}
+.QAquestion:hover{
+	text-decoration: underline;
+}
+.QAanswer img {
+	padding:10px;
 }
  
 
@@ -1779,12 +1790,16 @@ span#show-percent{
   height: 1000px;
   margin-right: auto;
   margin-left: auto;
+	padding-top:10px;
+	margin-top:10px;
   border-right-width: 1px;
   border-left-width: 1px;
   border-right-style: solid;
   border-left-style: solid;
   border-right-color: #FFFFFF;
   border-left-color: #FFFFFF;
+	border-top-width: 1px;
+	border-top-style: solid;
 }
 
 

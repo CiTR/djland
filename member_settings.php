@@ -20,7 +20,7 @@
 	</head>
 	<body>
 		<?php 
-		print_menu2(); 
+		print_menu();
 		?>
 
 		<div id='membership' >

@@ -4,13 +4,13 @@
 
 session_start();
 
-require("headers/security_header.php");
+require_once("headers/security_header.php");
 
-require("headers/function_header.php");
+require_once("headers/function_header.php");
 
-require("headers/menu_header.php");
+require_once("headers/menu_header.php");
 
-require("adLib.php");
+require_once("adLib.php");
 
 
 
@@ -40,7 +40,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
 <?php
 
-print_menu2();
+print_menu();
 
 $adLib = new AdLib($mysqli_sam,$db);
 

@@ -19,15 +19,15 @@ $SOCAN_FLAG;
 //***************************************************
 //***************************************************
 
-require("../headers/db_header.php");
-require("../headers/function_header.php");
-require("../headers/showlib.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
+require_once("../headers/showlib.php");
 
-require("../headers/socan_header.php");
+require_once("../headers/socan_header.php");
 $showlib = new Showlib($db);
 
 if($using_sam && $enabled['adscheduler']){
-	require("../adLib.php");
+	require_once("../adLib.php");
 	$adLib = new AdLib($mysqli_sam,$db);
 }
 

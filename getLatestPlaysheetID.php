@@ -1,6 +1,6 @@
 <?php
 	
-require("headers/db_header.php");
+require_once("headers/db_header.php");
 
 	$result_id = mysqli_query($db,"SELECT id FROM playlists ORDER BY create_date DESC LIMIT 1");
 	

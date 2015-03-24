@@ -251,5 +251,20 @@ function getRecentPlaylists($db, $numrows,$filter){
 
 }
 
-//END FUNCTION HEADER
+
+
+function get_time()
+{
+	$debug_time = false;
+	$the_fake_time = "2015/02/18 11:05:00";
+
+	if($debug_time){
+		return strtotime($the_fake_time);
+	} else {
+		return time();
+	}
+
+}
+
+// END FUNCTION HEADER
 ?>

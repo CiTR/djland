@@ -11,6 +11,7 @@ $enabled = array(); $station_info = array();
 // admin pass: 'pass'
 
 
+
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
 //*******************************************
@@ -93,28 +94,22 @@ $samDB_pass = 'password for that user';
 $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 
+// debug time operations? leave false unless you
+// are developing and need to fake the current time
+// for some reason
 
-//*******************************************
-//* 6) Profit! ;)
-//*******************************************
+// in code, do these two things:
+// 1) use get_time() instead of time()
+// 2) always use get_time() as optional last parameter for all date() calls
+// 3) use hidden field to pass time to javascript
+//
 
 // developers visit DJland on GitHUB to check out latest version
 // or contribute to the project and submit a pull request!
 // http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-
 // project home page
 // http://www.djland.info
-// http://www.djland.info
-// http://www.djland.info
-// http://www.djland.info
-
 // Developed by CiTR
-// http://www.citr.ca
-// http://www.citr.ca
-// http://www.citr.ca
 // http://www.citr.ca
 
 // contributors

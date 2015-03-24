@@ -1,7 +1,7 @@
 <?php
-require("../headers/db_header.php");
-require("../headers/function_header.php");
-require("../adLib.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
+require_once("../adLib.php");
 $today = date('m/d/Y');
 $from = $today;
 $to = $today;

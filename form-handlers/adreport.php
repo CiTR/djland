@@ -1,10 +1,10 @@
 <?php
 
 
-require("../headers/db_header.php");
-require("../headers/function_header.php");
-require("../headers/showlib.php");
-require("../adLib.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
+require_once("../headers/showlib.php");
+require_once("../adLib.php");
 
 $showlib = new Showlib($db);
 $adLib = new AdLib($mysqli_sam,$db);

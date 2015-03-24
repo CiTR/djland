@@ -1,7 +1,7 @@
 
 //VAR
 	var $clickedButtonId;
-	var debug;
+
 	var num_rows; // this is initialized in playsheet-ajax.php
 
 	var stopPop;
@@ -51,46 +51,47 @@
 		}
 		refreshRowIDs();
 	}
-	
+
 	function ajaxLoadPlaysheet(psid){
+
 		var playsheetID;
 		if(psid){
 			playsheetID = psid;
 		}
-		
+
 		$('#ps-loading-image').show();
 		targetShow = $('#showSelector').val();
-		
+
 		targetShowYear = $('#playsheet-year').val();
 		targetShowMonth = parseInt($('#playsheet-month').val()) - 1;
 		targetShowDay = $('#playsheet-day').val();
 		targetShowDate = new Date(targetShowYear, targetShowMonth, targetShowDay);
-		targetShowUnix = targetShowDate.getTime()/1000.0;
+		targetShowDayAsUnixAtMidnight = targetShowDate.getTime()/1000.0;
 		var show_block_data;
-		
+
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/show_info_loader.php",
+			url: "form-handlers/rebroadcast_loader.php",
 			data: {"showid":targetShow, "psid":playsheetID},
 			dataType: "json"
 		}).success(function(text) {
 			show_block_data = text;
-			
+
 			if(show_block_data.ads) {
 				jsDate = new Date(show_block_data.time*1000);
 				dur = show_block_data.duration*60*60*1000;
 				jsDateEnd = new Date(show_block_data.time*1000 + dur);
-				
+
 				show_h = jsDate.getHours();
 				show_m = jsDate.getMinutes();
-				
+
 				show_h_end = jsDateEnd.getHours();
 				show_m_end = jsDateEnd.getMinutes();
 				if(!playsheetID){
 					$('#type').val(show_block_data.showtype);
 					$('#unixTime').val(show_block_data.unixTime);
 				}
-				
+
 				$('#showSelector').val(show_block_data.showID);
 				$('#pl_date_hour').val(show_block_data.start_hour);
 				$('#end_date_hour').val(show_block_data.end_hour);
@@ -107,11 +108,88 @@
 			console.log('show_block_data obj: '+show_block_data);
 			console.log(show_block_data);
 			$('#ps-loading-image').hide();
-		
+
 		}).fail(function(){
 			$('#showOutput').html('connection error');
 		});
-	}	
+	}
+
+
+	function ajaxLoadPlaysheetMetaDataAndAdSchedule(){
+
+		$('#ps-loading-image').show();
+		targetShow = $('#showSelector').val();
+
+		targetShowYear = $('#playsheet-year').val();
+		targetShowMonth = parseInt($('#playsheet-month').val()) - 1;
+		targetShowDay = $('#playsheet-day').val();
+		targetShowDate = new Date(targetShowYear, targetShowMonth, targetShowDay);
+		targetShowDayAsUnixAtMidnight = targetShowDate.getTime()/1000.0;
+		var show_block_data;
+
+		$.ajax({
+			type:"POST",
+			url: "form-handlers/episode_info_and_ads.php",
+			data: {"showid":targetShow, "targetShowDayAsUnixAtMidnight":targetShowDayAsUnixAtMidnight},
+			dataType: "json"
+		})
+				.success(function(text) {
+			show_block_data = text;
+
+			if(show_block_data.ads) {
+				jsDate = new Date(show_block_data.time*1000);
+				dur = show_block_data.duration*60*60*1000;
+				jsDateEnd = new Date(show_block_data.time*1000 + dur);
+
+				show_h = jsDate.getHours();
+				show_m = jsDate.getMinutes();
+
+				show_h_end = jsDateEnd.getHours();
+				show_m_end = jsDateEnd.getMinutes();
+				if(!playsheetID || playsheetID==="0" || playsheetID===0 || typeof(playsheetID)==undefined || typeof(playsheetID)==null){
+					$('#type').val(show_block_data.showtype);
+					$('#unixTime').val(show_block_data.unixTime);
+				}
+
+				$('#showSelector').val(show_block_data.showID);
+				$('#pl_date_hour').val(show_block_data.start_hour);
+				$('#end_date_hour').val(show_block_data.end_hour);
+				$('#pl_date_min').val(show_block_data.start_min);
+				$('#end_date_min').val(show_block_data.end_min);
+				$('#pl_crtc').val(show_block_data.crtc);
+				$('#pl_lang').val(show_block_data.lang);
+				$('#host').val(show_block_data.host);
+				$('#ads').html(show_block_data.ads);
+			} else {
+				$('#ads').html(' No ad schedule found. Please mention station ID'+
+				' at the top of every hour ');
+			}
+			console.log('show_block_data obj: '+show_block_data);
+			console.log(show_block_data);
+			$('#ps-loading-image').hide();
+
+		})
+				.fail(function(){
+			$('#showOutput').html('connection error');
+		});
+
+
+		$.ajax({
+			type:"GET",
+			url: "api/ads.php?playsheet="+playsheetID
+
+
+		}).success(function(text) {
+			console.info(text);
+
+		});
+	}
+
+
+
+
+
+
 	// CRTC HELPERS
 	function getCRTC(position){
 			if($('#crtcThree'+position).prop('checked')){ 
@@ -260,9 +338,7 @@ function showStatus(status, delay){
 					container.stop().fadeTo(100,0, function(){
 						container.css('left','-2000'); //get it outta sight - so it doesn't block buttons that are behind it
 					});
-				//	stopPop = true;
-				//	debug.prepend('stopPop true<br/>');
-					// disable future hoverovers in the same region
+
 				}
 	
 	
@@ -340,7 +416,8 @@ function showStatus(status, delay){
 			url: "form-handlers/update-playsheet.php",
 			data: {"psid":playsheetID,"socan":socan},
 			dataType: "json"
-		}).success(function(text) {
+		})
+			.success(function(text) {
 			/* Format of playitem_data:
 			 * id (Playitem ID) , artist , album, track, composer is_pl , is_can , is_fem, is_theme, is_background, song_start_h, song_start_m, song_dur_m, song_dur_s
 			 */
@@ -469,9 +546,12 @@ function showStatus(status, delay){
 		}).fail(function(){
 			$('#showOutput').html('connection error');
 			});
-			ajaxLoadPlaysheet(playsheetID);
-		}
-		
+
+
+
+// didn't work anyway...		ajaxLoadPlaysheet(playsheetID);
+
+	}
 
 	
 			
@@ -569,9 +649,9 @@ function showStatus(status, delay){
 }
 
 	function loadTheRange(){
-		debug.prepend('loading the range<br/>');
+
 		var count = $('#SamListRange > .samsong').size();
-		debug.prepend('count: '+count+'<br/>');
+
 		
 //		for (var i = 0; i<count ; i++
 		
@@ -582,8 +662,8 @@ function showStatus(status, delay){
 			
 			
 		});
-		
-			debug.prepend("i'm here<br/>");
+
+
 	}
 
 	function updateSAMPlays(){
@@ -657,9 +737,6 @@ function showStatus(status, delay){
 				}
 			}
 		}
-
-		debug.prepend("Type2 total--> " + cctype2count + "</br>");
-		debug.prepend("Type3 total--> " + cctype3count + "</br>");
 
 		if (cctype2count > 0) {
 			type2content = cctype2count / crtc2total;

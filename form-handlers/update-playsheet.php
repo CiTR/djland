@@ -1,6 +1,6 @@
  <?php
-	require("../headers/db_header.php");
-	require("../headers/function_header.php");
+	require_once("../headers/db_header.php");
+	require_once("../headers/function_header.php");
 	 $psid = $_POST["psid"];
 	 $socan = $_Post["socan"];
 	 if($socan == 1){
