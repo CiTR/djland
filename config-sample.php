@@ -34,11 +34,11 @@ $station_info['timezone'] = 'America/Vancouver';
 //
 
 // enter your database credentials here.  If you are using MySQL on the same server
-// these files are on, use 'localhost'.
-// add 'p:' to the beginning to use a persistant connection
+// these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
 
 
-$djland_db_address = 'p:localhost';
+
+$djland_db_address = '127.0.0.1';
 $djland_db_username = 'djland-username';
 $djland_db_password = 'djland-password';
 $djland_db_dbname = 'djland-databasename';
