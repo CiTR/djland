@@ -103,18 +103,6 @@ $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 // 2) always use get_time() as optional last parameter for all date() calls
 // 3) use hidden field to pass time to javascript
 //
-function get_time()
-{
-  $debug_time = false;
-  $the_fake_time = "2015/02/18 11:05:00";
-
-  if($debug_time){
-    return strtotime($the_fake_time);
-  } else {
-    return time();
-  }
-
-}
 
 // developers visit DJland on GitHUB to check out latest version
 // or contribute to the project and submit a pull request!
