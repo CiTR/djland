@@ -1,22 +1,17 @@
 <?php		///	 playsheet.php - playlist.citr.ca
 
 session_start();
-require("headers/showlib.php");
-require("headers/security_header.php");
-require("headers/function_header.php");
-require("headers/menu_header.php");
-require("headers/socan_header.php");
+require_once("headers/showlib.php");
+require_once("headers/security_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
+require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 
-echo "<center>";
-print_menu2();
-echo "</center>";
-$SOCAN_FLAG=socanCheck($db);
+print_menu();
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
-
-
 	$SOCAN_FLAG = true;
 } else {
 	$SOCAN_FLAG = false;
@@ -90,7 +85,7 @@ else
 //
 //
 //
-//          Task:   Saving a playsheet - whethere it's a new one or editing an existing one
+//          Task:   Saving a playsheet - whether it's a new one or editing an existing one
 //
 //
 //
@@ -106,7 +101,7 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	$show_id = $_POST['showtitle'];
 	$host_id = htmlentities(fget_id($_POST['host'], "hosts", true));
 	$create_name = get_username();
-	$create_date = date('Y-m-d H:i:s');
+	$create_date = date('Y-m-d H:i:s', get_time());
 	$edit_name = get_username();
 	$show_date = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day']);
 	$start_time = fas($_POST['pl_date_year'] . "-" . $_POST['pl_date_month'] . "-" . $_POST['pl_date_day'] . " " . $_POST['pl_date_hour'] . ":" . $_POST['pl_date_min'] . ":" . "00");
@@ -125,8 +120,9 @@ if( (is_member("dj") || (is_member("editdj") && $newPlaysheet ) ) && $actionSet 
 	
 	$spokenword_duration = 60*$spokenword_h + $spokenword_m;
 
-	if($newPlaysheet) { // submitting a new playsheet		
-		$ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
+	if($newPlaysheet) { // submitting a new playsheet
+
+		$ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (null, '$create_date', '$create_name')";
 		if (mysqli_query($db,$ps_query))
 			$ps_id = mysqli_insert_id($db);
 		else
@@ -276,7 +272,7 @@ if(!isset($show_id)){
 	if (	mysqli_query($db, $ad_query)){		
 			} else {
 				echo "ad query didn't work: ".$ad_query."<br/>";
-				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y',get_time()).' - <b>'.date(' g:i:s a', get_time()).'</b>';
 				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
 				$log_file = 'logs/log.html';
 				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
@@ -291,7 +287,7 @@ if(!isset($show_id)){
 
 			}else{
 				echo "ad query didn't work: <br/>".$ad_query."<br/>";
-				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y').' - <b>'.date(' g:i:s a').'</b>';
+				$log_me = 'playsheet.php - there was a problem with the ad update query '.date('D, d M Y',get_time()).' - <b>'.date(' g:i:s a',get_time()).'</b>';
 				$log_me .= '<br/>POST: '.print_r($_POST,true).'<br>ad_query:'.$ad_query.'<hr>';
 				$log_file = 'logs/log.html';
 				file_put_contents ( 'logs/log.html' , $log_me, FILE_APPEND);
@@ -323,7 +319,9 @@ else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
 	
 	printf("<INPUT type=hidden name=action value=edit>");
 	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
-	$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id   ORDER BY start_time DESC";
+
+		$mysql_now_date = date('Y-m-d H:i:s', get_time());
+	$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id  ORDER BY start_time DESC";
 	if($result = $db->query($get_playlists)){
 
 
@@ -410,6 +408,7 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$loaded_spokenword = mysqli_result_dep($result,0,"spokenword");
 		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
 		$loaded_status = mysqli_result_dep($result, 0, "status");
+			if($loaded_status==1) $playsheet_is_draft = true; else $playsheet_is_draft = false;
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
 		
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
@@ -417,13 +416,13 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
 			// db query didn't work :|
-				$pl_date_year =  date('Y');
-				$pl_date_month =  date('m');
-				$pl_date_day =  date('d');
-				$pl_date_hour =  date('H');
-				$pl_date_min =  date('i');
-				$end_date_hour = date('H');
-				$end_date_min = date('i');
+				$pl_date_year =  date('Y',get_time());
+				$pl_date_month =  date('m',get_time());
+				$pl_date_day =  date('d',get_time());
+				$pl_date_hour =  date('H',get_time());
+				$pl_date_min =  date('i',get_time());
+				$end_date_hour = date('H',get_time());
+				$end_date_min = date('i',get_time());
 			
 				$host_name =  "";
 				$show_name =  "";
@@ -479,9 +478,9 @@ $adLib = new AdLib($mysqli_sam,$db);
 					$end_date_min = date('i', strtotime($showtime['end_time']));
 				//	echo "  ".$pl_date_hour.":".$pl_date_min;
 				}
-				$pl_date_year =  date('Y');
-				$pl_date_month =  date('m');
-				$pl_date_day =  date('d');
+				$pl_date_year =  date('Y', get_time());
+				$pl_date_month =  date('m', get_time());
+				$pl_date_day =  date('d', get_time());
 				
 				$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
 		
@@ -622,6 +621,11 @@ if (count($matches)>1){
 			printf("<FORM METHOD=POST ACTION=\"%s?action=submit\" name=\"playsheet\" id='playsheetForm' >", $_SERVER['SCRIPT_NAME']);
 		}
 		?>
+
+
+
+
+
 		<INPUT type=hidden id='psid' name=id value= <?php echo $ps_id; ?>>
 		<center><h1>DJ PLAYSHEET</h1></center>
 		<table border=0 align=center width=100%%><tr><td>Show Type:
@@ -671,18 +675,21 @@ if (count($matches)>1){
 		echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
 		
 		echo 	"<span id='ps_header'>";
-		
+
 		printf("<tr><td> Show: <select id='showSelector' name=\"showtitle\">");
 
 		if ($ps_id || $show_name) printf("<option value='%s' selected='selected'>%s",$show_id, $show_name);
-		
-		$query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
-		if($result = $db->query($query)){
-			while($row = mysqli_fetch_array($result)){
-				echo "<option value='".$row[id]."'>".$row[name]."</option>";
+
+
+		if(!$playsheet_is_draft) {
+			$query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
+			if ($result = $db->query($query)) {
+				while ($row = mysqli_fetch_array($result)) {
+					echo "<option value='" . $row[id] . "'>" . $row[name] . "</option>";
+				}
 			}
+			$result->close();
 		}
-		$result->close();
 
 		/*foreach($fshow_name_active as $x => $var_name) {
 			if($var_name != '!DELETED' || $ps_id) printf("<option "."value='".$x."'>%s", $var_name);			
@@ -691,17 +698,34 @@ if (count($matches)>1){
 
 		printf("<td align=right>Host/Op: <input id='host' name=\"host\" type=text size=30 value=\"%s\"  ></td></table>", $host_name);
 
-		//Playlist Date
-		echo "<table width=100%% border=0 align=center><tr><td>Date: ";
-		echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
-		for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i; 
-		echo "</SELECT>-";
-		echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
-		for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i); 
-		echo "</SELECT>-";
-		echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>".sprintf("%02d", $pl_date_day);
-		for($i=1; $i <= 31; $i++) echo "<OPTION>".sprintf("%02d", $i);  
-		echo "</SELECT>) <i>set date and show first</i>";
+		if($playsheet_is_draft){
+
+			// Playlist Date (READONLY if draft)
+
+			echo "<table width=100%% border=0 align=center><tr><td>Date: ";
+			echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-day NAME=pl_date_day   >\n<OPTION>".sprintf("%02d", $pl_date_day);
+			echo "</SELECT>) ";
+
+		} else {
+
+			// Playlist Date (able to change causing ads and show info to load via ajax if NOT a draft)
+
+			echo "<table width=100%% border=0 align=center><tr><td>Date: ";
+			echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
+			for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i;
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
+			for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i);
+			echo "</SELECT>-";
+			echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>".sprintf("%02d", $pl_date_day);
+			for($i=1; $i <= 31; $i++) echo "<OPTION>".sprintf("%02d", $i);
+			echo "</SELECT>) <i>set date and show first</i>";
+
+		}
 
 		printf("</td><td align=right>Start Time: [");
 		printf("<SELECT id=pl_date_hour NAME=pl_date_hour  >\n<OPTION>%02d", $pl_date_hour);
@@ -730,7 +754,7 @@ if (count($matches)>1){
 		</span>
 		
 		<!-- main interface table -->
-		<span id='draft'><?php if($loaded_status==1):?>(draft)<?php endif;?></span>
+		<span id='draft'><?php if($playsheet_is_draft):?>(draft)<?php endif;?></span>
 	
 		<br><table class='dragrows' id='playsheet-table'>
 		<input type='text' id='numberOfRows' name='numberOfRows' class='invisible' value='<?php echo $playlist_entries; ?>'>
@@ -1127,14 +1151,17 @@ require_once('playsheet-ajax.php');
 
 
 
-</table>
+
+
+<span class="left" id="ads">
+<span class="popup" id="ppAds"><b>Ads / PSA / IDs</b></span>
 
 
 <div id='highlightoverlay'></div>
 
 <script type="text/javascript" src="./js/playsheet-functions.js"></script> 
-<script type="text/javascript" src="./js/playsheet-setup.js"></script> 
-<script type="text/javascript" src="./js/playsheet-initialize.js"> </script>
+<script type="text/javascript" src="./js/playsheet-setup.js"></script>
+
 <script type="text/javascript">
 var enabled = {};
 enabled = <?php echo json_encode($enabled);?>;

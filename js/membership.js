@@ -719,10 +719,10 @@ function manage_members(action_,type_,value_){
 							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
 						
-							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].edit_dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
 							username = data[0].username;
 						}).fail(function(){
 							
@@ -802,8 +802,8 @@ function manage_members(action_,type_,value_){
 						$("#membership").append("<div id='membership_header'>Interest:");
 
 						$('#membership_header').append("<select id=search_value></select>");
-							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
-							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
+							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling','Web and Tech'];
+							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling','tech'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
 								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");

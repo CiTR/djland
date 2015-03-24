@@ -5,13 +5,13 @@
 
 session_start();
 
-require("headers/security_header.php");
+require_once("headers/security_header.php");
 
-require("headers/function_header.php");
-require("headers/menu_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
 
-require("headers/showlib.php");
-require('adLib.php');
+require_once("headers/showlib.php");
+require_once('adLib.php');
 
 echo '<html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">';
 echo "<link rel=stylesheet href='css/style.css' type='text/css' />";
@@ -44,7 +44,7 @@ background-color: lime;
 <?php
 
 
-print_menu2();
+print_menu();
 
 //global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
 
@@ -85,7 +85,7 @@ echo '<p>"Ad" button template:</p>'.
 
 $showBlocks = $showlib->getAllCurrentShowBlocks();
 
-$lastSunday = strtotime("last Sunday");
+$lastSunday = strtotime("last Sunday",get_time());
 	
 //for($i=0; $i<105; $i++){	
 //	$block = $showBlocks[$i];
