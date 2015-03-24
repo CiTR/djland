@@ -8,6 +8,8 @@ require_once('../../headers/db_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
+$error = '';
+
 function finish(){
 
   global $error;
@@ -17,7 +19,7 @@ function finish(){
 
   if($error != ''){
     echo $error;
-//    header('HTTP/1.0 400 '.$error);
+    header('HTTP/1.0 400 '.$error);
   } else {
 
     if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
@@ -52,6 +54,33 @@ function finish(){
 
 }
 
+function get_array($table, $idfield = 'id', $fields = 'basic'){
+  global $_GET;
+  global $db;
+  global $error;
+
+  if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
+  if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
+
+  if($fields == 'basic') {
+    $query = 'SELECT ' . $idfield . ', edit_date FROM ' . $table . ' ORDER BY edit_date DESC limit ' . $limit . ' OFFSET ' . $offset;
+  } else {
+    $query = 'SELECT * FROM ' . $table . ' ORDER BY edit_date DESC limit ' . $limit . ' OFFSET ' . $offset;
+  }
+  $array = array();
+  if ($result = mysqli_query($db, $query) ) {
+
+    while ($row = mysqli_fetch_assoc($result)) {
+
+      $array [] = $row;
+
+    }
+  } else {
+    $error .= mysqli_error($db);
+  }
+  return $array;
+
+}
 
 // used to retreive podcast audio
 $archive_tool_url = 'http://archive.citr.ca';
