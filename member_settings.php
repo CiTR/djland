@@ -166,14 +166,15 @@
 					<div class='col7'>Email Address*: </div>
 					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input></div>
 					<div class='col6'>Primary Number*:</div>
-					<div class='col6'><input id='phone1' class='required' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='primary_phone' class='required' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 					<div class='col6'>Secondary Number:</div>
-					<div class='col6'><input id='phone2' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='secondary_phone' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 				</div>
 
 				<hr>
 				<div class='containerrow'>
 					<div class='col6'>I am interested in:</div>
+					<div id = 'membership_year'style='display:none'></div> 
 					<div class='span3col4'>
 						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music'></div>
 						<div class='col3'><label for='discorder'>Illustrate for Discorder:</label><input type=checkbox id='discorder'></div>

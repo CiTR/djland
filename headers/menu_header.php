@@ -50,6 +50,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
 function print_menu2(){
 require('config.php');
 ?>
+	
 	<ul id=nav>
 		
 		<?php if(is_member("membership") && $enabled['membership']) : ?>
@@ -93,8 +94,8 @@ require('config.php');
 	endif; 
 	if($enabled['report']): ?>
 		<li class=drop ><a href="#">Reports</a>
-			<div class=dropdown_small>
-				<div class=small>
+			<div class='dropdown_small'>
+				<div class='small'>
 					<ul>
 						<?php if(is_member("dj")) : ?> 
 							<li><a href="report.php">Show Report</a></li> 
@@ -108,7 +109,7 @@ require('config.php');
 		</li>
 		<?php endif; ?>
 		<li class=drop><a href="#">Playsheets</a>
-			<div class=dropdown_small>
+			<div class='dropdown_small'>
 				<div class=small>
 					<ul>
 						<?php if(is_member("dj") && ($enabled['playsheets'])) : ?> 
@@ -127,6 +128,7 @@ require('config.php');
 						<?php if(is_member("dj")) : ?>
 							<li><a href="help.php" target="_blank"> Help </a></li>
 						<?php endif; ?>
+							<li><a href="member_settings.php">Member Settings</a></li>
 							<li><a href="index.php?action=logout">Log Out</a></li>
 					</ul>
 				</div>

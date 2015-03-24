@@ -17,7 +17,14 @@ $db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $
 	    		print('Connect Error for djland db (' . mysqli_connect_errno() . ') '
 	            . mysqli_connect_error());
 			}
-			
+try{
+	$hostandaddress = "mysql:host=localhost;dbname=".$djland_db_dbname;
+	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
+	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}catch(PDOException $e){
+	echo $e->getMessage();
+}
+		
 // DJLAND's playsheet can be customized to link to a music library mySQL backend
 // this provides the ability to easily add plays to a playsheet without typing
 // actually, any digital media library / player that uses MySQL should work

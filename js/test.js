@@ -19,7 +19,7 @@ function assertEqual(value,expected_value,desc){
 	if(testing){
 		var message = desc;
 		if(typeof value != typeof expected_value){
-			message += ":Type Mismatch";
+			message += ":Type Mismatch";	
 		}else if(value == null || expected_value == null){
 			message += ":A variable is null";
 		}else if(value != expected_value){
