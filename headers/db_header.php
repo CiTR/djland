@@ -20,11 +20,16 @@ $db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $
 	            . mysqli_connect_error());
 			}
 try{
-	$hostandaddress = "mysql:host=localhost;dbname=".$djland_db_dbname;
+	$hostandaddress = "mysql:host=".$djland_db_address.";dbname=".$djland_db_dbname;
 	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
 	echo $e->getMessage();
+	if ( extension_loaded('pdo') ){
+		echo "<br/> pdo extension is loaded";
+	} else {
+		echo "<br/> pdo extension is not loaded";
+	}
 }
 		
 // DJLAND's playsheet can be customized to link to a music library mySQL backend
