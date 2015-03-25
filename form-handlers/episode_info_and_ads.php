@@ -1,6 +1,7 @@
 <?php
 
 require_once('../headers/db_header.php');
+require_once('../headers/function_header.php');
 require_once('../headers/showlib.php');
 require_once('../config.php');
 require_once('../adLib.php');
