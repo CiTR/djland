@@ -382,7 +382,7 @@ if(is_member("addshow")) {
 		else {
 			echo "<p><span>Active: </span><input type='checkbox' name='c_active' value='1' /></p>";
 		}
-		
+
 		echo "<br/>
 		<p><span>Member Owner: </span>
 			<select name='member_access'><option value='no one'>no one</option>";
@@ -406,14 +406,14 @@ if(is_member("addshow")) {
 		echo "<br/><br/><br/>
 					<p><span></span><span> show tags (comma separated list)</span>";
 
-		printf("<p><span>High Level: </span><input name=\"top_tags\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $top_tags);
-		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $genre);
+		printf("<p><span>High Level: </span><input name=\"top_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $top_tags);
+		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $genre);
 		echo "<br><br>";
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
 		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
-		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $show_img);
-		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $website);
-		printf("<p><span>Podcast: </span><input name=\"t_rss\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $rss);
+		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $show_img);
+		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $website);
+		printf("<p><span>Podcast: </span><input name=\"t_rss\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $rss);
 		printf("<p><span>Language: </span><input name=\"t_lang_default\" type='text' size='35' value=\"%s\"></p>", $lang_default);
 		echo "<p><span>CRTC Default: </span>20<input name=\"r_crtc_default\" type='radio' value=\"20\" ".($crtc_num == 20 ? "checked='checked'" : "")." /> 30<input name=\"r_crtc_default\" type='radio' value=\"30\" ".($crtc_num == 30 ? "checked='checked'" : "")." /></p>";
 		printf("<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value=\"%s\">%%</p>", $pl_req);
