@@ -173,16 +173,6 @@
 			$('#showOutput').html('connection error');
 		});
 
-
-		$.ajax({
-			type:"GET",
-			url: "api/ads.php?playsheet="+playsheetID
-
-
-		}).success(function(text) {
-			console.info(text);
-
-		});
 	}
 
 

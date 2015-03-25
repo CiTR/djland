@@ -25,12 +25,20 @@ $query = 'SELECT '.
        shows.alerts,
        shows.show_img,
        hosts.name as host_name,
+        podcast_channels.title as podcast_title,
+        podcast_channels.subtitle as podcast_subtitle,
+        podcast_channels.summary as podcast_summary,
+        podcast_channels.keywords as podcast_keywords,
+        podcast_channels.image_url as podcast_image_url,
+        podcast_channels.xml as podcast_xml,
+        podcast_channels.edit_date as podcast_edit_date,
        social.social_name,
        social.social_url,
        social.short_name,
        social.unlink  ".
     "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id ".
-    "JOIN social on show_id = shows.id ";
+    "JOIN social on show_id = shows.id
+    LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
 
 if ( isset($_GET['ID'])){
 //  fetch id
@@ -39,7 +47,7 @@ if ( isset($_GET['ID'])){
   $query .=' WHERE shows.id = '.$id.'';
 
   } else {
-    $error = "please supply show id ( show?id=##)";
+    $error = "please supply show id ( show?ID=##)";
     //error
   }
 
@@ -62,8 +70,17 @@ if ($result = mysqli_query($db, $query) ) {
        shows.show_desc,
        shows.alerts,
        shows.show_img,
-       hosts.name as host_name ".
-        "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id ";
+       hosts.name as host_name,
+        podcast_channels.title as podcast_title,
+        podcast_channels.subtitle as podcast_subtitle,
+        podcast_channels.summary as podcast_summary,
+        podcast_channels.keywords as podcast_keywords,
+        podcast_channels.image_url as podcast_image_url,
+        podcast_channels.xml as podcast_xml,
+        podcast_channels.edit_date as podcast_edit_date ".
+
+        "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id
+                    LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
     $query .=' WHERE shows.id = '.$id.'';
 
       if($result2 = mysqli_query($db, $query)){
@@ -118,6 +135,10 @@ foreach($rawdata as $i => $show){
 
 
 $data['social_links'] = $social_array;
+
+$data['edit_date'] = max($data['edit_date'], $data['podcast_edit_date']);
+
+unset($data['podcast_edit_date']);
 
 unset($data['social_name']);
 unset($data['social_url']);
