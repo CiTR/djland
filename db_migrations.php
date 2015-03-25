@@ -9,6 +9,7 @@ require_once('headers/db_header.php');
 
 $queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
+    'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
 
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -60,7 +61,16 @@ $queries = array(
                                 PRIMARY KEY (`id`));',
     'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
     'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
-    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `top_tags` TINYTEXT NULL AFTER `lang_default`;'
+    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `top_tags` TINYTEXT NULL AFTER `lang_default`;',
+    'adjust member_show' => 'ALTER TABLE `member_show`
+                                  CHANGE COLUMN `member_id` `member_id` INT(11) NOT NULL ,
+                                  CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
+                                  ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                  DROP PRIMARY KEY,
+                                  ADD PRIMARY KEY (`id`);'
+
+
+
 
 
 
