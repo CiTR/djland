@@ -12,7 +12,7 @@ require_once('../api_common.php');
 if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
 if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
-  $query = 'SELECT * FROM user WHERE `status` = \'enabled\' ORDER BY edit_date DESC limit ' . $limit . ' OFFSET ' . $offset;
+  $query = 'SELECT id, lastname, firstname FROM membership  ORDER BY id DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 $rawdata = array();
 if ($result = mysqli_query($db, $query) ) {
@@ -27,12 +27,6 @@ if ($result = mysqli_query($db, $query) ) {
 }
 
 foreach($rawdata as $i => $v){
-  unset($rawdata[$i]['password']);
-  unset($rawdata[$i]['login_fails']);
-  unset($rawdata[$i]['edit_name']);
-  unset($rawdata[$i]['status']);
-  unset($rawdata[$i]['create_date']);
-  $rawdata[$i]['id'] = $v['userid'];
 }
 $data = $rawdata;
 
