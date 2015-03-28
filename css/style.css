@@ -320,10 +320,7 @@ div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
 			/*	text-align:center;*/
 				}
 				
-				
-				form{
-	/*				text-align:center;*/
-					}
+
 				
 table#playsheet-table { 
 	width:880px; 
@@ -1893,3 +1890,11 @@ width:20px;
 height:20px;
 }
 
+
+
+.form_wrap{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
+}
