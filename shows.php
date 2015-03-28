@@ -100,20 +100,21 @@ if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == '
 	print_menu();
 }
 
+if (isset($_POST['id'])){
+	$show_id = $_POST['id'];
+} else if (isset($_GET['id'])){
+	$show_id = $_GET['id'];
+} else {
+	$show_id = 0;
+}
 // -------- POST handling code ---------------------------------
 
-if(is_member("addshow")) {
+if(is_member("addshow") ) {
 //	print_r($_POST);
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
 		echo "<center><h1>Show Deleted</h1>";
 
-		if(isset($_POST['id']) && $_POST['id']) {
-			$show_id = $_POST['id'];
-		}
-		else {
-			$show_id = 0;
-		}
 		mysqli_query($db, "DELETE FROM `playitems` WHERE show_id='$show_id'");
 		mysqli_query($db, "DELETE FROM `playlists` WHERE show_id='$show_id'");
 		mysqli_query($db, "DELETE FROM `shows` WHERE id='$show_id'");
@@ -539,7 +540,7 @@ if(is_member("addshow")) {
 		<INPUT type=hidden name=action value=edit>";
 	?>	
 	<h2>All Shows:</h2>
-	<select name='id' size=20>
+	<select name='id' size=20 readonly="true">
 	<?php 
 			$query = "SELECT id,name FROM shows ORDER BY name";
 		if($result = $db->query($query)){
@@ -557,8 +558,6 @@ if(is_member("addshow")) {
 	}
 	// DEFAULT ACTION: LISTING ONLY ACTIVE SHOWS --------
 	else {
-	//	echo "<br><table class=menu border=0 align=center><tr>
-	//	<td class=menu><a href=\"?action=add\">&nbsp;Add New Show&nbsp;</a></td></tr><tr><td class=\"menu\"><a href=\"?action=listi\">&nbsp;Show Inactive Shows&nbsp;</a></td></tr></table>";
 		?>
 		<div class=buttonContainer>
 					<div class=nav>
@@ -593,6 +592,69 @@ if(is_member("addshow")) {
 		</FORM></CENTER>\n";
 
 	}
+} else if(has_show_access($show_id)){
+	print_menu();
+	?>
+
+
+<div ng-app="djLand">
+
+	<div ng-controller="showCtrl" class="form_wrap">
+
+		<h3>editing show: {{showData.title}}</h3>
+
+		<h3> {{showData.name}}</h3>
+		Description:<br/>
+  <textarea class="description" ng-model="showData.show_desc" >
+  </textarea><br/>
+
+		genre:<br/>
+		<input ng-model="showData.secondary_genre_tags" >
+		</input><br/>
+
+		website:<br/>
+		<input ng-model="showData.website" >
+		</input><br/>
+
+		message:{{message}}<br/>
+
+		<button ng-click="save();" >save info (tba)</button>
+		<textarea cols="100" rows="20">{{showData}}</textarea>
+	</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script src="js/angular.js"></script>
+	<script type="text/javascript">
+		var app = angular.module('djLand', []);
+	</script>
+	<script src="js/angular-common.js"></script>
+	<script src="js/show_edit.js"></script>
+
+	<?php
+} else {
+	echo " sorry you do not have access to this show";
 }
 echo "</body></html>";
 
