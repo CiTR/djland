@@ -49,7 +49,7 @@
   angular.module('bla', []
   )
       .controller('apiTest', ['$scope','testService','API_URL_BASE',function($scope,testService,API_URL_BASE){
-        var API_URL_BASE = 'http://localhost/~brad/djland-master/api/';
+
         $scope.hello = 'hi i\'m tesing api';
 
         $scope.public_api_lists = [
@@ -99,7 +99,7 @@
           }
         };
       })
-      .value('API_URL_BASE','http://localhost/~brad/djland-master/api/')//  change to api.citr.ca or whatever when we go live
+      .value('API_URL_BASE','http://l.h/djland-master/api/')//  change to api.citr.ca or whatever when we go live
 
 
 

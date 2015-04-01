@@ -8,11 +8,17 @@
 
 require_once('../api_common.php');
 
+$q = 'delete from special_events;';
+mysqli_query($db,$q);
+
 $times = array();
 
 for ($i = 0; $i < 20; $i ++){
-  $times []= array('start'=>time() + $i*604800,
-              'end' => time() + $i*604800 + 10800,
+  $date = date('U',strtotime('June 1, 2015, 2:55pm'));
+
+  $times []= array(
+              'start'=>$date + $i*24*60*(60+$i),
+              'end' => $date + $i*24*60*60 + 60*(61+($i*5)) ,
               'name' => 'sample special event',
               'show_id' => 50+ $i*4,
               'description' => 'description for sample special event',
