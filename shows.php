@@ -141,7 +141,7 @@ if(is_member("addshow")) {
 		$lang_default = fas($_POST['t_lang_default']);
 		$website = fas($_POST['t_website']);
 		$rss = fas($_POST['t_rss']);
-		$genre = fas($_POST['t_genre']);
+		$secondary_genre_tags = fas($_POST['t_secondary_genre_tags']);
 		$show_desc = fas($_POST['t_show_desc']);
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
@@ -201,7 +201,7 @@ if(is_member("addshow")) {
 			}
 		}
 		if (!$weekday) $weekday = 0;
-		$update_q = "UPDATE `shows` SET name='$show_name', host_id='$host_id', weekday='$weekday', pl_req='$pl_req', cc_req='$cc_req', indy_req='$indy_req', fem_req='$fem_req', edit_name='$edit_name', crtc_default=$crtc_default, lang_default='$lang_default', active=$active, genre='$genre', website='$website', rss='$rss', show_desc='$show_desc', notes='$notes', show_img='$show_img', sponsor_name='$sponsor_name', sponsor_url='$sponsor_url' WHERE id='$ed'";
+		$update_q = "UPDATE `shows` SET name='$show_name', host_id='$host_id', weekday='$weekday', pl_req='$pl_req', cc_req='$cc_req', indy_req='$indy_req', fem_req='$fem_req', edit_name='$edit_name', crtc_default=$crtc_default, lang_default='$lang_default', active=$active, secondary_genre_tags='$secondary_genre_tags', website='$website', rss='$rss', show_desc='$show_desc', notes='$notes', show_img='$show_img', sponsor_name='$sponsor_name', sponsor_url='$sponsor_url' WHERE id='$ed'";
 		
 		if( mysqli_query($db, $update_q) ) {
 			echo "show successfuly edited";
@@ -247,7 +247,7 @@ if(is_member("addshow")) {
 		$crtc_num = $ed ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
 		$lang_default = $ed ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$genre = ($ed && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
+		$secondary_genre_tags = ($ed && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
 		$website = ($ed && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
 		$rss = ($ed && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
 		$show_desc = ($ed && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
@@ -324,7 +324,7 @@ if(is_member("addshow")) {
 		echo "<div class=\"table\">";
 		printf("<p><span>Show Title: </span><input name=\"showtitle\" type='text' size=35 value=\"%s\"></p>", $show_name);
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
-		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $genre);
+		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $secondary_genre_tags);
 		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
 		printf("<p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $show_img);
 		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $website);
