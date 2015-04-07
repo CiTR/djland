@@ -1,6 +1,7 @@
 $(document).ready ( function() {
 	var id = getText('member_id');	
 	var member = queryMember(id);
+
 	//Query membership years associated with the member
 	var membership_years = queryMembershipYears(id);
 	//Query the most recent year found for the member
@@ -52,8 +53,7 @@ function addListeners(){
 	});
 
 	$('#submit_user').click( function() {
-		//TODO: updateMemberInfo(getMemberInfoFromPage());
-		updateMemberInterests(getMemberInterestsFromPage());
+		updateMember(getMemberInfoFromPage(),getMemberInterestsFromPage());
 	});
 	
 }
@@ -77,5 +77,5 @@ function checkBlocking(){
 			$('#submit_user').addClass("red");
 		}
 	}
-	
+
 	
