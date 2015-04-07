@@ -44,7 +44,7 @@ print_menu();
 
 $adLib = new AdLib($mysqli_sam,$db);
 
-$today = date('m/d/Y');
+$today = date('m/d/Y', get_time());
 echo '<h1>ad  report</h1>';;
 
 	echo "First select a date range:<br/>";

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+<h2>api test</h2>
+  <div ng-app="bla">
+
+    <div ng-controller="apiTest" >
+
+      <span ng-repeat="list in public_api_lists">
+        <h3>{{list.endpoint}}</h3>
+
+        <!--
+        <div class="error">
+          error: {{list.error}}
+        </div>
+        -->
+
+        <div class="contents">
+
+          <span ng-repeat="item in list.data track by $index">
+            <span ng-repeat="(field,value) in item">
+              {{field}}: {{value}} <br/>
+
+            </span>
+
+            <hr/>
+          </span><br/>
+
+          <div id="links" ng-repeat="link in list.links track by $index">
+
+            <a href="{{link}}">go to {{link}}</a>
+
+          </div>
+
+        </div>
+
+
+      </span>
+    </div>
+  </div>
+
+
+</head>
+<body>
+<script src="../js/angular.js"></script>
+<script type="text/javascript">
+  angular.module('bla', []
+  )
+      .controller('apiTest', ['$scope','testService','API_URL_BASE',function($scope,testService,API_URL_BASE){
+
+        $scope.public_api_lists = [
+          {endpoint:'episode',data:[], error:'', links:[]},
+          {endpoint:'playlist',data:[], error:'', links:[]},
+          {endpoint:'show',data:[], error:'',links:[]},
+          {endpoint:'member',data:[], error:'',links:[]},
+//          {endpoint:'specialevents', data:[], error:''},
+//          {endpoint:'auth',data:[], error:''}
+        ];
+
+
+        for( var i = 0; i<$scope.public_api_lists.length; i++){
+
+          testService.getPublicData($scope.public_api_lists[i].endpoint, i)
+              .then(function(data){
+                var the_original_index = data[0];
+                var the_data = data[1];
+                var the_list = $scope.public_api_lists[the_original_index]
+
+                if(typeof(data.error) == 'string'){
+                  the_list.error = data.error;
+                }
+
+                the_list.data = the_data;
+
+                  the_list.links = [
+                    API_URL_BASE+the_list.endpoint+'/?ID='+the_data[0].id,
+                    API_URL_BASE+the_list.endpoint+'/?ID='+the_data[2].id,
+                    API_URL_BASE+the_list.endpoint+'/?ID='+the_data[4].id,
+                  ]
+
+          });
+
+
+        }
+
+      }])
+      .factory('Time', ['$location', function($location) {
+        var url = 'http://:host::port/VirtualLawyerPj/services/timeoftheday/asjson/tue';
+        var params = {
+          host: $location.host(),
+          port: $location.port()
+        };
+        var actions = {
+          query: {method:'GET', isArray:false}
+        };
+        return $resource(url, params, actions);
+      }])
+
+
+      .factory('testService', ['$http','$location','API_URL_BASE',function($http, $location,API_URL_BASE) {
+        var API_URL_BASE = 'http://l.h/djland-dev/api/';
+
+        return {
+          getPublicData: function(endpoint,i){
+
+            var requestParams = {
+              method: 'GET',
+              url: API_URL_BASE+endpoint+'s/index.php?LIMIT=5',
+              headers: {
+                'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'withCredentials':true
+              },
+              data: { test: 'test' }
+            }
+
+
+            return $http(requestParams)
+                .error(function(result){return {error:result};})
+                .then(function(result){
+                  return [i,result.data];
+                });
+          }
+        };
+      }])
+        .value('API_URL_BASE','http://l.h/djland-dev/api/')
+//      .value('HOSTNAME','l.h')//  change to api.citr.ca or whatever when we go live
+
+
+
+//
+
+  ;
+
+</script>
+</body>
+</html>

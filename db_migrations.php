@@ -7,8 +7,9 @@
  */
 require_once('headers/db_header.php');
 
-$queries = [
+$queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
+    'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
 
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,10 +48,33 @@ $queries = [
                               ) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
     'add alert field to shows'=>'ALTER TABLE `shows` ADD COLUMN `alerts` TEXT NULL;',
     'add podcast channel id to shows' => 'ALTER TABLE `shows` ADD COLUMN `podcast_channel_id` int(11) DEFAULT NULL',
-    'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL'
+    'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL',
+    'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
+                                `id` INT NOT NULL AUTO_INCREMENT,
+                                `name` VARCHAR(455) NULL,
+                                `show_id` INT NULL,
+                                `description` TEXT NULL,
+                                `start` INT NULL,
+                                `end` INT NULL,
+                                `image` VARCHAR(455) NULL,
+                                `url` VARCHAR(455) NULL,
+                                PRIMARY KEY (`id`));',
+    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `top_tags` TINYTEXT NULL AFTER `lang_default`;',
+    'adjust member_show' => 'ALTER TABLE `member_show`
+                                  CHANGE COLUMN `member_id` `member_id` INT(11) NOT NULL ,
+                                  CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
+                                  ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                  DROP PRIMARY KEY,
+                                  ADD PRIMARY KEY (`id`);'
 
 
-    ];
+
+
+
+
+);
 
 foreach($queries as $description => $query){
   echo '<hr/>';
