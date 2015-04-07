@@ -8,7 +8,7 @@
 
 
 require_once('../api_common.php');
-
+$error = '';
 if (isset($_GET['ID'])) $id = $_GET['ID']; else $error = 'no id specified';
 
 $query = 'SELECT
@@ -19,11 +19,12 @@ $query = 'SELECT
           playlists.edit_date,
           playlists.type as playlist_type,
           playlists.spokenword as transcript,
-          playlists.podcast_episode as pid,
           hosts.name as host_name,
-          podcast_episodes.summary as description
+          playlists.podcast_episode as episode_id,
+          podcast_episodes.summary as episode_description,
+          podcast_episodes.title as episode_title,
+          podcast_episodes.url as episode_audio
           FROM playlists
-          JOIN shows on shows.id = playlists.show_id
           LEFT JOIN hosts on hosts.id = playlists.host_id
           LEFT JOIN podcast_episodes on podcast_episodes.id = playlists.podcast_episode
           WHERE playlists.status = 2 AND playlists.id ='.$id;
@@ -31,7 +32,9 @@ $query = 'SELECT
 $rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
-
+  if (mysqli_num_rows($result) == 0) {
+    $error .= "no finished playlist found with that ID. ";
+  }
   while ($row = mysqli_fetch_assoc($result)) {
     $rawdata = $row;
 
@@ -43,7 +46,7 @@ if ($result = mysqli_query($db, $query) ) {
 
   if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
-        $error = "no plays in this playlist!";
+        $error .= " no plays in this playlist! ";
       } else {
 
         while ($row = mysqli_fetch_assoc($result2)){
@@ -60,19 +63,19 @@ if ($result = mysqli_query($db, $query) ) {
     $error .= '<br/>'.mysqli_error($db);
   }
 
-
-
-
   $rawdata['songs'] = $plays;
-
 
 
 } else {
   $error .= '<br/>'.mysqli_error($db);
 }
 
-
-
+if(isset($rawdata['episode_audio']) && $rawdata['episode_audio'] == ""){
+  $rawdata['episode_description'] = '';
+  $rawdata['episode_subtitle'] = '';
+  $rawdata['episode_title'] = '';
+  $rawdata['episode_audio'] = '';
+}
 
 $data = $rawdata;
 
