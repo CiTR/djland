@@ -22,7 +22,7 @@ $db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $
 	            . mysqli_connect_error());
 			}
 try{
-	$hostandaddress = "mysql:host=".$djland_db_address.";dbname=".$djland_db_dbname;
+	$hostandaddress = "mysql:dbname=".$djland_db_dbname.";host=localhost";
 	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
