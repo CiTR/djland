@@ -6,7 +6,6 @@
 
 
 require_once('../../headers/db_header.php');
-//require_once('../../headers/security_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
