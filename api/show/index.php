@@ -18,8 +18,8 @@ $query = 'SELECT '.
        shows.create_date,
        shows.edit_date,
        shows.active,
-       shows.top_tags as primary_tags,
-       shows.genre as secondary_genre_tags,
+       shows.primary_genre_tags,
+       shows.secondary_genre_tags,
        shows.website,
        shows.rss,
        shows.show_desc,
@@ -47,10 +47,10 @@ if ( isset($_GET['ID'])){
 
   $query .=' WHERE shows.id = '.$id.'';
 
-  } else {
-    $error = "please supply show id ( show?ID=##)";
-    //error
-  }
+} else {
+  $error = "please supply show id ( show?ID=##)";
+  //error
+}
 
 
 if ($result = mysqli_query($db, $query) ) {
@@ -65,8 +65,8 @@ if ($result = mysqli_query($db, $query) ) {
        shows.create_date,
        shows.edit_date,
        shows.active,
-       shows.top_tags as primary_tags,
-       shows.genre as secondary_genre_tags,
+       shows.primary_genre_tags,
+       shows.secondary_genre_tags,
        shows.website,
        shows.rss,
        shows.show_desc,
@@ -85,23 +85,23 @@ if ($result = mysqli_query($db, $query) ) {
                     LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
     $query .=' WHERE shows.id = '.$id.'';
 
-      if($result2 = mysqli_query($db, $query)){
+    if($result2 = mysqli_query($db, $query)){
 
-        if (mysqli_num_rows($result2) == 0) {
+      if (mysqli_num_rows($result2) == 0) {
 
-          $error = 'empty data (are all parameters supplied correctly?). '.$query;
+        $error = 'empty data (are all parameters supplied correctly?). '.$query;
 
-        } else {
+      } else {
 
-          while ($row = mysqli_fetch_assoc($result2)) {
+        while ($row = mysqli_fetch_assoc($result2)) {
 
-            $rawdata [] = $row;
-
-          }
+          $rawdata [] = $row;
 
         }
 
       }
+
+    }
 
   } else {
 
@@ -127,11 +127,11 @@ $social_array = array();
 
 foreach($rawdata as $i => $show){
   if (isset($show['social_name'])){
-  $social_array []= array(
-      'type'  =>  html_entity_decode($show['social_name'],ENT_QUOTES),
-      'url'   =>  html_entity_decode($show['social_url'],ENT_QUOTES),
-      'name'  =>  html_entity_decode($show['short_name'],ENT_QUOTES)
-  );
+    $social_array []= array(
+        'type'  =>  html_entity_decode($show['social_name'],ENT_QUOTES),
+        'url'   =>  html_entity_decode($show['social_url'],ENT_QUOTES),
+        'name'  =>  html_entity_decode($show['short_name'],ENT_QUOTES)
+    );
   }
 }
 

@@ -93,3 +93,6 @@ $ftp_user = 'podcast';  $ftp_pass = 'podNAScast007';
 //$ftp_user = 'root';  $ftp_pass = 'nas101.9';
 $ftp_path = '/mnt/Audio/audio/';
 
+
+$incoming_data =  (array) json_decode(file_get_contents('php://input'));
+

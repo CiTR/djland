@@ -93,6 +93,7 @@ foreach($dow as $key_name => $var_name) { // Generates days of week
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+<base href='shows.php'>
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
@@ -143,8 +144,8 @@ if(is_member("addshow") ) {
 		$lang_default = fas($_POST['t_lang_default']);
 		$website = fas($_POST['t_website']);
 		$rss = fas($_POST['t_rss']);
-		$top_tags = fas($_POST['top_tags']);
-		$genre = fas($_POST['t_genre']);
+		$primary_genre_tags = fas($_POST['t_primary_genre_tags']);
+		$secondary_genre_tags = fas($_POST['t_secondary_genre_tags']);
 		$show_desc = fas($_POST['t_show_desc']);
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
@@ -231,8 +232,8 @@ if(is_member("addshow") ) {
 			crtc_default=$crtc_default,
 			lang_default='$lang_default',
 			active=$active,
-			top_tags='$top_tags',
-			genre='$genre',
+			primary_genre_tags='$primary_genre_tags',
+			secondary_genre_tags='$secondary_genre_tags',
 			website='$website',
 			rss='$rss',
 			show_desc='$show_desc',
@@ -284,9 +285,10 @@ if(is_member("addshow") ) {
 		$active = $show_id ? mysqli_result_dep($result, 0, "active") : 1;
 		$crtc_num = $show_id ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
+		
 		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$top_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "top_tags"))) ? mysqli_result_dep($result, 0, "top_tags") : "";
-		$genre = ($show_id && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
+		$primary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_genre_tags") : "";
+		$secondary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
 		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
 		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
 		$show_desc = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
@@ -407,8 +409,8 @@ if(is_member("addshow") ) {
 		echo "<br/><br/><br/>
 					<p><span></span><span> show tags (comma separated list)</span>";
 
-		printf("<p><span>High Level: </span><input name=\"top_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $top_tags);
-		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $genre);
+		printf("<p><span>High Level: </span><input name=\"t_primary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_genre_tags);
+		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $secondary_genre_tags);
 		echo "<br><br>";
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
 		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
@@ -540,7 +542,7 @@ if(is_member("addshow") ) {
 		<INPUT type=hidden name=action value=edit>";
 	?>	
 	<h2>All Shows:</h2>
-	<select name='id' size=20 readonly="true">
+	<select name='id' size=20>
 	<?php 
 			$query = "SELECT id,name FROM shows ORDER BY name";
 		if($result = $db->query($query)){
@@ -599,27 +601,31 @@ if(is_member("addshow") ) {
 
 <div ng-app="djLand">
 
-	<div ng-controller="showCtrl" class="form_wrap">
+	<div ng-controller="showCtrl" class="form_wrap show_form">
+		<br ng-init="formData.show_id = <?php echo $show_id;?>" />
+		<h3>editing show information</h3>
 
-		<h3>editing show: {{showData.title}}</h3>
-
-		<h3> {{showData.name}}</h3>
+		<h3>{{showData.name}}</h3>
+		Show Name:<br/>
+		<input ng-model="formData.name">
+		</input><br/>
 		Description:<br/>
-  <textarea class="description" ng-model="showData.show_desc" >
+  <textarea class="description" ng-model="formData.show_desc" >
   </textarea><br/>
 
 		genre:<br/>
-		<input ng-model="showData.secondary_genre_tags" >
+		<input ng-model="formData.secondary_genre_tags" >
 		</input><br/>
 
 		website:<br/>
-		<input ng-model="showData.website" >
+		<input ng-model="formData.website">
 		</input><br/>
 
 		message:{{message}}<br/>
 
+
 		<button ng-click="save();" >save info (tba)</button>
-		<textarea cols="100" rows="20">{{showData}}</textarea>
+		<textarea cols="100" rows="20">{{formData}}</textarea>
 	</div>
 
 

@@ -4,7 +4,7 @@
 
 app .value('API_URL_BASE', 'http://l.h/djland-dev/api')
 
-    .factory('apiService', function ($http, API_URL_BASE) {
+    .factory('apiService', function ($http, API_URL_BASE, $location) {
       return {
 
 
@@ -19,5 +19,9 @@ app .value('API_URL_BASE', 'http://l.h/djland-dev/api')
 
       };
     });
+
+app.config(function($locationProvider) {
+  $locationProvider.html5Mode(true).hashPrefix('!');
+})
 
 
