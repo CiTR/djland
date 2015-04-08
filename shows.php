@@ -93,6 +93,7 @@ foreach($dow as $key_name => $var_name) { // Generates days of week
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+<base href='shows.php'>
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
@@ -601,26 +602,30 @@ if(is_member("addshow") ) {
 <div ng-app="djLand">
 
 	<div ng-controller="showCtrl" class="form_wrap show_form">
+		<br ng-init="formData.show_id = <?php echo $show_id;?>" />
+		<h3>editing show information</h3>
 
-		<h3>editing show: {{showData.title}}</h3>
-
-		<h3> {{showData.name}}</h3>
+		<h3>{{showData.name}}</h3>
+		Show Name:<br/>
+		<input ng-model="formData.name">
+		</input><br/>
 		Description:<br/>
-  <textarea class="description" ng-model="showData.show_desc" >
+  <textarea class="description" ng-model="formData.show_desc" >
   </textarea><br/>
 
 		genre:<br/>
-		<input ng-model="showData.secondary_genre_tags" >
+		<input ng-model="formData.secondary_genre_tags" >
 		</input><br/>
 
 		website:<br/>
-		<input ng-model="showData.website" >
+		<input ng-model="formData.website">
 		</input><br/>
 
 		message:{{message}}<br/>
 
+
 		<button ng-click="save();" >save info (tba)</button>
-		<textarea cols="100" rows="20">{{showData}}</textarea>
+		<textarea cols="100" rows="20">{{formData}}</textarea>
 	</div>
 
 
