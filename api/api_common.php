@@ -6,6 +6,7 @@
 
 
 require_once('../../headers/db_header.php');
+//require_once('../../headers/security_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
@@ -92,4 +93,7 @@ $ftp_url = '192.168.25.79';
 $ftp_user = 'podcast';  $ftp_pass = 'podNAScast007';
 //$ftp_user = 'root';  $ftp_pass = 'nas101.9';
 $ftp_path = '/mnt/Audio/audio/';
+
+
+$incoming_data =  (array) json_decode(file_get_contents('php://input'));
 

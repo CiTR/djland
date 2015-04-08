@@ -143,7 +143,7 @@ if(is_member("addshow") ) {
 		$lang_default = fas($_POST['t_lang_default']);
 		$website = fas($_POST['t_website']);
 		$rss = fas($_POST['t_rss']);
-		$top_tags = fas($_POST['top_tags']);
+		$primary_tags = fas($_POST['primary_tags']);
 		$genre = fas($_POST['t_genre']);
 		$show_desc = fas($_POST['t_show_desc']);
 		$notes = fas($_POST['t_notes']);
@@ -231,7 +231,7 @@ if(is_member("addshow") ) {
 			crtc_default=$crtc_default,
 			lang_default='$lang_default',
 			active=$active,
-			top_tags='$top_tags',
+			primary_tags='$primary_tags',
 			genre='$genre',
 			website='$website',
 			rss='$rss',
@@ -285,7 +285,7 @@ if(is_member("addshow") ) {
 		$crtc_num = $show_id ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
 		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$top_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "top_tags"))) ? mysqli_result_dep($result, 0, "top_tags") : "";
+		$primary_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_tags"))) ? mysqli_result_dep($result, 0, "primary_tags") : "";
 		$genre = ($show_id && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
 		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
 		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
@@ -407,7 +407,7 @@ if(is_member("addshow") ) {
 		echo "<br/><br/><br/>
 					<p><span></span><span> show tags (comma separated list)</span>";
 
-		printf("<p><span>High Level: </span><input name=\"top_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $top_tags);
+		printf("<p><span>High Level: </span><input name=\"primary_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_tags);
 		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $genre);
 		echo "<br><br>";
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
@@ -599,7 +599,7 @@ if(is_member("addshow") ) {
 
 <div ng-app="djLand">
 
-	<div ng-controller="showCtrl" class="form_wrap">
+	<div ng-controller="showCtrl" class="form_wrap show_form">
 
 		<h3>editing show: {{showData.title}}</h3>
 
