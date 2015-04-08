@@ -143,8 +143,8 @@ if(is_member("addshow") ) {
 		$lang_default = fas($_POST['t_lang_default']);
 		$website = fas($_POST['t_website']);
 		$rss = fas($_POST['t_rss']);
-		$primary_tags = fas($_POST['primary_tags']);
-		$genre = fas($_POST['t_genre']);
+		$primary_tags = fas($_POST['primary__genre_tags']);
+		$secondary_genre_tags = fas($_POST['t_secondary_genre_tags']);
 		$show_desc = fas($_POST['t_show_desc']);
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
@@ -231,7 +231,8 @@ if(is_member("addshow") ) {
 			crtc_default=$crtc_default,
 			lang_default='$lang_default',
 			active=$active,
-			primary_tags='$primary_tags',
+			primary_genre_tags='$primary_genre_tags',
+			secondary_genre_tags='$secondary_genre_tags',
 			genre='$genre',
 			website='$website',
 			rss='$rss',
@@ -284,9 +285,10 @@ if(is_member("addshow") ) {
 		$active = $show_id ? mysqli_result_dep($result, 0, "active") : 1;
 		$crtc_num = $show_id ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
+		
 		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$primary_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_tags"))) ? mysqli_result_dep($result, 0, "primary_tags") : "";
-		$genre = ($show_id && !is_null(mysqli_result_dep($result, 0, "genre"))) ? mysqli_result_dep($result, 0, "genre") : "";
+		$primary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_tags") : "";
+		$secondary_genre_tags = ($ed && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
 		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
 		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
 		$show_desc = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
@@ -411,6 +413,7 @@ if(is_member("addshow") ) {
 		printf("<p><span>Genre: </span><input name=\"t_genre\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $genre);
 		echo "<br><br>";
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
+		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $secondary_genre_tags);
 		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
 		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $show_img);
 		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $website);
@@ -540,7 +543,7 @@ if(is_member("addshow") ) {
 		<INPUT type=hidden name=action value=edit>";
 	?>	
 	<h2>All Shows:</h2>
-	<select name='id' size=20 readonly="true">
+	<select name='id' size=20>
 	<?php 
 			$query = "SELECT id,name FROM shows ORDER BY name";
 		if($result = $db->query($query)){

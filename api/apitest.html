@@ -54,7 +54,7 @@
           {endpoint:'episode',data:[], error:'', links:[]},
           {endpoint:'playlist',data:[], error:'', links:[]},
           {endpoint:'show',data:[], error:'',links:[]},
-          {endpoint:'member',data:[], error:'',links:[]},
+//          {endpoint:'user',data:[], error:'',links:[]},
 //          {endpoint:'specialevents', data:[], error:''},
 //          {endpoint:'auth',data:[], error:''}
         ];
@@ -86,46 +86,18 @@
         }
 
       }])
-      .factory('Time', ['$location', function($location) {
-        var url = 'http://:host::port/VirtualLawyerPj/services/timeoftheday/asjson/tue';
-        var params = {
-          host: $location.host(),
-          port: $location.port()
-        };
-        var actions = {
-          query: {method:'GET', isArray:false}
-        };
-        return $resource(url, params, actions);
-      }])
-
-
-      .factory('testService', ['$http','$location','API_URL_BASE',function($http, $location,API_URL_BASE) {
-        var API_URL_BASE = 'http://l.h/djland-dev/api/';
-
+      .factory('testService', function($http, API_URL_BASE) {
         return {
           getPublicData: function(endpoint,i){
-
-            var requestParams = {
-              method: 'GET',
-              url: API_URL_BASE+endpoint+'s/index.php?LIMIT=5',
-              headers: {
-                'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'withCredentials':true
-              },
-              data: { test: 'test' }
-            }
-
-
-            return $http(requestParams)
+            return $http.get(API_URL_BASE+endpoint+'s?LIMIT=5')
                 .error(function(result){return {error:result};})
                 .then(function(result){
                   return [i,result.data];
                 });
           }
         };
-      }])
-        .value('API_URL_BASE','http://l.h/djland-dev/api/')
-//      .value('HOSTNAME','l.h')//  change to api.citr.ca or whatever when we go live
+      })
+      .value('API_URL_BASE','')//  change to api.citr.ca or whatever when we go live
 
 
 
