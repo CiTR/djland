@@ -61,7 +61,10 @@ $queries = array(
                                 PRIMARY KEY (`id`));',
     'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
     'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
-    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `top_tags` TINYTEXT NULL AFTER `lang_default`;',
+    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `primary_genre_tags` TINYTEXT NULL AFTER `lang_default`;',
+    'rename genre tables to tags' => "ALTER TABLE `shows`
+                                  CHANGE COLUMN `top_tags` `primary_genre_tags` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+                                  CHANGE COLUMN `genre` `secondary_genre_tags` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;",
     'adjust member_show' => 'ALTER TABLE `member_show`
                                   CHANGE COLUMN `member_id` `member_id` INT(11) NOT NULL ,
                                   CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
