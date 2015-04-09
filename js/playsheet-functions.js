@@ -171,6 +171,8 @@
 		})
 				.fail(function(){
 			$('#showOutput').html('connection error');
+					$('#ps-loading-image').hide();
+
 		});
 
 	}
@@ -285,7 +287,7 @@ function showStatus(status, delay){
 		$('#star').val(0);
 		$('#autosaver').css('background-color','lightblue');
 		showStatus('saving... please wait', false);
-		console.log('autosaving');	
+		console.log('autosaving');
 		$('#status').val(1);
 		playsheetID = parseInt($hiddenInput.attr('value'),10);
 
