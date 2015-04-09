@@ -728,7 +728,7 @@ function manage_members(action_,type_,value_){
 							
 						});
 							$('#row26').append("<hr>");
-						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password'></input><br/> \
+						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center>");
 					default:
 						break;

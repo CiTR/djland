@@ -248,6 +248,9 @@ $default = false;
 			while($row = mysqli_fetch_array($result)){
 			$members[] = $row;
 			}
+			foreach($members[0] as $i => $v){
+				$members[0][$i] = html_entity_decode($v,ENT_QUOTES);
+			}
 		}
 		echo json_encode($members);
 		$result->close();
