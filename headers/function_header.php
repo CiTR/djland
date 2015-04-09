@@ -255,7 +255,7 @@ function getRecentPlaylists($db, $numrows,$filter){
 
 function get_time()
 {
-	$debug_time = true;
+	$debug_time = false;
 	$the_fake_time = "2015/03/25 13:05:00";
 
 	if($debug_time){
