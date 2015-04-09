@@ -551,7 +551,7 @@ function manage_members(action_,type_,value_){
 							<option value='NWT'>NWT</option> \
 							<option value='YUK'>YUK</option> \
 							</select></div>");
-							$('#row2').append("<div class=col5> Postal Code:</div><div class=col5><input id='postalcode' name='postalcode' value="+data[0].postalcode+"></div>");
+							$('#row2').append("<div class=col5> Postal Code:</div><div class=col5><input id='postalcode' name='postalcode' value="+data[0].postalcode+" maxlength='6'></div>");
 							//CANADIAN CITIZEN
 							$('#row3').append("<div class=col5> Canadian Citizen:</div>");
 							if(data[0].canadian_citizen == 1){
@@ -632,7 +632,7 @@ function manage_members(action_,type_,value_){
 								</select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
 								$('#row5').append("<div id='student_no_container'> \
 								<div class='col5'>Student Number*:</div> \
-								<div class='col5'><input id='student_no' name='student_no' maxlength='10' value="+data[0].student_no+" onKeyPress='return numbersonly(this, event)''></input></div> \
+								<div class='col5'><input id='student_no' name='student_no' maxlength='8' value="+data[0].student_no+" onKeyPress='return numbersonly(this, event)''></input></div> \
 								</div>");
 								$('#row6').append("<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.): \
 									<input id='integrate'  name='integrate' type='checkbox'"+ (data[0].integrate==1 ? 'checked=checked' : '' ) +" /> \
@@ -716,8 +716,8 @@ function manage_members(action_,type_,value_){
 							$('#row24').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].adduser==1 ? "checked=checked" : "")+"/></div>");
+							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].addshow==1 ? "checked=checked" : "")+"/></div>");
 						
 							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
