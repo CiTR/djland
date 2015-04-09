@@ -79,7 +79,7 @@ input, select, textarea, option{
 #nav li, #tab-nav li{
 	float:left;
 	position:relative;
-	padding: 4px 10px 4px 10px;
+	padding: 4px 5px 4px 5px;
 	text-align:center;
 	margin-right:30px;
 	margin-top:7px;
@@ -108,7 +108,7 @@ input, select, textarea, option{
 	
 #nav li:hover{
 	border: 1px solid #555555;
-    padding: 4px 9px 4px 9px;
+    padding: 4px 4px 4px 4px;
     background: #F4F4F4;
     -moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
@@ -116,6 +116,7 @@ input, select, textarea, option{
 }
 #nav .nodrop,.drop, #tab-nav .nodrop,.drop {
 	right:8px;
+	cursor: pointer;
 }
 #nav .nodrop:hover {
 	-moz-border-radius: 5px 5px 5px 5px;
