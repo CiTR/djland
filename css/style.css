@@ -1615,7 +1615,7 @@ max-width:120px;
 }
 
 div.adType, div.adType input{
-max-width:110px;
+max-width:80px;
 }
 input.adInput{
 
@@ -1628,7 +1628,7 @@ overflow-x: visible;
 div.adName, div.adName input{
 
 background-color:transparent;
-width:270px;
+width:330px;
 }
 
 .adName input{

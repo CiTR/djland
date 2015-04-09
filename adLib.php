@@ -1,6 +1,7 @@
 <?php
 
 require_once('headers/showlib.php');
+require_once('config.php');
 date_default_timezone_set ("America/Vancouver");
 
 class AdLib {
@@ -275,6 +276,7 @@ class AdLib {
 		
 	// takes the time list and type list and returns the name list based on these
 	function getNames($types, $uniqueTime, $sponsor){
+		global $station_info;
 	//	$lastSunday = strtotime("last sunday");
 	//	$uniqueTime = $showBlock['wdt']+$lastSunday;
 //		$showBlock = $this->showlib->getShowByTime($uniqueTime)->times[0];
@@ -307,7 +309,8 @@ class AdLib {
 				$type = $types[$x];
 			
 				if($type == $this->ad_dict['ID']){
-					$names[] = "&quot;You're listening to CiTR 101.9 in Vancouver&quot;";
+					$names[] =
+					$station_info['station ID message'];
 				} else
 				if($type == $this->ad_dict['PSA']){
 					$names[] = "(any)";
