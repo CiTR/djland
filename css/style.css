@@ -1289,6 +1289,7 @@ width: 55px;
 div#ui-datepicker-div, div#up-datepicker-div * {
 	position:relative;
 	margin-top:-150px;
+	z-index:50 !important;
 }
 
 .invisible *{
