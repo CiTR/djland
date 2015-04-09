@@ -309,8 +309,7 @@ class AdLib {
 				$type = $types[$x];
 			
 				if($type == $this->ad_dict['ID']){
-					$names[] =
-					$station_info['station ID message'];
+					$names[] =	$station_info['station ID message'];
 				} else
 				if($type == $this->ad_dict['PSA']){
 					$names[] = "(any)";
@@ -483,7 +482,7 @@ class AdLib {
 		$view = 'dj';
 		$adload_query = "SELECT * FROM adlog WHERE playsheet_id = '".$playsheet_id."'";
 		if ($adload_result = mysqli_query($this->citr_link, $adload_query)){
-			$adTable = [];
+			$adTable = array();
 			while($adRow = $adload_result->fetch_array()){
 				$adTable []= $adRow;
 			}
