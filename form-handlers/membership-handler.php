@@ -239,7 +239,7 @@ $default = false;
 			$default = true;
 			break;
 	}
-	if(is_member('membership')){
+	if(is_member('member')){
 		if(!$default AND ($action != 'report')){
 		$result = null;
 		$members = null;
