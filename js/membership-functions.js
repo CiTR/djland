@@ -258,7 +258,7 @@ function updateMember(member,membership_year){
 	$.when(updateMemberInfo(member),updateMemberInterests(membership_year)).then(function(data,data2){
 		console.log("successfully updated: "+JSON.stringify(data )+ "," +JSON.stringify(data2));
 		alert("Successfully updated!");
-		//window.location.href = "main.php";
+		window.location.href = "main.php";
 	},function(error1,error2){
 		var data = error1 + error2;
 		$.ajax({
@@ -290,7 +290,8 @@ function displayMemberInfo(member){
 	if(member.member_type == "Student"){
 		setVal(member.faculty,'faculty');
 		setVal(member.schoolyear,'schoolyear');
-		setVal(member.integrate,'integrate');
+		setVal(member.student_no,'student_no');
+		setCheckbox(member.integrate,'integrate');
 	}else{
 		$('#row6').hide();
 		$('#row7').hide();
@@ -327,7 +328,8 @@ function getMemberInfoFromPage(){
 	if(member.member_type == "Student"){
 		member.faculty = getVal('faculty');
 		member.schoolyear = getVal('schoolyear');
-		member.integrate = getVal('integrate');
+		member.student_no = getVal('student_no');
+		member.integrate = getCheckbox('integrate');
 	}
 	member.has_show = getRadio('show');
 	member.show_name = getVal('show_name');
