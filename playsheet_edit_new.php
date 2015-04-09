@@ -242,8 +242,57 @@ else {
 
 <INPUT type=hidden id='psid' name=id value= <?php echo $ps_id; ?>>
 <center><h1>DJ PLAYSHEET</h1></center>
+
+  <span id='ps_header'>
 <table border=0 align=center width=100%%>
   <tr>
+  <td>
+  Show: <select id='showSelector' name="showtitle">
+  <?php
+  if ($ps_id || $show_name)
+    printf("<option value='%s' selected='selected'>%s", $show_id, $show_name);
+
+  if (!$playsheet_is_draft) {
+    $query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
+    if ($result = $db->query($query)) {
+      while ($row = mysqli_fetch_array($result)) {
+        echo "\n<option value='" . $row[id] . "'>" . $row[name] . "</option>";
+      }
+    }
+    $result->close();
+  }
+
+  if ($playsheet_is_draft) {
+    // Playlist Date (READONLY if draft)
+
+    echo "<tr><td>Date: ";
+    echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>" . $pl_date_year;
+    echo "</SELECT>-";
+    echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>" . sprintf("%02d", $pl_date_month);
+    echo "</SELECT>-";
+    echo "<SELECT id=playsheet-day NAME=pl_date_day   >\n<OPTION>" . sprintf("%02d", $pl_date_day);
+    echo "</SELECT>) ";
+
+  } else {
+
+    // Playlist Date (able to change causing ads and show info to load via ajax if NOT a draft)
+
+    echo "<tr><td>Date: ";
+    echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>" . $pl_date_year;
+    for ($i = 2002; $i <= 2014; $i++) echo "<OPTION>" . $i;
+    echo "</SELECT>-";
+    echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>" . sprintf("%02d", $pl_date_month);
+    for ($i = 1; $i <= 12; $i++) echo "<OPTION>" . sprintf("%02d", $i);
+    echo "</SELECT>-";
+    echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>" . sprintf("%02d", $pl_date_day);
+    for ($i = 1; $i <= 31; $i++) echo "<OPTION>" . sprintf("%02d", $i);
+    echo "</SELECT>) ";
+
+  }
+
+  ?><br/><i>^^ please set date and show first, to load your ad schedule</i><br/><br/>
+</td></tr>
+<tr>
     <td>Show Type:
       <?php if (isset($loaded_type) && ($loaded_type != null)){ ?>
     <select id='type' name='type' value=".$loaded_type.">
@@ -269,10 +318,10 @@ else {
           <?php
 
   echo "<br/><select style='height:25px' class=invisible id='select-playsheet' >";
-  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playlists AS p ON s.id = p.show_id";
+  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playlists AS p ON s.id = p.show_id order by start_time desc limit 3000";
   if ($result = $db->query($query)) {
     while ($row = mysqli_fetch_array($result)) {
-      echo "<option value='" . $row['playsheet_id'] . "' data='" . $row['start_time'] . "'>" . $row['start_time'] . " - " . $row['name'] . "</option>";
+      echo "\n<option value='" . $row['playsheet_id'] . "' data='" . $row['start_time'] . "'>" . $row['start_time'] . " - " . $row['name'] . "</option>";
     }
   }
   $result->close();
@@ -280,73 +329,30 @@ else {
   echo '</select>';
   echo '<button id="load-playsheet" type="button" class="invisible">Select This Playsheet</button></tr>';
 
-  echo "<span id='ps_header'>";
 
-  printf("<tr><td> Show: <select id='showSelector' name=\"showtitle\">");
-
-  if ($ps_id || $show_name) printf("<option value='%s' selected='selected'>%s", $show_id, $show_name);
-
-
-  if (!$playsheet_is_draft) {
-    $query = "SELECT id,name FROM shows WHERE active=1 ORDER BY name";
-    if ($result = $db->query($query)) {
-      while ($row = mysqli_fetch_array($result)) {
-        echo "<option value='" . $row[id] . "'>" . $row[name] . "</option>";
-      }
-    }
-    $result->close();
-  }
 
   /*foreach($fshow_name_active as $x => $var_name) {
     if($var_name != '!DELETED' || $ps_id) printf("<option "."value='".$x."'>%s", $var_name);
   }*/
-  printf("</select></td>");
+  printf("</select></td></tr>");
+  printf("<tr><td align=right>Host/Op: <input id='host' name=\"host\" type=text size=30 value=\"%s\"  ></td>", $host_name);
 
-  printf("<td align=right>Host/Op: <input id='host' name=\"host\" type=text size=30 value=\"%s\"  ></td></table>", $host_name);
 
-  if ($playsheet_is_draft) {
-
-    // Playlist Date (READONLY if draft)
-
-    echo "<table width=100%% border=0 align=center><tr><td>Date: ";
-    echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>" . $pl_date_year;
-    echo "</SELECT>-";
-    echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>" . sprintf("%02d", $pl_date_month);
-    echo "</SELECT>-";
-    echo "<SELECT id=playsheet-day NAME=pl_date_day   >\n<OPTION>" . sprintf("%02d", $pl_date_day);
-    echo "</SELECT>) ";
-
-  } else {
-
-    // Playlist Date (able to change causing ads and show info to load via ajax if NOT a draft)
-
-    echo "<table width=100%% border=0 align=center><tr><td>Date: ";
-    echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>" . $pl_date_year;
-    for ($i = 2002; $i <= 2014; $i++) echo "<OPTION>" . $i;
-    echo "</SELECT>-";
-    echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>" . sprintf("%02d", $pl_date_month);
-    for ($i = 1; $i <= 12; $i++) echo "<OPTION>" . sprintf("%02d", $i);
-    echo "</SELECT>-";
-    echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>" . sprintf("%02d", $pl_date_day);
-    for ($i = 1; $i <= 31; $i++) echo "<OPTION>" . sprintf("%02d", $i);
-    echo "</SELECT>) <i>set date and show first</i>";
-
-  }
 
   printf("</td><td align=right>Start Time: [");
   printf("<SELECT id=pl_date_hour NAME=pl_date_hour  >\n<OPTION>%02d", $pl_date_hour);
-  for ($i = 0; $i <= 23; $i++) printf("<OPTION value=%02d>%02d", $i, $i);
+  for ($i = 0; $i <= 23; $i++) printf("\n<OPTION value=%02d>%02d", $i, $i);
   printf("</SELECT>:");
   printf("<SELECT id=pl_date_min NAME=pl_date_min  >\n<OPTION >%02d", $pl_date_min);
-  for ($i = 0; $i <= 59; $i++) printf("<OPTION value=%02d>%02d", $i, $i);
+  for ($i = 0; $i <= 59; $i++) printf("\n<OPTION value=%02d>%02d", $i, $i);
   printf("</SELECT>]");
 
   printf("</td><td align=right>End Time: [");
   printf("<SELECT id=end_date_hour NAME=end_date_hour  >\n<OPTION>%02d", $end_date_hour);
-  for ($i = 0; $i <= 23; $i++) printf("<OPTION value=%02d >%02d", $i, $i);
+  for ($i = 0; $i <= 23; $i++) printf("\n<OPTION value=%02d >%02d", $i, $i);
   printf("</SELECT>:");
   printf("<SELECT id=end_date_min NAME=end_date_min  >\n<OPTION>%02d", $end_date_min);
-  for ($i = 0; $i <= 59; $i++) printf("<OPTION value=%02d>%02d", $i, $i);
+  for ($i = 0; $i <= 59; $i++) printf("\n<OPTION value=%02d>%02d", $i, $i);
   ?>
         </SELECT>]
     </td>
@@ -712,6 +718,8 @@ else {
 You may temporarily save a draft and resume at another time by clicking 'Save draft' in the top right corner</span><br/>
 <button id=submit type=submit value=\"Save Playsheet\">Submit Playsheet</button></center><br/><br/><br/>
 			<div></div>";
+  } else {
+    echo "<center> sorry, you don't have permissions to edit playsheets</center>";
   }
   echo "</FORM>";
   // echo'
