@@ -3,19 +3,28 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
-<h2>api test</h2>
-  <div ng-app="bla">
 
-    <div ng-controller="apiTest" >
+<style type="text/css">
+  .contents{
+    height:350px;
+    width:65%;
+    overflow:scroll;
+    border: solid 2px black ;
+    padding: 5px;
+  }
+</style>
+</head>
+<body>
 
-      <span ng-repeat="list in public_api_lists">
-        <h3>{{list.endpoint}}</h3>
 
-        <!--
-        <div class="error">
-          error: {{list.error}}
-        </div>
-        -->
+<h1>api test</h1>
+<div ng-app="bla">
+
+  <div ng-controller="apiTest" >
+
+    <h2> public pluralized endpoints with example links (limit 5 most recent) </h2>
+      <span ng-repeat="list in public_api_pluralized_lists">
+        <h3>/{{list.endpoint}}s</h3>
 
         <div class="contents">
 
@@ -38,35 +47,114 @@
 
 
       </span>
-    </div>
+    <h2> offset test results: </h2>
+
+    <p>playlists: {{public_api_pluralized_lists[0].data[3].id == public_api_pluralized_lists_offset[0].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[0].data[3].id}} should equal {{public_api_pluralized_lists_offset[0].data[0].id}}</p>
+    <p>shows: {{public_api_pluralized_lists[1].data[3].id == public_api_pluralized_lists_offset[1].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[1].data[3].id}} should equal {{public_api_pluralized_lists_offset[1].data[0].id}}</p>
+    <p>episodes: {{public_api_pluralized_lists[2].data[3].id == public_api_pluralized_lists_offset[2].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[2].data[3].id}} should equal {{public_api_pluralized_lists_offset[2].data[0].id}}</p>
+
+
+    <h2> public pluralized endpoints with offset=3 (limit 5 most recent) </h2>
+      <span ng-repeat="list in public_api_pluralized_lists_offset">
+        <h3>/{{list.endpoint}}s</h3>
+
+        <div class="contents">
+
+          <span ng-repeat="item in list.data track by $index">
+            <span ng-repeat="(field,value) in item">
+              {{field}}: {{value}} <br/>
+
+            </span>
+
+            <hr/>
+          </span>
+
+        </div>
+
+
+      </span>
+
+    <h2> public single endpoints</h2>
+      <span ng-repeat="list in public_other_lists">
+        <h3>/{{list.endpoint}}</h3>
+        <div class="contents">
+          <span ng-repeat="item in list.data track by $index">
+            <span ng-repeat="(field,value) in item">
+              {{field}}: {{value}} <br/>
+
+            </span>
+
+            <hr/>
+          </span><br/>
+        </div>
+      </span>
+
+
+    <h2> errors (bed requests)</h2>
+      <span ng-repeat="request_item in error_requests">
+        <h3>/{{request_item.request}}</h3>
+
+          <p>see javascript console for these test results</p>
+
+      </span>
+
+
+
   </div>
+</div>
 
 
-</head>
-<body>
+
 <script src="../js/angular.js"></script>
 <script type="text/javascript">
   angular.module('bla', []
   )
       .controller('apiTest', ['$scope','testService','API_URL_BASE',function($scope,testService,API_URL_BASE){
 
-        $scope.public_api_lists = [
-          {endpoint:'episode',data:[], error:'', links:[]},
+        $scope.public_api_pluralized_lists = [
           {endpoint:'playlist',data:[], error:'', links:[]},
           {endpoint:'show',data:[], error:'',links:[]},
+          {endpoint:'episode',data:[], error:'', links:[]}
 //          {endpoint:'user',data:[], error:'',links:[]},
 //          {endpoint:'specialevents', data:[], error:''},
 //          {endpoint:'auth',data:[], error:''}
         ];
 
+        $scope.public_api_pluralized_lists_offset = [
+          {endpoint:'playlist',data:[], error:'', links:[]},
+          {endpoint:'show',data:[], error:'', links:[]},
+          {endpoint:'episode',data:[], error:'', links:[]},];
 
-        for( var i = 0; i<$scope.public_api_lists.length; i++){
 
-          testService.getPublicData($scope.public_api_lists[i].endpoint, i)
+        $scope.public_other_lists = [
+          {endpoint:'schedule',data:[], error:'', links:[]},
+          {endpoint:'specialevents',data:[], error:'', links:[]}
+
+        ];
+
+        $scope.private_access = [
+          {endpoint:'podcasting',data:[], error:'', links:[]}
+
+        ];
+
+        $scope.error_requests = [
+          {request:'playlist',status:'',body:''},
+          {request:'show',status:'',body:''},
+          {request:'episode',status:'',body:''},
+          {request:'playlist?ID=cars',status:'',body:''},
+          {request:'show?ID=doge',status:'',body:''},
+          {request:'episode?ID=dingus',status:'',body:''},
+          {request:'playlist?ID=9999999999999',status:'',body:''},
+          {request:'episode?ID=999999999999',status:'',body:''},
+          {request:'show?ID=999999999999',status:'',body:''}
+        ]
+
+        for( var i in $scope.public_api_pluralized_lists){
+          testService.getPublicPluralizedData($scope.public_api_pluralized_lists[i].endpoint, i)
               .then(function(data){
                 var the_original_index = data[0];
                 var the_data = data[1];
-                var the_list = $scope.public_api_lists[the_original_index]
+                var the_list = $scope.public_api_pluralized_lists[the_original_index];
 
                 if(typeof(data.error) == 'string'){
                   the_list.error = data.error;
@@ -79,21 +167,93 @@
                     API_URL_BASE+the_list.endpoint+'/?ID='+the_data[2].id,
                     API_URL_BASE+the_list.endpoint+'/?ID='+the_data[4].id,
                   ]
-
           });
+
+          testService.getPublicPluralizedDataWithOffset($scope.public_api_pluralized_lists[i].endpoint, i)
+              .then(function(data){
+                var the_original_index = data[0];
+                var the_data = data[1];
+                var the_list = $scope.public_api_pluralized_lists_offset[the_original_index];
+
+                if(typeof(data.error) == 'string'){
+                  the_list.error = data.error;
+                }
+
+                the_list.data = the_data;
+
+              });
+
 
 
         }
 
+      for( var i in $scope.public_other_lists){
+        testService.getPublicData($scope.public_other_lists[i].endpoint,i)
+            .then(function(data){
+              var the_original_index = data[0];
+              var the_list = $scope.public_other_lists[the_original_index];
+              the_list.data = data[1];
+
+            });
+
+
+      }
+
+        for( var i in $scope.error_requests){
+          testService.makeDumbRequest($scope.error_requests[i].request,i)
+              .then(function(data){
+                var the_original_index = data[0];
+                var the_dumb_request = $scope.error_requests[the_original_index];
+
+                the_dumb_request.status='??1';//data[1].status;
+                the_dumb_request.body='body1';//data[1].body;
+              })
+
+        }
+
+
+
+
       }])
       .factory('testService', function($http, API_URL_BASE) {
         return {
-          getPublicData: function(endpoint,i){
+          getPublicPluralizedData: function(endpoint,i){
             return $http.get(API_URL_BASE+endpoint+'s?LIMIT=5')
                 .error(function(result){return {error:result};})
                 .then(function(result){
                   return [i,result.data];
                 });
+          },
+
+          getPublicPluralizedDataWithOffset: function(endpoint,i){
+            return $http.get(API_URL_BASE+endpoint+'s?LIMIT=5&OFFSET=3')
+                .error(function(result){return {error:result};})
+                .then(function(result){
+                  return [i,result.data];
+                });
+          },
+
+          getPublicData: function(endpoint,i){
+            return $http.get(API_URL_BASE+endpoint)
+                .error(function(result){return {error:result};})
+                .then(function(result){
+                  return [i, result.data];
+
+            });
+          },
+
+          makeDumbRequest: function(dumb_request,i){
+            return $http.get(API_URL_BASE+dumb_request)
+                .error(function(result){
+                  console.log('^^ result from request to /'+dumb_request);
+                  console.log('');
+                  return [i,{status:status, body:result}];
+                })
+                .then(function(result){
+                  console.log('?? the request to /'+dumb_request + ' did not trigger an error');
+                  console.log('');
+                  return [i, {status:200,body:'for some reason, no error was triggered for this request'}];
+                })
           }
         };
       })
