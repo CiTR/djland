@@ -1,0 +1,279 @@
+
+	<html>
+
+	<head>
+
+		<style type='text/css'>
+			#output{
+				position:absolute;
+				left:50%;
+				top:0;
+				height:80%;
+				overflow:scroll;
+				background-color:lightblue;
+			}
+		</style>
+	</head>
+		<body>
+
+
+
+<div id='podcast-tools'>
+	<h2>Podcast Tools</h2>
+	<center>
+
+		<span id='podcastTime'></span>	</center>
+</div>
+
+<div id="podcast">
+<pre>
+    START
+    DATE: <input type="datetime" id="start_date"> TIME: h:<input type="datetime" id="start_time_h" maxlength="2" size="2"> m:<input type="datetime" id="start_time_m" maxlength="2" size="2"> s:<input type="datetime" id="start_time_s" maxlength="2" size="2">
+
+    END
+    DATE: <input type="datetime" id="end_date"> TIME h: <input type="datetime" id="end_time_h" maxlength="2" size="2"> m:<input type="datetime" id="end_time_m" maxlength="2" size="2"> s:<input type="datetime" id="end_time_s" maxlength="2" size="2">
+<hr>
+OR use this text field to paste broken audio url
+
+<input id='audio_url' size="70"></input><br/><br/>
+
+    <input id="showname" value="show name"><br/>
+
+    <button id='preview_start'>preview start</button>
+    <button id='preview_end'>preview end</button>
+    <button id='stop_sounds'>stop</button>
+    <br/>
+    <button class='custom_button' id="go_podcast">create podcast file</button>
+
+
+    <div id="output"></div>
+
+
+</pre>
+</div>
+
+<script src='../../sm2.js' ></script>
+<script src='../../angular.js' ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+var PREVIEW_LENGTH = 10; // seconds of preview time
+//	var podcaster_url = 'http://djland.citr.ca/api/podcasting/create_audio_file.php';
+//	var podcaster_url = 'http://192.168.25.94/djland/api/podcasting/create_audio_file.php';
+//var podcaster_url = 'http://citr.ca.new/djland/api/podcasting/create_audio_file.php';
+var podcaster_url = 'podcasting/create_audio_file.php';
+//	var podcaster_url = 'http://localhost/~brad/djland-master/api/podcasting/create_audio_file.php';
+
+	var episode_endpoint = '';//'/episode.php';
+
+	var archive_tool_url = '';//'http://archive.citr.ca';
+
+	$('#start_date').datepicker({ dateFormat: "@" });
+	$('#end_date').datepicker({ dateFormat: "@" });
+
+	// TEST INIT
+
+	$('#start_time_h').val('13');
+	$('#end_time_h').val('14');
+
+	$('#start_time_m,#start_time_s,#end_time_m,#end_time_s').val('00');
+
+	$('#audio_url').change(function(){
+		var url = $('#audio_url').val();
+		url = url.split("/");
+		url = url[5];
+		var start_year = url.substring(0,4);
+		var start_month = url.substring(4,6);
+		var start_day = parseInt(url.substring(6,8)) + 1;
+		var start = new Date(start_year+'-'+start_month+'-'+start_day);
+		$('#start_date').datepicker("setDate",start);
+
+		var end_year = url.substring(19,23);
+		var end_month = url.substring(23,25);
+		var end_day = parseInt(url.substring(25,27)) + 1;
+		var end = new Date(end_year+'-'+end_month+'-'+end_day);
+		$('#end_date').datepicker("setDate",end);
+
+		var start_h = url.substring(9,11);
+		var start_m = url.substring(11,13);
+		var start_s = url.substring(13,15);
+
+		var end_h = url.substring(28,30);
+		var end_m = url.substring(30,32);
+		var end_s = url.substring(32,34);
+
+		$('#start_time_h').val(start_h);
+		$('#start_time_m').val(start_m);
+		$('#start_time_s').val(start_s);
+
+		$('#end_time_h').val(end_h);
+		$('#end_time_m').val(end_m);
+		$('#end_time_s').val(end_s);
+
+	});
+
+	function parse_start(option){
+		if(option == 'nodivide'){
+			var start_date = parseInt($('#start_date').val());
+			var start_hour = parseInt($('#start_time_h').val());
+			var start_minute = parseInt($('#start_time_m').val());
+			var start_second = parseInt($('#start_time_s').val());
+			return start_date + 60*60*1000*start_hour + 60*1000*start_minute + 1000*start_second;
+		} else {
+			var start_date = parseInt($('#start_date').val()) / 1000;
+			var start_hour = parseInt($('#start_time_h').val());
+			var start_minute = parseInt($('#start_time_m').val());
+			var start_second = parseInt($('#start_time_s').val());
+			return start_date + 60*60*start_hour + 60*start_minute + start_second;
+		}
+
+	}
+
+	function parse_end(option){
+		if(option == 'nodivide'){
+			var end_date = parseInt($('#end_date').val());
+			var end_hour = parseInt($('#end_time_h').val());
+			var end_minute = parseInt($('#end_time_m').val());
+			var end_second = parseInt($('#end_time_s').val());
+			return end_date + 60*60*1000*end_hour + 60*1000*end_minute + 1000*end_second;
+		} else {
+			var end_date = parseInt($('#end_date').val()) / 1000;
+			var end_hour = parseInt($('#end_time_h').val());
+			var end_minute = parseInt($('#end_time_m').val());
+			var end_second = parseInt($('#end_time_s').val());
+			return end_date + 60*60*end_hour + 60*end_minute + end_second;
+		}
+	}
+
+	function convert_to_archive_string_time(time){
+
+		var start_date = new Date(time);
+		var start_day = start_date.getDate();
+		var start_month = start_date.getMonth() + 1;
+		var start_year = start_date.getFullYear();
+
+		var start_hour = start_date.getHours();
+		var start_minute = start_date.getMinutes();
+		var start_second = start_date.getSeconds();
+
+		return pad(start_day,2)+"-"+
+				pad(start_month,2)+"-"+
+				start_year+" "+
+				pad(start_hour,2)+":"+
+				pad(start_minute,2)+":"+
+				pad(start_second,2);
+
+//                var start_ = $filter('date')(start_prev.getTime(),'dd-MM-yyyy HH:mm:ss');
+	}
+
+	soundManager.setup({
+		onready: function(){
+			$('#preview_start').click(function(){
+				var start_prev = new Date(parse_start('nodivide'));
+				var end_prev = new Date(parse_start('nodivide'));
+
+				end_prev.setSeconds(end_prev.getSeconds() + PREVIEW_LENGTH);
+
+				preview(start_prev, end_prev);
+			})
+
+			$('#preview_end').click(function(){
+				var start_prev = new Date(parse_end('nodivide'));
+				var end_prev = new Date(parse_end('nodivide'));
+
+				start_prev.setSeconds(start_prev.getSeconds() - PREVIEW_LENGTH);
+
+				preview(start_prev, end_prev);
+			})
+
+			$('#stop_sounds').click(function(){
+				soundManager.stopAll();
+			})
+		}
+	})
+	var sound;
+	var preview = function(time, end_time){
+				var start_prev = new Date(time);
+				var end_prev = new Date(end_time);
+
+                var sound_url = 'http://archive.citr.ca/py-test/archbrad/download?'+
+                    'archive=%2Fmnt%2Faudio-stor%2Flog'+
+                    '&startTime='+convert_to_archive_string_time(start_prev)+
+                    '&endTime='+convert_to_archive_string_time(end_prev);
+
+                console.info(sound_url);
+				//                soundManager.reset();
+				if(sound && typeof(sound) != 'undefined'){
+								sound.destruct();
+				}
+				sound = soundManager.createSound({
+					url:sound_url,
+					autoPlay:true
+				});
+				console.info(sound);
+
+
+	}
+
+	var do_podcast = function(podcast_url){
+
+		var show_name = $('#showname').val();
+
+		var file_name = $('#filename').val();
+
+		var start_unix = parse_start();
+		var end_unix = parse_end();
+
+		$('#output').html('start unix:<br/>'+start_unix+'<br/>end unix:<br/> '+end_unix);
+		$('#output').append('<br/>requested duration: '+ Math.floor((end_unix-start_unix)/60/60)).append(' hours');
+		$('#output').append('<hr/>making audio...please wait...');
+
+
+		$.ajax(podcast_url,{
+
+			data:{start:start_unix, end:end_unix, show:show_name},
+			success:function(data){
+				var data = JSON.parse(data);
+				if(data.error){
+					$('#output').append('<p>error creating audio:<br/>'+data.error)
+				} else {
+
+					$('#output').append('<p>audio created successfully. audio is available here:<hr/>'+
+					'<a href="http://playlist.citr.ca/podcasting/audio/2015/'+data.filename+'">'+data.filename+'</a>');
+
+					console.log(data);
+
+					var channel = $('#channel_id').val();
+					var title = $('#title').val();
+					var subtitle = $('#subtitle').val();
+					var summary = $('#summary').val();
+
+				}
+			},
+			error:function(data){
+				console.info(data);
+				$('#output').append('Podcast API error: '+data.statusText);
+			},
+			complete:function(data){
+				//    $('#output').append('<hr/>request complete');
+			}
+
+
+
+		});
+
+	}
+
+
+	$('#go_podcast').click(function() {
+		do_podcast(podcaster_url);
+	});
+
+
+	function pad(num, size){ return ('000000000' + num).substr(-size); }
+</script>
+
+
+		</body>
+</html>

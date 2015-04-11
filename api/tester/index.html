@@ -17,8 +17,14 @@
 <body>
 
 
-<h1>api test</h1>
+<h1>api test </h1>
+<p>-----&gt; <a href="podcast-test.html">podcast tester</a></p>
 <div ng-app="bla">
+
+
+
+
+
 
   <div ng-controller="apiTest" >
 
@@ -202,11 +208,7 @@
         for( var i in $scope.error_requests){
           testService.makeDumbRequest($scope.error_requests[i].request,i)
               .then(function(data){
-                var the_original_index = data[0];
-                var the_dumb_request = $scope.error_requests[the_original_index];
-
-                the_dumb_request.status='??1';//data[1].status;
-                the_dumb_request.body='body1';//data[1].body;
+                // this code block doesn't execute, since the request fails
               })
 
         }
