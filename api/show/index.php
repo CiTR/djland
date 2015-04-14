@@ -143,9 +143,6 @@ if ($data['alerts'] == ''){
   $data['alerts'] = 'I am the show alert text for '.$data['name'].'! Check out an upcoming episode on unique dog breeds and the hottest dogetronica music!';
 }
 
-if ($data['primary_genre_tags'] == ''){
-  $data['primary_genre_tags'] = 'doge talk, dogetronica';
-}
 
 
 
