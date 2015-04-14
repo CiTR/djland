@@ -3,24 +3,26 @@
 
 require_once('config.php');
 require_once('headers/function_header.php');
+require_once('headers/security_header.php');
 
 function print_menu(){
-	global $enabled;
+	global $enabled,$djland_permission_levels;
 ?>
 	
 	<ul id=nav>
 		
-		<?php if(is_member("membership") && $enabled['membership']) : ?>
+		<?php 
+		if((permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership']): ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
 		<li class=drop><a href="library.php">Library</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
-						<?php if(is_member("library") && $enabled['library']) : ?>
+						<?php if(permission_level() >=  $djland_permission_levels['member'] && $enabled['library']) : ?>
 						<li><a href="library.php"> View Library</a></li>
 						<?php endif; ?>
-						<?php if(is_member("editlibrary") && $enabled['library']) : ?>
+						<?php if( permission_level() >= $djland_permission_levels['volunteer'] && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 						<?php endif; ?>
 					</ul>
@@ -28,7 +30,7 @@ function print_menu(){
 			</div>
 		</li>
 
-	<?php if(is_member("addshow")) : 
+	<?php if(permission_level() >= $djland_permission_levels['workstudy']) : 
 		if($enabled['shows']) :?>
 			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
 		<?php endif; 
@@ -54,10 +56,10 @@ function print_menu(){
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
-						<?php if(is_member("dj")) : ?> 
+						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?> 
 							<li><a href="report.php">Show Report</a></li> 
 						<?php endif;
-						if(is_member("addshow")) : ?>
+						if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
 							<li><a href="crtcreport.php">CRTC Report</a></li> 
 						<?php endif; ?>
 					</ul>
@@ -69,7 +71,7 @@ function print_menu(){
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
-						<?php if(is_member("dj") && ($enabled['playsheets'])) : ?> 
+						<?php if(permission_level() >= $djland_permission_levels['dj'] && ($enabled['playsheets'])) : ?> 
 							<li><a href="playsheet.php">New Playsheet</a></li>
 							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
@@ -79,7 +81,7 @@ function print_menu(){
 			</div>
 		</li>
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
-		<?php if(is_member("dj")) : ?>
+		<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
 		<?php endif; ?>
 		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
@@ -90,12 +92,14 @@ function print_menu(){
 <?php } 
 
 function membership_menu(){
-require_once('config.php');
+global $djland_permission_levels;
 ?>
 <ul id ='tab-nav'>
-	<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
-	<li class = 'nodrop inactive-tab member_action' id='view' name='1' value='view'>View Member</li>
-	<li class = 'nodrop inactive-tab member_action' id='report' value='report'>Report</li>
+	<?php if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
+		<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
+		<li class = 'nodrop inactive-tab member_action' id='view' name='1' value='view'>View Member</li>
+		<li class = 'nodrop inactive-tab member_action' id='report' value='report'>Report</li>
+	<?php endif; ?>
 	<li class = 'nodrop inactive-tab member_action' id='mail' value='mail'>Send Emails</li>
 </ul> 
 

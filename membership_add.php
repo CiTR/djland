@@ -75,7 +75,7 @@
 						</select>
 					
 						<select id='member_type'>
-							<option value='Student'>Student</option>
+							<option value='Student'>UBC Student</option>
 							<option value='Community'>Community</option>
 							<option value='Staff'>Staff</option>
 						</select>

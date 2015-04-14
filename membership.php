@@ -3,8 +3,8 @@
 	require_once("headers/security_header.php");
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
-?>
-<?php if(is_member('membership')){ ?>
+	
+if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">

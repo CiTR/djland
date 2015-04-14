@@ -16,7 +16,7 @@ require_once('adLib.php');
 echo '<html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">';
 echo "<link rel=stylesheet href='css/style.css' type='text/css' />";
 
-?>
+if( permission_level() >= $djland_permission_levels['staff']){ ?>
 
 <title>Ad Scheduler</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -136,4 +136,8 @@ $db->close();
 
 </body>
 </html>
+
+<?php }else{
+    header("Location: main.php");
+}?>
 

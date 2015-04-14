@@ -8,10 +8,21 @@ var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'
 'Promos and Outreach':'promotions_outreach','Show Hosting':'show_hosting',
 'Sports':'sports','Tabling':'tabling','Web and Tech':'tech',"Other":"other"};
 
+var provinces = ["AB","BC","MAN","NB","NFL","NS","NVT","NWT","ON","QC","SASK","YUK"];
+
 
 //PAGE CREATION
 $(document).ready ( function() {
-	manage_members('init');
+	if(document.getElementById('init')){
+		manage_members('init');
+	}else if(document.getElementById('view')){
+		manage_members('view','init');
+	}else if(document.getElementById('report')){
+		manage_members('report','init');
+	}else{
+		manage_members('mail','init');
+	}
+	
 	add_handlers();	
 });
 function getVal($varname){
@@ -78,8 +89,6 @@ function add_handlers(){
 				manage_members(action,search_type,search_value);
 				break;
 			case 'edit':
-				//console.log(getVal('userid'));
-				//console.log("text= "+ getText('userid'));
 				if(confirm("Save changes?")){
 					var faculty = getVal('faculty');
 					if(faculty == 'Other'){
@@ -142,15 +151,12 @@ function add_handlers(){
 					"comments"			:getVal('comments'),
 					"membership_year"	:getVal('member_year_select'),
 					"userid"			:getText('userid'),
-					"is_member"			:getCheckbox('is_member'),
-					"is_dj"				:getCheckbox('is_dj'),
 					"is_administrator"	:getCheckbox('is_administrator'),
-					"is_add_user"		:getCheckbox('is_add_user'),
-					"is_add_show"		:getCheckbox('is_add_show'),
-					"is_edit_dj"		:getCheckbox('is_edit_dj'),
-					"is_library"		:getCheckbox('is_library'),
-					"is_membership"		:getCheckbox('is_membership'),
-					"is_edit_library"	:getCheckbox('is_edit_library'),
+					"is_staff"			:getCheckbox('is_staff'),
+					"is_workstudy"		:getCheckbox('is_workstudy'),
+					"is_volunteer"		:getCheckbox('is_volunteer'),
+					"is_dj"				:getCheckbox('is_dj'),
+					"is_member"			:getCheckbox('is_member'),
 					"password"			:getVal('password')	 },
 					dataType: "json"
 					}).success(function(data) {
@@ -344,12 +350,10 @@ function load_member_year(id,year){
 								
 								var interests = $('#member_interests');
 								var interests_data = data[0];
-								console.log(interests_data);
 								for(var interest in interests_list){
 									if(interest != 'Other'){
 										interests.append("<div class='col4'>"+interest+" <input type=checkbox id='"+interests_list[interest]+"' "+(interests_data[interests_list[interest]] == 1 ? "checked=checked":"") + "/></div>");
 									}else {
-										console.log("other");
 										interests.append("<div class='col4'>Other:</div><div class='col4'><input type=text id=other "+(interests_data[interests_list[interest]] != null ? "value='"+interests_data[interests_list[interest]] +"'" : "")+"/></div>");
 									}
 								}
@@ -461,7 +465,6 @@ function manage_members(action_,type_,value_){
 							$('#member_result').append("Search returned no results");
 						}
 
-						
 						for( $j = 0; $j < Object.keys(data).length; $j++ ){
 							$('#membership_table').append("<tr id='row"+$j+"' class='member_row' onclick=change_view('view','init','"+data[$j].id+"')><tr>");
 							$("#row"+$j).append("<td class=data_set>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
@@ -512,7 +515,8 @@ function manage_members(action_,type_,value_){
 							
 							$('#member_result').append("<div id=member_id value="+data[0][0]+" style='display:none;'></div>");
 							for($j = 0; $j<15 ; $j++){
-								$('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");						
+								if($j>8) $('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");
+								else 	$('#member_result').append("<div class ='member_result_row' id=row"+$j+"></div>");				
 							}
 							$('#member_result').append("<div class ='member_result_row padded'><hr></div>");
 							$('#member_result').append("<div id='membership_year' class='member_result_row padded'></div>");
@@ -525,21 +529,17 @@ function manage_members(action_,type_,value_){
 							//ADDRESS
 							$('#row1').append("<div class=col5>Address:</div><div class=col5><input id='address' name='address' value='"+data[0].address+"''></div>");
 							$('#row1').append("<div class=col5> City:</div><div class=col5><input id='city' name='city' value='"+data[0].city+"''></div>");
-							$('#row2').append("<div class=col5> Province:</div><div class=col5><select id='province'> \
-							<option value='"+data[0].province+"'>"+data[0].province+"</option> \
-							<option value='BC'>BC</option> \
-							<option value='AB'>AB</option> \
-							<option value='SASK'>SASK</option> \
-							<option value='MAN'>MAN</option> \
-							<option value='ON'>ON</option> \
-							<option value='QC'>QC</option> \
-							<option value='NB'>NB</option> \
-							<option value='NS'>NS</option> \
-							<option value='NFL'>NFL</option> \
-							<option value='NU'>NU</option> \
-							<option value='NWT'>NWT</option> \
-							<option value='YUK'>YUK</option> \
-							</select></div>");
+							$('#row2').append("<div class=col5> Province:</div><div class=col5><select id='province'></select></div>");
+							var province = $('#province');
+							for(var region in provinces){
+								if(data[0].province == provinces[region]){
+									province.append("<option value="+provinces[region]+" selected>"+provinces[region]+"</option>")
+								}else{
+									province.append("<option value="+provinces[region]+">"+provinces[region]+"</option>");
+								}
+								
+							}
+							
 							$('#row2').append("<div class=col5> Postal Code:</div><div class=col5><input id='postalcode' name='postalcode' value="+data[0].postalcode+" maxlength='6'></div>");
 							//CANADIAN CITIZEN
 							$('#row3').append("<div class=col5> Canadian Citizen:</div>");
@@ -563,7 +563,7 @@ function manage_members(action_,type_,value_){
 							}
 							$('#membertype').append("<select id='member_type'> \
 								<option value='"+data[0].member_type+"'>"+data[0].member_type+"</option> \
-								<option value='Student'>Student</option> \
+								<option value='Student'>UBC Student</option> \
 								<option value='Community'>Community</option> \
 								<option value='Staff'>Staff</option> \
 							</select>");
@@ -670,7 +670,6 @@ function manage_members(action_,type_,value_){
 
 						load_member_year(value,year);
 						$('#member_result').append("<div class ='member_result_row padded'><hr/></div>");
-						$('#member_result').append("<div id='member_permissions' class ='member_result_row padded'></div>");
 						$('#member_permissions').append("<div class='col5'>User Priveleges:</div>");
 						var username;
 						$.ajax({
@@ -680,22 +679,19 @@ function manage_members(action_,type_,value_){
 						dataType: "json",
 						async: false
 						}).success(function(data){
-							$('#member_permissions').append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
-							$('#member_permissions').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].adduser==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].addshow==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#member_permissions').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
+							var permissions = $("#member_permissions");
+							permissions.append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
+							
+							var levels = data[0];
+							for(var level in levels){
+								if(level != 'userid' && level != 'username') permissions.append("<div class='col5'>"+level+":<input type=checkbox id=is_"+level+" "+ (levels[level]==1 ? "checked=checked":"")+"/></div>");	
+							}
 							username = data[0].username;
 						}).fail(function(){
 							
 						});
-						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
-							<button class='member_submit' name='edit'>Save Changes</button></center>");
+						$('#member_result').append("<div id='member_password_change' class ='member_result_row padded'><center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
+							<button class='member_submit' name='edit'>Save Changes</button></center></div>");
 					default:
 						break;
 				}

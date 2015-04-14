@@ -23,9 +23,7 @@ function login ($the_username, $the_password, $set_cookie) {
 	if($is_operator) {
 		$result = $db -> query ("SELECT * FROM user WHERE username = '".$the_username."'");
 	}
-	else {
-		$result = $db -> query ("SELECT * FROM user WHERE username = '".$the_username."' and status = 'Enabled'");
-	}
+
 	$row = $result->fetch_assoc();
 	$hash = $row['password'];
 	//if match found, log in, clear login failures

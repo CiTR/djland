@@ -114,7 +114,7 @@ $default = false;
 					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' and membership_year='".$year."'ORDER BY membership_year DESC";
 					break;
 				case 'permission': //get permissions
-					$query = "SELECT u.userid AS userid, u.username AS username ,gm.member AS member,gm.dj AS dj,gm.administrator AS administrator,gm.adduser AS adduser,gm.addshow AS addshow,gm.editdj AS editdj,gm.library AS library,gm.membership AS membership,gm.editlibrary AS editlibrary FROM user AS u INNER JOIN membership AS m on u.member_id=m.id INNER JOIN group_members AS gm on u.userid=gm.userid WHERE m.id='".$value."'";
+					$query = "SELECT u.userid AS userid, u.username AS username, gm.administrator AS administrator,gm.staff AS staff,gm.workstudy AS workstudy,gm.volunteer AS volunteer,gm.dj AS dj,gm.member AS member FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid INNER JOIN membership AS m ON u.member_id = m.id WHERE m.id='".$value."'";
 					break;
 				default:
 					$default = true;
@@ -239,18 +239,18 @@ $default = false;
 			$default = true;
 			break;
 	}
-	if(is_member('member')){
+	if(permission_level() >= 0){
 		if(!$default AND ($action != 'report')){
 		$result = null;
 		$members = null;
 		if($result = $db->query($query)){
-			$members=array();
-			while($row = mysqli_fetch_array($result)){
+			$members = array();
+			while($row=$result->fetch_object()){
 			$members[] = $row;
 			}
-			foreach($members[0] as $i => $v){
+/*			foreach($members[0] as $i => $v){
 				$members[0][$i] = html_entity_decode($v,ENT_QUOTES);
-			}
+			}*/
 		}
 		echo json_encode($members);
 		$result->close();

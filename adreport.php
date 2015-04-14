@@ -18,8 +18,8 @@ require_once("adLib.php");
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 //printf("<title>CiTR 101.9</title></head><body>");
+if( permission_level() >= $djland_permission_levels['staff']){ ?>
 
-?>
 
 <title>Ad Report</title>
 
@@ -121,9 +121,9 @@ echo '<h1>ad  report</h1>';;
   });
 </script>  
 
-<?php
-
-?>
+<?php }else{
+    header("Location: main.php");
+}?>
 
 
 

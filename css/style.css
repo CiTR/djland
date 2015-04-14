@@ -460,7 +460,6 @@ button#submit_user.red{
 #membership{
 	width:916px;
 	background-color: grey;
-	height:auto;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top:-2px;
@@ -481,11 +480,14 @@ button#submit_user.red{
 	width:100%;
 	overflow-y: auto;
 	overflow-x:hidden;
-	max-height:80%;
+	max-height: 80%;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
 	margin-bottom:10px;
+}
+#member_password_change{
+	padding-bottom:10px;
 }
 #email_list{
 	min-height:400px;
@@ -592,7 +594,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .largeinput{
 	width:550px;
 	max-width:83%;
-	height:100px;
+	height:50px;
 	max-height:75px;
 }
 .padded{
