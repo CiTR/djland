@@ -43,7 +43,8 @@ OR use this text field to paste broken audio url
     <button id='preview_end'>preview end</button>
     <button id='stop_sounds'>stop</button>
     <br/>
-    <button class='custom_button' id="go_podcast">create podcast file</button>
+    <button class='custom_button' id="go_podcast">create podcast file</button><br/>
+    <button class='custom_button' id="go_podcast_local">create podcast (using local API)</button>
 
 
     <div id="output"></div>
@@ -52,8 +53,8 @@ OR use this text field to paste broken audio url
 </pre>
 </div>
 
-<script src='../../sm2.js' ></script>
-<script src='../../angular.js' ></script>
+<script src='js/sm2.js' ></script>
+<script src='js/angular.js' ></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -62,7 +63,9 @@ var PREVIEW_LENGTH = 10; // seconds of preview time
 //	var podcaster_url = 'http://djland.citr.ca/api/podcasting/create_audio_file.php';
 //	var podcaster_url = 'http://192.168.25.94/djland/api/podcasting/create_audio_file.php';
 //var podcaster_url = 'http://citr.ca.new/djland/api/podcasting/create_audio_file.php';
-var podcaster_url = 'podcasting/create_audio_file.php';
+//var podcaster_url = '../podcasting/create_audio_file.php';
+var podcaster_url = 'http://api.citr.ca/podcasting/create_audio_file.php';
+var podcaster_url_local = '../podcasting/create_audio_file.php';
 //	var podcaster_url = 'http://localhost/~brad/djland-master/api/podcasting/create_audio_file.php';
 
 	var episode_endpoint = '';//'/episode.php';
@@ -266,9 +269,13 @@ var podcaster_url = 'podcasting/create_audio_file.php';
 	}
 
 
-	$('#go_podcast').click(function() {
-		do_podcast(podcaster_url);
-	});
+$('#go_podcast').click(function() {
+	do_podcast(podcaster_url);
+});
+
+$('#go_podcast_local').click(function() {
+	do_podcast(podcaster_url_local);
+});
 
 
 	function pad(num, size){ return ('000000000' + num).substr(-size); }
