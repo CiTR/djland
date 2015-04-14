@@ -34,9 +34,9 @@
 				</div>
 				
 				<div id='row2' class='containerrow'>
-					<div class='col5'>First Name*: </div>
+					<div class='col5'>First Name: </div>
 					<div class='col5' id='firstname'></div>
-					<div class='col5'>Last Name*: </div>
+					<div class='col5'>Last Name: </div>
 					<div class='col5' id='lastname'></div>					
 				</div>
 				<div id='row3 'class='containerrow'>

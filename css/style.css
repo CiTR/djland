@@ -481,11 +481,11 @@ button#submit_user.red{
 	width:100%;
 	overflow-y: auto;
 	overflow-x:hidden;
-	max-height:500px;
+	max-height:80%;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
-	padding-bottom:15px;
+	margin-bottom:10px;
 }
 #email_list{
 	min-height:400px;

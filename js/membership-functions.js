@@ -200,37 +200,41 @@ function queryMembershipYears(id){
 	return member;
 }
 function queryMembershipYear(id,year){
-		var m_y = {"id":id,"membership_year":year};
-		$.ajax({
+	assertTrue(id != null,"id is null");
+	var m_y = {"id":id,"membership_year":year};
+	$.ajax({
+	type:"POST",
+	url: "form-handlers/membership-handler.php",
+	data: {"action" : 'get', "type" : 'member_year_content',"value":id,"year":year},
+	dataType: "json",
+	async: false
+	}).success(function(data){
+		var info = data[0];
+		for(var interest in info){
+			console.log(interest + "= "+info[interest]);
+			m_y[interest] = info[interest];
+		}
+	}).fail(function(){
+		console.log("Unable to retrieve member information");
+	});
+	return m_y;
+}
+
+function queryMembershipPriveleges(id){
+	assertTrue(id != null,"id is null");
+	var privileges = {"id":id}
+	$.ajax({
 		type:"POST",
 		url: "form-handlers/membership-handler.php",
-		data: {"action" : 'get', "type" : 'member_year_content',"value":id,"year":year},
+		data: {"action" : 'get', "type" : 'permission',"value":value},
 		dataType: "json",
 		async: false
-		}).success(function(data){
-			var info = data[0];
-			m_y.paid = info.paid;
-			m_y.sports = info.sports;
-			m_y.news = info.news;
-			m_y.arts = info.arts;
-			m_y.music = info.music;
-			m_y.show_hosting = info.show_hosting;
-			m_y.live_broadcast = info.live_broadcast;
-			m_y.tech = info.tech;
-			m_y.programming_committee = info.programming_committee;
-			m_y.ads_psa = info.ads_psa;
-			m_y.promotions_outreach = info.promotions_outreach;
-			m_y.discorder = info.discorder;
-			m_y.discorder_2 = info.discorder_2;
-			m_y.digital_library = info.digital_library;
-			m_y.photography = info.photography;
-			m_y.tabling = info.tabling;
-			m_y.dj = info.dj;
-			m_y.other = info.other;
-		}).fail(function(){
-			console.log("Unable to retrieve member information");
-		});
-		return m_y;
+	}).success(function(data){
+	
+		
+	}).fail(function(){
+			
+	});
 }
 function updateMemberInfo(member,handler){
 	return $.ajax({
@@ -327,6 +331,9 @@ function getMemberInfoFromPage(){
 	member.member_type = getVal('member_type');
 	if(member.member_type == "Student"){
 		member.faculty = getVal('faculty');
+		if(member.faculty == 'Other'){
+			member.faculty = getVal('faculty2');
+		}
 		member.schoolyear = getVal('schoolyear');
 		member.student_no = getVal('student_no');
 		member.integrate = getCheckbox('integrate');
@@ -389,6 +396,6 @@ function getMemberInterestsFromPage(){
 	my.digital_library = getCheckbox('digital_library');
 	my.tabling = getCheckbox('tabling');
 	my.other = getVal('other');
-
 	return my;
 }
+

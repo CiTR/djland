@@ -1,4 +1,13 @@
 //Created by Evan Friday, 2014
+var faculty_list = ["Arts","Applied Science","Architecture","Archival Studies","Audiology","Business","Community Planning","Continuing Studies","Dentistry","Doctoral Studies",
+								"Education","Environmental Health","Forestry","Graduate Studies","Journalism","Kinesiology","Land and Food Systems","Law","Medicine","Music","Nursing","Pharmaceutical","Public Health","Science","Social Work","Other"];
+
+var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'digital_library',
+'DJ101.9':'dj','Illustrate for Discorder':'discorder','Writing for Discorder':'discorder_2','Live Broadcasting':'live_broadcast',
+'Music':'music','News':'news','Photography':'photography','Programming Committee':'programming_committee',
+'Promos and Outreach':'promotions_outreach','Show Hosting':'show_hosting',
+'Sports':'sports','Tabling':'tabling','Web and Tech':'tech',"Other":"other"};
+
 
 //PAGE CREATION
 $(document).ready ( function() {
@@ -142,8 +151,7 @@ function add_handlers(){
 					"is_library"		:getCheckbox('is_library'),
 					"is_membership"		:getCheckbox('is_membership'),
 					"is_edit_library"	:getCheckbox('is_edit_library'),
-					"password"			:getVal('password')
-					 },
+					"password"			:getVal('password')	 },
 					dataType: "json"
 					}).success(function(data) {
 						if(data[0]=="ERROR"){
@@ -189,12 +197,10 @@ function add_handlers(){
 			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
-				var title = ['All','Arts','Ads and PSAs','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
-				var values =  ['all','arts','ads_psa','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
-
-			$searchval = $('#search_value');
-			for($i = 0; $i< title.length; $i++){
-				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
+			var searchval = $('#search_value');
+			search_type.append("<option value=all>All</option>")
+			for(var interest in interests_list){
+				searchval.append("<option value="+interests_list[interest]+">"+interest+"</option>");
 			}
 		}
 	});
@@ -219,7 +225,7 @@ function add_handlers(){
 	//MEMBER YEAR RELOAD
 	$('#member_year_select').unbind().change( function(){
 		var year = getVal('member_year_select');
-		var id = document.getElementById("idval").getAttribute('value');
+		var id = document.getElementById("member_id").getAttribute('value');
 		load_member_year(id,year);
 	});
 
@@ -271,11 +277,9 @@ function add_handlers(){
 			var row6 = $('#row6');
 			row5.append("<div class='col5'>Faculty*: </div>");
 			row5.append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
-			var title = ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
-			var values =  ['Arts','Applied Science','Architecture','Archival Studies','Audiology','Business','Community Planning','Continuing Studies','Dentistry','Doctoral Studies','Education','Environmental Health','Forestry','Graduate Studies','Journalism','Kinesiology','Land and Food Systems','Law','Medicine','Music','Nursing','Pharmaceutical','Public Health','Science','Social Work','Other'];
-			$searchval = $('#faculty');
-			for($i = 0; $i< title.length; $i++){
-				$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
+			var faculty_select = $("#faculty");
+			for(faculty in faculty_list){
+				faculty_select.append("<option value="+faculty_list[faculty]+">"+faculty_list[faculty]+"</option>");
 			}
 			row5.append("<div id='student_no_container'> \
 			<div class='col5'>Student Number*:</div> \
@@ -328,7 +332,7 @@ function change_view(action,type,value){
 }
 
 function load_member_year(id,year){
-	document.getElementById("membership_year").innerHTML = " ";
+	$('#member_interests').innerHTML= "";
 	$.ajax({
 						type:"POST",
 						url: "form-handlers/membership-handler.php",
@@ -337,35 +341,19 @@ function load_member_year(id,year){
 						async: false
 						}).success(function(data){
 							if( !$('#paid').length ){
-								//console.log('first load membership year');
-
-
-								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
 								
-								$('#row17').append("<div class='col4'> Writing for Discorder <input type=checkbox id=discorder_2 "+(data[0].discorder_2==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Illustrate for Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
-								$('#row17').append("<div class='col4'> DJ101.9:<input type=checkbox id=dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Tabling:<input type=checkbox id=tabling "+(data[0].tabling==1 ? "checked=checked" : "")+"/></div>");
-
-
-								$('#row18').append("<div class='col4'> Music Department:<input type=checkbox id=music "+(data[0].music==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Show Hosting:<input type=checkbox id=show_hosting "+(data[0].show_hosting==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> Sports:<input type=checkbox id=sports "+(data[0].sports==1 ? "checked=checked" : "")+"/></div>");
-								$('#row18').append("<div class='col4'> News 101.9:<input type=checkbox id=news "+(data[0].news==1 ? "checked=checked" : "")+"/></div>");
-
-								$('#row19').append("<div class='col4'> Arts Report:<input type=checkbox id=arts "+(data[0].arts==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Live Broadcasting:<input type=checkbox id=live_broadcast "+(data[0].live_broadcast==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Web and Tech:<input type=checkbox id=tech "+(data[0].tech==1 ? "checked=checked" : "")+"/></div>");
-								$('#row19').append("<div class='col4'> Digital Library:<input type=checkbox id=digital_library "+(data[0].digital_library==1 ? "checked=checked" : "")+"/></div>");
-								
-								$('#row20').append("<div class='col4'> Ads and PSAs:<input type=checkbox id=ads_psa "+(data[0].ads_psa==1 ? "checked=checked" : "")+"/></div>");
-								$('#row20').append("<div class='col4'> Promos and Outreach:<input type=checkbox id=promos "+(data[0].promotions_outreach==1 ? "checked=checked" : "")+"/></div>");
-								$('#row20').append("<div class='col4'> Photography:<input type=checkbox id=photography "+(data[0].photography==1 ? "checked=checked" : "")+"/></div>");
-								$('#row20').append("<div class='col4'> Programming Committee:<input type=checkbox id=prog_comm "+(data[0].programming_committee==1 ? "checked=checked" : "")+"/></div>");
-								
-								$('#row21').append("<div class='col4'> Other:<input type=text id=other "+(data[0].other ? ("value='"+data[0].other)+"'" : "")+"/></div><br/>");
+								var interests = $('#member_interests');
+								var interests_data = data[0];
+								console.log(interests_data);
+								for(var interest in interests_list){
+									if(interest != 'Other'){
+										interests.append("<div class='col4'>"+interest+" <input type=checkbox id='"+interests_list[interest]+"' "+(interests_data[interests_list[interest]] == 1 ? "checked=checked":"") + "/></div>");
+									}else {
+										console.log("other");
+										interests.append("<div class='col4'>Other:</div><div class='col4'><input type=text id=other "+(interests_data[interests_list[interest]] != null ? "value='"+interests_data[interests_list[interest]] +"'" : "")+"/></div>");
+									}
+								}
 							}else{
-								//console.log('reloading membership year');
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].music == 0){ $('#music').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].discorder == 0){ $('#discorder').removeAttr('checked'); }else{ $('#discorder').prop('checked','checked'); }
@@ -522,14 +510,15 @@ function manage_members(action_,type_,value_){
 						}).success(function(data){
 							var fields = Object.keys(data[0]);
 							
-							$('#member_result').append("<div id='idval' value="+data[0][0]+" style='display:none;'></div>");
-							for($j = 0; $j<=27 ; $j++){
-								if($j>=8 && $j<=16 ){ // pad large text inputs
-									$('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");
-								}else{
-									$('#member_result').append("<div class = member_result_row id=row"+$j+"></div>");
-								}							
+							$('#member_result').append("<div id=member_id value="+data[0][0]+" style='display:none;'></div>");
+							for($j = 0; $j<15 ; $j++){
+								$('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");						
 							}
+							$('#member_result').append("<div class ='member_result_row padded'><hr></div>");
+							$('#member_result').append("<div id='membership_year' class='member_result_row padded'></div>");
+							$('#member_result').append("<div class ='member_result_row padded'><hr></div>");
+							$('#member_result').append("<div id='member_permissions' class='member_result_row padded'></div>");
+							
 							//BASIC INFO
 							$('#row0').append("<br><div class=col5>First Name:</div><div class=col5><input id='firstname' name='firstname' value='"+data[0].firstname+"''></div>");
 							$('#row0').append("<div class=col5>Last Name:</div><div class=col5><input id='lastname' name='lastname' value='"+data[0].lastname+"''></div>");
@@ -599,37 +588,13 @@ function manage_members(action_,type_,value_){
 							//BEGIN IF STUDENT
 							if(data[0].member_type == 'Student' || data[0].member_type == 'student'){ 
 								$('#row5').addClass('loaded');
-								$('#row5').append("<div class='col5'>Faculty*: </div> \
-								<div class='col5'> \
-								<select id='faculty'> \
-									<option value='"+data[0].faculty+"'>"+data[0].faculty+"</option> \
-									<option value='Arts'>Arts</option> \
-									<option value='Applied Science'>Applied Science</option> \
-									<option value='Architecture'>Architecture</option> \
-									<option value='Archival Studies'>Archival Studies</option> \
-									<option value='Audiology'>Audiology</option> \
-									<option value='Business'>Business</option> \
-									<option value='Community Planning'>Community Planning</option> \
-									<option value='Continuing Studies'>Continuing Studies</option> \
-									<option value='Dentistry'>Dentistry</option> \
-									<option value='Doctoral Studies'>Doctoral Studies</option> \
-									<option value='Education'>Education</option> \
-									<option value='Environmental Health'>Environmental Health</option> \
-									<option value='Forestry'>Forestry</option> \
-									<option value='Graduate Studies'>Graduate Studies</option> \
-									<option value='Journalism'>Journalism</option> \
-									<option value='Kinesiology'>Kinesiology</option> \
-									<option value='Land and Food Systems'>Land and Food Systems</option> \
-									<option value='Law'>Law</option> \
-									<option value='Medicine'>Medicine</option> \
-									<option value='Music'>Music</option> \
-									<option value='Nursing'>Nursing</option> \
-									<option value='Pharmaceutical'>Pharmaceutical</option> \
-									<option value='Public Health'>Public Health</option> \
-									<option value='Science'>Science</option> \
-									<option value='Social Work'>Social Work</option> \
-									<option value='Other'>Other</option> \
-								</select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
+								$('#row5').append("<div class='col5'>Faculty*: </div><div class='col5'><select id='faculty'><option value='"+data[0].faculty+"'>"+data[0].faculty+"</option></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
+								
+								var faculty_select = $("#faculty");
+								for(faculty in faculty_list){
+									faculty_select.append("<option value="+faculty_list[faculty]+">"+faculty_list[faculty]+"</option>");
+								}
+	
 								$('#row5').append("<div id='student_no_container'> \
 								<div class='col5'>Student Number*:</div> \
 								<div class='col5'><input id='student_no' name='student_no' maxlength='8' value="+data[0].student_no+" onKeyPress='return numbersonly(this, event)''></input></div> \
@@ -683,7 +648,6 @@ function manage_members(action_,type_,value_){
 						}).fail(function(){
 							
 						});
-
 						$.ajax({
 						type:"POST",
 						url: "form-handlers/membership-handler.php",
@@ -692,18 +656,22 @@ function manage_members(action_,type_,value_){
 						async: false
 						}).success(function(data){
 							year = data[0].membership_year;
-							$('#row15').append("<hr>");
-							$('#row16').append("<div class='col2'> Select Year:<select id='member_year_select'></select></div>");
+							
+							//$('#member_result').append("<div id='membership_year' class ='member_result_row padded'></div>");
+							$('#membership_year').append("<div class='col2'> Select Year:<select id='member_year_select'></select></div>");
 							for( $j = 0; $j < Object.keys(data).length; $j++ ){
 								$('#member_year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
 							}
 						}).fail(function(){
 							
 						});
-						$('#member_result').append("<div id=membership_year></div>");
+
+						$('#membership_year').append("<div id='member_interests' class='member_result_row padded'></div>");
+
 						load_member_year(value,year);
-						$('#row22').append("<hr/>");
-						$('#row23').append("<div class='col5'>User Priveleges:</div>");
+						$('#member_result').append("<div class ='member_result_row padded'><hr/></div>");
+						$('#member_result').append("<div id='member_permissions' class ='member_result_row padded'></div>");
+						$('#member_permissions').append("<div class='col5'>User Priveleges:</div>");
 						var username;
 						$.ajax({
 						type:"POST",
@@ -712,22 +680,20 @@ function manage_members(action_,type_,value_){
 						dataType: "json",
 						async: false
 						}).success(function(data){
-							$('#row23').append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
-							$('#row24').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].adduser==1 ? "checked=checked" : "")+"/></div>");
-							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].addshow==1 ? "checked=checked" : "")+"/></div>");
-						
-							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
+							$('#member_permissions').append("<div class='col5'> Is a member:<input type=checkbox id=is_member "+(data[0].member==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Is a DJ:<input type=checkbox id=is_dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Is an admin:<input type=checkbox id=is_administrator "+(data[0].administrator==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].adduser==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].addshow==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
+							$('#member_permissions').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
 							username = data[0].username;
 						}).fail(function(){
 							
 						});
-							$('#row26').append("<hr>");
 						$('#member_result').append("<center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center>");
 					default:
