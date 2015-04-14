@@ -96,6 +96,15 @@ $samDB_pass = 'password for that user';
 $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 
+
+
+
+//default permission levels
+
+$djland_permission_levels = array('operator'=> '6','administrator'=> '5','staff'=>'4','workstudy'=>'3','volunteer'=>'2','dj'=>'1','member'=>'0');
+
+
+
 // debug time operations? leave false unless you
 // are developing and need to fake the current time
 // for some reason
