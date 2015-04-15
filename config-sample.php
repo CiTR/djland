@@ -101,7 +101,14 @@ $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 //default permission levels
 
-$djland_permission_levels = array('operator'=> '6','administrator'=> '5','staff'=>'4','workstudy'=>'3','volunteer'=>'2','dj'=>'1','member'=>'0');
+$djland_permission_levels = array(
+    'operator'=> '6',
+    'administrator'=> '5',
+    'staff'=>'4',
+    'workstudy'=>'3',
+    'volunteer'=>'2',
+    'dj'=>'1',
+    'member'=>'0');
 
 
 
