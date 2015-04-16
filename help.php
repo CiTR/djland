@@ -132,14 +132,14 @@ print("<body>");
 print("<div id='wrapper'>");
 
 print("<h1><center>DJLand Help</center></h1>");
-echo "<center>(Click on a topic to start)</center>";
+echo "<center>(Click on the questions to get the answers)</center>";
 for($i=0;$i<$numObjects;$i++){
 $numObjectsInside = sizeOf($data[$i]['question']);
 
 echo "<div class=QAcontainer id=QAcontainer".$i."><img id='QAicon".$i."' class='QAicon collapsed' src='images/collapsed.png'>".$data[$i][title][0]."</div>";
 
 for($j=0;$j<$numObjectsInside;$j++){
-echo "<div class=QAelement id=QAelement".$i." name=element".$j." style='display:none;'>";
+echo "<div class=QAelement id=QAelement".$i." name=element".$j." style='display:block;'>";
 echo "<div class=QAquestion id=QAquestion".$i." name=QAquestion".$j."><img id='QAicon".$i."' name='QAicon".$j."' class='QAicon collapsed' src='images/collapsed.png' >Q: ".$data[$i][question][$j]."</div>";
 echo "<div class=QAanswer id=QAanswer".$i." name=QAanswer".$j." style='display:none;'>A: ".$data[$i][answer][$j]."</div>";
 echo "</div>";
@@ -149,7 +149,7 @@ echo $SOCAN_FLAG;
 
 print("<p style='position:relative; bottom:10px; text-align:center;'>
 If you would like to see something added to this page, contact 
-<a href='mailto:TechnicalAssistant@citr.ca'> the Technical Assistant. 
+<a href='mailto:Technicalservices@citr.ca'> Technical Services.
 </a> 
 </p>
 ");

@@ -1,6 +1,6 @@
-
-
 <?php
+//MENU HEADER
+
 function print_menu2(){
 require('config.php');
 ?>
@@ -9,7 +9,7 @@ require('config.php');
 		<?php if(is_member("membership") && $enabled['membership']) : ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
-		<li class=drop><a href='#'>Library</a>
+		<li class=drop><a href="library.php">Library</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -29,7 +29,7 @@ require('config.php');
 			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
 		<?php endif; 
 		if($enabled['adscheduler']) : ?>
-			<li class=drop><a href="#">Manage Ads</a>
+			<li class=drop><a href="adscheduler.php">Manage Ads</a>
 				<div class=dropdown_small>
 					<div class=small>
 						<ul>
@@ -46,7 +46,7 @@ require('config.php');
 		<?php endif;
 	endif; 
 	if($enabled['report']): ?>
-		<li class=drop ><a href="#">Reports</a>
+		<li class=drop ><a href="report.php">Reports</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -61,7 +61,7 @@ require('config.php');
 			</div>
 		</li>
 		<?php endif; ?>
-		<li class=drop><a href="#">Playsheets</a>
+		<li class=drop><a href="playsheet.php">Playsheets</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
@@ -70,27 +70,18 @@ require('config.php');
 							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
 						<?php endif; ?>
-					</ul>
-				</div>
-			</div>
-		</li>
-		<li class="menu_right drop"><a href="#"><img src=images/gear.png style="width:20px;"></a>
-			<div class="dropdown_small align_right">
-				<div class=small>
-					<ul>
-						<?php if(is_member("dj")) : ?>
-							<li><a href="help.php" target="_blank"> Help </a></li>
-						<?php endif; ?>
-							<li><a href="index.php?action=logout">Log Out</a></li>
-					</ul>
+						</ul>
 				</div>
 			</div>
 		</li>
 
-		<?php
-		if($enabled['podcast_tools'] && is_member("dj")) :?>
-			<li class=nodrop><a href="podcasting.php?channel=124"> Podcast Editor Demo </a></li>
-		<?php endif;?>
+		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+		<?php if(is_member("dj")) : ?>
+			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
+		<?php endif; ?>
+		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
+
+
 	</ul>
 
 <?php } 

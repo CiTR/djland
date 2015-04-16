@@ -52,12 +52,9 @@ function add_handlers(){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
 		console.log("member_action="+action);
-		if(action == 'view'){
+		if(action == 'view' || action == 'mail' || action == 'report'){
 			manage_members(action,'init');
-		}else if(action == 'mail'){
-			manage_members(action,'init');
-		}
-		else{
+		}else{
 			manage_members(action);
 		}		
 	});
@@ -86,8 +83,6 @@ function add_handlers(){
 					else{
 						is_new = 0;
 					}
-
-
 					var member_id = $('#view').attr('name');
 					$.ajax({
 					type:"POST",
@@ -128,6 +123,9 @@ function add_handlers(){
 					"prog_comm"			:getCheckbox("prog_comm"),
 					"digital_library"	:getCheckbox("digital_library"),
 					"photography"		:getCheckbox("photography"),
+					"dj"				:getCheckbox('dj'),
+					"discorder_2"		:getCheckbox('discorder_2'),
+					"tabling"			:getCheckbox('tabling'),
 					"other"				:getVal("other"),
 					"about"				:getVal('about'),
 					"skills"			:getVal('skills'),
@@ -172,8 +170,7 @@ function add_handlers(){
 				}
 				break;
 			case 'report':
-				var submit_name= document.getElementById("submit_name").value;
-				alert("Report says everything is goo!");
+				manage_members(action,'generate');
 				break;
 			case 'mail':
 				var value = getVal('search_value');
@@ -192,7 +189,7 @@ function add_handlers(){
 			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
-				var title = ['All','Arts','Ads and PSAs','Digital Library','Design for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+				var title = ['All','Arts','Ads and PSAs','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
 				var values =  ['all','arts','ads_psa','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 
 			$searchval = $('#search_value');
@@ -346,7 +343,7 @@ function load_member_year(id,year){
 								$('#row16').append("<div class='col8'> Paid:<input type=checkbox id=paid "+(data[0].paid==1 ? "checked=checked" : "") +"/></div>");
 								
 								$('#row17').append("<div class='col4'> Writing for Discorder <input type=checkbox id=discorder_2 "+(data[0].discorder_2==1 ? "checked=checked" : "")+"/></div>");
-								$('#row17').append("<div class='col4'> Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
+								$('#row17').append("<div class='col4'> Illustrate for Discorder:<input type=checkbox id=discorder "+(data[0].discorder==1 ? "checked=checked" : "")+"/></div>");								
 								$('#row17').append("<div class='col4'> DJ101.9:<input type=checkbox id=dj "+(data[0].dj==1 ? "checked=checked" : "")+"/></div>");
 								$('#row17').append("<div class='col4'> Tabling:<input type=checkbox id=tabling "+(data[0].tabling==1 ? "checked=checked" : "")+"/></div>");
 
@@ -641,7 +638,7 @@ function manage_members(action_,type_,value_){
 									<input id='integrate'  name='integrate' type='checkbox'"+ (data[0].integrate==1 ? 'checked=checked' : '' ) +" /> \
 									<div class='col5'>Year*:</div> \
 									<div class='col8'> \
-										<select id='year' style='z-position=10;'> \
+										<select id='schoolyear' style='z-position=10;'> \
 											<option value='"+data[0].schoolyear+"'>"+data[0].schoolyear+"</option> \
 											<option value='1'>1</option> \
 											<option value='2'>2</option> \
@@ -663,10 +660,11 @@ function manage_members(action_,type_,value_){
 							$('#row7').append("<div class='col5'>Show Name:</div><div class='col5'><input id=show_name "+(data[0].show_name ? ("value='"+data[0].show_name+"'"):"placeholder='Show name(s)'")+"</div>");
 							$('#row8').append("<hr/>");
 							//CONTACT INFORMATION
+							console.log("Email = "+data[0].email);
 							$('#row9').append("<div class='col7'>Email Address*: </div> \
-								<div class='col6'><input id='email' class='required'  name='email' value="+data[0].email+" maxlength='40'></input></div> \
+								<div class='col6'><input id='email' class='required' name='email' value='"+data[0].email+"' maxlength='40'  ></input></div> \
 								<div class='col6'>Primary Number*:</div> \
-								<div class='col6'><input id='phone1' class='required' name='phone1' value="+data[0].primary_phone+" maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div> \
+								<div class='col6'><input id='phone1' class='required' name='phone1' value='"+data[0].primary_phone+"' maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div> \
 								<div class='col6'>Secondary Number:</div> \
 								<div class='col6'><input id='phone2' name='phone2' "+ (data[0].secondary_phone ? ("value='"+data[0].secondary_phone+"'"):"placeholder='Secondary Phone'") +"maxlength='10' onKeyPress='return numbersonly(this, event)''></input></div>");
 							$('#row10').append("<hr/>");
@@ -721,10 +719,10 @@ function manage_members(action_,type_,value_){
 							$('#row24').append("<div class='col5'> Add users:<input type=checkbox id=is_add_user "+(data[0].add_user==1 ? "checked=checked" : "")+"/></div>");
 							$('#row24').append("<div class='col5'> Add shows:<input type=checkbox id=is_add_show "+(data[0].add_show==1 ? "checked=checked" : "")+"/></div>");
 						
-							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].edit_dj==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit playsheet:<input type=checkbox id=is_edit_dj "+(data[0].editdj==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Access Library:<input type=checkbox id=is_library "+(data[0].library==1 ? "checked=checked" : "")+"/></div>");
 							$('#row25').append("<div class='col5'> Edit members:<input type=checkbox id=is_membership "+(data[0].membership==1 ? "checked=checked" : "")+"/></div>");
-							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].edit_library==1 ? "checked=checked" : "")+"/></div>");
+							$('#row25').append("<div class='col5'> Edit library:<input type=checkbox id=is_edit_library "+(data[0].editlibrary==1 ? "checked=checked" : "")+"/></div>");
 							username = data[0].username;
 						}).fail(function(){
 							
@@ -739,30 +737,56 @@ function manage_members(action_,type_,value_){
 				add_handlers();
 				break;
 			case 'report':
-				document.getElementById("membership").innerHTML = " ";
-				$('#membership').append('<div id=membership_result></div>');
-				$.ajax({
-						type:"POST",
-						url: "form-handlers/membership-handler.php",
-						data: {"action" : action},
-						dataType: "json",
-						async: false
-				}).success(function(data){
-					console.log(data);
-					var titles = ['member_all','member','student','community','alumni','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
-					for( $j = 0; $j < titles.length; $j++ ){
+				switch(type){
+					case 'init':
+						document.getElementById("membership").innerHTML = " ";
+						$('#membership').append('<select id="year_select"></select><button class="member_submit" name="report">Get Yearly Report</button><div id="membership_result"></div>');
+						//Populate Dropdown with possible years to report on.
+						actiontemp = 'get';
+						typetemp = 'year';
+						$.ajax({
+							type:"POST",
+							url: "form-handlers/membership-handler.php",
+							data: {"action" : actiontemp, "type" : typetemp},
+							dataType: "json",
+							async: false
+						}).success(function(data){
+							for( $j = 0; $j < Object.keys(data).length; $j++ ){
+								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
+							}
+						}).fail(function(){
+						
+						});
+					break;
+					case 'generate':
+						document.getElementById("membership_result").innerHTML = " ";
+						year = getVal('year_select');	
+						$.ajax({
+							type:"POST",
+							url: "form-handlers/membership-handler.php",
+							data: {"action" : action,"year" : year},
+							dataType: "json",
+							async: false
+						}).success(function(data){
+						console.log(data);
+						var titles = ['member_reg_all','member_reg_year','member_paid','student','community','alumni','staff','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
+						for( $j = 0; $j < titles.length; $j++ ){
 								console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
 								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
-								if($j > 1){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member"][1]*100).toFixed(2)+"% )");
-								}else if($j == 1){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_all"][1]*100).toFixed(2)+"% )");
+								if($j > 2){
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_paid"][1]*100).toFixed(2)+"% )");
+								}else if($j == 2){
+									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_reg_year"][1]*100).toFixed(2)+"% )");
 								}
 								$('#membership_result').append("<br/>");
-					}
-				}).fail(function(){
+						}
+						}).fail(function(){
 						
-				});
+						});
+					break;
+					default:
+					break;
+				}
 				add_handlers();
 				break;
 			case 'mail':
@@ -778,7 +802,7 @@ function manage_members(action_,type_,value_){
 						$("#membership").append("<div id='membership_header'>Interest:");
 
 						$('#membership_header').append("<select id=search_value></select>");
-							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Design for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
+							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling'];
 							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){

@@ -6,31 +6,21 @@ require("headers/security_header.php");
 require("headers/function_header.php");
 require("headers/menu_header.php");
 require("headers/socan_header.php");
+
 $SOCAN_FLAG;
 $showlib = new Showlib($db);
 
-echo "<center>";
 print_menu2();
-echo "</center>";
+
 $SOCAN_FLAG=socanCheck($db);
 
 if (socanCheck($db) || $_GET['socan']=='true' ){
-
-
 	$SOCAN_FLAG = true;
+	print ('<input type="hidden" id="socancheck" value="1">');
 } else {
 	$SOCAN_FLAG = false;
+	print ('<input type="hidden" id="socancheck" value="0">');
 }
-
-if($SOCAN_FLAG)
-{
-print ('<input type="hidden" id="socancheck" value="1">');
-}
-else
-{
-print ('<input type="hidden" id="socancheck" value="0">');
-}
-
 
 $newPlaysheet = false;
 if (!isset($_POST['id'])) $newPlaysheet = true;
@@ -38,8 +28,8 @@ if (isset($_POST['id']) && $_POST['id']==0)
 	$newPlaysheet = true;
 
 $actionSet = isset($_GET['action']);
-$action = $_GET['action'];	
-// invisible form element that javascript updates
+$action = $_GET['action'];
+
 
 if(isset($_POST['numberOfRows'])){
 	$playlist_entries = $_POST["numberOfRows"];
@@ -313,56 +303,17 @@ if(!isset($show_id)){
 //
 //
 else if($actionSet && $action == 'list' && !isset($_GET['delete'])) {
-//echo ('list playsheets');
 
 
-	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-
-	//echo "<CENTER><FORM METHOD='GET' name='the_form'>";
-	
-	printf("<INPUT type=hidden name=action value=edit>");
-	printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
-	$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id   ORDER BY start_time DESC";
-	if($result = $db->query($get_playlists)){
-
-
-		while($row = mysqli_fetch_array($result)){
-			$time = date( 'Y: M j, g:ia' ,strtotime($row['start_time']));
-			echo "<option value='".$row[id]."'>".$time." - ".$row[name].($row['status'] == 1 ? " - (draft)":"").($row["star"] == 1 ? " &#9733":"")."</option>";
-		}
-	}
-
-	echo "</SELECT><BR><button TYPE=submit VALUE='View Playsheet' class='bigbutton' >View Playsheet</button>";
-	echo "<br/><br/><button type=submit name=socan value='true' >Load as SOCAN playsheet</button>";
+	require_once('playsheet_list.php');
 
 
 
-	if((is_member("addshow"))){
-	echo "<br/><br/><button type=delete name=delete value=delete>delete selected playsheet</button>";
-	echo '<br/><br/><a href="setSocan.php">Set a Socan Period Here</a>';
-	
-	}
-	echo "</FORM></CENTER>";
 } else if ( (isset($_GET['delete']) && ( $_GET['delete'] == 'delete') ) && (is_member("addshow"))){
-	
-	$delete_query = "DELETE FROM playlists WHERE id='".$_GET['id']."'";
-	$delete_playitems = "DELETE FROM playitems WHERE playsheet_id = '".$_GET['id']."'";
 
-	if( $result = mysqli_query($db,$delete_query)) {
 
-		if($result2 = mysqli_query($db,$delete_playitems)){
-				echo '<center><br/><br/>you just deleted playsheet id #'.$_GET['id'];
-				echo '<br/><a href="/playsheet.php?action=list">back to list</a></center>';
-		}
-	} else {
-		echo 'could not delete the playsheet';
-		echo '<hr/>'.$delete_query;
-	}
+	require_once('playsheet_delete.php');
 }
-/* moved to an external file report.php
-else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'report' ) {
-}*/
-
 //
 //
 //
@@ -379,11 +330,12 @@ else if(is_member("member") && isset($_GET['action']) && $_GET['action'] == 'rep
 //
 
 else if(is_member("dj")){
+
 require_once('adLib.php');
 $adLib = new AdLib($mysqli_sam,$db);
-			
 
-	
+
+
 	// Existing Playsheet
 	if(  $actionSet && $action == 'edit' || $action == 'datadump'){
 
@@ -410,13 +362,9 @@ $adLib = new AdLib($mysqli_sam,$db);
 		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
 		$loaded_status = mysqli_result_dep($result, 0, "status");
 		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
-		
+
 		$loaded_lang = mysqli_result_dep($result, 0, "lang");
 		$loaded_type = mysqli_result_dep($result, 0, "type");
-
-		// podcast stuff
-
-
 		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
 		} else {
 			// db query didn't work :|
@@ -427,11 +375,11 @@ $adLib = new AdLib($mysqli_sam,$db);
 				$pl_date_min =  date('i');
 				$end_date_hour = date('H');
 				$end_date_min = date('i');
-			
+
 				$host_name =  "";
 				$show_name =  "";
 				$show_id =  "";
-			
+
 				$loaded_spokenword =  "";
 				$loaded_sw_duration =  "";
 				$loaded_crtc = "";
@@ -440,12 +388,12 @@ $adLib = new AdLib($mysqli_sam,$db);
 	}
 	else {
 		// making a new PS
-		
-			if(isset($_GET['time'])){	
-				$unix_start_time = $_GET['time'];	
-			
+
+			if(isset($_GET['time'])){
+				$unix_start_time = $_GET['time'];
+
 				//check to see if this unix time already has a playsheet saved - if so, load that one with action=edit
-				
+
 				$check_query = "SELECT id FROM playlists WHERE unix_time='".$unix_start_time."'";
 				if ($check = mysqli_query($db, $check_query)){
 					$checked = mysqli_fetch_assoc($check);
@@ -454,28 +402,27 @@ $adLib = new AdLib($mysqli_sam,$db);
 					}
 				} else{
 				}
-				
+
 				//MAKING A NEW PS THAT IS IN PAST (OR FUTURE)
 				$currshow = $showlib->getShowByTime($unix_start_time);
-				
+
 				$pl_date_year = date('Y',$unix_start_time);
 				$pl_date_month = date('m',$unix_start_time);
 				$pl_date_day = date('d',$unix_start_time);
 				$pl_date_hour = date('H', $unix_start_time);
 				$pl_date_min = date('i', $unix_start_time);
-				
+
 				$show_end = strtotime($currshow->times[0]['end_time']);
 				$end_date_hour = date('H', $show_end);
 				$end_date_min = date('i', $show_end);
-				
+
 			}
 			else{
-				
+
 				// MAKING NEW PS THAT IS RIGHT NOW (default)
 				$currshow = $showlib->getCurrentShow();
 				$showtime = $currshow->getMatchingTime($showlib->getCurrentTime());
-
-
+			
 				if (count($showtime)) {
 					$pl_date_hour = date('H', strtotime($showtime['start_time']));
 					$pl_date_min = date('i', strtotime($showtime['start_time']));
@@ -486,48 +433,48 @@ $adLib = new AdLib($mysqli_sam,$db);
 				$pl_date_year =  date('Y');
 				$pl_date_month =  date('m');
 				$pl_date_day =  date('d');
-				
+
 				$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
-		
+
 			}
-			$showtype = $currshow->showtype; 
-			$ps_id = 0;			
+			$showtype = $currshow->showtype;
+			$ps_id = 0;
 			$host_name = $currshow->host;
 			$show_name = $currshow->name;
 			$show_id = $currshow->id;
 			$lang_default = $currshow->lang_default;
 			$crtc_default = $currshow->crtc_default;
-			
+
 			if($lang_default == ''){
 				$lang_default = 'eng';
 			}
 			if($crtc_default == ''){
 				$crtc_default = 20;
 			}
-						
+
 			$loaded_spokenword =  "";
 			$loaded_sw_duration =  "";
 			$adTable = $adLib->generateTable($unix_start_time,'dj', false);
 	}
-	
+
 		if($loaded_crtc)
 			$crtc_pl = $loaded_crtc;
 		else $crtc_pl = $crtc_default;
-		
+
 		if($loaded_lang)
 			$lang_pl = $loaded_lang;
 		else $lang_pl = $lang_default;
-		echo "<div id=loaded_crtc_test style='display:none'>".$crtc_pl."</div>";	
+		echo "<div id=loaded_crtc_test style='display:none'>".$crtc_pl."</div>";
 	if($ps_id && $_GET['action'] != 'datadump') {
 		// VIEW IS NOT RAW DATA
 		printf("<br><div class=buttonContainer>");
 		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>",$ps_id);
-	}	
+	}
 	else if ($ps_id){
 		// VIEW IS RAW DATA
 		printf("<br><div class=buttonContainer>");
 		printf("<div class=nav><ul><li><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>",$ps_id);
-	}	
+	}
 
 
 // WINDOWS INTERNET EXPLORER CHECK
@@ -549,7 +496,7 @@ if (count($matches)>1){
   }
 }
 
-	
+
 	// Raw Data view
 	printf("<br>");
 	if($SOCAN_FLAG) {printf("<div class=playsheetSOCAN>");}
@@ -698,7 +645,7 @@ if (count($matches)>1){
 		//Playlist Date
 		echo "<table width=100%% border=0 align=center><tr><td>Date: ";
 		echo "(<SELECT id=playsheet-year NAME=pl_date_year  ><OPTION>".$pl_date_year;
-		for($i=2002; $i <= 2013; $i++) echo "<OPTION>".$i; 
+		for($i=2002; $i <= 2014; $i++) echo "<OPTION>".$i; 
 		echo "</SELECT>-";
 		echo "<SELECT id=playsheet-month NAME=pl_date_month  >\n<OPTION>".sprintf("%02d",$pl_date_month);
 		for($i=1; $i <= 12; $i++) echo "<OPTION>".sprintf("%02d", $i); 
