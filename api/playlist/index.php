@@ -8,8 +8,20 @@
 
 
 require_once('../api_common.php');
-$error = '';
-if (isset($_GET['ID'])) $id = $_GET['ID']; else $error = 'no id specified';
+
+if (isset($_GET['ID'])){
+  $id = $_GET['ID'];
+} else {
+  $error .= ' please supply playlist id ( /playlist?ID=## ) ';
+  $blame_request = true;
+}
+
+if (!is_numeric($id)){
+  $error .= ' ID parameter should not be a string ';
+  $blame_request = true;
+}
+
+if ($error != '') finish();
 
 $query = 'SELECT
           playlists.id as playlist_id,
@@ -31,9 +43,10 @@ $query = 'SELECT
 
 $rawdata = array();
 
-if ($result = mysqli_query($db, $query) ) {
+if ( $result = mysqli_query($db, $query) ) {
   if (mysqli_num_rows($result) == 0) {
-    $error .= "no finished playlist found with that ID. ";
+    $error .= "no finished playlist found with this ID: ".$id;
+    $blame_request = true;
   }
   while ($row = mysqli_fetch_assoc($result)) {
     $rawdata = $row;
@@ -47,6 +60,7 @@ if ($result = mysqli_query($db, $query) ) {
   if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
         $error .= " no plays in this playlist! ";
+        $blame_request = true;
       } else {
 
         while ($row = mysqli_fetch_assoc($result2)){

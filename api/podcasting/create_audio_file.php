@@ -1,5 +1,4 @@
 <?php
-header('access-control-allow-origin: *');
 
 
 
@@ -12,7 +11,8 @@ $error = '';
 if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
 } else {
   $error = "Incorrect GET parameters have been supplied.  I need 'start', 'end', and 'show'.  'start' and 'end' must be unix timestamps (PHP style - seconds, not milliseconds).  ";
-//	header('HTTP/1.0 400 '.$error);
+  $blame_request = true;
+
 }
 date_default_timezone_set($timezone);
 

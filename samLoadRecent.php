@@ -1,4 +1,10 @@
+<html>
+<head>
+<title>report from SAM</title>
+</head>
+<body>
 
+<div id="SamListRecent">
 <?php
 
 define ("HISTORY_COUNT", 50);

@@ -75,8 +75,6 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 <script type='text/javascript'>
 
-
-
 	var podcastEditor = angular.module('podcastEditor', ['ui.bootstrap','podcastEpisode'])
 		.controller('datepicker', ['$scope','$filter',function($scope, $filter) {
 			var episode = $scope.$parent.$parent.episode;
@@ -344,7 +342,8 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 				}
 			}
-		}).config(function($httpProvider) {
+		})
+		.config(function($httpProvider) {
 
             $httpProvider.interceptors.push(function($q, $rootScope) {
                 return {
@@ -360,9 +359,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
             });
 
         })
-
-
-        .directive("loadingIndicator", function() {
+		.directive("loadingIndicator", function() {
             return {
                 restrict : "A",
                 template: "<div>Loading...</div>",

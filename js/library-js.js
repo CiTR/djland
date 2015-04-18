@@ -46,27 +46,3 @@ $('#nukem').click(function(){
 
 });
 
-
-/*
-
-$.ajax({
-		type:'POST',
-		url:'./saveAds.php',
-		data:{action:'save',ads:saveData},
-		beforeSend: function() {
-     $('#save').css('background-color','red');
-     console.log('saveData:');
-     console.log(saveData);
-  },
-		
-		}).done(function(data){
-			console.log('done. loaded data: ');
-			console.log(data);
-			$('#save').css('background-color','beige');
-		}).fail(function(){
-			console.log('failed');
-		}).always(function(){
-			console.log('the js worked');
-		});
-		
-		*/

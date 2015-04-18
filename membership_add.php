@@ -1,4 +1,4 @@
-<?php require("headers/db_header.php"); ?>
+<?php require_once("headers/db_header.php"); ?>
 
 <html>
 	<head>

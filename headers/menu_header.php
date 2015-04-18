@@ -1,9 +1,13 @@
 <?php
 //MENU HEADER
 
-function print_menu2(){
-require('config.php');
+require_once('config.php');
+require_once('headers/function_header.php');
+
+function print_menu(){
+	global $enabled;
 ?>
+	
 	<ul id=nav>
 		
 		<?php if(is_member("membership") && $enabled['membership']) : ?>
@@ -70,16 +74,20 @@ require('config.php');
 							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
 						<?php endif; ?>
-						</ul>
+					</ul>
 				</div>
 			</div>
 		</li>
-
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 		<?php if(is_member("dj")) : ?>
 			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
 		<?php endif; ?>
 		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
+
+		<?php if(is_member("dj") && $user_show = users_show()) : ?>
+			<li class="menu_right nodrop"><a href="shows.php?action=edit&id=<?php echo $user_show;?>" > My Show </a></li>
+			<li class="menu_right nodrop"><a href="podcasts.php?id=<?php echo $user_show;?>" > Podcasts </a></li>
+		<?php endif; ?>
 
 
 	</ul>
@@ -87,7 +95,7 @@ require('config.php');
 <?php } 
 
 function membership_menu(){
-require('config.php');
+require_once('config.php');
 ?>
 <ul id ='tab-nav'>
 	<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
@@ -99,4 +107,10 @@ require('config.php');
 
 
 
-<?php } ?>
+<?php }
+
+// useful when testing time-related things while faking time
+//echo date('l jS \of F Y h:i:s A', get_time());
+//echo " (".get_time().")";
+
+?>

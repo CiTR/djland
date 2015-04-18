@@ -1,8 +1,8 @@
 <?php
 session_start();
-require('headers/login_header.php');
-require('headers/db_header.php');
-require("headers/password.php");
+require_once('headers/login_header.php');
+require_once('headers/db_header.php');
+require_once("headers/password.php");
 //echo '<p>after password';
 //header("HTTP/1.0 302 Redirect\r\n");
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
@@ -51,6 +51,7 @@ else {
 if (is_logged_in()) {
 	//header("Location: main.php");
 }
+
 else {
 ?>
 	<html>
@@ -61,12 +62,10 @@ else {
 	preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
 	if (count($matches)>1){
 		$version = $matches[1];
-		if($version <= 8 ){
-			echo "<body class='ie'>";
-		}
-		else{
-			echo "<body>";
-		}
+		if($version <= 8 ) echo "<body class='ie'>"; else echo "<body>";
+	}
+	else{
+		echo "<body>";
 	}
 ?>
 	<div id = 'login'>
@@ -82,7 +81,7 @@ else {
 		<?php echo $message; ?>
 		</div>
 	</div>
-		
+
 	</body>
 </html>
 

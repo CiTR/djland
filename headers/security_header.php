@@ -1,7 +1,7 @@
 <?php
 //SECURITY HEADER
-require("db_header.php");
-require("login_header.php");
+require_once("db_header.php");
+require_once("login_header.php");
 
 //Remove slashes added by stupid magic quotes
 if(get_magic_quotes_gpc()==1) {
@@ -44,33 +44,59 @@ function is_member($test_group) {
 	else{
 		return false;
 	}
-	//OLD CODE
-	/*if(!isset($group_memberships)) {
-		//check for group matches...
-		$result = mysqli_query($db,"SELECT * FROM group_members INNER JOIN WHERE username = '".$_SESSION['sv_username']."' ORDER BY 'groupname'");
-
-		//set group membership variable array with each group type
-		while ($myrow = mysqli_fetch_row($result)) {
-			$group_memberships[$myrow[1]] = true;
-		}
-	}
-
-	if((isset($group_memberships["operator"])
-	&& $group_memberships["operator"])
-	|| (isset($group_memberships["administrator"])
-	&& $group_memberships["administrator"]
-	&& $test_group!="operator")
-	) {
-		return true;
-	}
-	else if(isset($group_memberships[$test_group])) {
-		return $group_memberships[$test_group];
-	}
-	else {
-		return false; //non group checked...
-	}*/
 }
 
+function has_show_access($show_id){
+	global $db;
+	$query = 'SELECT member_id FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
+
+
+	if ( !isset($show_id) || $result = mysqli_query($db, $query)) {
+		$access = mysqli_fetch_assoc($result);
+		$access = $access['member_id'] == $_SESSION['sv_id'];
+		return $access;
+			} else {
+		echo ' could not check for show access - db problem:'.$query;
+		return false;
+	}
+}
+
+function users_show(){
+	global $db;
+	$query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];
+
+	if ( $result = mysqli_query($db, $query)) {
+		if(mysqli_num_rows($result) <= 0) return false;
+		$show = mysqli_fetch_assoc($result);
+		$show = $show['show_id'];
+		return $show;
+	} else {
+		echo ' could not check for show access - db problem:'.$query;
+		return false;
+	}
+}
+
+function users_channel(){
+	global $db;
+	if ($show_id = users_show()){
+		$query = 'SELECT podcast_channel_id FROM shows WHERE id='.$show_id;
+
+		if ( $result = mysqli_query($db, $query)) {
+			if(mysqli_num_rows($result) <= 0) return false;
+			$channel = mysqli_fetch_assoc($result);
+			$channel = $channel['podcast_channel_id'];
+			return $channel;
+		} else {
+			echo ' could not check for show access - db problem:'.$query;
+			return false;
+		}
+
+
+	} else {
+		return false;
+
+	}
+}
 
 //If not logged in, check for cookies, then make them log in...
 if(!(is_logged_in() || cookie_login())) {

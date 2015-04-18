@@ -4,22 +4,31 @@
 // populate $data to return
 // call finish()
 
+error_reporting(0);
+
 require_once('../../headers/db_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
 $error = '';
+$blame_request = false;
 
 function finish(){
 
   global $error;
+  global $blame_request;
   global $data;
   global $query;
   global $db;
 
   if($error != ''){
-    echo $error;
-    header('HTTP/1.0 400 '.$error);
+            mysqli_close($db);
+            echo $error;
+            if($blame_request){
+              header('HTTP/1.0 400 '.$error);
+            } else {
+              header('HTTP/1.0 500' .$error);
+            }
   } else {
 
     if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
@@ -37,10 +46,8 @@ function finish(){
       }
     }
 
-
-//    echo $query.'<hr>';
-//    echo '<pre>';
-    header("Content-Type:application/json; charset=utf-8");
+    header('Access-Control-Allow-Origin: *',false);
+    header("Content-Type:application/json; charset=utf-8",false);
 
     if( defined('JSON_PRETTY_PRINT') ){
       echo json_encode( $data, JSON_PRETTY_PRINT );
@@ -52,6 +59,7 @@ function finish(){
 
   mysqli_close($db);
 
+  return;
 }
 
 function get_array($table, $idfield = 'id', $fields = 'basic'){
@@ -92,4 +100,7 @@ $ftp_url = '192.168.25.79';
 $ftp_user = 'podcast';  $ftp_pass = 'podNAScast007';
 //$ftp_user = 'root';  $ftp_pass = 'nas101.9';
 $ftp_path = '/mnt/Audio/audio/';
+
+
+$incoming_data =  (array) json_decode(file_get_contents('php://input'));
 

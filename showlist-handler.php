@@ -1,7 +1,8 @@
 <?php
 
-include_once('headers/showlib.php'); 
-include_once('headers/db_header.php');
+require_once('headers/db_header.php');
+require_once('headers/function_header.php');
+require_once('headers/showlib.php');
 function mysqli_result($res, $row, $field=0) { 
 //	echo 'called mysqli result';
 //	echo '<br/>';
@@ -103,8 +104,8 @@ function printShow($show) {
 				echo "<br />";
 			}
 		}
-		if (!is_null($show->genre)) {
-			echo "<strong>Genre:</strong> {$show->genre}<br />";
+		if (!is_null($show->secondary_genre_tags)) {
+			echo "<strong>Genre:</strong> {$show->secondary_genre_tags}<br />";
 		}
 		if (count($show->sponsors) > 0) {
 			echo "<strong>Sponsored By:</strong>";
@@ -167,8 +168,8 @@ foreach($allshows as $i => $show){
 		if (!is_null($show->podcast)) {
 			echo " <a href=\"{$show->podcast}\"><img src=\"http://www.citr.ca/images/rss.gif\" alt=\"RSS\"/></a>";
 		}
-		if (!is_null($show->genre)) {
-			echo " ({$show->genre})";
+		if (!is_null($show->secondary_genre_tags)) {
+			echo " ({$show->secondary_genre_tags})";
 		}
 		echo '<br/>';
 	

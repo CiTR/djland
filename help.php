@@ -1,9 +1,9 @@
 <?php
 session_start();
-require("headers/security_header.php");
-require("headers/function_header.php");
-require("headers/menu_header.php");
-require("headers/socan_header.php");
+require_once("headers/security_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
+require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 
 
@@ -19,7 +19,7 @@ print("<script src='js/jquery.form.js'></script> ");
 print("</head>");
 
 //Data Setup
-print_menu2();
+print_menu();
 $SOCAN_FLAG=socanCheck($db);
 
 

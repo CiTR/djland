@@ -11,6 +11,7 @@ $enabled = array(); $station_info = array();
 // admin pass: 'pass'
 
 
+
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
 //*******************************************
@@ -22,6 +23,8 @@ $station_info['province']= 'BC';
 $station_info['country'] = 'Canada';
 $station_info['website'] = 'CiTR.ca';
 $station_info['tech_email'] = 'tech_person@station.ca';
+$station_info['station ID message'] =
+      "'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 
 $station_info['timezone'] = 'America/Vancouver'; 
 // for a list of valid timezones, visit 
@@ -33,11 +36,11 @@ $station_info['timezone'] = 'America/Vancouver';
 //
 
 // enter your database credentials here.  If you are using MySQL on the same server
-// these files are on, use 'localhost'.
-// add 'p:' to the beginning to use a persistant connection
+// these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
 
 
-$djland_db_address = 'p:localhost';
+
+$djland_db_address = '127.0.0.1';
 $djland_db_username = 'djland-username';
 $djland_db_password = 'djland-password';
 $djland_db_dbname = 'djland-databasename';
@@ -93,43 +96,22 @@ $samDB_pass = 'password for that user';
 $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 
+// debug time operations? leave false unless you
+// are developing and need to fake the current time
+// for some reason
 
-//*******************************************
-//* 6) Podcasting settings
-//*******************************************
-
-$podcast_xml_dir = './podcasting/podcast-rss/';
-
-// the citr podcaster makes a request to the URL specified here.  The
-// file at this location should reside on a server with storage space 
-// dedicated to storing large amounts of audio.
-// right now by default, it is a subdirectory of DJLand
-// for this to work, add the following line to your /etc/hosts file:
-// 127.0.0.1       djland.local
-// also edit your server settings to point djland.local 
-// to the djland root directory
-$podcast_media_dir = 'http://djland.local/podcasting/podcast-media/';
-$podcast_create_file_api = $podcast_media_dir.'create_audio_file.php';
-
-$archive_tool_url = 'http://archive.citr.ca';
+// in code, do these two things:
+// 1) use get_time() instead of time()
+// 2) always use get_time() as optional last parameter for all date() calls
+// 3) use hidden field to pass time to javascript
+//
 
 // developers visit DJland on GitHUB to check out latest version
 // or contribute to the project and submit a pull request!
 // http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-// http://www.github.com/citrtech/djland
-
 // project home page
 // http://www.djland.info
-// http://www.djland.info
-// http://www.djland.info
-// http://www.djland.info
-
 // Developed by CiTR
-// http://www.citr.ca
-// http://www.citr.ca
-// http://www.citr.ca
 // http://www.citr.ca
 
 // contributors

@@ -37,6 +37,7 @@ function login ($the_username, $the_password, $set_cookie) {
 			setcookie($cookiename_pass, $the_password, time() + 2678400);
 		}
 		$_SESSION['sv_username'] = mysqli_result_dep($result,0,"username");
+		$_SESSION['sv_id'] = mysqli_result_dep($result,0,"member_id");
 		$_SESSION['sv_login_fails'] = mysqli_result_dep($result,0,"login_fails");
 		$result = $db-> query("UPDATE user SET login_fails='0' WHERE username = '".$the_username."'");
 		return true;
