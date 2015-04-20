@@ -731,26 +731,9 @@ if(is_member("addshow") ) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<script src="js/angular.js"></script>
 	<script type="text/javascript">
-		var app = angular.module('djLand', []);
+		var djland = angular.module('djLand', []);
 	</script>
 	<script src="js/angular-djland.js"></script>
 
