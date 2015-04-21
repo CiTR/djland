@@ -287,10 +287,10 @@ else {
     echo "<SELECT id=playsheet-day NAME=pl_date_day  >\n<OPTION>" . sprintf("%02d", $pl_date_day);
     for ($i = 1; $i <= 31; $i++) echo "<OPTION>" . sprintf("%02d", $i);
     echo "</SELECT>) ";
-
+    echo "<br/><i>^^ Please set the show name and date to initialize your playsheet</i>";
   }
 
-  ?><br/><i>^^ please set date and show first, to load your ad schedule</i><br/><br/>
+  ?><br/><br/>
 </td></tr>
 <tr>
     <td>Show Type:

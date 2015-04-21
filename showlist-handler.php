@@ -1,7 +1,8 @@
 <?php
 
-include_once('headers/showlib.php'); 
-include_once('headers/db_header.php');
+require_once('headers/db_header.php');
+require_once('headers/function_header.php');
+require_once('headers/showlib.php');
 function mysqli_result($res, $row, $field=0) { 
 //	echo 'called mysqli result';
 //	echo '<br/>';

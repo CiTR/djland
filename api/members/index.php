@@ -24,6 +24,7 @@ if ($result = mysqli_query($db, $query) ) {
   }
 } else {
   $error .= mysqli_error($db);
+
 }
 
 foreach($rawdata as $i => $v){
