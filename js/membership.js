@@ -361,6 +361,7 @@ function load_member_year(id,year){
 								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].music == 0){ $('#music').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
 								if(data[0].discorder == 0){ $('#discorder').removeAttr('checked'); }else{ $('#discorder').prop('checked','checked'); }
+								if(data[0].discorder2 == 0){ $('#discorder2').removeAttr('checked'); }else{ $('#discorder2').prop('checked','checked'); }
 								if(data[0].show_hosting == 0){ $('#show_hosting').removeAttr('checked'); }else{ $('#show_hosting').prop('checked','checked'); }
 								if(data[0].sports == 0){ $('#sports').removeAttr('checked'); }else{ $('#sports').prop('checked','checked'); }
 								if(data[0].news == 0){ $('#news').removeAttr('checked'); }else{ $('#news').prop('checked','checked'); }
