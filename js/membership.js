@@ -22,7 +22,6 @@ $(document).ready ( function() {
 	}else{
 		manage_members('mail','init');
 	}
-	
 	add_handlers();	
 });
 function getVal($varname){
@@ -196,11 +195,12 @@ function add_handlers(){
 				break;
 		}
 	});
+
 	//SEARCH TYPE LISTEN
 	$('#search_type').unbind().change( function(){
 		document.getElementById("search_container").innerHTML="";
 		if(getVal('search_type')=='name'){
-			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
+			$('#search_container').append("<input id=search_value placeholder='Enter a name'/>");
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
 			var searchval = $('#search_value');
@@ -210,6 +210,34 @@ function add_handlers(){
 			}
 		}
 	});
+
+    $('.member_row_element').click( function(){
+        console.log('row clicked'+this.id);
+        if(!this.hasClass('delete_member')){
+            change_view('view','init',this.name);
+        }
+    });
+
+    $('#delete_selected').click( function(){
+        var members_to_delete = [];
+        $('.delete_member').each( function (){
+            var member_id = substring(7, this.id.toString());
+            members_to_delete.push(member_id);
+        });
+        console.log(members_to_delete);
+        if(confirm()){
+
+        }
+    });
+
+    $('.delete_member').click( function(){
+       if(!this.hasClass('delete')){
+           this.addClass('delete');
+           console.log("selected member"+substring(7,this.id.toString()));
+       }else{
+           this.removeClass('delete');
+       }
+    });
 
 
 	//PAID SEARCH TOGGLE
@@ -462,24 +490,26 @@ function manage_members(action_,type_,value_){
 							if(year != 'all'){
 								$('#headerrow').append('<th class=data_set>Paid</th><th class=data_set>Year</th>');
 							}
+                            $('#headerrow').append('<th class=data_set><button id="delete_selected">Delete</button></th>');
 						}else{
 							$('#member_result').append("Search returned no results");
 						}
 
 						for( $j = 0; $j < Object.keys(data).length; $j++ ){
-							$('#membership_table').append("<tr id='row"+$j+"' class='member_row' onclick=change_view('view','init','"+data[$j].id+"')><tr>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].email+"</td>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].primary_phone+"</td>");
+							$('#membership_table').append("<tr id='row"+$j+"' name='"+data[$j].id+"' class='member_row'><tr>");
+							$("#row"+$j).append("<td class='data_set member_row_element'>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
+							$("#row"+$j).append("<td class='data_set member_row_element'>"+data[$j].email+"</td>");
+							$("#row"+$j).append("<td class='data_set member_row_element'>"+data[$j].primary_phone+"</td>");
 							if(year != 'all'){
 								if(data[$j].paid == 1){
-									$("#row"+$j).append("<td class=data_set>yes</td>");
+									$("#row"+$j).append("<td class=data_set member_row_element>yes</td>");
 								}
 								else{
-									$("#row"+$j).append("<td class=data_set>no</td>");
+									$("#row"+$j).append("<td class=data_set member_row_element>no</td>");
 								}
 								$("#row"+$j).append('<td class=data_set>'+data[$j].membership_year+'</td>');
 							}
+                            $("#row"+$j).append("<td class=data_set><center><input type='checkbox' class='delete_member' id='delete_"+data[$j].id+"'></center>");
 						}
 					}
 					else{ 
@@ -691,7 +721,7 @@ function manage_members(action_,type_,value_){
 						}).fail(function(){
 							
 						});
-						$('#member_result').append("<div id='member_password_change' class ='member_result_row padded'><center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
+						$('#member_result').append("<div id='member_password_change' class ='member_result_row padded'><center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center></div>");
 					default:
 						break;

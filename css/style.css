@@ -515,6 +515,9 @@ button#submit_user.red{
 	cursor: pointer; cursor: hand;
 	background-color:blue;
 }
+.member_row.delete{
+    background-color:red;
+}
 #membership_year{
 	margin-left:auto;
 	margin-right:auto;
@@ -665,7 +668,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	}
 	.inputboxes input{
 		height:1.5em;
-		font-size: 15;
+		font-size: 15em;
 	}
 	
 	.inputboxesinner	{	
@@ -1060,7 +1063,7 @@ div.editform {
 /*	display:block;*/
 	display:none;
 	background-color:beige;
-	border-width:3;
+	border-width: medium;
 	border-style:solid;
 	border-color:#BBB;
 	height:80%;
@@ -1558,7 +1561,7 @@ width:20px;
 /*	display:block;*/
 	text-align: center;
 	background-color:beige;
-	border-width:3;
+	border-width:3px;
 	border-style:solid;
 	border-color:#BBB;
 	position:fixed;
@@ -1730,7 +1733,7 @@ font-weight:bold;
 	font-size: 0.70em;
 }
 .report-entry{
-	margin:2;
+	margin:2px;
 	padding:0;
 	width:600px;
 	z-index: 2;
@@ -1869,15 +1872,11 @@ border-width:0;
 
 .selectanad{
 	background-color: transparent;
-	border-width:1;
+	border-width:1px;
 }
 
 .selectanad option{
 background-color:black;
-}
-
-invisible-tempalate{
-		
 }
 
 #adcount{
