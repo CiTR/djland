@@ -13,7 +13,7 @@ $query = "SELECT show_times.start_day as start_day,
             show_times.end_time as end_time,
             show_times.alternating as alternating,
             show_times.show_id as show_time_id,
-             shows.id as showid,
+             shows.id as show_id,
              shows.active as active
             FROM show_times join shows on show_times.show_id = shows.id
             WHERE active = 1";
