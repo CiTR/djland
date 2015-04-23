@@ -9,8 +9,11 @@
 
 require_once('../api_common.php');
 
+
+
 $rawdata = array();
-$error = '';
+
+
 $query = 'SELECT '.
     "shows.id as show_id,
        shows.name,
@@ -41,6 +44,8 @@ $query = 'SELECT '.
     "JOIN social on show_id = shows.id
     LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
 
+
+
 if ( isset($_GET['ID'])){
 //  fetch id
   $id = $_GET['ID'];
@@ -48,10 +53,18 @@ if ( isset($_GET['ID'])){
   $query .=' WHERE shows.id = '.$id.'';
 
 } else {
-  $error = "please supply show id ( show?ID=##)";
+  $error .= " please supply show id ( show?ID=##) ";
+  $blame_request = true;
+
   //error
 }
 
+if (!is_numeric($id)){
+  $error .= ' ID parameter should not be a string ';
+  $blame_request = true;
+}
+
+if($error != '') finish();
 
 if ($result = mysqli_query($db, $query) ) {
 
@@ -89,7 +102,9 @@ if ($result = mysqli_query($db, $query) ) {
 
       if (mysqli_num_rows($result2) == 0) {
 
-        $error = 'empty data (are all parameters supplied correctly?). '.$query;
+        $error .= 'no show with this id:'.$id;
+        $blame_request = true;
+        finish();
 
       } else {
 
@@ -115,13 +130,21 @@ if ($result = mysqli_query($db, $query) ) {
 
 } else {
 
-  $error .= '<br/> database error: problem query: '.$query.' <br/>'.mysqli_error($db);
+  $error .= "\n database error. the problematic query is: ".$query." \n".mysqli_error($db);
 
 }
 
 
 
 $data = $rawdata[0];
+
+
+if ($data['alerts'] == ''){
+  $data['alerts'] = 'I am the show alert text for '.$data['name'].'! Check out an upcoming episode on unique dog breeds and the hottest dogetronica music!';
+}
+
+
+
 
 $social_array = array();
 

@@ -9,7 +9,19 @@
 
 require_once('../api_common.php');
 
-if (isset($_GET['ID'])) $id = $_GET['ID']; else $error .= 'no id specified. ';
+if (isset($_GET['ID'])){
+  $id = $_GET['ID'];
+} else {
+  $error .= 'please supply episode id ( /episode?ID=## )';
+  $blame_request = true;
+}
+
+if (!is_numeric($id)){
+  $error .= ' ID parameter should not be a string ';
+  $blame_request = true;
+}
+
+if ($error != '') finish();
 
 $query ="
     SELECT `podcast_episodes`.`id`,
@@ -27,13 +39,15 @@ $rawdata = array();
 
 if ($result = mysqli_query($db, $query) ) {
   if (mysqli_num_rows($result) == 0) {
-    $error .= "no podcast episode found with that ID. ";
+    $error .= "no podcast episode found with this ID: ".$id;
+    $blame_request = true;
   }
   while ($row = mysqli_fetch_assoc($result)) {
     $rawdata = $row;
 
   }
 
+  if($error != '') finish();
   $plays = array();
 
   $query = 'SELECT playlists.id as playlist_id FROM playlists WHERE playlists.podcast_episode = '.$id;
