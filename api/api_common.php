@@ -4,24 +4,31 @@
 // populate $data to return
 // call finish()
 
+error_reporting(0);
 
 require_once('../../headers/db_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
 $error = '';
+$blame_request = false;
 
 function finish(){
 
   global $error;
+  global $blame_request;
   global $data;
   global $query;
   global $db;
 
   if($error != ''){
-    mysqli_close($db);
-    echo $error;
-    header('HTTP/1.0 400 '.$error);
+            mysqli_close($db);
+            echo $error;
+            if($blame_request){
+              header('HTTP/1.0 400 '.$error);
+            } else {
+              header('HTTP/1.0 500' .$error);
+            }
   } else {
 
     if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
@@ -52,6 +59,7 @@ function finish(){
 
   mysqli_close($db);
 
+  return;
 }
 
 function get_array($table, $idfield = 'id', $fields = 'basic'){

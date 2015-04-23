@@ -9,7 +9,6 @@ $rawdata = array();
 
 global $_GET;
 global $db;
-global $error;
 
 if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
 if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
