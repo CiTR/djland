@@ -77,7 +77,7 @@
 	}
 	$insert_membership_year = "INSERT INTO membership_years (member_id,membership_year,paid,sports,music,arts,show_hosting,live_broadcast,ads_psa,tech,news,programming_committee,promotions_outreach,discorder,discorder_2,digital_library,photography,tabling,dj,other) VALUES (LAST_INSERT_ID(),'".$membership_year."','0','".$sports."','".$music."','".$arts."','".$show_hosting."','".$live_broadcast."','".$ads_psa."','".$tech."','".$news."','".$prog_comm."','".$outreach."','".$discorder."','".$discorder_2."','".$digital_library."','".$photography."','".$tabling."','".$dj."','".$other."');";
 	$insert_user = " INSERT INTO user (member_id,username,password,status,create_date) VALUES(LAST_INSERT_ID(),'".$username."','".password_hash($password,PASSWORD_DEFAULT)."','enabled','".$joined."');";
-	$insert_group_member = " INSERT INTO group_members (userid,member,dj,administrator,adduser,addshow,editdj,library,membership,editlibrary,operator) VALUES (LAST_INSERT_ID(),'1','0','0','0','0','0','0','0','0','0');";
+	$insert_group_member = " INSERT INTO group_members (userid,member,dj,volunteer,administrator,staff,workstudy,operator) VALUES (LAST_INSERT_ID(),'1','0','0','0','0','0','0');";
 	$fail=false;
 	$db->query("START TRANSACTION");
 	$error[0] = "ERROR";

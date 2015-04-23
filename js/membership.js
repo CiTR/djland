@@ -22,7 +22,6 @@ $(document).ready ( function() {
 	}else{
 		manage_members('mail','init');
 	}
-	
 	add_handlers();	
 });
 function getVal($varname){
@@ -196,11 +195,12 @@ function add_handlers(){
 				break;
 		}
 	});
+
 	//SEARCH TYPE LISTEN
 	$('#search_type').unbind().change( function(){
 		document.getElementById("search_container").innerHTML="";
 		if(getVal('search_type')=='name'){
-			$('#search_container').append("<input id=search_value placeholder='Enter a name' />");			
+			$('#search_container').append("<input id=search_value placeholder='Enter a name'/>");
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
 			var searchval = $('#search_value');
@@ -210,6 +210,59 @@ function add_handlers(){
 			}
 		}
 	});
+
+    //Listener for
+    $('#membership').off('click','.member_row_element').on('click','.member_row_element',function(e){
+        change_view('view','init',this.parentNode.getAttribute('name'));
+    });
+
+    $('#membership').off('click','#delete_button').on('click','#delete_button',function(e){
+        var members_to_delete = [];
+        var members_names = [];
+        $('.delete_member').each( function (){
+            if($(this).is(':checked')){
+                members_to_delete.push($(this.closest('tr')).attr('name').toString());
+                members_names.push( $(this).closest('td').siblings('.name').html() );
+            }
+        });
+        var confirm_string = "Are you sure you want to delete these members forever?:\n"+members_names.toString();
+        if(confirm(confirm_string)){
+            $.ajax({
+                type:"POST",
+                url: "form-handlers/member-delete.php",
+                data: {"ids" : JSON.stringify(members_to_delete)},
+                dataType: "json",
+                async: false
+            }).success(function(data){
+                alert("Successfully deleted:"+members_names.toString());
+            }).fail(function(data){
+                alert("Could not delete:"+members_names.toString()+"\n"+data[0]);
+            });
+        }
+    });
+
+    /*//Listener for delete member button
+    $('#delete_selected').unbind().click( function(){
+        var members_to_delete = [];
+        $('.delete_member').each( function (){
+            if(this.attr('checked') == 'checked'){
+                var delete_id = $(this.closest('tr')).name;
+                var member_id = substring(7, this.id.toString());
+                console.log(delete_id);
+                members_to_delete.push(member_id);
+            }
+
+        });
+        console.log("Members to delete: "+members_to_delete);
+        *//*if(confirm()){
+
+        }*//*
+    });*/
+
+    //Toggling red bar for showing members you are going to delete
+    $('#membership').off('change','.delete_member').on('change','.delete_member',function(e) {
+        $(this.closest('tr')).toggleClass('delete');
+    });
 
 
 	//PAID SEARCH TOGGLE
@@ -458,28 +511,30 @@ function manage_members(action_,type_,value_){
 					document.getElementById("member_result").innerHTML = " ";
 					if(data != null){ 
 						if(Object.keys(data).length > 0){
-							$('#member_result').append("<table id='membership_table'><tr id='headerrow'><th class=data_set>Name</th><th class=data_set>Email</th><th class=data_set>Phone</th></tr></table>");
+							$('#member_result').append("<table id='membership_table'><tr id='headerrow'><th >Name</th><th >Email</th><th >Phone</th></tr></table>");
 							if(year != 'all'){
-								$('#headerrow').append('<th class=data_set>Paid</th><th class=data_set>Year</th>');
+								$('#headerrow').append('<th>Paid</th><th class=>Year</th>');
 							}
+                            $('#headerrow').append('<th><button id="delete_button">Delete</button></th>');
 						}else{
 							$('#member_result').append("Search returned no results");
 						}
 
 						for( $j = 0; $j < Object.keys(data).length; $j++ ){
-							$('#membership_table').append("<tr id='row"+$j+"' class='member_row' onclick=change_view('view','init','"+data[$j].id+"')><tr>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].email+"</td>");
-							$("#row"+$j).append("<td class=data_set>"+data[$j].primary_phone+"</td>");
+							$('#membership_table').append("<tr id='row"+$j+"' name='"+data[$j].id+"' class='member_row'><tr>");
+							$("#row"+$j).append("<td id='name_"+data[$j].id+"' class='member_row_element name'>"+data[$j].firstname+" "+data[$j].lastname+"</td>");
+							$("#row"+$j).append("<td id='email_"+data[$j].id+"'class='member_row_element email'>"+data[$j].email+"</td>");
+							$("#row"+$j).append("<td id='phone_"+data[$j].id+"'class='member_row_element phone'>"+data[$j].primary_phone+"</td>");
 							if(year != 'all'){
 								if(data[$j].paid == 1){
-									$("#row"+$j).append("<td class=data_set>yes</td>");
+									$("#row"+$j).append("<td class='member_row_element'>yes</td>");
 								}
 								else{
-									$("#row"+$j).append("<td class=data_set>no</td>");
+									$("#row"+$j).append("<td class='member_row_element'>no</td>");
 								}
-								$("#row"+$j).append('<td class=data_set>'+data[$j].membership_year+'</td>');
+								$("#row"+$j).append("<td class='member_row_element'>"+data[$j].membership_year+"</td>");
 							}
+                            $("#row"+$j).append("<td><center><input type='checkbox' class='delete_member' id='delete_"+data[$j].id+"'></center>");
 						}
 					}
 					else{ 
@@ -691,7 +746,7 @@ function manage_members(action_,type_,value_){
 						}).fail(function(){
 							
 						});
-						$('#member_result').append("<div id='member_password_change' class ='member_result_row padded'><center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'></input><br/> \
+						$('#member_result').append("<div id='member_password_change' class ='member_result_row padded'><center>Username: "+username+"  -- New Password:<input id='password' placeholder='Enter a new password' type='password'><br/> \
 							<button class='member_submit' name='edit'>Save Changes</button></center></div>");
 					default:
 						break;
@@ -836,7 +891,7 @@ function manage_members(action_,type_,value_){
 
 					break;
 				}
-				
+                add_handlers();
 				break;
 			default:
 				manage_members('init');

@@ -81,28 +81,30 @@ if(!(is_logged_in() || cookie_login())) {
 function cleanArray($array){
 	if(is_array($array)){
 		foreach($array as $key=>$value){
+            //Integers cannot have anything bad in them, so ignore them
+            if(is_string($value)) {
+                $value = preg_replace("/script/i", "scrip t", $value); //no easy javascript injection
+                $value = preg_replace("/union/i", "uni on", $value); //no easy common mysql temper
 
-			$value = preg_replace("/script/i","scrip t",$value); //no easy javascript injection
-			$value = preg_replace("/union/i","uni on",$value); //no easy common mysql temper
+                $value = htmlentities($value, ENT_QUOTES); //encodes the string nicely
+                $value = addslashes($value); //mysql_real_escape_string() //htmlentities
 
-			$value = htmlentities($value, ENT_QUOTES); //encodes the string nicely
-			$value = addslashes($value); //mysql_real_escape_string() //htmlentities
-
-			if($key == "UserID" || $key == "PageID"){ //List variables that MUST be integers. Look at your mysql scheme and find every int(*) field.
-				$value = filter_var($value, FILTER_SANITIZE_NUMBER_INT); //Forces an integer
-			}/* EXAMPLES
+                if ($key == "UserID" || $key == "PageID") { //List variables that MUST be integers. Look at your mysql scheme and find every int(*) field.
+                    $value = filter_var($value, FILTER_SANITIZE_NUMBER_INT); //Forces an integer
+                }/* EXAMPLES
 			elseif($key == "CountryCode" || $key == "StateCode"){
 				$value = substr(trim($value),0,2); //Forces a max two character string
 			}elseif($key == "arrivalDate" || $key == "departureDate"){
 				$value = substr(trim($value),0,10); //Forces a max 10 character string. Could be also be tested by regular expression for a date value.
 			}
 			*/
-			else{
-				$value = substr($value,0,800);
-				$value = trim(filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW)); //All weird chars will be stripped. I usually also limit the characters to (alpha)nummeric, spaces, and punctuation.
-			}
+                else {
+                    $value = substr($value, 0, 800);
+                    $value = trim(filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW)); //All weird chars will be stripped. I usually also limit the characters to (alpha)nummeric, spaces, and punctuation.
+                }
 
-			$array[$key] = $value;
+                $array[$key] = $value;
+            }
 		}
 	} else{
 		return false;
@@ -110,8 +112,8 @@ function cleanArray($array){
 
 	return $array;
 }
-$_GET = cleanArray($_GET);
-$_POST = cleanArray($_POST);
+/*$_GET = cleanArray($_GET);
+$_POST = cleanArray($_POST);*/
 
 //END SECURITY HEADER
 ?>

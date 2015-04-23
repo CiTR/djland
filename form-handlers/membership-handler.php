@@ -49,7 +49,7 @@ $default = false;
 			switch($type){
 				case 'name':
 					if($value !=  "" && $value != null){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
+						$query = "SELECT m.id AS id, m.firstname AS firstname, m.lastname AS lastname, m.email AS email, m.primary_phone AS primary_phone FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
 						if($year != 'all'){
 							if($paid == 'both'){
 	 							$query.=" and my.membership_year='".$year."'";
@@ -66,7 +66,7 @@ $default = false;
 							}
 						}
 					}else{
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
+						$query = "SELECT m.id AS id, m.firstname AS firstname, m.lastname AS lastname, m.email AS email, m.primary_phone AS primary_phone FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query.=" WHERE my.membership_year='".$year."'";
@@ -85,7 +85,7 @@ $default = false;
 					break;
 				case 'interest':
 					if($value != "" && $value != null && $value != 'all'){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
+						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.{$value}='1'";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -153,7 +153,7 @@ $default = false;
 			switch($type){
 				case 'interest':
 					if($value != "" && $value != null && $value != 'all'){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1' ";
+						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.{$value}='1' ";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -264,30 +264,16 @@ $default = false;
 	if(permission_level() >= 0){
 		if(!$default AND ($action != 'report')){
 		$result = null;
-		$members = null;
-		if($result = $db->query($query)){
-			$members = array();
-			while($row=$result->fetch_object()){
-			$members[] = $row;
-			}
-			if (count($members)>0) {
-				foreach ($members[0] as $i => $v) {
-					$members[0][$i] = html_entity_decode($v, ENT_QUOTES);
-				}
-			}
-		}
+            $members = null;
+		if($result = $db->query($query)) {
+            $members = $result->fetch_all(MYSQL_ASSOC);
+        }
 		echo json_encode($members);
 		$result->close();
 		}
 	}else{
 		echo "you don't have permission";
 	}
-		
-	
-	
-
-
-/*}*/
 
 
 ?>
