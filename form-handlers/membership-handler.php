@@ -50,6 +50,7 @@ $default = false;
 				case 'name':
 					if($value !=  "" && $value != null){
 						$query = "SELECT m.id AS id, m.firstname AS firstname, m.lastname AS lastname, m.email AS email, m.primary_phone AS primary_phone FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
+
 						if($year != 'all'){
 							if($paid == 'both'){
 	 							$query.=" and my.membership_year='".$year."'";
@@ -264,6 +265,7 @@ $default = false;
 	if(permission_level() >= 0){
 		if(!$default AND ($action != 'report')){
 		$result = null;
+
             $members = null;
 		if($result = $db->query($query)) {
             $members = $result->fetch_all(MYSQL_ASSOC);

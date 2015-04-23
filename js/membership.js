@@ -225,7 +225,7 @@ function add_handlers(){
                 members_names.push( $(this).closest('td').siblings('.name').html() );
             }
         });
-        var confirm_string = "Are you sure you want to delete these members forever?:\n"+members_names.toString();
+        var confirm_string = "Are you sure you want to delete these members forever?\n"+members_names.toString();
         if(confirm(confirm_string)){
             $.ajax({
                 type:"POST",
@@ -234,34 +234,17 @@ function add_handlers(){
                 dataType: "json",
                 async: false
             }).success(function(data){
-                alert("Successfully deleted:"+members_names.toString());
+                alert("Successfully deleted: "+members_names.toString());
             }).fail(function(data){
-                alert("Could not delete:"+members_names.toString()+"\n"+data[0]);
+                alert("Could not delete: "+members_names.toString()+"\n"+data[0]);
             });
         }
     });
 
-    /*//Listener for delete member button
-    $('#delete_selected').unbind().click( function(){
-        var members_to_delete = [];
-        $('.delete_member').each( function (){
-            if(this.attr('checked') == 'checked'){
-                var delete_id = $(this.closest('tr')).name;
-                var member_id = substring(7, this.id.toString());
-                console.log(delete_id);
-                members_to_delete.push(member_id);
-            }
-
-        });
-        console.log("Members to delete: "+members_to_delete);
-        *//*if(confirm()){
-
-        }*//*
-    });*/
-
     //Toggling red bar for showing members you are going to delete
     $('#membership').off('change','.delete_member').on('change','.delete_member',function(e) {
         $(this.closest('tr')).toggleClass('delete');
+
     });
 
 
