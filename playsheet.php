@@ -100,8 +100,13 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     width: auto;
   }
 
-  .playsheet_block {
+  .playsheet_block, .spokenword_block {
     width: 1000px;
+    min-height:500px;
+    position:relative;
+    margin-left: auto;
+    margin-right:auto;
+
   }
 
   .dragzone {
@@ -278,7 +283,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
     <h2>New Playsheet</h2>
 
-    <div class="playsheet_block">
+    <div >
       <h3>Episode Data</h3>
 
       <div id="left">
@@ -333,7 +338,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     </div>
     <br/><br/>
 
-    <h3>Music <span ng-click="music_hidden = !music_hidden;">{{music_hidden? '( show )' : '( hide )'}}</span></h3>
+    <h2>Music <span ng-click="music_hidden = !music_hidden;">{{music_hidden? '( show )' : '( hide )'}}</span></h2>
 
     <div class="playsheet_block" ng-hide="music_hidden">
 
@@ -394,13 +399,15 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
       </ul>
     </div>
 
-    <h3>Spoken Word</h3>
+    <div class="spokenword_block">
+    <h2>Spoken Word</h2>
 <span class="left" id="ads" ng-show="playsheet.ads">
+  <h3>Scheduled Ads, PSAs, Station IDs</h3>
   <div class="adHead">
-    <div class='adTime label'>time</div>
-    <div class='adType label'>type</div>
-    <div class='adName label'>name</div>
-    <div class='adPlay label'>played</div>
+    <div class='adTime label'><h4>time</h4></div>
+    <div class='adType label'><h4>type</h4></div>
+    <div class='adName label'><h4>name</h4></div>
+    <div class='adPlay label'><h4>played</h4></div>
   </div>
   <div class="adRow" ng-repeat="ad in playsheet.ads">
     <div class='adTime'>{{ad.time}}</div>
@@ -411,9 +418,27 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
   </div>
   </span>
 
-    <h3>Podcast</h3>
+    <span class="right" id="spokenword">
+      <h3>Guests, Interviews, Topics</h3>
+      <textarea ng-model="playsheet.spokenword" placeholder="description" rows="10"></textarea>
+        <br/><h4>Total Overall Duration</h4>
+        <select ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select>Hours
+      <br/>
+        <select ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select>Minutes
+
+      <br/>
+    </span>
+    </div>
+    <div class="main">
+    <h2>Podcast</h2>
 
     <podcast-editor></podcast-editor>
+
+      <div class="playsheet_block"><center><input id="submit" type="submit"></input></center></div>
+    </div>
+
+
+
 
     <input id='sam_button' type="button" ng-click="samVisible = !samVisible;" value=" SAM "></input>
 
@@ -434,7 +459,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
       </div>
     </div>
 
-    <input id="submit" type="submit"></input>
 
     <div id="totals">
       <div>Cancon 2:<span class='req' ng-class="totals.cancon2 > 35.00 ? 'good': 'bad'; "> {{totals.cancon2 | number : 0.00}}%</span>

@@ -144,6 +144,10 @@ if ( $result = mysqli_query($db, $query_for_songs) ) {
   $rawdata['playlist']['end_time'] = $end_unix;
 
 
+  $rawdata['playlist']['spokenword_hours'] = $rawdata['playlist']['spokenword_duration']/60;
+  $rawdata['playlist']['spokenword_minutes'] = $rawdata['playlist']['spokenword_duration']%60;
+
+
 //  $rawdata['playlist']['start_time'] = strtotime($rawdata['playlist']['start_time']);
 
 } else {
