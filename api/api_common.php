@@ -62,6 +62,13 @@ function finish(){
   return;
 }
 
+function convertEntities($string){
+  if( defined('ENT_HTML5')) {
+    return html_entity_decode(html_entity_decode($string, ENT_QUOTES), ENT_HTML5);
+  } else {
+    return html_entity_decode($string,ENT_QUOTES);
+  }
+}
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
   global $db;

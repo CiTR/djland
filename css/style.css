@@ -13,6 +13,40 @@ div#main {
 	margin-left:auto;
 	margin-right:auto;
 }
+
+
+#mainleft {
+	font-size:1em;
+	line-height:1.3em;
+	width:90%;
+	position:relative;
+	margin-left:10px;
+}
+
+#mainleft input, #mainleft textarea{
+	width:75%;
+	margin: 5px;
+	padding:5px;
+}
+#mainleft label{
+	font-size:0.95em;
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+
+#mainleft input{
+	font-size: 1em;
+}
+
+#mainleft textarea{
+
+	font-size:0.77em;
+	vertical-align: top;
+}
+
+
+
 h1,h2,h3,h4{
 	text-align: center;
 }
@@ -1923,3 +1957,4 @@ height:20px;
 	position:relative;
 	padding:12px;
 }
+

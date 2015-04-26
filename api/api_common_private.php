@@ -29,7 +29,7 @@ function update_row_in_table($tablename, $data, $id){
   try{
     $statement->execute();
   }catch(PDOException $e){
-    $error = $e->getMessage();
+    $error .= $e->getMessage();
     return $error;
   }
 
@@ -37,3 +37,31 @@ function update_row_in_table($tablename, $data, $id){
 
 }
 
+function insert_row_in_table($tablename,$data){
+  global $pdo_db;
+  global $error;
+
+  $keys = array_keys($data);
+
+  $keys_prefixed = array();
+  foreach($keys as $i => $key){
+    $keys_prefixed []= ' :'.$key;
+  }
+
+  $query = 'INSERT INTO '.$tablename.'('.implode(', ',$keys).')'
+        .' VALUES ('.implode(', ',$keys_prefixed).');';
+
+  $statement = $pdo_db->prepare($query);
+
+  foreach($data as $key => $value){
+    $statement->bindValue($key,$value);
+  }
+
+  try {
+    $statement->execute();
+  } catch (PDOException $e){
+    $error .= $e->getMessage();
+    return $error;
+  }
+    return  $pdo_db->lastInsertId();
+}

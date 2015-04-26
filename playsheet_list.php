@@ -29,7 +29,11 @@ $get_playlists = "SELECT p.start_time AS start_time,
     INNER JOIN shows AS s
     ON s.id=p.show_id  ".
     " LEFT JOIN podcast_episodes as pe ON pe.id = p.podcast_episode ".
-    "WHERE show_id = ".users_show()." ORDER BY start_time DESC LIMIT 500";
+    is_numeric(users_show())?
+    "WHERE show_id = ".users_show()." ORDER BY start_time DESC LIMIT 500"
+    :
+    " ORDER BY start_time DESC LIMIT 500"
+    ;
 if($result = $db->query($get_playlists)){
 
   while($row = mysqli_fetch_assoc($result)){

@@ -61,6 +61,7 @@ episode start obj: {{episode.start_obj | date: 'medium'}}<br/>
 episode end obj: {{episode.end_obj | date: 'medium'}}<br/>
 episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 -->
+		{{episode}}
 	</div>
 
 </div>
@@ -146,7 +147,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 
 			$scope.makeEpisodes = function() {
-				$http.get('./podcasting/list.php?channel='+channel_id)
+				$http.get('./api/episodes/list.php?channel='+channel_id)
 					.success(function(data, status, headers, config){
 						$scope.status = '';
 

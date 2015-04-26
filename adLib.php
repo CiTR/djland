@@ -168,14 +168,7 @@ class AdLib {
 			else return false;
 		} else return false;
 	}
-	
-	function playAd($ad){
-		
-	}
-	
-	function wasPlayed($ad){
-		
-	}
+
 	function howManySlots($showBlock){
 
 		$dur = showBlock::getShowBlockLength($showBlock);

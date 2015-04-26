@@ -30,7 +30,17 @@ function print_menu(){
 
 	<?php if(is_member("addshow")) : 
 		if($enabled['shows']) :?>
-			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
+			<li class=drop><a href="shows.php?action=list">Shows</a>
+				<div class="dropdown_small">
+					<div class="small">
+						<ul>
+							<li><a href="shows.php?action=list">All Shows</a></li>
+							<li><a href="shows.php">Active Shows</a></li>
+							<li><a href="specialbroadcasts.php">Special Broadcasts</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
 		<?php endif; 
 		if($enabled['adscheduler']) : ?>
 			<li class=drop><a href="adscheduler.php">Manage Ads</a>

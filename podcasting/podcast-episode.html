@@ -95,6 +95,7 @@
     </h4></span>
 
 	</span>
+        dingy:{{episode}}
 	<span ng-controller='timepicker'  class='timepicker'>
 	<h4>edit start time</h4>
 	<timepicker ng-model="episode.time" ng-change="start_changed(episode.time)"></timepicker>
@@ -109,9 +110,9 @@
         <button class='play_end' ng-click="preview_end()" ng-hide="!editing">play end</button>
         <span ng-class="{playing: playing}"><image src='./images/speaker.png'></span>
         <br/>
-	</span>
+	</span>{{episode}}
     </div>
-<!--
+
     <pre>
         episode.date: {{episode.date}}
         episode.date_unix: {{episode.date_unix}}
@@ -122,7 +123,7 @@
         episode.end: {{episode.end}}
         episode.end_obj: {{episode.end_obj}}
 
-        </pre>-->
+        </pre>
 
 
     <br/>

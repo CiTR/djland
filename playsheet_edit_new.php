@@ -28,6 +28,7 @@ if ($actionSet && $action == 'edit' || $action == 'datadump') {
     $loaded_spokenword = mysqli_result_dep($result, 0, "spokenword");
     $loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
     $loaded_status = mysqli_result_dep($result, 0, "status");
+    $podcast_id = mysqli_result_dep($result, 0, "podcast_episode");
     if ($loaded_status == 1) $playsheet_is_draft = true; else $playsheet_is_draft = false;
     $loaded_crtc = mysqli_result_dep($result, 0, "crtc");
 
@@ -165,9 +166,9 @@ if (count($matches) > 1) {
 // Raw Data view
 printf("<br>");
 if ($SOCAN_FLAG) {
-  printf("<div class=playsheetSOCAN>");
+  printf("<div class=playsheetSOCAN ng-app='djLand'>");
 } else {
-  printf("<div class=playsheet>");
+  printf("<div class=playsheet ng-app='djLand'>");
 }
 if ($_GET['action'] == 'datadump') {
 
@@ -244,7 +245,7 @@ else {
 <center><h1>DJ PLAYSHEET</h1></center>
 
   <span id='ps_header'>
-<table border=0 align=center width=100%%>
+<table border=0 align=center width=100%% >
   <tr>
   <td>
   Show: <select id='showSelector' name="showtitle">
@@ -351,7 +352,7 @@ else {
   printf("<SELECT id=end_date_hour NAME=end_date_hour  >\n<OPTION>%02d", $end_date_hour);
   for ($i = 0; $i <= 23; $i++) printf("\n<OPTION value=%02d >%02d", $i, $i);
   printf("</SELECT>:");
-  printf("<SELECT id=end_date_min NAME=end_date_min  >\n<OPTION>%02d", $end_date_min);
+  printf("<SELECT id=end_date_min NAME=end_date_min >\n<OPTION>%02d", $end_date_min);
   for ($i = 0; $i <= 59; $i++) printf("\n<OPTION value=%02d>%02d", $i, $i);
   ?>
         </SELECT>]
@@ -699,16 +700,80 @@ else {
   <?php if ($enabled['podcast_tools']) { ?>
 
 
-    <div id='podcast-tools'>
+    <div id='podcast-tools' ng-controller="playsheet_podcast" >
       <h2>Podcast Tools</h2>
-      <center>
-        <button id='podcastMarker' type='button' title='Add Time Marker'>Add Time Marker</button>
-        <a href="http://playlist.citr.ca/podcasting/phpadmin/edit.php" target="_blank">link to podcast editor</a>
-        <span id='podcastTime'></span></center>
-      <hr>
-    </div>
+      <?php if (is_numeric($podcast_id)) {
 
-  <?php
+      //IF THIS PLAYSHEET HAS A PODCAST EPISODE
+      ?>
+
+        <center>This playsheet has a podcast. <br/>
+          <a href="podcast.php?id=<?php echo $podcast_id; ?>">
+            <br/>
+            Click here to leave this playsheet and edit it
+          </a>
+        </center>
+
+
+        <?php }  else {
+      //THIS PLAYSHEET DOESN'T HAVE A PODCAST EPISODE
+      ?>
+
+      <div>
+        <p>playsheet:
+        {{playsheet_time}}
+        </p>
+        <p>podcast:
+        {{podcast}}
+        </p>
+        <span class=button ng-click="init();">Initialize a new podcast episode</span>
+      </div>
+      <hr>
+      </div>
+
+      <script src="js/angular.js"></script>
+    <script type="text/javascript">
+      var djland = angular.module('djLand', []);
+
+      djland.controller('playsheet_podcast', ['$scope', function($scope){
+        $scope.playsheet_time = {};
+        $scope.playsheet_time.st_h = <?php echo $pl_date_hour;?>;
+        $scope.playsheet_time.st_m = <?php echo $pl_date_min;?>;
+        $scope.playsheet_time.end_h = <?php echo $end_date_hour;?>;
+        $scope.playsheet_time.end_m = <?php echo $end_date_min;?>;
+
+        $scope.hello = 'hello!';
+
+        $scope.init = function(){
+
+          var date = <?php echo $unix_start_time;?>;
+       //   date = new Date(date*1000);
+         // date = date.toISOString();
+
+          $scope.podcast = {
+
+            title:'',
+            subtitle:'',
+            summary:'',
+            date:date,
+            channel_id:'',
+            url:'',
+            length:'',
+            author:'',
+            active:0,
+            duration:0
+
+          }
+
+        }
+      }]);
+
+
+    </script>
+    <script src="js/angular-djland.js"></script>
+    <?php
+
+    }
   }// end of podcast tools creation block
 
 

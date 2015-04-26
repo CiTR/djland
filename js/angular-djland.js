@@ -33,8 +33,33 @@ djland.factory('apiService', function ($http, $location) {
           return $http.get(API_URL_BASE+ '/playlist?ID='+id);
         },
 
+        getFullPlaylistData: function (id) {
+          return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);
+        },
+
         getEpisodes: function () {
           return $http.get(API_URL_BASE + '/episodes/list.php');
+        },
+
+        getSpecialBroadcasts: function () {
+          return $http.get(API_URL_BASE + '/specialevents');
+        },
+
+        saveSpecialBroadcast: function (data) {
+          return $http.post(API_URL_BASE + '/specialevents/save.php', data);
+        },
+
+        createSpecialBroadcast: function (data) {
+          return $http.post(API_URL_BASE + '/specialevents/create.php', data);
+        },
+
+        getRecentSamPlays: function () {
+          return $http.get(API_URL_BASE + '/sam/recent.php');
+        },
+
+        getSamFromRange: function(min, max) {
+          return $http.post(API_URL_BASE + '/sam/range.php',angular.toJson({'min':min,'max':max}));
+
         }
 
 
@@ -165,3 +190,55 @@ djland.controller('episodeCtrl', ['$scope','apiService', function($scope, apiSer
 
 }]);
 
+
+
+djland.controller('datepicker', ['$scope','$filter',function($scope, $filter) {
+
+
+  $scope.today = function() {
+    $scope.dt = new Date();
+  };
+
+  $scope.clear = function () {
+    $scope.dt = null;
+  };
+
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened = true;
+  };
+
+  $scope.format = 'medium';
+
+  $scope.date_change = function(){
+    //  $scope.$parent.new_sb.start.updateTimeObjs();
+  }
+
+}]);
+
+djland.filter('range', function($filter) {
+  return function(input, min, max) {
+    min = parseInt(min); //Make string input int
+    max = parseInt(max);
+    for (var i=min; i<max; i++)
+      input.push($filter('pad')(i,2));
+    return input;
+  };
+});
+
+djland.filter('pad', function () {
+  return function (n, len) {
+    var num = parseInt(n, 10);
+    len = parseInt(len, 10);
+    if (isNaN(num) || isNaN(len)) {
+      return n;
+    }
+    num = ''+num;
+    while (num.length < len) {
+      num = '0'+num;
+    }
+    return num;
+  };
+});

@@ -13,29 +13,6 @@ require_once("headers/menu_header.php");
 
   <style type="text/css">
 
-    #mainpodcast {
-      font-size:1.10em;
-      line-height:1.3em;
-      width:90%;
-      position:relative;
-      margin-left:10px;
-    }
-
-    #mainpodcast input, #mainpodcast textarea{
-
-      width:100%;
-      margin: 5px;
-      padding:5px;
-    }
-
-    #mainpodcast input{
-      font-size: 1em;
-    }
-
-    #mainpodcast textarea{
-
-      font-size:0.77em;
-    }
     #popup{
       position:fixed;
       bottom:0;
@@ -69,7 +46,7 @@ require_once("headers/menu_header.php");
 
 <?php print_menu(); ?>
 
-<div ng-app="djLand" id="mainpodcast">
+<div ng-app="djLand" id="mainleft">
 
   <div ng-controller="episodeList">
     <br/><br/>
