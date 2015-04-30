@@ -95,7 +95,7 @@ function membership_menu(){
 global $djland_permission_levels;
 ?>
 <ul id ='tab-nav'>
-	<?php if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
+	<?php if(permission_level() >= $djland_permission_levels['staff']) : ?>
 		<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
 		<li class = 'nodrop inactive-tab member_action' id='view' name='1' value='view'>View Member</li>
 		<li class = 'nodrop inactive-tab member_action' id='report' value='report'>Report</li>

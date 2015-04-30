@@ -26,10 +26,11 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 	</head>
 	<body>
 		<?php print_menu();
-		membership_menu(); 
+		membership_menu();
 		 ?>
-		<div id='membership' >
-		</div>
+        <div id="data" style="display:none" ></div>
+		<ul id='membership' >
+		</ul>
 	</body>
 </html>
 <?php }else{

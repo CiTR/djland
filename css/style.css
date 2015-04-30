@@ -6,7 +6,13 @@ background-repeat: repeat;
 font-family: Helvetica,Arial;
 color:white;
 }
-
+ul{
+    padding:0px;
+    margin:0px;
+}
+li{
+    margin:0px;
+}
 h1,h2,h3,h4{
 	text-align: center;
 }
@@ -68,8 +74,9 @@ input, select, textarea, option{
     -webkit-border-radius: 10px;
 }
 #tab-nav{
+    position:relative;
 	list-style:none;
-    width:940px;
+    width:1024px;
     margin:0px auto 0px auto;
     min-height:35px;
     height:auto;
@@ -79,9 +86,13 @@ input, select, textarea, option{
 #nav li, #tab-nav li{
 	float:left;
 	position:relative;
-	padding: 4px 5px 4px 5px;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:4px;
+    padding-bottom: 4px;
 	text-align:center;
-	margin-right:30px;
+    margin-left:10px;
+	margin-right:10px;
 	margin-top:7px;
 	border:none;
 }
@@ -458,20 +469,28 @@ button#submit_user.red{
 	margin-bottom:2px;
 }
 #membership{
-	width:916px;
+	width:1024px;
 	background-color: grey;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top:-2px;
-	margin-bottom:25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -2px;
 	z-index: 3;
 }
 #membership_header{
+    width: 95%;
+    height:auto;
+    list-style: none;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	width:100%;
+    margin-top:0px;
 	}
+#membership_header li{
+    float:left;
+    position:relative;
+    margin-right:2px;
+    border:none;
+}
 #search_container{
 	width:auto;
 	display:inline-block;
@@ -510,6 +529,9 @@ button#submit_user.red{
 #membership_table{
 	position:relative;
 	margin-left:30px;
+}
+#membership_table tr td{
+    padding-right:5px;
 }
 .member_row:hover{
 	cursor: pointer; cursor: hand;
@@ -1294,7 +1316,7 @@ width: 55px;
 
 div#ui-datepicker-div, div#up-datepicker-div * {
 	position:relative;
-	margin-top:-150px;
+	margin-top:-100px;
 	z-index:50 !important;
 }
 

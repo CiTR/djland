@@ -9,7 +9,8 @@ var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'
 'Sports':'sports','Tabling':'tabling','Web and Tech':'tech',"Other":"other"};
 
 var provinces = ["AB","BC","MAN","NB","NFL","NS","NVT","NWT","ON","QC","SASK","YUK"];
-
+var member_types = {'Student':'UBC Student','Community':'Community Member','Staff':'Staff'};
+var permission_levels = {'administrator':'Administrator','staff':'Staff','workstudy':'Workstudy','volunteer':'Volunteer Head','dj':'DJ','member':'Basic Member'};
 
 //PAGE CREATION
 $(document).ready ( function() {
@@ -204,18 +205,20 @@ function add_handlers(){
 		}else{
 			$('#search_container').append("<select id=search_value></select>");
 			var searchval = $('#search_value');
-			search_type.append("<option value=all>All</option>")
+			searchval.append("<option value=all>All</option>")
 			for(var interest in interests_list){
 				searchval.append("<option value="+interests_list[interest]+">"+interest+"</option>");
 			}
 		}
 	});
 
-    //Listener for
+    //NOTE: the off/on listener style was the ONLY way this worked. Standard JQuery ".click( function ..." did not work
+
+    //Listener for viewing individual members from clicking on their row
     $('#membership').off('click','.member_row_element').on('click','.member_row_element',function(e){
         change_view('view','init',this.parentNode.getAttribute('name'));
     });
-
+    //Listener for getting ID's when deleting
     $('#membership').off('click','#delete_button').on('click','#delete_button',function(e){
         var members_to_delete = [];
         var members_names = [];
@@ -246,23 +249,6 @@ function add_handlers(){
         $(this.closest('tr')).toggleClass('delete');
 
     });
-
-
-	//PAID SEARCH TOGGLE
-	$('.paid_select').unbind().click( function(){
-		if( this.id =='paid1'){
-			$('#paid2').removeAttr("checked");
-			$('#paid3').removeAttr("checked");
-		}
-		else if(this.id =='paid2'){
-			$('#paid1').removeAttr("checked");
-			$('#paid3').removeAttr("checked");
-		}
-		else{
-			$('#paid1').removeAttr("checked");
-			$('#paid2').removeAttr("checked");
-		}
-	});
 
 	//MEMBER YEAR RELOAD
 	$('#member_year_select').unbind().change( function(){
@@ -382,7 +368,7 @@ function load_member_year(id,year){
 						dataType: "json",
 						async: false
 						}).success(function(data){
-							if( !$('#paid').length ){
+							if( $('#paid').length <= 0 ){
 								
 								var interests = $('#member_interests');
 								var interests_data = data[0];
@@ -439,21 +425,13 @@ function manage_members(action_,type_,value_){
 		switch(action){
 			case 'init':
 					document.getElementById("membership").innerHTML = " ";
-					$('#membership').append("<div id='membership_header'></div>");
-					$('#membership_header').append("Search by \
-						<select id='search_type'> \
-						<option value='name'> Name </option> \
-						<option value='interest'> Interest </option> \
-						</select>\
-						<div id='search_container'><input id='search_value' placeholder='Enter a name' /></div>\
-						Order By:<select id='sort_select'> \
-							<option value='id'> Date Added </option>\
-							<option value='lastname'> Last Name </option> \
-						</select> \
-						Filter by Year: <select id='year_select'><option value='all'>don't filter</option></select><br/> \
-						Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
-						Paid<input id='paid2' class='paid_select' type='radio' /> \
-						Not Paid<input id='paid3' class='paid_select' type='radio' />");
+					$('#membership').append("<ul id='membership_header'></ul>");
+					var membership_header = $('#membership_header');
+                    membership_header.append("<li>Search by <select id='search_type'><option value='name'> Name </option><option value='interest'> Interest </option></select> </li>");
+					membership_header.append("<li id ='search_container'><input id='search_value' placeholder='Enter a name' /></li>");
+                    membership_header.append("<li>Order By:<select id='sort_select'><option value='id'> Date Added </option><option value='lastname'> Last Name </option></select>");
+					membership_header.append("<li>Filter by Year: <select id='year_select'><option value='all'>All</option></select></li>");
+                membership_header.append("<li>Paid Status: <select id='paid_select'><option value='both'>Both</option><option value='1'>Paid</option><option value='0'>Not Paid</option></select></li>");
 						actiontemp = 'get';
 						typetemp = 'year';
 					$.ajax({
@@ -470,19 +448,13 @@ function manage_members(action_,type_,value_){
 						
 					});
 
-					$('#membership_header').append("<button class='member_submit' name='search'>Search</button>");
+					$('#membership_header').append("<li><button class='member_submit' name='search'>Search</button></li>");
 					$('#membership').append("<div id='member_result'></div>");
 					add_handlers();
 					manage_members('search','name');
 				break;
 			case 'search':
-				if(getCheckbox('paid3')){
-					paid='0';
-				}else if(getCheckbox('paid2')){
-					paid='1';
-				}else{
-					paid='both';
-				}
+                paid = getVal('paid_select');
 				year = getVal('year_select');				
 				sort = getVal('sort_select');
 				$.ajax({
@@ -510,10 +482,10 @@ function manage_members(action_,type_,value_){
 							$("#row"+$j).append("<td id='phone_"+data[$j].id+"'class='member_row_element phone'>"+data[$j].primary_phone+"</td>");
 							if(year != 'all'){
 								if(data[$j].paid == 1){
-									$("#row"+$j).append("<td class='member_row_element'>yes</td>");
+									$("#row"+$j).append("<td class='member_row_element'>Yes</td>");
 								}
 								else{
-									$("#row"+$j).append("<td class='member_row_element'>no</td>");
+									$("#row"+$j).append("<td class='member_row_element'>No</td>");
 								}
 								$("#row"+$j).append("<td class='member_row_element'>"+data[$j].membership_year+"</td>");
 							}
@@ -600,12 +572,17 @@ function manage_members(action_,type_,value_){
 								$('#is_new').append("<option value='new'>New</option><option value='returning'>Returning</option>");
 								
 							}
-							$('#membertype').append("<select id='member_type'> \
-								<option value='"+data[0].member_type+"'>"+data[0].member_type+"</option> \
-								<option value='Student'>UBC Student</option> \
-								<option value='Community'>Community</option> \
-								<option value='Staff'>Staff</option> \
-							</select>");
+
+                            //Member Type Select : UBC Student, Community, Staff
+                            $('#membertype').append("<select id='member_type'></select>");
+                            var member_type_select = $('#member_type');
+                            for(var member_type in member_types){
+                                if(data[0].member_type == member_types[member_type]){
+                                    member_type_select.append("<option value="+member_types[member_type]+" selected>"+member_types[member_type]+"</option>")
+                                }else{
+                                    member_type_select.append("<option value="+member_types[member_type]+">"+member_types[member_type]+"</option>");
+                                }
+                            }
 							//ALUMNI STATUS
 							if(data[0].alumni == 1){
 								$('#row4').append("<div class='col5'>Alumni:</div><div class='col5' > Yes<input id='alumni1' class='alumni_select' type='radio' checked='checked' /> \
@@ -723,8 +700,10 @@ function manage_members(action_,type_,value_){
 							
 							var levels = data[0];
 							for(var level in levels){
-								if(level != 'userid' && level != 'username') permissions.append("<div class='col5'>"+level+":<input type=checkbox id=is_"+level+" "+ (levels[level]==1 ? "checked=checked":"")+"/></div>");	
-							}
+								if(level != 'userid' && level != 'username') {
+                                    permissions.append("<div class='col5'>" + permission_levels[level] + ":<input type=checkbox id=is_" + level + " " + (levels[level] == 1 ? "checked=checked" : "") + "/></div>");
+                                }
+                            }
 							username = data[0].username;
 						}).fail(function(){
 							
@@ -800,24 +779,25 @@ function manage_members(action_,type_,value_){
 						d2.setDate(d2.getDate() - 7);
 						var week_ago = ('0' + (d2.getMonth()+1)).slice(-2) + "/"+('0' + d2.getDate()).slice(-2) + "/" + d2.getFullYear();
 						document.getElementById("membership").innerHTML = " ";
-						$("#membership").append("<div id='membership_header'>Interest:");
-
-						$('#membership_header').append("<select id=search_value></select>");
+						$("#membership").append("<ul id='membership_header'></ul>");
+                        var membership_header = $('#membership_header');
+                        membership_header.append("<li id='interest'>List:</li>");
+                        $('#interest').append("<select id=search_value></select>");
 							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling','Web and Tech'];
 							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling','tech'];
 							$searchval = $('#search_value');
 							for($i = 0; $i< title.length; $i++){
 								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
 							}
-						
-						$("#membership_header").append("Paid Status: Both<input id='paid1' class='paid_select' type='radio' checked='checked' /> \
-						Paid<input id='paid2' class='paid_select' type='radio' /> \
-						Not Paid<input id='paid3' class='paid_select' type='radio' /> \
-						Filter by Year: <select id='year_select'><option value='all'>Don't Filter</option></select><br/>");
-						$("#membership_header").append("<laber for='date_filter'>Filter by join date</label><input id='date_filter' type='checkbox'/>");
-						$("#membership_header").append("<label for='from'></label><input type='text' id='from' name='from' value='"+week_ago+"' />");
-						$("#membership_header").append("<label for='to'> to </label><input type=text id='to' name='to' value='"+today+"' />");
-						
+                        membership_header.append("<li>Paid Status: <select id='paid_select'><option value='both'>Both</option><option value='1'>Paid</option><option value='0'>Not Paid</option></select></li>");
+
+                        membership_header.append("<li>Year: <select id='year_select'><option value='all'>All</option></select></li>");
+                        membership_header.append("<li><ul id='join_filter'></ul></li>");
+                        $('#join_filter').append("<li>Joined<input id='date_filter' type='checkbox'/></li>");
+                        $('#join_filter').append("<li>from<input type='text' id='from' name='from' value='"+week_ago+"' /></li>");
+                        $('#join_filter').append("<li>to<input type=text id='to' name='to' value='"+today+"' /></li>");
+
+
 						var actiontemp = 'get';
 						var typetemp = 'year';
 					$.ajax({
@@ -833,19 +813,13 @@ function manage_members(action_,type_,value_){
 					}).fail(function(){
 						
 					});
-						$('#membership_header').append("<button class='member_submit' name='mail'>Generate Email List</button>");
+						$('#membership_header').append("<li><button class='member_submit' name='mail'>Generate Email List</button></li>");
 						$('#membership').append("<div id='member_result'></div>");
 						add_handlers();
 						break;
 					case 'generate':
 						//console.log('mail generate');
-						if(getCheckbox('paid3')){
-						paid='0';
-						}else if(getCheckbox('paid2')){
-							paid='1';
-						}else{
-							paid='both';
-						}
+						paid = getVal('paid_select');
 						//get year
 						year = getVal('year_select');	
 						sort = 'email';
