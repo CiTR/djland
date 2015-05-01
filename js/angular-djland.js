@@ -60,6 +60,10 @@ djland.factory('apiService', function ($http, $location) {
         getSamFromRange: function(min, max) {
           return $http.post(API_URL_BASE + '/sam/range.php',angular.toJson({'min':min,'max':max}));
 
+        },
+
+        savePlaylist: function(data) {
+          return $http.post(API_URL_BASE + '/playlist/save.php', data);
         }
 
 

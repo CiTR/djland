@@ -33,6 +33,8 @@ function finish(){
 
     if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
 
+    $data = convertEntities($data);
+/*
     foreach($data as $i => $v){
 
       if( defined('ENT_HTML5')){
@@ -44,7 +46,7 @@ function finish(){
         if(!is_array($v)) $data[$i] = html_entity_decode($v, ENT_QUOTES);
 
       }
-    }
+    }*/
 
     header('Access-Control-Allow-Origin: *',false);
     header("Content-Type:application/json; charset=utf-8",false);
@@ -62,12 +64,20 @@ function finish(){
   return;
 }
 
-function convertEntities($string){
-  if( defined('ENT_HTML5')) {
-    return html_entity_decode(html_entity_decode($string, ENT_QUOTES), ENT_HTML5);
-  } else {
-    return html_entity_decode($string,ENT_QUOTES);
-  }
+function convertEntities($data){
+  if( is_string($data)){
+    if( defined('ENT_HTML5')) {
+       return html_entity_decode(html_entity_decode($data, ENT_QUOTES), ENT_HTML5);
+    } else {
+      return   html_entity_decode($data,ENT_QUOTES);
+    }
+  } else if(is_array($data)){
+      foreach($data as $i => $v){
+        $data[$i] = convertEntities($data[$i]);
+      }
+    }
+  return $data;
+
 }
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
@@ -97,6 +107,47 @@ function get_array($table, $idfield = 'id', $fields = 'basic'){
 
 }
 
+function singleRowByID($table, $id){
+  global $db;
+  global $error;
+
+  $q = 'SELECT * from '.$table.' where id ='.$id;
+  if ($error == '' && $result = mysqli_query($db, $q)){
+    return mysqli_fetch_assoc($result);
+  } else {
+    return false;
+  }
+}
+
+function getIDbyRow($table,$array){
+  global $db;
+  global $error;
+
+  $q = 'SELECT id from '.$table.' WHERE ';
+
+  $q_values = array();
+
+  foreach ($array as $key => $val ){
+    $q_values [] = $key.' = "'.$val.'" ';
+  }
+  $q_values = implode(' AND ', $q_values);
+
+  $q .= $q_values;
+
+  if ($error == '' && $result = mysqli_query($db, $q)){
+    if (mysqli_num_rows($result) == 0) {
+      return false;
+    }
+    $row = mysqli_fetch_assoc($result);
+    if (array_key_exists('id', $row)){
+      return $row['id'];
+    } else {
+      $error .= 'key id not found ';
+      return false;
+    }
+
+  }
+}
 // used to retreive podcast audio
 $archive_tool_url = 'http://archive.citr.ca';
 $archive_access_url = $archive_tool_url.

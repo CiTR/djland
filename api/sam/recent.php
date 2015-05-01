@@ -31,9 +31,9 @@ $rawdata = array();
     $rawdata[$i]['durMin'] = intval($row['duration'] / 60000);
     $rawdata[$i]['durSec']= ($row['duration'] / 1000) % 60;
 
-    $rawdata[$i]['hour'] = date("g", strtotime($row['date_played']));
+    $rawdata[$i]['hour'] = date("H", strtotime($row['date_played']));
     $rawdata[$i]['minute'] = date("i", strtotime($row['date_played']));
-    $rawdata[$i]['pmCheck'] = date("a", strtotime($row['date_played']));
+    $rawdata[$i]['second'] = date("s", strtotime($row['date_played']));
   }
   $data = $rawdata;
   finish();

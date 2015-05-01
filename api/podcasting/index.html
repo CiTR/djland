@@ -21,7 +21,7 @@ This directory contains scripts that:
   revert steps:
 
     truncate podcast_episodes, podcast_channels
-    delete podcast_channel_id in every show
-    delete episode_id in every playlist
+    delete podcast_channel_id in every show ( UPDATE shows set podcast_channel_id = NULL; )
+    delete episode_id in every playlist (UPDATE playlists SET podcast_episode = NULL; )
 
   </pre>

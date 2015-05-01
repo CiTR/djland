@@ -20,6 +20,9 @@ if ($result = mysqli_query($db, $query) ){
 	foreach($episodes as $i => $episode){
 
 		$episodes[$i]['date_unix'] = strtotime($episode['date']);
+		foreach($episode as $j => $val){
+			$episodes[$i][$j] = convertEntities($val);
+		}
 
 	}
 /*
@@ -29,6 +32,8 @@ if ($result = mysqli_query($db, $query) ){
 
 */
 
-	echo json_encode($episodes);
+//	echo json_encode($episodes);
+	$data = $episodes;
+	finish();
 } else { echo 'db prob';}
 

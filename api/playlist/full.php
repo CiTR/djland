@@ -38,10 +38,8 @@ $rawdata = array();
 
 
 $query_for_playsheet = 'SELECT playlists.*,
-            podcast_episodes.*,
             hosts.name as host
             FROM playlists
-            LEFT JOIN podcast_episodes on playlists.id = podcast_episodes.id
             LEFT JOIN hosts on hosts.id = playlists.host_id
             WHERE playlists.id = '.$id;
 
@@ -52,6 +50,16 @@ if ( $result = mysqli_query($db,$query_for_playsheet)){
   finish();
 }
 
+if (is_numeric($rawdata['playlist']['podcast_episode'])){
+
+    $query_for_podcast = 'SELECT * FROM podcast_episodes
+            WHERE id = '.$rawdata['playlist']['podcast_episode'];
+
+    if ($result = mysqli_query($db,$query_for_podcast)){
+      $rawdata['playlist']['podcast'] = mysqli_fetch_assoc($result);
+    }
+
+}
 
 $query_for_ads = 'SELECT
             *
@@ -70,19 +78,28 @@ if ($result = mysqli_query($db,$query_for_ads)){
 
 
 
-$query_for_songs = 'SELECT playlists.id,
-          playitems.*,
-          songs.*
-          FROM playlists
-          LEFT JOIN playitems on playlists.id = playitems.playsheet_id
-          LEFT JOIN songs on playitems.song_id = songs.id
-          WHERE playlists.id ='.$id;
+$query_for_songs = 'SELECT *
+
+          FROM playitems
+          WHERE playitems.playsheet_id ='.$id.'
+          ORDER BY id DESC';
 
 
 if ( $result = mysqli_query($db, $query_for_songs) ) {
   $rawdata['plays'] = array();
+
   while ($row = mysqli_fetch_assoc($result)) {
+
+    $song_q = 'SELECT * from songs where ID = '.$row['song_id'];
+
+    if ($result2 = mysqli_query($db, $song_q)){
+      while ($row2 = mysqli_fetch_assoc($result2)){
+        $row['song'] = $row2;
+      }
+    }
+
     $rawdata['plays'] []= $row;
+
 
   }
 
@@ -92,12 +109,18 @@ if ( $result = mysqli_query($db, $query_for_songs) ) {
       $rawdata['plays'][$i][$bool] = ($play[$bool] == 1)? true : false;
 
     }
+    foreach($rawdata['plays'][$i]['song'] as $j => $song_item){
+      $rawdata['plays'][$i]['song'][$j] = convertEntities($song_item);
+    }
 
-    $rawdata['plays'][$i]['artist'] = convertEntities($play['artist']);
-    $rawdata['plays'][$i]['title'] = convertEntities($play['title']);
-    $rawdata['plays'][$i]['song'] = convertEntities($play['song']);
-    $rawdata['plays'][$i]['composer'] = convertEntities($play['composer']);
+
     $rawdata['plays'][$i]['lang'] = convertEntities($play['lang']);
+error_reporting(E_ALL);
+    $rawdata['plays'][$i]['insert_song_start_hour'] = str_pad(strval($play['insert_song_start_hour']), 2, "0", STR_PAD_LEFT);
+    $rawdata['plays'][$i]['insert_song_start_minute'] = str_pad(strval($play['insert_song_start_minute']), 2, "0", STR_PAD_LEFT);
+    $rawdata['plays'][$i]['insert_song_length_minute'] = str_pad(strval($play['insert_song_length_minute']), 2, "0", STR_PAD_LEFT);
+    $rawdata['plays'][$i]['insert_song_length_second'] = str_pad(strval($play['insert_song_length_second']), 2, "0", STR_PAD_LEFT);
+
   }
 
   foreach($rawdata['ads'] as $i => $ad){
@@ -108,8 +131,7 @@ if ( $result = mysqli_query($db, $query_for_songs) ) {
 
     if(is_numeric($ad['name'])){
 
-
-      $ad_q = "SELECT artist, title FROM songlist WHERE ID = '".$ad['name']."'";
+      $ad_q = "SELECT artist, title FROM songlist WHERE ID = ".$ad['name'];
           if( $result = mysqli_query($mysqli_sam,$ad_q)){
             $sam_ad = $result->fetch_assoc();
             if (is_array($sam_ad)) {
@@ -144,22 +166,20 @@ if ( $result = mysqli_query($db, $query_for_songs) ) {
   $rawdata['playlist']['end_time'] = $end_unix;
 
 
-  $rawdata['playlist']['spokenword_hours'] = $rawdata['playlist']['spokenword_duration']/60;
   $rawdata['playlist']['spokenword_minutes'] = $rawdata['playlist']['spokenword_duration']%60;
 
+  $rawdata['playlist']['spokenword_hours'] = ($rawdata['playlist']['spokenword_duration'] - $rawdata['playlist']['spokenword_minutes'])/60;
 
-//  $rawdata['playlist']['start_time'] = strtotime($rawdata['playlist']['start_time']);
+  $rawdata['playlist']['id'] = $id;
+
+
+  $rawdata['playlist']['start_time'] = Date(DATE_RFC2822,strtotime($rawdata['playlist']['start_time']));
+  $rawdata['playlist']['end_time'] = Date(DATE_RFC2822,strtotime($rawdata['playlist']['end_time']));
 
 } else {
   $error .= '<br/>'.mysqli_error($db).'<br/>'.$query;
 }
-
-if(isset($rawdata['episode_audio']) && $rawdata['episode_audio'] == ""){
-  $rawdata['episode_description'] = '';
-  $rawdata['episode_subtitle'] = '';
-  $rawdata['episode_title'] = '';
-  $rawdata['episode_audio'] = '';
-}
+unset($rawdata['playlist']['edit_date']);
 
 $data = $rawdata;
 

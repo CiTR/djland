@@ -70,7 +70,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
   .music_row {
 
-    width: 990px;
+    max-width: 990px;
     /*
           background-color:rgba(150,150,150,0.8);*/
   }
@@ -101,7 +101,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
   }
 
   .playsheet_block, .spokenword_block {
-    width: 1000px;
+    max-width: 1000px;
     min-height:500px;
     position:relative;
     margin-left: auto;
@@ -156,6 +156,17 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     opacity: 0.5;
   }
 
+
+  span.box.background:hover {
+    background-image: url('images/BACKGROUND.png');
+    opacity: 0.5;
+  }
+
+  span.box.theme:hover {
+    background-image: url('images/THEME.png');
+    opacity: 0.5;
+  }
+
   span.box.new.filled {
     background-image: url('images/pl.png');
     opacity: 1;
@@ -186,9 +197,38 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     opacity: 1;
   }
 
+  span.box.background.filled {
+    background-image: url('images/BACKGROUND.png');
+    opacity: 1;
+  }
+
+  span.box.theme.filled {
+    background-image: url('images/THEME.png');
+    opacity: 1;
+  }
+
   span.box {
     background-color: transparent;
     background-image: none;;
+  }
+
+  li.socan{
+width:1200px;
+  }
+
+  .socan select, .socan button, .socan input, .music_row_socan input, .music_row_socan button{
+    font-size:0.75em;
+    max-width:80px;
+  }
+
+  .socan_cue select{
+    width:46px;
+
+  }
+  .playsheet_block_socan, .music_row_socan, .music_row_socan .music_row{
+    max-width:1200px;
+    margin-left:10px;
+    padding-left:10px;
   }
 
   input[type=checkbox] {
@@ -288,11 +328,15 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
       <div id="left">
         Playsheet Type: <select ng-model="playsheet.type">
-          <option value="syndicated">syndicated</option>
-          <option value="live">live</option>
-          <option value="rebroadcast">rebroadcast</option>
-          <option value="simulcast">simulcast</option>
+          <option value="Syndicated">Syndicated</option>
+          <option value="Live">Live</option>
+          <option value="Rebroadcast">Rebroadcast</option>
+          <option value="Simulcast">Simulcast</option>
         </select>
+        <span ng-show="playsheet.type == 'Rebroadcast'">
+        Load from Playsheet: <select ng-model="desired_playsheet" ng-options="available_playsheets"></select>
+          <button ng-click="loadPlays">Select this Playsheet</button>
+          </span>
         <br/>Show:
         <select>
           <!--ng-options="show as show.name for show in active_shows"-->
@@ -312,49 +356,62 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
                                   ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</span>
       </div>
       <div id="right">
+        <div ng-controller="datepicker" >
 <pre>
         Date: {{playsheet.start_time | date: 'mediumDate'}}
         Start Time: {{playsheet.start_time | date: 'mediumTime'}}
         End Time: {{playsheet.end_time | date: 'mediumTime'}}
 
-        Start Date Obj: {{start_date_obj}}
-        End Date Obj: {{end_date_obj}}
+        playsheet.start_time: {{playsheet.start_time | date:'medium'}}
+        playsheet.end_time: {{playsheet.end_time | date:'medium'}}
         StartHour: {{start_hour}}
+        Socan: {{socan}}  (type: {{typeofsocan}})
+        datepicker: {{datepicker_date}}
 </pre>
         Start Time:
         [<select ng-model="start_hour" ng-options="n for n in [] | range:0:24"
-                 ng-change="start_date_obj.setHours(start_hour);"></select> :
+                 ng-change="playsheet.start_time.setHours(start_hour);"></select> :
         <select ng-model="start_minute" ng-options="n for n in [] | range:0:60"
-                ng-change="start_date_obj.setMinutes(start_minute);"></select>]
+                ng-change="playsheet.start_time.setMinutes(start_minute);"></select>]
 
         End Time:
         [<select ng-model="end_hour" ng-options="n for n in [] | range:0:24 "
-                 ng-change="end_date_obj.setHours(end_hour);"></select> :
+                 ng-change="playsheet.end_time.setHours(end_hour);"></select> :
         <select ng-model="end_minute" ng-options="n for n in [] | range:0:60"
-                ng-change="end_date_obj.setMinutes(end_minute);"></select>]
+                ng-change="playsheet.end_time.setMinutes(end_minute);"></select>]
 
-        <button ng-click="edit">change date</button>
+          <input class="date_picker" type="text" datepicker-popup="{{format}}"
+                 ng-model="playsheet.start_time"  is-open="opened"
+                 ng-required="true" close-text="Close" ng-hide="false" />
+        <button ng-click="open($event)" ng-change="date_change()" ng-model="datepicker_date">change date</button>
+        </div>
       </div>
     </div>
-    <br/><br/>
+    <br/>
+    <span ng-click="socan=!socan;" >{{socan? 'Hide' : 'Show'}} Socan Fields</span><br/>
 
     <h2>Music <span ng-click="music_hidden = !music_hidden;">{{music_hidden? '( show )' : '( hide )'}}</span></h2>
 
-    <div class="playsheet_block" ng-hide="music_hidden">
+    <div class="playsheet_block" ng-hide="music_hidden" ng-class="{playsheet_block_socan: socan}">
 
 
-      <div class="music_row_heading music_row">
-        <input value="artist" class="music" readonly></input> &nbsp; <input value="album" class="music"
-                                                                            readonly></input> &nbsp; <input value="song"
-                                                                                                            class="music"
-                                                                                                            readonly></input>
-        &nbsp;&nbsp;
+      <div class="music_row_heading music_row" ng-class="{music_row_socan: socan}">
+        <input value="artist" class="music" readonly></input>
+        <input value="album" class="music" readonly></input>
+        <input value="song" class="music" readonly></input>
+        <input ng-show="socan" value="composer" class="music" readonly></input>
+        <span ng-show="socan" class="socan_cue">Time Start (H:M)&nbsp; |&nbsp; Duration (M:S)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
         <span class="box new filled">&nbsp;</span>
         <span class="box cancon filled" ">&nbsp;</span>
         <span class="box femcon filled">&nbsp;</span>
         <span class="box instrumental filled">&nbsp;</span>
         <span class="box partial filled">&nbsp;</span>
         <span class="box hit filled">&nbsp;</span>
+
+        <span ng-show="socan" class="box theme filled">&nbsp;</span>
+        <span ng-show="socan" class="box background filled">&nbsp;</span>
+
         <span class="crtc"> crtc </span>
         <input class="lang" value="language"></input>
         <button class="tools">+</button>
@@ -362,12 +419,26 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
       </div>
 
       <ul ui-sortable ng-model="playsheet.plays">
-        <li ng-repeat="row in playsheet.plays track by $index" class="music_li">
-          <div class="music_row">
-            <input ng-model="row.artist" class="music" required="true"></input> <input ng-model="row.title"
-                                                                                       class="music"
-                                                                                       required="true"></input>
-            <input ng-model="row.song" class="music" required="true"></input>
+        <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
+          <div class="music_row" ng-class="{music_row_socan: socan}">
+            <input ng-model="row.song.artist" class="music" >
+            <input ng-model="row.song.title"
+                   class="music" required="true">
+            <input ng-model="row.song.song" class="music" >
+            <input ng-model="row.song.composer" class="music" ng-show="socan"></input>
+
+            <span ng-show="socan" class="socan_cue">
+
+                <select ng-model="row.insert_song_start_hour" ng-options="n for n in [] | range:0:24 "
+                        ng-change="updateNow(row);"></select>:
+                <select ng-model="row.insert_song_start_minute" ng-options="n for n in [] | range:0:60 "
+                        ng-change="updateNow(row);"></select>
+                <button ng-click="cue(row)">CUE</button>
+
+                <select ng-model="row.insert_song_length_minute" ng-options="n for n in [] | range:0:60 "></select>:
+                <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60 "></select>
+                <button ng-click="end(row)">END</button>
+            </span>
             <span class="box new" ng-model="row.is_playlist" ng-class="{filled: row.is_playlist}"
                   ng-click="row.is_playlist = !row.is_playlist;">&nbsp;</span>
             <span class="box cancon" ng-model="row.is_canadian" ng-class="{filled: row.is_canadian}"
@@ -380,23 +451,24 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
                   ng-click="row.is_part = !row.is_part;">&nbsp;</span>
             <span class="box hit" ng-model="row.is_hit" ng-class="{filled: row.is_hit}"
                   ng-click="row.is_hit = !row.is_hit;">&nbsp;</span>
-
-
-            <span class="box hit" ng-model="row.is_hit" ng-class="{filled: row.is_hit}"
-                  ng-click="row.is_hit = !row.is_hit;">&nbsp;</span>
-
+            <span ng-show="socan">
+            <span class="box theme" ng-model="row.is_theme" ng-class="{filled: row.is_theme}"
+                  ng-click="row.is_theme = !row.is_theme;">&nbsp;</span>
+              <span class="box background" ng-model="row.is_background" ng-class="{filled: row.is_background}"
+                      ng-click="row.is_background = !row.is_background;">&nbsp;</span>
+            </span>
 
             <span class="crtc" ng-model="row.crtc_category"
-                  ng-click="row.crtc_category == 30? row.crtc_category = 20 : row.crtc_category = 30;">{{row.crtc_category}}</span>
-            <input class="lang" ng-model="row.lang"></input>
+                  ng-click="row.crtc_category == '30'? row.crtc_category = '20' : row.crtc_category = '30';">{{row.crtc_category}}</span>
+            <input class="lang" ng-model="row.lang">
             <span class="tools" ng-click="add($index)">&nbsp;+&nbsp;</span>
             <span class="tools" ng-click="remove($index)">&nbsp;-&nbsp;</span>
-            <span class="dragzone">:::</span>
-
-            <!--</div>-->
+            <span class="dragzone">:::</span><br/>
           </div>
         </li>
       </ul>
+
+            <span class="tools right" ng-click="add(0)" ng-show="playsheet.plays.length == 0">&nbsp;+&nbsp;music</span>
     </div>
 
     <div class="spokenword_block">
@@ -434,7 +506,19 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
     <podcast-editor></podcast-editor>
 
-      <div class="playsheet_block"><center><input id="submit" type="submit"></input></center></div>
+      <div class="playsheet_block">
+
+
+        <center>
+
+
+
+          <button id="submit" ng-click="save();">save</button>
+
+        <br/>
+            <div>{{message}}</div>
+        </center>
+      </div>
     </div>
 
 
@@ -446,7 +530,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
       <div id="sam_title"><span ng-click="samVisible = false;"> X </span>&nbsp;&nbsp;Sam Plays&nbsp;&nbsp;&nbsp;</div>
       <br/>
       <br/>
-      <button ng-click="samRange()">add all plays from {{start_date_obj | date:'mediumTime'}} to {{end_date_obj |
+      <button ng-click="samRange()">add all plays from {{playsheet.start_time | date:'mediumTime'}} to {{playsheet.end_time |
         date:'mediumTime'}}
       </button>
       <br>
@@ -455,7 +539,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <button ng-click="sam_add(sam);">&nbsp;+&nbsp;
 
         </button>
-        <span class="one_sam">{{sam.artist}} - {{sam.song}}</span>
+        <span class="one_sam">{{sam.song.artist}} - {{sam.song.song}}</span>
       </div>
     </div>
 
@@ -490,8 +574,11 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
               host: {{playsheet.host}}
               language: {{playsheet.language}}
               crtc: {{playsheet.crtc}}
-
-              <span ng-repeat="play in playsheet.plays">{{play}}<br/></span>
+<br/><hr/>
+        SOCAN:{{socan}}
+        <br/><hr/>
+  PLAYS:
+              <span ng-repeat="play in playsheet.plays">{{play}}<br/><br/><br/></span>
 
       </pre>
 
@@ -514,242 +601,10 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 </script>
 
 <script src="js/angular-djland.js"></script>
-
 <script type="text/javascript">
 
   djland.value('channel_id', <?php echo users_show();?>);
-
-
-  djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $window, apiService, channel_id) {
-
-    $scope.playsheet = {};
-    console.log('channel id is ' + channel_id);
-
-    $scope.samVisible = false;
-    $scope.totals = {cancon2: 0, cancon3: 0, hits: 0, femcon: 0, nu: 0};
-
-    apiService.getShowData(channel_id).then(function (showData) {
-
-      if ($location.search().id) {
-        apiService.getFullPlaylistData($location.search().id).success(function (result) {
-
-          $scope.playsheet = result.playlist;
-          $scope.playsheet.plays = result.plays;
-          $scope.playsheet.ads = result.ads;
-
-          init();
-
-        });
-      } else {
-        $scope.playsheet = $scope.blankPlaysheet(showData);
-        init();
-      }
-
-
-    });
-
-
-    $scope.blankPlaysheet = function (showData) {
-
-      var blankplays = [];
-      for (var i = 0; i < 5; i++) {
-        blankplays.push({
-          artist: '',
-          album: '',
-          song: '',
-          nu: false,
-          cancon: false,
-          femcon: false,
-          instrumental: false,
-          partial: false,
-          hit: false,
-          crtc: showData.crtc,
-          language: showData.language
-        });
-      }
-      var now = new Date();
-      var later = new Date();
-      later.setHours(now.getHours() + 1);
-      now.setMinutes(0);
-      later.setMinutes(0);
-      now.setSeconds(0);
-      later.setSeconds(0);
-      now = now.getTime();
-      later = later.getTime();
-
-      return {
-        type: 'live',
-        show_name: showData.name,
-        show_id: showData.id,
-        host: showData.host,
-        language: showData.language,
-        crtc: showData.crtc,
-        start: now,
-        end: later,
-        podcast: {
-          title: 'broadcast on ' + $filter('date')(now, 'mediumDate'),
-          subtitle: '',
-          summary: '',
-          active: '1'
-        },
-        plays: blankplays
-      };
-    };
-
-
-    var init = function () {
-
-      $scope.start_date_obj = new Date($scope.playsheet.start_time);
-      $scope.end_date_obj = new Date($scope.playsheet.end_time);
-
-      $scope.start_hour = $filter('pad')($scope.start_date_obj.getHours(), 2);
-      $scope.start_minute = $filter('pad')($scope.start_date_obj.getMinutes(), 2);
-      $scope.end_hour = $filter('pad')($scope.end_date_obj.getHours(), 2);
-      $scope.end_minute = $filter('pad')($scope.end_date_obj.getMinutes(), 2);
-
-      $scope.$watch('playsheet.plays', function () {
-        var newTotals = {cancon2: 0, cancon3: 0, hits: 0, femcon: 0, nu: 0};
-        var num = $scope.playsheet.plays.length;
-        var num_20 = 0;
-        var num_30 = 0;
-        for (var i = 0; i < num; i++) {
-          if ($scope.playsheet.plays[i].is_playlist) {
-            newTotals.is_playlist++;
-          }
-          if ($scope.playsheet.plays[i].is_canadian && $scope.playsheet.plays[i].crtc_category == 20) {
-            newTotals.cancon2++;
-          }
-          if ($scope.playsheet.plays[i].is_canadian && $scope.playsheet.plays[i].crtc_category == 30) {
-            newTotals.cancon3++;
-          }
-          if ($scope.playsheet.plays[i].is_fem) {
-            newTotals.is_fem++;
-          }
-          if ($scope.playsheet.plays[i].is_hit) {
-            newTotals.hits++;
-          }
-
-          if ($scope.playsheet.plays[i].crtc_category == 20) {
-            num_20++;
-          }
-          if ($scope.playsheet.plays[i].crtc_category == 30) {
-            num_30++;
-          }
-        }
-
-        newTotals.cancon2 = 100.00 * newTotals.cancon2 / num_20;
-        newTotals.cancon3 = 100.00 * newTotals.cancon3 / num_30;
-        newTotals.is_fem = 100.00 * newTotals.is_fem / num;
-        newTotals.hits = 100.00 * newTotals.hits / num;
-        newTotals.is_playlist = 100.00 * newTotals.is_playlist / num;
-        $scope.totals = newTotals;
-      }, true);
-      $scope.add = function (id) {
-        $scope.playsheet.plays.splice(id + 1, 0, {
-
-          artist: '',
-          album: '',
-          song: '',
-          composer: '',
-          is_playlist: false,
-          is_canadian: '',
-          is_fem: '',
-          is_inst: false,
-          is_part: false,
-          is_hit: false,
-          crtc_category: $scope.playsheet.crtc,
-          lang: $scope.playsheet.lang
-        });
-
-        for (var i = 0; i < $scope.playsheet.plays.length; i++) {
-          $scope.playsheet.plays[i].id = i;
-        }
-
-      };
-
-      $scope.remove = function (id) {
-        $scope.playsheet.plays.splice(id, 1);
-
-        for (var i = 0; i < $scope.playsheet.plays.length; i++) {
-
-        }
-      };
-
-      // DATE STUFF (faking knowing the start of current episode
-
-      $scope.persistent_date = {};
-
-      $scope.persistent_date.start = $scope.playsheet.start;
-      $scope.persistent_date.duration = 60 * 60;
-      $scope.episode = $scope.playsheet.podcast;
-
-
-      $scope.sam_add = function (sam) {
-        $scope.playsheet.plays.push(angular.copy(sam));
-      };
-
-      var entry_template = {
-        artist: '',
-        title: '',
-        song: '',
-        composer: '',
-        is_playlist: false,
-        is_canadian: false,
-        is_fem: false,
-        is_inst: false,
-        is_part: false,
-        is_hit: false,
-        crtc_category: $scope.playsheet.crtc,
-        lang: $scope.playsheet.lang
-      };
-
-      $scope.processSam = function (sam_play) {
-        var djland_entry = angular.copy(entry_template);
-        djland_entry.artist = sam_play.artist;
-        djland_entry.title = sam_play.album;
-        djland_entry.song = sam_play.title;
-        djland_entry.composer = sam_play.composer;
-
-        return djland_entry;
-      };
-
-      $scope.loadSAM = function () {
-
-        apiService.getRecentSamPlays()
-            .success(function (data) {
-              var samRecent = [];
-              for (var i = 0; i < data.length; i++) {
-                samRecent.push(
-                    $scope.processSam(data[i])
-                );
-              }
-              $scope.samRecent = samRecent;
-
-            });
-
-      };
-
-      $scope.loadSAM();
-
-      $scope.samRange = function () {
-        apiService.getSamFromRange($scope.start_date_obj, $scope.end_date_obj)
-            .success(function (result){
-              for (var i in result) {
-                $scope.sam_add($scope.processSam(result[i]));
-              }
-              $scope.samVisible = false;
-
-            });
-      };
-
-    };
-
-
-    $scope.varshidden = false;
-  });
-
 </script>
-
-
+<script src="js/angular/playsheet.js"></script>
 </body>
 </html>

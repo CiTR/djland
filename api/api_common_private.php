@@ -6,10 +6,13 @@ require_once('api_common.php');
 require_once('../../headers/security_header.php');
 
 $incoming_data =  (array) json_decode(file_get_contents('php://input'));
+$incoming_data = json_decode(json_encode($incoming_data), true);
 
 function update_row_in_table($tablename, $data, $id){
   global $pdo_db;
   global $error;
+
+  if(array_key_exists('id',$data)) unset($data['id']);
 
   $keys = array_keys($data);
 
@@ -41,6 +44,9 @@ function insert_row_in_table($tablename,$data){
   global $pdo_db;
   global $error;
 
+  if(array_key_exists('id',$data)){
+    $error .= ' key already exists in '.$tablename;
+  }
   $keys = array_keys($data);
 
   $keys_prefixed = array();
@@ -57,11 +63,16 @@ function insert_row_in_table($tablename,$data){
     $statement->bindValue($key,$value);
   }
 
-  try {
-    $statement->execute();
-  } catch (PDOException $e){
-    $error .= $e->getMessage();
-    return $error;
-  }
+  if ($error == ''){
+    try {
+      $statement->execute();
+    } catch (PDOException $e){
+      $error .= $e->getMessage();
+      return $error;
+    }
     return  $pdo_db->lastInsertId();
-}
+  } else {
+    return false;
+  }
+
+  }
