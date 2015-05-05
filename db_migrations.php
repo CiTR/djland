@@ -70,12 +70,25 @@ $queries = array(
                                   CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
-                                  ADD PRIMARY KEY (`id`);'
-
-
-
-
-
+                                  ADD PRIMARY KEY (`id`);',
+    'edit membership permissions' => "ALTER TABLE `group_members`
+                                    DROP COLUMN `editlibrary`,
+                                    DROP COLUMN `membership`,
+                                    DROP COLUMN `library`,
+                                    DROP COLUMN `editdj`,
+                                    DROP COLUMN `addshow`,
+                                    DROP COLUMN `adduser`,
+                                    CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
+                                    CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
+                                    CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
+                                    CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0' ,
+                                    ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`,
+                                    ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
+                                    ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`",
+    'add training' => "ALTER TABLE `membership`
+                          ADD COLUMN `tech_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
+                          ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `tech_training`,
+                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`"
 
 );
 

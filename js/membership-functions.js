@@ -1,3 +1,9 @@
+$(document).ready ( function() {
+    //Use this area to test functions!
+    //console.log(queryMembershipYear('1','2013/2014'));
+});
+
+
 function getVal($varname){
 	$temp = $varname;
 	if( $('#'+$temp).val()!=null){
@@ -178,40 +184,32 @@ function queryMember(id){
 //Returns all membership years present for member id
 function queryMembershipYears(id){
 	assertTrue(id != null,"id is null");
-	var member = {"id":id};
-	var membership_years = Array();
+    var membership_years= {};
 	$.ajax({
 		type:"POST",
-		url: "form-handlers/membership-handler.php",
-		data: {"action" : 'get', "type" : 'member_year',"value":id},
+		url: "form-handlers/membership/years.php",
+		data: {"id":id},
 		dataType: "json",
 		async: false
 		}).success(function(data){
-			var info = data;
-			var i;
-			for(i = 0 ; i < info.length; i ++){
-				membership_years[i] = info[i][0];
-			}
+            membership_years = data.years;
 		}).fail(function(){
 			console.log("Unable to retrieve member information");
 		});
-	
-	member.membership_years = membership_years;
-	return member;
+	return membership_years;
 }
 function queryMembershipYear(id,year){
 	assertTrue(id != null,"id is null");
 	var m_y = {"id":id,"membership_year":year};
 	$.ajax({
 	type:"POST",
-	url: "form-handlers/membership-handler.php",
-	data: {"action" : 'get', "type" : 'member_year_content',"value":id,"year":year},
+	url: "form-handlers/membership/year.php",
+	data: {"id":id,"year":year},
 	dataType: "json",
 	async: false
 	}).success(function(data){
 		var info = data[0];
 		for(var interest in info){
-			console.log(interest + "= "+info[interest]);
 			m_y[interest] = info[interest];
 		}
 	}).fail(function(){

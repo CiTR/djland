@@ -1,6 +1,8 @@
 //Testing Code
 var testing = true;
 
+
+
 function assertTrue(condition,message){
 	if(testing){
 		if(!condition){
@@ -32,4 +34,6 @@ function assertEqual(value,expected_value,desc){
 		}
 	}
 }
+
+
 

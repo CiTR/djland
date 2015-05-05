@@ -5,6 +5,18 @@ require_once('config.php');
 require_once('headers/function_header.php');
 require_once('headers/security_header.php');
 
+function admin_menu()
+{
+    global $djland_permission_levels;
+    if (permission_level() >= $djland_permission_levels['administrator']) : ?>
+        <ul id="nav">
+            <li class="nodrop"><a href="membership_admin.php">Membership Admin</a></li>
+            <li class="nodrop"><a href="data_structures">Data Structures</a></li>
+        </ul>
+    <?php
+    endif;
+}
+
 function print_menu(){
 	global $enabled,$djland_permission_levels;
 ?>

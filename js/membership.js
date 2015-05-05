@@ -253,7 +253,7 @@ function add_handlers(){
 	//MEMBER YEAR RELOAD
 	$('#member_year_select').unbind().change( function(){
 		var year = getVal('member_year_select');
-		var id = document.getElementById("member_id").getAttribute('value');
+		var id = document.getElementById("view").getAttribute('name');
 		load_member_year(id,year);
 	});
 
@@ -360,47 +360,37 @@ function change_view(action,type,value){
 }
 
 function load_member_year(id,year){
-	$('#member_interests').innerHTML= "";
-	$.ajax({
-						type:"POST",
-						url: "form-handlers/membership-handler.php",
-						data: {"action" : 'get', "type" : 'member_year_content',"value":id,"year":year},
-						dataType: "json",
-						async: false
-						}).success(function(data){
-							if( $('#paid').length <= 0 ){
-								
-								var interests = $('#member_interests');
-								var interests_data = data[0];
-								for(var interest in interests_list){
-									if(interest != 'Other'){
-										interests.append("<div class='col4'>"+interest+" <input type=checkbox id='"+interests_list[interest]+"' "+(interests_data[interests_list[interest]] == 1 ? "checked=checked":"") + "/></div>");
-									}else {
-										interests.append("<div class='col4'>Other:</div><div class='col4'><input type=text id=other "+(interests_data[interests_list[interest]] != null ? "value='"+interests_data[interests_list[interest]] +"'" : "")+"/></div>");
-									}
-								}
-							}else{
-								if(data[0].paid == 0){ $('#paid').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
-								if(data[0].music == 0){ $('#music').removeAttr('checked'); }else{ $('#paid').prop('checked','checked'); }
-								if(data[0].discorder == 0){ $('#discorder').removeAttr('checked'); }else{ $('#discorder').prop('checked','checked'); }
-								if(data[0].discorder2 == 0){ $('#discorder2').removeAttr('checked'); }else{ $('#discorder2').prop('checked','checked'); }
-								if(data[0].show_hosting == 0){ $('#show_hosting').removeAttr('checked'); }else{ $('#show_hosting').prop('checked','checked'); }
-								if(data[0].sports == 0){ $('#sports').removeAttr('checked'); }else{ $('#sports').prop('checked','checked'); }
-								if(data[0].news == 0){ $('#news').removeAttr('checked'); }else{ $('#news').prop('checked','checked'); }
-								if(data[0].arts == 0){ $('#arts').removeAttr('checked'); }else{ $('#arts').prop('checked','checked'); }
-								if(data[0].live_broadcast == 0){ $('#live_broadcast').removeAttr('checked'); }else{ $('#live_broadcast').prop('checked','checked'); }
-								if(data[0].tech == 0){ $('#tech').removeAttr('checked'); }else{ $('#tech').prop('checked','checked'); }
-								if(data[0].programming_committee == 0){ $('#prog_comm').removeAttr('checked'); }else{ $('#prog_comm').prop('checked','checked'); }
-								if(data[0].ads_psa == 0){ $('#ads_psa').removeAttr('checked'); }else{ $('#ads_psa').prop('checked','checked'); }
-								if(data[0].outreach == 0){ $('#promos').removeAttr('checked'); }else{ $('#promos').prop('checked','checked'); }
-								if(data[0].photography == 0){ $('#photography').removeAttr('checked'); }else{ $('#photography').prop('checked','checked'); }
-								if(data[0].digital_library == 0){ $('#digital_library').removeAttr('checked'); }else{ $('#digital_library').prop('checked','checked'); }
-								if(data[0].music == 0){ $('#ads_psa').removeAttr('checked'); }else{ $('#ads_psa').prop('checked','checked'); }
-								$('#other').attr('value',data[0].other);
-							}
-						}).fail(function(){
-							
-						});
+	//$('#member_interests').innerHTML= "";
+    console.log("Loading "+year);
+    var interests = $('#member_interests');
+    var interests_data = queryMembershipYear(id,year);
+    console.log(interests_data);
+    $('#membership_interests_header').append("<div class='col2'>Paid<input type=checkbox id='paid' "+(interests_data['paid'] == 1 ? "checked=checked":"")+"/></div>");
+    if( $('#arts').length <= 0 ){
+        for(var interest in interests_list){
+            if(interest != 'Other'){
+                interests.append("<div class='col4'>"+interest+" <input type=checkbox id='"+interests_list[interest]+"' "+(interests_data[interests_list[interest]] == 1 ? "checked=checked":"") + "/></div>");
+            }else {
+                interests.append("<div class='col4'>Other:</div><div class='col4'><input type=text id=other "+(interests_data[interests_list[interest]] != null ? "value='"+interests_data[interests_list[interest]] +"'" : "")+"/></div>");
+            }
+        }
+    }else {
+        if(interests_data['paid']== 0){
+            $('#paid').removeAttr('checked');
+        }else{
+            $('#paid').prop('checked','checked');
+        }
+
+        for (var interest in interests_list) {
+            if (interests_data[interests_list[interest]] == 0 && interest != "Other") {
+                $('#' + interests_list[interest]).removeAttr('checked');
+            } else if (interests_data[interests_list[interest]] == 1 && interest != "Other") {
+                $('#' + interests_list[interest]).prop('checked', 'checked');
+            } else {
+                $('#other').attr('value', interests_data.other);
+            }
+        }
+    }
 }
 
 function manage_members(action_,type_,value_){
@@ -434,7 +424,9 @@ function manage_members(action_,type_,value_){
                 membership_header.append("<li>Paid Status: <select id='paid_select'><option value='both'>Both</option><option value='1'>Paid</option><option value='0'>Not Paid</option></select></li>");
 						actiontemp = 'get';
 						typetemp = 'year';
-					$.ajax({
+
+
+                 $.ajax({
 						type:"POST",
 						url: "form-handlers/membership-handler.php",
 						data: {"action" : actiontemp, "type" : typetemp},
@@ -524,7 +516,7 @@ function manage_members(action_,type_,value_){
 						}).success(function(data){
 							var fields = Object.keys(data[0]);
 							
-							$('#member_result').append("<div id=member_id value="+data[0][0]+" style='display:none;'></div>");
+
 							for($j = 0; $j<15 ; $j++){
 								if($j>8) $('#member_result').append("<div class ='member_result_row padded' id=row"+$j+"></div>");
 								else 	$('#member_result').append("<div class ='member_result_row' id=row"+$j+"></div>");				
@@ -664,27 +656,16 @@ function manage_members(action_,type_,value_){
 						}).fail(function(){
 							
 						});
-						$.ajax({
-						type:"POST",
-						url: "form-handlers/membership-handler.php",
-						data: {"action" : 'get', "type" : 'member_year',"value":value},
-						dataType: "json",
-						async: false
-						}).success(function(data){
-							year = data[0].membership_year;
-							
-							//$('#member_result').append("<div id='membership_year' class ='member_result_row padded'></div>");
-							$('#membership_year').append("<div class='col2'> Select Year:<select id='member_year_select'></select></div>");
-							for( $j = 0; $j < Object.keys(data).length; $j++ ){
-								$('#member_year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
-							}
-						}).fail(function(){
-							
-						});
+						var years = queryMembershipYears(value);
+                        $('#membership_year').append("<div id='member_interests_header' class='col2'> Select Year:<select id='member_year_select'></select></div>");
+                        console.log(years);
+                        for(var i=0; i<years.length;i++){
+                            $('#member_year_select').append("<option value="+years[i]+">"+years[i]+"</option>");
+                        }
 
 						$('#membership_year').append("<div id='member_interests' class='member_result_row padded'></div>");
 
-						load_member_year(value,year);
+						load_member_year(value,years[0]);
 						$('#member_result').append("<div class ='member_result_row padded'><hr/></div>");
 						$('#member_permissions').append("<div class='col5'>User Priveleges:</div>");
 						var username;

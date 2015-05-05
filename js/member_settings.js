@@ -5,7 +5,7 @@ $(document).ready ( function() {
 	//Query membership years associated with the member
 	var membership_years = queryMembershipYears(id);
 	//Query the most recent year found for the member
-	var membership_year = queryMembershipYear(id,membership_years.membership_years[0]);
+	var membership_year = queryMembershipYear(id,membership_years[0]);
 	
 	addListeners();
 	
