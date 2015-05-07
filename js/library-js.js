@@ -17,7 +17,7 @@ var id=$(this).attr('id');
 			
 			$.ajax({
 				type: "POST",
-				url: "./form-handlers/library-handler.php",
+				url: "./form-handlers/library_handler.php",
 				data: { dopeysecurity: dopeysecurityval,action: "delete", id: id },
 				beforeSend: function(){
 					$(this).html('deleting...');	

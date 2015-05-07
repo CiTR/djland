@@ -15,7 +15,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
 		<script src="js/test.js"></script>
-		<script src="js/membership-functions.js"></script>
+		<script src="js/membership_functions.js"></script>
 		<script src="js/member_settings.js"></script>
 	</head>
 	<body>
@@ -91,7 +91,7 @@
 					<div class='col5'>Alumni:</div>
 					<div class='col5'> Yes<input id='alumni1' class='alumni_select' type='radio'  />
 						No<input id='alumni2' class='alumni_select' type='radio' checked='checked'/> </div>
-					<div class='col5'>Member Since</div>
+					<div class='col5'>Member Since: </div>
 					<div class='col5' id='since'>1927</div>
 				</div>
 				<div id='row6' class='containerrow'>

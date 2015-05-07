@@ -125,7 +125,7 @@ $num_id = $row[0];
 		console.log(id);
 		var text = $.ajax({
 			type: "POST", // HTTP method POST or GET
-			url: "./form-handlers/socan-delete.php", //Where to make Ajax calls
+			url: "./form-handlers/socan_delete.php", //Where to make Ajax calls
 			data:{id:id},
 			beforeSend: function(data) {
 				$('#loadStatus2').html('<img src="./images/loading.gif" alt="Loading..."/>');

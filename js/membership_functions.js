@@ -126,7 +126,7 @@ function queryMember(id){
 	var member = {"id":id};
 	$.ajax({
 		type:"POST",
-		url: "form-handlers/membership-handler.php",
+		url: "form-handlers/membership_handler.php",
 		data: {"action" : 'view', "type" : 'init',"value":id},
 		dataType: "json",
 		async: false
@@ -223,12 +223,12 @@ function queryMembershipPriveleges(id){
 	var privileges = {"id":id}
 	$.ajax({
 		type:"POST",
-		url: "form-handlers/membership-handler.php",
+		url: "form-handlers/membership/permission.php",
 		data: {"action" : 'get', "type" : 'permission',"value":value},
 		dataType: "json",
 		async: false
 	}).success(function(data){
-	
+	    //TODO: Create form hander, and return permissions array
 		
 	}).fail(function(){
 			
@@ -237,7 +237,7 @@ function queryMembershipPriveleges(id){
 function updateMemberInfo(member,handler){
 	return $.ajax({
 		type:"POST",
-		url: "form-handlers/member-info-update-handler.php",
+		url: "form-handlers/member_info_update_handler.php",
 		data: {
 		"member": JSON.stringify(member)
 	 	},
@@ -247,7 +247,7 @@ function updateMemberInfo(member,handler){
 function updateMemberInterests(membership_year){
 	return $.ajax({
 		type:"POST",
-		url: "form-handlers/member-interest-update-handler.php",
+		url: "form-handlers/member_interest_update_handler.php",
 		data: {
 		"membership_year": JSON.stringify(membership_year)
 	 	},

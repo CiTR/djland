@@ -405,7 +405,7 @@ function showStatus(status, delay){
 		
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/update-playsheet.php",
+			url: "form-handlers/update_playsheet.php",
 			data: {"psid":playsheetID,"socan":socan},
 			dataType: "json"
 		})

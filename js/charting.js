@@ -33,7 +33,7 @@ function loadCharts(){
 		console.log("To: "+to);
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/charting-handler.php",
+			url: "form-handlers/charting_handler.php",
 			data: {"from":from,"to":to},
 			dataType: "json"
 		}).success(function(data){

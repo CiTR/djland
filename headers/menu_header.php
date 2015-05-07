@@ -9,8 +9,8 @@ function admin_menu()
 {
     global $djland_permission_levels;
     if (permission_level() >= $djland_permission_levels['administrator']) : ?>
-        <ul id="nav">
-            <li class="nodrop"><a href="membership_admin.php">Membership Admin</a></li>
+        <ul id="nav-admin" class="nav mini">
+            <li class="nodrop"><a href="../admin.php">Membership Admin</a></li>
             <li class="nodrop"><a href="data_structures">Data Structures</a></li>
         </ul>
     <?php
@@ -19,6 +19,7 @@ function admin_menu()
 
 function print_menu(){
 	global $enabled,$djland_permission_levels;
+    admin_menu();
 ?>
 	
 	<ul id=nav>
@@ -28,7 +29,7 @@ function print_menu(){
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
 		<li class=drop><a href="library.php">Library</a>
-			<div class=dropdown_small>
+			<div class="dropdown small">
 				<div class=small>
 					<ul>
 						<?php if(permission_level() >=  $djland_permission_levels['member'] && $enabled['library']) : ?>
@@ -48,7 +49,7 @@ function print_menu(){
 		<?php endif; 
 		if($enabled['adscheduler']) : ?>
 			<li class=drop><a href="adscheduler.php">Manage Ads</a>
-				<div class=dropdown_small>
+				<div class="dropdown small">
 					<div class=small>
 						<ul>
 							<li><a href="adscheduler.php">Ad Scheduler</a></li>
@@ -65,7 +66,7 @@ function print_menu(){
 	endif; 
 	if($enabled['report']): ?>
 		<li class=drop ><a href="report.php">Reports</a>
-			<div class=dropdown_small>
+			<div class="dropdown small">
 				<div class=small>
 					<ul>
 						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?> 
@@ -80,7 +81,7 @@ function print_menu(){
 		</li>
 		<?php endif; ?>
 		<li class=drop><a href="playsheet.php">Playsheets</a>
-			<div class=dropdown_small>
+			<div class="dropdown small">
 				<div class=small>
 					<ul>
 						<?php if(permission_level() >= $djland_permission_levels['dj'] && ($enabled['playsheets'])) : ?> 

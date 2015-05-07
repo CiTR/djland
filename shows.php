@@ -5,6 +5,7 @@ require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
+
 function fieldComplete($arr, $curr) {
 	// status codes
 	// -1: not started
@@ -77,6 +78,7 @@ function processFields($arr) {
 	return $o_arr;
 }
 
+if( permission_level() >= $djland_permission_levels['dj']){
 // Used to populate time schedule
 $alt_val = array(0=>"None",1=>"Week 1",2=>"Week 2");
 
@@ -684,4 +686,7 @@ function write_new_showlist_file(){
 		echo "<br/>Show list successfully updated";
 	}
 }
-?>
+
+}else{
+    header("Location: main.php");
+}?>

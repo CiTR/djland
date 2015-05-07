@@ -101,8 +101,8 @@ if (isset($_POST['numberOfRows'])) {
       }
       ?>
 
-    <script type="text/javascript" src="./js/playsheet-functions.js"></script>
-    <script type="text/javascript" src="./js/playsheet-setup.js"></script>
+    <script type="text/javascript" src="js/playsheet_functions.js"></script>
+    <script type="text/javascript" src="js/playsheet_setup.js"></script>
 
     <script type="text/javascript">
       var enabled = {};

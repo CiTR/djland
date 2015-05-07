@@ -1,5 +1,5 @@
 <?php // CRTC REPORT PAGE
-
+if( permission_level() >= $djland_permission_levels['dj']){
 //***************************************************
 // see handlers/crtcreport.php to change requirement values
 //***************************************************
@@ -145,3 +145,7 @@ echo '<h1>CRTC Report</h1>';;
   });
 </script>  
 
+<?php
+}else{
+    header("Location: main.php");
+}?>

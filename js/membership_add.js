@@ -119,7 +119,7 @@ $(document).ready ( function() {
 
 		$.ajax({
 				type:"POST",
-				url: "form-handlers/membership-add-handler.php",
+				url: "form-handlers/membership_add_handler.php",
 				data: {
 				"username"			:getVal('username'),
 				"password"			:getVal('password1'),
@@ -255,7 +255,7 @@ $(document).ready ( function() {
 		var username = getVal('username');		
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/username-handler.php",
+			url: "form-handlers/username_handler.php",
 			data: {"username":username},
 			dataType: "json"
 		    }).success( function(data){
@@ -319,7 +319,7 @@ $(document).ready ( function() {
 		var username = getVal('username');		
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/username-handler.php",
+			url: "form-handlers/username_handler.php",
 			data: {"username":username},
 			dataType: "json"
 		    }).success( function(data){

@@ -67,11 +67,32 @@ input, select, textarea, option{
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
     z-index:5;
-}
-#nav{
-	border-radius: 10px;
-	-moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+}
+.nav.mini{
+    list-style:none;
+    width:940px;
+    margin:0px auto 0px auto;
+    height:25px;
+    font-size: 16px;
+    background: #A4A4A4;
+    background: -moz-linear-gradient(top, #343434, #101010);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#cccccc), to(#343434));
+    border: 1px solid #002232;
+    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
+    z-index:5;
+
+}
+.nav.mini li{
+    position: relative;
+    float: left;
+    height: 25px;
+    z-index:20;
+    padding: 0px 10px;
 }
 #tab-nav{
     position:relative;
@@ -160,9 +181,9 @@ input, select, textarea, option{
 }
 
 
-.dropdown_small,
-.dropdown_medium,
-.dropdown_large {
+.dropdown.small,
+.dropdown.medium,
+.dropdown.large {
 	float:left;
     position:absolute;
     left:-999em;
@@ -177,29 +198,29 @@ input, select, textarea, option{
     -webkit-border-radius: 0px 5px 5px 5px;
     border-radius: 0px 5px 5px 5px;
 }
-.dropdown_small {width: 140px;}
-.dropdown_medium {width: 280px;}
-.dropdown_large {width: 420px;}
+.dropdown.small {width: 140px;}
+.dropdown.medium {width: 280px;}
+.dropdown.large {width: 420px;}
 
-#nav li:hover .dropdown_small, 
-#nav li:hover .dropdown_medium , 
-#nav li:hover .dropdown_large{
+#nav li:hover .dropdown.small,
+#nav li:hover .dropdown.medium ,
+#nav li:hover .dropdown.large{
     left:-1px;
     top:auto;
 }
 
-.small,
-.medium,
-.large{
+.dropdown > .small,
+.dropdown > .medium,
+.dropdown > .large{
     display:inline;
     float: left;
     position: relative;
     margin-left: 5px;
     margin-right: 5px;
 }
-.small {width:130px;}
-.medium {width:270px;}
-.large {width:410px;}
+.dropdown > .small {width:130px;}
+.dropdown > .medium {width:270px;}
+.dropdown > .large {width:410px;}
 
 #nav .menu_right {
     float:right;
@@ -453,7 +474,7 @@ button#submit_user.red{
 	overflow:hidden;
 	text-align:left;
 }
-#container{
+.container{
 	height:auto;
 	padding-left:10px;
 	width:95%;
@@ -463,6 +484,7 @@ button#submit_user.red{
 }
 
 .containerrow{
+    text-align:right;
 	display:inline-block;
 	width:100%;
 	overflow:visible;
@@ -557,7 +579,6 @@ button#submit_user.red{
 	display:inline-block;
 	position:relative;
 	float:left;
-	text-align:right;
 	height:auto;
 	left:2px;
 	overflow:visible;
@@ -617,7 +638,8 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	font-size:70%;
 }
 .largeinput{
-	width:550px;
+    float:left;
+	width:65%;
 	max-width:83%;
 	height:50px;
 	max-height:75px;
@@ -663,9 +685,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	}
 
 	li.playsheetrow
-	{	
-		top:-15px;
-		left:-38px;
+	{
 		float:left;
 		width:914px;
 		position:relative;
@@ -689,7 +709,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 		width: 175px;
 	}
 	.inputboxes input{
-		height:1.5em;
+		height:22px;
 		font-size: 15em;
 	}
 	
@@ -1046,7 +1066,7 @@ div.editform {
 	margin: 0 auto 0 auto;
 	border-style:ridge;
 	border-color: #c3c3c3;
-	padding: 0 50px 40px 50px;
+	padding: 0 50px 0px 50px;
 }
 
 .editform h1 {
@@ -1811,23 +1831,57 @@ span#show-percent{
 /* CSS for general page layout */
 
 #wrapper {
-  background-color: rgba(0,0,0,.2);
-  width: 800px;
-  height: 1000px;
-  margin-right: auto;
-  margin-left: auto;
-	padding-top:10px;
-	margin-top:10px;
-  border-right-width: 1px;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-left-style: solid;
-  border-right-color: #FFFFFF;
-  border-left-color: #FFFFFF;
-	border-top-width: 1px;
-	border-top-style: solid;
+    background-color: rgba(0,0,0,.2);
+    width: 800px;
+    height: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top:10px;
+    padding-top:10px;
+    padding-left:10px;
+    padding-right:10px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-right-color: #FFFFFF;
+    border-left-color: #FFFFFF;
+    border-top-width: 1px;
+    border-top-style: solid;
 }
 
+.wrapper{
+    position: relative;
+    width:940px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    overflow: visible;
+}
+.inner{
+    display:inline-block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    width:90%;
+}
+.inner > li{
+    min-height:20px;
+}
+.small{
+    width:100%;
+    height:auto;
+}
+.wrapper:after{
+    background-color: grey;
+}
+.clean-list{
+    list-style: none;
+}
+.text-center{
+    text-align: center;
+}
 
 .lib-delete{
 color:black;

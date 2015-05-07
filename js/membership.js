@@ -104,7 +104,7 @@ function add_handlers(){
 					var member_id = $('#view').attr('name');
 					$.ajax({
 					type:"POST",
-					url: "form-handlers/membership-update-handler.php",
+					url: "form-handlers/membership_update_handler.php",
 					data: {
 					"member_id"			:member_id,
 					"firstname"			:getVal('firstname'),
@@ -232,7 +232,7 @@ function add_handlers(){
         if(confirm(confirm_string)){
             $.ajax({
                 type:"POST",
-                url: "form-handlers/member-delete.php",
+                url: "form-handlers/member_delete.php",
                 data: {"ids" : JSON.stringify(members_to_delete)},
                 dataType: "json",
                 async: false
@@ -364,7 +364,6 @@ function load_member_year(id,year){
     console.log("Loading "+year);
     var interests = $('#member_interests');
     var interests_data = queryMembershipYear(id,year);
-    console.log(interests_data);
     $('#membership_interests_header').append("<div class='col2'>Paid<input type=checkbox id='paid' "+(interests_data['paid'] == 1 ? "checked=checked":"")+"/></div>");
     if( $('#arts').length <= 0 ){
         for(var interest in interests_list){
@@ -428,7 +427,7 @@ function manage_members(action_,type_,value_){
 
                  $.ajax({
 						type:"POST",
-						url: "form-handlers/membership-handler.php",
+						url: "form-handlers/membership_handler.php",
 						data: {"action" : actiontemp, "type" : typetemp},
 						dataType: "json",
 						async: false
@@ -451,7 +450,7 @@ function manage_members(action_,type_,value_){
 				sort = getVal('sort_select');
 				$.ajax({
 					type:"POST",
-					url: "form-handlers/membership-handler.php",
+					url: "form-handlers/membership_handler.php",
 					data: {"action":action, "type":type, "sort":sort, "value":value, "paid":paid, "year":year},
 					dataType: "json"
 				}).done(function(data){
@@ -509,7 +508,7 @@ function manage_members(action_,type_,value_){
 						
 						$.ajax({
 						type:"POST",
-						url: "form-handlers/membership-handler.php",
+						url: "form-handlers/membership_handler.php",
 						data: {"action" : action, "type" : type, "value" : value},
 						dataType: "json",
 						async: false
@@ -658,20 +657,20 @@ function manage_members(action_,type_,value_){
 						});
 						var years = queryMembershipYears(value);
                         $('#membership_year').append("<div id='member_interests_header' class='col2'> Select Year:<select id='member_year_select'></select></div>");
-                        console.log(years);
                         for(var i=0; i<years.length;i++){
                             $('#member_year_select').append("<option value="+years[i]+">"+years[i]+"</option>");
                         }
 
 						$('#membership_year').append("<div id='member_interests' class='member_result_row padded'></div>");
-
+                        console.log(years);
+                        console.log(years.years);
 						load_member_year(value,years[0]);
 						$('#member_result').append("<div class ='member_result_row padded'><hr/></div>");
 						$('#member_permissions').append("<div class='col5'>User Priveleges:</div>");
 						var username;
 						$.ajax({
 						type:"POST",
-						url: "form-handlers/membership-handler.php",
+						url: "form-handlers/membership_handler.php",
 						data: {"action" : 'get', "type" : 'permission',"value":value},
 						dataType: "json",
 						async: false
@@ -707,7 +706,7 @@ function manage_members(action_,type_,value_){
 						typetemp = 'year';
 						$.ajax({
 							type:"POST",
-							url: "form-handlers/membership-handler.php",
+							url: "form-handlers/membership_handler.php",
 							data: {"action" : actiontemp, "type" : typetemp},
 							dataType: "json",
 							async: false
@@ -724,7 +723,7 @@ function manage_members(action_,type_,value_){
 						year = getVal('year_select');	
 						$.ajax({
 							type:"POST",
-							url: "form-handlers/membership-handler.php",
+							url: "form-handlers/membership_handler.php",
 							data: {"action" : action,"year" : year},
 							dataType: "json",
 							async: false
@@ -783,7 +782,7 @@ function manage_members(action_,type_,value_){
 						var typetemp = 'year';
 					$.ajax({
 						type:"POST",
-						url: "form-handlers/membership-handler.php",
+						url: "form-handlers/membership_handler.php",
 						data: {"action" : actiontemp, "type" : typetemp},
 						dataType: "json",
 						async: false
@@ -811,7 +810,7 @@ function manage_members(action_,type_,value_){
 						}
 						$.ajax({
 							type:"POST",
-							url: "form-handlers/membership-handler.php",
+							url: "form-handlers/membership_handler.php",
 							data: {"action":'mail', "type":'interest', "value":value, "paid":paid, "year":year, "from":from , "to":to },
 							dataType: "json"
 						}).done(function(data){
