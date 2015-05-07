@@ -54,7 +54,7 @@ function permission_level(){
 		}	
 	}
 
-    if(is_paid()==false){
+    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] ){
         $level = 0;
     }
 
@@ -73,7 +73,7 @@ function is_paid(){
     }catch(PDOException $e){
         echo $e->getMessage();
     }
-    if($result[0][0]){
+    if($result[0][0] == '1'){
         return true;
     }else{
         return false;
