@@ -2,16 +2,18 @@
 
 
 
-djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $window, apiService, channel_id) {
+djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $window, apiService, show_id) {
 
   $scope.playsheet = {};
-  console.log('channel id is ' + channel_id);
+  console.log('channel id is ' + show_id);
 
   $scope.samVisible = false;
   $scope.totals = {cancon2: 0, cancon3: 0, hits: 0, femcon: 0, nu: 0};
 
-  apiService.getShowData(channel_id).then(function (showData) {
+  apiService.getShowData(show_id).then(function (showData) {
+    var showData = showData.data;
     var playsheet_id = $location.search().id;
+    $scope.show_name = showData.name;
     $scope.socan = ($location.search().socan === 'true');
     $scope.typeofsocan = typeof socan;
     if (playsheet_id) {
@@ -27,6 +29,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
           });
     } else {
       $scope.playsheet = $scope.blankPlaysheet(showData);
+
       init();
     }
 
@@ -35,23 +38,25 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
 
   $scope.blankPlaysheet = function (showData) {
-
+/*
     var blankplays = [];
     for (var i = 0; i < 5; i++) {
       blankplays.push({
-        artist: '',
-        album: '',
-        song: '',
-        nu: false,
-        cancon: false,
-        femcon: false,
-        instrumental: false,
-        partial: false,
-        hit: false,
-        crtc: showData.crtc,
-        language: showData.language
+        song:{artist: '',
+              title: '',
+              song: ''
+        },
+        is_playlist: false,
+        is_canadian: false,
+        is_fem: false,
+        is_inst: false,
+        is_part: false,
+        is_hit: false,
+        crtc_category: showData.crtc,
+        lang: showData.language
       });
     }
+    */
     var now = new Date();
     var later = new Date();
     later.setHours(now.getHours() + 1);
@@ -62,22 +67,23 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     now = now.getTime();
     later = later.getTime();
 
+    $scope.show_name = showData.name;
     return {
-      type: 'live',
-      show_name: showData.name,
-      show_id: showData.id,
-      host: showData.host,
-      language: showData.language,
-      crtc: showData.crtc,
-      start: now,
-      end: later,
+      type: showData.showtype || 'Live',
+//      show_name: showData.name,
+      show_id: showData.show_id,
+      host: showData.host_name,
+      lang: showData.lang_default || 'English',
+      crtc: showData.crtc_default,
+      start_time: now,
+      end_time: later,
       podcast: {
         title: 'broadcast on ' + $filter('date')(now, 'mediumDate'),
         subtitle: '',
         summary: '',
         active: '1'
       },
-      plays: blankplays
+      plays: []
     };
   };
 
@@ -93,7 +99,8 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     $scope.end_minute = $filter('pad')($scope.playsheet.end_time.getMinutes(), 2);
 
     $scope.$watch('playsheet.plays', function () {
-      var newTotals = {cancon2: 0, cancon3: 0, hits: 0, femcon: 0, nu: 0};
+
+      var newTotals = {cancon2: 0, cancon3: 0, hits: 0, is_fem: 0, is_playlist: 0};
       var num = $scope.playsheet.plays.length;
       var num_20 = 0;
       var num_30 = 0;
@@ -124,9 +131,20 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
       newTotals.cancon2 = 100.00 * newTotals.cancon2 / num_20;
       newTotals.cancon3 = 100.00 * newTotals.cancon3 / num_30;
+
+      if (num_30 == 0) newTotals.cancon3 = 100;
+      if (num_20 == 0) newTotals.cancon2 = 100;
+
       newTotals.is_fem = 100.00 * newTotals.is_fem / num;
       newTotals.hits = 100.00 * newTotals.hits / num;
       newTotals.is_playlist = 100.00 * newTotals.is_playlist / num;
+
+      $scope.playsheet.star = 1;
+      if(newTotals.cancon2 < 35.00) $scope.playsheet.star = 0;
+      if(newTotals.cancon3 < 12.00) $scope.playsheet.star = 0;
+      if(newTotals.hits > 10.00) $scope.playsheet.star = 0;
+      if(newTotals.is_fem < 35.00) $scope.playsheet.star = 0;
+      if(newTotals.is_playlist < 15.00) $scope.playsheet.star = 0;
       $scope.totals = newTotals;
     }, true);
 
@@ -154,6 +172,12 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       }
 
     };
+
+    if($scope.playsheet.plays.length == 0){
+      for (var i = 0; i < 5; i ++){
+        $scope.add(i);
+      }
+    }
 
     $scope.remove = function (id) {
       $scope.playsheet.plays.splice(id, 1);
@@ -263,7 +287,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       }
 
       if(good){
-
+        $scope.playsheet.status = 2;
         apiService.savePlaylist($scope.playsheet)
             .success(function(result){
 
@@ -274,7 +298,8 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
             });
 
       } else {
-        alert('please make sure all "artist", "album", and "song" entries are filled in');
+        $scope.playsheet.status = 1;
+
         $scope.message = 'please make sure all "artist", "album", and "song" entries are filled in';
       }
 

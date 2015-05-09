@@ -310,6 +310,10 @@ width:1200px;
   .sam_row button:hover {
 
   }
+
+  #totals{
+    color:black;
+  }
 </style>
 
 </head>
@@ -321,7 +325,7 @@ width:1200px;
   <div ng-controller="playsheetCtrl">
 
 
-    <h2>New Playsheet</h2>
+    <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}}</h2>
 
     <div >
       <h3>Episode Data</h3>
@@ -334,17 +338,11 @@ width:1200px;
           <option value="Simulcast">Simulcast</option>
         </select>
         <span ng-show="playsheet.type == 'Rebroadcast'">
-        Load from Playsheet: <select ng-model="desired_playsheet" ng-options="available_playsheets"></select>
+<!--        Load from Playsheet: <select ng-model="desired_playsheet" ng-options="available_playsheets"></select> -->
           <button ng-click="loadPlays">Select this Playsheet</button>
           </span>
-        <br/>Show:
-        <select>
-          <!--ng-options="show as show.name for show in active_shows"-->
-          <option value="{{playsheet.show_id}}" ng-selected>{{playsheet.show_name}}</option>
-          <option value="{{show.id}}" ng-repeat="show in active_shows">{{show.name}}</option>
-          </ng-repeat>
+        <br/>Show: {{show_name}}
 
-        </select>
 
         <!--    <br/>Date:   <button >{{date | date: 'mediumDate'}}</button> (click to change)
             <br/>Time:   <span ng-controller="timepicker" class="timepicker">
@@ -545,6 +543,7 @@ width:1200px;
 
 
     <div id="totals">
+      {{(playsheet.star)? '&#9733&#9733&#9733&#9733' : ''}}
       <div>Cancon 2:<span class='req' ng-class="totals.cancon2 > 35.00 ? 'good': 'bad'; "> {{totals.cancon2 | number : 0.00}}%</span>
         (min 35%)
       </div>
@@ -561,11 +560,14 @@ width:1200px;
       <div>New:<span class='req' ng-class="totals.is_playlist > 15.00 ? 'good': 'bad'; "> {{totals.is_playlist | number : 0.00}}%</span>
         (min 15%)
       </div>
+      {{(playsheet.star)? '&#9733&#9733&#9733&#9733' : ''}}
     </div>
 
     <hr/>
 
       <pre class="vars" ng-hide="varshidden">
+
+        {{playsheet}}
           live variables view: <button ng-click="varshidden=true;">go away</button>
               <hr/>
               type: {{playsheet.type}}                  start: {{playsheet.start_time | date:"medium"}}
@@ -603,7 +605,7 @@ width:1200px;
 <script src="js/angular-djland.js"></script>
 <script type="text/javascript">
 
-  djland.value('channel_id', <?php echo users_show();?>);
+  djland.value('show_id', <?php echo users_show();?>);
 </script>
 <script src="js/angular/playsheet.js"></script>
 </body>

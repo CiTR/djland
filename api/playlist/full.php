@@ -38,7 +38,7 @@ $rawdata = array();
 
 
 $query_for_playsheet = 'SELECT playlists.*,
-            hosts.name as host
+            hosts.name as host_name
             FROM playlists
             LEFT JOIN hosts on hosts.id = playlists.host_id
             WHERE playlists.id = '.$id;
@@ -164,6 +164,18 @@ error_reporting(E_ALL);
   }
 
   $rawdata['playlist']['end_time'] = $end_unix;
+
+
+
+  if (!(is_null($rawdata['playlist']['host']) || ($rawdata['playlist']['host'])=='') ){
+
+  } else {
+    $rawdata['playlist']['host'] = $rawdata['playlist']['host_name'];
+
+  }
+  unset($rawdata['playlist']['host_id']);
+  unset($rawdata['playlist']['host_name']);
+
 
 
   $rawdata['playlist']['spokenword_minutes'] = $rawdata['playlist']['spokenword_duration']%60;

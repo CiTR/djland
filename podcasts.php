@@ -53,6 +53,7 @@ require_once("headers/menu_header.php");
     <p>{{status}}</p>
 
     <div ng-repeat="playlist in playlists track by playlist.ps_id">
+      {{playlist.start_time | date: "medium"}}<br/>
       Title: {{playlist.title}}<br/>
       Subtitle: {{playlist.subtitle}}<br/>
       <a ng-href="playsheet.php?action=edit&id={{playlist.ps_id}}" target="_self">edit playsheet</a> |

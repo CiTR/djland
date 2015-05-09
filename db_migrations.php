@@ -70,7 +70,9 @@ $queries = array(
                                   CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
-                                  ADD PRIMARY KEY (`id`);'
+                                  ADD PRIMARY KEY (`id`);',
+    'add string based host field' => 'ALTER TABLE `playlists`
+        ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;'
 
 
 

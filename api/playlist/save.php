@@ -28,13 +28,12 @@ if(array_key_exists('id',$playlist)){
   } else {
     $error .= 'could not delete plays before adding updated plays. ';
   }
+} else {
+  $playlist_id = -1;
 }
 
 $podcast = $playlist['podcast'];
 unset($playlist['podcast']);
-
-$host = $playlist['host'];
-unset($playlist['host']);
 
 $spokenword_hours = $playlist['spokenword_hours'];
 $spokenword_min = $playlist['spokenword_minutes'];
@@ -45,9 +44,18 @@ $playlist['spokenword_duration'] = 60*$spokenword_hours + $spokenword_min;
 $playlist['start_time'] = date('Y-m-d H:i:s',strtotime($playlist['start_time'] ));
 $playlist['end_time'] = date('H:i:s',strtotime($playlist['end_time'] ));
 
+
+if($playlist_id == -1){
+  $playlist['create_date'] = date("Y-m-d H:i:s", time());
+  $playlist['create_name'] = array_key_exists('sv_username',$_SESSION)? $_SESSION['sv_username'] : 'unknown user';
+  $playlist['edit_name'] = array_key_exists('sv_username',$_SESSION)? $_SESSION['sv_username'] : 'unknown user';
+  $playlist_id = insert_row_in_table('playlists',$playlist);
+}
 update_row_in_table('playlists',$playlist,$playlist_id);
 
 foreach($ads as $i => $ad){
+
+  $ads[$i]['playsheet_id'] = $playlist_id;
 
   $ads[$i]['played'] = ($ad['played'])? 1 : 0;
 
@@ -55,7 +63,7 @@ foreach($ads as $i => $ad){
     $the_id = $ad['id'];
     unset($ads[$i]['id']);
 
-    $message = update_row_in_table('adlog', $ads[$i], $the_id);
+    update_row_in_table('adlog', $ads[$i], $the_id);
   }
 }
 
@@ -95,6 +103,7 @@ foreach($plays as $i => $play){
       if(array_key_exists('id',$play)) unset($play['id']);
 
     $play['playsheet_id'] = $playlist_id;
+
       insert_row_in_table('playitems', $play);
 
 
@@ -103,7 +112,7 @@ foreach($plays as $i => $play){
 
 
 if ($error == ''){
-  echo json_encode(array('message' => $error. ' '.$message));
+  echo json_encode(array('message' => $error));
 } else {
   header('HTTP/1.0 400 '.json_encode(array('message' => $error)));
 }

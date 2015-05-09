@@ -142,6 +142,7 @@ djland.controller('episodeList', ['$scope','apiService','$location', function($s
   apiService.getPlaylists()
       .then(function(response){
         $scope.playlists = response.data;
+        if($scope.episodes) $scope.status = '';
       });
 
   apiService.getEpisodes()
@@ -149,6 +150,8 @@ djland.controller('episodeList', ['$scope','apiService','$location', function($s
         for( var i in response.data){
           $scope.episodes[response.data[i].id] = response.data[i];
         }
+
+        if($scope.playlists) $scope.status = '';
 
       });
 

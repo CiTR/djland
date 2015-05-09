@@ -29,6 +29,7 @@ $query = 'SELECT
           playlists.start_time,
           playlists.end_time,
           playlists.edit_date,
+          playlists.host,
           playlists.type as playlist_type,
           playlists.spokenword as transcript,
           hosts.name as host_name,
@@ -83,6 +84,11 @@ if ( $result = mysqli_query($db, $query) ) {
 } else {
   $error .= '<br/>'.mysqli_error($db);
 }
+
+if (!(is_null($rawdata['host']) || ($rawdata['host'])=='') ){
+  $rawdata['host_name'] = $rawdata['host'];
+}
+unset($rawdata['host']);
 
 if(isset($rawdata['episode_audio']) && $rawdata['episode_audio'] == ""){
   $rawdata['episode_description'] = '';
