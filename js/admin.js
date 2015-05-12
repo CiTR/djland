@@ -1,18 +1,48 @@
 /**
  * Created by Evan on 5/6/2015.
  */
+var cutoff;
+var current_year;
 $(document).ready ( function() {
+    cutoff = $('#current_cutoff');
+    current_year = $('#current_year');
+    show_current_cutoff();
     $(".inner").off('click',"#year_rollover").on('click','#year_rollover', function(){
-       new_membership_year();
+       update_cutoff_year();
     });
 });
 
-function new_membership_year(){
+
+function show_current_cutoff(){
     var membership_year;
-    if( new Date().getMonth() >= 9 ){ //9 is september here
+
+    $.ajax({
+        type:"GET",
+        url: "form-handlers/membership/year_rollover.php",
+        dataType: "json",
+        async: true
+    }).success(function(data){
+        cutoff.text("Cutoff:"+data['year']);
+        if( new Date().getMonth() >= 4 ) { //9 is september here
+            membership_year = new Date().getFullYear() + "/" + (new Date().getFullYear() + 1);
+        }else{
+            membership_year = (new Date().getFullYear() - 1) + "/" + (new Date().getFullYear() + 0);
+        }
+        current_year.text("Active year:"+membership_year);
+    }).fail(function(data){
+        cutoff.text("Failed to load");
+    })
+}
+
+function update_cutoff_year(){
+    var membership_year;
+    //console.log( cutoff.text().substring(7) + ":" + current_year.text().substr(12));
+    if(  (cutoff.text()).substring(7) == (current_year.text()).substr(12)  ){
+        alert("You have already set the cutoff for this year!");
+    }else if( new Date().getMonth() >= 4 ){ //9 is september here
         membership_year = new Date().getFullYear() + "/" + (new Date().getFullYear()+1);
-        last_membership_year = (new Date().getFullYear()-1) + "/" + new Date().getFullYear();
-        var yes = confirm("This will create a new membership year for: "+ membership_year);
+
+        var yes = confirm("This will lock out all accounts not renewed for: "+ membership_year);
         if(yes){
             console.log("Confirmed");
             $.ajax({

@@ -88,7 +88,13 @@ $queries = array(
     'add training' => "ALTER TABLE `membership`
                           ADD COLUMN `tech_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
                           ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `tech_training`,
-                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`"
+                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`",
+    'add spoken word' => "ALTER TABLE `membership`
+                          ADD COLUMN `spoken_word` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`",
+    'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
+                            `id` INT NOT NULL AUTO_INCREMENT,
+                            `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
+                            PRIMARY KEY (`id`))"
 
 );
 

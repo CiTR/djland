@@ -7,39 +7,38 @@
  */
 session_start();
 require_once("../../headers/security_header.php");
-if(isset($_POST['year'])){
-    $year = $_POST['year'];
-    //TODO: Possibly convert into a INSERT INTO xxxx SELECT statement?
-    $select_query = "SELECT * FROM membership_years GROUP BY id ORDER BY membership_year DESC";
-        $statement = $pdo_db->prepare($select_query);
-    try {
+
+//POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access
+//GET Gets the current mandatory membership year
+if(isset($_POST) && isset($_POST['year'])){
+    $update_query = "UPDATE year_rollover SET membership_year=:year WHERE id='1'";
+    $statement = $pdo_db->prepare($update_query);
+    $statement->bindValue(':year',$_POST['year']);
+    try{
         $statement->execute();
-        $result=$statement->fetchAll(PDO::FETCH_ASSOC);
-        foreach($result as $key=>$value){
-            if($key =='membership_year'){
-                $result[$key] = $year;
-            }
-        }
-        $insert_query = "INSERT INTO membership_years (member_id, membership_year) VALUES (:member_id,:membership_year)";
-        $statement2->$pdo_db->prepare($insert_query);
-        foreach($result as $value){
-            try {
-                $statement2->execute(array($value.member_id,$year));
-            }catch(PDOException $e){
-                http_response_code(404);
-                echo json_encode($e->getMessage());
-            }
-        }
         http_response_code(201);
-        echo json_encode("true");
-
-
-        echo json_encode($years);
-    }catch( PDOException $e){
+        echo json_encode(true);
+    }catch(PDOException $pdoe){
         http_response_code(404);
         echo json_encode($e->getMessage());
     }
-}else{
+
+}else if(isset($_GET)) {
+    $select_query = "SELECT membership_year FROM year_rollover WHERE id='1'";
+    $statement = $pdo_db->prepare($select_query);
+    try{
+        $statement->execute();
+        $result = new stdClass();
+        $result->year = $statement->fetchColumn(0);
+        http_response_code(200);
+        echo json_encode($result,JSON_UNESCAPED_SLASHES);
+
+
+    }catch(PDOException $pdoe){
+        http_response_code(404);
+        echo json_encode($e->getMessage());
+    }
+}else {
     http_response_code(401);
     echo json_encode("You do not have permission");
 }

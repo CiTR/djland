@@ -21,9 +21,9 @@ if( permission_level() >= $djland_permission_levels['administrator']){ ?>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="js/jquery.form.js"></script>
-        <script type="text/javascript" src="js/admin.js"></script>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
         <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/admin.js"></script>
         <script>
             $(function() {
                 $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
@@ -37,8 +37,10 @@ if( permission_level() >= $djland_permission_levels['administrator']){ ?>
     <div class="wrapper">
         <h1>Administrator Tools</h1>
         <ul class="inner clean-list text-center">
-            <li class="col4"><button id="year_rollover">Start new membership year</button> </li>
-            <li class="span3col4">Create new 'membership year' entries for each user, which have no selected interests and are set to unpaid</li>
+            <li class="col4"><button id="year_rollover">Start new membership year</button></li>
+            <li class="col4" id="current_year">Loading Current Active Year...</li>
+            <li class="col4" id="current_cutoff">Loading Current Cutoff...</li>
+            <li class="col4">Current membership year members must have renewed, and paid for to this current year</li>
         </ul>
     </div>
 
