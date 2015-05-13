@@ -37,10 +37,13 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 		<button id="submitDates">View Sam Ads</button>
 		<img src='images/loading.gif' id='loadbar' style='display:none;'>
 		
-		<div id=samAds style='display:none;'><div class=samtitleh>Ad Name</div><div class=samplayedh>Time Played</div>
-		</div></center>
+		<div id=samAds style='display:none;'>
+            <div class=samtitleh>Ad Name</div>
+            <div class=samplayedh>Time Played</div>
+		</div>
 	</body>
 </html>
-<?php}else{
+<?php
+}else{
     header("Location: main.php");
 }?>

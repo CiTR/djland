@@ -25,8 +25,10 @@
 
 		<div id='membership' >
 			<div id='member_id' style='display:none' value = '<?php echo $_SESSION['sv_id']; ?>'><?php echo $_SESSION['sv_id']; ?></div>
-			<h1> CiTR Member Settings </h1>
-			<hr>
+			<h1 id="title"> CiTR Member Settings </h1>
+            <h4 id="subtitle"></h4>
+			<div class="col1"><button id="renew">Renew Membership</button></div>
+            <hr>
 			<div class = 'container'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
@@ -41,9 +43,9 @@
 				</div>
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
-					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
+					<div class='col5'><input id='address' class='required renew' placeholder='Address' maxlength='50'/></div>
 					<div class='col5'>City*:</div>
-					<div class='col5'><input id='city' class='required' placeholder='City' maxlength='45'></input></div>
+					<div class='col5'><input id='city' class='required renew' placeholder='City' maxlength='45'/></div>
 				</div>
 				<div id='row4 'class='containerrow'>
 					<div class='col5'>Province*: </div>
@@ -62,7 +64,7 @@
 							<option value='YUK'>YUK</option>
 						</select></div>
 					<div class='col5'>Postal Code*:</div>
-					<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'></input></div>
+					<div class='col5'><input id='postalcode' class='required renew' placeholder='Postal Code' maxlength='6'/></div>
 				</div>
 
 				<div id='row5' class='containerrow'>
@@ -131,7 +133,7 @@
 					<div id='student_no_container'>
 						<div class='col5'>Student Number*:</div>
 						<div class='col5' id='student_no_check'>
-							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='8' onKeyPress="return numbersonly(this, event)"></input>
+							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='8' onKeyPress="return numbersonly(this, event)"/>
 						</div>
 					</div>	
 
@@ -164,11 +166,11 @@
 
 				<div id='row8' class='containerrow'>
 					<div class='col7'>Email Address*: </div>
-					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input></div>
+					<div class='col6'><input id='email' class='required renew'  name='email' placeholder='Email Address' maxlength='40'/></div>
 					<div class='col6'>Primary Number*:</div>
-					<div class='col6'><input id='primary_phone' class='required' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='primary_phone' class='required renew' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
 					<div class='col6'>Secondary Number:</div>
-					<div class='col6'><input id='secondary_phone' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='secondary_phone' name='phone2 renew' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
 				</div>
 
 				<hr>
@@ -176,23 +178,23 @@
 					<div class='col6'>I am interested in:</div>
 					<div id = 'membership_year'style='display:none'></div> 
 					<div class='span3col4'>
-						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music'></div>
-						<div class='col3'><label for='discorder'>Illustrate for Discorder:</label><input type=checkbox id='discorder'></div>
-						<div class='col3'><label for='discorder_2'>Writing for Discorder:</label><input type=checkbox id='discorder_2'></div>
-						<div class='col3'><label for='dj'>DJ 101.9:</label><input type=checkbox id='dj'></div>
-						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting'></div>
-						<div class='col3'><label for='sports'>Sports:</label><input type=checkbox id='sports'></div>
-						<div class='col3'><label for='news'>News 101.9:</label><input type=checkbox id='news'></div>
-						<div class='col3'><label for='arts'>Arts Report:</label><input type=checkbox id='arts'></div>
-						<div class='col3'><label for='live_broadcast'>Live Broadcasting:</label><input type=checkbox id='live_broadcast'></div>
-						<div class='col3'><label for='tech'>Web and Tech:</label><input type=checkbox id='tech'></div>
-						<div class='col3'><label for='programming'>Programming Committee:</label><input type=checkbox id='programming'></div>
-						<div class='col3'><label for='ads_psa'>Ads and PSAs:</label><input type=checkbox id='ads_psa'></div>
-						<div class='col3'><label for='promos'>Promotions and Outreach:</label><input type=checkbox id='promos'></div>
-						<div class='col3'><label for='photography'>Photography:</label><input type=checkbox id='photography'></div>
-						<div class='col3'><label for='digital_library'>Digital Library:</label><input type=checkbox id='digital_library'></div>
-						<div class='col3'><label for='tabling'>Tabling Events:</label><input type=checkbox id='tabling'></div>
-						<div class='col3'><label for='other'>Other:</label><input type=text id='other'></div>
+						<div class='col3'><label for='music'>Music Department:</label><input type=checkbox id='music' class='renew'></div>
+						<div class='col3'><label for='discorder'>Illustrate for Discorder:</label><input type=checkbox id='discorder' class='renew'></div>
+						<div class='col3'><label for='discorder_2'>Writing for Discorder:</label><input type=checkbox id='discorder_2' class='renew'></div>
+						<div class='col3'><label for='dj'>DJ 101.9:</label><input type=checkbox id='dj' class='renew'></div>
+						<div class='col3'><label for='show_hosting'>Show Hosting:</label><input type=checkbox id='show_hosting' class='renew'></div>
+						<div class='col3'><label for='sports'>Sports:</label><input type=checkbox id='sports' class='renew'></div>
+						<div class='col3'><label for='news'>News 101.9:</label><input type=checkbox id='news' class='renew'></div>
+						<div class='col3'><label for='arts'>Arts Report:</label><input type=checkbox id='arts' class='renew'></div>
+						<div class='col3'><label for='live_broadcast'>Live Broadcasting:</label><input type=checkbox id='live_broadcast' class='renew'></div>
+						<div class='col3'><label for='tech'>Web and Tech:</label><input type=checkbox id='tech' class='renew'></div>
+						<div class='col3'><label for='programming'>Programming Committee:</label><input type=checkbox id='programming' class='renew'></div>
+						<div class='col3'><label for='ads_psa'>Ads and PSAs:</label><input type=checkbox id='ads_psa' class='renew'></div>
+						<div class='col3'><label for='promos'>Promotions and Outreach:</label><input type=checkbox id='promos' class='renew'></div>
+						<div class='col3'><label for='photography'>Photography:</label><input type=checkbox id='photography' class='renew'></div>
+						<div class='col3'><label for='digital_library'>Digital Library:</label><input type=checkbox id='digital_library' class='renew'></div>
+						<div class='col3'><label for='tabling'>Tabling Events:</label><input type=checkbox id='tabling' class='renew'></div>
+						<div class='col3'><label for='other'>Other:</label><input type=text id='other' class='renew'></div>
 					</div>
 				</div>
 				<hr>

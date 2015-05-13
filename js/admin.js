@@ -15,7 +15,6 @@ $(document).ready ( function() {
 
 function show_current_cutoff(){
     var membership_year;
-
     $.ajax({
         type:"GET",
         url: "form-handlers/membership/year_rollover.php",

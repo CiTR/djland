@@ -254,6 +254,30 @@ function updateMemberInterests(membership_year){
 		dataType: "json"
 	});
 }
+
+function renewMembership(membership_year){
+    if(new Date().getMonth() > 4){
+        membership_year.membership_year = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
+    }
+    return $.ajax({
+        type:"POST",
+        url: "form-handlers/membership/renew_membership.php",
+        data: {
+            "membership_year": JSON.stringify(membership_year)
+        },
+        dataType: "json"
+    });
+}
+function renewMember(member,membership_year){
+    $.when(updateMemberInfo(member),renewMembership(membership_year)).then(
+        function(data,data2){
+
+        },
+        function(error1,error2){
+
+        })
+}
+
 function updateMember(member,membership_year){
 	$info = updateMemberInfo(member);
 	$interests = updateMemberInterests(membership_year);
