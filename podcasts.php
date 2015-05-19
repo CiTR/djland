@@ -37,6 +37,24 @@ require_once("headers/menu_header.php");
       color:red;
     }
 
+    .title{
+      font-size:1.2em;
+    }
+
+    .subtitle{
+      font-size:0.9em;
+      font-style: italic;
+    }
+    .podcast_date{
+      margin-left:-20px;
+      font-color:lightgrey;
+      font-size:0.8em;
+    }
+
+    .podcast_list_entry{
+      margin-left: 35px;
+    }
+
   </style>
 
 
@@ -50,14 +68,20 @@ require_once("headers/menu_header.php");
 
   <div ng-controller="episodeList">
     <br/><br/>
-    <p>{{status}}</p>
+    <p ng-show="!episodes_loaded || !playlists_loaded ">{{status}}</p>
 
-    <div ng-repeat="playlist in playlists track by playlist.ps_id">
-      {{playlist.start_time | date: "medium"}}<br/>
-      Title: {{playlist.title}}<br/>
-      Subtitle: {{playlist.subtitle}}<br/>
+    <div >
+      <a ng-href="{new_link}">+ start next episode ({{new_date}}) - from {{playlists[0].date}}</a>
+    </div>
+    <div ng-repeat="playlist in playlists track by playlist.ps_id" class="podcast_list_entry">
+      <span class="podcast_date">{{playlist.start_time | date: "medium"}}</span>
+      <p ng-show="playlist.ep_id">
+        <span class="title" >{{playlist.title}}</span><br/>
+        <span class="subtitle" >{{playlist.subtitle? playlist.subtitle : '(no subtitle)'}}</span><br/>
+      </p>
+      <br/>
       <a ng-href="playsheet.php?action=edit&id={{playlist.ps_id}}" target="_self">edit playsheet</a> |
-      <a ng-click="edit_episode(playlist.ep_id);">edit podcast</a>
+      <a ng-click="edit_episode(playlist.ep_id);" ng-show="playlist.ep_id;" >edit podcast</a>
       <br/>
       <hr/>
     </div>
@@ -106,6 +130,7 @@ require_once("headers/menu_header.php");
 <script type="text/javascript" src="js/angular.js"></script>
 <script type="text/javascript">
   var djland = angular.module('djLand', []);
+
 </script>
 <script type="text/javascript" src="js/angular-djland.js"></script>
 

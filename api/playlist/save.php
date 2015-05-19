@@ -11,9 +11,19 @@ require_once("../api_common_private.php");
 
 $ads = $incoming_data['ads'];
 $plays = $incoming_data['plays'];
+$podcast = $incoming_data['podcast'];
 
 unset($incoming_data['ads']);
 unset($incoming_data['plays']);
+unset($incoming_data['podcast']);
+
+
+if (array_key_exists('id',$podcast)){
+  $podcast_id = $podcast['id'];
+  unset($podcast['id']);
+} else {
+  $podcast_id = 0;
+}
 
 $playlist = $incoming_data;
 
@@ -32,9 +42,6 @@ if(array_key_exists('id',$playlist)){
   $playlist_id = -1;
 }
 
-$podcast = $playlist['podcast'];
-unset($playlist['podcast']);
-
 $spokenword_hours = $playlist['spokenword_hours'];
 $spokenword_min = $playlist['spokenword_minutes'];
 unset($playlist['spokenword_hours']);
@@ -43,6 +50,8 @@ $playlist['spokenword_duration'] = 60*$spokenword_hours + $spokenword_min;
 
 $playlist['start_time'] = date('Y-m-d H:i:s',strtotime($playlist['start_time'] ));
 $playlist['end_time'] = date('H:i:s',strtotime($playlist['end_time'] ));
+
+$playlist['podcast_episode'] = $podcast_id;
 
 
 if($playlist_id == -1){
@@ -104,15 +113,26 @@ foreach($plays as $i => $play){
 
     $play['playsheet_id'] = $playlist_id;
 
+    if (array_key_exists('start', $play) ){
+      unset($play['start']);
+    }
+
       insert_row_in_table('playitems', $play);
 
 
   }
 }
 
+if ($error == ''){
+
+  $podcast['date'] = date(DATE_RSS, strtotime($playlist['start_time']));
+  $podcast['edit_date'] = date('Y-m-d H:i:s');
+
+  update_row_in_table('podcast_episodes',$podcast, $podcast_id);
+}
 
 if ($error == ''){
-  echo json_encode(array('message' => $error));
+  echo json_encode(array('message' => $playlist_id));
 } else {
   header('HTTP/1.0 400 '.json_encode(array('message' => $error)));
 }

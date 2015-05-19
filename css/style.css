@@ -7,6 +7,8 @@ font-family: Helvetica,Arial;
 color:white;
 }
 
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+
 div#main {
 	width:50%;
 	position:relative;

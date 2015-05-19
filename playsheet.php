@@ -12,6 +12,8 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
 ?>
 
+
+
 <style type="text/css">
 
   ul, li {
@@ -100,14 +102,22 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     width: auto;
   }
 
-  .playsheet_block, .spokenword_block {
+  .playsheet_block, .spokenword_block, .podcast_block,.save_block {
     max-width: 1000px;
-    min-height:500px;
+    width:100%;
+    min-height:200px;
     position:relative;
     margin-left: auto;
     margin-right:auto;
+    display:block;
+    float:left;
 
   }
+
+  .spokenword_block{
+    min-height:400px;
+  }
+
 
   .dragzone {
     cursor: default;
@@ -288,7 +298,7 @@ width:1200px;
 
   }
 
-  input#sam_button {
+  div.floating {
     position: fixed;
     right: 0;
     top: 30px;
@@ -301,6 +311,12 @@ width:1200px;
     border-top: black 1px solid;
   }
 
+  .blocker{
+    position:relative;
+    bottom:30px;
+    background-color:black;
+    color:red;
+  }
   .sam_row button {
 
     vertical-align: top;
@@ -314,35 +330,80 @@ width:1200px;
   #totals{
     color:black;
   }
+
+  #submit{
+    font-size:3em;
+
+  }
+  button {
+    color:black;
+  }
+
+  #message{
+    padding:6px;
+    color:black;
+    position:fixed;
+    top:0;
+    left:40%;
+    background-color:mintcream;
+    font-size:1.2em;
+  }
+
+  #left, #right{
+    width:48%;
+    float:left;
+  }
+
+  .vars{
+    position:absolute;
+    top:5000px;
+  }
 </style>
 
 </head>
 <body>
-<?php print_menu(); ?>
+<?php
 
-<div ng-app="djLand">
+    print_menu();
+
+
+    $show_id = users_show();
+    if ( is_numeric($show_id) && $show_id >0 ){
+      //good
+    } else {
+
+      echo "<br/><center>sorry, your user account doesn't own a show</center>";
+      return;
+    }
+?>
+
+<div ng-app="djLand" ng-cloak>
 
   <div ng-controller="playsheetCtrl">
-
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}}</h2>
 
     <div >
-      <h3>Episode Data</h3>
+
 
       <div id="left">
-        Playsheet Type: <select ng-model="playsheet.type">
+        Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast();">
           <option value="Syndicated">Syndicated</option>
           <option value="Live">Live</option>
           <option value="Rebroadcast">Rebroadcast</option>
           <option value="Simulcast">Simulcast</option>
         </select>
         <span ng-show="playsheet.type == 'Rebroadcast'">
-<!--        Load from Playsheet: <select ng-model="desired_playsheet" ng-options="available_playsheets"></select> -->
-          <button ng-click="loadPlays">Select this Playsheet</button>
-          </span>
-        <br/>Show: {{show_name}}
+          <br/>
+          <select ng-model="desired_playsheet"
+                  ng-options="playsheet.playlist_id as playsheet.start_time + ' - ' + playsheet.show_name
+                   for playsheet
+                   in available_playsheets ">
+          </select>
 
+          <button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1? '<-- load plays from this playsheet' : '...'}}</button>
+          </span>
+        <br/>Show: {{playsheet.show_id}}
 
         <!--    <br/>Date:   <button >{{date | date: 'mediumDate'}}</button> (click to change)
             <br/>Time:   <span ng-controller="timepicker" class="timepicker">
@@ -355,17 +416,6 @@ width:1200px;
       </div>
       <div id="right">
         <div ng-controller="datepicker" >
-<pre>
-        Date: {{playsheet.start_time | date: 'mediumDate'}}
-        Start Time: {{playsheet.start_time | date: 'mediumTime'}}
-        End Time: {{playsheet.end_time | date: 'mediumTime'}}
-
-        playsheet.start_time: {{playsheet.start_time | date:'medium'}}
-        playsheet.end_time: {{playsheet.end_time | date:'medium'}}
-        StartHour: {{start_hour}}
-        Socan: {{socan}}  (type: {{typeofsocan}})
-        datepicker: {{datepicker_date}}
-</pre>
         Start Time:
         [<select ng-model="start_hour" ng-options="n for n in [] | range:0:24"
                  ng-change="playsheet.start_time.setHours(start_hour);"></select> :
@@ -380,15 +430,22 @@ width:1200px;
 
           <input class="date_picker" type="text" datepicker-popup="{{format}}"
                  ng-model="playsheet.start_time"  is-open="opened"
-                 ng-required="true" close-text="Close" ng-hide="false" />
-        <button ng-click="open($event)" ng-change="date_change()" ng-model="datepicker_date">change date</button>
+                 ng-required="true" close-text="Close" ng-hide="true"
+                 ng-change="$parent.date_change();" />
+          <br/>
+          {{playsheet.start_time | date:'EEE, MMM d, y'}}
+        <button ng-click="open($event)"  ng-model="datepicker_date">change date</button>
         </div>
+
       </div>
     </div>
     <br/>
-    <span ng-click="socan=!socan;" >{{socan? 'Hide' : 'Show'}} Socan Fields</span><br/>
+    <br/>
+    <br/>
+    <br/>
+    <button ng-click="socan=!socan;" >{{socan? 'Hide' : 'Show'}} Socan Fields</button><br/>
 
-    <h2>Music <span ng-click="music_hidden = !music_hidden;">{{music_hidden? '( show )' : '( hide )'}}</span></h2>
+    <h2>Music </h2>
 
     <div class="playsheet_block" ng-hide="music_hidden" ng-class="{playsheet_block_socan: socan}">
 
@@ -471,14 +528,18 @@ width:1200px;
 
     <div class="spokenword_block">
     <h2>Spoken Word</h2>
-<span class="left" id="ads" ng-show="playsheet.ads">
+<span class="left" id="ads" >
   <h3>Scheduled Ads, PSAs, Station IDs</h3>
-  <div class="adHead">
+
+  <p>{{(!playsheet.ads) ? ad_message: '';}}</p>
+
+  <div class="adHead" ng-show="playsheet.ads.length >0">
     <div class='adTime label'><h4>time</h4></div>
     <div class='adType label'><h4>type</h4></div>
     <div class='adName label'><h4>name</h4></div>
     <div class='adPlay label'><h4>played</h4></div>
   </div>
+  <button ng-hide="playsheet.ads.length >0" ng-click="loadAds()"> load your ads </button>
   <div class="adRow" ng-repeat="ad in playsheet.ads">
     <div class='adTime'>{{ad.time}}</div>
     <div class='adType'>{{ad.type}}</div>
@@ -499,30 +560,57 @@ width:1200px;
       <br/>
     </span>
     </div>
-    <div class="main">
-    <h2>Podcast</h2>
 
-    <podcast-editor></podcast-editor>
+      <div class="podcast_block" >
+        <h2>Podcast</h2>
+<center>
+        <button ng-click="init_podcast()" ng-show="!playsheet.podcast">Initialize Podcast</button>
 
-      <div class="playsheet_block">
+        <span ng-show="playsheet.podcast">
+          <p>podcast for show feed: {{playsheet.podcast.channel_id}}.<br/>
+            audio file:
+            <a ng-show="playsheet.podcast.url" ng-href="{{playsheet.podcast.url}}" target="_blank">{{playsheet.podcast.url}}</a>
+            <span ng-show="!playsheet.podcast.url || playsheet.podcast.url == ''">not yet created</span>
+            <br/>
 
+            start time: {{playsheet.start_time | date: 'mediumTime'}}<br/>
+            end time: {{playsheet.end_time | date: 'mediumTime'}}
+          </p>
+          <button ng-click="startPodcast()">Start Podcast</button>
 
-        <center>
+          <button ng-click="endPodcast()">End Podcast</button>
+          <br/>
+          active: <input ng-model="playsheet.podcast.active"><br/>
+          Title: <input ng-model="playsheet.podcast.title"><br/>
+          Subtitle: <input ng-model="playsheet.podcast.subtitle" ><br/>
+          Summary: <br/><textarea ng-model="playsheet.podcast.summary" rows="20" cols="90"></textarea>
+        </span>
+</center>
+</div>
 
+<div class="save_block">
 
-
-          <button id="submit" ng-click="save();">save</button>
+  <center>
+          <button id="submit" ng-click="submit()">save</button>
+          <div class="blocker" ng-hide="songsComplete"> Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
+          <span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span> </div>
 
         <br/>
-            <div>{{message}}</div>
+            <div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
         </center>
-      </div>
-    </div>
+  </div>
 
 
 
 
-    <input id='sam_button' type="button" ng-click="samVisible = !samVisible;" value=" SAM "></input>
+  <div class="floating">
+  <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "></input><br/>
+  <input type="button"
+         ng-click="saveDraft(); saving = true;"
+         value="{{(saving)? 'saving....':'Save Draft'}}"
+         ng-hide="playsheet.status == 2"
+      ></input>
+</div>
 
     <div id="sam_picker" ng-show="samVisible">
       <div id="sam_title"><span ng-click="samVisible = false;"> X </span>&nbsp;&nbsp;Sam Plays&nbsp;&nbsp;&nbsp;</div>
@@ -605,7 +693,7 @@ width:1200px;
 <script src="js/angular-djland.js"></script>
 <script type="text/javascript">
 
-  djland.value('show_id', <?php echo users_show();?>);
+  djland.value('show_id', <?php echo $show_id;?>);
 </script>
 <script src="js/angular/playsheet.js"></script>
 </body>

@@ -18,13 +18,15 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 
   $query = '
-    SELECT playlists.id,
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date) as edit_date
+    SELECT playlists.start_time, playlists.edit_date, playlists.id as playlist_id,
+     show_id as sh_id,
+     shows.name as show_name
+
     FROM playlists
     LEFT JOIN podcast_episodes on playlists.podcast_episode = podcast_episodes.id
-
+    LEFT JOIN shows on shows.id = playlists.show_id
     ORDER BY
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date)
+      playlists.edit_date
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 

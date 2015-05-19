@@ -108,13 +108,24 @@ function get_array($table, $idfield = 'id', $fields = 'basic'){
 }
 
 function singleRowByID($table, $id){
+
   global $db;
+  return singleRowFromDB($db, $table, $id);
+}
+
+function singleRowByIDFromSam($table,$id){
+  global $mysqli_sam;
+  return singleRowFromDB($mysqli_sam, $table, $id);
+}
+
+function singleRowFromDB($db, $table, $id){
   global $error;
 
   $q = 'SELECT * from '.$table.' where id ='.$id;
   if ($error == '' && $result = mysqli_query($db, $q)){
     return mysqli_fetch_assoc($result);
   } else {
+    $error .= mysqli_error($db);
     return false;
   }
 }

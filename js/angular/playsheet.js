@@ -2,13 +2,21 @@
 
 
 
-djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $window, apiService, show_id) {
+djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $interval, apiService, show_id) {
+
+
+  $scope.message = {text:'',age:0};
 
   $scope.playsheet = {};
   console.log('channel id is ' + show_id);
 
   $scope.samVisible = false;
   $scope.totals = {cancon2: 0, cancon3: 0, hits: 0, femcon: 0, nu: 0};
+
+  apiService.listActiveShows()
+      .success(function(result){
+        $scope.shows = result;
+      })
 
   apiService.getShowData(show_id).then(function (showData) {
     var showData = showData.data;
@@ -38,25 +46,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
 
   $scope.blankPlaysheet = function (showData) {
-/*
-    var blankplays = [];
-    for (var i = 0; i < 5; i++) {
-      blankplays.push({
-        song:{artist: '',
-              title: '',
-              song: ''
-        },
-        is_playlist: false,
-        is_canadian: false,
-        is_fem: false,
-        is_inst: false,
-        is_part: false,
-        is_hit: false,
-        crtc_category: showData.crtc,
-        lang: showData.language
-      });
-    }
-    */
+
     var now = new Date();
     var later = new Date();
     later.setHours(now.getHours() + 1);
@@ -77,12 +67,6 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       crtc: showData.crtc_default,
       start_time: now,
       end_time: later,
-      podcast: {
-        title: 'broadcast on ' + $filter('date')(now, 'mediumDate'),
-        subtitle: '',
-        summary: '',
-        active: '1'
-      },
       plays: []
     };
   };
@@ -98,7 +82,10 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     $scope.end_hour = $filter('pad')($scope.playsheet.end_time.getHours(), 2);
     $scope.end_minute = $filter('pad')($scope.playsheet.end_time.getMinutes(), 2);
 
+
     $scope.$watch('playsheet.plays', function () {
+
+      $scope.songsComplete = checkComplete();
 
       var newTotals = {cancon2: 0, cancon3: 0, hits: 0, is_fem: 0, is_playlist: 0};
       var num = $scope.playsheet.plays.length;
@@ -160,7 +147,12 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       is_part: false,
       is_hit: false,
       crtc_category: $scope.playsheet.crtc,
-      lang: $scope.playsheet.lang
+      lang: $scope.playsheet.lang,
+      insert_song_start_hour:"00",
+      insert_song_start_minute:"00",
+      insert_song_length_minute:"00",
+      insert_song_length_second:"00",
+      start:'0'
     };
 
 
@@ -186,20 +178,23 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
       }
     };
+
     $scope.cue = function(row){
       row.start = new Date();
       row.insert_song_start_hour = $filter('pad')(row.start.getHours(),2);
       row.insert_song_start_minute = $filter('pad')(row.start.getMinutes(),2);
 
-    }
+    };
+
     $scope.updateNow = function(row){
       row.start = new Date();
       row.start.setHours(row.insert_song_start_hour);
       row.start.setMinutes(row.insert_song_start_minute);
       row.start.setSeconds(0);
-    }
+    };
 
     $scope.end = function(row){
+      if (row.start == '0') return;
       var start_milliseconds = row.start.getTime();//1000*60*60*row.insert_song_start_hour + 1000*60*row.insert_song_start_minute;
 
       var rightnow = new Date();
@@ -218,11 +213,9 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     $scope.persistent_date.duration = 60 * 60;
     $scope.episode = $scope.playsheet.podcast;
 
-
     $scope.sam_add = function (sam) {
       $scope.playsheet.plays.push(angular.copy(sam));
     };
-
 
     $scope.processSam = function (sam_play) {
       var djland_entry = angular.copy(entry_template);
@@ -268,45 +261,184 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
           });
     };
 
-    $scope.save = function(){
-      $scope.message = 'saving...';
+    var checkComplete = function() {
       var good = true;
 
-      for( var i in $scope.playsheet.plays){
+      for (var i in $scope.playsheet.plays) {
         if ($scope.playsheet.plays[i].song.artist == undefined
             || $scope.playsheet.plays[i].song.title == undefined
             || $scope.playsheet.plays[i].song.song == undefined
             || $scope.playsheet.plays[i].song.artist == ''
             || $scope.playsheet.plays[i].song.title == ''
             || $scope.playsheet.plays[i].song.song == ''
+            || $scope.playsheet.plays[i].song.artist == ' '
+            || $scope.playsheet.plays[i].song.title == ' '
+            || $scope.playsheet.plays[i].song.song == ' '
+            || $scope.playsheet.plays[i].song.artist == '.'
+            || $scope.playsheet.plays[i].song.title == '.'
+            || $scope.playsheet.plays[i].song.song == '.'
+            || $scope.playsheet.plays[i].song.artist == "'"
+            || $scope.playsheet.plays[i].song.title == "'"
+            || $scope.playsheet.plays[i].song.song == "'"
+            || $scope.playsheet.plays[i].song.artist == '/'
+            || $scope.playsheet.plays[i].song.title == '/'
+            || $scope.playsheet.plays[i].song.song == '/'
             || $scope.playsheet.plays[i].song.artist == null
             || $scope.playsheet.plays[i].song.title == null
-            || $scope.playsheet.plays[i].song.song == null){
+            || $scope.playsheet.plays[i].song.song == null) {
           good = false;
+        }
+
+        if ($scope.socan){
+
+          if ($scope.playsheet.plays[i].song.composer == undefined
+              || $scope.playsheet.plays[i].song.composer == ''
+              || $scope.playsheet.plays[i].song.composer == ' '
+              || $scope.playsheet.plays[i].song.composer == '.'
+              || $scope.playsheet.plays[i].song.composer == "'"
+              || $scope.playsheet.plays[i].song.composer == '/'
+              || $scope.playsheet.plays[i].song.composer == null) {
+            good = false;
+          }
+
+          if ($scope.playsheet.plays[i].insert_song_length_minute == "00"
+              && $scope.playsheet.plays[i].insert_song_length_second == "00") {
+            good = false;
+          }
+
+          if ($scope.playsheet.plays[i].start != '0' && isNaN($scope.playsheet.plays[i].start.getTime())) {
+            good = false;
+          }
+
+
+        }
+      }
+      return good;
+    };
+
+      $scope.submit = function(){
+
+        if ($scope.songsComplete) {
+          $scope.playsheet.status = 2;
+
+          apiService.savePlaylist($scope.playsheet)
+              .success(function (result) {
+                $scope.show_message('success: ' + result.message);
+                $scope.playsheet.id = result.message;
+              });
         }
       }
 
-      if(good){
-        $scope.playsheet.status = 2;
+    $scope.saveDraft = function(){
+      $scope.saving = true;
+       $scope.playsheet.status = 1;
+
         apiService.savePlaylist($scope.playsheet)
-            .success(function(result){
+            .success(function (result) {
+              $scope.saving = false;
+              var now = new Date();
+              $scope.show_message('draft saved at '+now.getHours()+':'+$filter('pad')(now.getMinutes(),2));
 
+              var new_url = 'l.h/djland-podcast/playsheet.php?action=edit';
+              if ($scope.socan) new_url += '&socan=true';
+              new_url += '&id='+result.message;// <== new playsheet id
+              $location.url(new_url);
 
-
-              $scope.message = 'success: '+result.message;
-
-            });
-
-      } else {
-        $scope.playsheet.status = 1;
-
-        $scope.message = 'please make sure all "artist", "album", and "song" entries are filled in';
-      }
-
+              $scope.playsheet.id = result.message;
+            })
     }
 
+
+      $scope.init_podcast = function(){
+        apiService.newPodcast()
+            .success(function(result){
+              $scope.playsheet.podcast = result;
+
+            });
+      }
+    }
+
+  var age = $interval(function(){
+    $scope.message.age +=1;
+  }, 1000);
+
+  $scope.show_message = function(stuff){
+    $scope.message.text = stuff;
+    $scope.message.age = 0;
+  }
+
+
+  $scope.date_change = function(){
+/*
+
+    var time = new Date($scope.playsheet.start_time);
+    time.setHours(0);
+    time.setMinutes(0);
+    time.setSeconds(0);
+
+    apiService.getNextShow(time)
+        .success(function(result){
+
+          $scope.ad_message = result;
+
+          var start = new Date(result.start*1000);
+          var end = new Date(result.end*1000);
+
+          $scope.playsheet.start_time = start;
+          $scope.playsheet.end_time = end;
+
+          $scope.start_hour = $filter('pad')(start.getHours(),2);
+          $scope.start_minute = $filter('pad')(start.getMinutes(),2);
+          $scope.end_hour = $filter('pad')(end.getHours(),2);
+          $scope.end_minute = $filter('pad')(end.getMinutes(),2);
+
+          $scope.loadAds(time);
+  });
+*/
+
+        };
+
+
+  $scope.loadAds = function(time){
+    $scope.show_message('loading the ads...');
+    apiService.getAdsFromBlock(time)
+        .success(function(result){
+          $scope.playsheet.ads = result;
+
+        })
+        .fail(function(result){
+          $scope.show_message('no ads found. have a great show!');});
   };
 
+  $scope.loadIfRebroadcast = function(){
+    $scope.loadButtonText = 'loading list...';
+    apiService.getEveryonesPlaylists(2000,0)
+        .success(function(result){
+          $scope.available_playsheets = result;
+
+          $scope.available_playsheets.sort(function(a,b){
+            if (a.start_time > b.start_time) return -1;
+            else return 1;
+          })
+
+          $scope.available_playsheets.unshift({
+            playlist_id: "0",
+            sh_id: "0",
+            show_name: "Select a Playsheet..",
+            start_time: ""});
+          $scope.desired_playsheet = "0";
+          $scope.loadButtonText = '<-- Load plays from this playsheet'
+        });
+
+  }
+
+  $scope.loadPlays = function(desired_playsheet){
+    if (desired_playsheet == 0) return;
+    apiService.getFullPlaylistData(desired_playsheet)
+        .success(function(result){
+          $scope.playsheet.plays = result.plays;
+        })
+  }
 
   $scope.varshidden = false;
 });
