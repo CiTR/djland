@@ -54,7 +54,7 @@ function permission_level(){
 		}	
 	}
 
-    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] ){
+    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
         $level = 0;
     }
 

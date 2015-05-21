@@ -4,14 +4,21 @@
  * User: Evan
  * Date: 5/4/2015
  * Time: 1:09 PM
+ * If a member id is passed, return membership years that member possesses in DESC order
+ * Else return all possible membership years for all members in DESC order
  */
 
 session_start();
 require_once("../../headers/security_header.php");
-    if(isset($_POST['id'])){
-        $query = "SELECT membership_year AS year FROM membership_years WHERE member_id=:id ORDER BY membership_year DESC";
-        $statement = $pdo_db->prepare($query);
-        $statement ->bindValue(':id',$_POST['id']);
+    if(isset($_POST)){
+        if(isset($_POST['id'])){
+            $query = "SELECT membership_year AS year FROM membership_years WHERE member_id=:id ORDER BY membership_year DESC";
+            $statement = $pdo_db->prepare($query);
+            $statement ->bindValue(':id',$_POST['id']);
+        }else{
+            $query = "SELECT membership_year AS year FROM membership_years GROUP BY membership_year ORDER BY membership_year DESC";
+            $statement = $pdo_db->prepare($query);
+        }        
         try {
             $statement->execute();
             $result=$statement->fetchAll(PDO::FETCH_NUM);

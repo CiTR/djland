@@ -36,12 +36,7 @@ if( permission_level() >= $djland_permission_levels['administrator']){ ?>
     ?>
     <div class="wrapper">
         <h1>Administrator Tools</h1>
-        <ul class="inner clean-list text-center">
-            <li class="col4"><button id="year_rollover">Start new membership year</button></li>
-            <li class="col4" id="current_year">Loading Current Active Year...</li>
-            <li class="col4" id="current_cutoff">Loading Current Cutoff...</li>
-            <li class="col4">Current membership year members must have renewed, and paid for to this current year</li>
-        </ul>
+        
     </div>
 
     </body>

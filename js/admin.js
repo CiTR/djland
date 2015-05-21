@@ -27,7 +27,7 @@ function show_current_cutoff(){
         }else{
             membership_year = (new Date().getFullYear() - 1) + "/" + (new Date().getFullYear() + 0);
         }
-        current_year.text("Active year:"+membership_year);
+        current_year.text("Current year:"+membership_year);
     }).fail(function(data){
         cutoff.text("Failed to load");
     })
@@ -49,7 +49,7 @@ function update_cutoff_year(){
                 url: "form-handlers/membership/year_rollover.php",
                 data: {"year":membership_year},
                 dataType: "json",
-                async: true
+                async: false
             }).success(function(data){
                 membership_years = data.years;
             }).fail(function(){

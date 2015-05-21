@@ -1,4 +1,5 @@
 //Created by Evan Friday, 2014
+/*
 var faculty_list = ["Arts","Applied Science","Architecture","Archival Studies","Audiology","Business","Community Planning","Continuing Studies","Dentistry","Doctoral Studies",
 								"Education","Environmental Health","Forestry","Graduate Studies","Journalism","Kinesiology","Land and Food Systems","Law","Medicine","Music","Nursing","Pharmaceutical","Public Health","Science","Social Work","Other"];
 
@@ -11,10 +12,11 @@ var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'
 var provinces = ["AB","BC","MAN","NB","NFL","NS","NVT","NWT","ON","QC","SASK","YUK"];
 var member_types = {'Student':'UBC Student','Community':'Community Member','Staff':'Staff'};
 var permission_levels = {'administrator':'Administrator','staff':'Staff','workstudy':'Workstudy','volunteer':'Volunteer Head','dj':'DJ','member':'Basic Member'};
+*/
 
 //PAGE CREATION
 $(document).ready ( function() {
-	if(document.getElementById('init')){
+	/*if(document.getElementById('init')){
 		manage_members('init');
 	}else if(document.getElementById('view')){
 		manage_members('view','init');
@@ -22,9 +24,11 @@ $(document).ready ( function() {
 		manage_members('report','init');
 	}else{
 		manage_members('mail','init');
-	}
+	}*/
 	add_handlers();	
 });
+
+
 function getVal($varname){
 	$temp = $varname;
 	if( $('#'+$temp).val()!=null){
@@ -232,7 +236,7 @@ function add_handlers(){
         if(confirm(confirm_string)){
             $.ajax({
                 type:"POST",
-                url: "form-handlers/member_delete.php",
+                url: "form-handlers/membership/delete.php",
                 data: {"ids" : JSON.stringify(members_to_delete)},
                 dataType: "json",
                 async: false
@@ -293,42 +297,11 @@ function add_handlers(){
 
 	//MEMBER TYPE: HIDE/SHOW STUDENT
 	$('#member_type').unbind().change( function(){		
-		if( ($('#row5').hasClass('loaded') || $('#row5').css('display') == 'none') && (getVal('member_type') == 'Student' || getVal('member_type') == 'student' )){
-			$('#row5').show();
-			$('#row5').children().show();
-			$('#row6').show();
-			$('#row6').children().show();
-			//console.log("show student");
-		}
-		else if(getVal('member_type') == 'Student' || getVal('member_type') == 'student' ){ 
-			var row5 = $('#row5');
-			var row6 = $('#row6');
-			row5.append("<div class='col5'>Faculty*: </div>");
-			row5.append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
-			var faculty_select = $("#faculty");
-			for(faculty in faculty_list){
-				faculty_select.append("<option value="+faculty_list[faculty]+">"+faculty_list[faculty]+"</option>");
-			}
-			row5.append("<div id='student_no_container'> \
-			<div class='col5'>Student Number*:</div> \
-			<div class='col5'><input id='student_no' name='student_no' maxlength='10' placeholder='Student Number' onKeyPress='return numbersonly(this, event)''></input></div> \
-			</div>");
-			row6.append("<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.): \
-				<input id='integrate'  name='integrate' type='checkbox'/> \
-				<div class='col5'>Year*:</div> \
-				<div class='col8'> \
-					<select id='year' style='z-position=10;'> \
-						<option value='1'>1</option> \
-						<option value='2'>2</option> \
-						<option value='3'>3</option> \
-						<option value='4'>4</option> \
-						<option value='5'>5+</option> \
-					</select> \
-				</div></div>");
-			//console.log("Create student");
+		if($('#member_type').val() == 'Student'){
+			$('.student').show();
+			$('.student').children().show();
 		}else{
-			$('#row5').hide();
-			$('#row6').hide();
+			$('.student').hide();
 			//console.log("Hide student fields");
 		}
 	});
@@ -413,6 +386,9 @@ function manage_members(action_,type_,value_){
 		//console.log("Manage members called, action="+action);
 		switch(action){
 			case 'init':
+					
+
+
 					document.getElementById("membership").innerHTML = " ";
 					$('#membership').append("<ul id='membership_header'></ul>");
 					var membership_header = $('#membership_header');

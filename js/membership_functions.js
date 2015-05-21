@@ -3,7 +3,6 @@ $(document).ready ( function() {
     //console.log(queryMembershipYear('1','2013/2014'));
 });
 
-
 function getVal($varname){
 	$temp = $varname;
 	if( $('#'+$temp).val()!=null){
@@ -32,7 +31,6 @@ function getSelect($id){
 		return null;
 	}	
 }
-
 function getCheckbox($id){
 	var checkbox = $id;
 	if($('#'+checkbox).prop('checked')){
@@ -125,9 +123,9 @@ function queryMember(id){
 	assertTrue(id != null,"id is null");
 	var member = {"id":id};
 	$.ajax({
-		type:"POST",
-		url: "form-handlers/membership_handler.php",
-		data: {"action" : 'view', "type" : 'init',"value":id},
+		type:"GET",
+		url: "form-handlers/membership/member.php",
+		data: {"id":id},
 		dataType: "json",
 		async: false
 		}).success(function(data){
@@ -183,9 +181,21 @@ function queryMember(id){
 
 //Returns all membership years present for member id
 function queryMembershipYears(id){
-	assertTrue(id != null,"id is null");
     var membership_years= {};
-	$.ajax({
+    if(id != null){
+    	$.ajax({
+		type:"POST",
+		url: "form-handlers/membership/years.php",
+		data: {"id":id},
+		dataType: "json",
+		async: false
+		}).success(function(data){
+            membership_years = data.years;
+		}).fail(function(){
+			console.log("Unable to retrieve member information");
+		});	
+    }else{
+		$.ajax({
 		type:"POST",
 		url: "form-handlers/membership/years.php",
 		data: {"id":id},
@@ -196,6 +206,7 @@ function queryMembershipYears(id){
 		}).fail(function(){
 			console.log("Unable to retrieve member information");
 		});
+    }
 	return membership_years;
 }
 function queryMembershipYear(id,year){
@@ -237,7 +248,7 @@ function queryMembershipPriveleges(id){
 function updateMemberInfo(member,handler){
 	return $.ajax({
 		type:"POST",
-		url: "form-handlers/member_info_update_handler.php",
+		url: "form-handlers/membership/update_info.php",
 		data: {
 		"member": JSON.stringify(member)
 	 	},
@@ -247,7 +258,7 @@ function updateMemberInfo(member,handler){
 function updateMemberInterests(membership_year){
 	return $.ajax({
 		type:"POST",
-		url: "form-handlers/member_interest_update_handler.php",
+		url: "form-handlers/membership/update_interest.php",
 		data: {
 		"membership_year": JSON.stringify(membership_year)
 	 	},

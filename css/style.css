@@ -40,6 +40,71 @@ input, select, textarea, option{
 	background-color: #000977;
 }
 
+/* CSS for general page layout */
+
+#wrapper {
+    background-color: rgba(0,0,0,.2);
+    width: 800px;
+    height: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top:10px;
+    padding-top:10px;
+    padding-left:10px;
+    padding-right:10px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-right-color: #FFFFFF;
+    border-left-color: #FFFFFF;
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.wrapper{
+    position: relative;
+    width:940px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    overflow: visible;
+}
+.inner{
+    display:inline-block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    width:90%;
+}
+.inner > li{
+    min-height:20px;
+}
+.small{
+    width:100%;
+    height:auto;
+}
+.wrapper:after{
+    background-color: grey;
+}
+.clean-list{
+    list-style: none;
+}
+.inline-list *{
+	display:inline;
+}
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+.text-center{
+    text-align: center;
+}
+
+
 
 #ps_status{
 	position:fixed;
@@ -480,7 +545,6 @@ button#submit_user.red{
 	width:95%;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom:25px;
 }
 
 .containerrow{
@@ -492,35 +556,41 @@ button#submit_user.red{
 }
 #membership{
 	width:1024px;
+	min-height:300px;
 	background-color: grey;
     margin-left: auto;
     margin-right: auto;
     margin-top: -2px;
 	z-index: 3;
+	margin-bottom: 15px;
 }
+#membership ul{
+	background-color:inherit;
+}
+
 #membership_header{
-    width: 95%;
-    height:auto;
     list-style: none;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
     margin-top:0px;
 	}
-#membership_header li{
+#membership_header li,#search_header li{
     float:left;
     position:relative;
     margin-right:2px;
     border:none;
 }
+
+
 #search_container{
 	width:auto;
 	display:inline-block;
 }
-#member_result{
+#membership_result{
 	width:100%;
-	overflow-y: auto;
-	overflow-x:hidden;
+	max-height:85%;
+	overflow:auto; 
 	max-height: 80%;
 	margin-left:auto;
 	margin-right:auto;
@@ -579,8 +649,7 @@ button#submit_user.red{
 	display:inline-block;
 	position:relative;
 	float:left;
-	height:auto;
-	left:2px;
+	height:auto;	
 	overflow:visible;
 }
 div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
@@ -658,7 +727,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-
+.hidden{
+	display:none;
+}
 
 /*----------------------------*/
 /*----PLAYLIST TABLE RULES----*/
@@ -1828,60 +1899,6 @@ span#show-percent{
 	font-style: italic;
 }
 
-/* CSS for general page layout */
-
-#wrapper {
-    background-color: rgba(0,0,0,.2);
-    width: 800px;
-    height: 1000px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top:10px;
-    padding-top:10px;
-    padding-left:10px;
-    padding-right:10px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-right-style: solid;
-    border-left-style: solid;
-    border-right-color: #FFFFFF;
-    border-left-color: #FFFFFF;
-    border-top-width: 1px;
-    border-top-style: solid;
-}
-
-.wrapper{
-    position: relative;
-    width:940px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: grey;
-    overflow: visible;
-}
-.inner{
-    display:inline-block;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: grey;
-    width:90%;
-}
-.inner > li{
-    min-height:20px;
-}
-.small{
-    width:100%;
-    height:auto;
-}
-.wrapper:after{
-    background-color: grey;
-}
-.clean-list{
-    list-style: none;
-}
-.text-center{
-    text-align: center;
-}
 
 .lib-delete{
 color:black;
