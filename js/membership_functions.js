@@ -116,7 +116,7 @@ function queryMembers(){
 	return $.ajax({
 		type:"GET",
 		url: "form-handlers/membership/member.php",
-		data: {"id":id},
+		data: {},
 		dataType: "json",
 		async: true
 		});
@@ -318,7 +318,7 @@ function displayMemberList(){
 	var members = queryMembers();
 	$.when(members).then(function(data){
 		var member_result = $('#member_result');
-		member_result.INNERHTML('');
+		member_result.innerHTML='';
 		for(var member in members){
 			member_result.append("<li>"+member.firstname+"</li>");
 		}	

@@ -109,7 +109,73 @@ $djland_permission_levels = array(
     'volunteer'=>'2',
     'dj'=>'1',
     'member'=>'0');
-
+$djland_interests = array(
+	'Arts'=>'arts',
+	'Ads and PSAs'=>'ads_psa',
+	'Digital Library'=>'digital_library',
+	'DJ101.9'=>'dj',
+	'Illustrate for Discorder'=>'discorder',
+	'Writing for Discorder'=>'discorder_2',
+	'Live Broadcasting'=>'live_broadcast',
+	'Music'=>'music',
+	'News'=>'news',
+	'Photography'=>'photography',
+	'Programming Committee'=>'programming_committee',
+	'Promos and Outreach'=>'promotions_outreach',
+	'Show Hosting'=>'show_hosting',
+	'Sports'=>'sports',
+	'Tabling'=>'tabling',
+	'Web and Tech'=>'tech',
+	"Other"=>"other");
+$djland_member_types = array(
+	'UBC Student'=>'Student',
+	'Community Member'=>'Community',
+	'Staff'=>'Staff');
+$djland_program_years = array(
+	'1'=>'1',
+	'2'=>'2',
+	'3'=>'3',
+	'4'=>'4',
+	'5+'=>'5');
+$djland_faculties = array(
+	"Arts",
+	"Applied Science",
+	"Architecture",
+	"Archival Studies",
+	"Audiology",
+	"Business",
+	"Community Planning",
+	"Continuing Studies",
+	"Dentistry",
+	"Doctoral Studies",
+	"Education",
+	"Environmental Health",
+	"Forestry",
+	"Graduate Studies",
+	"Journalism",
+	"Kinesiology",
+	"Land and Food Systems",
+	"Law","Medicine",
+	"Music",
+	"Nursing",
+	"Pharmaceutical",
+	"Public Health",
+	"Science",
+	"Social Work",
+	"Other");
+$djland_provinces = array(
+	'AB',
+	'BC',
+	'MAN',
+	'NB',
+	'NFL',
+	'NS',
+	'NVT',
+	'NWT',
+	'ONT',
+	'QUE',
+	'SASK',
+	'YUK');
 
 
 // debug time operations? leave false unless you

@@ -1,5 +1,33 @@
+window.myNameSpace = window.myNameSpace || { };
+
 function Member(){
-	//Blank constructor as we want two different constructors, and javascript does not support overloading. Instead use _init(arguments...), and _fromObj(Member)
+	this.member_id="";
+	this.firstnane="";
+	this.lastname="";
+	this.fullname="";
+	this.address="";
+	this.city="";
+	this.postalcode="";
+	this.canadian="";
+	this.alumni="";
+	this.since="";
+	this.is_new="";
+	this.member_type="";
+	this.faculty="";
+	this.schoolyear="";
+	this.student_no="";
+	this.integrate="";
+	this.show="";
+	this.show_name="";
+	this.email="";
+	this.primary_phone="";
+	this.secondary_phone="";
+	this.about="";
+	this.skills="";
+	this.exposure="";
+	this.comments="";
+	this.membership_years={};
+	//Blank constructor as we want multiple constructors, and javascript does not support overloading. Instead use _init(arguments list...), _fromObj(Member), and query(id) to build the object.
 }
 
 Member.prototype = {
@@ -7,6 +35,7 @@ Member.prototype = {
 		this.member_id = id;
 		this.firstnane= firstname;
 		this.lastname=lastname;
+		this.fullname = firstname + " " + lastname;
 		this.address=address;
 		this.city=city;
 		this.postalcode=postalcode;
@@ -33,6 +62,7 @@ Member.prototype = {
 		this.member_id =member.id;
 		this.firstnane=member.firstname;
 		this.lastname=member.lastname;
+		this.fullname = member.firstname + " " + member.lastname;
 		this.address=member.address;
 		this.city=member.city;
 		this.postalcode=member.postalcode;
@@ -54,6 +84,68 @@ Member.prototype = {
 		this.skills=member.skills;
 		this.exposure=member.exposure;
 		this.comments=member.comments;
+	},
+	_query:function(id){
+		var member_info;
+		var ajax = $.ajax({
+		type:"GET",
+		url: "form-handlers/membership/member.php",
+		data: {"id":id},
+		dataType: "json",
+		async: true
+		});
+
+		
+
+		$.when(ajax).then(function(data){
+			var member_info = data[0];
+			if(member_info != null){
+				//Populate the basic member member_information 
+				this.firstname = member_info.firstname;
+				this.lastname = member_info.lastname;
+				this.fullname = member_info.firstname + " " + member_info.lastname;
+				this.address = member_info.address;
+				this.city = member_info.city;
+				this.province = member_info.province;
+				this.postalcode = member_info.postalcode;
+				this.canadian = member_info.canadian_citizen;
+				this.member_type = member_info.member_type;
+				if(this.member_type == "Student"){
+					this.faculty = member_info.faculty;
+					this.schoolyear = member_info.schoolyear;
+					this.student_no = member_info.student_no;
+					this.integrate = member_info.integrate;	
+				}
+				this.is_new = member_info.is_new;
+				this.alumni = member_info.alumni;
+				this.since = member_info.since;
+				this.has_show = member_info.has_show;
+				//handling future possibility for multiple shows.
+				
+				if(member_info.show_name.constructor === Array){
+					this.show_name = "";
+					var i;
+					for(i = 0 ; i < member_info.show_name.length; i++){
+						this.show_name += member_info.show_name[i];
+						if(i < member_info.show_name.size() - 1){
+							this.show_name += ", "
+						}
+					}
+				}else{
+					this.show_name = member_info.show_name;
+				}
+				this.email = member_info.email;
+				this.primary_phone = member_info.primary_phone;
+				this.secondary_phone = member_info.secondary_phone;
+				this.about = member_info.about;
+				this.skills = member_info.skills;
+				this.exposure = member_info.exposure;
+				this.comments = member_info.comments;
+			}
+		},function(error){
+				console.log("Could not retrieve member data");
+		});
+	
 	},
 	displayInfo:function(){
 	setText(this.firstname,'firstname');
@@ -84,66 +176,5 @@ Member.prototype = {
 	setVal(this.about,'about');
 	setVal(this.skills,'skills');
 	setVal(this.exposure,'exposure');
-	},
-	query:function(){
-	assertTrue(id != null,"id is null");
-	var member = {"id":id};
-	$.ajax({
-		type:"GET",
-		url: "form-handlers/membership/member.php",
-		data: {"id":id},
-		dataType: "json",
-		async: false
-		}).success(function(data){
-			var info = data[0];
-			
-			//Populate the basic member information 
-			member.firstname = info.firstname;
-			member.lastname = info.lastname;
-			member.name = info.firstname + " " + info.lastname;
-			member.address = info.address;
-			member.city = info.city;
-			member.province = info.province;
-			member.postalcode = info.postalcode;
-			member.canadian_citizen = info.canadian_citizen;
-			member.member_type = info.member_type;
-			if(member.member_type == "Student"){
-				member.faculty = info.faculty;
-				member.schoolyear = info.schoolyear;
-				member.student_no = info.student_no;
-				member.integrate = info.integrate;	
-			}
-			member.is_new = info.is_new;
-			member.alumni = info.alumni;
-			member.since = info.since;
-			member.has_show = info.has_show;
-			//handling future possibility for multiple shows.
-			
-			if(info.show_name.constructor === Array){
-				member.show_name = "";
-				var i;
-				for(i = 0 ; i < info.show_name.length; i++){
-					member.show_name += info.show_name[i];
-					if(i < info.show_name.size() - 1){
-						member.show_name += ", "
-					}
-				}
-			}else{
-			member.show_name = info.show_name;
-			}
-			member.email = info.email;
-			member.primary_phone = info.primary_phone;
-			member.secondary_phone = info.secondary_phone;
-			member.about = info.about;
-			member.skills = info.skills;
-			member.exposure = info.exposure;
-			member.comments = info.comments;
-
-		}).fail(function(){
-			console.log("Unable to retrieve member information");
-		});
-	return member;
-}
-	query:function
-
+	}
 }

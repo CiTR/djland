@@ -13,14 +13,15 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 
 		<title>DJLAND | Membership</title>
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src='js/jquery-1.11.3.min.js'></script>
 		<script src="js/jquery.form.js"></script>
         <script type='text/javascript' src='js/test.js'></script>
-        <script type='text/javascript' src='js/constants.js'/>
+        <script type='text/javascript' src='js/constants.js'/></script>
+        <script type='text/javascript' src='js/member.js'></script>
         <script type='text/javascript' src='js/membership_functions.js'></script>
 		<script type='text/javascript' src='js/membership.js'></script>
 		<script type="text/javascript" src="js/admin.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+		
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 		<script>
 			$(function() {

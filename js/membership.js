@@ -1,24 +1,12 @@
 //Created by Evan Friday, 2014
-/*
-var faculty_list = ["Arts","Applied Science","Architecture","Archival Studies","Audiology","Business","Community Planning","Continuing Studies","Dentistry","Doctoral Studies",
-								"Education","Environmental Health","Forestry","Graduate Studies","Journalism","Kinesiology","Land and Food Systems","Law","Medicine","Music","Nursing","Pharmaceutical","Public Health","Science","Social Work","Other"];
-
-var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'digital_library',
-'DJ101.9':'dj','Illustrate for Discorder':'discorder','Writing for Discorder':'discorder_2','Live Broadcasting':'live_broadcast',
-'Music':'music','News':'news','Photography':'photography','Programming Committee':'programming_committee',
-'Promos and Outreach':'promotions_outreach','Show Hosting':'show_hosting',
-'Sports':'sports','Tabling':'tabling','Web and Tech':'tech',"Other":"other"};
-
-var provinces = ["AB","BC","MAN","NB","NFL","NS","NVT","NWT","ON","QC","SASK","YUK"];
-var member_types = {'Student':'UBC Student','Community':'Community Member','Staff':'Staff'};
-var permission_levels = {'administrator':'Administrator','staff':'Staff','workstudy':'Workstudy','volunteer':'Volunteer Head','dj':'DJ','member':'Basic Member'};
-*/
+window.myNameSpace = window.myNameSpace || { };
 
 //PAGE CREATION
 $(document).ready ( function() {
 	var member = new Member();
-	
-	displayMemberList();
+	member._query(1).displayInfo();
+	//member.displayInfo();
+	//displayMemberList();
 	/*if(document.getElementById('init')){
 		manage_members('init');
 	}else if(document.getElementById('view')){
