@@ -33,6 +33,12 @@ djland.factory('apiService', function ($http, $location) {
           return $http.get(API_URL_BASE + '/playlists/mine.php');
         },
 
+        getPlodcasts: function(limit,offset) {
+          limit = limit || 100; offset = offset || 0;
+          return $http.get(API_URL_BASE + '/playlists/plodcast.php');
+
+        },
+
         getEveryonesPlaylists: function (limit,offset) {
           limit = limit || 100; offset = offset || 0;
           return $http.get(API_URL_BASE + '/playlists/all.php?LIMIT='+limit+'&offset='+offset);
@@ -47,7 +53,7 @@ djland.factory('apiService', function ($http, $location) {
         },
 
         getEpisodes: function () {
-          return $http.get(API_URL_BASE + '/episodes/list.php');
+          return $http.get(API_URL_BASE + '/episodes/mine.php');
         },
 
         getSpecialBroadcasts: function () {
@@ -83,8 +89,17 @@ djland.factory('apiService', function ($http, $location) {
           return $http.get(API_URL_BASE + '/ad/scheduled.php?timeblock='+time)
         },
 
-        newPodcast: function(channel){
+        savePodcast: function(podcast){
           return $http.post(API_URL_BASE + '/episode/create.php')
+        },
+
+        getArchiverTime: function(){
+          return $http.get('http://archive.citr.ca/time/')
+        },
+
+
+        createPodcastAudio: function(data){
+          return $http.get(API_URL_BASE + '/podcasting/create_audio_file.php?start='+data.start+'&end='+data.end+'&show='+data.show)
         }
 
 
@@ -149,65 +164,6 @@ djland.controller('showCtrl', ['$scope','apiService','$location',function($scope
 }]);
 
 
-djland.controller('episodeList', ['$scope','apiService','$location', function($scope, apiService, $location){
-// GET id FROM list provider...
-
-  $scope.status = 'loading playlists and podcasts...';
-  $scope.episodes = [];
-  $scope.playlists = [];
-  $scope.items = [];
-  $scope.editing  = false;
-
-  var episodes_loaded = false;
-  var playlists_loaded = false;
-
-  $scope.load = function(){
-
-  apiService.getPlaylists()
-      .then(function(response){
-        $scope.playlists = response.data;
-
-        playlists_loaded = true;
-
-        init_new_button();
-      });
-
-  apiService.getEpisodes()
-      .then(function(response){
-        for( var i in response.data){
-          $scope.episodes[response.data[i].id] = response.data[i];
-        }
-
-        episodes_loaded = true;
-
-        init_new_button();
-
-      });
-
-  }
-
-
-  $scope.load();
-
-  $scope.edit_episode = function (id){
-    $scope.editing = true;
-    $scope.editing_episode = [];
-    $scope.editing_episode[0] = $scope.episodes[id];
-  }
-
-  var init_new_button = function() {
-    if($scope.status != '') return;
-    $scope.new_link = 'playlist?dingus';
-
-    apiService.getNextShow($scope.playlists[0].date)
-        .success(function (result) {
-
-          $scope.new_date = result.start;
-        })
-  }
-
-
-}]);
 
 
 djland.controller('episodeSingle', ['$scope', '$location', 'apiService', function($scope, $location, apiService) {
@@ -223,25 +179,6 @@ djland.controller('episodeSingle', ['$scope', '$location', 'apiService', functio
 
 }]);
 
-djland.controller('episodeCtrl', ['$scope','apiService', function($scope, apiService){
-
-  $scope.episodeData = $scope.$parent.episode;
-
-  $scope.save = function(data){
-    $scope.message = 'saving...';
-
-    apiService.saveEpisodeData(data)
-        .then(function(response){
-          $scope.message = response.data.message;
-          $scope.$parent.load();
-        }).catch(function(response){
-          console.error(response.data);
-          $scope.message = 'sorry, saving did not work';
-        });
-  };
-
-
-}]);
 
 
 

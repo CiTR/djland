@@ -167,7 +167,7 @@ error_reporting(E_ALL);
 
 
 
-  if (!(is_null($rawdata['playlist']['host']) || ($rawdata['playlist']['host'])=='') ){
+  if (array_key_exists('host',$rawdata['playlist']) &&  ($rawdata['playlist']['host'] !='') ){
 
   } else {
     $rawdata['playlist']['host'] = $rawdata['playlist']['host_name'];

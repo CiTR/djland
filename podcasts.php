@@ -21,6 +21,7 @@ require_once("headers/menu_header.php");
       height:100%;
       background-color: #88d2ba;
       overflow:scroll;
+      z-index:20;
     }
 
     #closer{
@@ -52,7 +53,23 @@ require_once("headers/menu_header.php");
     }
 
     .podcast_list_entry{
-      margin-left: 35px;
+      padding-left: 35px;
+    }
+
+    .button{
+      cursor:default;
+    }
+
+    .tiny{
+      font-size:0.7em;
+      width:100%;
+      background-color:black;
+      overflow-wrap: break-word;
+    }
+
+    .lit{
+      background-color:lightblue;
+
     }
 
   </style>
@@ -66,60 +83,80 @@ require_once("headers/menu_header.php");
 
 <div ng-app="djLand" id="mainleft">
 
-  <div ng-controller="episodeList">
+  <div ng-controller="episodeList as list">
     <br/><br/>
-    <p ng-show="!episodes_loaded || !playlists_loaded ">{{status}}</p>
+    <p>{{status}}</p>
 
     <div >
-      <a ng-href="{new_link}">+ start next episode ({{new_date}}) - from {{playlists[0].date}}</a>
+
+      <br/>
     </div>
-    <div ng-repeat="playlist in playlists track by playlist.ps_id" class="podcast_list_entry">
-      <span class="podcast_date">{{playlist.start_time | date: "medium"}}</span>
-      <p ng-show="playlist.ep_id">
-        <span class="title" >{{playlist.title}}</span><br/>
-        <span class="subtitle" >{{playlist.subtitle? playlist.subtitle : '(no subtitle)'}}</span><br/>
+
+    <div ng-repeat="plodcast in plodcasts track by plodcast.playlist.id" class="podcast_list_entry"
+         ng-class="{lit: plodcast.playlist.id === editing.playlist.id}"  >
+
+
+
+      <span class="podcast_date">{{plodcast.playlist.start_time | date: "medium"}}</span>
+
+      <p >
+        <span ng-show="plodcast.playlist.status == 1">( DRAFT )<br/></span>
+        <span class="title" >{{plodcast.podcast.title? plodcast.podcast.title : '(no title)'}}</span>
+          <br/>
+        <span class="subtitle" >{{plodcast.podcast.subtitle? plodcast.podcast.subtitle : '(no subtitle)'}}</span>
       </p>
+      <br />
+      <a ng-href="playsheet.php?action=edit&id={{plodcast.playlist.id}}" target="_self">go to playsheet</a>
+      <span >
+      <a ng-click="edit_episode(plodcast);" class="button">edit podcast</a>
+      </span>
       <br/>
-      <a ng-href="playsheet.php?action=edit&id={{playlist.ps_id}}" target="_self">edit playsheet</a> |
-      <a ng-click="edit_episode(playlist.ep_id);" ng-show="playlist.ep_id;" >edit podcast</a>
-      <br/>
+
+
+
+      <p class="tiny">PLAYLIST:{{plodcast.playlist}}<br>PODCAST:{{plodcast.podcast}}</p>
+
+
+
       <hr/>
+
+
+
+
     </div>
 
-    <!--
-    <div ng-controller="episodeCtrl" ng-repeat="episode in episodes track by episode.id">
 
-      {{episodeData.title}} - {{episodeData.subtitle}}<br/>
+    <div id="popup"  ng-show="editing">
 
-    </div>-->
-
-    <div id="popup" ng-controller="episodeCtrl" ng-repeat="episode in editing_episode" ng-show="editing">
       <p ng-click="editing = false;" id="closer"> X </p>
 
       Episode Title:<br/>
-      <input ng-model="episodeData.title">
+      <input ng-model="editing.podcast.title">
       </input><br/>
 
       Subtitle:<br/>
-      <input  ng-model="episodeData.subtitle" >
+      <input  ng-model="editing.podcast.subtitle" >
       </textarea><br/>
 
       Episode Summary:<br/>
-						<textarea ng-model="episodeData.summary" rows="25">
-						</textarea><br/>
+      <textarea ng-model="editing.podcast.summary" rows="25">
+      </textarea><br/>
 
       Date:<br/>
-      <input ng-model="episodeData.date">
+      <input ng-model="editing.podcast.date">
       </input><br/>
 
       URL:<br/>
-      <input ng-model="episodeData.url">
+      <input ng-model="editing.podcast.url">
       </input><br/>
 
       message:{{message}}<br/>
 
 
-      <button ng-click="save(episodeData);" >save info (tba)</button>
+      <button ng-click="save(editing.podcast);" >save info (tba)</button>
+
+
+
       {{episode}}
 
     </div>
@@ -133,5 +170,83 @@ require_once("headers/menu_header.php");
 
 </script>
 <script type="text/javascript" src="js/angular-djland.js"></script>
+<script type="text/javascript" >
+
+
+  djland.controller('episodeList', ['$scope','apiService','$location', function($scope, apiService, $location){
+// GET id FROM list provider...
+
+    $scope.status = 'loading playlists and podcasts...';
+    $scope.plodcasts = [];
+
+    $scope.editing  = false;
+
+    $scope.load = function(){
+
+      apiService.getPlodcasts()
+          .then(function(response){
+
+            $scope.plodcasts = [].concat(response.data);
+
+            $scope.status = 'select a plodcast';
+
+          });
+
+
+
+    }
+
+    $scope.load();
+
+    $scope.edit_episode = function (plodcast){
+        $scope.editing = angular.copy(plodcast);
+    }
+
+
+    $scope.save = function(data){
+
+      $scope.message = 'saving...';
+
+      apiService.saveEpisodeData(data)
+          .then(function(response){
+            $scope.message = 'saved. now creating audio...';
+            var audioData = {};
+            audioData.start = new Date(data.date);
+            audioData.start = audioData.start.getTime()/1000;
+            audioData.end = audioData.start + 60 * 60 + 1;
+            audioData.show = 'testing';
+            apiService.createPodcastAudio(audioData)
+                .success(function(result){
+                  $scope.message = result;
+
+                });
+            $scope.message = response.data.message;
+            $scope.load();
+          }).catch(function(response){
+            console.error(response.data);
+            $scope.message = 'sorry, saving did not work';
+          });
+    };
+
+  }]);
+
+
+
+  djland.controller('episodeCtrl', ['$scope','apiService', function($scope, apiService){
+
+    $scope.closeEditor = function(){
+
+      $scope.$parent.$parent.editing = false;
+    }
+
+    $scope.episodeData = $scope.$parent.episode;
+
+
+
+
+
+  }]);
+
+</script>
 
 

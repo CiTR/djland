@@ -12,6 +12,7 @@ if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
 } else {
   $error = "Incorrect GET parameters have been supplied.  I need 'start', 'end', and 'show'.  'start' and 'end' must be unix timestamps (PHP style - seconds, not milliseconds).  ";
   $blame_request = true;
+  finish();
 
 }
 date_default_timezone_set($timezone);

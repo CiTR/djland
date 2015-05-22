@@ -303,6 +303,7 @@ width:1200px;
     right: 0;
     top: 30px;
     width: auto;
+    z-index:20;
   }
 
   .sam_row {
@@ -358,6 +359,38 @@ width:1200px;
     position:absolute;
     top:5000px;
   }
+
+  .tracklist_overlay{
+    position:fixed;
+    overflow:scroll;
+    top:40px;
+    left:10%;
+    width:80%;
+    background-color:lightsteelblue;
+    z-index:21;
+    padding:20px;
+    color:darkblue;
+  }
+  .tracklist_overlay span{
+    margin-left:40px;
+  }
+  .tracklist_overlay a{
+    background-color:steelblue;
+    padding:2px;
+  }
+  .tracklist_overlay a:hover{
+    color:greenyellow;
+  }
+
+  .dark{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    opacity: 0.8;
+    background-color:black;
+  }
 </style>
 
 </head>
@@ -368,6 +401,8 @@ width:1200px;
 
 
     $show_id = users_show();
+    $channel_id = users_channel();
+
     if ( is_numeric($show_id) && $show_id >0 ){
       //good
     } else {
@@ -377,9 +412,9 @@ width:1200px;
     }
 ?>
 
-<div ng-app="djLand" ng-cloak>
+<div ng-app="djLand" ng-cloak >
 
-  <div ng-controller="playsheetCtrl">
+  <div ng-controller="playsheetCtrl" >
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}}</h2>
 
@@ -539,7 +574,7 @@ width:1200px;
     <div class='adName label'><h4>name</h4></div>
     <div class='adPlay label'><h4>played</h4></div>
   </div>
-  <button ng-hide="playsheet.ads.length >0" ng-click="loadAds()"> load your ads </button>
+<!--  <button ng-hide="playsheet.ads.length >0" ng-click="loadAds()"> load your ads </button>-->
   <div class="adRow" ng-repeat="ad in playsheet.ads">
     <div class='adTime'>{{ad.time}}</div>
     <div class='adType'>{{ad.type}}</div>
@@ -564,18 +599,25 @@ width:1200px;
       <div class="podcast_block" >
         <h2>Podcast</h2>
 <center>
-        <button ng-click="init_podcast()" ng-show="!playsheet.podcast">Initialize Podcast</button>
 
-        <span ng-show="playsheet.podcast">
+        <span >
           <p>podcast for show feed: {{playsheet.podcast.channel_id}}.<br/>
             audio file:
             <a ng-show="playsheet.podcast.url" ng-href="{{playsheet.podcast.url}}" target="_blank">{{playsheet.podcast.url}}</a>
             <span ng-show="!playsheet.podcast.url || playsheet.podcast.url == ''">not yet created</span>
             <br/>
 
-            start time: {{playsheet.start_time | date: 'mediumTime'}}<br/>
-            end time: {{playsheet.end_time | date: 'mediumTime'}}
+            playsheet start time: {{playsheet.start_time | date: 'medium'}}<br/>
+            playsheet end time: {{playsheet.end_time | date: 'medium'}}
           </p>
+
+          <hr/>
+
+            episode start time: {{playsheet.podcast.date | date: 'medium'}}<br/>
+            episode duration: {{playsheet.podcast.duration }}<br/><br/>
+
+
+          <hr/>
           <button ng-click="startPodcast()">Start Podcast</button>
 
           <button ng-click="endPodcast()">End Podcast</button>
@@ -673,9 +715,35 @@ width:1200px;
       </pre>
 
 
+
+
+    <div class="tracklist_overlay" ng-show="show_the_tracklist_overlay">
+
+      <h3>thanks for submitting your playsheet</h3>
+
+      <h3>If you're done, please <a href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
+      A podcast episode is now being created.
+
+      <br/>status:{{podcast_status}}<br/>
+      To modify the episode timing, title, subtitle, or summary,
+      <a ng-href="podcasts.php" target="_self">click here to visit your podcast editor page</a>
+      <h4>Tracklist:</h4>
+      <p>
+
+      <span ng-repeat="play in playsheet.plays">
+        {{play.song.artist}} - {{play.song.song}} ({{play.song.title}}) <br/>
+      </span>
+      </p>
+      <br/><br/>
+    </div>
+
+    <div class="dark" ng-show="show_the_tracklist_overlay"></div>
+
+
+
+
+
   </div>
-
-
 </div>
 
 
@@ -694,6 +762,8 @@ width:1200px;
 <script type="text/javascript">
 
   djland.value('show_id', <?php echo $show_id;?>);
+  djland.value('channel_id', <?php echo $channel_id;?>);
+
 </script>
 <script src="js/angular/playsheet.js"></script>
 </body>

@@ -96,6 +96,22 @@ $samDB_pass = 'password for that user';
 $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 
+// used to retreive podcast audio
+$archive_tool_url = 'http://archive.citr.ca';
+
+$archive_access_url = $archive_tool_url.
+    "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
+
+// use this to put podcast audio, rss xml files on a network drive that provides FTP access
+
+$ftp_url = 'ip address of drive';
+$ftp_user = 'username';  $ftp_pass = 'password';
+//$ftp_user = 'root';  $ftp_pass = 'nas101.9';
+$ftp_path_audio = 'path/to/audio/dir';
+$ftp_path_xml = 'path/to/xml/dir';
+
+
+
 // debug time operations? leave false unless you
 // are developing and need to fake the current time
 // for some reason

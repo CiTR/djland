@@ -13,9 +13,9 @@ $data = $incoming_data;
 
 $new_podcast = array();
 
-$new_podcast['title'] = '1';
-$new_podcast['subtitle'] = '2';
-$new_podcast['summary'] = '3';
+$new_podcast['title'] = '';
+$new_podcast['subtitle'] = '';
+$new_podcast['summary'] = '';
 $new_podcast['date'] = '';
 
 $new_podcast['channel_id'] = users_channel();

@@ -6,7 +6,8 @@ if(isset($_GET['playsheet'])){
   echo load_ads_from_saved_playsheet($_GET['playsheet']);
 
 } else if (isset($_GET['timeblock'])){
-  $data = load_ads_from_time_block($_GET['timeblock']);
+  $unix = strtotime($_GET['timeblock']);
+  $data = load_ads_from_time_block($unix);
 
   foreach ($data as $i => $v){
 

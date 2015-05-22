@@ -150,8 +150,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 				$http.get('./api/episodes/list.php?channel='+channel_id)
 					.success(function(data, status, headers, config){
 						$scope.status = '';
-
-						$scope.episodes = angular.fromJson(data);
+						$scope.episodes = [].concat(angular.fromJson(data));
 
 						if(!edit_all){
 							$scope.episodes = $scope.episodes.slice(0,10);
