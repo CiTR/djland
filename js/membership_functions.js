@@ -1,7 +1,3 @@
-$(document).ready ( function() {
-    //Use this area to test functions!
-    //console.log(queryMembershipYear('1','2013/2014'));
-});
 
 function getVal($varname){
 	$temp = $varname;
@@ -116,7 +112,15 @@ function numbersonly(myfield, e, dec)
 		else
 		   return false;
 		}
-
+function queryMembers(){
+	return $.ajax({
+		type:"GET",
+		url: "form-handlers/membership/member.php",
+		data: {"id":id},
+		dataType: "json",
+		async: true
+		});
+}
 
 //Returns member data associated with member id
 function queryMember(id){
@@ -310,7 +314,16 @@ function updateMember(member,membership_year){
 			});
 	});
 }
-
+function displayMemberList(){
+	var members = queryMembers();
+	$.when(members).then(function(data){
+		var member_result = $('#member_result');
+		member_result.INNERHTML('');
+		for(var member in members){
+			member_result.append("<li>"+member.firstname+"</li>");
+		}	
+	});	
+}
 
 function displayMemberInfo(member){
 	setText(member.firstname,'firstname');

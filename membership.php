@@ -87,11 +87,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			</ul>
 			<ul id='membership_result' class='col1 clean-list'>
 				Loading...
-				<?php 
-					for($i=0;$i<100;$i++){
-						echo "<li>Things</li>";
-					}
-				?>
+				
 			</div>	
    		</div>
 		<!-- Begin Tab 2 "member view" -->   		

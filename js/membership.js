@@ -16,6 +16,9 @@ var permission_levels = {'administrator':'Administrator','staff':'Staff','workst
 
 //PAGE CREATION
 $(document).ready ( function() {
+	var member = new Member();
+	
+	displayMemberList();
 	/*if(document.getElementById('init')){
 		manage_members('init');
 	}else if(document.getElementById('view')){
@@ -27,7 +30,6 @@ $(document).ready ( function() {
 	}*/
 	add_handlers();	
 });
-
 
 function getVal($varname){
 	$temp = $varname;
