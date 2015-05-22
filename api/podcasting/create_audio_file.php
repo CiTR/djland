@@ -79,7 +79,7 @@ if ($error=='') {
 
   if (!$error){
     ftp_mkdir($ftp_connection, $ftp_path.$podcast_year);
-    ftp_fput($ftp_connection, $ftp_path.$podcast_year.'/'.$file_name, $fp, FTP_ASCII);
+    ftp_fput($ftp_connection, $ftp_path.$podcast_year.'/'.$file_name, $fp, FTP_BINARY);
     ftp_chmod($ftp_connection,'444',$ftp_path.$podcast_year.'/'.$file_name);
   }
 
