@@ -39,9 +39,9 @@ function getCheckbox($id){
 function setCheckbox(value,id){
 	$target = $('#'+id);
 	if(value == true){
-		$target.attr('checked','checked');
+		$target.attr('checked','checked').change();
 	}else{
-		$target.removeAttr('checked');
+		$target.removeAttr('checked').change();
 	}
 }
 function setText(value,id){
@@ -52,7 +52,7 @@ function setText(value,id){
 function setVal(value,id){
 	$target = $('#'+id);
 	assertTrue($target != null);
-	$target.val(value);
+	$target.val(value).change();
 }
 function setRadio(value,id){
 	//yes
@@ -315,12 +315,16 @@ function updateMember(member,membership_year){
 	});
 }
 function displayMemberList(){
-	var members = queryMembers();
-	$.when(members).then(function(data){
-		var member_result = $('#member_result');
+
+	
+	$.when(queryMembers()).then(function(data){
+		var member_result = $('#membership_result');
 		member_result.innerHTML='';
-		for(var member in members){
-			member_result.append("<li>"+member.firstname+"</li>");
+		for(var member in data){
+			console.log(member);
+
+			//console.log(member.member_id + member.firstname);
+			member_result.append("<li id="+member+">"+data[member].firstname+"</li>");
 		}	
 	});	
 }

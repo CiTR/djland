@@ -97,7 +97,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			<div class = 'container'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
-					<div class='col5' id='username' name='username'><?php echo $_SESSION['sv_username']; ?></div>
+					<div class='col5' id='username' name='username'></div>
 				</div>
 				
 				<div id='row2' class='containerrow'>

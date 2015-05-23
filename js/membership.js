@@ -3,10 +3,17 @@ window.myNameSpace = window.myNameSpace || { };
 
 //PAGE CREATION
 $(document).ready ( function() {
-	var member = new Member();
-	member._query(1).displayInfo();
-	//member.displayInfo();
-	//displayMemberList();
+	var member = new Member(1);
+	$.when(member.info_callback,member.interest_callback).then(function(info,interests){
+		member._initInfo(info[0]);
+		member._initInterests(interests[0]);
+		member.displayInfo();
+	},function(err1,err2){
+		console.log("Failed to load member");
+	});
+
+
+	displayMemberList();
 	/*if(document.getElementById('init')){
 		manage_members('init');
 	}else if(document.getElementById('view')){
