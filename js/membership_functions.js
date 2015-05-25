@@ -1,3 +1,5 @@
+window.myNameSpace = window.myNameSpace || { };
+var member;
 
 function getVal($varname){
 	$temp = $varname;
@@ -39,9 +41,9 @@ function getCheckbox($id){
 function setCheckbox(value,id){
 	$target = $('#'+id);
 	if(value == true){
-		$target.attr('checked','checked').change();
+		$target.prop('checked',true);
 	}else{
-		$target.removeAttr('checked').change();
+		$target.prop('checked',false);
 	}
 }
 function setText(value,id){
@@ -112,106 +114,25 @@ function numbersonly(myfield, e, dec)
 		else
 		   return false;
 		}
-function queryMembers(){
+function queryMembers(search_by,value,paid,year,order_by){
 	return $.ajax({
 		type:"GET",
-		url: "form-handlers/membership/member.php",
-		data: {},
+		url: "form-handlers/membership/search.php",
+		data: { 'search_by':search_by,'value':value,'order_by':order_by,'paid':paid,'year':year},
 		dataType: "json",
 		async: true
 		});
 }
 
-//Returns member data associated with member id
-function queryMember(id){
-	assertTrue(id != null,"id is null");
-	var member = {"id":id};
-	$.ajax({
-		type:"GET",
-		url: "form-handlers/membership/member.php",
-		data: {"id":id},
-		dataType: "json",
-		async: false
-		}).success(function(data){
-			var info = data[0];
-			
-			//Populate the basic member information 
-			member.firstname = info.firstname;
-			member.lastname = info.lastname;
-			member.name = info.firstname + " " + info.lastname;
-			member.address = info.address;
-			member.city = info.city;
-			member.province = info.province;
-			member.postalcode = info.postalcode;
-			member.canadian_citizen = info.canadian_citizen;
-			member.member_type = info.member_type;
-			if(member.member_type == "Student"){
-				member.faculty = info.faculty;
-				member.schoolyear = info.schoolyear;
-				member.student_no = info.student_no;
-				member.integrate = info.integrate;	
-			}
-			member.is_new = info.is_new;
-			member.alumni = info.alumni;
-			member.since = info.since;
-			member.has_show = info.has_show;
-			//handling future possibility for multiple shows.
-			
-			if(info.show_name.constructor === Array){
-				member.show_name = "";
-				var i;
-				for(i = 0 ; i < info.show_name.length; i++){
-					member.show_name += info.show_name[i];
-					if(i < info.show_name.size() - 1){
-						member.show_name += ", "
-					}
-				}
-			}else{
-			member.show_name = info.show_name;
-			}
-			member.email = info.email;
-			member.primary_phone = info.primary_phone;
-			member.secondary_phone = info.secondary_phone;
-			member.about = info.about;
-			member.skills = info.skills;
-			member.exposure = info.exposure;
-			member.comments = info.comments;
-
-		}).fail(function(){
-			console.log("Unable to retrieve member information");
-		});
-	return member;
-}
-
 //Returns all membership years present for member id
 function queryMembershipYears(id){
-    var membership_years= {};
-    if(id != null){
-    	$.ajax({
+    return $.ajax({
 		type:"POST",
 		url: "form-handlers/membership/years.php",
 		data: {"id":id},
 		dataType: "json",
-		async: false
-		}).success(function(data){
-            membership_years = data.years;
-		}).fail(function(){
-			console.log("Unable to retrieve member information");
+		async: true
 		});	
-    }else{
-		$.ajax({
-		type:"POST",
-		url: "form-handlers/membership/years.php",
-		data: {"id":id},
-		dataType: "json",
-		async: false
-		}).success(function(data){
-            membership_years = data.years;
-		}).fail(function(){
-			console.log("Unable to retrieve member information");
-		});
-    }
-	return membership_years;
 }
 function queryMembershipYear(id,year){
 	assertTrue(id != null,"id is null");
@@ -221,7 +142,7 @@ function queryMembershipYear(id,year){
 	url: "form-handlers/membership/year.php",
 	data: {"id":id,"year":year},
 	dataType: "json",
-	async: false
+	async: true
 	}).success(function(data){
 		var info = data[0];
 		for(var interest in info){
@@ -241,7 +162,7 @@ function queryMembershipPriveleges(id){
 		url: "form-handlers/membership/permission.php",
 		data: {"action" : 'get', "type" : 'permission',"value":value},
 		dataType: "json",
-		async: false
+		async: true
 	}).success(function(data){
 	    //TODO: Create form hander, and return permissions array
 		
@@ -249,40 +170,9 @@ function queryMembershipPriveleges(id){
 			
 	});
 }
-function updateMemberInfo(member,handler){
-	return $.ajax({
-		type:"POST",
-		url: "form-handlers/membership/update_info.php",
-		data: {
-		"member": JSON.stringify(member)
-	 	},
-		dataType: "json"
-	});
-}
-function updateMemberInterests(membership_year){
-	return $.ajax({
-		type:"POST",
-		url: "form-handlers/membership/update_interest.php",
-		data: {
-		"membership_year": JSON.stringify(membership_year)
-	 	},
-		dataType: "json"
-	});
-}
 
-function renewMembership(membership_year){
-    if(new Date().getMonth() > 4){
-        membership_year.membership_year = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
-    }
-    return $.ajax({
-        type:"POST",
-        url: "form-handlers/membership/renew_membership.php",
-        data: {
-            "membership_year": JSON.stringify(membership_year)
-        },
-        dataType: "json"
-    });
-}
+
+
 function renewMember(member,membership_year){
     $.when(updateMemberInfo(member),renewMembership(membership_year)).then(
         function(data,data2){
@@ -314,138 +204,46 @@ function updateMember(member,membership_year){
 			});
 	});
 }
-function displayMemberList(){
-
-	
-	$.when(queryMembers()).then(function(data){
-		var member_result = $('#membership_result');
-		member_result.innerHTML='';
+function loadMember(id){
+	$('#member_loading').show();
+	$('#member').hide();
+	member = new Member(id);
+	$.when(member.info_callback,member.interest_callback).then(function(info,interests){
+		$('#member_loading').hide();
+		$('#member').show();
+		member._initInfo(info[0]);
+		member._initInterests(interests[0]);
+		member.displayInfo();
+		member.displayInterests();
+	},function(err1,err2){
+		console.log("Failed to load member");
+	});
+}
+function displayMemberList(search_by,value,paid,year,order_by){
+	$('#search_loading').show();
+	$.when(queryMembers(search_by ,value ,paid ,year ,order_by)).then(function(data){
+		$('#search_loading').hide();
+		var member_result = $('#membership_table[name="search"]');
+		var member_result_header = $('#headerrow');
+		member_result_header.show();
+		$('.member_row').each(function(e){
+			$(this).remove();
+		});
+		
 		for(var member in data){
-			console.log(member);
-
-			//console.log(member.member_id + member.firstname);
-			member_result.append("<li id="+member+">"+data[member].firstname+"</li>");
+			member_result.append("<tr id=row"+data[member].member_id+" class='member_row'></tr>");
+			var row = $('#row'+data[member].member_id);
+			
+			for(var item in data[member]){
+				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
+				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
+			}	
+			row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
 		}	
 	});	
 }
 
-function displayMemberInfo(member){
-	setText(member.firstname,'firstname');
-	setText(member.lastname, 'lastname');
-	setVal(member.address,'address');
-	setVal(member.city,'city');
-	setVal(member.province,'province');
-	setVal(member.postalcode,'postalcode');
-	setRadio(member.canadian_citizen,'can')
-	setRadio(member.alumni,'alumni');
-	setText(member.since,'since');
-	setVal(member.is_new,'is_new');
-	setVal(member.member_type,'member_type');
-	if(member.member_type == "Student"){
-		setVal(member.faculty,'faculty');
-		setVal(member.schoolyear,'schoolyear');
-		setVal(member.student_no,'student_no');
-		setCheckbox(member.integrate,'integrate');
-	}else{
-		$('#row6').hide();
-		$('#row7').hide();
-	}
-	setRadio(member.has_show,'show');
-	setVal(member.show_name,'show_name');
-	setVal(member.email,'email');
-	setVal(member.primary_phone,'primary_phone');
-	setVal(member.secondary_phone,'secondary_phone');
-	setVal(member.about,'about');
-	setVal(member.skills,'skills');
-	setVal(member.exposure,'exposure');
 
-}
 
-function getMemberInfoFromPage(){
-	var member = {};
-	member.id = getText('member_id');
-	member.firstname = getText('firstname');
-	member.lastname = getText('lastname');
-	member.address = getVal('address');
-	member.city = getVal('city');
-	member.province = getSelect('province');
-	member.postalcode = getVal('postalcode');
-	member.canadian_citizen = getRadio('can');
-	member.alumni = getRadio('alumni');
-	member.since = getText('since');
-	if(getVal('is_new') == "Returning"){
-		member.is_new = '0';
-	}else{
-		member.is_new = '1';
-	}
-	member.member_type = getVal('member_type');
-	if(member.member_type == "Student"){
-		member.faculty = getVal('faculty');
-		if(member.faculty == 'Other'){
-			member.faculty = getVal('faculty2');
-		}
-		member.schoolyear = getVal('schoolyear');
-		member.student_no = getVal('student_no');
-		member.integrate = getCheckbox('integrate');
-	}
-	member.has_show = getRadio('show');
-	member.show_name = getVal('show_name');
-	member.email = getVal('email');
-	member.primary_phone = getVal('primary_phone');
-	member.secondary_phone = getVal('secondary_phone');
-	member.about = getVal('about');
-	member.skills = getVal('skills');
-	member.exposure = getVal('exposure');
-	var out = "";
-	for(var v in member){
-		out += v +"="+ member[v]+ ", ";
-	}
-	//console.log(out);
-	return member;
-}
-function displayMemberInterests(membership_year){
-	var m = membership_year;
-	setText(m.membership_year,'membership_year');
-	setCheckbox(m.music,'music');
-	setCheckbox(m.discorder,'discorder');
-	setCheckbox(m.discorder_2,'discorder_2');
-	setCheckbox(m.dj,'dj');
-	setCheckbox(m.show_hosting,'show_hosting');
-	setCheckbox(m.sports,'sports');
-	setCheckbox(m.news,'news');
-	setCheckbox(m.arts,'arts');
-	setCheckbox(m.live_broadcast,'live_broadcast');
-	setCheckbox(m.tech,'tech');
-	setCheckbox(m.programming_committee,'programming');
-	setCheckbox(m.ads_psa,'ads_psa');
-	setCheckbox(m.promotions_outreach,'promos');
-	setCheckbox(m.photography,'photography');
-	setCheckbox(m.digital_library,'digital_library');
-	setCheckbox(m.tabling,'tabling');
-	setVal(m.other,'other');
-}
 
-function getMemberInterestsFromPage(){
-	var my = {};
-	my.id = getText('member_id');
-	my.membership_year = getText('membership_year');
-	my.music = getCheckbox('music');
-	my.discorder = getCheckbox('discorder');
-	my.discorder_2 = getCheckbox('discorder_2');
-	my.dj = getCheckbox('dj');
-	my.show_hosting = getCheckbox('show_hosting');
-	my.sports = getCheckbox('sports');
-	my.news = getCheckbox('news');
-	my.arts = getCheckbox('arts');
-	my.live_broadcast = getCheckbox('live_broadcast');
-	my.tech = getCheckbox('tech');
-	my.programming_committee = getCheckbox('programming');
-	my.ads_psa = getCheckbox('ads_psa');
-	my.promotions_outreach = getCheckbox('promos');
-	my.photography = getCheckbox('photography');
-	my.digital_library = getCheckbox('digital_library');
-	my.tabling = getCheckbox('tabling');
-	my.other = getVal('other');
-	return my;
-}
 

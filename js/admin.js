@@ -49,7 +49,7 @@ function update_cutoff_year(){
                 url: "form-handlers/membership/year_rollover.php",
                 data: {"year":membership_year},
                 dataType: "json",
-                async: false
+                async: true
             }).success(function(data){
                 membership_years = data.years;
             }).fail(function(){

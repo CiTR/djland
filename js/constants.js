@@ -10,7 +10,7 @@ function getConstants(){
 		url: "headers/constants.php",
 		data: {},
 		dataType: "json",
-		async: false
+		async: true
 	}).success( function (data){
 		faculties = data['faculties'];
 		interests = data['interests'];

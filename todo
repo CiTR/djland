@@ -1,0 +1,17 @@
+TODO:
+
+Member Page:
+	permissions
+
+Emails:
+	rework
+
+Report:
+	copy old code in to new divs
+
+Renew:
+	-Migrate to member class renew function
+	-Update permission level to check for paid of this year
+
+
+

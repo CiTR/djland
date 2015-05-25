@@ -1,28 +1,11 @@
 //Created by Evan Friday, 2014
 window.myNameSpace = window.myNameSpace || { };
-
+	
 //PAGE CREATION
 $(document).ready ( function() {
-	var member = new Member(1);
-	$.when(member.info_callback,member.interest_callback).then(function(info,interests){
-		member._initInfo(info[0]);
-		member._initInterests(interests[0]);
-		member.displayInfo();
-	},function(err1,err2){
-		console.log("Failed to load member");
-	});
-
-
+	loadYearSelect();
 	displayMemberList();
-	/*if(document.getElementById('init')){
-		manage_members('init');
-	}else if(document.getElementById('view')){
-		manage_members('view','init');
-	}else if(document.getElementById('report')){
-		manage_members('report','init');
-	}else{
-		manage_members('mail','init');
-	}*/
+	loadMember(1);
 	add_handlers();	
 });
 
@@ -67,27 +50,36 @@ function getCheckbox($id){
 function add_handlers(){
 	
 	//CHANGING TABS
-	$('.member_action').unbind().click( function () {
-		
-		var action = $(this).attr('value');
+	$('#tab-nav').off('click','.member_action').on('click','.member_action', function(e){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
-		//console.log("member_action="+action);
-		if(action == 'view' || action == 'mail' || action == 'report'){
-			manage_members(action,'init');
-		}else{
-			manage_members(action);
-		}		
-	});
+		$('.membership').hide();
+		$('.membership#'+$(this).attr('name')).show();
+	})
+	//Listener for viewing individual members from clicking on their row
+    $('#search').off('click','.member_row_element').on('click','.member_row_element',function(e){
+        $('.member_action').attr('class','nodrop inactive-tab member_action');
+		$(".member_action[name='view']").attr('class','nodrop active-tab member_action');
+		loadMember($(this.closest('tr')).attr('id').toString().replace('row',''));
+		$('.membership').hide();
+		$('.membership#view').show();
+    });
+
 	
 	//CLICKING A PAGE SUBMISSION BUTTON
 	$('.member_submit').unbind().click( function(){
 		var action = $(this).attr('name');
 		switch(action){
 			case 'search':
-				var search_type = getSelect('search_type');
-				var search_value = getVal('search_value');
-				manage_members(action,search_type,search_value);
+				var search_value;
+				$('.search_value').each(function(e){
+					if($(this).is(':visible')){
+						search_value = $(this).val();
+					}
+				});
+				console.log(search_value);
+
+				displayMemberList( getVal('search_by'), search_value, getVal('paid_status'), getVal('year_select'), getVal('order_by'));
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){
@@ -199,28 +191,16 @@ function add_handlers(){
 	});
 
 	//SEARCH TYPE LISTEN
-	$('#search_type').unbind().change( function(){
-		document.getElementById("search_container").innerHTML="";
-		if(getVal('search_type')=='name'){
-			$('#search_container').append("<input id=search_value placeholder='Enter a name'/>");
-		}else{
-			$('#search_container').append("<select id=search_value></select>");
-			var searchval = $('#search_value');
-			searchval.append("<option value=all>All</option>")
-			for(var interest in interests_list){
-				searchval.append("<option value="+interests_list[interest]+">"+interest+"</option>");
-			}
-		}
+	$('#search_by').unbind().change( function(){
+		$('.search_value').addClass('hidden');
+		$('.search_value[name="'+getVal('search_by')+'"]').removeClass('hidden');
 	});
 
     //NOTE: the off/on listener style was the ONLY way this worked. Standard JQuery ".click( function ..." did not work
 
-    //Listener for viewing individual members from clicking on their row
-    $('#membership').off('click','.member_row_element').on('click','.member_row_element',function(e){
-        change_view('view','init',this.parentNode.getAttribute('name'));
-    });
+    
     //Listener for getting ID's when deleting
-    $('#membership').off('click','#delete_button').on('click','#delete_button',function(e){
+    $('.membership').off('click','#delete_button').on('click','#delete_button',function(e){
         var members_to_delete = [];
         var members_names = [];
         $('.delete_member').each( function (){
@@ -236,7 +216,7 @@ function add_handlers(){
                 url: "form-handlers/membership/delete.php",
                 data: {"ids" : JSON.stringify(members_to_delete)},
                 dataType: "json",
-                async: false
+                async: true
             }).success(function(data){
                 alert("Successfully deleted: "+members_names.toString());
             }).fail(function(data){
@@ -246,16 +226,14 @@ function add_handlers(){
     });
 
     //Toggling red bar for showing members you are going to delete
-    $('#membership').off('change','.delete_member').on('change','.delete_member',function(e) {
+    $('.membership').off('change','.delete_member').on('change','.delete_member',function(e) {
         $(this.closest('tr')).toggleClass('delete');
 
     });
 
 	//MEMBER YEAR RELOAD
-	$('#member_year_select').unbind().change( function(){
-		var year = getVal('member_year_select');
-		var id = document.getElementById("view").getAttribute('name');
-		load_member_year(id,year);
+	$('#view').off('click','#membership_year').on('click','#membership_year',function(e){
+		member.displayInterests(getVal('membership_year'));
 	});
 
 	//RADIO BUTTONS
@@ -322,45 +300,18 @@ function add_handlers(){
     });
 }
 
-function change_view(action,type,value){
-	$('.member_action').attr('class','nodrop inactive-tab member_action');
-	$("#"+action).attr('class','nodrop active-tab member_action');
-	//console.log('manage_members'+action+type+value);
-	manage_members(action,type,value);
+function loadYearSelect(){
+	var select = $('#year_select');
+	$.when(queryMembershipYears()).then(function(data){
+		for(var i=0; i<data['years'].length; i++){
+		select.append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
+		}
+	},function(err){
+		console.log("failed to load years");
+	});
+	
 }
 
-function load_member_year(id,year){
-	//$('#member_interests').innerHTML= "";
-    console.log("Loading "+year);
-    var interests = $('#member_interests');
-    var interests_data = queryMembershipYear(id,year);
-    $('#membership_interests_header').append("<div class='col2'>Paid<input type=checkbox id='paid' "+(interests_data['paid'] == 1 ? "checked=checked":"")+"/></div>");
-    if( $('#arts').length <= 0 ){
-        for(var interest in interests_list){
-            if(interest != 'Other'){
-                interests.append("<div class='col4'>"+interest+" <input type=checkbox id='"+interests_list[interest]+"' "+(interests_data[interests_list[interest]] == 1 ? "checked=checked":"") + "/></div>");
-            }else {
-                interests.append("<div class='col4'>Other:</div><div class='col4'><input type=text id=other "+(interests_data[interests_list[interest]] != null ? "value='"+interests_data[interests_list[interest]] +"'" : "")+"/></div>");
-            }
-        }
-    }else {
-        if(interests_data['paid']== 0){
-            $('#paid').removeAttr('checked');
-        }else{
-            $('#paid').prop('checked','checked');
-        }
-
-        for (var interest in interests_list) {
-            if (interests_data[interests_list[interest]] == 0 && interest != "Other") {
-                $('#' + interests_list[interest]).removeAttr('checked');
-            } else if (interests_data[interests_list[interest]] == 1 && interest != "Other") {
-                $('#' + interests_list[interest]).prop('checked', 'checked');
-            } else {
-                $('#other').attr('value', interests_data.other);
-            }
-        }
-    }
-}
 
 function manage_members(action_,type_,value_){
 		var action = null;
@@ -382,41 +333,6 @@ function manage_members(action_,type_,value_){
 		} 
 		//console.log("Manage members called, action="+action);
 		switch(action){
-			case 'init':
-					
-
-
-					document.getElementById("membership").innerHTML = " ";
-					$('#membership').append("<ul id='membership_header'></ul>");
-					var membership_header = $('#membership_header');
-                    membership_header.append("<li>Search by <select id='search_type'><option value='name'> Name </option><option value='interest'> Interest </option></select> </li>");
-					membership_header.append("<li id ='search_container'><input id='search_value' placeholder='Enter a name' /></li>");
-                    membership_header.append("<li>Order By:<select id='sort_select'><option value='id'> Date Added </option><option value='lastname'> Last Name </option></select>");
-					membership_header.append("<li>Filter by Year: <select id='year_select'><option value='all'>All</option></select></li>");
-                membership_header.append("<li>Paid Status: <select id='paid_select'><option value='both'>Both</option><option value='1'>Paid</option><option value='0'>Not Paid</option></select></li>");
-						actiontemp = 'get';
-						typetemp = 'year';
-
-
-                 $.ajax({
-						type:"POST",
-						url: "form-handlers/membership_handler.php",
-						data: {"action" : actiontemp, "type" : typetemp},
-						dataType: "json",
-						async: false
-					}).success(function(data){
-							for( $j = 0; $j < Object.keys(data).length; $j++ ){
-								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
-							}
-					}).fail(function(){
-						
-					});
-
-					$('#membership_header').append("<li><button class='member_submit' name='search'>Search</button></li>");
-					$('#membership').append("<div id='member_result'></div>");
-					add_handlers();
-					manage_members('search','name');
-				break;
 			case 'search':
                 paid = getVal('paid_select');
 				year = getVal('year_select');				
@@ -471,7 +387,7 @@ function manage_members(action_,type_,value_){
 				switch(type){
 					case 'init':
 						document.getElementById("membership").innerHTML = " ";
-						$('#membership').append("<div id='member_result'></div>");
+						$('.membership').append("<div id='member_result'></div>");
 						if(value == null){
 							value = $('#view').attr('name');
 						}
@@ -484,7 +400,7 @@ function manage_members(action_,type_,value_){
 						url: "form-handlers/membership_handler.php",
 						data: {"action" : action, "type" : type, "value" : value},
 						dataType: "json",
-						async: false
+						async: true
 						}).success(function(data){
 							var fields = Object.keys(data[0]);
 							
@@ -646,7 +562,7 @@ function manage_members(action_,type_,value_){
 						url: "form-handlers/membership_handler.php",
 						data: {"action" : 'get', "type" : 'permission',"value":value},
 						dataType: "json",
-						async: false
+						async: true
 						}).success(function(data){
 							var permissions = $("#member_permissions");
 							permissions.append("<div id='userid' style='display:none' value='"+data[0].userid+"'>"+data[0].userid+"</div>");
@@ -673,7 +589,7 @@ function manage_members(action_,type_,value_){
 				switch(type){
 					case 'init':
 						document.getElementById("membership").innerHTML = " ";
-						$('#membership').append('<select id="year_select"></select><button class="member_submit" name="report">Get Yearly Report</button><div id="membership_result"></div>');
+						$('.membership').append('<select id="year_select"></select><button class="member_submit" name="report">Get Yearly Report</button><div id="membership_result"></div>');
 						//Populate Dropdown with possible years to report on.
 						actiontemp = 'get';
 						typetemp = 'year';
@@ -682,7 +598,7 @@ function manage_members(action_,type_,value_){
 							url: "form-handlers/membership_handler.php",
 							data: {"action" : actiontemp, "type" : typetemp},
 							dataType: "json",
-							async: false
+							async: true
 						}).success(function(data){
 							for( $j = 0; $j < Object.keys(data).length; $j++ ){
 								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
@@ -699,7 +615,7 @@ function manage_members(action_,type_,value_){
 							url: "form-handlers/membership_handler.php",
 							data: {"action" : action,"year" : year},
 							dataType: "json",
-							async: false
+							async: true
 						}).success(function(data){
 						//console.log(data);
 						var titles = ['member_reg_all','member_reg_year','member_paid','student','community','alumni','staff','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
@@ -732,7 +648,7 @@ function manage_members(action_,type_,value_){
 						d2.setDate(d2.getDate() - 7);
 						var week_ago = ('0' + (d2.getMonth()+1)).slice(-2) + "/"+('0' + d2.getDate()).slice(-2) + "/" + d2.getFullYear();
 						document.getElementById("membership").innerHTML = " ";
-						$("#membership").append("<ul id='membership_header'></ul>");
+						$(".membership").append("<ul id='membership_header'></ul>");
                         var membership_header = $('#membership_header');
                         membership_header.append("<li id='interest'>List:</li>");
                         $('#interest').append("<select id=search_value></select>");
@@ -758,7 +674,7 @@ function manage_members(action_,type_,value_){
 						url: "form-handlers/membership_handler.php",
 						data: {"action" : actiontemp, "type" : typetemp},
 						dataType: "json",
-						async: false
+						async: true
 					}).success(function(data){
 							for( $j = 0; $j < Object.keys(data).length; $j++ ){
 								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
@@ -767,7 +683,7 @@ function manage_members(action_,type_,value_){
 						
 					});
 						$('#membership_header').append("<li><button class='member_submit' name='mail'>Generate Email List</button></li>");
-						$('#membership').append("<div id='member_result'></div>");
+						$('.membership').append("<div id='member_result'></div>");
 						add_handlers();
 						break;
 					case 'generate':

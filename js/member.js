@@ -47,8 +47,13 @@ Member.prototype = {
 	},
 	_initInterests:function(membership_years){
 		this.membership_years = membership_years;
+		 document.getElementById('membership_year').options.length = 0;
+		for(var year in membership_years){
+			$('#membership_year').append("<option value="+year+">"+year+"</option>");
+		}
+		
 	},
-	_queryInfo:function(id){
+	_queryInfo:function(){
 		var _this = this;
 		return $.ajax({
 			type:"GET",
@@ -58,7 +63,7 @@ Member.prototype = {
 			async: true
 		});
 	},
-	_queryInterests:function(id){
+	_queryInterests:function(){
 		var _this = this;
 		return $.ajax({
 			type:"GET",
@@ -67,7 +72,47 @@ Member.prototype = {
 			dataType: "json",
 			async: true
 		});
-	},	
+	},getInfoFromPage:function(){
+		this.firstname = getText('firstname');
+		this.lastname = getText('lastname');
+		this.address = getVal('address');
+		this.city = getVal('city');
+		this.province = getSelect('province');
+		this.postalcode = getVal('postalcode');
+		this.canadian_citizen = getRadio('can');
+		this.alumni = getRadio('alumni');
+		this.since = getText('since');
+		this.is_new = getVal('is_new');
+		this.member_type = getVal('member_type');
+		if(this.member_type == "Student"){
+			this.faculty = getVal('faculty');
+			if(this.faculty == 'Other'){
+				this.faculty = getVal('faculty2');
+			}
+			this.schoolyear = getVal('schoolyear');
+			this.student_no = getVal('student_no');
+			this.integrate = getCheckbox('integrate');
+		}
+		this.has_show = getRadio('show');
+		this.show_name = getVal('show_name');
+		this.email = getVal('email');
+		this.primary_phone = getVal('primary_phone');
+		this.secondary_phone = getVal('secondary_phone');
+		this.about = getVal('about');
+		this.skills = getVal('skills');
+		this.exposure = getVal('exposure');
+		this.comments = getVal('comments');
+	},getInterestsFromPage:function(){
+		var membership_year = getVal('membership_year');
+		var my={'membership_year':membership_year};
+		for(var interest in interests){
+			if(interest != 'other') my[interests[interest]] = getCheckbox(interests[interest]);
+			else my[interests[interest]] = getVal(interests[interest]);
+		}
+		this.membership_years[membership_year] = my;
+		console.log(this);
+	},
+
 	displayInfo:function(request){
 		_this = this;
 		if(request == null){
@@ -111,5 +156,67 @@ Member.prototype = {
 				console.log('data was not available');
 			});
 		}
+	},displayInterests:function(year){
+		var m;
+		if(!year){
+			for(year in this.membership_years){
+			m = year;
+			break;
+			}
+		}
+		m=this.membership_years[year];
+		setVal(year,'membership_year');
+		setCheckbox(m.music,'music');
+		setCheckbox(m.discorder,'discorder');
+		setCheckbox(m.discorder_2,'discorder_2');
+		setCheckbox(m.dj,'dj');
+		setCheckbox(m.show_hosting,'show_hosting');
+		setCheckbox(m.sports,'sports');
+		setCheckbox(m.news,'news');
+		setCheckbox(m.arts,'arts');
+		setCheckbox(m.live_broadcast,'live_broadcast');
+		setCheckbox(m.tech,'tech');
+		setCheckbox(m.programming_committee,'programming');
+		setCheckbox(m.ads_psa,'ads_psa');
+		setCheckbox(m.promotions_outreach,'promos');
+		setCheckbox(m.photography,'photography');
+		setCheckbox(m.digital_library,'digital_library');
+		setCheckbox(m.tabling,'tabling');
+		setVal(m.other,'other');
+	},renewMembership:function(){
+		if(new Date().getMonth() > 4){
+        	membership_year = getVal('membership_year')
+	        if(!this.membership_years[membership_year]){
+	        	this.membership_years[membership_year] = getInterestsFromPage();
+	        	return $.ajax({
+		        type:"POST",
+		        url: "form-handlers/membership/renew.php",
+		        data: {
+		            "membership_year":this.membership_years[membership_year] 
+		        },
+		        dataType: "json"
+	    		});
+	        }
+   	 	}else{
+    		alert("You already renewed for this year");
+    	}
+    },updateMemberInfo:function(){
+		return $.ajax({
+		type:"POST",
+		url: "form-handlers/membership/update_info.php",
+		data: {
+		"member": JSON.stringify(this)
+	 	},
+		dataType: "json"
+		});
+	},updateMemberInterests:function(membership_year){
+			return $.ajax({
+			type:"POST",
+			url: "form-handlers/membership/update_interest.php",
+			data: {
+			"membership_year": JSON.stringify()
+		 	},
+			dataType: "json"
+		});
 	}
 }

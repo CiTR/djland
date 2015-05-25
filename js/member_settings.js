@@ -1,29 +1,11 @@
-var faculty_list = ["Arts","Applied Science","Architecture","Archival Studies","Audiology","Business","Community Planning","Continuing Studies","Dentistry","Doctoral Studies",
-    "Education","Environmental Health","Forestry","Graduate Studies","Journalism","Kinesiology","Land and Food Systems","Law","Medicine","Music","Nursing","Pharmaceutical","Public Health","Science","Social Work","Other"];
-var interests_list = {'Arts':'arts','Ads and PSAs':'ads_psa','Digital Library':'digital_library',
-    'DJ101.9':'dj','Illustrate for Discorder':'discorder','Writing for Discorder':'discorder_2','Live Broadcasting':'live_broadcast',
-    'Music':'music','News':'news','Photography':'photography','Programming Committee':'programming_committee',
-    'Promos and Outreach':'promotions_outreach','Show Hosting':'show_hosting',
-    'Sports':'sports','Tabling':'tabling','Web and Tech':'tech',"Other":"other"};
-var provinces = ["AB","BC","MAN","NB","NFL","NS","NVT","NWT","ON","QC","SASK","YUK"];
-var member_types = {'Student':'UBC Student','Community':'Community Member','Staff':'Staff'};
+window.myNameSpace = window.myNameSpace || { };
 
 $(document).ready ( function() {
     if(new Date().getMonth() < 5) $('renew').hide();
 	var id = getText('member_id');	
-	var member = queryMember(id);
-
-	//Query membership years associated with the member
-	var membership_years = queryMembershipYears(id);
-	//Query the most recent year found for the member
-	var membership_year = queryMembershipYear(id,membership_years[0]);
+	loadMember(id);
 	
 	addListeners();
-	
-	//Display the information on the page
-	displayMemberInfo(member);
-	displayMemberInterests(membership_year);
-
 	//periodically check if the user has filled out all fields
 	window.setInterval(checkBlocking,1000);
 });
@@ -71,43 +53,17 @@ function addListeners() {
         }
 
     });
-
-    $('#membership').off('click', '#renew').on('click', '#renew', function (e) {
+    $('#renew').click(function(){
         renew_membership_form();
     });
 
 //MEMBER TYPE: HIDE/SHOW STUDENT
-    $('#member_type').unbind().change(function () {
-        if (($('#row6').hasClass('loaded') || $('#row6').css('display') == 'none') && (getVal('member_type') == 'Student' || getVal('member_type') == 'student' )) {
-            $('#row6').show();
-            $('#row6').children().show();
-            $('#row7').show();
-            $('#row7').children().show();
-        }
-        else if (getVal('member_type') == 'Student' || getVal('member_type') == 'student') {
-            var row6 = $('#row6');
-            var row7 = $('#row7');
-            row6.append("<div class='col5'>Faculty*: </div>");
-            row6.append("<div class='col5'><select id=faculty></select><input id='faculty2' style='display:none' placeholder='Enter your Faculty'/></div>");
-            $faculty_select = $('#faculty');
-            for (var faculty in faculty_list) {
-                $faculty_select.append("<option value='" + faculty_list[faculty] + "'>" + faculty_list[faculty] + "</option>");
-            }
-            row6.append("<div id='student_no_container'> \
-			<div class='col5'>Student Number*:</div> \
-			<div class='col5'><input id='student_no' name='student_no' maxlength='10' placeholder='Student Number' onKeyPress='return numbersonly(this, event)''></input></div> \
-			</div>");
-            row7.append("<div class='col1'>I would like to incorporate CiTR into my courses(projects, practicums, etc.): \
-				<input id='integrate'  name='integrate' type='checkbox'/> \
-				<div class='col5'>Year*:</div> \
-				<div class='col8'><select id='year' style='z-position=10;'></select></div></div>");
-            var year_select = $('#year');
-            for (var i = 0; i < 5; i++) {
-                if (i < 4) year_select.append("<option value='" + i + "'>" + i + "</option>"); else year_select.append("<option value='" + i + "'>" + i + "+</option>");
-            }
-        } else {
-            $('#row6').hide();
-            $('#row7').hide();
+    $('#member_type').unbind().change( function(){     
+        if($('#member_type').val() == 'Student'){
+            $('.student').show();
+            $('.student').children().show();
+        }else{
+            $('.student').hide();
             //console.log("Hide student fields");
         }
     });
@@ -181,14 +137,17 @@ function renew_membership_form(){
     $('#subtitle').text("Please update your contact information and interests!");
     $('#submit_user').text("Renew Membership");
     $('#renew').hide();
-    $('.renew').each(function(){
+    var date = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
+    $('#membership_year').append("<option value="+date +">"+date + "</option>").val(date);
 
+    $('.renew').each(function(){
         if($(this).attr('type') == 'checkbox'){
             $(this).removeAttr('checked');
         }else{
             $(this).val("");
         }
     });
+    
 }
 
 	

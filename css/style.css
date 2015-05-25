@@ -554,9 +554,9 @@ button#submit_user.red{
 	overflow:visible;
 	margin-bottom:2px;
 }
-#membership{
+.membership{
 	width:1024px;
-	min-height:300px;
+	max-height:700px;
 	background-color: grey;
     margin-left: auto;
     margin-right: auto;
@@ -564,7 +564,7 @@ button#submit_user.red{
 	z-index: 3;
 	margin-bottom: 15px;
 }
-#membership ul{
+.membership ul{
 	background-color:inherit;
 }
 
@@ -581,21 +581,18 @@ button#submit_user.red{
     margin-right:2px;
     border:none;
 }
-
-
 #search_container{
 	width:auto;
 	display:inline-block;
 }
 #membership_result{
 	width:100%;
-	max-height:85%;
 	overflow:auto; 
-	max-height: 80%;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
 	margin-bottom:10px;
+	max-height:680px;
 }
 #member_password_change{
 	padding-bottom:10px;
@@ -608,22 +605,20 @@ button#submit_user.red{
 	padding-bottom:15px;
 }
 .member_result_row{
-	display:inline-block;
 	margin-left:auto;
 	margin-right:auto;
 	width:95%;
 	text-align:left;
-
+	overflow:hidden;
 }
 #headerrow{
 	background-color: #a4a4a4;
 }
-#membership_table{
-	position:relative;
-	margin-left:30px;
-}
-#membership_table tr td{
+#membership_table tr td,#membership_table tr th{
     padding-right:5px;
+}
+.staff_comment{
+	width:250px;
 }
 .member_row:hover{
 	cursor: pointer; cursor: hand;

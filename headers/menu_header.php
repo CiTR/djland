@@ -104,22 +104,6 @@ function print_menu(){
 
 <?php } 
 
-function membership_menu(){
-global $djland_permission_levels;
-?>
-<ul id ='tab-nav'>
-	<?php if(permission_level() >= $djland_permission_levels['staff']) : ?>
-		<li class = 'nodrop active-tab member_action' id='init' value='init'>Search Members</li>
-		<li class = 'nodrop inactive-tab member_action' id='view' name='1' value='view'>View Member</li>
-		<li class = 'nodrop inactive-tab member_action' id='report' value='report'>Report</li>
-	<?php endif; ?>
-	<li class = 'nodrop inactive-tab member_action' id='mail' value='mail'>Send Emails</li>
-</ul> 
-
-
-
-
-<?php }
 
 // useful when testing time-related things while faking time
 //echo date('l jS \of F Y h:i:s A', get_time());
