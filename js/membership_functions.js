@@ -128,30 +128,11 @@ function queryMembers(search_by,value,paid,year,order_by){
 function queryMembershipYears(id){
     return $.ajax({
 		type:"POST",
-		url: "form-handlers/membership/years.php",
+		url: "form-handlers/membership/membership_years.php",
 		data: {"id":id},
 		dataType: "json",
 		async: true
 		});	
-}
-function queryMembershipYear(id,year){
-	assertTrue(id != null,"id is null");
-	var m_y = {"id":id,"membership_year":year};
-	$.ajax({
-	type:"POST",
-	url: "form-handlers/membership/year.php",
-	data: {"id":id,"year":year},
-	dataType: "json",
-	async: true
-	}).success(function(data){
-		var info = data[0];
-		for(var interest in info){
-			m_y[interest] = info[interest];
-		}
-	}).fail(function(){
-		console.log("Unable to retrieve member information");
-	});
-	return m_y;
 }
 
 function queryMembershipPriveleges(id){

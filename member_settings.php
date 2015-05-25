@@ -25,7 +25,6 @@
 		print_menu();
 		?>
 		<div class='membership clearfix'>
-			<div id='member_id' value='<?php echo $_SESSION['sv_id']; ?>' class='hidden'><?php echo $_SESSION['sv_id']; ?> </div>
 			<h1 id="title"> CiTR Member Settings </h1>
             <h4 id="subtitle"></h4>
 			<div class="col1"><button id="renew">Renew Membership</button></div>
@@ -148,7 +147,7 @@
 						<?php 
 						foreach($djland_interests as $key=>$interest){ 
 							echo "<div class='col3'>{$key}";
-							if($interest == 'other'){echo " <input id='{$interest}2' placeholder='Enter interest'/>";}
+							if($interest == 'other'){echo " <input id='{$interest}' placeholder='Enter interest'/>";}
 							echo "<input type='checkbox' class='renew' id='{$interest}'/></div>";
 							}?>
 					</div>

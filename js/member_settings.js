@@ -1,7 +1,7 @@
 window.myNameSpace = window.myNameSpace || { };
 
 $(document).ready ( function() {
-    if(new Date().getMonth() < 5) $('renew').hide();
+    if(new Date().getMonth() < 4) $('renew').hide();
 	var id = getText('member_id');	
 	loadMember(id);
 	
@@ -47,7 +47,7 @@ function addListeners() {
 
     $('#submit_user').click(function () {
         if ($(this).text() == 'Renew') {
-            renewMember(getMemberInfoFromPage(), getMemberInterestsFromPage());
+            member.renew();
         } else {
             updateMember(getMemberInfoFromPage(), getMemberInterestsFromPage());
         }
@@ -133,21 +133,32 @@ function checkBlocking(){
 	}
 
 function renew_membership_form(){
-    $('#title').text("Renew Membership");
-    $('#subtitle').text("Please update your contact information and interests!");
-    $('#submit_user').text("Renew Membership");
-    $('#renew').hide();
+    
     var date = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
-    $('#membership_year').append("<option value="+date +">"+date + "</option>").val(date);
-
-    $('.renew').each(function(){
-        if($(this).attr('type') == 'checkbox'){
-            $(this).removeAttr('checked');
-        }else{
-            $(this).val("");
+    var exists = false;
+    $('#membership_year option').each(function(){
+        if (this.value == date) {
+            exists = true;
+            return false;
         }
     });
-    
+    if(!exists){
+        $('#title').text("Renew Membership");
+        $('#subtitle').text("Please update your contact information and interests!");
+        $('#submit_user').text("Renew Membership");
+        $('#renew').hide();
+        $('#membership_year').append("<option value="+date +">"+date + "</option>").val(date);
+        $('.renew').each(function(){
+            if($(this).attr('type') == 'checkbox'){
+                $(this).removeAttr('checked');
+            }else{
+                $(this).val("");
+            }
+        });
+    }else{
+        Alert("You have already renewed for the "+date+" membership year!");
+    } 
+
 }
 
 	

@@ -67,7 +67,7 @@ Member.prototype = {
 		var _this = this;
 		return $.ajax({
 			type:"GET",
-			url: "form-handlers/membership/year.php",
+			url: "form-handlers/membership/membership_year.php",
 			data: {"id":_this.member_id},
 			dataType: "json",
 			async: true
@@ -183,23 +183,21 @@ Member.prototype = {
 		setCheckbox(m.digital_library,'digital_library');
 		setCheckbox(m.tabling,'tabling');
 		setVal(m.other,'other');
-	},renewMembership:function(){
-		if(new Date().getMonth() > 4){
-        	membership_year = getVal('membership_year')
-	        if(!this.membership_years[membership_year]){
-	        	this.membership_years[membership_year] = getInterestsFromPage();
-	        	return $.ajax({
-		        type:"POST",
-		        url: "form-handlers/membership/renew.php",
-		        data: {
-		            "membership_year":this.membership_years[membership_year] 
-		        },
-		        dataType: "json"
-	    		});
-	        }
-   	 	}else{
-    		alert("You already renewed for this year");
-    	}
+	},renew:function(){
+
+    	membership_year = getVal('membership_year')
+        if(!this.membership_years[membership_year]){
+        	this.membership_years[membership_year] = getInterestsFromPage();
+        	return $.ajax({
+	        type:"POST",
+	        url: "form-handlers/membership/renew.php",
+	        data: {
+	            "membership_year":this.membership_years[membership_year] 
+	        },
+	        dataType: "json"
+    		});
+        }
+   	 	
     },updateMemberInfo:function(){
 		return $.ajax({
 		type:"POST",

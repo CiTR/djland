@@ -2,6 +2,7 @@ window.myNameSpace = window.myNameSpace || { };
 var faculties,interests,provinces,member_types,permission_levels,program_years;
 $(document).ready ( function() {
     getConstants();
+
 });
 
 function getConstants(){

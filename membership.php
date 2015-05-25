@@ -231,7 +231,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 						<?php 
 						foreach($djland_interests as $key=>$interest){ 
 							echo "<div class='col3'>{$key}";
-							if($interest == 'other'){echo " <input id='{$interest}2' placeholder='Enter interest'/>";}
+							if($interest == 'other'){echo " <input id='{$interest}' placeholder='Enter interest'/>";}
 							echo "<input type='checkbox' id='{$interest}'/></div>";
 							}?>
 					</div>
