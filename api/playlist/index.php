@@ -55,7 +55,7 @@ if ( $result = mysqli_query($db, $query) ) {
 
   $plays = array();
 
-  $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id;
+  $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer, playitems.id FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id .' order by playitems.id asc';
 
   if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
