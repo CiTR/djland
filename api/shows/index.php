@@ -14,6 +14,7 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 $query = 'SELECT shows.id as id,
                 shows.edit_date as edit_date,
+                shows.active as active,
                 podcast_channels.edit_date as podcast_edit_date,
                 podcast_channels.id as podcast_id
                 FROM shows
