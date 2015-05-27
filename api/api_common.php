@@ -50,10 +50,10 @@ function finish(){
     header("Content-Type:application/json; charset=utf-8",false);
 
     if( defined('JSON_PRETTY_PRINT') ){
-      echo json_encode( $data, JSON_PRETTY_PRINT );
+      echo utf8_json_encode( $data, JSON_PRETTY_PRINT );
 
     } else {
-      echo json_encode( $data );
+      echo utf8_json_encode( $data );
     }
   }
 
@@ -61,6 +61,17 @@ function finish(){
 
   return;
 }
+
+
+function utf8_json_encode($arr, $option = false)
+{
+  //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
+  array_walk_recursive($arr, function (&$item, $key) {
+    if (is_string($item)) $item = mb_encode_numericentity($item, array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
+  });
+  return mb_decode_numericentity(json_encode($arr, $option), array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
+}
+
 
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
