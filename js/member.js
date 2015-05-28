@@ -197,18 +197,17 @@ Member.prototype = {
 	        dataType: "json"
     		});
         }
-   	 	
     },updateMemberInfo:function(){
 		return $.ajax({
-		type:"POST",
-		url: "form-handlers/membership/update_info.php",
-		data: {
-		"member": JSON.stringify(this)
-	 	},
-		dataType: "json"
+			type:"POST",
+			url: "form-handlers/membership/member.php",
+			data: {
+			"member": JSON.stringify(this)
+		 	},
+			dataType: "json"
 		});
 	},updateMemberInterests:function(membership_year){
-			return $.ajax({
+		return $.ajax({
 			type:"POST",
 			url: "form-handlers/membership/update_interest.php",
 			data: {
