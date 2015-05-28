@@ -401,7 +401,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
                     })
                     .catch(function (result) {
 
-                      $scope.podcast_status('Something went wrong. Please try again later from the Podcasts page.');
+                      $scope.podcast_status = 'Something went wrong. Please try again later from the Podcasts page.';
 
                     });
               } else {
