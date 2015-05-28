@@ -88,6 +88,9 @@ if ($result = mysqli_query($db, $query) ) {
        shows.show_desc,
        shows.alerts,
        shows.show_img,
+       shows.crtc_default,
+       shows.lang_default,
+       shows.showtype,
        hosts.name as host_name,
         podcast_channels.title as podcast_title,
         podcast_channels.subtitle as podcast_subtitle,
@@ -143,7 +146,7 @@ $data = $rawdata[0];
 
 
 if ($data['alerts'] == ''){
-  $data['alerts'] = 'I am the show alert text for '.$data['name'].'! Check out an upcoming episode on unique dog breeds and the hottest dogetronica music!';
+  $data['alerts'] = 'I am the show alert text for '.$data['name'].'! Check out an upcoming episode with a special interview and very exclusive music!';
 }
 
 

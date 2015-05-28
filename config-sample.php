@@ -111,6 +111,14 @@ $ftp_path_audio = 'path/to/audio/dir';
 $ftp_path_xml = 'path/to/xml/dir';
 
 
+$djland_permission_levels = array(
+    'operator'=> '6',
+    'administrator'=> '5',
+    'staff'=>'4',
+    'workstudy'=>'3',
+    'volunteer'=>'2',
+    'dj'=>'1',
+    'member'=>'0');
 
 // debug time operations? leave false unless you
 // are developing and need to fake the current time

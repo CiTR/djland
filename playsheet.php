@@ -380,7 +380,7 @@ width:1200px;
 
   .dark{
     position:fixed;
-    top:0;
+    top:50px;
     left:0;
     height:100%;
     width:100%;
@@ -400,9 +400,7 @@ width:1200px;
 </head>
 <body>
 <?php
-
     print_menu();
-
 
     $show_id = users_show();
     $channel_id = users_channel();
