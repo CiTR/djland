@@ -133,7 +133,7 @@ foreach($plays as $i => $play){
 }
 
 if ($error == ''){
-  echo json_encode(array('message' => $playlist_id));
+  echo json_encode(array('playsheet_id' => $playlist_id, 'podcast_id' => $podcast_id));
 } else {
   header('HTTP/1.0 400 '.json_encode(array('message' => $error)));
 }

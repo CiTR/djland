@@ -25,26 +25,63 @@ function test_cgi($test_var) {
 	}
 }
 
+
 //function to check group permissions, administrators and operators are in all groups...
 function is_member($test_group) {
-
 	global $group_memberships,$db;
-
-
 	if(!isset($_SESSION['sv_username'])) {
 		return false;
 	}
-	$query = "SELECT * FROM group_members INNER JOIN user on user.userid = group_members.userid WHERE username='".$_SESSION['sv_username']."'";
-	$result = mysqli_query($db,$query);
-	$members=array();
-	$row = mysqli_fetch_array($result);
-	if( $row[$test_group] == '1' || $row['operator'] == '1' || $row['administrator'] == '1'){
+	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.userid = g.userid WHERE u.username = '".$_SESSION['sv_username']."'";
+	$result = $db->query($query);
+	$permissions = $result->fetch_assoc();
+
+	if($permissions[$test_group] == '1' || $permissions['operator'] == '1' || $permissions['administrator'] == '1'){
 		return true;
-	}
-	else{
+	}else{
 		return false;
 	}
 }
+
+function permission_level(){
+	global $db, $sv_username, $djland_permission_levels;
+	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid WHERE u.username='".$_SESSION['sv_username']."'";
+	$result = $db->query($query);
+	$permissions = $result->fetch_object();
+	$level = -1; //failure return value
+	foreach($permissions as $level => $value){
+		if( $value == '1'){
+			$level = $djland_permission_levels[$level];
+			break;
+		}
+	}
+
+	if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
+		$level = 0;
+	}
+
+	return $level;
+}
+
+function is_paid(){
+	global $pdo_db;
+	$query = "SELECT paid FROM membership_years WHERE member_id=:member_id ORDER BY membership_year DESC";
+	$statement = $pdo_db->prepare($query);
+	$statement->bindValue(':member_id',$_SESSION['sv_id']);
+
+	try{
+		$statement->execute();
+		$result = $statement->fetchAll(PDO::FETCH_NUM);
+	}catch(PDOException $e){
+		echo $e->getMessage();
+	}
+	if($result[0][0] == '1'){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 
 function has_show_access($show_id){
 	global $db;

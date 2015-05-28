@@ -10,16 +10,21 @@ $rawdata = array();
 global $_GET;
 global $db;
 
-if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
-if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
+if(isset($_GET['show'])) $show_id = $_GET['show']; else $show_id = 0;
+
+
+if (!has_show_access($show_id) ){
+  $error .= 'sorry, you do not have access to this show\'s podcasts';
+  finish();
+}
 $query = '
     SELECT *
     FROM playlists
-    WHERE playlists.show_id = '.users_show().'
+    WHERE playlists.show_id = '.$show_id.'
     ORDER BY
       playlists.start_time
-    DESC limit ' . $limit . ' OFFSET ' . $offset;
+    DESC ';
 
 if ($result = mysqli_query($db, $query) ) {
 

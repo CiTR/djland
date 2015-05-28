@@ -86,7 +86,7 @@ function make_podcast($channel,$episodes){
 				'<title>'.$channel['title'].'</title>'.
 			'</image>';
 	$xml .= '<link>'.$channel['link'].'</link>';
-	$xml .= '<generator> podcast mate 2000</generator>';
+	$xml .= '<generator> podcast mate 2000 </generator>';
 
 
 

@@ -100,7 +100,7 @@ foreach($rawdata as $i => $v){
 
     $end = ($endday)*24*60*60 + $end;
 
-  $end = strtotime($v['end_time'], $start);
+  $end = strtotime($v['end_time'], $actual_show_time);
 
   $candidates []= array('start' => $actual_show_time, 'end' => $end);
 

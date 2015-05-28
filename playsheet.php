@@ -90,7 +90,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     font-size: 0.7em;
   }
 
-  .music_row_heading input {
+  .music_row_heading input, .music_row_heading span {
     text-align: center;
     background: none;
     border-width: 0;
@@ -124,7 +124,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
   }
 
-  span.box {
+  button.box {
     display: inline-block;
     height: 27px;
     width: 27px;
@@ -136,88 +136,88 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     margin-bottom: 2px;
   }
 
-  span.box.new:hover {
+  button.box.new:hover {
     background-image: url('images/pl.png');
     opacity: 0.5;
   }
 
-  span.box.cancon:hover {
+  button.box.cancon:hover {
     background-image: url('images/CAN.png');
     opacity: 0.5;
   }
 
-  span.box.femcon:hover {
+  button.box.femcon:hover {
     background-image: url('images/fe.png');
     opacity: 0.5;
   }
 
-  span.box.instrumental:hover {
+  button.box.instrumental:hover {
     background-image: url('images/inst.png');
     opacity: 0.5;
   }
 
-  span.box.hit:hover {
+  button.box.hit:hover {
     background-image: url('images/hit.png');
     opacity: 0.5;
   }
 
-  span.box.partial:hover {
+  button.box.partial:hover {
     background-image: url('images/part.png');
     opacity: 0.5;
   }
 
 
-  span.box.background:hover {
+  button.box.background:hover {
     background-image: url('images/BACKGROUND.png');
     opacity: 0.5;
   }
 
-  span.box.theme:hover {
+  button.box.theme:hover {
     background-image: url('images/THEME.png');
     opacity: 0.5;
   }
 
-  span.box.new.filled {
+  button.box.new.filled {
     background-image: url('images/pl.png');
     opacity: 1;
   }
 
-  span.box.cancon.filled {
+  button.box.cancon.filled {
     background-image: url('images/cc.png');
     opacity: 1;
   }
 
-  span.box.femcon.filled {
+  button.box.femcon.filled {
     background-image: url('images/fe.png');
     opacity: 1;
   }
 
-  span.box.instrumental.filled {
+  button.box.instrumental.filled {
     background-image: url('images/inst.png');
     opacity: 1;
   }
 
-  span.box.hit.filled {
+  button.box.hit.filled {
     background-image: url('images/hit.png');
     opacity: 1;
   }
 
-  span.box.partial.filled {
+  button.box.partial.filled {
     background-image: url('images/part.png');
     opacity: 1;
   }
 
-  span.box.background.filled {
+  button.box.background.filled {
     background-image: url('images/BACKGROUND.png');
     opacity: 1;
   }
 
-  span.box.theme.filled {
+  button.box.theme.filled {
     background-image: url('images/THEME.png');
     opacity: 1;
   }
 
-  span.box {
+  button.box {
     background-color: transparent;
     background-image: none;;
   }
@@ -332,10 +332,6 @@ width:1200px;
     color:black;
   }
 
-  #submit{
-    font-size:3em;
-
-  }
   button {
     color:black;
   }
@@ -391,6 +387,14 @@ width:1200px;
     opacity: 0.8;
     background-color:black;
   }
+
+  th small{
+    color:black;
+  }
+
+  .wrapper{
+    margin-left:15px;
+  }
 </style>
 
 </head>
@@ -412,17 +416,21 @@ width:1200px;
     }
 ?>
 
+<div class="wrapper">
+
+
 <div ng-app="djLand" ng-cloak >
 
   <div ng-controller="playsheetCtrl" >
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}}</h2>
 
+
     <div >
 
 
       <div id="left">
-        Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast();">
+        Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
           <option value="Syndicated">Syndicated</option>
           <option value="Live">Live</option>
           <option value="Rebroadcast">Rebroadcast</option>
@@ -446,8 +454,8 @@ width:1200px;
                         </span>-->
         <br/>Host: <input ng-model="playsheet.host"></input>
         <br/>Language: <input ng-model="playsheet.lang"></input>
-        <br/>CRTC Category: <span class="crtc" ng-model="playsheet.crtc"
-                                  ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</span>
+        <br/>CRTC Category: <button class="crtc" ng-model="playsheet.crtc"
+                                  ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
       </div>
       <div id="right">
         <div ng-controller="datepicker" >
@@ -469,7 +477,7 @@ width:1200px;
                  ng-change="$parent.date_change();" />
           <br/>
           {{playsheet.start_time | date:'EEE, MMM d, y'}}
-        <button ng-click="open($event)"  ng-model="datepicker_date">change date</button>
+        <button ng-click="open($event)"  >change date</button>
         </div>
 
       </div>
@@ -486,24 +494,24 @@ width:1200px;
 
 
       <div class="music_row_heading music_row" ng-class="{music_row_socan: socan}">
-        <input value="artist" class="music" readonly></input>
-        <input value="album" class="music" readonly></input>
-        <input value="song" class="music" readonly></input>
-        <input ng-show="socan" value="composer" class="music" readonly></input>
-        <span ng-show="socan" class="socan_cue">Time Start (H:M)&nbsp; |&nbsp; Duration (M:S)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <input value="artist" class="music" readonly tooltip="{{artistHelp}}"></input>
+        <input value="album" class="music" readonly tooltip="{{albumHelp}}"></input>
+        <input value="song" class="music" readonly tooltip="{{songHelp}}"></input>
+        <input ng-show="socan" value="composer" class="music" readonly tooltip="{{compHelp}}"></input>
+        <span ng-show="socan" class="socan_cue" ><span tooltip="{{timeHelp1}}">Time Start (H:M)&nbsp; </span>|&nbsp;<span tooltip="{{timeHelp2}}"> Duration (M:S)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-        <span class="box new filled">&nbsp;</span>
-        <span class="box cancon filled" ">&nbsp;</span>
-        <span class="box femcon filled">&nbsp;</span>
-        <span class="box instrumental filled">&nbsp;</span>
-        <span class="box partial filled">&nbsp;</span>
-        <span class="box hit filled">&nbsp;</span>
+        <button class="box new filled">&nbsp;</button>
+        <button class="box cancon filled" ">&nbsp;</button>
+        <button class="box femcon filled">&nbsp;</button>
+        <button class="box instrumental filled">&nbsp;</button>
+        <button class="box partial filled">&nbsp;</button>
+        <button class="box hit filled">&nbsp;</button>
 
-        <span ng-show="socan" class="box theme filled">&nbsp;</span>
-        <span ng-show="socan" class="box background filled">&nbsp;</span>
+        <button ng-show="socan" class="box theme filled">&nbsp;</button>
+        <button ng-show="socan" class="box background filled">&nbsp;</button>
 
-        <span class="crtc"> crtc </span>
-        <input class="lang" value="language"></input>
+        <button class="crtc" tooltip="{{help_crtc}}"> crtc </button>
+        <input class="lang" value="language">
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
@@ -511,10 +519,12 @@ width:1200px;
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">
-            <input ng-model="row.song.artist" class="music" >
+            <input ng-model="row.song.artist" class="music"
+                   required="true">
             <input ng-model="row.song.title"
                    class="music" required="true">
-            <input ng-model="row.song.song" class="music" >
+            <input ng-model="row.song.song" class="music"
+                   required="true">
             <input ng-model="row.song.composer" class="music" ng-show="socan"></input>
 
             <span ng-show="socan" class="socan_cue">
@@ -529,18 +539,18 @@ width:1200px;
                 <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60 "></select>
                 <button ng-click="end(row)">END</button>
             </span>
-            <span class="box new" ng-model="row.is_playlist" ng-class="{filled: row.is_playlist}"
-                  ng-click="row.is_playlist = !row.is_playlist;">&nbsp;</span>
-            <span class="box cancon" ng-model="row.is_canadian" ng-class="{filled: row.is_canadian}"
-                  ng-click="row.is_canadian = !row.is_canadian;">&nbsp;</span>
-            <span class="box femcon" ng-model="row.is_fem" ng-class="{filled: row.is_fem}"
-                  ng-click="row.is_fem = !row.is_fem;">&nbsp;</span>
-            <span class="box instrumental" ng-model="row.is_inst" ng-class="{filled: row.is_inst}"
-                  ng-click="row.is_inst = !row.is_inst;">&nbsp;</span>
-            <span class="box partial" ng-model="row.is_part" ng-class="{filled: row.is_part}"
-                  ng-click="row.is_part = !row.is_part;">&nbsp;</span>
-            <span class="box hit" ng-model="row.is_hit" ng-class="{filled: row.is_hit}"
-                  ng-click="row.is_hit = !row.is_hit;">&nbsp;</span>
+            <button class="box new" ng-model="row.is_playlist" ng-class="{filled: row.is_playlist}"
+                  ng-click="row.is_playlist = !row.is_playlist;" >&nbsp;</button>
+            <button class="box cancon" ng-model="row.is_canadian" ng-class="{filled: row.is_canadian}"
+                  ng-click="row.is_canadian = !row.is_canadian;" >&nbsp;</button>
+            <button class="box femcon" ng-model="row.is_fem" ng-class="{filled: row.is_fem}"
+                  ng-click="row.is_fem = !row.is_fem;" >&nbsp;</button>
+            <button class="box instrumental" ng-model="row.is_inst" ng-class="{filled: row.is_inst}"
+                  ng-click="row.is_inst = !row.is_inst;" >&nbsp;</button>
+            <button class="box partial" ng-model="row.is_part" ng-class="{filled: row.is_part}"
+                  ng-click="row.is_part = !row.is_part;" >&nbsp;</button>
+            <button class="box hit" ng-model="row.is_hit" ng-class="{filled: row.is_hit}"
+                  ng-click="row.is_hit = !row.is_hit;" >&nbsp;</button>
             <span ng-show="socan">
             <span class="box theme" ng-model="row.is_theme" ng-class="{filled: row.is_theme}"
                   ng-click="row.is_theme = !row.is_theme;">&nbsp;</span>
@@ -548,17 +558,17 @@ width:1200px;
                       ng-click="row.is_background = !row.is_background;">&nbsp;</span>
             </span>
 
-            <span class="crtc" ng-model="row.crtc_category"
-                  ng-click="row.crtc_category == '30'? row.crtc_category = '20' : row.crtc_category = '30';">{{row.crtc_category}}</span>
+            <button class="crtc" ng-model="row.crtc_category"
+                  ng-click="row.crtc_category == '30'? row.crtc_category = '20' : row.crtc_category = '30';" >{{row.crtc_category}}</button>
             <input class="lang" ng-model="row.lang">
-            <span class="tools" ng-click="add($index)">&nbsp;+&nbsp;</span>
-            <span class="tools" ng-click="remove($index)">&nbsp;-&nbsp;</span>
+            <button class="tools" ng-click="add($index)" >&nbsp;+&nbsp;</button>
+            <button class="tools" ng-click="remove($index)" >&nbsp;-&nbsp;</button>
             <span class="dragzone">:::</span><br/>
           </div>
         </li>
       </ul>
 
-            <span class="tools right" ng-click="add(0)" ng-show="playsheet.plays.length == 0">&nbsp;+&nbsp;music</span>
+            <button class="tools right" ng-click="add(0)" ng-show="playsheet.plays.length == 0" >&nbsp;+&nbsp;music</button>
     </div>
 
     <div class="spokenword_block">
@@ -633,7 +643,8 @@ width:1200px;
 <div class="save_block">
 
   <center>
-          <button id="submit" ng-click="submit()">save</button>
+          <button class="large-button" ng-click="submit()" ng-hide="submitting">save</button>
+          <p ng-show="submitting">Submitting...</p>
           <div class="blocker" ng-hide="songsComplete"> Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
           <span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span> </div>
 
@@ -648,7 +659,7 @@ width:1200px;
   <div class="floating">
   <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "></input><br/>
   <input type="button"
-         ng-click="saveDraft(); saving = true;"
+         ng-click="saveDraft();"
          value="{{(saving)? 'saving....':'Save Draft'}}"
          ng-hide="playsheet.status == 2"
       ></input>
@@ -693,7 +704,7 @@ width:1200px;
       {{(playsheet.star)? '&#9733&#9733&#9733&#9733' : ''}}
     </div>
 
-    <hr/>
+
 
       <pre class="vars" ng-hide="varshidden">
 
@@ -724,7 +735,8 @@ width:1200px;
       <h3>If you're done, please <a href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
       A podcast episode is now being created.
 
-      <br/>status:{{podcast_status}}<br/>
+      <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <center>{{podcast_status}}</center><br/><br/>
       To modify the episode timing, title, subtitle, or summary,
       <a ng-href="podcasts.php" target="_self">click here to visit your podcast editor page</a>
       <h4>Tracklist:</h4>
@@ -746,6 +758,9 @@ width:1200px;
   </div>
 </div>
 
+</div>
+
+
 
 <script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
 <script type='text/javascript' src="js/angular.js"></script>
@@ -758,7 +773,8 @@ width:1200px;
   var djland = angular.module('djLand', ['ui.bootstrap', 'ui.sortable']);
 </script>
 
-<script src="js/angular-djland.js"></script>
+<script type="text/javascript" src="js/angular-djland.js"></script>
+
 <script type="text/javascript">
 
   djland.value('show_id', <?php echo $show_id;?>);

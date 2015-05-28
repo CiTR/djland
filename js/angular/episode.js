@@ -139,19 +139,19 @@ angular.module('podcastEpisode',['soundManager'])
 
         $scope.preview_start = function(){
 
-            var start_prev_end = new Date(episode.start_obj);
+            var start_prev_end = new Date($scope.editing.podcast.date);
             start_prev_end.setSeconds(start_prev_end.getSeconds() + 5);
-            var sound_url = archiveService.url(episode.start_obj, start_prev_end);
+            var sound_url = archiveService.url($scope.editing.podcast.date, start_prev_end);
 
 
             $scope.load_and_play_sound(sound_url);
         };
 
         $scope.preview_end = function(){
-
-            var end_prev_start = new Date(episode.end_obj);
+            var end_date = $scope.editing.podcast.date.setMilliseconds(0) + $scope.editing.podcast.duration*1000;
+            var end_prev_start = new Date(end_date);
             end_prev_start.setSeconds(end_prev_start.getSeconds() - 5);
-            var sound_url = archiveService.url(end_prev_start, episode.end_obj);
+            var sound_url = archiveService.url(end_prev_start, end_date);
             $scope.load_and_play_sound(sound_url);
 
         }

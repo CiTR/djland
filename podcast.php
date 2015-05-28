@@ -43,9 +43,10 @@ require_once("headers/menu_header.php");
 <body>
 
 <?php print_menu(); ?>
-<div ng-app="djLand" id="mainpodcast">
 
-	<div ng-controller="episodeSingle">
+<div ng-app="djLand" id="mainpodcast" ng-cloak>
+
+	<div ng-controller="episodeSingle" >
 		{{status}}<hr/>
 		{{episode}}<hr/>
 

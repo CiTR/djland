@@ -13,7 +13,7 @@ $show_data = $incoming_data;
 
 $show_id = $show_data['show_id'];
 
-if (array_key_exists('show_id',$episode_data)) unset($episode_data['show_id']);
+if (array_key_exists('show_id',$show_data)) unset($show_data['show_id']);
 
 
 // TO DO: add host_id code

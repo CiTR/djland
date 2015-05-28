@@ -79,7 +79,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
 
             if (!$found && (
-                        (levenshtein($this_show_name, $pod_name) <3)
+                        (levenshtein($this_show_name, $pod_name) < 3)
                         || $pos_1!==false || $pos_2!==false
 //                        (strpos($this_show_name,$pod_name)) ||
 //                        (strpos($pod_name,$this_show_name))

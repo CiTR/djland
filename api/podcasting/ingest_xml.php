@@ -73,8 +73,27 @@ $channel_count = 0;
                 $channel_info['link'] = $values[$index['LINK'][0]]['value'];
                 $channel_info['image'] = isset($index['ITUNES:LINK'][0]) ? $values[$index['ITUNES:LINK'][0]]['attributes']['HREF'] : '';
                 $channel_info['xml'] = $xml_url;
+                $slug = explode('/',$xml_url);
+                $slug = array_pop($slug);
+                $slug = explode('-fb',$slug);
+                $slug = $slug[0];
+                $channel_info['slug'] = $slug;
 
-                $channel_q = "INSERT into podcast_channels (title, subtitle, summary, author, keywords, owner_name, owner_email, episode_default_title, episode_default_subtitle, episode_default_author, link, image_url, xml) ";
+                $channel_q = "INSERT into podcast_channels
+                  (title,
+                  subtitle,
+                  summary,
+                  author,
+                  keywords,
+                  owner_name,
+                  owner_email,
+                  episode_default_title,
+                  episode_default_subtitle,
+                  episode_default_author,
+                  link,
+                  image_url,
+                  slug,
+                  xml) ";
                 $channel_q .= "VALUES ('" . htmlentities(addslashes($channel_info['title'])) . "','" .
                     htmlentities(addslashes($channel_info['subtitle'])) . "','" .
                     htmlentities(addslashes($channel_info['summary'])) . "','" .
@@ -87,6 +106,7 @@ $channel_count = 0;
                     htmlentities(addslashes($channel_info['default_episode_author'])) . "','" .
                     htmlentities(addslashes($channel_info['link'])) . "','" .
                     htmlentities(addslashes($channel_info['image'])) . "','" .
+                    htmlentities(addslashes($channel_info['slug'])) . "','" .
                     htmlentities(addslashes($channel_info['xml'])) . "');";
 
   //                $channel_q = mysqli_escape_string($db,$channel_q);

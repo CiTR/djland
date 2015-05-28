@@ -1,17 +1,14 @@
 <?php
 
-if (!isset($_GET['channel'])){
-	echo 'please append podcasting.php with ?channel=CHANNEL# after migrating your database. (For example, <a href="./podcasting.php?channel=12">click here for channel 12</a>) <br/><br/>see <a href="./podcasting/NOTES.txt"> notes.txt </a> for more info about migration</a></a>';
-} else {
-	$channel_id = $_GET['channel'];
-	date_default_timezone_set('America/Vancouver');
-}
+session_start();
+require_once("headers/security_header.php");
+require_once("headers/function_header.php");
+require_once("headers/menu_header.php");
 
-if (isset($_GET['editall']) && $_GET['editall'] == 'true'){
-	$edit_all = 'true';
-} else {
-	$edit_all = 'false';
-}
+$show_id = users_show();
+$channel_id = users_channel();
+
+//if (permission_level() >= $djland_permission_levels['staff'])
 
 ?>
 <html>
@@ -34,7 +31,7 @@ if (isset($_GET['editall']) && $_GET['editall'] == 'true'){
 
 	</style>
 
-	<link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'></script>
+	<link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'>
 
 
 </head>
@@ -54,122 +51,45 @@ if (isset($_GET['editall']) && $_GET['editall'] == 'true'){
 		<ng-include src="'podcasting/podcast-episode.html'">
 
 		</ng-include>
-		<!--
+
 duration: {{episode.duration}}<br/>
 
 episode start obj: {{episode.start_obj | date: 'medium'}}<br/>
 episode end obj: {{episode.end_obj | date: 'medium'}}<br/>
 episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
--->
-		{{episode}}
+
+
 	</div>
 
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<script type='text/javascript' src='js/soundmanager2.js'></script>	
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.js"></script>
+<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
+<script type='text/javascript' src="js/angular.js"></script>
+<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
+<script type='text/javascript' src="js/soundmanager2.js"></script>
+<script type='text/javascript' src="js/angular/sortable.js"></script>
 <script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
 <script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
+<script type="text/javascript">
+	var djland = angular.module('djLand', ['ui.bootstrap','podcastEditor']);
+</script>
+<script type="text/javascript" src="js/angular-djland.js"></script>
+
+<script type="text/javascript">
+
+	djland.value('show_id', <?php echo $show_id;?>);
+	djland.value('channel_id', <?php echo $channel_id;?>);
+
+</script>
+
 <script type='text/javascript'>
 
-	var podcastEditor = angular.module('podcastEditor', ['ui.bootstrap','podcastEpisode'])
-		.controller('datepicker', ['$scope','$filter',function($scope, $filter) {
-			var episode = $scope.$parent.$parent.episode;
 
-			$scope.today = function() {
-				$scope.dt = new Date();
-			};
-
-			$scope.clear = function () {
-				$scope.dt = null;
-			};
-
-			$scope.open = function($event) {
-				$event.preventDefault();
-				$event.stopPropagation();
-
-				$scope.opened = true;
-			};
-
-			$scope.format = 'medium';
-
-			$scope.date_change = function(){
-				episode.updateTimeObjs();
-			}
-
-		}])
-		.controller('timepicker', ['$scope','$filter','timezone_offset', function($scope, $filter, timezone_offset) {
-			var episode = $scope.$parent.episode;
-			episode.time = episode.date;
-			episode.duration_obj = new Date((episode.duration-timezone_offset) * 1000);
-
-			$scope.start_changed = function(time){
-				var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
-				var episode_date = new Date(episode.date);
-				episode_date.setHours( hh);episode_date.setMinutes( mm);episode_date.setSeconds( ss);
-				episode.date = episode_date;//$filter('date')(episode_date, 'medium');
-				episode.date_unix = episode_date.getTime() / 1000;
-
-				episode.updateTimeObjs()
-			};
-
-			$scope.length_changed = function(time){
-
-				var existing_duration = time.getSeconds();
-				episode.duration = ( time.getTime() / 1000 ) + timezone_offset;
-				var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
-
-				var new_end_date = new Date(episode.date);
-				var start_hh = new_end_date.getHours();
-				var start_mm = new_end_date.getMinutes();
-				var start_ss = new_end_date.getSeconds();
-
-				new_end_date.setSeconds(start_ss + ss + timezone_offset);
-				new_end_date.setMinutes(start_mm + mm);
-				new_end_date.setHours(start_hh + hh);
-
-				episode.end_obj = new_end_date;
-				episode.updateTimeObjs()
-
-			};
-		}])
-		.controller('channelCtrl', ['$scope', '$http', '$filter','channel_id','edit_all', function($scope, $http, $filter, channel_id, edit_all){
-
-			$scope.status = 'loading...';
-			$scope.edit_all = edit_all;
-
-			$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-			$scope.channel_id = channel_id;
-
-
-			$scope.makeEpisodes = function() {
-				$http.get('./api/episodes/list.php?channel='+channel_id)
-					.success(function(data, status, headers, config){
-						$scope.status = '';
-						$scope.episodes = [].concat(angular.fromJson(data));
-
-						if(!edit_all){
-							$scope.episodes = $scope.episodes.slice(0,10);
-						}
-					});
-			};
-			$scope.makeEpisodes();
-			/*
-			 $scope.numPages = function () {
-			 return Math.ceil($scope.episodes.length / $scope.numPerPage);
-			 };
-			 */
-
-			sm = new SoundManager();
-
-		}]);
-
-	angular.module('podcastEpisode',[])
-		.controller('episodeCtrl', ['$scope', '$http', '$filter', 'archiveService', 'channel_id', function($scope, $http, $filter, archiveService, channel_id){
+	var podcastEditor = angular.module('podcastEditor',[])
+		.controller('episodeCtrl', function($scope, $http, $filter, archiveService, channel_id){
 
 			$scope.episode = $scope.$parent.episode;
 
@@ -322,8 +242,36 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 			}
 
-		}])
-		.factory('archiveService', ['$filter', function($filter) {
+		})
+		.controller('channelCtrl', function($scope, $http, $filter, channel_id){
+
+				$scope.status = 'loading...';
+
+				$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+				$scope.channel_id = channel_id;
+
+
+				$scope.makeEpisodes = function() {
+					$http.get('./api/episodes/mine.php')
+							.success(function(data, status, headers, config){
+								$scope.status = '';
+								$scope.episodes = [].concat(angular.fromJson(data));
+
+								$scope.episodes = $scope.episodes.slice(0,4);
+
+							});
+				};
+				$scope.makeEpisodes();
+				/*
+				 $scope.numPages = function () {
+				 return Math.ceil($scope.episodes.length / $scope.numPerPage);
+				 };
+				 */
+
+				sm = new SoundManager();
+
+})
+		.factory('archiveService', function($filter) {
 			return {
 				url: function(date, end) {
 
@@ -334,7 +282,7 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
 				}
 			};
-		}])
+		})
 		.factory('soundManager', function() {
 
 			return {
@@ -374,15 +322,79 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 
                 }
             };
-        });
+        })
+		.value('channel_id', <?php echo $channel_id;?>);
+
+	podcastEditor.value('timezone_offset',<?php echo date_offset_get(new DateTime); ?>); //timezone offset is in seconds
+
+
+	podcastEditor.controller('datepicker', function($scope, $filter) {
+		var episode = $scope.$parent.$parent.episode;
+
+		$scope.today = function() {
+			$scope.dt = new Date();
+		};
+
+		$scope.clear = function () {
+			$scope.dt = null;
+		};
+
+		$scope.open = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+
+			$scope.opened = true;
+		};
+
+		$scope.format = 'medium';
+
+		$scope.date_change = function(){
+			episode.updateTimeObjs();
+		}
+
+	});
+
+
+	podcastEditor.controller('timepicker', function($scope, $filter, timezone_offset) {
+		var episode = $scope.$parent.episode;
+		episode.time = episode.date;
+		episode.duration_obj = new Date((episode.duration-timezone_offset) * 1000);
+
+		$scope.start_changed = function(time){
+			var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
+			var episode_date = new Date(episode.date);
+			episode_date.setHours( hh);episode_date.setMinutes( mm);episode_date.setSeconds( ss);
+			episode.date = episode_date;//$filter('date')(episode_date, 'medium');
+			episode.date_unix = episode_date.getTime() / 1000;
+
+			episode.updateTimeObjs()
+		};
+
+		$scope.length_changed = function(time){
+
+			var existing_duration = time.getSeconds();
+			episode.duration = ( time.getTime() / 1000 ) + timezone_offset;
+			var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
+
+			var new_end_date = new Date(episode.date);
+			var start_hh = new_end_date.getHours();
+			var start_mm = new_end_date.getMinutes();
+			var start_ss = new_end_date.getSeconds();
+
+			new_end_date.setSeconds(start_ss + ss + timezone_offset);
+			new_end_date.setMinutes(start_mm + mm);
+			new_end_date.setHours(start_hh + hh);
+
+			episode.end_obj = new_end_date;
+			episode.updateTimeObjs()
+
+		};
+	});
+
 
 </script>
 
 	<script type='text/javascript'>
-		podcastEditor.value('timezone_offset',<?php echo date_offset_get(new DateTime); ?>); //timezone offset is in seconds
-		podcastEditor.value('channel_id','<?php echo $channel_id; ?>');
-		podcastEditor.value('edit_all',<?php echo $edit_all;?>);
-		podcastEditor.value('creating_new_episode',false);
 
 	</script>
 

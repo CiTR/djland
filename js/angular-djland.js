@@ -33,9 +33,8 @@ djland.factory('apiService', function ($http, $location) {
           return $http.get(API_URL_BASE + '/playlists/mine.php');
         },
 
-        getPlodcasts: function(limit,offset) {
-          limit = limit || 100; offset = offset || 0;
-          return $http.get(API_URL_BASE + '/playlists/plodcast.php');
+        getPlodcasts: function(show_id) {
+          return $http.get(API_URL_BASE + '/playlists/plodcast.php?show='+show_id);
 
         },
 
@@ -98,10 +97,13 @@ djland.factory('apiService', function ($http, $location) {
         },
 
 
-        createPodcastAudio: function(data){
-          return $http.get(API_URL_BASE + '/podcasting/create_audio_file.php?start='+data.start+'&end='+data.end+'&show='+data.show)
-        }
+        updatePodcast: function(data){
+          return $http.post(API_URL_BASE + '/podcasting/update_podcast.php', data)
+        },
 
+        logout: function(){
+          return $http.post('')
+        }
 
       };
     });
@@ -174,16 +176,15 @@ djland.controller('episodeSingle', ['$scope', '$location', 'apiService', functio
       .then(function(response){
         $scope.episodes[0] = response.data;
         $scope.status = '';
-      });
+      }).catch(function(response){
+            $scope.status = response.data;
+          });
 
 
 }]);
 
 
-
-
-djland.controller('datepicker', ['$scope','$filter',function($scope, $filter) {
-
+djland.controller('datepicker', function($scope, $filter) {
 
   $scope.today = function() {
     $scope.dt = new Date();
@@ -202,12 +203,44 @@ djland.controller('datepicker', ['$scope','$filter',function($scope, $filter) {
 
   $scope.format = 'medium';
 
-  $scope.date_change = function(){
-    //  $scope.$parent.new_sb.start.updateTimeObjs();
-    alert('hi');
-  }
+});
 
-}]);
+djland.controller('timepicker', function($scope, $filter, timezone_offset) {
+//  var episode = $scope.$parent.episode;
+//  episode.time = episode.date;
+//  episode.duration_obj = new Date((episode.duration-timezone_offset) * 1000);
+
+  $scope.start_changed = function(time){
+    var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
+    var episode_date = new Date(episode.date);
+    episode_date.setHours( hh);episode_date.setMinutes( mm);episode_date.setSeconds( ss);
+    episode.date = episode_date;//$filter('date')(episode_date, 'medium');
+    episode.date_unix = episode_date.getTime() / 1000;
+
+    episode.updateTimeObjs()
+  };
+
+  $scope.length_changed = function(time){
+
+    var existing_duration = time.getSeconds();
+//    episode.duration = ( time.getTime() / 1000 ) + timezone_offset;
+    var hh = time.getHours();var mm = time.getMinutes();var ss = time.getSeconds();
+
+    var new_end_date = new Date(episode.date);
+    var start_hh = new_end_date.getHours();
+    var start_mm = new_end_date.getMinutes();
+    var start_ss = new_end_date.getSeconds();
+
+    new_end_date.setSeconds(start_ss + ss + timezone_offset);
+    new_end_date.setMinutes(start_mm + mm);
+    new_end_date.setHours(start_hh + hh);
+
+    episode.end_obj = new_end_date;
+    episode.updateTimeObjs()
+
+  };
+});
+
 
 djland.filter('range', function($filter) {
   return function(input, min, max) {
@@ -243,3 +276,6 @@ djland.filter('pad', function () {
     return num;
   };
 });
+
+
+djland.value('MAX_PODCAST_DURATION_HOURS', 4);

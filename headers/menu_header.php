@@ -10,17 +10,17 @@ function print_menu(){
 	
 	<ul id=nav>
 		
-		<?php if(is_member("membership") && $enabled['membership']) : ?>
+		<?php if(is_member("staff") && $enabled['membership']) : ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
 		<li class=drop><a href="library.php">Library</a>
 			<div class=dropdown_small>
 				<div class=small>
 					<ul>
-						<?php if(is_member("library") && $enabled['library']) : ?>
+						<?php if(is_member("member") && $enabled['library']) : ?>
 						<li><a href="library.php"> View Library</a></li>
 						<?php endif; ?>
-						<?php if(is_member("editlibrary") && $enabled['library']) : ?>
+						<?php if(is_member("workstudy") && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 						<?php endif; ?>
 					</ul>
@@ -28,7 +28,7 @@ function print_menu(){
 			</div>
 		</li>
 
-	<?php if(is_member("addshow")) : 
+	<?php if(is_member("staff")) :
 		if($enabled['shows']) :?>
 			<li class=drop><a href="shows.php?action=list">Shows</a>
 				<div class="dropdown_small">
@@ -67,7 +67,7 @@ function print_menu(){
 						<?php if(is_member("dj")) : ?> 
 							<li><a href="report.php">Show Report</a></li> 
 						<?php endif;
-						if(is_member("addshow")) : ?>
+						if(is_member("staff")) : ?>
 							<li><a href="crtcreport.php">CRTC Report</a></li> 
 						<?php endif; ?>
 					</ul>
