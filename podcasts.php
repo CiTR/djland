@@ -28,9 +28,9 @@ error_reporting(E_ALL);
 
     #closer{
       position:fixed;
-      top:0;
+      top:30px;
       right:700px;
-      background-color:grey;
+      background-color:lightsteelblue;
       color:black;
       cursor:default;
       font-size:2em;
@@ -70,8 +70,28 @@ error_reporting(E_ALL);
     }
 
     .lit{
-      background-color:lightblue;
+      background-color:darkblue;
 
+
+    }
+    button{
+      color:black;
+    }
+
+    .large-button{
+      height:40px;
+      font-size: 1.5em;
+    }
+
+    #mainleft a{
+      background-color:steelblue;
+      padding:2px;
+    }
+    #mainleft  a:hover{
+      color:greenyellow;
+    }
+    #message{
+      font-size:2em;
     }
 
   </style>
@@ -99,12 +119,12 @@ if (permission_level() >= $djland_permission_levels['staff']){
 
 
 <div ng-app="djLand" id="mainleft" ng-cloak>
-<a href="http://l.h/djland-podcast/index.php?action=logout" target="_self">logout? click here</a>
+
   <div ng-controller="episodeList as list">
     <br/><br/>
     <p>{{status}}</p>
     <p>
-      <button ng-click='deferred();'> defer me </button></p>
+<!--      <button ng-click='deferred();'> defer me </button> --></p>
 
     <div >
 
@@ -128,13 +148,13 @@ if (permission_level() >= $djland_permission_levels['staff']){
       <br />
       <a ng-href="playsheet.php?action=edit&id={{plodcast.playlist.id}}" target="_self">go to playsheet</a>
       <span >
-      <a ng-click="edit_episode(plodcast);" class="button">edit podcast</a>
+      <button ng-click="edit_episode(plodcast);" >edit podcast </button>
       </span>
       <br/>
 
 
 
-      <p class="tiny">PLAYLIST:{{plodcast.playlist}}<br>PODCAST:{{plodcast.podcast}}</p>
+<!--      <p class="tiny">PLAYLIST:{{plodcast.playlist}}<br>PODCAST:{{plodcast.podcast}}</p>-->
 
 
 
@@ -159,39 +179,30 @@ if (permission_level() >= $djland_permission_levels['staff']){
       </textarea><br/>
 
       Episode Summary:<br/>
-      <textarea ng-model="editing.podcast.summary" rows="11">
+      <textarea ng-model="editing.podcast.summary" rows="8">
       </textarea><br/>
 
-<hr>
 	<div ng-controller='datepicker' >
 
           <input class="date_picker" type="text" datepicker-popup="{{format}}"
                  ng-model="editing.podcast.date"  is-open="opened"
-                 ng-required="true" close-text="Close" ng-hide="false"
+                 ng-required="true" close-text="Close" ng-hide="true"
                  ng-change="$parent.date_change();" />
           <br/>
-        <button ng-click="open($event)" ng-model="editing.podcast.date"  >change date</button>
-	<br/>
-	<h4 ><i>broadcast on </i><b>{{editing.podcast.date | date:'medium'}}</b><br/>
-    <i> duration: </i>
-    <b>{{editing.podcast.duration}}</b>
+	<i>broadcasted on <br/></i><b>{{editing.podcast.date | date:'mediumDate'}}</b>
+    <button ng-click="open($event)" ng-model="editing.podcast.date"  >change date</button>
+    <br/>
+    <i> from: </i>
+    <b>{{editing.podcast.date | date: 'mediumTime' }}</b>
+<br/>
+    <i> to: </i>
+    <b>{{editing.end_time | date: 'mediumTime' }}</b>
 
-    <i> ends at: </i>
-    <b>{{editing.end_time | date: 'medium' }}</b>
-
-  </h4>
   </div>
-
-      <hr>
-
-      Date:<br/>
-      <input ng-model="editing.podcast.date">
-      {{editing.podcast.date}}
-      </input><br/>
 
       Start Time:
       [<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
-               ng-change="alerts();"></select> :
+               ng-change="editing.podcast.date.setHours(editing.start_hour);"></select> :
       <select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
               ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>]
       <select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
@@ -205,26 +216,26 @@ if (permission_level() >= $djland_permission_levels['staff']){
               ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>]
       <select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
               ng-change="editing.end_time.setSeconds(editing.end_second);"></select>]
-<br/>end h: {{editing.end_hour}}<br/>
-      end m: {{editing.end_minute}}<br/>
+<br/>
+      <br/>
+      <i> duration: </i>
+      <b>{{editing.podcast.duration /60/60 | number:0 | pad:2 }}:{{(editing.podcast.duration /60)%60 | number:0 | pad:2}} , {{(editing.podcast.duration )%60 | pad:2 }}s</b>
 
-      Duration:<br/>
-      <input ng-model="editing.podcast.duration">
-      </input><br/>
+      <br/>
 
       <button ng-click="preview_start()">listen to start</button>
       <button ng-click="preview_end()">listen to end</button>
       <button ng-click="stop_sound()">stop playback</button>
 
-      URL:<br/>
-      <input ng-model="editing.podcast.url">
+      <br/>audio file:<br/>
+      <input ng-model="editing.podcast.url" readonly>
       </input><br/>
 
-      message:{{message}}<br/>
+      <span id="message">{{message}}</span><br/><br/>
 
 
       <button class='large-button' ng-click="save(editing.podcast);" > save </button>
-      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button>
+<!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
 
 
 
@@ -279,6 +290,8 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
           .then(function(response){
 
             $scope.plodcasts = [].concat(response.data);
+
+            
 
             $scope.status = 'select a plodcast';
 
@@ -354,7 +367,7 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
             apiService.updatePodcast($scope.editing.podcast)
                 .then(function(result){
 
-                  $scope.message = 'done updating podcast! Audio will be updated later'//result;
+                  $scope.message = 'done updating the podcast'//result;
 
                   $scope.load();
 
@@ -392,15 +405,19 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
     if(typeof($scope.sound) != 'undefined') {
       $scope.sound.destruct();
     }
-    sm.stopAll();
+//    sm.stopAll();
+
+    $scope.message = 'playing ...';
     $scope.sound = sm.createSound(
         angular.extend(basic_sound_options,{
           autoPlay:true,
           url:url,
           onfinish:function(){
+            $scope.message = '';
           },
+
           whileplaying: function() {
-            $scope.message = 'playing ... type: '+this.type;
+            $scope.message = 'playing ...';
             if (this.duration == 0){
               $scope.message = 'sorry, preview not available.';
             }
@@ -431,6 +448,8 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
 
   $scope.stop_sound = function(){
     sm.stopAll();
+
+    $scope.message = '';
   }
 
   });
