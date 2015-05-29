@@ -746,7 +746,7 @@ width:1200px;
       <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <center>{{podcast_status}}</center><br/><br/>
       To modify the episode timing, title, subtitle, or summary,
-      <a ng-href="podcasts.php?id={{$playsheet.show_id}}" target="_self">click here to visit your podcast editor page</a>
+      <a ng-href="podcasts.php?id={{playsheet.show_id}}" target="_self">click here to visit your podcast editor page</a>
       <h4>Tracklist:</h4>
       <p>
 
