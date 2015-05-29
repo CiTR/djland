@@ -95,10 +95,12 @@ if (permission_level() >= $djland_permission_levels['staff']){
 
 
 <div ng-app="djLand" id="mainleft" ng-cloak>
-
+<a href="http://l.h/djland-podcast/index.php?action=logout" target="_self">logout? click here</a>
   <div ng-controller="episodeList as list">
     <br/><br/>
     <p>{{status}}</p>
+    <p>
+      <button ng-click='deferred();'> defer me </button></p>
 
     <div >
 
@@ -185,7 +187,7 @@ if (permission_level() >= $djland_permission_levels['staff']){
 
       Start Time:
       [<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
-               ng-change="editing.podcast.date.setHours(editing.start_hour);"></select> :
+               ng-change="alerts();"></select> :
       <select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
               ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>]
       <select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
@@ -199,7 +201,8 @@ if (permission_level() >= $djland_permission_levels['staff']){
               ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>]
       <select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
               ng-change="editing.end_time.setSeconds(editing.end_second);"></select>]
-
+<br/>end h: {{editing.end_hour}}<br/>
+      end m: {{editing.end_minute}}<br/>
 
       Duration:<br/>
       <input ng-model="editing.podcast.duration">
@@ -253,6 +256,19 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
 
     $scope.editing  = false;
 
+    $scope.deferred = function(){
+      $scope.status = 'this will take a while...';
+      apiService.def()
+          .then(function(result){
+            $scope.status = 'done:'+result.data;
+          }.catch(function(result){
+                $scope.status = 'did not work';
+              }))
+    }
+
+  $scope.alerts = function(){
+    alert($scope.editing.start_hour);
+  }
     $scope.load = function(){
 
       apiService.getPlodcasts($location.search().id)
@@ -261,6 +277,7 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
             $scope.plodcasts = [].concat(response.data);
 
             $scope.status = 'select a plodcast';
+
 
           }).catch(function(response){
             $scope.status = response.data;

@@ -28,7 +28,10 @@ if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
 
 
 function make_audio($start, $end, $file, $tags = false){
-  global $archive_access_url, $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $ftp_port, $error;
+  global $archive_access_url,
+         $ftp_url, $ftp_user, $ftp_pass, $ftp_port,
+         $audio_path_local,
+         $error;
 
   if($end == '' || !$end || $end == 0 || !is_numeric($end)){
     $error .= 'end value "'.$end.'" is invalid';
@@ -102,19 +105,24 @@ function make_audio($start, $end, $file, $tags = false){
 //    rewind($fp);
 
     $temp_file = sys_get_temp_dir().'temp.mp3';
-    $num_bytes = file_put_contents($temp_file,$new_podcast_audio_file);
+
+    $file_handle = tmpfile();
+
+    $info = stream_get_meta_data($file_handle);
+
+    $num_bytes = fwrite($file_handle,$new_podcast_audio_file);//file_put_contents($temp_file,$new_podcast_audio_file);
 
     if ($num_bytes < 16){
-      $error .= 'Error writing file to temp '.$ftp_path.$file_name.' ('.$num_bytes.').  ';
+      $error .= 'Error writing file to temp: '.$temp_file.' ('.$num_bytes.' bytes written).  ';
     }
 
-    if($tags) write_tags($tags,$temp_file);
+    if($tags && $error == '') write_tags($tags,$temp_file);
 
 
-    if (!$error){
-      ftp_mkdir($ftp_connection, $ftp_path.$podcast_year);
-      ftp_fput($ftp_connection, $ftp_path.$podcast_year.'/'.$file_name, fopen($temp_file,'r'), FTP_BINARY);
-      ftp_chmod($ftp_connection,'444',$ftp_path.$podcast_year.'/'.$file_name);
+    if ($error == ''){
+      ftp_mkdir($ftp_connection, $audio_path_local.$podcast_year);
+      ftp_fput($ftp_connection, $audio_path_local.$podcast_year.'/'.$file_name, fopen($temp_file,'r'), FTP_BINARY);
+      ftp_chmod($ftp_connection,'444',$audio_path_local.$podcast_year.'/'.$file_name);
 
       ftp_close($ftp_connection);
 

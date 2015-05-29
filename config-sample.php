@@ -108,8 +108,15 @@ $ftp_url = 'ip address of drive';
 $ftp_user = 'username';
 $ftp_pass = 'password';
 $ftp_port = 21;
-$ftp_path_audio = 'path/to/audio/dir';
-$ftp_path_xml = 'path/to/xml/dir';
+
+
+$audio_path_online = 'http://mypodcast.com/audio/';
+$audio_path_local = '/var/www/audio/or/something/';
+
+$xml_path_online   = 'http://mypodcast.com/rss/';
+$xml_path_local   = '/var/www/xml/or/something/';
+
+
 
 
 $djland_permission_levels = array(

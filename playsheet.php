@@ -458,16 +458,16 @@ width:1200px;
       <div id="right">
         <div ng-controller="datepicker" >
         Start Time:
-        [<select ng-model="start_hour" ng-options="n for n in [] | range:0:24"
-                 ng-change="playsheet.start_time.setHours(start_hour);"></select> :
-        <select ng-model="start_minute" ng-options="n for n in [] | range:0:60"
-                ng-change="playsheet.start_time.setMinutes(start_minute);"></select>]
+        [<select ng-model="$parent.start_hour" ng-options="n for n in [] | range:0:24"
+                 ng-change="$parent.adjust_times();"></select> :
+        <select ng-model="$parent.start_minute" ng-options="n for n in [] | range:0:60"
+                ng-change="$parent.adjust_times();"></select>]
 
         End Time:
-        [<select ng-model="end_hour" ng-options="n for n in [] | range:0:24 "
-                 ng-change="playsheet.end_time.setHours(end_hour);"></select> :
-        <select ng-model="end_minute" ng-options="n for n in [] | range:0:60"
-                ng-change="playsheet.end_time.setMinutes(end_minute);"></select>]
+        [<select ng-model="$parent.end_hour" ng-options="n for n in [] | range:0:24 "
+                 ng-change="$parent.adjust_times();"></select> :
+        <select ng-model="$parent.end_minute" ng-options="n for n in [] | range:0:60"
+                ng-change="$parent.adjust_times();"></select>]
 
           <input class="date_picker" type="text" datepicker-popup="{{format}}"
                  ng-model="playsheet.start_time"  is-open="opened"
@@ -475,7 +475,12 @@ width:1200px;
                  ng-change="$parent.date_change();" />
           <br/>
           {{playsheet.start_time | date:'EEE, MMM d, y'}}
-        <button ng-click="open($event)"  >change date</button>
+        <button ng-click="open($event)"  >change date</button><br/>
+          START: {{playsheet.start_time | date:'medium'}}<br/>
+          END: {{playsheet.end_time | date:'medium'}}<br/>
+          DURATION:{{playsheet.podcast.duration / 60 / 60 | number:0}} hrs {{(playsheet.podcast.duration / 60) % 60 | number:0}} mins  ({{playsheet.podcast.duration}} seconds<br/>
+          end h:{{end_hour}}<br/>
+          end m:{{end_minute}}
         </div>
 
       </div>
@@ -631,7 +636,7 @@ width:1200px;
           <button ng-click="endPodcast()">End Podcast</button>
           <br/>
           active: <input ng-model="playsheet.podcast.active"><br/>
-          Title: <input ng-model="playsheet.podcast.title"><br/>
+          Title: <input ng-model="playsheet.podcast.title" required ng-change="isTheFormAcceptible()" placeholder="(required)"><br/>
           Subtitle: <input ng-model="playsheet.podcast.subtitle" ><br/>
           Summary: <br/><textarea ng-model="playsheet.podcast.summary" rows="20" cols="90"></textarea>
         </span>
@@ -643,10 +648,15 @@ width:1200px;
   <center>
           <button class="large-button" ng-click="submit()" ng-hide="submitting">save</button>
           <p ng-show="submitting">Submitting...</p>
-          <div class="blocker" ng-hide="songsComplete"> Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
-          <span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span> </div>
+          <div class="blocker" ng-hide="(songsComplete && formAcceptible)">
+            <span ng-show="!songsComplete">
+              Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
 
-        <br/>
+              <span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span>
+          </span>
+          <span ng-show="!formAcceptible">&nbsp;&nbsp;&nbsp;&nbsp;You did not set a podcast title (this is now required)</span>
+          </div>
+      <br/>
             <div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
         </center>
   </div>
@@ -736,7 +746,7 @@ width:1200px;
       <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <center>{{podcast_status}}</center><br/><br/>
       To modify the episode timing, title, subtitle, or summary,
-      <a ng-href="podcasts.php" target="_self">click here to visit your podcast editor page</a>
+      <a ng-href="podcasts.php?id={{$playsheet.show_id}}" target="_self">click here to visit your podcast editor page</a>
       <h4>Tracklist:</h4>
       <p>
 

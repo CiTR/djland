@@ -103,6 +103,10 @@ djland.factory('apiService', function ($http, $location) {
 
         logout: function(){
           return $http.post('')
+        },
+
+        def: function(){
+          return $http.post(API_URL_BASE + '/deferMe.php',{data: 'some data'});
         }
 
       };
@@ -278,4 +282,4 @@ djland.filter('pad', function () {
 });
 
 
-djland.value('MAX_PODCAST_DURATION_HOURS', 4);
+djland.value('MAX_PODCAST_DURATION_HOURS', 4.5);

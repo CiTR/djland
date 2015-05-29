@@ -90,7 +90,7 @@ if ($error == ''){
   $episodes = array();
   if ($result2 = mysqli_query($db, $query) ){
 
-    while($row = mysqli_fetch_array($result2)) {
+    while($row = mysqli_fetch_assoc($result2)) {
       $episodes []= $row;
     }
 
@@ -184,7 +184,7 @@ function make_podcast($channel,$episodes){
 
 
 function writeFile($local_path,$file_data, $file_name){
-  global $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $error, $ftp_port;
+  global $ftp_url, $ftp_user, $ftp_pass, $error, $ftp_port;
 
   $ftp_connection = ftp_connect($ftp_url, $ftp_port);
 
