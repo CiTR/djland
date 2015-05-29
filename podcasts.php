@@ -291,7 +291,7 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
 
             $scope.plodcasts = [].concat(response.data);
 
-            
+
 
             $scope.status = 'select a plodcast';
 
