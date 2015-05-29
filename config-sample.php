@@ -105,8 +105,9 @@ $archive_access_url = $archive_tool_url.
 // use this to put podcast audio, rss xml files on a network drive that provides FTP access
 
 $ftp_url = 'ip address of drive';
-$ftp_user = 'username';  $ftp_pass = 'password';
-//$ftp_user = 'root';  $ftp_pass = 'nas101.9';
+$ftp_user = 'username';
+$ftp_pass = 'password';
+$ftp_port = 21;
 $ftp_path_audio = 'path/to/audio/dir';
 $ftp_path_xml = 'path/to/xml/dir';
 

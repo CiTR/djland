@@ -184,9 +184,9 @@ function make_podcast($channel,$episodes){
 
 
 function writeFile($local_path,$file_data, $file_name){
-  global $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $error;
+  global $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $error, $ftp_port;
 
-  $ftp_connection = ftp_connect($ftp_url);
+  $ftp_connection = ftp_connect($ftp_url, $ftp_port);
 
   if(!$ftp_connection){
     $error .= 'cannot connect to ftp server. ';
