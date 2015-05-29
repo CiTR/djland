@@ -67,8 +67,19 @@ foreach($playlists as $i => $playlist){
 
     foreach($podcasts as $j => $podcast){
 
+      if (array_key_exists('duration', $podcast) &&
+          $podcast['duration'] == 0 &&
+          array_key_exists('end_time', $playlist)){
+
+        $start = strtotime($podcast['date']);
+        $end = strtotime($playlist['end_time'], $start);
+        $podcast['duration'] = $end - $start;
+      }
+
       if ($podcast['id'] == $podcast_id){
         $rawdata []= ['playlist' => $playlist, 'podcast' => $podcast];
+
+
       }
     }
 }
