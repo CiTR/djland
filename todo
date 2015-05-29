@@ -1,8 +1,6 @@
 TODO:
 
-Member Page:
-	-permissions
-		- Add permission grabber to member object
+Member Search:
 	-add in listener for saving comments
 
 Emails:
@@ -11,12 +9,8 @@ Emails:
 Report:
 	copy old code from membership-handler to new report handler and content in to new divs to show numbers
 
-Renew:
-	-Migrate to member class renew function
-
 General:	
 	-Update permission level to check for paid of this year
-	-Allow member creation, user creation via 'put' methods for respective form-handlers (remove membership_add_handler,membership_handler,membership_update_handler)
 	-move student_no-handler to member
 
 
