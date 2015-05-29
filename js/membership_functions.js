@@ -187,11 +187,11 @@ function updateMember(member,membership_year){
 }
 function loadMember(id){
 	$('#member_loading').show();
-	$('#member').hide();
+	$('#member_result').hide();
 	member = new Member(id);
 	$.when(member.info_callback,member.interest_callback).then(function(info,interests){
 		$('#member_loading').hide();
-		$('#member').show();
+		$('#member_result').show();
 		member._initInfo(info[0]);
 		member._initInterests(interests[0]);
 		member.displayInfo();

@@ -113,7 +113,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    				<h4>Edit Member</h4>
    			</div>
    			<div id='member_loading' class='col1'>Loading...</div>
-			<div id='member' class = 'container hidden'>
+			<div id='member_result' class = 'container hidden'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
 					<div class='col5' id='username' name='username'></div>

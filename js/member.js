@@ -140,7 +140,7 @@ Member.prototype = {
 	},
 	getPermissions:function(){
 		var permissions = {};
-		for(var level in this.permissions){
+		for(var level in permission_levels){ 
 			if(level != 'operator') permissions[level] = getCheckbox(level);
 		}
 		this.permissions = permissions;
