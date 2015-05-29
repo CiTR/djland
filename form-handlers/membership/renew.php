@@ -11,10 +11,17 @@ $request = $_SERVER['REQUEST_METHOD'];
 if( permission_level() >= $djland_permission_levels['member'] ) {
     switch($request){
         case "GET":
+            //Create Query
             $select_query = "SELECT membership_year FROM year_rollover WHERE id='1'";
+            
+            //Prepare Statement
             $statement = $pdo_db->prepare($select_query);
+           
+            //Try to execute statement
             try{
                 $statement->execute();
+
+                //Create object and bind result to 'year' index
                 $result = new stdClass();
                 $result->year = $statement->fetchColumn(0);
                 http_response_code(200);
@@ -26,9 +33,14 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
             break;
         case "POST":
             if(isset($_POST['member_id']) && isset($_POST['membership_year'])){
+                
+                //Create associative array from membership year object passed  
                 $membership_year = json_decode($_POST['membership_year'],true);
+                
+                //Create Query
                 $query = "INSERT INTO membership_years SET ";
-                $end = end(array_keys($membership_year));
+                $keys = array_keys($membership_year);
+                $end = end($keys);
                 foreach($membership_year as $key => $var){
                     //ignore primary keys id and membership_year
                     if($key != 'member_id') {
@@ -41,11 +53,17 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                 }
 
                 $query.=" WHERE member_id=:member_id";
+                
+                //Prepare Statement
                 $statement = $pdo_db->prepare($update_query);
 
+
+                //Bind variables to values in query
                 foreach($membership_year as $key => $value){
                         $statement->bindValue(":".$key,$membership_year[$key]);     
                 }
+
+                //Try to execute statement
                 try{
                     $statement->execute();
                     http_response_code(201);
@@ -73,14 +91,4 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
     http_response_code(401);
     echo json_encode("You do not have permission");
 }
-//POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access
-//GET Gets the current mandatory membership year
-else if(isset($_GET)) {
-   
-}else {
-    http_response_code(401);
-    echo json_encode("You do not have permission");
-}
-
-
 ?>

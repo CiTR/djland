@@ -125,11 +125,11 @@ function queryMembers(search_by,value,paid,year,order_by){
 }
 
 //Returns all membership years present for member id
-function queryMembershipYears(id){
+function queryMembershipYears(member_id){
     return $.ajax({
-		type:"POST",
+		type:"GET",
 		url: "form-handlers/membership/membership_years.php",
-		data: {"id":id},
+		data: {"member_id":member_id},
 		dataType: "json",
 		async: true
 		});	
@@ -139,7 +139,7 @@ function queryMembershipPriveleges(id){
 	assertTrue(id != null,"id is null");
 	var privileges = {"id":id}
 	$.ajax({
-		type:"POST",
+		type:"GET",
 		url: "form-handlers/membership/permission.php",
 		data: {"action" : 'get', "type" : 'permission',"value":value},
 		dataType: "json",
@@ -212,11 +212,11 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		});
 		
 		for(var member in data){
-			member_result.append("<tr id=row"+data[member].member_id+" class='member_row'></tr>");
+			member_result.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
 			
 			for(var item in data[member]){
-				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
+				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
 			}	
 			row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");

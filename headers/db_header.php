@@ -70,7 +70,16 @@ function mysqli_result_dep($res, $row, $field=0) {
 	    return $datarow[$field];
 	else 	return false;
 	        
-} 
+}
+function getContent(){
+   
+    if (0 === strlen(trim($content = file_get_contents('php://input'))))
+    {
+      $content = false;
+    }
+
+  return $content;
+}
 
 //END DB HEADER
 ?>

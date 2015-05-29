@@ -6,8 +6,11 @@ $(document).ready ( function() {
 	loadYearSelect();
 	displayMemberList();
 	loadMember(1);
+
 	add_handlers();	
 });
+
+window.setInterval(checkBlocking,1000);
 
 function getVal($varname){
 	$temp = $varname;
@@ -82,10 +85,10 @@ function add_handlers(){
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){
-					$.when(member.updateInfo(member.getInfoFromPage()),member.updateInterests(member.getInterestsFromPage())).then(function(d1,d2){
+					$.when(member.updateInfo(), member.updateInterests(), member.updatePermissions(), member.updatePassword()).then(function(d1,d2,d3){
 						alert('Successfully updated');
-					},function(e1,e2){
-						console.log('failed to update');
+					},function(e1,e2,e3){
+						
 					});
 				}
 				break;
@@ -122,19 +125,28 @@ function add_handlers(){
                 members_names.push( $(this).closest('td').siblings('.name').html() );
             }
         });
+
         var confirm_string = "Are you sure you want to delete these members forever?\n"+members_names.toString();
+        var requests = Array();
         if(confirm(confirm_string)){
-            $.ajax({
-                type:"POST",
-                url: "form-handlers/membership/delete.php",
-                data: {"ids" : JSON.stringify(members_to_delete)},
-                dataType: "json",
-                async: true
-            }).success(function(data){
-                alert("Successfully deleted: "+members_names.toString());
-            }).fail(function(data){
-                alert("Could not delete: "+members_names.toString()+"\n"+data[0]);
-            });
+        	for(var member in members_to_delete){
+	        	requests.push(
+	        		$.ajax({
+						type:"DELETE",
+		                url: "form-handlers/membership/member.php",
+		                data: {"member_id" : members_to_delete[member]},
+		                dataType: "json",
+		                async: true
+        			})
+        		);
+        	}
+
+	        $.when.apply($,requests).then(function(){
+	        	console.log(arguments);
+	        	alert("Successfully deleted: "+members_names.toString());
+	        },function(err){
+	        	 alert("Could not delete: "+members_names.toString()+"\n"+data[0]);
+	        });
         }
     });
 
@@ -211,6 +223,39 @@ function add_handlers(){
         $( "#from" ).datepicker( "option", "maxDate", selectedDate );
       }
     });
+
+    $('#student_no').blur(function(){
+		var student_no = getVal('student_no');
+		if(student_no != ""){
+			$.ajax({
+			type:"POST",
+			url: "form-handlers/student_no-handler.php",
+			data: {"student_no":student_no},
+			dataType: "json"
+		    }).success( function(data){
+		    	console.log('success');
+				if(data == true){
+					$('#student_no_ok').remove();
+					$('#student_no_check').append("<div id='student_no_ok'></div>");
+					$('#student_no_ok').text("This student number is already registered!");
+				}
+				else if(student_no.length< 8){
+					
+					$('#student_no_ok').remove();
+					$('#student_no_check').append("<div id='student_no_ok'></div>");
+					$('#student_no_ok').text("Student number must be 8 characters long.");
+				}
+				else{
+					$('#student_no_ok').remove();
+				}
+			}).fail( function(){
+				console.log('fail');
+				$('#student_no_ok').text('connection error');
+			
+			});
+		}
+		
+	});
 }
 
 function loadYearSelect(){
@@ -224,6 +269,42 @@ function loadYearSelect(){
 	});
 	
 }
+
+function checkBlocking(){
+		var allOkay = true;
+		$('.required').each( function(){
+			if( !$.trim( $(this).val() )){
+			allOkay=false;
+			console.log("a field is not filled out");
+			}
+		});
+	
+		if($('#username_ok').text() == 'Username taken'){
+			allOkay=false;
+			console.log("username not okay");
+		}
+		if($('#password_ok').text() == 'Passwords do not match' || $('#password_ok').text() == 'Password must be more than 4 characters'){
+			allOkay=false;
+			console.log("password not okay");
+		}
+		if(getVal('member_type')=='Student'){
+			if(!$.trim(getVal('student_no'))){
+				allOkay=false;
+			}
+			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
+				allOkay=false;
+			}
+		}
+		if (allOkay){
+		$('.member_submit[name="edit"]').attr('disabled',false);
+		$('.member_submit[name="edit"]').text("Submit");
+		$('.member_submit[name="edit"]').removeClass("red");
+		}else{
+			$('.member_submit[name="edit"]').attr('disabled',true);
+			$('.member_submit[name="edit"]').text("Form Not Complete");
+			$('.member_submit[name="edit"]').addClass("red");
+		}
+	}
 
 		/*case 'report':
 				switch(type){

@@ -106,12 +106,12 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					<tr id='headerrow' class='hidden'><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Staff Comments</th><th><button id='delete_button'>Delete</button></th></tr>
 				</table>
 			</div>
-				
-				
-				
    		</div>
 		<!-- Begin Tab 2 "member view" -->   		
    		<div id='view' class='membership clearfix'>
+   			<div class='col1'>
+   				<h4>Edit Member</h4>
+   			</div>
    			<div id='member_loading' class='col1'>Loading...</div>
 			<div id='member' class = 'container hidden'>
 				<div id='row1' class='containerrow'>
@@ -154,8 +154,8 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					<div class='col5'>Member Type*:</div>
 					
 					<div class='col4'><select id='is_new'>
-							<option value='Returning'>Returning</option>
-							<option value='New'>New</option>
+							<option value='0'>Returning</option>
+							<option value='1'>New</option>
 						</select>
 					
 						<select id='member_type'>
@@ -226,13 +226,17 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 
 				<hr>
 				<div class='containerrow'>
-					<div class='col6'>Interests for:</div><select id ='membership_year'></select> 
-					<div class='span3col4'>
+					<div class='col1'>
+						<div class='col6'>Interests for:</div><select id ='membership_year'></select> 
+					</div>
+
+					
+					<div class='col1'>
 						<?php 
 						foreach($djland_interests as $key=>$interest){ 
-							echo "<div class='col3'>{$key}";
+							echo "<div class='col3 text-right'>{$key}";
 							if($interest == 'other'){echo " <input id='{$interest}' placeholder='Enter interest'/>";}
-							echo "<input type='checkbox' id='{$interest}'/></div>";
+							else echo "<input type='checkbox' id='{$interest}'/></div>";
 							}?>
 					</div>
 				</div>
@@ -254,24 +258,46 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					<div class='col6'>Staff Comments:</div>
 					<textarea id='comments' placeholder='Enter a staff only comment' class='largeinput' rows='3'></textarea>
 				</div>
-				
-				<div class='contanerrow'>
-					<center>
-						<button id='submit_user' class='red' disabled='true'>Form Not Complete</button>
-						<br>* indicates a required field
-					</center>
+				<hr>
+				<div class='containerrow'>
+					<div class='col1 text-left'>Permission Levels:</div>
+					<?php
+						foreach($djland_permission_levels as $key=>$value){
+							if($key != 'operator') echo "<div class='col6'>{$key} <input type=checkbox id='$key'/></div>";
+						}
+					?>
 				</div>
-				<div class='contanerrow'>
-					<br/>
+				<hr>
+				<div class='containerrow'>
+					<div class='col1'>
+						Change Current Password: <input id='password' placeholder='Enter new password.'/> 
+					</div>
+				</div>
+
+				<hr>
+				<div class='containerrow'>
+					<div class='col1'>
+						<button name='edit' class='member_submit red' disabled='true'>Form Not Complete</button>
+					</div>	
+				</div>
+				<div class='containerrow'>
+					<div class='col1'>
+						*indicates a required field 
+					</div>
 				</div>
 			</div>	
    		</div>
+
    		<!-- Begin Tab 3 "report view" -->  
 		<div id='report' class='membership clearfix'>
-			<select id="year_select">
-				
-			</select>
-			<button class="member_submit" name="report">Get Yearly Report</button>
+			<div class='col1'>
+   				<h4>Yearly Report</h4>
+   			</div>
+			<div class='col1'>
+				<select id="year_select">
+				</select>
+				<button class="member_submit" name="report">Get Yearly Report</button>
+			</div>
    			<div id="membership_result">
    				<div class='col2'>
 	   				<h4>Members Registered this year</h4>
@@ -296,7 +322,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    		</div>
    		<!-- Begin Tab 4 "member admin" -->  
    		<div id='admin' class='membership clearfix'>
-   			<h4>Admin Panel</h4>
+   			<div class='col1'>
+   				<h4>Admin Panel</h4>
+   			</div>
 
    			<ul class="inner clean-list text-center">
 	            <li class="col4"><button id="year_rollover">Start new membership year</button></li>
@@ -309,7 +337,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
         <!-- Begin Tab 5 "email view" -->  
    		<?php endif; ?>
    		<div id='email' class='membership clearfix'>
-   			<h4>Email List</h4>
+   			<div class='col1'>
+   				<h4>Email List</h4>
+   			</div>	
    			<ul id='membership_header' name='email' class='clean-list inline-list'>
    				<li>Interested in:
    					<select>
