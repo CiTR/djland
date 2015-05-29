@@ -189,7 +189,7 @@ function writeFile($local_path,$file_data, $file_name){
   $ftp_connection = ftp_connect($ftp_url, $ftp_port);
 
   if(!$ftp_connection){
-    $error .= 'cannot connect to ftp server. ';
+    $error .= 'cannot connect to ftp server. ('.$ftp_url.', port '.$ftp_port.')';
   }
   if ($error==''){
     $logged_in = ftp_login($ftp_connection, $ftp_user ,$ftp_pass);

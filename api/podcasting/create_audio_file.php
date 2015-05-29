@@ -28,7 +28,7 @@ if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
 
 
 function make_audio($start, $end, $file, $tags = false){
-  global $archive_access_url, $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $error;
+  global $archive_access_url, $ftp_url, $ftp_user, $ftp_pass, $ftp_path, $ftp_port, $error;
 
   if($end == '' || !$end || $end == 0 || !is_numeric($end)){
     $error .= 'end value "'.$end.'" is invalid';
@@ -72,7 +72,7 @@ function make_audio($start, $end, $file, $tags = false){
       "&endTime=".
       $end_date;
 
-  $ftp_connection = ftp_connect($ftp_url);
+  $ftp_connection = ftp_connect($ftp_url, $ftp_port);
 
     if(!$ftp_connection){
       $error .= 'cannot connect to ftp server. ';
