@@ -347,7 +347,7 @@ if(is_member("addshow") ) {
 		if ($podcast_result = mysqli_query($db, $podcast_query)){
 
 			$podcast_data = mysqli_fetch_array($podcast_result);
-			print_r($podcast_data);
+
 		} else {
 
 		}

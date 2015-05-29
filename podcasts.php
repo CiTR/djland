@@ -85,13 +85,17 @@ error_reporting(E_ALL);
 
 
 
-
+/*
 if (permission_level() >= $djland_permission_levels['staff']){
 
   echo ' you are staff ';
 } else {
   echo ' not staff';
-} ?>
+}
+
+*/
+
+?>
 
 
 <div ng-app="djLand" id="mainleft" ng-cloak>

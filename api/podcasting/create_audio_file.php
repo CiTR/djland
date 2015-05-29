@@ -57,7 +57,7 @@ function make_audio($start, $end, $file, $tags = false){
   //$file_name = $file.'-'.$start.'-'.$end.'.mp3';
 
   $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
-  $podcast_year = date('Y',$start);
+  $podcast_year = 'test';//date('Y',$start);
   $podcast_day_month = date('Y-m-d',$start);
 
 
@@ -104,7 +104,7 @@ function make_audio($start, $end, $file, $tags = false){
 //    $num_bytes = fwrite($fp, $new_podcast_audio_file);
 //    rewind($fp);
 
-    $temp_file = sys_get_temp_dir().'temp.mp3';
+//    $temp_file = sys_get_temp_dir().'temp.mp3';
 
     $file_handle = tmpfile();
 
@@ -113,16 +113,19 @@ function make_audio($start, $end, $file, $tags = false){
     $num_bytes = fwrite($file_handle,$new_podcast_audio_file);//file_put_contents($temp_file,$new_podcast_audio_file);
 
     if ($num_bytes < 16){
-      $error .= 'Error writing file to temp: '.$temp_file.' ('.$num_bytes.' bytes written).  ';
+      $error .= 'Error writing file to temp:  ('.$num_bytes.' bytes written).  ';
     }
 
-    if($tags && $error == '') write_tags($tags,$temp_file);
+    if($tags && $error == '') {
+      rewind($file_handle);
+      write_tags($tags,$info['uri']);
+      rewind($file_handle);
+    }
 
 
     if ($error == ''){
       ftp_mkdir($ftp_connection, $audio_path_local.$podcast_year);
-      ftp_fput($ftp_connection, $audio_path_local.$podcast_year.'/'.$file_name, fopen($temp_file,'r'), FTP_BINARY);
-      ftp_chmod($ftp_connection,'444',$audio_path_local.$podcast_year.'/'.$file_name);
+      ftp_fput($ftp_connection, $audio_path_local.$podcast_year.'/'.$file_name, $file_handle, FTP_BINARY);
 
       ftp_close($ftp_connection);
 
