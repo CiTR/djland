@@ -2,8 +2,8 @@
 
 
 
-djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $interval, apiService, show_id, channel_id, MAX_PODCAST_DURATION_HOURS) {
-
+djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $interval, apiService, show_id, channel_id, MAX_PODCAST_DURATION_HOURS, adminStatus) {
+  $scope.adminStatus = adminStatus;
   var loadAds = function (time) {
     show_message('loading the ads...');
     apiService.getAdsFromBlock(time)
@@ -143,7 +143,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
         url:"",
         length:0,
         author:"CiTR",
-        active:"0",
+        active:"1",
         duration:"0",
         edit_date:""
       }
@@ -466,7 +466,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
     $scope.submit = function () {
 
-      if ($scope.songsComplete && $scope.formAcceptible) {
+      if ($scope.songsComplete && $scope.formAcceptible && ($scope.playsheet.end_time < $scope.currentTime)) {
         $scope.playsheet.status = 2;
 
         $scope.submitting = true;
@@ -546,6 +546,12 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       $scope.message.age += 1;
     }, 1000);
 
+    var time = $interval(function(){
+      $scope.currentTime = new Date();
+
+    },1000);
+
+
 
 
 
@@ -604,10 +610,13 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
             $scope.start_minute = $filter('pad')(start.getMinutes(),2);
 
             $scope.playsheet.podcast.date = start;
+
+            $scope.startClicked = true;
           });
     };
 
-
+    $scope.startClicked = false;
+    $scope.endClicked = false;
     $scope.endPodcast = function(){
 
       apiService.getArchiverTime()
@@ -623,6 +632,8 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
             $scope.playsheet.podcast.duration = duration;
 
             $scope.adjust_times();
+
+            $scope.endClicked = true;
           });
     };
 

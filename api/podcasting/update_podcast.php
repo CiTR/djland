@@ -13,6 +13,15 @@
 require_once('../api_common_private.php');
 require_once('create_audio_file.php');
 
+if(array_key_exists('updateAudio', $incoming_data)){
+  $update_audio = $incoming_data['updateAudio'];
+  unset($incoming_data['updateAudio']);
+
+} else {
+
+  $update_audio = true;
+}
+
 $episode = $incoming_data;
 
 if($episode['duration'] <= 0){
@@ -25,7 +34,6 @@ $start = strtotime($episode['date']);
 $end = $start + $episode['duration'];
 $slug = $channel_info['slug'];
 
-
 $episode_id = $episode['id'];
 unset($episode['id']);
 
@@ -34,56 +42,38 @@ if(array_key_exists('edit_date', $episode)){
 }
 // create audio file
 
-$episode_times_did_change = true;
-$episode_tags_did_change = false;
+if($update_audio){
 
-$existing_episode_data = singleRowByID('podcast_episodes',$episode_id);
-
-if ( $existing_episode_data['date'] != $episode['date'] ||
-    $existing_episode_data['duration'] != $episode['duration']){
-//  $episode_times_did_change = true;
-}
-
-if ( $existing_episode_data['title'] != $episode['title'] ){
-  $existing_tags_did_change = true;
-}
-
-if ( !strpos($existing_episode_data['url'],'.mp3') ){
-  // no mp3 file present, so try to make one
-  $episode_times_did_change = true;
-  $existing_tags_did_change = true;
-
-}
+  $tags = array(
+      'title'         => array($episode['title']),
+      'artist'        => array($channel_info['title']),
+      'album'         => array('CiTR Podcasts'),
+      'year'          => array(date('Y', strtotime($episode['date']))),
+      'genre'         => array('CiTR'),
+      'comment'       => array('citr.ca')
+  );
 
 
+  if($error == '') {
 
+      $audio_result = make_audio($start, $end, $slug.'-'.$episode_id.'-', $tags);
 
-$tags = array(
-    'title'         => array($episode['title']),
-    'artist'        => array($channel_info['title']),
-    'album'         => array('CiTR Podcasts'),
-    'year'          => array(date('Y', strtotime($episode['date']))),
-    'genre'         => array('CiTR'),
-    'comment'       => array('citr.ca')
-);
+    if($audio_result){
+      $episode['url'] = $audio_path_online . $audio_result['filename'];
+      $episode['length'] = $audio_result['size'];
+    }
 
-
-if($episode_times_did_change && $error == '') {
-
-    $result = make_audio($start, $end, $slug, $tags);
-
-  if($result){
-    $episode['url'] = $audio_path_online . $result['filename'];
-    $episode['length'] = $result['size'];
   }
 
+    $episode['date'] = date(DATE_RSS,strtotime($episode['date']));
+    update_row_in_table('podcast_episodes',$episode, $episode_id);
+
+
 }
 
-  $episode['date'] = date(DATE_RSS,strtotime($episode['date']));
-  update_row_in_table('podcast_episodes',$episode, $episode_id);
+
 
 if ($error == ''){
-
 
   $query = "SELECT * FROM podcast_episodes WHERE channel_id = ".$channel_info['id']." order by date asc";
 
@@ -108,6 +98,10 @@ if ($error == ''){
 if ($error == '') {
 
   $data = $result;
+
+  if($update_audio){
+    $data['new_audio_url'] = $audio_path_online . $audio_result['filename'];;
+  }
   finish();
 
 } else {
@@ -157,22 +151,24 @@ function make_podcast($channel,$episodes){
 
   foreach ($episodes as $i => $episode) {
 
-    foreach ($episode as $in => $val) {
-      $episode[$in] = htmlspecialchars(html_entity_decode($val));
+    if($episode['active']== 1) {
+
+      foreach ($episode as $in => $val) {
+        $episode[$in] = htmlspecialchars(html_entity_decode($val));
+      }
+
+      $xml .=
+          '<item>' .
+          '<title>' . $episode['title'] . '</title>' .
+          '<pubDate>' . $episode['date'] . '</pubDate>' .
+          '<description>' . $episode['summary'] . '</description>' .
+          '<itunes:subtitle>' . $episode['subtitle'] . '</itunes:subtitle>';
+      $xml .= ($episode['duration'] > 0) ? '<itunes:duration>' . $episode['duration'] . '</itunes:duration>' : '';
+
+      $xml .=
+          '<enclosure url="' . $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg"/>' .
+          '<guid isPermaLink="true">' . $episode['url'] . '</guid></item>';
     }
-
-    $xml .=
-        '<item>' .
-        '<title>' . $episode['title'] . '</title>' .
-        '<pubDate>' . $episode['date'] . '</pubDate>' .
-        '<description>' . $episode['summary'] . '</description>' .
-        '<itunes:subtitle>' . $episode['subtitle'] . '</itunes:subtitle>';
-    $xml .= ($episode['duration'] > 0) ? '<itunes:duration>' . $episode['duration'] . '</itunes:duration>' : '';
-
-    $xml .=
-        '<enclosure url="' . $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg"/>' .
-        '<guid isPermaLink="true">' . $episode['url'] . '</guid></item>';
-
 
   }
 

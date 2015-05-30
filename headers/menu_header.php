@@ -5,7 +5,7 @@ require_once('config.php');
 require_once('headers/function_header.php');
 
 function print_menu(){
-	global $enabled;
+	global $enabled, $djland_permission_levels;
 ?>
 	
 	<ul id=nav>
@@ -87,12 +87,21 @@ function print_menu(){
 					</ul>
 				</div>
 			</div>
+
 		</li>
+
+		<?php if (permission_level() >= $djland_permission_levels['staff']) : ?>
+			<li class="menu_right nodrop"><a href="podcasts.php"> Podcasts </a></li>
+		<?php endif; ?>
+
+
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 		<?php if(is_member("dj")) : ?>
 			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
 		<?php endif; ?>
 		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
+
+
 
 		<?php if(is_member("dj") && $user_show = users_show()) : ?>
 			<li class="menu_right nodrop"><a href="shows.php?action=edit&id=<?php echo $user_show;?>" > My Show </a></li>
@@ -124,3 +133,5 @@ require_once('config.php');
 //echo " (".get_time().")";
 
 ?>
+
+

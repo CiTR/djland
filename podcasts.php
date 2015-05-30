@@ -104,16 +104,21 @@ error_reporting(E_ALL);
 <?php print_menu();
 
 
+if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staff']){
 
-/*
-if (permission_level() >= $djland_permission_levels['staff']){
+  echo '<center> <br/><br/>since you are staff, you can edit any show\'s podcasts <br/><br/><br/> ';
 
-  echo ' you are staff ';
+  foreach($fshow_name as $i => $v){
+    echo '<a href=podcasts.php?id='.$i.'>'.$v.'</a><br/>';
+  }
+
 } else {
-  echo ' not staff';
+
 }
 
-*/
+
+
+
 
 ?>
 
@@ -140,7 +145,9 @@ if (permission_level() >= $djland_permission_levels['staff']){
 
 
       <p >
-        <span ng-show="plodcast.playlist.status == 1">( DRAFT )<br/></span>
+        <span ng-show="plodcast.playlist.status == 1"> ( DRAFT ) <br/></span>
+        <span ng-show="plodcast.podcast.active == 0"> ( INACTIVE ) <br/></span>
+
         <span class="title" >{{plodcast.podcast.title? plodcast.podcast.title : '(no title)'}}</span>
           <br/>
         <span class="subtitle" >{{plodcast.podcast.subtitle? plodcast.podcast.subtitle : '(no subtitle)'}}</span>
@@ -153,9 +160,9 @@ if (permission_level() >= $djland_permission_levels['staff']){
       <br/>
 
 
-
-<!--      <p class="tiny">PLAYLIST:{{plodcast.playlist}}<br>PODCAST:{{plodcast.podcast}}</p>-->
-
+<!--
+      <p class="tiny">PLAYLIST:{{plodcast.playlist}}<br>PODCAST:{{plodcast.podcast}}</p>
+-->
 
 
       <hr/>
@@ -192,42 +199,38 @@ if (permission_level() >= $djland_permission_levels['staff']){
 	<i>broadcasted on <br/></i><b>{{editing.podcast.date | date:'mediumDate'}}</b>
     <button ng-click="open($event)" ng-model="editing.podcast.date"  >change date</button>
     <br/>
-    <i> from: </i>
-    <b>{{editing.podcast.date | date: 'mediumTime' }}</b>
-<br/>
-    <i> to: </i>
-    <b>{{editing.end_time | date: 'mediumTime' }}</b>
+
 
   </div>
 
       Start Time:
-      [<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
-               ng-change="editing.podcast.date.setHours(editing.start_hour);"></select> :
-      <select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
-              ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>]
-      <select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
-              ng-change="editing.podcast.date.setSeconds(editing.start_second);"></select>]
+      h:<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
+               ng-change="editing.podcast.date.setHours(editing.start_hour);"></select>
+      m:<select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
+              ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>
+      s:<select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
+              ng-change="editing.podcast.date.setSeconds(editing.start_second);"></select>
 
 
       End Time:
-      [<select ng-model="editing.end_hour" ng-options="n for n in [] | range:0:24 "
-               ng-change="editing.end_time.setHours(editing.end_hour);"></select> :
-      <select ng-model="editing.end_minute" ng-options="n for n in [] | range:0:60"
-              ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>]
-      <select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
-              ng-change="editing.end_time.setSeconds(editing.end_second);"></select>]
+      h:<select ng-model="editing.end_hour" ng-options="n for n in [] | range:0:24 "
+               ng-change="editing.end_time.setHours(editing.end_hour);"></select>
+      m:<select ng-model="editing.end_minute" ng-options="n for n in [] | range:0:60"
+              ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>
+      s:<select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
+              ng-change="editing.end_time.setSeconds(editing.end_second);"></select>
 <br/>
       <br/>
       <i> duration: </i>
-      <b>{{editing.podcast.duration /60/60 | number:0 | pad:2 }}:{{(editing.podcast.duration /60)%60 | number:0 | pad:2}} , {{(editing.podcast.duration )%60 | pad:2 }}s</b>
+      <b>{{Math.floor( editing.podcast.duration /60/60 )  | number:0 }}:{{(editing.podcast.duration /60)%60 | number:0 | pad:2}} , {{(editing.podcast.duration )%60 | pad:2 }}s</b>
 
       <br/>
 
-      <button ng-click="preview_start()">listen to start</button>
-      <button ng-click="preview_end()">listen to end</button>
+      <button ng-click="preview_start()">preview start</button>
+      <button ng-click="preview_end()">preview end</button>
       <button ng-click="stop_sound()">stop playback</button>
 
-      <br/>audio file:<br/>
+      <br/><br/>audio file:<br/>
       <input ng-model="editing.podcast.url" readonly>
       </input><br/>
 
@@ -235,6 +238,7 @@ if (permission_level() >= $djland_permission_levels['staff']){
 
 
       <button class='large-button' ng-click="save(editing.podcast);" > save </button>
+      <button ng-show="{{adminStatus}}" ng-click="deactivate(editing.podcast);"> deactivate </button>
 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
 
 
@@ -263,10 +267,10 @@ if (permission_level() >= $djland_permission_levels['staff']){
 djland.value('timezone_offset',<?php echo date_offset_get(new DateTime); ?>); //timezone offset is in seconds
 
 
-djland.controller('episodeList', function($scope, apiService, $location, $filter, archiveService, MAX_PODCAST_DURATION_HOURS){
+djland.controller('episodeList', function($scope, apiService, $location, $filter, archiveService, MAX_PODCAST_DURATION_HOURS, adminStatus){
 // GET id FROM list provider...
+    $scope.Math = window.Math;
 
-    $scope.status = 'loading playlists and podcasts...';
     $scope.plodcasts = [];
 
     $scope.editing  = false;
@@ -284,25 +288,30 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
   $scope.alerts = function(){
     alert($scope.editing.start_hour);
   }
-    $scope.load = function(){
+    $scope.load = function() {
 
-      apiService.getPlodcasts($location.search().id)
-          .then(function(response){
+      if (show_id = $location.search().id){
 
-            $scope.plodcasts = [].concat(response.data);
+        $scope.status = 'loading playlists and podcasts...';
 
-            $scope.status = 'select a plodcast';
+        apiService.getPlodcasts(show_id)
+            .then(function (response) {
 
-          }).catch(function(response){
-            $scope.status = response.data;
-          });
+              $scope.plodcasts = [].concat(response.data);
+
+              $scope.status = 'select a plodcast';
+
+            }).catch(function (response) {
+              $scope.status = response.data;
+            });
+      }
 
     }
 
     $scope.load();
 
     $scope.edit_episode = function (plodcast){
-        $scope.editing = angular.copy(plodcast);
+      $scope.editing = angular.copy(plodcast);
       $scope.editing.podcast.date = new Date($scope.editing.podcast.date);
 
       $scope.editing.start_hour = $filter('pad')($scope.editing.podcast.date.getHours(),2);
@@ -319,6 +328,11 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
       }
 
       calculate_end_from_start_and_duration();
+
+      $scope.date_change = function(){
+        calculate_end_from_start_and_duration();
+
+      }
 
 
       var recalculate_duration = function(){
@@ -344,6 +358,7 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
         }
       }
 
+
       $scope.$watch('editing.podcast.date', function(){
         recalculate_duration();
       }, true);
@@ -353,20 +368,24 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
       }, true);
     }
 
-    $scope.save = function(data){
+    $scope.save = function(podcast){
 
       $scope.message = 'saving...';
 
-      apiService.saveEpisodeData(data)
+      apiService.saveEpisodeData(podcast)
           .then(function(response){
             $scope.message = 'saved. now updating your feed...';
 
-            apiService.updatePodcast($scope.editing.podcast)
+            apiService.updatePodcast($scope.editing.podcast,true)
                 .then(function(result){
 
                   $scope.message = 'done updating the podcast'//result;
 
+                  $scope.editing.podcast.url = result.data.new_audio_url;
                   $scope.load();
+
+
+
 
                 }).catch(function(result){
                   $scope.message = 'error:' + result.data;
@@ -377,8 +396,26 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
           });
     };
 
+  $scope.deactivate = function(podcast){
+    podcast.active = 0;
+
+    apiService.saveEpisodeData(podcast)
+        .then(function(response){
+          $scope.message = 'podcast deactivated. now updating feed...';
+
+          apiService.updatePodcast(podcast, false)
+              .then(function(){
+                $scope.message = ' feed updated ';
+
+                $scope.load();
+
+              })
+        })
+
+  }
 
 
+$scope.adminStatus = adminStatus;
 
 
 
@@ -463,6 +500,13 @@ djland.controller('episodeList', function($scope, apiService, $location, $filter
       }
     };
   })
+
+      <?php if (permission_level() >= $djland_permission_levels['staff']){
+        echo "djland.value('adminStatus',true);";
+      } else {
+        echo "djland.value('adminStatus',false);";
+
+      }?>
 
 
 </script>

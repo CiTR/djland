@@ -84,7 +84,10 @@ function is_paid(){
 
 
 function has_show_access($show_id){
-	global $db;
+	global $db,$djland_permission_levels;
+
+	if (permission_level() >= $djland_permission_levels['staff']) return true;
+
 	$query = 'SELECT member_id FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
 
 

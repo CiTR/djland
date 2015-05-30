@@ -97,7 +97,8 @@ djland.factory('apiService', function ($http, $location) {
         },
 
 
-        updatePodcast: function(data){
+        updatePodcast: function(data, updateAudio){
+          data.updateAudio = updateAudio;
           return $http.post(API_URL_BASE + '/podcasting/update_podcast.php', data)
         },
 

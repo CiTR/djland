@@ -114,6 +114,14 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
   }
 
+  .podcast_block_inner{
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+    display:block;
+    position:relative;
+  }
+
   .spokenword_block{
     min-height:400px;
   }
@@ -476,11 +484,13 @@ width:1200px;
           <br/>
           {{playsheet.start_time | date:'EEE, MMM d, y'}}
         <button ng-click="open($event)"  >change date</button><br/>
+<!--
           START: {{playsheet.start_time | date:'medium'}}<br/>
           END: {{playsheet.end_time | date:'medium'}}<br/>
           DURATION:{{playsheet.podcast.duration / 60 / 60 | number:0}} hrs {{(playsheet.podcast.duration / 60) % 60 | number:0}} mins  ({{playsheet.podcast.duration}} seconds<br/>
           end h:{{end_hour}}<br/>
-          end m:{{end_minute}}
+          end m:{{end_minute}}-->
+
         </div>
 
       </div>
@@ -609,38 +619,29 @@ width:1200px;
     </span>
     </div>
 
-      <div class="podcast_block" >
-        <h2>Podcast</h2>
-<center>
+      <div class="podcast_block" ng-show="playsheet.podcast.id == '0'">
+        <h2>Podcast Episode</h2>
 
-        <span >
-          <p>podcast for show feed: {{playsheet.podcast.channel_id}}.<br/>
-            audio file:
-            <a ng-show="playsheet.podcast.url" ng-href="{{playsheet.podcast.url}}" target="_blank">{{playsheet.podcast.url}}</a>
-            <span ng-show="!playsheet.podcast.url || playsheet.podcast.url == ''">not yet created</span>
-            <br/>
+        <span  class="podcast_block_inner" >
 
-            playsheet start time: {{playsheet.start_time | date: 'medium'}}<br/>
-            playsheet end time: {{playsheet.end_time | date: 'medium'}}
-          </p>
-
-          <hr/>
-
-            episode start time: {{playsheet.podcast.date | date: 'medium'}}<br/>
-            episode duration: {{playsheet.podcast.duration }}<br/><br/>
-
-
-          <hr/>
-          <button ng-click="startPodcast()">Start Podcast</button>
-
-          <button ng-click="endPodcast()">End Podcast</button>
+          <center>
+          <button ng-click="startPodcast()"  ng-hide="startClicked">Start Podcast at {{currentTime | date: 'mediumTime'}}</button>
+          <span ng-show="startClicked">
+            podcast start : {{playsheet.start_time | date: 'mediumTime'}}<br/></span>
+          <button ng-click="endPodcast()" ng-show="startClicked && !endClicked">End Podcast at {{currentTime | date: 'mediumTime'}}</button>
+          <span ng-show="endClicked">
+            podcast end : {{playsheet.end_time | date: 'mediumTime'}}<br/>
+            (podcast times can be adjusted from Podcasts page)<br/></span>
           <br/>
-          active: <input ng-model="playsheet.podcast.active"><br/>
-          Title: <input ng-model="playsheet.podcast.title" required ng-change="isTheFormAcceptible()" placeholder="(required)"><br/>
-          Subtitle: <input ng-model="playsheet.podcast.subtitle" ><br/>
-          Summary: <br/><textarea ng-model="playsheet.podcast.summary" rows="20" cols="90"></textarea>
+          </center>
+          <span ng-show="adminStatus"> podcast will be created:
+            <input type="checkbox" ng-model="playsheet.podcast.active" ng-true-value="'1'" ng-false-value="'0'"><br/>
+          </span>
+            <br/>
+            Title: <br/><input ng-model="playsheet.podcast.title" required ng-change="isTheFormAcceptible()" placeholder="(required)"><br/>
+          Subtitle: <br/><input ng-model="playsheet.podcast.subtitle" size="60" ><br/>
+          Summary: <br/><textarea ng-model="playsheet.podcast.summary" rows="10" cols="40"></textarea>
         </span>
-</center>
 </div>
 
 <div class="save_block">
@@ -648,13 +649,14 @@ width:1200px;
   <center>
           <button class="large-button" ng-click="submit()" ng-hide="submitting">save</button>
           <p ng-show="submitting">Submitting...</p>
-          <div class="blocker" ng-hide="(songsComplete && formAcceptible)">
+          <div class="blocker" ng-hide="(songsComplete && formAcceptible && (playsheet.end_time < currentTime) )">
             <span ng-show="!songsComplete">
               Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
 
               <span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span>
           </span>
           <span ng-show="!formAcceptible">&nbsp;&nbsp;&nbsp;&nbsp;You did not set a podcast title (this is now required)</span>
+          <span ng-show="!(playsheet.end_time < currentTime)"><br/>Cannot save a future podcast - please save a draft and submit later. </span>
           </div>
       <br/>
             <div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
@@ -665,12 +667,12 @@ width:1200px;
 
 
   <div class="floating">
-  <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "></input><br/>
+  <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "><br/>
   <input type="button"
          ng-click="saveDraft();"
          value="{{(saving)? 'saving....':'Save Draft'}}"
          ng-hide="playsheet.status == 2"
-      ></input>
+      >
 </div>
 
     <div id="sam_picker" ng-show="samVisible">
@@ -787,6 +789,15 @@ width:1200px;
 
   djland.value('show_id', <?php echo $show_id;?>);
   djland.value('channel_id', <?php echo $channel_id;?>);
+
+
+  <?php if (permission_level() >= $djland_permission_levels['staff']){
+    echo "djland.value('adminStatus',true);";
+  } else {
+    echo "djland.value('adminStatus',false);";
+
+  }?>
+
 
 </script>
 <script src="js/angular/playsheet.js"></script>

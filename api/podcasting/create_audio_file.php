@@ -30,7 +30,7 @@ if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
 function make_audio($start, $end, $file, $tags = false){
   global $archive_access_url,
          $ftp_url, $ftp_user, $ftp_pass, $ftp_port,
-         $audio_path_local,
+         $audio_path_local,$audio_path_online,
          $error;
 
   if($end == '' || !$end || $end == 0 || !is_numeric($end)){
@@ -57,7 +57,7 @@ function make_audio($start, $end, $file, $tags = false){
   //$file_name = $file.'-'.$start.'-'.$end.'.mp3';
 
   $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
-  $podcast_year = 'test';//date('Y',$start);
+  $podcast_year = date('Y',$start);
   $podcast_day_month = date('Y-m-d',$start);
 
 
@@ -132,7 +132,8 @@ function make_audio($start, $end, $file, $tags = false){
       return array('filename' => $podcast_year.'/'.$file_name,
               'size' => $num_bytes,
               'start' => $start_date,
-              'end' => $end_date);
+              'end' => $end_date,
+              'url' => $audio_path_online.$podcast_year.'/'.$file_name);
     } else {
 
       ftp_close($ftp_connection);
