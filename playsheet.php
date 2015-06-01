@@ -269,6 +269,7 @@ width:1200px;
     position: fixed;
     padding: 5px;
     height: 40px;
+    background-color:beige;
   }
 
   #sam_title span {
@@ -302,7 +303,6 @@ width:1200px;
   span.one_sam {
     overflow: hidden;
     display: inline-block;
-    width: 350px;
 
   }
 
@@ -403,6 +403,28 @@ width:1200px;
   .wrapper{
     margin-left:15px;
   }
+
+  .admin_picker{
+    position:absolute;
+    top:0px;
+
+    height:30%;
+    width:100%;
+    z-index:60;
+  }
+
+  .admin_picker span{
+    position: relative;
+    display:block;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:100px;
+    padding-top:50px;
+    text-align:center;
+    height:300px;
+    background-color: darkslategray;
+    width:100%;
+  }
 </style>
 
 </head>
@@ -414,9 +436,30 @@ width:1200px;
     $channel_id = users_channel();
 
     if ( is_numeric($show_id) && $show_id >0 ){
-      //good
-    } else {
+      // good, member owns a show
+    } else if (permission_level() >= $djland_permission_levels['staff']){
+      // ok user is admin.. fine, but you need to select a show...
 
+      if (array_key_exists('show',$_GET)){
+        $show_id = $_GET['show'];
+        $channel_id = users_channel($show_id);
+
+      } else {
+        $show_id = 0;
+        $channel_id = 0;
+        echo '<center><br/><br/><br/>';
+        echo 'please select a show to make a playsheet for:<br/><br/>';
+
+        foreach ($fshow_name as $i => $v) {
+          echo '<a href=playsheet.php?show=' . $i . '>' . $v . '</a><br/>';
+        }
+
+        return;
+
+      }
+
+    } else {
+      // not good
       echo "<br/><center>sorry, your user account doesn't own a show</center>";
       return;
     }
@@ -429,7 +472,7 @@ width:1200px;
 
   <div ng-controller="playsheetCtrl" >
 
-    <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}}</h2>
+    <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}} </h2>
 
 
     <div >
@@ -453,6 +496,7 @@ width:1200px;
           <button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1? '<-- load plays from this playsheet' : '...'}}</button>
           </span>
         <br/>Show: {{playsheet.show_id}}
+        <br/>
 
         <!--    <br/>Date:   <button >{{date | date: 'mediumDate'}}</button> (click to change)
             <br/>Time:   <span ng-controller="timepicker" class="timepicker">
@@ -619,7 +663,11 @@ width:1200px;
     </span>
     </div>
 
-      <div class="podcast_block" ng-show="playsheet.podcast.id == '0'">
+      <div class="podcast_block"
+           ng-show="playsheet.podcast.id == '0' ||
+            playsheet.podcast.id == 0 ||
+            playsheet.status == 1 ||
+            playsheet.status == '1'">
         <h2>Podcast Episode</h2>
 
         <span  class="podcast_block_inner" >
@@ -631,7 +679,8 @@ width:1200px;
           <button ng-click="endPodcast()" ng-show="startClicked && !endClicked">End Podcast at {{currentTime | date: 'mediumTime'}}</button>
           <span ng-show="endClicked">
             podcast end : {{playsheet.end_time | date: 'mediumTime'}}<br/>
-            (podcast times can be adjusted from Podcasts page)<br/></span>
+            <br/></span><br/>
+            (podcast times can also be adjusted from Podcasts page)
           <br/>
           </center>
           <span ng-show="adminStatus"> podcast will be created:
@@ -667,7 +716,7 @@ width:1200px;
 
 
   <div class="floating">
-  <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "><br/>
+  <input type="button" ng-click="samVisible = !samVisible;" value=" SAM "><br/><br/>
   <input type="button"
          ng-click="saveDraft();"
          value="{{(saving)? 'saving....':'Save Draft'}}"
@@ -787,16 +836,24 @@ width:1200px;
 
 <script type="text/javascript">
 
-  djland.value('show_id', <?php echo $show_id;?>);
-  djland.value('channel_id', <?php echo $channel_id;?>);
 
+  <?php
 
-  <?php if (permission_level() >= $djland_permission_levels['staff']){
-    echo "djland.value('adminStatus',true);";
-  } else {
-    echo "djland.value('adminStatus',false);";
+      if (permission_level() >= $djland_permission_levels['staff']){
+        // ADMIN
 
-  }?>
+        echo "djland.value('adminStatus',true);";
+
+      } else {
+        // REGULAR DJ
+
+        echo "djland.value('adminStatus',false);";
+        }
+
+      echo "  djland.value('show_id', ".$show_id.");".
+              "djland.value('channel_id', ".$channel_id.");";
+
+  ?>
 
 
 </script>

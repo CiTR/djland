@@ -116,9 +116,13 @@ function users_show(){
 	}
 }
 
-function users_channel(){
+function users_channel($show = false){
 	global $db;
-	if ($show_id = users_show()){
+	if ($show_id = users_show() || is_numeric($show)){
+
+		if(is_numeric($show)) {$show_id = $show;}
+		else {$show_id = users_show();}
+
 		$query = 'SELECT podcast_channel_id FROM shows WHERE id='.$show_id;
 
 		if ( $result = mysqli_query($db, $query)) {

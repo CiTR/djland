@@ -64,7 +64,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
             init();
 
-            $scope.message += '...done!';
+            $scope.message.text += '...done!';
             $scope.message.age = 5;
 
           });
@@ -286,7 +286,10 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     };
 
     $scope.add = function (id) {
-      $scope.playsheet.plays.splice(id + 1, 0, angular.copy(entry_template));
+      var newRow = angular.copy(entry_template);
+      newRow.crtc_category = $scope.playsheet.crtc;
+      newRow.lang = $scope.playsheet.lang;
+      $scope.playsheet.plays.splice(id + 1, 0, newRow);
 
       for (var i = 0; i < $scope.playsheet.plays.length; i++) {
         $scope.playsheet.plays[i].id = i;
@@ -353,6 +356,10 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       djland_entry.insert_song_start_minute = $filter('pad')(sam_play.minute, 2);
       djland_entry.insert_song_length_minute = $filter('pad')(sam_play.durMin, 2);
       djland_entry.insert_song_length_second = $filter('pad')(sam_play.durSec, 2);
+
+
+      djland_entry.crtc_category = $scope.playsheet.crtc;
+      djland_entry.lang = $scope.playsheet.lang;
 
       return djland_entry;
     };
