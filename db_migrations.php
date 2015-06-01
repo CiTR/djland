@@ -71,14 +71,16 @@ $queries = array(
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
                                   ADD PRIMARY KEY (`id`);',
-    'edit membership permissions' => "ALTER TABLE `group_members`
+  ' remove unnecessary permissions' => "ALTER TABLE `group_members`
                                     DROP COLUMN `editlibrary`,
                                     DROP COLUMN `membership`,
                                     DROP COLUMN `library`,
                                     DROP COLUMN `editdj`,
                                     DROP COLUMN `addshow`,
-                                    DROP COLUMN `adduser`,
-                                    ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`,
+                                    DROP COLUMN `adduser`",
+    'add staff to permissions' => "ALTER TABLE `group_members`
+                                    ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`",
+    'edit more of the permissions' => "ALTER TABLE `group_members`
                                     ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
                                     ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
                                     CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
@@ -90,9 +92,6 @@ $queries = array(
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
         ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
-
-
-
 
 
 
