@@ -20,16 +20,16 @@
         <script type='text/javascript' src='js/membership_functions.js'></script>
 		<script src="js/member_settings.js"></script>
 	</head>
-	<body>
+	<body class='wallpaper'>
 		<?php 
 		print_menu();
 		?>
-		<div class='membership clearfix'>
+		<div class='membership grey clearfix'>
 			<h1 id="title"> CiTR Member Settings </h1>
             <h4 id="subtitle"></h4>
-			<div class="col1"><button id="renew">Renew Membership</button></div>
+			<div class="col1"><button id="renew">Renew Membership Form</button></div>
    			<div id='member_loading' class='col1'>Loading...</div>
-			<div id='member' class = 'container hidden'>
+			<div id='member_result' class = 'container hidden'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
 					<div class='col5' id='username' name='username'></div>

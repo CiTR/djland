@@ -39,7 +39,7 @@ background-color: lime;
 </style>
  
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php
 

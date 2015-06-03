@@ -66,11 +66,10 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     }
                     
                 }
-                $query.=" WHERE userid=(SELECT u.userid as userid FROM user AS u INNER JOIN membership AS m ON m.id = u.member_id WHERE m.id=:member_id)";
+                $query.=" WHERE userid = (SELECT u.userid FROM user AS u INNER JOIN membership AS m ON m.id = u.member_id WHERE m.id=:member_id LIMIT 1)";
                 
                 //Prepare statement
                 $statement = $pdo_db->prepare($query);
-
                 //Bind variables to values in query
                 $statement->bindValue(':member_id', $_POST['member_id']);
                 foreach($permissions as $level=>$value){

@@ -29,8 +29,8 @@ function getSelect($id){
 		return null;
 	}	
 }
-function getCheckbox($id){
-	var checkbox = $id;
+function getCheckbox(id){
+	var checkbox = id;
 	if($('#'+checkbox).prop('checked')){
 		return 1;
 	}
@@ -39,13 +39,14 @@ function getCheckbox($id){
 	}
 }
 function setCheckbox(value,id){
-	$target = $('#'+id);
-	if(value == true){
-		$target.prop('checked',true);
+	if(value == '1'){
+		$('#'+id).prop('checked',true);
 	}else{
-		$target.prop('checked',false);
+		$('#'+id).prop('checked',false);
 	}
-}
+
+	
+}	
 function setText(value,id){
 	$target = $('#'+id);
 	assertTrue($target != null);
@@ -151,40 +152,20 @@ function queryMembershipPriveleges(id){
 			
 	});
 }
-
-
-
-function renewMember(member,membership_year){
-    $.when(updateMemberInfo(member),renewMembership(membership_year)).then(
-        function(data,data2){
-
-        },
-        function(error1,error2){
-
-        })
+function loadYearSelect(){
+	var years = queryMembershipYears();
+	$.when(years).then(function(data){
+		$('.year_select').each(function(element){
+			for(var i=0; i<data['years'].length; i++){
+				$(this).append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
+			}
+		});
+	},function(err){
+		console.log("failed to load years");
+	});	
+	return years;
 }
 
-function updateMember(member,membership_year){
-	$info = updateMemberInfo(member);
-	$interests = updateMemberInterests(membership_year);
-	$.when(updateMemberInfo(member),updateMemberInterests(membership_year)).then(function(data,data2){
-		console.log("successfully updated: "+JSON.stringify(data )+ "," +JSON.stringify(data2));
-		alert("Successfully updated!");
-		window.location.href = "main.php";
-	},function(error1,error2){
-		var data = error1 + error2;
-		$.ajax({
-			type:"POST",
-			url: "form-handlers/log_handler.php",
-			data: {"data":data },
-			dataType: "json"
-			}).success(function(reply) {
-				alert(data[1] + "Please contact Technical Services! This error has been logged.");
-			}).fail(function(reply){
-				alert(data[1] + "Please contact Technical Services! This error could not be logged. :(");
-			});
-	});
-}
 function loadMember(id){
 	$('#member_loading').show();
 	$('#member_result').hide();
@@ -220,8 +201,61 @@ function displayMemberList(search_by,value,paid,year,order_by){
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
 			}	
 			row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
+			row.append("<div class='check hidden'>&#x274F;</div>");
 		}	
 	});	
+}
+
+function saveComments(){
+	var comments = {};
+
+	$('.staff_comment.updated').each(function(element){
+		var id = ($(this).attr('id').toString().replace('comment',''));
+		var comment = ($(this).val());
+		comments[id] = {'id':id,'comments':comment};
+		$(this).removeClass('updated');
+	});
+	console.log(comments);
+
+	var requests = Array();
+	for(var comment in comments){
+    	requests.push(
+    		$.ajax({
+				type:"POST",
+                url: "form-handlers/membership/member.php",
+                data: {"member_id" : comment, "member": JSON.stringify(comments[comment])},
+                dataType: "json",
+                async: true
+			})
+		);
+	}
+
+    $.when.apply($,requests).then(function(){
+    	console.log(arguments);
+    	alert("Successfully updated comments for "+comments.toString());
+    },function(err){
+    	 alert("Could not delete: "+comments.toString()+"\n"+data[0]);
+    });
+
+}
+
+function yearlyReport(year_callback){
+	$.when(year_callback).then(function(){
+		var year =	$('.year_select[name="report"]').val();
+		var ajax = $.ajax({
+				type:"GET",
+                url: "form-handlers/membership/report.php",
+                data: {"year" : year},
+                dataType: "json",
+                async: true
+			}).success(function(data){
+				console.log(data);
+				for(var item in data){
+					setText(data[item],item);
+				}
+			});
+
+	});
 }
 
 

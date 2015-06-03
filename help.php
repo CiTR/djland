@@ -128,7 +128,7 @@ $numObjects = sizeOf($data);
 
 
 
-print("<body>");
+print("<body class='wallpaper'>");
 print("<div id='wrapper'>");
 
 print("<h1><center>DJLand Help</center></h1>");

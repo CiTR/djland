@@ -47,7 +47,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
   });
   </script>
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php
 

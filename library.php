@@ -17,7 +17,7 @@ echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"><
 
   
   
-echo "</head><body>";
+echo "</head><body class='wallpaper'>";
 
 print_menu();
 

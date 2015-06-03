@@ -3,62 +3,66 @@ window.myNameSpace = window.myNameSpace || { };
 	
 //PAGE CREATION
 $(document).ready ( function() {
-	loadYearSelect();
+	var year_callback = loadYearSelect();
 	displayMemberList();
 	loadMember(1);
 
 	add_handlers();	
+	yearlyReport(year_callback);
 });
 
 window.setInterval(checkBlocking,1000);
 
-function getVal($varname){
-	$temp = $varname;
-	if( $('#'+$temp).val()!=null){
-		return $('#'+$temp).val();
-	}
-	else{
-		return null;
-	}
-}
-function getText($varname){
-	$temp = $varname;
-	if( $('#'+$temp).text()!=null){
-		return $('#'+$temp).text();
-	}
-	else{
-		return null;
-	}
-}
-function getSelect($id){
-	var selects;
-	if(document.getElementById($id)!=null){
-		selects = document.getElementById($id);
-		var selectedValue = selects.options[selects.selectedIndex].value;
-		return selectedValue;
-	}else{
-		return null;
-	}	
-}
-function getCheckbox($id){
-	var checkbox = $id;
-	if($('#'+checkbox).prop('checked')){
-		return 1;
-	}
-	else{
-		return 0;
-	}
-}
-
 function add_handlers(){
-	
+
+	$('#print_friendly').on('click',function(element){
+		if(!$(this).hasClass('print_friendly')){
+			$(this).text('Normal View');
+			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').hide();
+			
+			$('body').removeClass('wallpaper');
+			$('.membership').removeClass('grey');
+			//make printer friendly
+			$('.staff_comment, .delete_member').each(function(element){
+				$(this).hide();
+			});
+
+			$('.check').each(function(element){
+				$(this).removeClass('hidden');
+			});
+			
+
+			//$('#search').addClass('inline_block');
+			$('#membership_result').removeClass('overflow_auto').removeClass('height_cap').addClass('overflow_visible');
+		}else{
+			//return to normal
+			$(this).text('Print View');
+			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').show();
+		
+			
+			$('body').addClass('wallpaper');
+			$('.membership').addClass('grey');
+
+			$('.staff_comment, .delete_member').each(function(element){
+				$(this).show();
+			});
+			$('.check').each(function(element){
+				$(this).addClass('hidden');
+			});
+			//$('#search').removeClass('inline_block');
+			$('#membership_result').removeClass('overflow_visible').addClass('height_cap').addClass('overflow_auto');
+		}
+		$(this).toggleClass('print_friendly');
+		console.log("Clicked");
+	});
+
 	//CHANGING TABS
 	$('#tab-nav').off('click','.member_action').on('click','.member_action', function(e){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
 		$('.membership').hide();
 		$('.membership#'+$(this).attr('name')).show();
-	})
+	});
 	//Listener for viewing individual members from clicking on their row
     $('#search').off('click','.member_row_element').on('click','.member_row_element',function(e){
         $('.member_action').attr('class','nodrop inactive-tab member_action');
@@ -67,6 +71,14 @@ function add_handlers(){
 		$('.membership').hide();
 		$('.membership#view').show();
     });
+
+    $('#membership_table').off('keyup','.staff_comment').on('keyup','.staff_comment',function(element){
+    	$(this).addClass('updated');
+    });
+
+    $('#search').off('click','#save_comments').on('click','#save_comments',function(element){
+    	saveComments();
+    });	
 
 	
 	//CLICKING A PAGE SUBMISSION BUTTON
@@ -81,19 +93,23 @@ function add_handlers(){
 					}
 				});
 				console.log(search_value);
-				displayMemberList( getVal('search_by'), search_value, getVal('paid_status'), getVal('year_select'), getVal('order_by'));
+				displayMemberList( getVal('search_by'), search_value, getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){
 					$.when(member.updateInfo(), member.updateInterests(), member.updatePermissions(), member.updatePassword()).then(function(d1,d2,d3){
 						alert('Successfully updated');
+						$('.member_action').attr('class','nodrop inactive-tab member_action');
+						$(".member_action[name=search]").attr('class','nodrop active-tab member_action');
+						$('.membership').hide();
+						$('.membership#search').show();
 					},function(e1,e2,e3){
 						
 					});
 				}
 				break;
 			case 'report':
-				manage_members(action,'generate');
+				yearlyReport();
 				break;
 			case 'mail':
 				var value = getVal('search_value');
@@ -258,17 +274,7 @@ function add_handlers(){
 	});
 }
 
-function loadYearSelect(){
-	var select = $('#year_select');
-	$.when(queryMembershipYears()).then(function(data){
-		for(var i=0; i<data['years'].length; i++){
-		select.append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
-		}
-	},function(err){
-		console.log("failed to load years");
-	});
-	
-}
+
 
 function checkBlocking(){
 		var allOkay = true;

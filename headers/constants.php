@@ -2,7 +2,7 @@
 	session_start();
 	require_once("security_header.php");
 	$constants = new StdClass();
-	$constants->permissions = $djland_permission_levels;
+	$constants->permission_levels = $djland_permission_levels;
 	$constants->interests = $djland_interests;
 	$constants->member_types = $djland_member_types;
 	$constants->faculties = $djland_faculties;

@@ -1,10 +1,22 @@
 /*PLAYSHEET TEST */
 body { 
-background-color: #3434A4;
-background-image: url('../images/wallpaper.jpg');
 background-repeat: repeat;
 font-family: Helvetica,Arial;
-color:white;
+
+}
+.lightblue{
+	background-color: #3434A4;
+}
+.grey{
+	background-color: grey;
+}
+.white{
+	background-color: white;
+}
+
+.wallpaper{
+	background-image: url('../images/wallpaper.jpg');
+	color:white;
 }
 ul{
     padding:0px;
@@ -88,6 +100,7 @@ input, select, textarea, option{
 .wrapper:after{
     background-color: grey;
 }
+
 .clean-list{
     list-style: none;
 }
@@ -560,16 +573,20 @@ button#submit_user.red{
 	overflow:visible;
 	margin-bottom:2px;
 }
+#print_friendly{
+	position:absolute;
+	right:0px;
+	top:80px;
+}
 .membership{
 	width:1024px;
-	background-color: grey;
     margin-left: auto;
     margin-right: auto;
     margin-top: -2px;
 	z-index: 3;
 	margin-bottom: 15px;
-	padding-bottom:15px;
 }
+
 .membership ul{
 	background-color:inherit;
 }
@@ -592,13 +609,28 @@ button#submit_user.red{
 	display:inline-block;
 }
 #membership_result{
+	float:left;
 	width:100%;
-	overflow:auto; 
+ 	background:inherit;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
 	margin-bottom:10px;
-	max-height:680px;
+}
+.height_cap{
+	max-height:80%;
+}
+.overflow_hidden{
+	overflow:hidden;
+}
+.overflow_show{
+	overflow:visible;
+}
+.overflow_auto{
+	overflow:auto;
+}
+.inline_block{
+	display:inline-block;
 }
 #member_password_change{
 	padding-bottom:10px;
@@ -625,6 +657,9 @@ button#submit_user.red{
 }
 .staff_comment{
 	width:250px;
+}
+.report_row:hover>div{
+	background-color:blue;
 }
 .member_row:hover{
 	cursor: pointer; cursor: hand;

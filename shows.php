@@ -99,7 +99,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
-	echo "</head><body>";
+	echo "</head><body class='wallpaper'>";
 	print_menu();
 }
 
@@ -360,7 +360,7 @@ if(is_member("addshow") ) {
 		output += '<span class=\"controls\"><button class=\"minus\" type=\"button\" onclick=\"minusSocialRow()\">-</button><button class=\"plus\" type=\"button\" onclick=\"addSocialRow()\">+</button></span></div>';
 		return output;}";
 		echo '</script>';
-		echo "</head><body>";
+		echo "</head><body class='wallpaper'>";
 		print_menu();
 		// End of head
 

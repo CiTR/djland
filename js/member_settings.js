@@ -49,7 +49,7 @@ function addListeners() {
         if ($(this).text() == 'Renew') {
             member.renew();
         } else {
-            updateMember(getMemberInfoFromPage(), getMemberInterestsFromPage());
+            updateMember(member.getInfo(), member.getInterests());
         }
 
     });

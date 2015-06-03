@@ -9,7 +9,7 @@ function admin_menu()
 {
     global $djland_permission_levels;
     if (permission_level() >= $djland_permission_levels['administrator']) : ?>
-        <ul id="nav-admin" class="nav mini">
+        <ul id="admin-nav" class="nav mini">
             <li class="nodrop"><a href="../admin.php">Membership Admin</a></li>
             <li class="nodrop"><a href="data_structures">Data Structures</a></li>
         </ul>
@@ -19,7 +19,7 @@ function admin_menu()
 
 function print_menu(){
 	global $enabled,$djland_permission_levels;
-    admin_menu();
+    //admin_menu();
 ?>
 	
 	<ul id=nav>

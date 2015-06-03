@@ -17,7 +17,17 @@ if( permission_level() >= $djland_permission_levels['staff']) {
         $query .= " WHERE";
         switch($_GET['search_by']){
             case 'name':
-                $query.=" m.lastname LIKE :value OR m.firstname LIKE :value";
+                $keywords = explode(" ",$_GET['value']);
+                $size = sizeof($keywords);
+                if($size == 2){
+                    $query.=" m.firstname LIKE :value0 AND m.lastname LIKE :value1";
+                }else{
+                    for($i = 0; $i < $size; $i++){
+                        if($i>0) $query.= " OR";
+                        $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
+                    }   
+                }
+               
                 break;
             case 'interest':
                 $query.=" :value='1'";
@@ -51,10 +61,12 @@ if( permission_level() >= $djland_permission_levels['staff']) {
     $statement = $pdo_db->prepare($query);
     //Binding Variables
     if(isset($_GET['search_by']) && isset($_GET['value'])){
-        $statement->bindValue(':search_by', $_GET['search_by']);
         switch($_GET['search_by']){
             case 'name':
-               $statement->bindValue(':value', "%".$_GET['value']."%");
+                $size = sizeof($keywords);
+                for($i = 0; $i<$size; $i++){
+                    $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+                }
                 break;
             case 'interest':
                 $statement->bindValue(':value', "my.".$_GET['value']);
@@ -73,7 +85,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
         $statement->bindValue(':value', $_GET['paid']);
     }
     if(isset($_GET['order_by'])){
-        $statement->bindValue(':order_by', "m.".$_GET['order_by']);
+                $statement->bindValue(':order_by', "m.".$_GET['order_by']);
     }
     try {
         http_response_code(200);

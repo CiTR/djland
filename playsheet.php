@@ -63,7 +63,7 @@ if (isset($_POST['numberOfRows'])) {
 
   </head>
 
-  <body>
+  <body class='wallpaper'>
     <?php
 
     //

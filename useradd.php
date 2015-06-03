@@ -10,7 +10,7 @@ require_once("headers/password.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
-printf("<title>DJ LAND | users</title></head><body>");
+printf("<title>DJ LAND | users</title></head><body class='wallpaper'>");
 
 print_menu();
 

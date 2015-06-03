@@ -1230,7 +1230,7 @@ function getNgAttribute(element, ngAttr) {
  *
  * Use this directive to **auto-bootstrap** an AngularJS application. The `ngApp` directive
  * designates the **root element** of the application and is typically placed near the root element
- * of the page - e.g. on the `<body>` or `<html>` tags.
+ * of the page - e.g. on the `<body class='wallpaper'>` or `<html>` tags.
  *
  * Only one AngularJS application can be auto-bootstrapped per HTML document. The first `ngApp`
  * found in the document will be used to define the root element to auto-bootstrap as an
@@ -1388,7 +1388,7 @@ function angularInit(element, bootstrap) {
  * ```html
  * <!doctype html>
  * <html>
- * <body>
+ * <body class='wallpaper'>
  * <div ng-controller="WelcomeController">
  *   {{greeting}}
  * </div>
@@ -21041,7 +21041,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  * displayed by the browser in its raw (uncompiled) form while your application is loading. Use this
  * directive to avoid the undesirable flicker effect caused by the html template display.
  *
- * The directive can be applied to the `<body>` element, but the preferred usage is to apply
+ * The directive can be applied to the `<body class='wallpaper'>` element, but the preferred usage is to apply
  * multiple `ngCloak` directives to small portions of the page to permit progressive rendering
  * of the browser view.
  *

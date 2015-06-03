@@ -139,11 +139,16 @@ Member.prototype = {
 		this.membership_years[membership_year] = my;
 	},
 	getPermissions:function(){
+
 		var permissions = {};
 		for(var level in permission_levels){ 
-			if(level != 'operator') permissions[level] = getCheckbox(level);
+			if(level != 'operator') permissions[level] = getCheckbox('level_'+level);
 		}
 		this.permissions = permissions;
+		console.log("NEW=");
+		console.log(permissions);
+		console.log("AFTER=");
+		console.log(this.permissions);
 	},
 	displayInfo:function(request){
 		_this = this;
@@ -176,7 +181,10 @@ Member.prototype = {
 			setVal(this['member_info'].secondary_phone,'secondary_phone');
 			setVal(this['member_info'].about,'about');
 			setVal(this['member_info'].skills,'skills');
-			setVal(this.exposure,'exposure');
+			setVal(this['member_info'].exposure,'exposure');
+			if($('#comments').length > 0){
+				setVal(this['member_info'].comments,'comments');
+			}
 		}else{
 			$.when(request).then(function(data){
 				_this.displayInfo();
@@ -192,34 +200,24 @@ Member.prototype = {
 			break;
 			}
 		}
+
 		m=this.membership_years[year];
+		
 		setVal(year,'membership_year');
-		setCheckbox(m.music,'music');
-		setCheckbox(m.discorder,'discorder');
-		setCheckbox(m.discorder_2,'discorder_2');
-		setCheckbox(m.dj,'dj');
-		setCheckbox(m.show_hosting,'show_hosting');
-		setCheckbox(m.sports,'sports');
-		setCheckbox(m.news,'news');
-		setCheckbox(m.arts,'arts');
-		setCheckbox(m.live_broadcast,'live_broadcast');
-		setCheckbox(m.tech,'tech');
-		setCheckbox(m.programming_committee,'programming_committee');
-		setCheckbox(m.ads_psa,'ads_psa');
-		setCheckbox(m.promotions_outreach,'promos');
-		setCheckbox(m.photography,'photography');
-		setCheckbox(m.digital_library,'digital_library');
-		setCheckbox(m.tabling,'tabling');
+		for(var interest in interests){
+			if(interests[interest] != 'other' && interests[interest] != 'membership_year');
+			setCheckbox(m[interests[interest]],interests[interest]);
+		}
 		setVal(m.other,'other');
 	},displayPermissions:function(){
-		for(var level in this.permissions){
-			setCheckbox(this.permissions[level],level);
+		for(var level in permission_levels){
+			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);
 		}
 
 	},renew:function(){
 		$_this = this;
         if(!this.membership_years[membership_year]){
-        	this.membership_years[membership_year] = getInterestse();
+        	this.membership_years[membership_year] = this.getInterests();
         }
     	return $.ajax({
         type:"POST",

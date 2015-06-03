@@ -2,7 +2,7 @@
 <head>
 <title>report from SAM</title>
 </head>
-<body>
+<body class='wallpaper'>
 
 <div id="SamListRange">
 <?php

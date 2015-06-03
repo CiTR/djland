@@ -24,7 +24,7 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 			});
 		</script>
 	</head>
-	<body>
+	<body class='wallpaper'>
 		<?php print_menu();
 		$today = date('m/d/Y');?>
 		<center><br/><br/><br/><br/>

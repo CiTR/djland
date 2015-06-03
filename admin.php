@@ -30,7 +30,7 @@ if( permission_level() >= $djland_permission_levels['administrator']){ ?>
             });
         </script>
     </head>
-    <body>
+    <body class='wallpaper'>
     <?php
     print_menu();
     ?>

@@ -20,7 +20,7 @@ if (count($matches)>1){
       break;
 
     default:
-      print("<body>");
+      print("<body class='wallpaper'>");
   }
 }
 

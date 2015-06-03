@@ -38,27 +38,26 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                 $membership_year = json_decode($_POST['membership_year'],true);
                 
                 //Create Query
-                $query = "INSERT INTO membership_years SET ";
+                $query = "INSERT INTO membership_years SET member_id=:member_id,";
                 $keys = array_keys($membership_year);
                 $end = end($keys);
                 foreach($membership_year as $key => $var){
                     //ignore primary keys id and membership_year
                     if($key != 'member_id') {
-                        $query .= $key." =:".$key;
+                        $query .= " ".$key." =:".$key;
                         //no comma on last entry
                         if($key != $end){
                             $query .= ",";
                         }
                     }
                 }
-
-                $query.=" WHERE member_id=:member_id";
                 
                 //Prepare Statement
-                $statement = $pdo_db->prepare($update_query);
+                $statement = $pdo_db->prepare($query);
 
 
                 //Bind variables to values in query
+                $statement->bindValue(':member_id',$_POST['member_id']);
                 foreach($membership_year as $key => $value){
                         $statement->bindValue(":".$key,$membership_year[$key]);     
                 }
@@ -70,7 +69,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     echo json_encode(true);
                 }catch(PDOException $pdoe){
                     http_response_code(404);
-                    echo json_encode($e->getMessage());
+                    echo json_encode($pdoe->getMessage());
                 }
             }else{
                 http_response_code(400);

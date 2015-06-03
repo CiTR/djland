@@ -16,7 +16,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 <script type='text/javascript' src='js/charting.js'></script>
 
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php	print_menu(); ?>
     <center>

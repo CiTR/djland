@@ -9,7 +9,7 @@ require_once("headers/menu_header.php");
 if( permission_level() >= $djland_permission_levels['dj']){
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
-printf("<title>DJLAND | Report</title></head><body>");
+printf("<title>DJLAND | Report</title></head><body class='wallpaper'>");
 
 print_menu();
 
