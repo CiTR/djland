@@ -3,7 +3,7 @@
 
 require_once('../api_common.php');
 
-//$rawdata = get_array('playlists');
+//$rawdata = get_array('playsheets');
 
 $rawdata = array();
 
@@ -16,13 +16,13 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 
   $query = '
-    SELECT playlists.id,
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date) as edit_date
-    FROM playlists
-    LEFT JOIN podcast_episodes on playlists.podcast_episode = podcast_episodes.id
+    SELECT playsheets.id,
+      GREATEST(playsheets.edit_date, podcast_episodes.edit_date) as edit_date
+    FROM playsheets
+    LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
 
     ORDER BY
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date)
+      GREATEST(playsheets.edit_date, podcast_episodes.edit_date)
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 

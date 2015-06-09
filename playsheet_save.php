@@ -23,7 +23,7 @@
 
   if ($newPlaysheet) { // submitting a new playsheet
 
-    $ps_query = "INSERT INTO `playlists` (id, create_date, create_name) VALUES (null, '$create_date', '$create_name')";
+    $ps_query = "INSERT INTO `playsheets` (id, create_date, create_name) VALUES (null, '$create_date', '$create_name')";
     if (mysqli_query($db, $ps_query))
       $ps_id = mysqli_insert_id($db);
     else
@@ -45,7 +45,7 @@
   $result = $db->query($query);
 
   if ($result) {
-    $update_show_query = "UPDATE `playlists` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=" . $unix_time . ", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang', type='$type' WHERE id='$ps_id'";
+    $update_show_query = "UPDATE `playsheets` SET show_id='$show_id', host_id='$host_id', edit_name='$edit_name', start_time='$start_time', end_time='$end_time', spokenword='$spokenword', spokenword_duration='$spokenword_duration', unix_time=" . $unix_time . ", status='$status', star='$star', crtc='$pl_crtc', lang='$pl_lang', type='$type' WHERE id='$ps_id'";
     $result2 = $db->query($update_show_query);
     if ($result2) {
       echo "<h3>thanks for submitting a playsheet!  Here is the music you played:</h3>";
@@ -84,8 +84,8 @@
     $show_id = 0;
   }
 
-  for ($i = 0; $i < $playlist_entries; $i++) {
-    //		mysqli_query($db, "INSERT INTO `playitems` (playsheet_id, show_id, song_id, format_id, is_playlist, is_canadian, is_yourown, is_indy, is_fem, show_date) VALUES ('$ps_id', '$show_id', '".fget_song_id($_POST['artist'.$i], $_POST['title'.$i], $_POST['song'.$i])."', '".$fformat_id[$_POST['format'.$i]]."', '".(isset($_POST['pl'.$i])?1:0)."', '".(isset($_POST['cc'.$i])?1:0)."', '".(isset($_POST['yo'.$i])?1:0)."', '".(isset($_POST['indy'.$i])?1:0)."', '".(isset($_POST['fem'.$i])?1:0)."', '$show_date')");
+  for ($i = 0; $i < $playsheet_entries; $i++) {
+    //		mysqli_query($db, "INSERT INTO `playitems` (playsheet_id, show_id, song_id, format_id, is_playsheet, is_canadian, is_yourown, is_indy, is_fem, show_date) VALUES ('$ps_id', '$show_id', '".fget_song_id($_POST['artist'.$i], $_POST['title'.$i], $_POST['song'.$i])."', '".$fformat_id[$_POST['format'.$i]]."', '".(isset($_POST['pl'.$i])?1:0)."', '".(isset($_POST['cc'.$i])?1:0)."', '".(isset($_POST['yo'.$i])?1:0)."', '".(isset($_POST['indy'.$i])?1:0)."', '".(isset($_POST['fem'.$i])?1:0)."', '$show_date')");
     /*abcd*/
     $cat = 12;
     if ($SOCAN_FLAG) {
@@ -124,11 +124,11 @@
     if (isset($_POST['artist' . $i]) && isset($_POST['album' . $i]) && isset($_POST['song' . $i])) {
       if ($SOCAN_FLAG) {
         $insert_query = "INSERT INTO `playitems` " .
-            "(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit, is_background, is_theme, insert_song_start_hour, insert_song_start_minute,  insert_song_length_minute, insert_song_length_second)" .
+            "(playsheet_id, show_id, song_id, is_playsheet, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit, is_background, is_theme, insert_song_start_hour, insert_song_start_minute,  insert_song_length_minute, insert_song_length_second)" .
             "VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit', '$insert_background','$insert_theme','$insert_song_start_hour',  '$insert_song_start_minute', '$insert_song_length_minute',  '$insert_song_length_second')";
       } else {
         $insert_query = "INSERT INTO `playitems` " .
-            "(playsheet_id, show_id, song_id, is_playlist, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)" .
+            "(playsheet_id, show_id, song_id, is_playsheet, is_canadian, is_fem, show_date, crtc_category, lang, is_part, is_inst, is_hit)" .
             "VALUES ('$ps_id', '$show_id', '$insert_songID', '$insert_pl', '$insert_cc', '$insert_fem','$show_date', '$insert_crtc', '$insert_lang', '$insert_part', '$insert_inst', '$insert_hit')";
       }
       $insert_result = $db->query($insert_query);

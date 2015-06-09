@@ -8,7 +8,7 @@
 
 
 
-$delete_query = "DELETE FROM playlists WHERE id='".$_GET['id']."'";
+$delete_query = "DELETE FROM playsheets WHERE id='".$_GET['id']."'";
 $delete_playitems = "DELETE FROM playitems WHERE playsheet_id = '".$_GET['id']."'";
 
 if( $result = mysqli_query($db,$delete_query)) {

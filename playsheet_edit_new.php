@@ -11,7 +11,7 @@ if ($actionSet && $action == 'edit' || $action == 'datadump') {
   //LOADING A SAVED PS
   $ps_id = fas($_GET['id']);
   //echo " you are editing playsheet id number ".$ps_id;
-  if ($result = mysqli_query($db, "SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playlists WHERE id='$ps_id'")) {
+  if ($result = mysqli_query($db, "SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playsheet WHERE id='$ps_id'")) {
     $curr_id = mysqli_result_dep($result, 0, "show_id");
     $currshow = $showlib->getShowByID($curr_id);
     $pl_date_year = date('Y', mysqli_result_dep($result, 0, "good_date"));
@@ -61,7 +61,7 @@ if ($actionSet && $action == 'edit' || $action == 'datadump') {
 
     //check to see if this unix time already has a playsheet saved - if so, load that one with action=edit
 
-    $check_query = "SELECT id FROM playlists WHERE unix_time='" . $unix_start_time . "'";
+    $check_query = "SELECT id FROM playsheets WHERE unix_time='" . $unix_start_time . "'";
     if ($check = mysqli_query($db, $check_query)) {
       $checked = mysqli_fetch_assoc($check);
       if ($yesnumber = $checked['id']) {
@@ -318,7 +318,7 @@ else {
           <?php
 
   echo "<br/><select style='height:25px' class=invisible id='select-playsheet' >";
-  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playlists AS p ON s.id = p.show_id order by start_time desc limit 3000";
+  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playsheets AS p ON s.id = p.show_id order by start_time desc limit 3000";
   if ($result = $db->query($query)) {
     while ($row = mysqli_fetch_array($result)) {
       echo "\n<option value='" . $row['playsheet_id'] . "' data='" . $row['start_time'] . "'>" . $row['start_time'] . " - " . $row['name'] . "</option>";

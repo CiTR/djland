@@ -55,7 +55,7 @@
       </span>
     <h2> offset test results: </h2>
 
-    <p>playlists: {{public_api_pluralized_lists[0].data[3].id == public_api_pluralized_lists_offset[0].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[0].data[3].id}} should equal {{public_api_pluralized_lists_offset[0].data[0].id}}</p>
+    <p>Playsheets: {{public_api_pluralized_lists[0].data[3].id == public_api_pluralized_lists_offset[0].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[0].data[3].id}} should equal {{public_api_pluralized_lists_offset[0].data[0].id}}</p>
     <p>shows: {{public_api_pluralized_lists[1].data[3].id == public_api_pluralized_lists_offset[1].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[1].data[3].id}} should equal {{public_api_pluralized_lists_offset[1].data[0].id}}</p>
     <p>episodes: {{public_api_pluralized_lists[2].data[3].id == public_api_pluralized_lists_offset[2].data[0].id ? "PASS" : "FAIL"}}!  {{public_api_pluralized_lists[2].data[3].id}} should equal {{public_api_pluralized_lists_offset[2].data[0].id}}</p>
 
@@ -118,7 +118,7 @@
       .controller('apiTest', ['$scope','testService','API_URL_BASE',function($scope,testService,API_URL_BASE){
 
         $scope.public_api_pluralized_lists = [
-          {endpoint:'playlist',data:[], error:'', links:[]},
+          {endpoint:'playsheet',data:[], error:'', links:[]},
           {endpoint:'show',data:[], error:'',links:[]},
           {endpoint:'episode',data:[], error:'', links:[]}
 //          {endpoint:'user',data:[], error:'',links:[]},
@@ -127,7 +127,7 @@
         ];
 
         $scope.public_api_pluralized_lists_offset = [
-          {endpoint:'playlist',data:[], error:'', links:[]},
+          {endpoint:'playsheet',data:[], error:'', links:[]},
           {endpoint:'show',data:[], error:'', links:[]},
           {endpoint:'episode',data:[], error:'', links:[]},];
 
@@ -144,13 +144,13 @@
         ];
 
         $scope.error_requests = [
-          {request:'playlist',status:'',body:''},
+          {request:'playsheet',status:'',body:''},
           {request:'show',status:'',body:''},
           {request:'episode',status:'',body:''},
-          {request:'playlist?ID=cars',status:'',body:''},
+          {request:'playsheet?ID=cars',status:'',body:''},
           {request:'show?ID=doge',status:'',body:''},
           {request:'episode?ID=dingus',status:'',body:''},
-          {request:'playlist?ID=9999999999999',status:'',body:''},
+          {request:'playsheet?ID=9999999999999',status:'',body:''},
           {request:'episode?ID=999999999999',status:'',body:''},
           {request:'show?ID=999999999999',status:'',body:''}
         ]

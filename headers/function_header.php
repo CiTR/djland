@@ -4,16 +4,6 @@
 error_reporting(0);
 
 date_default_timezone_set($station_info['timezone']);
-//Membership status, index by Name/ID
-$fresult = mysqli_query($db,"SELECT * FROM membership_status ORDER BY 'sort', 'name'");
-$fnum_rows = mysqli_num_rows($fresult);
-$fcount = 0;
-while($fcount < $fnum_rows) {
-	$fmembership_status_name[mysqli_result_dep($fresult,$fcount,"id")] = mysqli_result_dep($fresult,$fcount,"name");
-	$fmembership_status_id[mysqli_result_dep($fresult,$fcount,"name")] = mysqli_result_dep($fresult,$fcount,"id");
-	$fcount++;
-}
-
 
 
 //Music format types, index by Name/ID
@@ -138,14 +128,14 @@ function getFormatName($format_id, $db){
 	
 }
 // given $min and $max as unix timestamps
-function grabPlaylists($min,$max, $db){
+function grabplaysheets($min,$max, $db){
 	
 	// convert to string representation
 	$min = date("Y-m-d H:i:s",$min);
 	$max = date("Y-m-d H:i:s",$max);
 	
 $showList = array();
-$query = "SELECT * FROM playlists WHERE start_time >= '$min' AND start_time <= '$max' ORDER BY start_time ASC";
+$query = "SELECT * FROM playsheets WHERE start_time >= '$min' AND start_time <= '$max' ORDER BY start_time ASC";
 
 if( $result = $db->query($query)){
 	while($row = $result->fetch_assoc()){
@@ -215,30 +205,30 @@ return 0;
 
 
 }
-// $numrows is the number of recent playlists you want
+// $numrows is the number of recent playsheets you want
 // $filter (optional) show id to filter by
-function getRecentPlaylists($db, $numrows,$filter){
+function getRecentplaysheets($db, $numrows,$filter){
 	//if we are filtering by a showname then filter our query.
 	
-	$playlists = array();
+	$playsheets = array();
 	
 	if($filter)
 	{
-	//query playlists for saved playlists with show id = to show we are filtering
-	$query="SELECT id, show_id, start_time, status, star FROM playlists WHERE show_id =".$filter." ORDER BY start_time DESC LIMIT ".$numrows;
+	//query playsheets for saved playsheets with show id = to show we are filtering
+	$query="SELECT id, show_id, start_time, status, star FROM playsheets WHERE show_id =".$filter." ORDER BY start_time DESC LIMIT ".$numrows;
 	
 	}
 	else
 	{
-	//query playlists database for ALL saved playlists
-	$query = "SELECT id, show_id, start_time, status, star FROM playlists ORDER BY start_time DESC LIMIT ".$numrows;
+	//query playsheets database for ALL saved playsheets
+	$query = "SELECT id, show_id, start_time, status, star FROM playsheets ORDER BY start_time DESC LIMIT ".$numrows;
 	}
 	
 	if ($result = mysqli_query($db,$query)){
 	
 			while($row = $result->fetch_array()){
 			
-				$playlists []= $row;
+				$playsheets []= $row;
 		
 	
 	
@@ -246,8 +236,8 @@ function getRecentPlaylists($db, $numrows,$filter){
 	} else {
 	return ' there was a  problem in the db';
 	}
-//	print_r($playlists);
-	return $playlists;
+//	print_r($playsheets);
+	return $playsheets;
 
 }
 

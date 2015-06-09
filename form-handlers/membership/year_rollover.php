@@ -20,7 +20,7 @@ if(isset($_POST) && isset($_POST['year'])){
         echo json_encode(true);
     }catch(PDOException $pdoe){
         http_response_code(404);
-        echo json_encode($e->getMessage());
+        echo json_encode($pdoe->getMessage());
     }
 
 }else if(isset($_GET)) {
@@ -36,7 +36,7 @@ if(isset($_POST) && isset($_POST['year'])){
 
     }catch(PDOException $pdoe){
         http_response_code(404);
-        echo json_encode($e->getMessage());
+        echo json_encode($pdoe->getMessage());
     }
 }else {
     http_response_code(401);

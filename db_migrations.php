@@ -48,7 +48,7 @@ $queries = array(
                               ) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
     'add alert field to shows'=>'ALTER TABLE `shows` ADD COLUMN `alerts` TEXT NULL;',
     'add podcast channel id to shows' => 'ALTER TABLE `shows` ADD COLUMN `podcast_channel_id` int(11) DEFAULT NULL',
-    'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL',
+    'add podcsat episode id to playsheet' => 'ALTER TABLE `playsheets` ADD COLUMN `podcast_episode` INT NULL',
     'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
                                 `id` INT NOT NULL AUTO_INCREMENT,
                                 `name` VARCHAR(455) NULL,

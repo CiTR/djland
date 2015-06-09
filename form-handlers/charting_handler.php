@@ -20,7 +20,7 @@ $to = date("Y/m/d",$to);
  */
 $query = 
 "SELECT DISTINCT s.song AS song, s.artist AS artist, s.title AS album, pi.is_canadian AS is_can, pi.is_playlist AS is_pl, pi.show_date AS date, sh.name AS show_name, pl.status AS status 
-FROM songs AS s INNER JOIN playitems AS pi ON s.id = pi.song_id INNER JOIN shows AS sh ON sh.id = pi.show_id INNER JOIN playlists AS pl ON pi.playsheet_id = pl.id WHERE pi.show_date >= '".$from."' AND pi.show_date <= '".$to."' 
+FROM songs AS s INNER JOIN playitems AS pi ON s.id = pi.song_id INNER JOIN shows AS sh ON sh.id = pi.show_id INNER JOIN playsheets AS pl ON pi.playsheet_id = pl.id WHERE pi.show_date >= '".$from."' AND pi.show_date <= '".$to."' 
 GROUP BY s.artist, s.song, sh.id ORDER BY pi.show_date ASC, sh.name ASC , pl.status DESC";
 
 if($result = $db->query($query)){

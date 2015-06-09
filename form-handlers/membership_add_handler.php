@@ -57,10 +57,10 @@
 	$today = date("Y-m-d H:i:s");
 	$joined = $today;
 	
-	//Check to see if we are before the end of school year or not (end of August)
+	//Check to see if we are before the end of school year or not (end of April)
 	$year = idate('Y');
 	$today_date = date('m/d/Y',strtotime("today"));
-	$cutoff_date = date('09/31/'.$year);
+	$cutoff_date = date('04/31/'.$year);
 
 	//Check to see if we are in a new school year or not.
 	if(strtotime($today-date) < strtotime($cutoff_date)){

@@ -5,8 +5,8 @@ printf("<br/><br/><center><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\
 
 printf("<INPUT type=hidden name=action value=edit>");
 printf("<SELECT class='selectps' NAME=\"id\" SIZE=25>\n");
-$get_playlists = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playlists AS p INNER JOIN shows AS s ON s.id=p.show_id   ORDER BY start_time DESC LIMIT 500";
-if($result = $db->query($get_playlists)){
+$get_playsheets = "SELECT p.start_time AS start_time,p.id AS id, s.name AS name, p.star AS star, p.status AS status FROM playsheets AS p INNER JOIN shows AS s ON s.id=p.show_id   ORDER BY start_time DESC LIMIT 500";
+if($result = $db->query($get_playsheets)){
 
   while($row = mysqli_fetch_array($result)){
     $time = date( 'Y: M j, g:ia' ,strtotime($row['start_time']));

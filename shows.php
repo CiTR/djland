@@ -116,14 +116,7 @@ if(is_member("addshow") ) {
 //	print_r($_POST);
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
-		echo "<center><h1>Show Deleted</h1>";
-
-		mysqli_query($db, "DELETE FROM `playitems` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `playlists` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `shows` WHERE id='$show_id'");
-		mysqli_query($db, "DELETE FROM `social` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `show_times` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `member_show` WHERE show_id='$show_id'");
+		echo "<center><h1>Show Deleted</h1>";		
 	}
 	// SUBMITTING SHOWS -------
 	else if(isset($_GET['action']) && $_GET['action'] == "submit") {
