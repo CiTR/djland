@@ -99,7 +99,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 echo json_encode($e->getMessage());
             }
             break;
-        default
+        default:
             break;
     }
 }else{
