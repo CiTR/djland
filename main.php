@@ -20,5 +20,5 @@ require_once("headers/menu_header.php");
 			</tr>
 		</table>
 	</body>
-</html>");
+</html>
 ?>
