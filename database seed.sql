@@ -413,25 +413,6 @@ AUTO_INCREMENT = 129858
 DEFAULT CHARACTER SET = latin1;
 
 -- ----------------------------------------------------------------------------
--- Table citr_live.scheduled_ads
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `citr_live`.`scheduled_ads` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `time_block` INT(11) NULL DEFAULT NULL,
-  `show_date` DATE NULL DEFAULT NULL,
-  `sam_song_id_list` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  `type` TINYINT(3) UNSIGNED NULL DEFAULT NULL,
-  `description` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  `playsheet_id` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
-  `dj_note` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `show_id_UNIQUE` (`time_block` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 19324
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
--- ----------------------------------------------------------------------------
 -- Table citr_live.show_times
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `citr_live`.`show_times` (

@@ -1,14 +1,14 @@
 <?php
-	require("../headers/db_header.php");
-	require("../headers/function_header.php");
-	require("../headers/password.php");
+	require_once("../headers/db_header.php");
+	require_once("../headers/function_header.php");
+	require_once("../headers/password.php");
 	
 	$member_id = $_POST['member_id'];
 	$userid = $_POST['userid'];
-	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES);
-	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES);
-	$address = htmlentities($_POST['address'],ENT_QUOTES);
-	$city = htmlentities($_POST['city'],ENT_QUOTES);
+	$firstname = htmlentities($_POST['firstname'],ENT_QUOTES,'UTF-8');
+	$lastname = htmlentities($_POST['lastname'],ENT_QUOTES,'UTF-8');
+	$address = htmlentities($_POST['address'],ENT_QUOTES,'UTF-8');
+	$city = htmlentities($_POST['city'],ENT_QUOTES,'UTF-8');
 	$province = $_POST['province'];
 	$postalcode = $_POST['postalcode'];
 	$canadian_citizen = $_POST['canadian_citizen'];
@@ -25,13 +25,19 @@
 		$student_no = null;
 	}
 	$has_show = $_POST['has_show'];
-	$show_name = htmlentities($_POST['show_name'],ENT_QUOTES);
+	$show_name = htmlentities($_POST['show_name'],ENT_QUOTES,'UTF-8');
 	$is_new = $_POST['is_new'];
 	$alumni = $_POST['alumni'];
 	$since = $_POST['since'];
-	$email = htmlentities($_POST['email'],ENT_QUOTES);
+	$email = htmlentities($_POST['email'],ENT_QUOTES,'UTF-8');
 	$primary_phone = $_POST['primary_phone'];
 	$secondary_phone = $_POST['secondary_phone'];
+	$about = htmlentities($_POST['about'],ENT_QUOTES,'UTF-8');
+	$skills = htmlentities($_POST['skills'],ENT_QUOTES,'UTF-8');
+	$exposure = htmlentities($_POST['exposure'],ENT_QUOTES,'UTF-8');
+	$comments = htmlentities($_POST['comments'],ENT_QUOTES,'UTF-8');
+
+
 	$paid = $_POST['paid'];
 	$music = $_POST['music'];
 	$sports = $_POST['sports'];
@@ -49,11 +55,8 @@
 	$photography = $_POST['photography'];
 	$dj = $_POST['dj'];
 	$tabling = $_POST['tabling'];
-	$other = htmlentities($_POST['other'],ENT_QUOTES);
-	$about = htmlentities($_POST['about'],ENT_QUOTES);
-	$skills = htmlentities($_POST['skills'],ENT_QUOTES);
-	$exposure = htmlentities($_POST['exposure'],ENT_QUOTES);
-	$comments = htmlentities($_POST['comments'],ENT_QUOTES);
+	$other = htmlentities($_POST['other'],ENT_QUOTES,'UTF-8');
+	
 	$membership_year = $_POST['membership_year'];
 	$is_member = $_POST['is_member'];
 	$is_dj = $_POST['is_dj'];
@@ -66,9 +69,8 @@
 	$is_edit_library = $_POST['is_edit_library'];
 	$new_password = $_POST['password'];
 
-
 	if($member_type != 'Student' && $member_type != 'student'){
-		$update_membership = "UPDATE membership SET firstname='".$firstname."',lastname='".$lastname."',address='".$address."',city='".$city."',province='".$province."',postalcode='".$postalcode."',canadian_citizen='".$canadian_citizen."',member_type='".$member_type."',is_new='".$is_new."',alumni='".$alumni."',since='".$since."',has_show='".$has_show."',show_name='".$show_name."',email='".$email."',primary_phone='".$primary_phone."',secondary_phone='".$secondary_phone."',about='".$about."',skills='".$skills."',exposure='".$exposure."',comments='".$comments."' WHERE id='".$member_id."';";	
+		$update_membership = "UPDATE membership SET firstname='".$firstname."',lastname='".$lastname."',address='".$address."',city='".$city."',province='".$province."',postalcode='".$postalcode."',canadian_citizen='".$canadian_citizen."',member_type='".$member_type."',is_new='".$is_new."',alumni='".$alumni."',since='".$since."',has_show='".$has_show."',show_name='".$show_name."',email='".$email."',primary_phone='".$primary_phone."',secondary_phone='".$secondary_phone."',about='".$about."',skills='".$skills."',exposure='".$exposure."' ".($comments != null ? ",comments='".$comments."'" : "")." WHERE id='".$member_id."';";
 	}else{
 		$update_membership = "UPDATE membership SET firstname='".$firstname."',lastname='".$lastname."',address='".$address."',city='".$city."',province='".$province."',postalcode='".$postalcode."',canadian_citizen='".$canadian_citizen."',member_type='".$member_type."',is_new='".$is_new."',alumni='".$alumni."',since='".$since."',faculty='".$faculty."', schoolyear='".$schoolyear."',integrate='".$integrate."',student_no='".$student_no."',has_show='".$has_show."',show_name='".$show_name."',email='".$email."',primary_phone='".$primary_phone."',secondary_phone='".$secondary_phone."',about='".$about."',skills='".$skills."',exposure='".$exposure."',comments='".$comments."' WHERE id='".$member_id."';"; 	
 	}
@@ -81,8 +83,10 @@
 	$update_group_member = "UPDATE group_members  SET member='".$is_member."',dj='".$is_dj."',administrator='".$is_administrator."',adduser='".$is_add_user."',addshow='".$is_add_show."',editdj='".$is_edit_dj."',library='".$is_library."',membership='".$is_membership."',editlibrary='".$is_edit_library."' WHERE userid ='".$userid."';";
 	$fail=false;
 	$db->query("START TRANSACTION");
+	
 	$error[0] = "ERROR";
 	
+
 	$result = $db -> query($update_membership);
 	if(!$result){
 		$fail = true;
@@ -91,27 +95,32 @@
 		$error[3] = $update_membership;
 	}
 	else{
-		$result = $db -> query($update_membership_year);
-		if(!$result){
-			$fail = true;
-			$error[1] = "Error with membership year update ";
-			$error[2] = mysqli_error($db);
-		}
-		else{
-			$result = $db -> query($update_group_member);
+		//check if updating membership years
+		if(isset($_POST['membership_year'])){
+			$result = $db -> query($update_membership_year);
 			if(!$result){
-				$error[1] = "Error with permission update";
-				$error[2] = mysqli_error($db);
 				$fail = true;
-			}else{
-				if($new_password != null){
-					$result = $db -> query($update_user);
-					if(!$result){
-					$error[1] = "Error with user update ";
+				$error[1] = "Error with membership year update ";
+				$error[2] = mysqli_error($db);
+			}
+			//Check if updating user information
+			if(isset($_POST['is_member'])){
+				$result = $db -> query($update_group_member);
+				if(!$result){
+					$error[1] = "Error with permission update";
 					$error[2] = mysqli_error($db);
 					$fail = true;
-					}
 				}
+				else{
+					if($new_password != null){
+						$result = $db -> query($update_user);
+						if(!$result){
+						$error[1] = "Error with user update ";
+						$error[2] = mysqli_error($db);
+						$fail = true;
+						}
+					}
+				}		
 			}
 		}
 	}

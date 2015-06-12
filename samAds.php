@@ -1,8 +1,8 @@
 <?php 	
 	session_start();
-	require("headers/security_header.php");
-	require("headers/function_header.php");
-	require("headers/menu_header.php"); 
+	require_once("headers/security_header.php");
+	require_once("headers/function_header.php");
+	require_once("headers/menu_header.php");
 ?>
 <html>
 	<head>
@@ -24,7 +24,7 @@
 		</script>
 	</head>
 	<body>
-		<?php print_menu2(); 
+		<?php print_menu();
 		$today = date('m/d/Y');?>
 		<center><br/><br/><br/><br/>
 		<input id='adname' onfocus="this.value=''" value='Enter an ad name' maxlength='15'></input>

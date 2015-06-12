@@ -16,7 +16,7 @@ if($using_sam){
 <?php
 
 global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
-require( './samLoadRecent.php');
+require_once( './samLoadRecent.php');
 
 ?>
 </div>
@@ -87,10 +87,6 @@ print("<SELECT id=hourFrom  >\n<OPTION>");
 
 
 
-
-
-
-
 		<?php
 		print(" Time: [");
 		
@@ -141,16 +137,8 @@ if (count($matches)>1){
 				<button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div> ");
   }
 
-} // end of if(sam enabled) block
-
-//echo "<div align='right'> <button type='button' id='autosaver' class='panel-button'>save<br/>draft</button></div>";
-
+}
 ?>
-<!--<button id="SamTab" class="panel-button">SAM plays</button>
-<button id="buttonLoadTimes" class="panel-button">SAM period </button>
-<button id="autosaver" class="panel-button">save<br/>draft</button>
--->
-<!---- END OF BODY TAG -->
 
 
 

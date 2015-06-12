@@ -25,7 +25,7 @@
 		</script>
 	</head>
 	<body>
-		<?php print_menu2();
+		<?php print_menu();
 		membership_menu(); 
 		 ?>
 		<div id='membership' >
