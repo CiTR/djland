@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 require_once("../headers/security_header.php");
 
@@ -43,6 +43,7 @@ $default = false;
 	$value = 'arts';
 	$year = 'all';
 	$sort = 'email';*/
+	
 	switch($action){
 		case 'search':
 			switch($type){
@@ -55,6 +56,14 @@ $default = false;
 							}else{
 								$query.=" and my.membership_year='".$year."' and my.paid='".$paid."'";
 							}
+						} else {
+
+
+							if($paid == 'both'){
+								$query.=" ";
+							}else {
+								$query .= " and my.paid='" . $paid . "'";
+							}
 						}
 					}else{
 						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
@@ -64,6 +73,13 @@ $default = false;
 							}else{
 								$query.=" WHERE my.membership_year='".$year."' and my.paid='".$paid."'";
 							} 
+						} else {
+
+							if($paid == 'both'){
+								$query.=" ";
+							}else {
+								$query .= " and my.paid='" . $paid . "'";
+							}
 						}
 					}
 					break;
@@ -107,7 +123,7 @@ $default = false;
 					$query = "SELECT DISTINCT membership_year FROM membership_years ORDER BY membership_year DESC";
 					break;
 				case 'member_year': //get all possible years for a member
-					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' ORDER BY membership_year DESC";
+					$query = "SELECT membership_year FROM membership_years WHERE member_id='".$value."' ORDER BY membership_year DESC";
 					break;
 				case 'member_year_content': //get all possible years for a member
 					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' and membership_year='".$year."'ORDER BY membership_year DESC";
@@ -137,7 +153,7 @@ $default = false;
 			switch($type){
 				case 'interest':
 					if($value != "" && $value != null && $value != 'all'){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1' AND my.paid ='1'";
+						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1' ";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -146,13 +162,20 @@ $default = false;
 							}
 						}
 					}else{
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.paid ='1'";
+						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.member_id IS NOT NULL ";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
 							}else{
 								$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
 							}
+						} else {
+							if($paid == 'both'){
+								$query .=" ";
+							}else{
+								$query.= " AND my.paid='".$paid."'";
+							}
+
 						}
 					}
 					if(($from != null || $from != "") && ($to != null || $to!= "")){
@@ -172,48 +195,59 @@ $default = false;
 			}
 			break;
 		case 'report':
-
 			$member = array();
-			$query = "SELECT count(m.id) AS num FROM membership AS m";;
+			$query = "SELECT count(m.id) AS num FROM membership AS m";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
-				$arr = array('Number of Members',$row['num']);
-				$member['num_member_all'] = $arr;
+				$arr = array('Total Number of Registered Members',$row['num']);
+				$member['num_member_reg_all'] = $arr;
 				}
-			$query = "SELECT count(m.id) AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
+			$query = "SELECT count(my.member_id) AS num FROM membership_years AS my WHERE my.membership_year='".$year."'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
-				$arr = array('Number Paid of Members',$row['num']);
-				$member['num_member'] = $arr;
+				$arr = array('Total Number of Members Registered this year',$row['num']);
+				$member['num_member_reg_year'] = $arr;
 				}
-			$query = "SELECT SUM(member_type='Student') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
+			$query = "SELECT count(m.id) AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='".$year."'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
-				$arr=array('Number of Student Members',$row['num']);
+				$arr = array('Number Paid of Members this Year',$row['num']);
+				$member['num_member_paid'] = $arr;
+				}
+			$query = "SELECT SUM(member_type='Student') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='".$year."'";
+			if($result = $db->query($query)){
+				$row = $result->fetch_assoc();
+				$arr=array('Number of Paid Student Members',$row['num']);
 				$member['num_student'] = $arr;
 				}
-			$query = "SELECT SUM(member_type='Community') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
+			$query = "SELECT SUM(member_type='Community') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='".$year."'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
-				$arr=array('Number of Community Members',$row['num']);
+				$arr=array('Number of Paid  Community Members',$row['num']);
 				$member['num_community'] = $arr;
 				}
-			$query = "SELECT SUM(alumni='1') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='2014/2015'";
+			$query = "SELECT SUM(alumni='1') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='".$year."'";
 			if($result = $db->query($query)){
 				$row = $result->fetch_assoc();
-				$arr=array('Number of Alumni Members',$row['num']);
+				$arr=array('Number of Paid Alumni Members',$row['num']);
 				$member['num_alumni'] = $arr;
+				}
+			$query = "SELECT SUM(member_type='Staff') AS num FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.paid = '1' AND my.membership_year='".$year."'";
+			if($result = $db->query($query)){
+				$row = $result->fetch_assoc();
+				$arr=array('Number of Staff Members',$row['num']);
+				$member['num_staff'] = $arr;
 				}
 			
 			$arr = array('arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling');
 			$titles = array('Arts','Digital Library','Illustrate for Discorder','Writing for Discorder','DJ101.9','Live Broadcasting','Music','News','Photography','Programming Committee','Promotions and Outreach','Show Hosting','Sports','Tabling');
 			$max = sizeof($titles);
 			for($i=0;$i<$max;$i++){
-				$titles[$i]="Members interested in ".$titles[$i];
+				$titles[$i]="Paid members interested in ".$titles[$i];
 			}
 			$max = sizeof($arr);
 			for($i=0; $i< $max; $i++){
-				$query = "SELECT count(member_id) AS num_".$arr[$i]." FROM membership_years WHERE ".$arr[$i]."='1' AND paid = '1' and membership_year='2014/2015'";	
+				$query = "SELECT count(member_id) AS num_".$arr[$i]." FROM membership_years WHERE ".$arr[$i]."='1' AND paid = '1' and membership_year='".$year."'";	
 				if($result = $db->query($query)){
 					$row = $result->fetch_assoc();
 					$temp=array($titles[$i],$row['num_'.$arr[$i]]);
@@ -227,7 +261,7 @@ $default = false;
 			$default = true;
 			break;
 	}
-	if(is_member('membership')){
+	if(is_member('member')){
 		if(!$default AND ($action != 'report')){
 		$result = null;
 		$members = null;
@@ -235,6 +269,11 @@ $default = false;
 			$members=array();
 			while($row = mysqli_fetch_array($result)){
 			$members[] = $row;
+			}
+			if (count($members)>0) {
+				foreach ($members[0] as $i => $v) {
+					$members[0][$i] = html_entity_decode($v, ENT_QUOTES);
+				}
 			}
 		}
 		echo json_encode($members);
