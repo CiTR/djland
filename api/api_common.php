@@ -31,7 +31,7 @@ function finish(){
             }
   } else {
 
-    if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
+    //if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
 
     foreach($data as $i => $v){
 
