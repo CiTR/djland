@@ -25,31 +25,11 @@ Member.prototype = {
 	_initInfo:function(member){
 		var member_info = {};
 		this.username=member.username;
-		member_info.firstname=member.firstname;
-		member_info.lastname=member.lastname;
 		this.fullname = member.firstname + " " + member.lastname;
-		member_info.address=member.address;
-		member_info.province=member.province;
-		member_info.city=member.city;
-		member_info.postalcode=member.postalcode;
-		member_info.canadian_citizen=member.canadian_citizen;
-		member_info.alumni=member.alumni;
-		member_info.since=member.since;
-		member_info.is_new=member.is_new;
-		member_info.member_type=member.member_type;
-		member_info.faculty=member.faculty;
-		member_info.schoolyear=member.schoolyear;
-		member_info.student_no =member.student_no;
-		member_info.integrate=member.integrate;
-		member_info.has_show=member.has_show;
-		member_info.show_name=member.show_name;
-		member_info.email=member.email;
-		member_info.primary_phone=member.primary_phone;
-		member_info.secondary_phone=member.secondary_phone;
-		member_info.about=member.about;
-		member_info.skills=member.skills;
-		member_info.exposure=member.exposure;
-		member_info.comments=member.comments;
+		for(var item in member){
+			if(item != 'username' && item != 'member_id')
+				member_info[item] = member[item]
+		}
 		this.member_info = member_info;
 	},
 	_initInterests:function(membership_years){
@@ -99,6 +79,16 @@ Member.prototype = {
 		});
 	},
 	getInfo:function(){
+		for(var field in this.member_info){
+			this['member_info'][field] = get(field);
+			console.log(field + get(field));
+		}
+		/*
+
+
+		for(var field in this.member_info){
+				set(this['member_info'][field],field);
+			}
 		this['member_info'].firstname = getText('firstname');
 		this['member_info'].lastname = getText('lastname');
 		this['member_info'].address = getVal('address');
@@ -127,7 +117,7 @@ Member.prototype = {
 		this['member_info'].about = getVal('about');
 		this['member_info'].skills = getVal('skills');
 		this['member_info'].exposure = getVal('exposure');
-		this['member_info'].comments = getVal('comments');
+		this['member_info'].comments = getVal('comments');*/
 	},
 	getInterests:function(){
 		var membership_year = getVal('membership_year');
@@ -145,46 +135,15 @@ Member.prototype = {
 			if(level != 'operator') permissions[level] = getCheckbox('level_'+level);
 		}
 		this.permissions = permissions;
-		console.log("NEW=");
-		console.log(permissions);
-		console.log("AFTER=");
-		console.log(this.permissions);
 	},
 	displayInfo:function(request){
 		_this = this;
 		if(request == null){
 			setText(this.username,'username');
-			setText(this['member_info'].firstname,'firstname');
-			setText(this['member_info'].lastname, 'lastname');
-			setVal(this['member_info'].address,'address');
-			setVal(this['member_info'].city,'city');
-			setVal(this['member_info'].province,'province');
-			setVal(this['member_info'].postalcode,'postalcode');
-			setRadio(this['member_info'].canadian_citizen,'can')
-			setRadio(this['member_info'].alumni,'alumni');
-			setText(this['member_info'].since,'since');
-			setVal(this['member_info'].is_new,'is_new');
-			setVal(this['member_info'].member_type,'member_type');
-			if(this['member_info'].member_type == "Student"){
-				setVal(this['member_info'].faculty,'faculty');
-				setVal(this['member_info'].schoolyear,'schoolyear');
-				setVal(this['member_info'].student_no,'student_no');
-				setCheckbox(this['member_info'].integrate,'integrate');
-			}else{
-				$('#row6').hide();
-				$('#row7').hide();
+			for(var field in this.member_info){
+				set(this['member_info'][field],field);
 			}
-			setRadio(this['member_info'].has_show,'has_show');
-			setVal(this['member_info'].show_name,'show_name');
-			setVal(this['member_info'].email,'email');
-			setVal(this['member_info'].primary_phone,'primary_phone');
-			setVal(this['member_info'].secondary_phone,'secondary_phone');
-			setVal(this['member_info'].about,'about');
-			setVal(this['member_info'].skills,'skills');
-			setVal(this['member_info'].exposure,'exposure');
-			if($('#comments').length > 0){
-				setVal(this['member_info'].comments,'comments');
-			}
+			setVal(this)
 		}else{
 			$.when(request).then(function(data){
 				_this.displayInfo();

@@ -12,14 +12,15 @@ function get_username() {
 }
 function login ($the_username, $the_password, $set_cookie) {
 	//Got to do the global
-	global $db, $sv_username, $sv_login_fails;
+	global $db,$pdo_db, $sv_username, $sv_login_fails;
 	global $cookiename_id, $cookiename_pass;
 	
 	//Operator accounts cannot be disabled...
-	
-	$result = $db->query("SELECT * FROM group_members INNER JOIN user on user.userid = group_members.userid WHERE user.username = '".$the_username."' AND group_members.operator='1'");
-	
-	$is_operator = mysqli_num_rows($result);
+	$query = "SELECT * FROM group_members INNER JOIN user on user.userid = group_members.userid WHERE user.username = :username AND group_members.operator='1'";
+	$check_operator = $pdo_db -> prepare($query);
+	$check_operator -> bindValue(':username',$the_username);
+	$check_operator->execute();
+	$is_operator = sizeof($check_operator->fetchAll(PDO::FETCH_ASSOC)) > 0 ? true : false;
 	if($is_operator) {
 		$result = $db -> query ("SELECT * FROM user WHERE username = '".$the_username."'");
 	}

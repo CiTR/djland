@@ -14,10 +14,37 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
             if(isset($_GET['member_id'])){
                 
                 //Create Query
-                $query = "SELECT m.id AS member_id, m.firstname AS firstname, m.lastname AS lastname, m.address AS address,m.province AS province, m.city AS city, m.postalcode AS postalcode, m.canadian_citizen AS canadian_citizen, m.alumni AS alumni, m.since AS since, m.is_new AS is_new, m.member_type AS member_type, m.joined AS joined, m.faculty AS faculty, m.schoolyear AS schoolyear, m.student_no AS student_no, m.integrate AS integrate, m.has_show AS has_show, m.show_name AS show_name, m.email AS email, m.primary_phone AS primary_phone, m.secondary_phone AS secondary_phone, m.about AS about, m.skills AS skills, m.exposure AS exposure, u.username AS username";
+                $query = "SELECT 
+                m.id AS member_id, 
+                m.firstname AS firstname, 
+                m.lastname AS lastname, 
+                m.address AS address,
+                m.province AS province, 
+                m.city AS city, 
+                m.postalcode AS postalcode, 
+                m.canadian_citizen AS canadian_citizen, 
+                m.alumni AS alumni, 
+                m.since AS since, 
+                m.is_new AS is_new, 
+                m.member_type AS member_type, 
+                m.joined AS joined, 
+                m.faculty AS faculty, 
+                m.schoolyear AS schoolyear, 
+                m.student_no AS student_no, 
+                m.integrate AS integrate, 
+                m.has_show AS has_show, 
+                m.show_name AS show_name, 
+                m.email AS email, 
+                m.primary_phone AS primary_phone, 
+                m.secondary_phone AS secondary_phone, 
+                m.about AS about, 
+                m.skills AS skills, 
+                m.exposure AS exposure, 
+                u.username AS username";
                 if(permission_level() >= $djland_permission_levels['staff']){
                     //Only staff can query staff comments
-                    $query.= " , m.comments as comments";
+                    $staff_query=" ,m.comments AS comments, m.technical_training AS technical_training, m.production_training AS production_training, m.programming_training AS programming_training, m.spoken_word_training AS spoken_word_training";
+                    $query.= $staff_query;
                 } 
                 $query.=" FROM membership AS m INNER JOIN user AS u ON m.id = u.member_id WHERE m.id=:member_id";
                 
@@ -34,6 +61,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     
                 } catch (PDOException $e) {
                     http_response_code(500);
+                    echo "PDO EXCEPTION";
                     echo json_encode($e->getMessage());
                 }
             }

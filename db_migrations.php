@@ -80,21 +80,26 @@ $queries = array(
                                     DROP COLUMN `adduser`,
                                     CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
                                     CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
-                                    CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
-                                    CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0' ,
                                     ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`,
                                     ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
-                                    ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`",
+                                    ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
+                                    CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
+                                    CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0'",
     'add training' => "ALTER TABLE `membership`
-                          ADD COLUMN `tech_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
-                          ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `tech_training`,
-                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`",
-    'add spoken word' => "ALTER TABLE `membership`
-                          ADD COLUMN `spoken_word` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`",
+                          ADD COLUMN `station_tour` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
+                          ADD COLUMN `technical_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `station_tour`,
+                          ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `technical_training`,
+                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`,
+                          ADD COLUMN `spoken_word_training` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`;",                        
     'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
                             `id` INT NOT NULL AUTO_INCREMENT,
                             `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
-                            PRIMARY KEY (`id`))"
+                            PRIMARY KEY (`id`));",
+    'additional committees' => "ALTER TABLE `citr_dev`.`membership_years` 
+                                ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
+                                ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
+                                ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;"
+
 
 );
 
