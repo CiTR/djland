@@ -38,6 +38,86 @@ function getCheckbox(id){
 		return 0;
 	}
 }
+
+function get(target_id,target_class,target_name){
+	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
+	var tag = target.prop('tagName');
+	var result;
+	switch(tag){
+		case 'DIV':
+			result = target.text();
+			break;
+		case 'INPUT':
+			var type = target.attr('type');
+			switch(type){
+				case 'checkbox':
+					if(target.prop('checked')) result = 1;
+					else result = 0;
+					break;
+				default:
+					target.val();
+					break;
+			}
+			break;
+		case 'SELECT':
+		case 'TEXTAREA':
+			target.val();
+			break;
+		default:
+			target.val();
+			break;
+	}
+	return result;
+}
+function set(value,target_id,target_class,target_name){
+	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
+	var tag = target.prop('tagName');
+	//console.log("Value:"+value+" Target:"+target.attr('id') + "," +target.attr('class') + "," +target.attr('name')+" Tag:"+tag);
+	switch(tag){
+		case 'DIV':
+			target.text(value);
+			break;
+		case 'SELECT':
+			target.val(value).change();
+			break;
+		case 'INPUT':
+			var type = target.attr('type');
+			switch(type){
+				case 'checkbox':
+					if(value == '1'){
+						target.prop('checked',true);
+					}else{
+						target.prop('checked',false);
+					}
+					break;
+				case 'radio':
+					var yes = $('#'+target_id+'1');
+					var no = $('#'+target_id+'2');
+					switch(value){
+						case '1': 
+							$radio1.attr('checked','checked');
+							$radio2.removeAttr('checked');
+							break;
+						case '0':
+							$radio2.attr('checked','checked');
+							$radio1.removeAttr('checked');
+							break;
+						default:
+							break; 
+					}
+					break;
+				default:
+					target.val(value).change();
+					break;
+			}
+			break;
+		case 'TEXTAREA':
+		default:
+			target.val(value).change();
+			break;
+	}
+
+}
 function setCheckbox(value,id){
 	if(value == '1'){
 		$('#'+id).prop('checked',true);
@@ -57,6 +137,7 @@ function setVal(value,id){
 	assertTrue($target != null);
 	$target.val(value).change();
 }
+
 function setRadio(value,id){
 	//yes
 	$radio1 = $('#'+id+'1');
@@ -151,16 +232,17 @@ function loadYearSelect(){
 }
 
 function loadMember(id){
-	$('#member_loading').show();
+	$('#member_loading[name="view"]').show();
 	$('#member_result').hide();
-	member = new Member(id);
-	$.when(member.info_callback,member.interest_callback).then(function(info,interests){
-		$('#member_loading').hide();
-		$('#member_result').show();
+	var new_member = new Member(id);
+	$.when(new_member.info_callback,new_member.interest_callback).then(function(info,interests){
+		member = new_member;
 		member._initInfo(info[0]);
 		member._initInterests(interests[0]);
 		member.displayInfo();
 		member.displayInterests();
+		$('#member_loading[name="view"]').hide();
+		$('#member_result').show();
 	},function(err1,err2){
 		console.log("Failed to load member");
 	});

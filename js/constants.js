@@ -1,5 +1,5 @@
 window.myNameSpace = window.myNameSpace || { };
-var faculties,interests,provinces,member_types,permission_levels,program_years;
+var faculties,training,interests,provinces,member_types,permission_levels,program_years;
 getConstants();
 
 
@@ -12,6 +12,7 @@ function getConstants(){
 		async: true
 	}).success( function (data){
 		faculties = data['faculties'];
+		training = data['training'];
 		interests = data['interests'];
 		provinces = data['member_types'];
 		member_types = data['member_types'];

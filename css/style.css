@@ -113,6 +113,9 @@ input, select, textarea, option{
 .text-right{
 	text-align: right;
 }
+.text-center{
+	text-align: center;
+}
 .clearfix:after { 
    content: " ";
    display: block; 
@@ -692,7 +695,6 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	max-width:140px;
 }
 .col1{
-	text-align:center;
 	width:100%;
 }
 .col2{

@@ -106,7 +106,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			</ul>
 
 			<div id='membership_result' class='overflow_auto height_cap'>
-				<div id='search_loading' class='col1'>Loading...</div>
+				<div id='search_loading' class='col1 text-center' name='search'>Loading...</div>
 				<table id='membership_table' name='search'>
 					<tr id='headerrow' class='hidden'><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Staff Comments</th><th><button id='delete_button'>Delete</button></th></tr>
 				</table>
@@ -117,7 +117,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    			<div class='col1'>
    				<h4>Edit Member</h4>
    			</div>
-   			<div id='member_loading' class='col1'>Loading...</div>
+   			<div id='member_loading' class='col1 text-center' name='view'>Loading...</div>
 			<div id='member_result' class = 'container hidden'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
@@ -153,12 +153,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<div class='containerrow'>
 					<div class='col5'>Canadian Citizen*:</div>
 					<div class='col5'>
-						Yes<input id='can1' class='can_status' type='radio' checked='checked' />
-						No<input id='can2' class='can_status' type='radio' />
-						
+						<input id='canadian_citizen' type='checkbox'>						
 					</div>
 					<div class='col5'>Member Type*:</div>
-					
 					<div class='col4'><select id='is_new'>
 							<option value='0'>Returning</option>
 							<option value='1'>New</option>
@@ -177,8 +174,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<div class='containerrow student'>
 					<div class='col5'>Alumni:</div>
 					<div class='col5'> 
-						Yes<input id='alumni1' class='alumni_select' type='radio'  />
-						No<input id='alumni2' class='alumni_select' type='radio' checked='checked'/> 
+						<input id='alumni' type='checkbox'/>
 					</div>
 					<div class='col5'>Member Since: </div>
 					<div class='col5' id='since'>1927</div>
@@ -218,8 +214,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<div class='containerrow'>
 					<div class='col5'>Do you have a show?*:</div>
 					<div class='col5'>
-						Yes<input id='show1' class='show_select' type='radio'  />
-						No<input id='show2' class='show_select' type='radio' checked='checked'/> 
+						<input id='has_show' type='checkbox' >
 					</div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
@@ -242,13 +237,17 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 
 					
 					<div class='col1'>
-						<?php 
-						foreach($djland_interests as $key=>$interest){ 
-							echo "<div class='col3 text-right'>{$key}";
-							if($interest == 'other'){echo " <input id='{$interest}' placeholder='Enter interest'/>";}
-							else echo "<input type='checkbox' id='{$interest}'/>";
-							echo "</div>";
-							}?>
+						<?php foreach($djland_interests as $key=>$interest): ?> 
+						<div class='col3 text-right'>
+							<?php
+							echo $key; 
+							if($interest == 'other'): ?>
+							<input id='<?php= $interest ?>' placeholder='Enter interest'/>
+							<?php else: ?>
+							<input type='checkbox' id='<?php echo $interest; ?>'>
+							<?php endif; ?>
+						</div>
+						<?php endforeach; ?>
 					</div>
 				</div>
 				<hr>
@@ -271,6 +270,15 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				</div>
 				<hr>
 				<div class='containerrow'>
+					<div class='col1 text-left'>Training Completion Status:</div>
+					<?php 
+					foreach($djland_training AS $key=>$value){
+						echo "<div class='col5 text-right'>{$key} <input type='checkbox' id={$value}></div>";
+					}
+					?>
+				</div>
+				<hr>
+				<div class='containerrow'>
 					<div class='col1 text-left'>Permission Levels:</div>
 					<?php
 						foreach($djland_permission_levels as $key=>$value){
@@ -280,19 +288,19 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				</div>
 				<hr>
 				<div class='containerrow'>
-					<div class='col1'>
+					<div class='col1 text-center'>
 						Change Current Password: <input id='password' placeholder='Enter new password.'/> 
 					</div>
 				</div>
 
 				<hr>
 				<div class='containerrow'>
-					<div class='col1'>
+					<div class='col1 text-center'>
 						<button name='edit' class='member_submit red' disabled='true'>Form Not Complete</button>
 					</div>	
 				</div>
 				<div class='containerrow'>
-					<div class='col1'>
+					<div class='col1 text-center'>
 						*indicates a required field 
 					</div>
 				</div>
@@ -304,7 +312,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			<div class='col1'>
    				<h4>Yearly Report</h4>
    			</div>
-			<div class='col1'>
+			<div class='col1 text-center'>
 				<select class='year_select' name='report'>
 				</select>
 				<button class='member_submit' name='report'>Get Yearly Report</button>
@@ -372,7 +380,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    		<div id='email' class='membership grey clearfix'>
    			<div class='col1'>
    				<h4>Email List</h4>
-   			</div>	
+   			</div>
    			<ul id='membership_header' name='email' class='clean-list inline-list'>
    				<li>Generate List for paid members
    					<select id='email_select'>
@@ -404,9 +412,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
                     to<input type='text' id='to'>
    				</li>
    				<li>
-	   				<button class='member_submit' name='email'>Generate Email List</button>
+   					<button class='member_submit' name='email'>Generate Mailing List</button>
    				</li>
-   			</ul>
+   			</div>
    		</div>
    		<ul id='membership' >
 		</ul>

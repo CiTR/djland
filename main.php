@@ -1,11 +1,8 @@
 <?php
 session_start();
-
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
 ?>
-
-
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -14,6 +11,7 @@ require_once("headers/menu_header.php");
 	</head>
 	<body class='wallpaper'>
 		<?php print_menu(); ?>
+
 		<table width=100%% height=100%%>
 			<tr>
 				<td align=center>
@@ -23,6 +21,6 @@ require_once("headers/menu_header.php");
 						</h1>
 				</td>
 			</tr>
-		</table>");
+		</table>
 	</body>
 </html>
