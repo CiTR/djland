@@ -1,4 +1,4 @@
-<?php require("headers/db_header.php"); ?>
+<?php require_once("headers/db_header.php"); ?>
 
 <html>
 	<head>
@@ -90,10 +90,17 @@
 					<div class='col5'>
 						<select id='since'>
 							<?php 
+							
 							$year = idate('Y');
 							$year_end = 1925;
-							echo $year;
-							echo $year_end;
+							$today = date('m/d/Y',strtotime("today"));
+							$cutoff = date('09/31/'.$year);
+
+							//Check to see if we are in a new school year or not.
+							if(strtotime($today) < strtotime($cutoff)){
+								$year--;
+							}
+
 							for ($i=$year; $i > $year_end ; $i--) { 
 								$next_year = $i+1;
 								echo "<option value='".$i."/".$next_year."''>".$i."/".$next_year."</option>";
@@ -197,7 +204,7 @@
 						<div class='col3'><label for='photography'>Photography:</label><input type=checkbox id='photography'></div>
 						<div class='col3'><label for='digital_library'>Digital Library:</label><input type=checkbox id='digital_library'></div>
 						<div class='col3'><label for='tabling'>Tabling Events:</label><input type=checkbox id='tabling'></div>
-						<div class='col3'><label for='other'>Other:</label><input type=text id='other'></div>
+						<div class='col3'><label for='other'>Other:</label><input type=text id='other' maxlength='40'></div>
 					</div>
 				</div>
 				<hr>

@@ -79,7 +79,7 @@ input, select, textarea, option{
 #nav li, #tab-nav li{
 	float:left;
 	position:relative;
-	padding: 4px 10px 4px 10px;
+	padding: 4px 5px 4px 5px;
 	text-align:center;
 	margin-right:30px;
 	margin-top:7px;
@@ -108,7 +108,7 @@ input, select, textarea, option{
 	
 #nav li:hover{
 	border: 1px solid #555555;
-    padding: 4px 9px 4px 9px;
+    padding: 4px 4px 4px 4px;
     background: #F4F4F4;
     -moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
@@ -116,6 +116,7 @@ input, select, textarea, option{
 }
 #nav .nodrop,.drop, #tab-nav .nodrop,.drop {
 	right:8px;
+	cursor: pointer;
 }
 #nav .nodrop:hover {
 	-moz-border-radius: 5px 5px 5px 5px;
@@ -320,10 +321,7 @@ div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
 			/*	text-align:center;*/
 				}
 				
-				
-				form{
-	/*				text-align:center;*/
-					}
+
 				
 table#playsheet-table { 
 	width:880px; 
@@ -421,6 +419,51 @@ table { border-collapse: collapse; }
 	width:30px;
 }
 
+
+/*----------------------------*/
+/*--------CHARTING (OLD)------------*/
+/*----------------------------*/
+.chartBanner
+*{
+	background-color: #004080;
+}
+
+.chartSong
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartArtist
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartAlbum
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartShow
+{
+	float: left;
+	width: 300px;
+	position:relative;
+}
+.chartDate
+{
+	float: left;
+	width: 150px;
+	position:relative;
+}
+.chartCC
+{
+	float: left;
+	width:35px;
+	position:relative;
+}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
@@ -892,9 +935,11 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
  position:relative;
  width:750px;
  margin-left:10px;
+	 margin-bottom:10px;
  color:white;
  text-decoration:underline;
- background-color:#111144;
+	 cursor:default;
+	 font-size:1.7em;
  }
 .QAelement{
 width:750px;
@@ -902,16 +947,18 @@ margin-left:10px;
 position:relative;
 padding-top:5px;
 padding-bottom:5px;
-background-color:#000000;
+	cursor:default;
 }
 .QAanswer{
 position:relative;
 left:10px;
 right:10px;
-
+margin-left: 30px;
 width:705px;
 background-color:#222266;
 color:#BEBEBE;
+	cursor:default;
+	line-height:1.6em;
 }
 .QAquestion
 {
@@ -919,10 +966,17 @@ position:relative;
 left:10px;
 right:10px;
 width:705px;
-background-color:#111144;
 color:#F0F0F0;
-height:20px;
+height:auto;
+	margin-bottom:15px;
+	cursor:help;
 
+}
+.QAquestion:hover{
+	text-decoration: underline;
+}
+.QAanswer img {
+	padding:10px;
 }
  
 
@@ -1281,6 +1335,7 @@ width: 55px;
 div#ui-datepicker-div, div#up-datepicker-div * {
 	position:relative;
 	margin-top:-150px;
+	z-index:50 !important;
 }
 
 .invisible *{
@@ -1607,7 +1662,7 @@ max-width:120px;
 }
 
 div.adType, div.adType input{
-max-width:110px;
+max-width:80px;
 }
 input.adInput{
 
@@ -1620,7 +1675,7 @@ overflow-x: visible;
 div.adName, div.adName input{
 
 background-color:transparent;
-width:270px;
+width:330px;
 }
 
 .adName input{
@@ -1779,12 +1834,16 @@ span#show-percent{
   height: 1000px;
   margin-right: auto;
   margin-left: auto;
+	padding-top:10px;
+	margin-top:10px;
   border-right-width: 1px;
   border-left-width: 1px;
   border-right-style: solid;
   border-left-style: solid;
   border-right-color: #FFFFFF;
   border-left-color: #FFFFFF;
+	border-top-width: 1px;
+	border-top-style: solid;
 }
 
 
@@ -1878,3 +1937,11 @@ width:20px;
 height:20px;
 }
 
+
+
+.form_wrap{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
+}

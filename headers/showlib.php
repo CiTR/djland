@@ -13,7 +13,7 @@ class ShowLib {
 
 	function __construct($link) {
 		$this->mysqli_link = $link;
-		$this->curr_time = time();
+		$this->curr_time = get_time();
 		$this->curr_week = ShowTime::getWeekNum($this->curr_time);
 
 		// list of each show's time info
@@ -385,7 +385,7 @@ class Show {
 	public $id;
 	public $name;
 	public $host;
-	public $genre;
+	public $secondary_genre_tags;
 	public $show_desc;
 	public $img_url;
 	public $lang_default;
@@ -407,7 +407,7 @@ class Show {
 		$this->setVar($this->id, $show_r['id']);
 		$this->setVar($this->name, $show_r['name']);
 		$this->setVar($this->host, $show_r['host']);
-		$this->setVar($this->genre, $show_r['genre']);
+		$this->setVar($this->secondary_genre_tags, $show_r['secondary_genre_tags']);
 		$this->setVar($this->lang_default, $show_r['lang_default']);
 		$this->setVar($this->crtc_default, $show_r['crtc_default']);
 		$this->setVar($this->show_desc, $show_r['show_desc']);

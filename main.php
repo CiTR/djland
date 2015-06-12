@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require("headers/security_header.php");
-require("headers/menu_header.php");
+require_once("headers/security_header.php");
+require_once("headers/menu_header.php");
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
@@ -25,7 +25,7 @@ if (count($matches)>1){
 }
 
 
-print_menu2();
+print_menu();
 printf("<table width=100%% height=100%%><tr><td align=center>");
 
 printf("<h1>User: %s<br>Logged In</h1>", get_username());

@@ -4,7 +4,7 @@ if( isset($_POST['action'])){
 $action = $_POST['action'];
 }
 
-require("../headers/db_header.php");
+require_once("../headers/db_header.php");
 
 // DELETE ALL ADS
 /*
@@ -35,8 +35,7 @@ if($action=='save' && isset($_POST['ads'])){
 		foreach($oneShow[2] as $j => $showAdRow){
 					
 			$insert_q = "INSERT INTO adlog (time_block,time,type,name) VALUES ('".$showUnixTime."','".htmlentities($showAdRow['time'],ENT_QUOTES)."','".htmlentities($showAdRow['type'],ENT_QUOTES)."','".htmlentities($showAdRow['name'],ENT_QUOTES)."')";
-		//	$update_q = "UPDATE scheduled_ads SET sam_song_id_list='".$array[2]."' WHERE time_block=".$array[0];
-			
+
 			if ($result_ads = $db->query($insert_q)){ 
 				
 				echo $insert_q.'</br>';	
@@ -44,13 +43,12 @@ if($action=='save' && isset($_POST['ads'])){
 			}	else {
 				echo "did not insert anything, but here is the q: || ".$insert_q." ||";
 			}
-				
-	//	print($i.': '.$j.': '.$v.'.<br/>');
+
+
 	
 		}
 	
-	//$db->close();
-	
+
 	}
 
 }
