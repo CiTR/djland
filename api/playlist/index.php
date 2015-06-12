@@ -22,6 +22,7 @@ if (!$id) {
 $query = "SELECT
           playlists.id as playlist_id,
           playlists.show_id,
+		  platlisrs.show_name,
           playlists.start_time,
           playlists.end_time,
           GREATEST(playlists.edit_date, COALESCE(podcast_episodes.edit_date,'0000-00-00 00:00:00')) as edit_date,
@@ -32,7 +33,6 @@ $query = "SELECT
           podcast_episodes.summary as episode_description,
           podcast_episodes.title as episode_title,
           podcast_episodes.url as episode_audio
-
           FROM playlists
           join shows on shows.id = playlists.show_id
           LEFT JOIN hosts on hosts.id = playlists.host_id
