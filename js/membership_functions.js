@@ -136,22 +136,6 @@ function queryMembershipYears(member_id){
 		});	
 }
 
-function queryMembershipPriveleges(id){
-	assertTrue(id != null,"id is null");
-	var privileges = {"id":id}
-	$.ajax({
-		type:"GET",
-		url: "form-handlers/membership/permission.php",
-		data: {"action" : 'get', "type" : 'permission',"value":value},
-		dataType: "json",
-		async: true
-	}).success(function(data){
-	    //TODO: Create form hander, and return permissions array
-		
-	}).fail(function(){
-			
-	});
-}
 function loadYearSelect(){
 	var years = queryMembershipYears();
 	$.when(years).then(function(data){
@@ -256,6 +240,17 @@ function yearlyReport(year_callback){
 			});
 
 	});
+}
+
+function emailList(){
+	var email_value;
+	$('.email_select_value').each(function(e){
+		if($(this).is(':visible')){
+			email_value = $(this).val();
+		}
+	}); 
+	
+	console.log(email_value);
 }
 
 

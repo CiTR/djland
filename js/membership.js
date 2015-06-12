@@ -111,23 +111,25 @@ function add_handlers(){
 			case 'report':
 				yearlyReport();
 				break;
-			case 'mail':
-				var value = getVal('search_value');
-				manage_members(action,'generate',value);
+			case 'email':
+				emailList();
 				break;
 			default:
-				//console.log("something went wrong");
-				manage_members('init');
 				break;
 		}
 	});
 
-	//SEARCH TYPE LISTEN
+	//SEARCH TYPE LISTENER
 	$('#search_by').unbind().change( function(){
 		$('.search_value').addClass('hidden');
 		$('.search_value[name="'+getVal('search_by')+'"]').removeClass('hidden');
 	});
 
+	//EMAIL LIST TYPE LISTENER
+	$('#email_select').unbind().change( function(){
+		$('.email_select_value').addClass('hidden');
+		$('.email_select_value[name="'+getVal('email_select') +'"]').removeClass('hidden');
+	});
     //NOTE: the off/on listener style was the ONLY way this worked. Standard JQuery ".click( function ..." did not work
 
     

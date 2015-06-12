@@ -1440,12 +1440,36 @@ width: 55px;
 	width:45px;
 }
 
-
-div#ui-datepicker-div, div#up-datepicker-div * {
-	position:relative;
-	margin-top:-100px;
+div#ui-datepicker-div{
+	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
+	display:inline-block;
+		position:relative;
+	max-width:200px;
+	max-height:200px;
+	margin-top:0px;
 	z-index:50 !important;
 }
+
+div.ui-datepicker{
+	width:100%;
+	background:grey;
+}
+
+.ui-datepicker-header{
+	width:100%;
+}
+.ui-datepicker-next{
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+.ui-datepicker-prev{
+	text-align:left;
+	display:inline-block;
+	width:100px;
+}	
 
 .invisible *{
 display:none;

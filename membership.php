@@ -10,6 +10,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
 		<link rel=stylesheet href='css/style.css' type='text/css'>
+		
 
 		<title>DJLAND | Membership</title>
 
@@ -44,7 +45,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<li class = 'nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
 				<li class = 'nodrop inactive-tab member_action' name='report'>Report</li>
 			<?php endif; ?>
-			<li class = 'nodrop inactive-tab member_action' id='mail' value='mail'>Send Emails</li>
+			<li class = 'nodrop inactive-tab member_action' name='email'>Send Emails</li>
 		</ul> 
 		<?php if(permission_level() >= $djland_permission_levels['staff']): ?>
 
@@ -373,19 +374,41 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    				<h4>Email List</h4>
    			</div>	
    			<ul id='membership_header' name='email' class='clean-list inline-list'>
-   				<li>Interested in:
-   					<select>
+   				<li>Generate List for paid members
+   					<select id='email_select'>
+   						<option value='interest'>that are interested in</option>
+   						<option value='member_type'>of type</option>
+   					</select>
+				</li>	
+   				<li>
+   					<select name='interest' class='email_select_value'>
    						<?php
    							foreach($djland_interests as $key=>$value){
    								echo "<option value='{$value}'>{$key}</option>";
    							}
    						?>
    					</select>
+   					<select name='member_type' class='email_select_value hidden'>
+   						<?php
+   							foreach($djland_member_types as $key=>$value){
+   								echo "<option value='{$value}'>{$key}</option>";
+   							}
+   						?>
+   					</select>
+   				</li>
+   				<li>
+   					<select class='year_select' name='email'>
+					</select>
+   	   				Use date range instead of membership year<input type='checkbox' id='email_date_range'>
+   	   				from<input type='text' id='from'>
+                    to<input type='text' id='to'>
+   				</li>
+   				<li>
+	   				<button class='member_submit' name='email'>Generate Email List</button>
    				</li>
    			</ul>
    		</div>
-   		<div id="data" style="display:none" ></div>
-		<ul id='membership' >
+   		<ul id='membership' >
 		</ul>
 	</body>
 </html>

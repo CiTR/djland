@@ -46,7 +46,8 @@ if( permission_level() >= $djland_permission_levels['staff']) {
     }else if(isset($_GET['year'])){
         $query.=" WHERE membership_year=:year";
     }else{
-        $query.=" WHERE my.membership_year=(SELECT MAX(membership_year) FROM membership_years WHERE member_id = m.id)";
+        $query.=" AND membership_year=`2015/2016`";
+        //$query.=" WHERE my.membership_year=(SELECT MAX(membership_year) FROM membership_years WHERE member_id = m.id)";
     }
     //Do we want all members, paid, or unpaid?
     if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){

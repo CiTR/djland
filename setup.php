@@ -61,7 +61,7 @@ $setup_query ['membership_years']= "CREATE TABLE IF NOT EXISTS `membership_years
   `dj` varchar(16) DEFAULT '0',
   `other` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`member_id`,`membership_year`),
-  CONSTRAINT `id` FOREIGN KEY (`member_id`) REFERENCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`member_id`) REFERENCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ";
 
@@ -74,11 +74,11 @@ $setup_query ['user']= "CREATE TABLE IF NOT EXISTS `user` (
   `status` char(20) NOT NULL DEFAULT '0',
   `create_date` datetime DEFAULT NULL,
   `create_name` char(30) DEFAULT NULL,
-  `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `edit_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `edit_name` char(30) DEFAULT NULL,
   `login_fails` mediumint(9) DEFAULT '0',
   PRIMARY KEY (`id`,`member_id`),
-  CONSTRAINT `id` FOREIGN KEY (`member_id`) REFERENCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`member_id`) REFERENCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 
@@ -92,7 +92,7 @@ $setup_query ['group_members']= "CREATE TABLE IF NOT EXISTS `group_members` (
   `dj` varchar(1) DEFAULT '0',
   `member` varchar(1) DEFAULT '0',
   PRIMARY KEY (`user_id`),
-  CONSTRAINT `id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
 $setup_query ['library']= "CREATE TABLE IF NOT EXISTS `library` (
@@ -110,54 +110,13 @@ $setup_query ['library']= "CREATE TABLE IF NOT EXISTS `library` (
   `title` tinytext,
   `label` tinytext,
   `genre` tinytext,
-  `added` date DEFAULT NULL,
-  `modified` date NOT NULL DEFAULT CURRENT_DATE ON UPDATE CURRENT_DATE,
+  `added` date NOT NULL DEFAULT CURRENT_DATE,
+  `modified` timestamp DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  CREATE INDEX `artist` ON (artist),
-  CREATE INDEX `title` ON (title),
-  CREATE INDEX `label` ON (label),
+  INDEX `artist` ON (artist),
+  INDEX `title` ON (title),
+  INDEX `label` ON (label),
   FULLTEXT KEY `text_desc` (`artist`,`title`,`label`,`genre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
-";
-
-$setup_query ['playsheets']="CREATE TABLE IF NOT EXISTS `playsheets` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `show_id` int(10) unsigned DEFAULT NULL,
-  `host_id` int(10) unsigned DEFAULT NULL,
-  `start_time` datetime DEFAULT NULL,
-  `end_time` time DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `create_name` tinytext,
-  `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `edit_name` tinytext,
-  `spokenword` mediumtext,
-  `spokenword_duration` int(11) DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL,
-  `unix_time` int(11) DEFAULT NULL,
-  `star` tinyint(4) DEFAULT NULL,
-  `crtc` int(11) DEFAULT NULL,
-  `lang` text,
-  `type` tinytext,
-  PRIMARY KEY (`id`,`show_id`,`host_id`),
-  CONSTRAINT `id` FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `id` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CREATE INDEX `show_idx` ON (show_id),
-  CREATE INDEX `host_idx` ON (host_id),
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
-";
-
-$setup_query ['adlog']= "CREATE TABLE IF NOT EXISTS `adlog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `playsheet_id` int(11) DEFAULT NULL,
-  `num` smallint(6) DEFAULT NULL,
-  `time` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `type` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `name` text CHARACTER SET utf8,
-  `played` tinyint(4) DEFAULT NULL,
-  `sam_id` int(11) DEFAULT NULL,
-  `time_block` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`,`playsheet_id`),
-  CONSTRAINT `id` FOREIGN KEY (`playsheet_id`) REFERENCES `playsheets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 
@@ -168,13 +127,77 @@ $setup_query ['hosts']= "CREATE TABLE IF NOT EXISTS `hosts` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 
-$setup_query['member_show'] = "CREATE TABLE IF NOT EXISTS `member_show` (
-  `member_id` int(11) unsigned NOT NULL,
-  `show_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`member_id`,`show_id`),
-  CONSTRAINT `id` FOREIGN KEY (`member_id`) REFERNCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-"
+$setup_query ['shows']= "CREATE TABLE IF NOT EXISTS `shows` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` tinytext CHARACTER SET utf8,
+  `host_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `weekday` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `start_time` time NOT NULL DEFAULT '00:00:00',
+  `end_time` time NOT NULL DEFAULT '00:00:00',
+  `pl_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `cc_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `indy_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `fem_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `last_show` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_name` tinytext CHARACTER SET utf8 NOT NULL,
+  `edit_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `edit_name` tinytext CHARACTER SET utf8,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `crtc_default` int(8) NOT NULL DEFAULT '20',
+  `lang_default` tinytext CHARACTER SET utf8,
+  `genre` tinytext CHARACTER SET utf8,
+  `website` tinytext CHARACTER SET utf8,
+  `rss` tinytext CHARACTER SET utf8,
+  `show_desc` text CHARACTER SET utf8,
+  `notes` text CHARACTER SET utf8,
+  `show_img` tinytext CHARACTER SET utf8,
+  `sponsor_name` tinytext CHARACTER SET utf8,
+  `sponsor_url` tinytext CHARACTER SET utf8,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`host_id`) REFERENCES `hosts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `host_idx` ON (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+";
+
+$setup_query ['songs']= "CREATE TABLE IF NOT EXISTS `songs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `artist` tinytext,
+  `title` tinytext,
+  `song` tinytext,
+  `composer` tinytext,
+  PRIMARY KEY (`id`),
+  INDEX `artist_idx` ON (artist),
+  INDEX `title_idx` ON (title),
+  INDEX `song_idx` ON (song) 
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+";
+
+$setup_query ['playsheets']="CREATE TABLE IF NOT EXISTS `playsheets` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `show_id` int(10) unsigned DEFAULT NULL,
+  `host_id` int(10) unsigned DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `create_date` datetime DEFAULT CURRENT_DATE,
+  `create_name` tinytext,
+  `edit_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `edit_name` tinytext,
+  `spokenword` mediumtext,
+  `spokenword_duration` int(11) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL,
+  `unix_time` int(11) DEFAULT NULL,
+  `star` tinyint(4) DEFAULT NULL,
+  `crtc` int(11) DEFAULT NULL,
+  `lang` text,
+  `type` tinytext,
+  PRIMARY KEY (`id`,`show_id`,`host_id`),
+  FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `show_idx` ON (show_id),
+  INDEX `host_idx` ON (host_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+";
 
 $setup_query ['playitems']= "CREATE TABLE IF NOT EXISTS `playitems` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -187,7 +210,7 @@ $setup_query ['playitems']= "CREATE TABLE IF NOT EXISTS `playitems` (
   `is_yourown` tinyint(1) unsigned DEFAULT '0',
   `is_indy` tinyint(1) unsigned DEFAULT '0',
   `is_fem` tinyint(3) unsigned DEFAULT '0',
-  `show_date` date DEFAULT NULL,
+  `show_date` date NOT NULL DEFAULT CURRENT_DATE,
   `duration` tinytext,
   `is_theme` tinyint(3) unsigned DEFAULT NULL,
   `is_background` tinyint(3) unsigned DEFAULT NULL,
@@ -201,11 +224,36 @@ $setup_query ['playitems']= "CREATE TABLE IF NOT EXISTS `playitems` (
   `insert_song_length_minute` tinyint(4) DEFAULT NULL,
   `insert_song_length_second` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CREATE INDEX `playitem_idx` ON (`id`,`show_id`,`playsheet_id`,`song_id`),
+  INDEX `playitem_idx` ON (`id`,`show_id`,`playsheet_id`,`song_id`),
   CONSTRAINT `id` FOREIGN KEY (`playsheet_id`) REFERENCES `playsheets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `id` FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `id` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `id` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+";
+
+$setup_query ['adlog']= "CREATE TABLE IF NOT EXISTS `adlog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playsheet_id` bigint(20) DEFAULT NULL,
+  `num` smallint(6) DEFAULT NULL,
+  `time` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `type` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `name` text CHARACTER SET utf8,
+  `played` tinyint(4) DEFAULT NULL,
+  `sam_id` int(11) DEFAULT NULL,
+  `time_block` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`,`playsheet_id`),
+  FOREIGN KEY (`playsheet_id`) REFERENCES `playsheets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+";
+
+
+
+$setup_query['member_show'] = "CREATE TABLE IF NOT EXISTS `member_show` (
+  `member_id` int(11) unsigned NOT NULL,
+  `show_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`member_id`,`show_id`),
+  FOREIGN KEY (`member_id`) REFERNCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ";
 
 $setup_query ['scheduled_ads']= "CREATE TABLE IF NOT EXISTS `scheduled_ads` (
@@ -229,48 +277,15 @@ $setup_query ['show_times']= "CREATE TABLE IF NOT EXISTS `show_times` (
   `end_time` time NOT NULL,
   `alternating` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`show_id`,`start_day`,`start_time`,`end_day`,`end_time`,`alternating`),
-  CREATE INDEX `start_index` ON (start_day,start_time),
-  CREATE INDEX `end_index` ON (end_day,end_time),
+  INDEX `start_index` ON (start_day,start_time),
+  INDEX `end_index` ON (end_day,end_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
-$setup_query ['shows']= "CREATE TABLE IF NOT EXISTS `shows` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` tinytext CHARACTER SET utf8,
-  `host_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `weekday` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `start_time` time NOT NULL DEFAULT '00:00:00',
-  `end_time` time NOT NULL DEFAULT '00:00:00',
-  `pl_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `cc_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `indy_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `fem_req` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `last_show` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `create_name` tinytext CHARACTER SET utf8 NOT NULL,
-  `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `edit_name` tinytext CHARACTER SET utf8,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `crtc_default` int(8) NOT NULL DEFAULT '20',
-  `lang_default` tinytext CHARACTER SET utf8,
-  `genre` tinytext CHARACTER SET utf8,
-  `website` tinytext CHARACTER SET utf8,
-  `rss` tinytext CHARACTER SET utf8,
-  `show_desc` text CHARACTER SET utf8,
-  `notes` text CHARACTER SET utf8,
-  `show_img` tinytext CHARACTER SET utf8,
-  `sponsor_name` tinytext CHARACTER SET utf8,
-  `sponsor_url` tinytext CHARACTER SET utf8,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `id` FOREIGN KEY (`host_id`) REFERENCES `hosts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-  CREATE INDEX `host_idx` ON ('name)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
-";
 $setup_query ['socan']= "CREATE TABLE IF NOT EXISTS `socan` (
-  `idSocan` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `socanStart` date DEFAULT NULL,
   `socanEnd` date DEFAULT NULL,
-  PRIMARY KEY (`idSocan`),
-  UNIQUE KEY `idSocan_UNIQUE` (`idSocan`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table for socan'
 ";
 $setup_query ['social']= "CREATE TABLE IF NOT EXISTS `social` (
@@ -280,45 +295,49 @@ $setup_query ['social']= "CREATE TABLE IF NOT EXISTS `social` (
   `short_name` tinytext CHARACTER SET utf8,
   `unlink` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`show_id`,`social_name`,`social_url`)
+  FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-";
-$setup_query ['songs']= "CREATE TABLE IF NOT EXISTS `songs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `artist` tinytext,
-  `title` tinytext,
-  `song` tinytext,
-  `composer` tinytext,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `id_2` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 $setup_query ['types_format']= "CREATE TABLE IF NOT EXISTS `types_format` (
   `id` int(11) DEFAULT '0',
   `name` tinytext,
   `sort` int(11) DEFAULT NULL,
-  UNIQUE KEY `id` (`id`),
-  KEY `id_2` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
+
+
+//Setting the initial membership year members must have paid for to log in.
+$year = idate('Y');
+$today_date = date('m/d/Y',strtotime("today"));
+//Check to see if we are in a this years membership year or not.
+if(strtotime($today-date) < strtotime($cutoff_date)){
+    $year--;
+}
+$membership_year = $year."/".($year+1);
+
+
 $setup_query ['year_rollover'] = "CREATE TABLE IF NOT EXISTS `year_rollover` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
-  PRIMARY KEY (`id`))";
+  `membership_year` VARCHAR(16) NOT NULL DEFAULT {$membership_year},
+  PRIMARY KEY (`id`) 
+  )
+  ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 
 $worked = false;
  foreach($setup_query as $i => $query) {
     if ($db->query($query) ){
         $worked = true;
-        echo '<h4>table was created (or already existed): '.$i;
+        echo '<h4>table was created (or already existed): '.$i."<h4>";
 
     }else {
         $worked = false;
-        echo '<h2>something went wrong while creating '.$i;
+        echo '<h2>something went wrong while creating '.$i ."</h2>";
+        echo $db->error; 
     }
 }
-
+$db->close();
 $init_query = array();
 
 
