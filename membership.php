@@ -272,7 +272,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<div class='containerrow'>
 					<div class='col1 text-left'>Training Completion Status:</div>
 					<?php 
-					foreach($djland_training AS $key=>$value){
+					foreach($djland_training AS $key){
 						echo "<div class='col5 text-right'>{$key} <input type='checkbox' id={$value}></div>";
 					}
 					?>

@@ -12,17 +12,14 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
         case "GET":
             //Get Permissions for a user
             if(isset($_GET['type']) && isset($_GET['value'])){
-                $query = isset($_GET['from']) && isset($_GET['to']) ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE "
-                
-
+                $query = isset($_GET['from']) && isset($_GET['to']) ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE m.joined>=':from' AND m.joined <=':to'" : "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE"; 
+              
                 switch($_GET['type']){
-                    $query = "SELECT email"
-
                     case 'interest':
-                        $query = 
+                        $query .= " :value='1'";
                         break;
                     case 'member_type':
-                        
+                        $query .= " member_type=':value'";
                         break;
                     default:
                         http_response_code(400);
@@ -36,8 +33,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     $statement = $pdo_db->prepare($insert_query);
                     
                     //Bind variables to values in query
-                    $statement->bindValue(":password",password_hash($_POST['password'],PASSWORD_DEFAULT));     
-                    $statement->bindValue(":member_id",$_POST['member_id']);
+                    $statement->bindValue(":value",$_GET['value']);     
                     //Try to execute statement
                     try{
                         $statement->execute();

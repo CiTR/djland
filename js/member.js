@@ -169,6 +169,7 @@ Member.prototype = {
 		}
 		setVal(m.other,'other');
 	},displayPermissions:function(){
+		console.log(permission_levels);
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);
 		}
