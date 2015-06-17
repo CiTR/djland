@@ -51,6 +51,7 @@ function permission_level(){
 	foreach($permissions as $level => $value){
 		if( $value == '1'){
 			$level = $djland_permission_levels[$level];
+			break;
 		}	
 	}
 
