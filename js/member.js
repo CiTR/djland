@@ -81,7 +81,7 @@ Member.prototype = {
 	getInfo:function(){
 		for(var field in this.member_info){
 			this['member_info'][field] = get(field);
-			console.log(field + get(field));
+			
 		}
 		/*
 
