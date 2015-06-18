@@ -116,6 +116,10 @@ input, select, textarea, option{
 .text-center{
 	text-align: center;
 }
+.center{
+	margin-left:auto;
+	margin-right:auto;
+}
 .clearfix:after { 
    content: " ";
    display: block; 
@@ -745,8 +749,8 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	font-size:70%;
 }
 .largeinput{
-    float:left;
-	width:65%;
+
+	width:750px;
 	max-width:83%;
 	height:50px;
 	max-height:75px;

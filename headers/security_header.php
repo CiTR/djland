@@ -46,27 +46,32 @@ function permission_level(){
 	global $db, $sv_username, $djland_permission_levels;
 	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid WHERE u.username='".$_SESSION['sv_username']."'";
 	$result = $db->query($query);
-	$permissions = $result->fetch_object();
-    $level = -1; //failure return value
-	foreach($permissions as $level => $value){
-		if( $value == '1'){
-			$level = $djland_permission_levels[$level];
-		}	
-	}
+	$level = -1; //failure return value
+	if($result){
+		$permissions = $result->fetch_object();
+	    
+		foreach($permissions as $level => $value){
+			if( $value == '1'){
+				$level = $djland_permission_levels[$level];
+				break;
+			}	
+		}
 
-    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
-        $level = 0;
-    }
+	    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
+	        $level = 0;
+	    }
+	}
+	
 
     return $level;
 }
 
 function is_paid(){
     global $pdo_db;
+    //Session contains member id.
     $query = "SELECT paid FROM membership_years WHERE member_id=:member_id ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
-
     try{
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_NUM);

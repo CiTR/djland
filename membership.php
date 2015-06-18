@@ -105,7 +105,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					</li>
 			</ul>
 
-			<div id='membership_result' class='overflow_auto height_cap'>
+			<div id='membership_result' class='overflow_auto height_cap' name='search'>
 				<div id='search_loading' class='col1 text-center' name='search'>Loading...</div>
 				<table id='membership_table' name='search'>
 					<tr id='headerrow' class='hidden'><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Staff Comments</th><th><button id='delete_button'>Delete</button></th></tr>
@@ -382,7 +382,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    				<h4>Email List</h4>
    			</div>
    			<ul id='membership_header' name='email' class='clean-list inline-list'>
-   				<li>Generate List for paid members
+   				<li>Get paid members
    					<select id='email_select'>
    						<option value='interest'>that are interested in</option>
    						<option value='member_type'>of type</option>
@@ -405,19 +405,28 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    					</select>
    				</li>
    				<li>
+   					for 
    					<select class='year_select' name='email'>
 					</select>
+				</li>
+				<li>
    	   				Use date range instead of membership year<input type='checkbox' id='email_date_range'>
-   	   				from<input type='text' id='from'>
-                    to<input type='text' id='to'>
-   				</li>
+   	   			</li>
    				<li>
-   					<button class='member_submit' name='email'>Generate Mailing List</button>
+   					<button class='member_submit' name='email'>Get List</button>
    				</li>
-   			</div>
+   	   			<li>
+   	   				<div id='email_date_container' class='hidden'>
+   	   					from<input type='text' id='from'>
+                    	to<input type='text' id='to'>
+                    </div>
+   				</li>
+   			<div id='membership_result' name='email' class='containerrow'>
+   				<br/>
+   				<textarea id='email_list' class='largeinput center' placeholder='Email List Will Be Generated Here'></textarea>
+			</div>
    		</div>
-   		<ul id='membership' >
-		</ul>
+
 	</body>
 </html>
 <?php }else{

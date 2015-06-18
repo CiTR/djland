@@ -25,8 +25,9 @@ function print_menu(){
 	<ul id=nav>
 		
 		<?php 
-		echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
-		if((permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership']): ?>
+			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
+			if( (permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership'] ): 
+		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php endif; ?>
 		<li class=drop><a href="library.php">Library</a>

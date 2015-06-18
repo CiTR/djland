@@ -101,6 +101,14 @@ $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
 
 //default permission levels
 
+$djland_membership_year_date =  $cutoff_date = date('04/31/'.idate('Y'));
+
+$djland_training = array(
+	'Technical'=>'technical_training',
+	'Production'=>'production_training',
+	'Programming'=>'programming_trianing',
+	'Spoken Word'=>'spoken_word_training'
+	);
 $djland_permission_levels = array(
     'operator'=> '6',
     'administrator'=> '5',
@@ -130,7 +138,8 @@ $djland_interests = array(
 $djland_member_types = array(
 	'UBC Student'=>'Student',
 	'Community Member'=>'Community',
-	'Staff'=>'Staff');
+	'Staff'=>'Staff',
+	'Lifetime'=>'Lifetime');
 $djland_program_years = array(
 	'1'=>'1',
 	'2'=>'2',
@@ -176,6 +185,7 @@ $djland_provinces = array(
 	'QUE',
 	'SASK',
 	'YUK');
+
 
 
 // debug time operations? leave false unless you
