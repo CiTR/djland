@@ -99,6 +99,26 @@ $queries = array(
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
                                 ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;"
+    'rename userid to id' =>    "BEGIN TRANSACTION;
+                                    ALTER TABLE `group_members` 
+                                        DROP FOREIGN KEY `user_id`;
+                                    ALTER TABLE `citr_dev`.`group_members` 
+                                        DROP INDEX `userid_idx`;
+                                    ALTER TABLE `citr_live`.`user` 
+                                        CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
+                                    ALTER TABLE `citr_dev`.`group_members` 
+                                        ADD INDEX `user_id_idx` (`user_id` ASC);
+                                    ALTER TABLE `citr_dev`.`group_members` 
+                                        ADD CONSTRAINT `user_id`
+                                        FOREIGN KEY (`user_id`)
+                                        REFERENCES `citr_dev`.`user` (`id`)
+                                            ON DELETE CASCADE
+                                            ON UPDATE CASCADE;
+
+
+
+
+"
 
 
 );

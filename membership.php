@@ -272,7 +272,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<div class='containerrow'>
 					<div class='col1 text-left'>Training Completion Status:</div>
 					<?php 
-					foreach($djland_training AS $key){
+					foreach($djland_training AS $key=>$value){
 						echo "<div class='col5 text-right'>{$key} <input type='checkbox' id={$value}></div>";
 					}
 					?>
@@ -382,7 +382,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    				<h4>Email List</h4>
    			</div>
    			<ul id='membership_header' name='email' class='clean-list inline-list'>
-   				<li>Generate List for paid members
+   				<li>Get paid members
    					<select id='email_select'>
    						<option value='interest'>that are interested in</option>
    						<option value='member_type'>of type</option>
@@ -405,14 +405,21 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    					</select>
    				</li>
    				<li>
+   					for 
    					<select class='year_select' name='email'>
 					</select>
+				</li>
+				<li>
    	   				Use date range instead of membership year<input type='checkbox' id='email_date_range'>
-   	   				from<input type='text' id='from'>
-                    to<input type='text' id='to'>
-   				</li>
+   	   			</li>
    				<li>
-   					<button class='member_submit' name='email'>Generate Mailing List</button>
+   					<button class='member_submit' name='email'>Get List</button>
+   				</li>
+   	   			<li>
+   	   				<div id='email_date_container' class='hidden'>
+   	   					from<input type='text' id='from'>
+                    	to<input type='text' id='to'>
+                    </div>
    				</li>
    			</div>
    		</div>

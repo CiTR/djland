@@ -61,10 +61,10 @@ function get(target_id,target_class,target_name){
 			break;
 		case 'SELECT':
 		case 'TEXTAREA':
-			target.val();
+			return target.val();
 			break;
 		default:
-			target.val();
+			return target.val();
 			break;
 	}
 	return result;
@@ -325,12 +325,29 @@ function yearlyReport(year_callback){
 }
 
 function emailList(){
+
 	var email_value;
 	$('.email_select_value').each(function(e){
 		if($(this).is(':visible')){
 			email_value = $(this).val();
 		}
 	}); 
+	console.log(get('email_select'));
+	var request = $.ajax({
+		type:"GET",
+        url: "form-handlers/membership/email_list.php",
+        data: {"type" : get('email_select'),'value': email_value, "year":get(null,'year_select','email'),"from":get('from'),"to":get('to') },
+        dataType: "json",
+        async: true
+	});
+
+	$.when(request).then(
+		function(reply){
+			console.log(reply);
+		},
+		function(error){
+			console.log(error[0]);
+		});
 	
 	console.log(email_value);
 }

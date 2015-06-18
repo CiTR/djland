@@ -15,6 +15,8 @@ window.setInterval(checkBlocking,1000);
 
 function add_handlers(){
 
+
+	//This makes page printer/user friendly and toggles on the button trigger
 	$('#print_friendly').on('click',function(element){
 		if(!$(this).hasClass('print_friendly')){
 			$(this).text('Normal View');
@@ -72,10 +74,13 @@ function add_handlers(){
 		$('.membership#view').show();
     });
 
+
+    //Listener for adding 'updated' to allow only updated comments to be submitted for saving
     $('#membership_table').off('keyup','.staff_comment').on('keyup','.staff_comment',function(element){
     	$(this).addClass('updated');
     });
 
+    //Listener for saving comments
     $('#search').off('click','#save_comments').on('click','#save_comments',function(element){
     	saveComments();
     });	
@@ -118,6 +123,12 @@ function add_handlers(){
 				break;
 		}
 	});
+
+	//Email calendar container toggle
+	$('#email_date_range').unbind().click( function(){
+		$('#email_date_container').toggleClass('hidden');
+	});
+
 
 	//SEARCH TYPE LISTENER
 	$('#search_by').unbind().change( function(){

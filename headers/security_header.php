@@ -64,10 +64,9 @@ function permission_level(){
 
 function is_paid(){
     global $pdo_db;
-    $query = "SELECT paid FROM membership_years WHERE member_id=:member_id ORDER BY membership_year DESC";
+    $query = "SELECT paid FROM membership_years AS my INNER JOIN user as u ON my.member_id = u.member_id WHERE u.id=:user_id ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
-
     try{
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_NUM);
