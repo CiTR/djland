@@ -28,7 +28,7 @@
 			<h1 id="title"> CiTR Member Settings </h1>
             <h4 id="subtitle"></h4>
 			<div class="col1"><button id="renew">Renew Membership Form</button></div>
-   			<div id='member_loading' class='col1'>Loading...</div>
+   			<div id='member_loading' name='view' class='col1'>Loading...</div>
 			<div id='member_result' class = 'container hidden'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username: </div>
@@ -144,12 +144,17 @@
 				<div class='containerrow'>
 					<div class='col6'>Interests:</div><select id ='membership_year' class='hidden'></select> 
 					<div class='span3col4'>
-						<?php 
-						foreach($djland_interests as $key=>$interest){ 
-							echo "<div class='col3'>{$key}";
-							if($interest == 'other'){echo " <input id='{$interest}' placeholder='Enter interest'/>";}
-							echo "<input type='checkbox' class='renew' id='{$interest}'/></div>";
-							}?>
+						<?php foreach($djland_interests as $key=>$interest): ?> 
+						<div class='col3 text-right'>
+							<?php
+							echo $key; 
+							if($interest == 'other'): ?>
+							<input id='<?php echo $interest ?>' placeholder='Enter interest'/>
+							<?php else: ?>
+							<input type='checkbox' id='<?php echo $interest; ?>'>
+							<?php endif; ?>
+						</div>
+						<?php endforeach; ?>
 					</div>
 				</div>
 				<hr>

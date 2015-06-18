@@ -137,7 +137,9 @@ function renew_membership_form(){
     var date = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
     var exists = false;
     $('#membership_year option').each(function(){
+        console.log(this.value + " ?=" +date);
         if (this.value == date) {
+            
             exists = true;
             return false;
         }
@@ -156,7 +158,7 @@ function renew_membership_form(){
             }
         });
     }else{
-        Alert("You have already renewed for the "+date+" membership year!");
+        alert("You have already renewed for the "+date+" membership year!");
     } 
 
 }

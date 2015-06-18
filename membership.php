@@ -94,7 +94,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 							<option value='id'>Join Date</option>
 							<option value='lastname'>Lastname</option>
 							<option value='firstname'>Firstname</option>
-							<option value='type'>Member Type</option>
+							<option value='member_type'>Member Type</option>
 						</select>
 					</li>
 					<li>
@@ -242,7 +242,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 							<?php
 							echo $key; 
 							if($interest == 'other'): ?>
-							<input id='<?php= $interest ?>' placeholder='Enter interest'/>
+							<input id='<?php echo $interest ?>' placeholder='Enter interest'/>
 							<?php else: ?>
 							<input type='checkbox' id='<?php echo $interest; ?>'>
 							<?php endif; ?>

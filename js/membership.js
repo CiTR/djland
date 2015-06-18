@@ -4,7 +4,14 @@ window.myNameSpace = window.myNameSpace || { };
 //PAGE CREATION
 $(document).ready ( function() {
 	var year_callback = loadYearSelect();
-	displayMemberList();
+
+	$.when(year_callback).then(
+		function(){
+			displayMemberList("name","","both",get(undefined,'year_select','search'),'id');
+		},function(){	
+
+		});
+	//displayMemberList();
 	loadMember(1);
 
 	add_handlers();	

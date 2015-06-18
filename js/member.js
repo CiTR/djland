@@ -81,43 +81,7 @@ Member.prototype = {
 	getInfo:function(){
 		for(var field in this.member_info){
 			this['member_info'][field] = get(field);
-			console.log(field + get(field));
 		}
-		/*
-
-
-		for(var field in this.member_info){
-				set(this['member_info'][field],field);
-			}
-		this['member_info'].firstname = getText('firstname');
-		this['member_info'].lastname = getText('lastname');
-		this['member_info'].address = getVal('address');
-		this['member_info'].city = getVal('city');
-		this['member_info'].province = getSelect('province');
-		this['member_info'].postalcode = getVal('postalcode');
-		this['member_info'].canadian_citizen = getRadio('can');
-		this['member_info'].alumni = getRadio('alumni');
-		this['member_info'].since = getText('since');
-		this['member_info'].is_new = getVal('is_new');
-		this['member_info'].member_type = getVal('member_type');
-		if(this['member_info'].member_type == "Student"){
-			this['member_info'].faculty = getVal('faculty');
-			if(this['member_info'].faculty == 'Other'){
-				this['member_info'].faculty = getVal('faculty2');
-			}
-			this['member_info'].schoolyear = getVal('schoolyear');
-			this['member_info'].student_no = getVal('student_no');
-			this['member_info'].integrate = getCheckbox('integrate');
-		}
-		this['member_info'].has_show = getRadio('show');
-		this['member_info'].show_name = getVal('show_name');
-		this['member_info'].email = getVal('email');
-		this['member_info'].primary_phone = getVal('primary_phone');
-		this['member_info'].secondary_phone = getVal('secondary_phone');
-		this['member_info'].about = getVal('about');
-		this['member_info'].skills = getVal('skills');
-		this['member_info'].exposure = getVal('exposure');
-		this['member_info'].comments = getVal('comments');*/
 	},
 	getInterests:function(){
 		var membership_year = getVal('membership_year');
@@ -162,12 +126,15 @@ Member.prototype = {
 
 		m=this.membership_years[year];
 		
-		setVal(year,'membership_year');
 		for(var interest in interests){
-			if(interests[interest] != 'other' && interests[interest] != 'membership_year');
-			setCheckbox(m[interests[interest]],interests[interest]);
+			if(interest != 'Other' && interest != 'membership_year'){ 
+				setCheckbox(m[interests[interest]],interests[interest]); 
+			}
+			else {
+				setVal(m['other'],interests[interest]);			
+			}
 		}
-		setVal(m.other,'other');
+		
 	},displayPermissions:function(){
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);

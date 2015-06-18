@@ -23,14 +23,11 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                         SUM(m.alumni = '1') AS alumni";
 
                 foreach($djland_interests AS $interest){
-                    if($interest !='other') $query.=" ,SUM(my.{$interest} = '1') AS report_{$interest}";
-                    else $query.=" ,SUM(my.{$interest} = '1') AS report_{$interest}";
+                    if($interest !='other') $query.=" ,CASE WHEN SUM(my.{$interest} = '1') IS NULL THEN 0 ELSE SUM(my.{$interest} = '1') END AS report_{$interest}";
+                    else $query.=" ,CASE WHEN SUM(my.{$interest}) IS NULL THEN 0 ELSE SUM(my.{$interest} IS NOT NULL) END AS report_{$interest}";
                 }
                 $query .= " FROM membership AS m INNER JOIN membership_years as my ON m.id = my.member_id WHERE my.membership_year=:year AND paid='1'";
                         
-
-               
-
                 $get_total = $pdo_db->prepare($total);
                 $get_total->bindValue(':year',$_GET['year']);
 

@@ -15,59 +15,73 @@ if( permission_level() >= $djland_permission_levels['staff']) {
         case "GET":
             $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";  
 
-            //Are we search_bying results? By: Name, Interest, Member_type
-            if(isset($_GET['search_by']) && isset($_GET['value'])){
-                $query .= " WHERE";
+            if(isset($_GET['search_by'])){
                 switch($_GET['search_by']){
                     case 'name':
-                        $keywords = explode(" ",$_GET['value']);
-                        $size = sizeof($keywords);
-                        if($size == 2){
-                            $query.=" m.firstname LIKE :value0 AND m.lastname LIKE :value1";
-                        }else{
-                            for($i = 0; $i < $size; $i++){
-                                if($i>0) $query.= " OR";
-                                $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
-                            }   
+                        if($_GET['value'] != "" && isset($_GET['value'])){
+                            $keywords = explode(" ",$_GET['value']);
+                            $size = sizeof($keywords);
+                            if($size == 2){
+                                $query.=" WHERE m.firstname LIKE :value0 AND m.lastname LIKE :value1";
+                            }else{
+                                for($i = 0; $i < $size; $i++){
+                                    $query.= $i>0 ? " OR" : " WHERE";
+                                       
+                                    $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
+                                }   
+                            }
                         }
                        
                         break;
                     case 'interest':
-                        $query.=" :value='1'";
+                        $query.="WHERE :value='1'";
                         break;
                     case 'member_type':
-                        $query.=" m.member_type=:value";
+                        $query.="WHERE m.member_type=:value";
                         break;
                     default:
                         break;
                 }
-            }
-            //Are we looking at a specific year? If we are, search_by by that. If not return most recent.
-            if(isset($_GET['year']) && isset($_GET['search_by']) && isset($_GET['value'])){
                 $query.=" AND membership_year=:year";
-            }else if(isset($_GET['year'])){
-                $query.=" WHERE membership_year=:year";
             }else{
-                $query.=" WHERE my.membership_year=(SELECT MAX(membership_year) FROM membership_years WHERE member_id = m.id)";
+                $query.=" WHERE membership_year=:year";
+
             }
+
+           
             //Do we want all members, paid, or unpaid?
             if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                 $query.=" AND my.paid=:paid";
             }
-            //How to order results
-            if(isset($_GET['order_by'])){
-                $query.=" ORDER BY :order_by DESC";
-            }else{
-                $query.=" ORDER BY m.id DESC";
-            }   
+
+            //How to order results   
+            switch($_GET['order_by']){
+                case 'firstname':
+                    $query.=" ORDER BY m.firstname ASC";
+                    break;
+                case 'lastname':
+                    $query.=" ORDER BY m.lastname ASC";
+                    break;
+                case 'member_type':
+                    $query.=" ORDER BY m.member_type";
+                    break;
+                default:
+                    $query.=" ORDER BY m.id DESC";
+                    break;
+            }
+
+            //Prepare the statement
             $statement = $pdo_db->prepare($query);
+
             //Binding Variables
             if(isset($_GET['search_by']) && isset($_GET['value'])){
                 switch($_GET['search_by']){
                     case 'name':
-                        $size = sizeof($keywords);
-                        for($i = 0; $i<$size; $i++){
-                            $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+                        if($_GET['value'] != "" && isset($_GET['value'])){
+                            $size = sizeof($keywords);
+                            for($i = 0; $i<$size; $i++){
+                                $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+                            }
                         }
                         break;
                     case 'interest':
@@ -80,15 +94,14 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                         break;
                 }
             }
-            if(isset($_GET['year'])){
-                $statement->bindValue(':year', $_GET['year']);
-            }
+            $statement->bindValue(':year', $_GET['year']);
             if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                 $statement->bindValue(':value', $_GET['paid']);
             }
-            if(isset($_GET['order_by'])){
-                        $statement->bindValue(':order_by', "m.".$_GET['order_by']);
-            }
+          
+
+
+            //echo $statement->debugDumpParams();
             try {
                 http_response_code(200);
                 $statement->execute();

@@ -61,10 +61,10 @@ function get(target_id,target_class,target_name){
 			break;
 		case 'SELECT':
 		case 'TEXTAREA':
-			target.val();
+			result = target.val();
 			break;
 		default:
-			target.val();
+			result = target.val();
 			break;
 	}
 	return result;
@@ -236,11 +236,7 @@ function loadMember(id){
 	$('#member_result').hide();
 	var new_member = new Member(id);
 	$.when(new_member.info_callback,new_member.interest_callback).then(function(info,interests){
-		member = new_member;
-		member._initInfo(info[0]);
-		member._initInterests(interests[0]);
-		member.displayInfo();
-		member.displayInterests();
+		 member = new_member;
 		$('#member_loading[name="view"]').hide();
 		$('#member_result').show();
 	},function(err1,err2){
@@ -248,16 +244,17 @@ function loadMember(id){
 	});
 }
 function displayMemberList(search_by,value,paid,year,order_by){
+	$('.member_row').remove();
 	$('#search_loading').show();
+
+	if(year == null){
+		year = get('year_select',null,'search');
+	}
 	$.when(queryMembers(search_by ,value ,paid ,year ,order_by)).then(function(data){
 		$('#search_loading').hide();
 		var member_result = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');
 		member_result_header.show();
-		$('.member_row').each(function(e){
-			$(this).remove();
-		});
-		
 		for(var member in data){
 			member_result.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
