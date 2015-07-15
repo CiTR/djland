@@ -1,7 +1,9 @@
 <?php
 //SECURITY HEADER
+//session_start();
 require_once("db_header.php");
 require_once("login_header.php");
+date_default_timezone_set($station_info['timezone']);
 
 //Remove slashes added by stupid magic quotes
 if(get_magic_quotes_gpc()==1) {
@@ -44,7 +46,7 @@ function is_member($test_group) {
 
 function permission_level(){
 	global $db, $sv_username, $djland_permission_levels;
-	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid WHERE u.username='".$_SESSION['sv_username']."'";
+	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
 	$result = $db->query($query);
 	$level = -1; //failure return value
 	if($result){
@@ -60,8 +62,9 @@ function permission_level(){
 	    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
 	        $level = 0;
 	    }
+	}else{
+		echo "Database Error:".mysqli_error($db);
 	}
-	
 
     return $level;
 }
@@ -75,8 +78,8 @@ function is_paid(){
     try{
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_NUM);
-    }catch(PDOException $e){
-        echo $e->getMessage();
+    }catch(PDOException $pdoe){
+        echo $pdoe->getMessage();
     }
     if($result[0][0] == '1'){
         return true;

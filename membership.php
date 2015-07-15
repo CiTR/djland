@@ -14,7 +14,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 
 		<title>DJLAND | Membership</title>
 
-		<script src='js/jquery-1.11.3.min.js'></script>
+		<script src='js/jquery-1.4.2.js'></script>
 		<script src="js/jquery.form.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
         <script type='text/javascript' src='js/test.js'></script>

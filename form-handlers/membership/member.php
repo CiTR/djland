@@ -1,10 +1,9 @@
-<?php
+ <?php
 /**
  * User: Evan
  * Date: 5/20/2015
  * Time: 7:09 PM
  */
-session_start();
 require_once("../../headers/security_header.php");
 $request = $_SERVER['REQUEST_METHOD'];
 if( permission_level() >= $djland_permission_levels['member'] ) {
@@ -59,10 +58,9 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     $statement->execute();
                     echo json_encode($statement->fetchObject());
                     
-                } catch (PDOException $e) {
+                } catch (PDOException $pdoe) {
                     http_response_code(500);
-                    echo "PDO EXCEPTION";
-                    echo json_encode($e->getMessage());
+                    echo json_encode(__FILE__." ".$pdoe->getMessage());
                 }
             }
             break;

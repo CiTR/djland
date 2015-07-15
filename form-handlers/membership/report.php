@@ -62,22 +62,28 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                 } catch (PDOException $e) {
                     http_response_code(500);
                     echo json_encode($e->getMessage());
+                    exit();
                 }
             }else{
                 http_response_code(400);
                 echo json_encode("Missing member id");
+                //exit();
             }
             break;
         case "POST":
-        case "PUT":            
+            http_response_code(501);
+            exit();
+        case "PUT":
+            http_response_code(501);
+            exit();           
         case "DELETE":
-            http_response_code(405);
-            echo json_encode("Not Allowed");
-            break;
+            http_response_code(501);
+            exit();
         default:
             http_response_code(400);
-            echo json_encode($e->getMessage());
+            
             break;
+            //exit();
     }
 }else{
     http_response_code(401);

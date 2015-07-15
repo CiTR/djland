@@ -122,24 +122,25 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     $statement->execute();
                     http_response_code(201);
                     echo json_encode(true);
+                    exit();
                     
                 } catch (PDOException $e) {
                     http_response_code(500);
                     echo json_encode($e->getMessage());
+                    exit();
                 }
             }else{
                 http_response_code(400);
                 echo json_encode("Missing user id");
+                exit();
             }
-            break;
+            break;        
         case "DELETE":
-            http_response_code(405);
-            echo json_encode("Not Allowed");
-            break;
+            http_response_code(501);
+            exit();
         default:
             http_response_code(400);
-            echo json_encode($e->getMessage());
-            break;
+            exit();
     }
 }else{
     http_response_code(401);

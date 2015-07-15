@@ -1,9 +1,8 @@
 <?php
 //MENU HEADER
-
-require_once('config.php');
-require_once('headers/function_header.php');
-require_once('headers/security_header.php');
+require_once(dirname(__DIR__).'\config.php');
+//require_once(__DIR__.'\function_header.php');
+require_once('security_header.php');
 
 function admin_menu()
 {
@@ -26,6 +25,7 @@ function print_menu(){
 		
 		<?php 
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
+			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
 			if( (permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership'] ): 
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	

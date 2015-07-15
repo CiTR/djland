@@ -4,7 +4,6 @@
  * Date: 5/20/2015
  * Time: 7:09 PM
  */
-session_start();
 require_once("../../headers/security_header.php");
 require_once("../../headers/password.php");
 
@@ -30,29 +29,35 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                         $statement->execute();
                         http_response_code(201);
                         echo json_encode(true);
+                        exit();
                     }catch(PDOException $pdoe){
                         http_response_code(404);
                         echo json_encode($e->getMessage());
+                        exit();
                     }
                 }else{
-                http_response_code(204);
+                    http_response_code(204);
                     echo json_encode("No password Sent");
+                    exit();
                 }
 
             }else{
             	http_response_code(400);
                 echo json_encode("Missing member id or password");
+                exit();
             }
          	break;
-        case "GET":
+        case "POST":
+            http_response_code(501);
+            exit();
         case "PUT":
+            http_response_code(501);
+            exit();           
         case "DELETE":
-            http_response_code(405);
-            echo json_encode("Not Allowed");
-       		break;
-       	default:
-       		http_response_code(400);
-            echo json_encode($e->getMessage());
-       		break;
+            http_response_code(501);
+            exit();
+        default:
+            http_response_code(400);
+            exit();
        	}
 }

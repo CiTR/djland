@@ -7,7 +7,9 @@
  */
 
 session_start();
-require_once("../../headers/security_header.php");$request = $_SERVER['REQUEST_METHOD'];
+require_once("../../headers/security_header.php");
+$request = $_SERVER['REQUEST_METHOD'];
+echo "test";
 if( permission_level() >= $djland_permission_levels['member'] ) {
     switch($request){
         case "GET":

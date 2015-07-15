@@ -71,6 +71,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                 }catch(PDOException $pdoe){
                     http_response_code(404);
                     echo json_encode($pdoe->getMessage());
+                    exit();
                 }
             }else{
                 http_response_code(400);
@@ -79,15 +80,17 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
             }
             break;
         case "POST":
-        case "PUT":            
+            http_response_code(501);
+            exit();
+        case "PUT":
+            http_response_code(501);
+            exit();           
         case "DELETE":
-            http_response_code(405);
-            echo json_encode("Not Allowed");
-            break;
+            http_response_code(501);
+            exit();
         default:
             http_response_code(400);
-            echo json_encode($e->getMessage());
-            break;
+            exit();
     }
 }else{
     http_response_code(401);
