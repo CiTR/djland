@@ -1,7 +1,6 @@
 <?php
-//session_start();
+require_once("headers/session_header.php");
 require_once("headers/menu_header.php");
-print_r($_SESSION);
 ?>
 <html>
 	<head>

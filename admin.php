@@ -5,7 +5,6 @@
  * Date: 5/6/2015
  * Time: 2:59 PM
  */
-session_start();
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");

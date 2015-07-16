@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	require_once("security_header.php");
 	$constants = new StdClass();
 	$constants->permission_levels = $djland_permission_levels;

@@ -5,7 +5,6 @@
  * Date: 5/6/2015
  * Time: 4:30 PM
  */
-session_start();
 require_once("../../headers/security_header.php");
 
 //POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access

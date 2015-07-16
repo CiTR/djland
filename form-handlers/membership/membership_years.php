@@ -5,11 +5,11 @@
  * Date: 5/4/2015
  * Time: 1:09 PM
  */
-
-session_start();
 require_once("../../headers/security_header.php");
 $request = $_SERVER['REQUEST_METHOD'];
-echo "test";
+echo "Request method is";
+print_r($request);
+
 if( permission_level() >= $djland_permission_levels['member'] ) {
     switch($request){
         case "GET":
@@ -52,12 +52,17 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
             }
             break;
         case "POST":
+            http_response_code(501);
+            break;
         case "PUT":
+            http_response_code(501);
+            break;
         case "DELETE":
             http_response_code(501);
             break;
         default:
             http_response_code(400);
+            echo json_encode("REQUEST METHOD INVALID");
             break;
     }
 }else{

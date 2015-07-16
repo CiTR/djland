@@ -3,7 +3,6 @@
  * User: Evan
  * Date: 6/10/2015
  */
-session_start();
 require_once("../../headers/security_header.php");
 
 $request = $_SERVER['REQUEST_METHOD'];

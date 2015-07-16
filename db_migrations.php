@@ -103,20 +103,21 @@ $queries = array(
     'other rework' => "ALTER TABLE `membership_years`
                             DELETE COLUMN `other`",
     'rename userid to id' =>    "BEGIN TRANSACTION;
-                                    ALTER TABLE `group_members` 
+                                    ALTER TABLE group_members 
                                         DROP FOREIGN KEY `user_id`;
-                                    ALTER TABLE `citr_dev`.`group_members` 
+                                    ALTER TABLE group_members
                                         DROP INDEX `userid_idx`;
-                                    ALTER TABLE `citr_live`.`user` 
+                                    ALTER TABLE user
                                         CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
-                                    ALTER TABLE `citr_dev`.`group_members` 
+                                    ALTER TABLE group_members
                                         ADD INDEX `user_id_idx` (`user_id` ASC);
-                                    ALTER TABLE `citr_dev`.`group_members` 
+                                    ALTER TABLE group_members 
                                         ADD CONSTRAINT `user_id`
                                         FOREIGN KEY (`user_id`)
-                                        REFERENCES `citr_dev`.`user` (`id`)
+                                        REFERENCES user (`id`)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE;"
+
 
 
 );

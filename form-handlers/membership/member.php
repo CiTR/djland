@@ -4,6 +4,8 @@
  * Date: 5/20/2015
  * Time: 7:09 PM
  */
+session_start();
+require_once("../../headers/session_header.php");
 require_once("../../headers/security_header.php");
 $request = $_SERVER['REQUEST_METHOD'];
 if( permission_level() >= $djland_permission_levels['member'] ) {
@@ -11,7 +13,6 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
         case "GET":
             //If it is a general "get" return all members. Else return info for a member.
             if(isset($_GET['member_id'])){
-                
                 //Create Query
                 $query = "SELECT 
                 m.id AS member_id, 
@@ -199,7 +200,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
             break;
         default:
             http_response_code(400);
-            echo json_encode($e->getMessage());
+            echo json_encode("ERROR".$e->getMessage());
             break;
     }
 }else{

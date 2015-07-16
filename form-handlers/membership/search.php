@@ -5,7 +5,6 @@
  * Time: 7:09 PM
  */
 
-session_start();
 require_once("../../headers/security_header.php");
 
 //GET: Accepts search_by,value,paid,order

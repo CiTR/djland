@@ -3,8 +3,9 @@
 //$sv_username = "";
 //$sv_login_fails = 0;
 include_once('password.php');
-$cookiename_id = "login";
-$cookiename_pass = "pass";
+/*$cookiename_id = "login";
+$cookiename_pass = "pass";*/
+
 function is_logged_in() {
 	return isset($_SESSION['sv_username']) ? true : false;
 }
@@ -20,16 +21,26 @@ function login ($username, $raw_password, $set_cookie) {
 	$user_query = "SELECT u.username, u.id, u.member_id, u.login_fails, u.password AS hash, gm.operator, gm.administrator, gm.staff, gm.workstudy,gm.volunteer,gm.dj,gm.member
 					FROM user AS u INNER JOIN group_members AS gm ON u.id = gm.user_id WHERE (u.username = :username AND gm.operator='1') OR (u.username= :username AND u.status LIKE '%Enabled%')";
 	
-	
 	try{
 		$user_statement = $pdo_db->prepare($user_query);
 		$user_statement->bindValue(':username',$username);
 		$user_statement->execute();
 		$user_result = $user_statement->fetch(PDO::FETCH_ASSOC);	
-
-
+		
 		if(password_verify($raw_password,$user_result['hash'])){
-			session_start();
+			$status = session_status();
+			switch($status){
+				case PHP_SESSION_NONE:
+					session_start();
+					break;
+				case PHP_SESSION_ACTIVE:
+					session_destroy();
+					session_start();
+					break;
+				default:
+					//sessions not enabled
+					break;
+			}
 			$_SESSION['sv_username'] = $user_result['username'];
 			$_SESSION['sv_id'] = $user_result['member_id'];
 			$_SESSION['sv_login_fails'] = $user_result['login_fails'];
@@ -53,12 +64,10 @@ function login ($username, $raw_password, $set_cookie) {
 			$login_fail_statement ->bindValue(':id',$user_result['id']);
 
 			return false;
-			exit();
 		}
 	}catch(PDOException $pdoe){
 		echo $pdoe->getMessage();
 		return false;
-		exit();
 	}
 }
 function cookie_login () {
@@ -86,6 +95,7 @@ function logout () {
 		setcookie($cookiename_pass);
 	}
 	unset($_SESSION['sv_username']);
+	header("Location: .");
 	session_destroy();
 }
 //END LOGIN HEADER

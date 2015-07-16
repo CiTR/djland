@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	require_once("headers/security_header.php");
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
@@ -17,7 +16,6 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 		<script src='js/jquery-1.4.2.js'></script>
 		<script src="js/jquery.form.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-        <script type='text/javascript' src='js/test.js'></script>
         <script type='text/javascript' src='js/constants.js'/></script>
         <script type='text/javascript' src='js/member.js'></script>
         <script type='text/javascript' src='js/membership_functions.js'></script>
