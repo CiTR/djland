@@ -8,7 +8,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
 $crtc_min = 6;
 $crtc_max = 24;
 
-session_start();
+include_once("headers/session_header.php");
 
 require_once("headers/security_header.php");
 

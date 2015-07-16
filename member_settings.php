@@ -1,6 +1,7 @@
 <!--- Member Settings -->
 
 <?php
+	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
@@ -12,7 +13,7 @@
 		<meta charset="UTF-8">
 		<link rel=stylesheet href='css/style.css' type='text/css'>
 		<title>DJLAND | Member Settings</title>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src='js/jquery-1.11.3.min.js'></script>
 		<script src="js/jquery.form.js"></script>
         <script type='text/javascript' src='js/test.js'></script>
  		<script type='text/javascript' src='js/constants.js'/></script>

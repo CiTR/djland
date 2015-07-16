@@ -252,11 +252,11 @@ function displayMemberList(search_by,value,paid,year,order_by){
 	}
 	$.when(queryMembers(search_by ,value ,paid ,year ,order_by)).then(function(data){
 		$('#search_loading').hide();
-		var member_result = $('#membership_table[name="search"]');
+		var member_result_table = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');
 		member_result_header.show();
 		for(var member in data){
-			member_result.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
+			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
 			
 			for(var item in data[member]){
@@ -265,6 +265,10 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			}	
 			row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
 			row.append("<div class='check hidden'>&#x274F;</div>");
+		}
+		if(data.length <1){
+			member_result_header.hide();
+			$('#membership_result[name="search"]').append("<div class='member_row'>No Results</div>");
 		}	
 	});	
 }

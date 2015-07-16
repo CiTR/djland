@@ -1,14 +1,10 @@
 <?php
 //SECURITY HEADER
-require_once("session_header.php");
-print_r($_SESSION);
-echo "after session";
+include_once("session_header.php");
 require_once("config.php");
-echo "after config";
 require_once("db_header.php");
-echo "after db";
 require_once("login_header.php");
-echo "after login";
+
 date_default_timezone_set($station_info['timezone']);
 
 //Remove slashes added by stupid magic quotes
@@ -112,6 +108,7 @@ function has_show_access($show_id){
 //If not logged in, check for cookies, then make them log in...
 if(!is_logged_in()) {
 	logout();
+		header("Location: .");
 }
 
 function cleanArray($array){

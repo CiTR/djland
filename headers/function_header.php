@@ -1,6 +1,6 @@
 <?php
 //FUNCTION HEADER - playlist.citr.ca
-
+require_once("session_header.php");
 error_reporting(0);
 
 date_default_timezone_set($station_info['timezone']);

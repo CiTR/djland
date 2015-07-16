@@ -1,6 +1,6 @@
 <?php ///	 playsheet.php - playlist.citr.ca
 
-session_start();
+include_once("headers/session_header.php");
 require_once("headers/showlib.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");

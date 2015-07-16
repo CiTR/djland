@@ -4,6 +4,7 @@
  * Date: 5/20/2015
  * Time: 7:09 PM
  */
+include_once("../../headers/session_header.php");
 require_once("../../headers/security_header.php");
 $request = $_SERVER['REQUEST_METHOD'];
 if(permission_level() >= $djland_permission_levels['member']) {

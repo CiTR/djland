@@ -62,7 +62,6 @@ function add_handlers(){
 			$('#membership_result').removeClass('overflow_visible').addClass('height_cap').addClass('overflow_auto');
 		}
 		$(this).toggleClass('print_friendly');
-		console.log("Clicked");
 	});
 
 	//CHANGING TABS
@@ -104,7 +103,6 @@ function add_handlers(){
 						search_value = $(this).val();
 					}
 				});
-				console.log(search_value);
 				displayMemberList( getVal('search_by'), search_value, getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
 				break;
 			case 'edit':
@@ -178,7 +176,6 @@ function add_handlers(){
         	}
 
 	        $.when.apply($,requests).then(function(){
-	        	console.log(arguments);
 	        	alert("Successfully deleted: "+members_names.toString());
 	        },function(err){
 	        	 alert("Could not delete: "+members_names.toString()+"\n"+data[0]);
@@ -238,7 +235,6 @@ function add_handlers(){
 			$('.student').children().show();
 		}else{
 			$('.student').hide();
-			//console.log("Hide student fields");
 		}
 	});
 
@@ -269,7 +265,6 @@ function add_handlers(){
 			data: {"student_no":student_no},
 			dataType: "json"
 		    }).success( function(data){
-		    	console.log('success');
 				if(data == true){
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
@@ -285,7 +280,6 @@ function add_handlers(){
 					$('#student_no_ok').remove();
 				}
 			}).fail( function(){
-				console.log('fail');
 				$('#student_no_ok').text('connection error');
 			
 			});
@@ -301,17 +295,14 @@ function checkBlocking(){
 		$('.required').each( function(){
 			if( !$.trim( $(this).val() )){
 			allOkay=false;
-			console.log("a field is not filled out");
 			}
 		});
 	
 		if($('#username_ok').text() == 'Username taken'){
 			allOkay=false;
-			console.log("username not okay");
 		}
 		if($('#password_ok').text() == 'Passwords do not match' || $('#password_ok').text() == 'Password must be more than 4 characters'){
 			allOkay=false;
-			console.log("password not okay");
 		}
 		if(getVal('member_type')=='Student'){
 			if(!$.trim(getVal('student_no'))){
@@ -332,145 +323,4 @@ function checkBlocking(){
 		}
 	}
 
-		/*case 'report':
-				switch(type){
-					case 'init':
-						document.getElementById("membership").innerHTML = " ";
-						$('.membership').append('<select id="year_select"></select><button class="member_submit" name="report">Get Yearly Report</button><div id="membership_result"></div>');
-						//Populate Dropdown with possible years to report on.
-						actiontemp = 'get';
-						typetemp = 'year';
-						$.ajax({
-							type:"POST",
-							url: "form-handlers/membership_handler.php",
-							data: {"action" : actiontemp, "type" : typetemp},
-							dataType: "json",
-							async: true
-						}).success(function(data){
-							for( $j = 0; $j < Object.keys(data).length; $j++ ){
-								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
-							}
-						}).fail(function(){
-						
-						});
-					break;
-					case 'generate':
-						document.getElementById("membership_result").innerHTML = " ";
-						year = getVal('year_select');	
-						$.ajax({
-							type:"POST",
-							url: "form-handlers/membership_handler.php",
-							data: {"action" : action,"year" : year},
-							dataType: "json",
-							async: true
-						}).success(function(data){
-						//console.log(data);
-						var titles = ['member_reg_all','member_reg_year','member_paid','student','community','alumni','staff','arts','digital_library','discorder','discorder_2','dj','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling'];
-						for( $j = 0; $j < titles.length; $j++ ){
-								//console.log( data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
-								$('#membership_result').append(data["num_"+titles[$j]][0] + " = " + data["num_"+titles[$j]][1]);
-								if($j > 2){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_paid"][1]*100).toFixed(2)+"% )");
-								}else if($j == 2){
-									$('#membership_result').append(" ( "+(data["num_"+titles[$j]][1]/data["num_member_reg_year"][1]*100).toFixed(2)+"% )");
-								}
-								$('#membership_result').append("<br/>");
-						}
-						}).fail(function(){
-						
-						});
-					break;
-					default:
-					break;
-				}
-				add_handlers();
-				break;
-			case 'mail':
-				switch(type){
-					case 'init':
-						//console.log('Mail Init');
-						var d = new Date();
-						var today = ('0' + (d.getMonth()+1)).slice(-2) + "/"+('0' + d.getDate()).slice(-2) + "/" + d.getFullYear();
-						var d2 = new Date();
-						d2.setDate(d2.getDate() - 7);
-						var week_ago = ('0' + (d2.getMonth()+1)).slice(-2) + "/"+('0' + d2.getDate()).slice(-2) + "/" + d2.getFullYear();
-						document.getElementById("membership").innerHTML = " ";
-						$(".membership").append("<ul id='membership_header'></ul>");
-                        var membership_header = $('#membership_header');
-                        membership_header.append("<li id='interest'>List:</li>");
-                        $('#interest').append("<select id=search_value></select>");
-							var title = ['All','Arts','Ads and PSAs','Digital Library','DJ101.9','Illustrate for Discorder','Writing for Discorder','Live Broadcasting','Music','News','Photography','Programming Committee','Promos and Outreach','Show Hosting','Sports','Tabling','Web and Tech'];
-							var values =  ['all','arts','ads_psa','digital_library','dj','discorder','discorder_2','live_broadcast','music','news','photography','programming_committee','promotions_outreach','show_hosting','sports','tabling','tech'];
-							$searchval = $('#search_value');
-							for($i = 0; $i< title.length; $i++){
-								$searchval.append("<option value='"+values[$i]+"'>"+title[$i]+"</option>");
-							}
-                        membership_header.append("<li>Paid Status: <select id='paid_select'><option value='both'>Both</option><option value='1'>Paid</option><option value='0'>Not Paid</option></select></li>");
-
-                        membership_header.append("<li>Year: <select id='year_select'><option value='all'>All</option></select></li>");
-                        membership_header.append("<li><ul id='join_filter'></ul></li>");
-                        $('#join_filter').append("<li>Joined<input id='date_filter' type='checkbox'/></li>");
-                        $('#join_filter').append("<li>from<input type='text' id='from' name='from' value='"+week_ago+"' /></li>");
-                        $('#join_filter').append("<li>to<input type=text id='to' name='to' value='"+today+"' /></li>");
-
-
-						var actiontemp = 'get';
-						var typetemp = 'year';
-					$.ajax({
-						type:"POST",
-						url: "form-handlers/membership_handler.php",
-						data: {"action" : actiontemp, "type" : typetemp},
-						dataType: "json",
-						async: true
-					}).success(function(data){
-							for( $j = 0; $j < Object.keys(data).length; $j++ ){
-								$('#year_select').append("<option value="+data[$j].membership_year+">"+data[$j].membership_year+"</option>")
-							}
-					}).fail(function(){
-						
-					});
-						$('#membership_header').append("<li><button class='member_submit' name='mail'>Generate Email List</button></li>");
-						$('.membership').append("<div id='member_result'></div>");
-						add_handlers();
-						break;
-					case 'generate':
-						//console.log('mail generate');
-						paid = getVal('paid_select');
-						//get year
-						year = getVal('year_select');	
-						sort = 'email';
-						//console.log("Date Filter "+getCheckbox('date_filter'));
-						if(getCheckbox('date_filter')){
-							to = getVal('to');
-							from = getVal('from');
-						}
-						$.ajax({
-							type:"POST",
-							url: "form-handlers/membership_handler.php",
-							data: {"action":'mail', "type":'interest', "value":value, "paid":paid, "year":year, "from":from , "to":to },
-							dataType: "json"
-						}).done(function(data){
-							document.getElementById("member_result").innerHTML = " ";
-							$('#member_result').append("<textarea id=email_list></textarea>");
-							if(data){
-								var email_list = "";
-								for( $j = 0; $j < Object.keys(data).length; $j++ ){
-									email_list += data[$j].email + "; ";								
-								}
-								$('#email_list').val(email_list);	
-							}
-						}).fail(function(){
-						});
-
-					break;
-				}
-                add_handlers();
-				break;
-			default:
-				manage_members('init');
-				add_handlers();
-				break;		
-		}	
-	}*/
-	
 

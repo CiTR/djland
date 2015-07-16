@@ -1,5 +1,7 @@
 <?php
-	require_once("security_header.php");
+	include_once("session_header.php");
+	include_once("../config.php");
+	//require_once("security_header.php");
 	$constants = new StdClass();
 	$constants->permission_levels = $djland_permission_levels;
 	$constants->training = $djland_training;

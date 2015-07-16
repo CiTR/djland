@@ -1,4 +1,5 @@
 <?php
+	session_start();
 require_once("../headers/db_header.php");
 require_once("../headers/function_header.php");
 require_once("../adLib.php");

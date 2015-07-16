@@ -1,4 +1,5 @@
 <?php
+require_once("session_header.php");
 //DB HEADER
 if (file_exists('config.php')){ 
 // this check is because sometimes this script is accessed from the root 

@@ -17,7 +17,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                 foreach($djland_permission_levels as $level=>$value){
                     if($level != 'operator') $query.=", gm.{$level} AS {$level}";
                 }
-                $query.=" FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid INNER JOIN membership AS m ON u.member_id = m.id WHERE m.id=:member_id";
+                $query.=" FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id INNER JOIN membership AS m ON u.member_id = m.id WHERE m.id=:member_id";
                 
                 //Prepare statement
                 $statement = $pdo_db->prepare($query);
@@ -65,7 +65,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     }
                     
                 }
-                $query.=" WHERE userid = (SELECT u.userid FROM user AS u INNER JOIN membership AS m ON m.id = u.member_id WHERE m.id=:member_id LIMIT 1)";
+                $query.=" WHERE user_id = (SELECT u.id FROM user AS u INNER JOIN membership AS m ON m.id = u.member_id WHERE m.id=:member_id LIMIT 1)";
                 
                 //Prepare statement
                 $statement = $pdo_db->prepare($query);
@@ -102,7 +102,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                 $permissions = json_decode($_PUT['member'],true);
 
                 //Create Query
-                $query = "INSERT INTO group_members SET userid=(SELECT u.userid AS userid FROM user AS u INNER JOIN membership as m ON m.id = u.member_id WHERE m.id=:member_id)";
+                $query = "INSERT INTO group_members SET user_id=(SELECT u.id AS id FROM user AS u INNER JOIN membership as m ON m.id = u.member_id WHERE m.id=:member_id)";
                 foreach($djland_permission_levels as $level=>$value){
                     if($level != 'operator') $query.=", {$level}=:{$level}";
                 }

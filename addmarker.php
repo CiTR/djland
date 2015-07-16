@@ -20,16 +20,6 @@ require_once('podcast-config.php');
 		die("Error connecting to the podcast Server");
 		exit;
 	}
-	/*
-	$pod_result = mysqli_select_db($pod_db_database, $pod_db);
-	if( !$pod_result )
-	{
-		die("Error selecting podcast Database");
-		exit;
-	}*/
-
-    
-
 	$pod_sqlcreate = "CREATE TABLE IF NOT EXISTS `podcast_timemarkers` (
 	  `marker` datetime NOT NULL default '0000-00-00 00:00:00'
 		) TYPE=MyISAM; ";
@@ -55,10 +45,6 @@ require_once('podcast-config.php');
 		
 }
 else {
-//	echo " hi time is ";
-//	echo time();
-//	echo " other time is ";
-//	echo file_get_contents('http://137.82.188.13/time.php');
 	die("nope");
 	}
 ?>

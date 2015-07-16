@@ -13,22 +13,25 @@ if( permission_level() >= $djland_permission_levels['staff']) {
      switch($request){
         case "GET":
             $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";  
-
             if(isset($_GET['search_by'])){
                 switch($_GET['search_by']){
                     case 'name':
                         if($_GET['value'] != "" && isset($_GET['value'])){
                             $keywords = explode(" ",$_GET['value']);
                             $size = sizeof($keywords);
+                            
+                            //If only two words, assume it is first and last name.
                             if($size == 2){
-                                $query.=" WHERE m.firstname LIKE :value0 AND m.lastname LIKE :value1";
+                                $query.=" WHERE (m.firstname LIKE :value0 AND m.lastname LIKE :value1";
                             }else{
+                            //Search for any combination of the words
                                 for($i = 0; $i < $size; $i++){
-                                    $query.= $i>0 ? " OR" : " WHERE";
+                                    $query.= $i > 0 ? " OR" : " WHERE (";
                                        
                                     $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
                                 }   
                             }
+                            $query.=")";
                         }
                        
                         break;
@@ -41,9 +44,9 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                     default:
                         break;
                 }
-                $query.=" AND membership_year=:year";
+                $query.=" AND my.membership_year=:year ";
             }else{
-                $query.=" WHERE membership_year=:year";
+                $query.=" WHERE my.membership_year=:year";
 
             }
 
@@ -98,9 +101,8 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 $statement->bindValue(':value', $_GET['paid']);
             }
           
-
-
             //echo $statement->debugDumpParams();
+            
             try {
                 http_response_code(200);
                 $statement->execute();

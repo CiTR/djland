@@ -2,10 +2,13 @@
 //LOGIN HEADER
 //$sv_username = "";
 //$sv_login_fails = 0;
-include_once('password.php');
+
 /*$cookiename_id = "login";
 $cookiename_pass = "pass";*/
+//session_start();
 
+include_once("session_header.php");
+//include_once('password.php');
 function is_logged_in() {
 	return isset($_SESSION['sv_username']) ? true : false;
 }
@@ -95,7 +98,7 @@ function logout () {
 		setcookie($cookiename_pass);
 	}
 	unset($_SESSION['sv_username']);
-	header("Location: .");
+
 	session_destroy();
 }
 //END LOGIN HEADER
