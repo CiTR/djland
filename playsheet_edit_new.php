@@ -5,54 +5,53 @@ require_once('adLib.php');
 $adLib = new AdLib($mysqli_sam, $db);
 
 // Existing Playsheet
-if ($actionSet && $action == 'edit' || $action == 'datadump') {
+if ($action == 'edit' || $action == 'datadump') {
 
 
-  //LOADING A SAVED PS
-  $ps_id = fas($_GET['id']);
-  //echo " you are editing playsheet id number ".$ps_id;
-  if ($result = mysqli_query($db, "SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playsheet WHERE id='$ps_id'")) {
-    $curr_id = mysqli_result_dep($result, 0, "show_id");
-    $currshow = $showlib->getShowByID($curr_id);
-    $pl_date_year = date('Y', mysqli_result_dep($result, 0, "good_date"));
-    $pl_date_month = date('m', mysqli_result_dep($result, 0, "good_date"));
-    $pl_date_day = date('d', mysqli_result_dep($result, 0, "good_date"));
-    $pl_date_hour = date('H', mysqli_result_dep($result, 0, "good_date"));
-    $pl_date_min = date('i', mysqli_result_dep($result, 0, "good_date"));
-    $end_date_hour = mysqli_result_dep($result, 0, "end_hour");
-    $end_date_min = mysqli_result_dep($result, 0, "end_min");
-    $unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
-    $host_name = $fhost_name[mysqli_result_dep($result, 0, "host_id")];
-    $show_name = $fshow_name[mysqli_result_dep($result, 0, "show_id")];
-    $show_id = mysqli_result_dep($result, 0, "show_id");
-    $loaded_spokenword = mysqli_result_dep($result, 0, "spokenword");
-    $loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
-    $loaded_status = mysqli_result_dep($result, 0, "status");
-    if ($loaded_status == 1) $playsheet_is_draft = true; else $playsheet_is_draft = false;
-    $loaded_crtc = mysqli_result_dep($result, 0, "crtc");
+    //LOADING A SAVED PS
+    $ps_id = fas($_GET['id']);
+    //echo " you are editing playsheet id number ".$ps_id;
+    if ($result = mysqli_query($db, "SELECT *,UNIX_TIMESTAMP(start_time) AS good_date, HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min FROM playsheets WHERE id='$ps_id'")) {
+		$curr_id = mysqli_result_dep($result, 0, "show_id");
+		$currshow = $showlib->getShowByID($curr_id);
+		$pl_date_year = date('Y', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_month = date('m', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_day = date('d', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_hour = date('H', mysqli_result_dep($result, 0, "good_date"));
+		$pl_date_min = date('i', mysqli_result_dep($result, 0, "good_date"));
+		$end_date_hour = mysqli_result_dep($result, 0, "end_hour");
+		$end_date_min = mysqli_result_dep($result, 0, "end_min");
+		$unix_start_time = mktime($pl_date_hour, $pl_date_min, 0, $pl_date_month, $pl_date_day, $pl_date_year);
+		$host_name = $fhost_name[mysqli_result_dep($result, 0, "host_id")];
+		$show_name = $fshow_name[mysqli_result_dep($result, 0, "show_id")];
+		$show_id = mysqli_result_dep($result, 0, "show_id");
+		$loaded_spokenword = mysqli_result_dep($result, 0, "spokenword");
+		$loaded_sw_duration = mysqli_result_dep($result, 0, "spokenword_duration");
+		$loaded_status = mysqli_result_dep($result, 0, "status");
+		if ($loaded_status == 1) $playsheet_is_draft = true; else $playsheet_is_draft = false;
+		$loaded_crtc = mysqli_result_dep($result, 0, "crtc");
+		$loaded_lang = mysqli_result_dep($result, 0, "lang");
+		$loaded_type = mysqli_result_dep($result, 0, "type");
+		$adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
+    } else {
+		// db query didn't work :|
+		$pl_date_year = date('Y', get_time());
+		$pl_date_month = date('m', get_time());
+		$pl_date_day = date('d', get_time());
+		$pl_date_hour = date('H', get_time());
+		$pl_date_min = date('i', get_time());
+		$end_date_hour = date('H', get_time());
+		$end_date_min = date('i', get_time());
 
-    $loaded_lang = mysqli_result_dep($result, 0, "lang");
-    $loaded_type = mysqli_result_dep($result, 0, "type");
-    $adTable = $adLib->loadTableForSavedPlaysheet($ps_id);
-  } else {
-    // db query didn't work :|
-    $pl_date_year = date('Y', get_time());
-    $pl_date_month = date('m', get_time());
-    $pl_date_day = date('d', get_time());
-    $pl_date_hour = date('H', get_time());
-    $pl_date_min = date('i', get_time());
-    $end_date_hour = date('H', get_time());
-    $end_date_min = date('i', get_time());
+		$host_name = "";
+		$show_name = "";
+		$show_id = "";
 
-    $host_name = "";
-    $show_name = "";
-    $show_id = "";
-
-    $loaded_spokenword = "";
-    $loaded_sw_duration = "";
-    $loaded_crtc = "";
-    $loaded_lang = "";
-  }
+		$loaded_spokenword = "";
+		$loaded_sw_duration = "";
+		$loaded_crtc = "";
+		$loaded_lang = "";
+    }
 } else {
   // making a new PS
 
@@ -134,11 +133,11 @@ echo "<div id=loaded_crtc_test style='display:none'>" . $crtc_pl . "</div>";
 if ($ps_id && $_GET['action'] != 'datadump') {
   // VIEW IS NOT RAW DATA
   printf("<br><div class=buttonContainer>");
-  printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>", $ps_id);
+  printf("<div class=nav><ul><li><a href=playsheet.php?action=datadump&id=%s>&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>", $ps_id);
 } else if ($ps_id) {
   // VIEW IS RAW DATA
   printf("<br><div class=buttonContainer>");
-  printf("<div class=nav><ul><li><a href=\"playsheet.php?action=edit&id=%s\">&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>", $ps_id);
+  printf("<div class=nav><ul><li><a href=playsheet.php?action=edit&id=%s>&nbsp;View Playsheet&nbsp;</a></li></ul></div></div>", $ps_id);
 }
 
 
@@ -712,7 +711,7 @@ else {
   }// end of podcast tools creation block
 
 
-  if (!$ps_id || is_member("editdj")) {
+  if (!$ps_id || permission_level() >= $djland_permission_levels['dj']) {
     echo "<center><br/><span id='submitMsg'>This is an incomplete playsheet. <br/>Please fill in all music fields:
 <b>artist</b>, <b>album</b> (release title), and <b>song</b>. Also delete all empty rows by clicking the '-' button.<br/>
 You may temporarily save a draft and resume at another time by clicking 'Save draft' in the top right corner</span><br/>

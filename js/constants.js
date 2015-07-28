@@ -17,7 +17,6 @@ $(document).ready ( function() {
 			member_types = data['member_types'];
 			permission_levels = data['permission_levels'];
 			program_years = data['program_years'];
-			//console.log(faculties,interests,provinces,member_types,permission_levels,program_years);
 		}).fail(function(data){
 			console.log("failed to load constants");
 		});
