@@ -1,5 +1,4 @@
 <?php
-
 define('PODCAST_LIMIT_HOURS',8);
 
 require_once('../api_common.php');
@@ -7,7 +6,6 @@ require_once('../api_common.php');
 error_reporting(E_ERROR);
 
 if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
-
   $start = $_GET['start'];
   $end = $_GET['end'];
   $show = $_GET['show'];
@@ -21,7 +19,8 @@ if ( isset($_GET['start']) && isset($_GET['end']) && isset($_GET['show']) ){
   }
 
 } else {
-
+    $error = "Incorrect GET parameters have been supplied.  I need 'start', 'end', and 'show'.  'start' and 'end' must be unix timestamps (PHP style - seconds, not milliseconds).  ";
+  $blame_request = true;
 }
 
 

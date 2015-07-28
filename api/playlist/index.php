@@ -24,23 +24,22 @@ if (!is_numeric($id)){
 if ($error != '') finish();
 
 $query = 'SELECT
-          playlists.id as playlist_id,
-          playlists.show_id,
-          playlists.start_time,
-          playlists.end_time,
-          playlists.edit_date,
-          playlists.host,
-          playlists.type as playlist_type,
-          playlists.spokenword as transcript,
+          playsheets.id as playlist_id,
+          playsheets.show_id,
+          playsheets.start_time,
+          playsheets.end_time,
+          playsheets.edit_date,
+          playsheets.type as playlist_type,
+          playsheets.spokenword as transcript,
           hosts.name as host_name,
-          playlists.podcast_episode as episode_id,
+          playsheets.podcast_episode as episode_id,
           podcast_episodes.summary as episode_description,
           podcast_episodes.title as episode_title,
           podcast_episodes.url as episode_audio
-          FROM playlists
-          LEFT JOIN hosts on hosts.id = playlists.host_id
-          LEFT JOIN podcast_episodes on podcast_episodes.id = playlists.podcast_episode
-          WHERE playlists.status = 2 AND playlists.id ='.$id;
+          FROM playsheets
+          LEFT JOIN hosts on hosts.id = playsheets.host_id
+          LEFT JOIN podcast_episodes on podcast_episodes.id = playsheets.podcast_episode
+          WHERE playsheets.status = 2 AND playsheets.id ='.$id;
 
 $rawdata = array();
 

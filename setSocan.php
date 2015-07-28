@@ -1,6 +1,5 @@
 <?php
-session_start();
-
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("config.php");
 require_once("headers/function_header.php");
@@ -27,36 +26,33 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
   });
   </script>
 </head>
-<body>
+<body class='wallpaper'>
 
 
 <?php
 
 print_menu();
 
-
-
-
-echo "<div id='wrapper'>";
-echo "<div style='margin-left:15px;'>";
-echo '<h1>Set Socan</h1>';
+?>
+<div id='wrapper'>
+<div style='margin-left:15px;'>
+<h1>Set Socan</h1>';
+<center>First select a date range:
+<form id="adreport">
+	<label for="from">Start Date: </label>
+	<input type="text" id="from" name="from" value="'.$now.'"/>
 	
-	echo "<center>First select a date range: ";
-	echo '<form id="adreport">
-			<label for="from">Start Date: </label>
-			<input type="text" id="from" name="from" value="'.$now.'"/>
-			
-			<label for="to">End Date: </label>
-			<input type="text" id="to" name="to" value="'.$twodaysfromnow.'"/>
-			
-			</form>
-			
-			<button id="submitDates">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
-			</center>
-			<div id="result">&nbsp;</div>';
+	<label for="to">End Date: </label>
+	<input type="text" id="to" name="to" value="'.$twodaysfromnow.'"/>
+	
+	</form>
+	
+	<button id="submitDates">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
+	</center>
+	<div id="result">&nbsp;</div>
 	
 	
-	
+<?php	
 $query="SELECT MAX(idSOCAN) FROM socan";
 $result = mysqli_query($db,$query);
 $row = mysqli_fetch_row($result);
@@ -125,7 +121,7 @@ $num_id = $row[0];
 		console.log(id);
 		var text = $.ajax({
 			type: "POST", // HTTP method POST or GET
-			url: "./form-handlers/socan-delete.php", //Where to make Ajax calls
+			url: "./form-handlers/socan_delete.php", //Where to make Ajax calls
 			data:{id:id},
 			beforeSend: function(data) {
 				$('#loadStatus2').html('<img src="./images/loading.gif" alt="Loading..."/>');

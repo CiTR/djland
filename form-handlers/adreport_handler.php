@@ -1,5 +1,5 @@
 <?php
-
+	include_once("../headers/session_header.php");
 require_once("../headers/db_header.php");
 require_once("../headers/function_header.php");
 require_once("../headers/showlib.php");
@@ -24,7 +24,7 @@ $to = strtotime($to)+ 24*60*60; //add one day to make the request include last d
 $samFrom = date("Y-m-d H:i:s", $from);
 $samTo = date("Y-m-d H:i:s", $to);  
 
-$showList = grabPlaylists($from,$to, $db);
+$showList = grabPlaysheets($from,$to, $db);
 $samPlays = array();
 $adsLogged = array();
 

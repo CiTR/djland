@@ -1,5 +1,5 @@
 <?php // CRTC REPORT PAGE
-
+if( permission_level() >= $djland_permission_levels['dj']){
 //***************************************************
 // see handlers/crtcreport.php to change requirement values
 //***************************************************
@@ -8,12 +8,9 @@
 $crtc_min = 6;
 $crtc_max = 24;
 
-session_start();
-
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-
 require_once("headers/function_header.php");
-
 require_once("headers/menu_header.php");
 
 
@@ -47,7 +44,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
   });
   </script>
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php
 
@@ -145,3 +142,7 @@ echo '<h1>CRTC Report</h1>';;
   });
 </script>  
 
+<?php
+}else{
+    header("Location: main.php");
+}?>

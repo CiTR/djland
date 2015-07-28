@@ -48,7 +48,7 @@ $queries = array(
                               ) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
     'add alert field to shows'=>'ALTER TABLE `shows` ADD COLUMN `alerts` TEXT NULL;',
     'add podcast channel id to shows' => 'ALTER TABLE `shows` ADD COLUMN `podcast_channel_id` int(11) DEFAULT NULL',
-    'add podcsat episode id to playsheet' => 'ALTER TABLE `playlists` ADD COLUMN `podcast_episode` INT NULL',
+    'add podcsat episode id to playsheet' => 'ALTER TABLE `playsheets` ADD COLUMN `podcast_episode` INT NULL',
     'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
                                 `id` INT NOT NULL AUTO_INCREMENT,
                                 `name` VARCHAR(455) NULL,
@@ -71,12 +71,17 @@ $queries = array(
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
                                   ADD PRIMARY KEY (`id`);',
+<<<<<<< HEAD
   ' remove unnecessary permissions' => "ALTER TABLE `group_members`
+=======
+    'edit membership permissions' => "ALTER TABLE `group_members`
+>>>>>>> dev
                                     DROP COLUMN `editlibrary`,
                                     DROP COLUMN `membership`,
                                     DROP COLUMN `library`,
                                     DROP COLUMN `editdj`,
                                     DROP COLUMN `addshow`,
+<<<<<<< HEAD
                                     DROP COLUMN `adduser`",
     'add staff to permissions' => "ALTER TABLE `group_members`
                                     ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`",
@@ -92,6 +97,48 @@ $queries = array(
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
         ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
+=======
+                                    DROP COLUMN `adduser`,
+                                    CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
+                                    CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
+                                    ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`,
+                                    ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
+                                    ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
+                                    CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
+                                    CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0'",
+    'add training' => "ALTER TABLE `membership`
+                          ADD COLUMN `station_tour` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
+                          ADD COLUMN `technical_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `station_tour`,
+                          ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `technical_training`,
+                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`,
+                          ADD COLUMN `spoken_word_training` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`;",                        
+    'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
+                            `id` INT NOT NULL AUTO_INCREMENT,
+                            `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
+                            PRIMARY KEY (`id`));",
+    'additional committees' => "ALTER TABLE `citr_dev`.`membership_years` 
+                                ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
+                                ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
+                                ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",
+    
+    'other rework' => "ALTER TABLE `membership_years`
+                            DELETE COLUMN `other`",
+    'rename userid to id' =>    "BEGIN TRANSACTION;
+                                    ALTER TABLE group_members 
+                                        DROP FOREIGN KEY `user_id`;
+                                    ALTER TABLE group_members
+                                        DROP INDEX `userid_idx`;
+                                    ALTER TABLE user
+                                        CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
+                                    ALTER TABLE group_members
+                                        ADD INDEX `user_id_idx` (`user_id` ASC);
+                                    ALTER TABLE group_members 
+                                        ADD CONSTRAINT `user_id`
+                                        FOREIGN KEY (`user_id`)
+                                        REFERENCES user (`id`)
+                                            ON DELETE CASCADE
+                                            ON UPDATE CASCADE;"
+>>>>>>> dev
 
 
 

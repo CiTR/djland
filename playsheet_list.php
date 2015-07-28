@@ -1,24 +1,12 @@
 
 
+
+<div id=mainpodcast>
+  <a href='playsheet.php'><center>+ new podcast</center></a>
 <br/><br/>
-
-
-
-
-
-
-
-
-
-
 
 
 <?php
-echo "<div id=mainpodcast>
-<a href='playsheet.php'><center>+ new podcast</center></a>
-<br/><br/>
-";
-
 $get_playlists = "SELECT p.start_time AS start_time,
     p.id AS id,
     s.name AS name,
@@ -48,11 +36,10 @@ if($result = $db->query($get_playlists)){
   echo mysqli_error($db)."<hr/>".$get_playlists;
 }
 
-if((is_member("addshow"))){
-
+if(permission_level() >= $djland_permission_levels['staff']){
   echo "<br/><br/><button type=delete name=delete value=delete>delete selected playsheet</button>";
   echo '<br/><br/><a href="setSocan.php">Set a Socan Period Here</a>';
 
 }
-echo "</div>";
-
+?>
+</div>

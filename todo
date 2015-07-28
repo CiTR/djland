@@ -1,0 +1,14 @@
+TODO:
+
+Emails:
+	-rework, make sure retrieving proper lists.
+
+
+General:	
+	-Update permission level to check for paid of this year
+	-move student_no-handler to member
+
+SQL:
+
+	remove other, rename other2 to to other? or just remove checkbox checking.
+

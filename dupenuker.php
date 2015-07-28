@@ -5,7 +5,8 @@ $library_post_key = 'something';
 $library_post_val = 'something-else';
 
 
-session_start();
+
+include_once("/headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
@@ -20,8 +21,7 @@ echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"><
 
 echo '</head>';
 print_menu();
-echo '<body><h1>dupe nuke-em!</h1>';
-
+echo '<body class='wallpaper'><h1>dupe nuke-em!</h1>';
 echo '<p>select from the options and then click LOAD to load some duplicate albums that can be nuked! (It will take a couple minutes to load the dupes)</p>';
 echo '<form id=dupenuker><input type="hidden" name="action" value="dupenuking"></input>
 <input type="hidden" name="'.$library_post_key.'" value="'.$library_post_val.'"></input>

@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	include_once("../headers/session_header.php");
 	require("../headers/db_header.php");
 	$member = json_decode($_POST['member'],true);
 	$query = "UPDATE membership SET ";

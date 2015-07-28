@@ -1,8 +1,10 @@
 <?php 	
-	session_start();
+
+	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
+if( permission_level() >= $djland_permission_levels['workstudy']){
 ?>
 <html>
 	<head>
@@ -23,7 +25,8 @@
 			});
 		</script>
 	</head>
-	<body>
+
+	<body class='wallpaper'>
 		<?php print_menu();
 		$today = date('m/d/Y');?>
 		<center><br/><br/><br/><br/>
@@ -36,7 +39,13 @@
 		<button id="submitDates">View Sam Ads</button>
 		<img src='images/loading.gif' id='loadbar' style='display:none;'>
 		
-		<div id=samAds style='display:none;'><div class=samtitleh>Ad Name</div><div class=samplayedh>Time Played</div>
-		</div></center>
+		<div id=samAds style='display:none;'>
+            <div class=samtitleh>Ad Name</div>
+            <div class=samplayedh>Time Played</div>
+		</div>
 	</body>
 </html>
+<?php
+}else{
+    header("Location: main.php");
+}?>

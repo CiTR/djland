@@ -1,6 +1,7 @@
 <?php
-	require_once("../headers/db_header.php");
-	require_once("../headers/function_header.php");
+include_once("../headers/session_header.php");
+require_once("../headers/db_header.php");
+require_once("../headers/function_header.php");
 	
 	if(isset($_POST['username'])){
 		$username = $_POST['username'];

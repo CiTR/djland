@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once("headers/session_header.php");
 require_once('headers/login_header.php');
 require_once('headers/db_header.php');
 require_once("headers/password.php");
@@ -29,25 +29,10 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 		$message = "Login (Failed) ".login($_POST['username'], $_POST['password'], isset($_POST['permanent_cookie']) );
 		}
 	}
-else if(isset($_COOKIE[$cookiename_id]) && isset($_COOKIE[$cookiename_pass]) && $_COOKIE[$cookiename_pass] && $_COOKIE[$cookiename_id]) {
-	if(cookie_login()) {
-		//header("Location: main.php");
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
-
-		}
-	else{
-		logout();
-		$message = "Login (Bad Cookie)";
-		}
-	}
 else {
 	logout();
 	$message = " ";
 	}
-
-
-
-
 if (is_logged_in()) {
 	//header("Location: main.php");
 }
@@ -62,10 +47,10 @@ else {
 	preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
 	if (count($matches)>1){
 		$version = $matches[1];
-		if($version <= 8 ) echo "<body class='ie'>"; else echo "<body>";
+		if($version <= 8 ) echo "<body class='ie'>"; else echo "<body class='wallpaper'>";
 	}
 	else{
-		echo "<body>";
+		echo "<body class='wallpaper'>";
 	}
 ?>
 	<div id = 'login'>

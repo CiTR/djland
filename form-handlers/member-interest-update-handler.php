@@ -1,5 +1,5 @@
 <?php 
-	session_start();
+	include_once("../headers/session_header.php");
 	require("../headers/db_header.php");
 	$membership_year = json_decode($_POST['membership_year'],true);
 	$query = "UPDATE membership_years SET ";

@@ -6,17 +6,13 @@
  * Time: 4:50 PM
  */
 
+
 require_once("../api_common_private.php");
-
-
 $show_data = $incoming_data;
-
 $show_id = $show_data['show_id'];
-
 if (array_key_exists('show_id',$show_data)) unset($show_data['show_id']);
 
-
-// TO DO: add host_id code
+// TODO: add host_id code
 $message = update_row_in_table('shows', $show_data, $show_id);
 
 if ($error == ''){

@@ -1,4 +1,5 @@
 <?php
+include_once("session_header.php");
 //DB HEADER
 if (file_exists('config.php')){ 
 // this check is because sometimes this script is accessed from the root 
@@ -15,12 +16,12 @@ date_default_timezone_set($station_info['timezone']);
 //*******************************************
 //*******************************************
 //*******************************************
-
 $db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $djland_db_dbname);
-			if (mysqli_connect_error()) {
-	    		print('Connect Error for djland db (' . mysqli_connect_errno() . ') '
-	            . mysqli_connect_error());
-			}
+
+if (mysqli_connect_error()) {
+	print('Connect Error for djland db (' . mysqli_connect_errno() . ') '
+    . mysqli_connect_error());
+}
 try{
 	$hostandaddress = "mysql:dbname=".$djland_db_dbname.";host=".$djland_db_address;
 	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
@@ -70,7 +71,16 @@ function mysqli_result_dep($res, $row, $field=0) {
 	    return $datarow[$field];
 	else 	return false;
 	        
-} 
+}
+function getContent(){
+   
+    if (0 === strlen(trim($content = file_get_contents('php://input'))))
+    {
+      $content = false;
+    }
+
+  return $content;
+}
 
 //END DB HEADER
 ?>

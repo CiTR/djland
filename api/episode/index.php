@@ -50,7 +50,7 @@ if ($result = mysqli_query($db, $query) ) {
   if($error != '') finish();
   $plays = array();
 
-  $query = 'SELECT playlists.id as playlist_id FROM playlists WHERE playlists.podcast_episode = '.$id;
+  $query = 'SELECT playsheets.id as playlist_id FROM playsheet WHERE playsheets.podcast_episode = '.$id;
 
   if ($result2 = mysqli_query($db, $query)){
     if (mysqli_num_rows($result2) == 0){

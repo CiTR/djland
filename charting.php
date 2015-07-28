@@ -1,9 +1,12 @@
 <?php
-session_start();
+
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
-?>
+
+if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
+
 <html>
 <head>
 <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -15,7 +18,7 @@ require_once("headers/menu_header.php");
 <script type='text/javascript' src='js/charting.js'></script>
 
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php	print_menu(); ?>
     <center>
@@ -38,3 +41,6 @@ require_once("headers/menu_header.php");
     </center>
 
 </body></html>
+<?php }else{
+    header("Location: main.php");
+}?>

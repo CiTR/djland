@@ -1,15 +1,12 @@
 <?php
-
-
-
-session_start();
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
-
+if( permission_level() >= $djland_permission_levels['dj']){
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
-printf("<title>DJLAND | Report</title></head><body>");
+printf("<title>DJLAND | Report</title></head><body class='wallpaper'>");
 
 print_menu();
 
@@ -19,7 +16,7 @@ print_menu();
 	printf("<center><h1>DJ PLAYSHEET REPORT</h1></center>");
 
 
-	//Playlist Start Date
+	//playsheet Start Date
 	printf("<table border=0><tr><td align=right>Start Date: ");
 	printf("(<SELECT NAME=pl_date_year>\n<OPTION>%s", date('Y'));
 	for($i=2002; $i <= 2011; $i++) printf("<OPTION>%s", $i); 
@@ -71,7 +68,7 @@ print_menu();
 
 		//Do All Shows
 		if($_POST['showtitle'] == "All Shows") {
-			printf("<table border=1 class=report align=center><tr><td>Show Title</td><td>Playlist</td><td>Canadian (reg)</td><td>Canadian (spec)</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
+			printf("<table border=1 class=report align=center><tr><td>Show Title</td><td>playsheet</td><td>Canadian (reg)</td><td>Canadian (spec)</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
 			$result = mysqli_query($db, "SELECT * FROM shows WHERE last_show >= '$start_time' ORDER BY name");
 			$num_rows = mysqli_num_rows($result);
 			$count = 0;
@@ -85,7 +82,7 @@ print_menu();
 				$show_fe_req = 35;// mysqli_result_dep($result,$count,"fem_req");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE show_date >= '$start_date' AND show_date <= '$end_date' AND show_id='$show_id'";
 				$total_items += $count_items = mysqli_result_dep(mysqli_query($db, $the_query),0);
-				$total_pl += $count_pl = mysqli_result_dep(mysqli_query( $db,$the_query." AND is_playlist"),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query( $db,$the_query." AND is_playsheet"),0);
 				$total_cc_reg += $count_cc_reg = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
 				$total_cc_spec += $count_cc_spec = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
 				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db,$the_query." AND is_yourown"),0);
@@ -124,7 +121,7 @@ print_menu();
 		//Do Single Show
 		else {
 			printf($_POST['showtitle']);
-			printf("<table cellpadding=5 border=1 class=report align=center><tr><td>Playsheet Date</td><td>Playlist</td><td>Canadian (reg)</td><td>Canadian (spec)</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
+			printf("<table cellpadding=5 border=1 class=report align=center><tr><td>Playsheet Date</td><td>playsheet</td><td>Canadian (reg)</td><td>Canadian (spec)</td><td>Your Own</td><td>Indy</td><td>Female</td></tr>");
 			$show_id = $fshow_id[$_POST['showtitle']];
 			$result = mysqli_query($db, "SELECT * FROM shows WHERE id='$show_id'");
 			$show_cc_req_regular = 35; // mysqli_result_dep($result,$count,"cc_req");
@@ -132,14 +129,14 @@ print_menu();
 			$show_pl_req = 60;// mysqli_result_dep($result,$count,"pl_req");
 			$show_in_req = 70;// mysqli_result_dep($result,$count,"indy_req");
 			$show_fe_req = 35;// mysqli_result_dep($result,$count,"fem_req");
-			$result = mysqli_query($db, "SELECT * FROM playlists WHERE start_time >= '$start_time' AND start_time <= '$end_time' AND show_id='$show_id'");
+			$result = mysqli_query($db, "SELECT * FROM playsheets WHERE start_time >= '$start_time' AND start_time <= '$end_time' AND show_id='$show_id'");
 			$num_rows = mysqli_num_rows($result);
 			$count = 0;
 			while($count < $num_rows) {
 				$playsheet_id = mysqli_result_dep($result,$count,"id");
 				$the_query = "SELECT COUNT(*) FROM playitems WHERE playsheet_id='$playsheet_id'";
 				$total_items += $count_items = mysqli_result_dep(mysqli_query($db,$the_query),0);
-				$total_pl += $count_pl = mysqli_result_dep(mysqli_query($db,$the_query." AND is_playlist"),0);
+				$total_pl += $count_pl = mysqli_result_dep(mysqli_query($db,$the_query." AND is_playsheet"),0);
 				$total_cc_reg += $count_cc_reg = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 2"),0);
 				$total_cc_spec += $count_cc_spec = mysqli_result_dep(mysqli_query($db,$the_query." AND is_canadian AND crtc_category DIV 10 = 3"),0);
 				$total_yo += $count_yo = mysqli_result_dep(mysqli_query($db,$the_query." AND is_yourown"),0);
@@ -187,5 +184,6 @@ print_menu();
 			printf("</table><br>");
 		}
 	}
-
-?>
+}else{
+    header("Location: main.php");
+}?>

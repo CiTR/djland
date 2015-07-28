@@ -1,4 +1,5 @@
 <?php
+	include_once("../headers/session_header.php");
 	require_once("../headers/db_header.php");
 	require_once("../headers/function_header.php");
 	require_once("../headers/password.php");
@@ -58,15 +59,13 @@
 	$other = htmlentities($_POST['other'],ENT_QUOTES,'UTF-8');
 	
 	$membership_year = $_POST['membership_year'];
-	$is_member = $_POST['is_member'];
+	
 	$is_dj = $_POST['is_dj'];
 	$is_administrator = $_POST['is_administrator'];
-	$is_add_user = $_POST['is_add_user'];
-	$is_add_show = $_POST['is_add_show'];
-	$is_edit_dj = $_POST['is_edit_dj'];
-	$is_library = $_POST['is_library'];
-	$is_membership = $_POST['is_membership'];
-	$is_edit_library = $_POST['is_edit_library'];
+	$is_staff = $_POST['is_staff'];
+	$is_workstudy = $_POST['is_workstudy'];
+	$is_volunteer = $_POST['is_volunteer'];
+	$is_member = $_POST['is_member'];
 	$new_password = $_POST['password'];
 
 	if($member_type != 'Student' && $member_type != 'student'){
@@ -80,7 +79,7 @@
 	}else{
 		$update_user = "Password Not changed";
 	}
-	$update_group_member = "UPDATE group_members  SET member='".$is_member."',dj='".$is_dj."',administrator='".$is_administrator."',adduser='".$is_add_user."',addshow='".$is_add_show."',editdj='".$is_edit_dj."',library='".$is_library."',membership='".$is_membership."',editlibrary='".$is_edit_library."' WHERE userid ='".$userid."';";
+	$update_group_member = "UPDATE group_members  SET administrator='".$is_administrator."',staff='".$is_staff."',workstudy='".$is_workstudy."',volunteer='".$is_volunteer."',dj='".$is_dj."',member='".$is_member."' WHERE userid ='".$userid."';";
 	$fail=false;
 	$db->query("START TRANSACTION");
 	

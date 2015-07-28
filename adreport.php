@@ -1,25 +1,17 @@
 
 <?php
 
-
-session_start();
-
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-
 require_once("headers/function_header.php");
-
 require_once("headers/menu_header.php");
-
 require_once("adLib.php");
-
-
-
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
-//printf("<title>CiTR 101.9</title></head><body>");
+//printf("<title>CiTR 101.9</title></head><body class='wallpaper'>");
+if( permission_level() >= $djland_permission_levels['staff']){ ?>
 
-?>
 
 <title>Ad Report</title>
 
@@ -36,7 +28,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
   });
   </script>
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php
 
@@ -121,9 +113,9 @@ echo '<h1>ad  report</h1>';;
   });
 </script>  
 
-<?php
-
-?>
+<?php }else{
+    header("Location: main.php");
+}?>
 
 
 

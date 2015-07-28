@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once("../headers/session_header.php");
 require_once("../headers/security_header.php");
 
 //require_once("../headers/function_header.php");
@@ -46,60 +46,41 @@ $default = false;
 	
 	switch($action){
 		case 'search':
+
+            $query = "SELECT m.id AS id, m.firstname AS firstname, m.lastname AS lastname, m.email AS email, m.primary_phone AS primary_phone, my.membership_year AS membership_year, my.paid AS paid FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
 			switch($type){
-				case 'name':
+            	case 'name':
 					if($value !=  "" && $value != null){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
-						if($year != 'all'){
-							if($paid == 'both'){
-	 							$query.=" and my.membership_year='".$year."'";
-							}else{
-								$query.=" and my.membership_year='".$year."' and my.paid='".$paid."'";
-							}
-						} else {
-
-
-							if($paid == 'both'){
-								$query.=" ";
-							}else {
-								$query .= " and my.paid='" . $paid . "'";
-							}
-						}
-					}else{
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON my.member_id = m.id";
-						if($year != 'all'){
-							if($paid == 'both'){
-								$query.=" WHERE my.membership_year='".$year."'";
-							}else{
-								$query.=" WHERE my.membership_year='".$year."' and my.paid='".$paid."'";
-							} 
-						} else {
-
-							if($paid == 'both'){
-								$query.=" ";
-							}else {
-								$query .= " and my.paid='" . $paid . "'";
-							}
-						}
-					}
+						$query.=" WHERE m.lastname LIKE '%".$value."%' OR m.firstname LIKE '%".$value."%'";
+                        if($year != 'all') {
+                            $query .= " AND my.membership_year='" . $year . "'";
+                            if ($paid != 'both') {
+                                $query .= " AND my.paid='" . $paid . "'";
+                            }
+                        }
+                    }else {
+                        if ($year != 'all') {
+                            $query.= " WHERE my.membership_year='" . $year . "'";
+                            if ($paid != 'both') {
+                                $query .= " AND my.paid='" . $paid . "'";
+                            }
+                        }
+                    }
 					break;
 				case 'interest':
 					if($value != "" && $value != null && $value != 'all'){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1'";
+						$query.= " WHERE my.{$value}='1'";
 						if($year != 'all'){
-							if($paid == 'both'){
-								$query .=" AND my.membership_year='".$year."'";
-							}else{
-								$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
+                            $query .=" AND my.membership_year='".$year."'";
+							if($paid != 'both'){
+								$query.= " AND my.paid='".$paid."'";
 							}
 						}
 					}else{
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id";
 						if($year != 'all'){
-							if($paid == 'both'){
-								$query .=" AND my.membership_year='".$year."'";
-							}else{
-								$query.= " AND my.membership_year='".$year."' AND my.paid='".$paid."'";
+                            $query .=" WHERE my.membership_year='".$year."'";
+							if($paid != 'both'){
+								$query.=" AND my.paid='".$paid."'";
 							}
 						}
 					}
@@ -129,7 +110,7 @@ $default = false;
 					$query = "SELECT * FROM membership_years WHERE member_id='".$value."' and membership_year='".$year."'ORDER BY membership_year DESC";
 					break;
 				case 'permission': //get permissions
-					$query = "SELECT u.userid AS userid, u.username AS username ,gm.member AS member,gm.dj AS dj,gm.administrator AS administrator,gm.adduser AS adduser,gm.addshow AS addshow,gm.editdj AS editdj,gm.library AS library,gm.membership AS membership,gm.editlibrary AS editlibrary FROM user AS u INNER JOIN membership AS m on u.member_id=m.id INNER JOIN group_members AS gm on u.userid=gm.userid WHERE m.id='".$value."'";
+					$query = "SELECT u.userid AS userid, u.username AS username, gm.administrator AS administrator,gm.staff AS staff,gm.workstudy AS workstudy,gm.volunteer AS volunteer,gm.dj AS dj,gm.member AS member FROM group_members AS gm INNER JOIN user AS u ON u.userid = gm.userid INNER JOIN membership AS m ON u.member_id = m.id WHERE m.id='".$value."'";
 					break;
 				default:
 					$default = true;
@@ -153,7 +134,7 @@ $default = false;
 			switch($type){
 				case 'interest':
 					if($value != "" && $value != null && $value != 'all'){
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.".$value."='1' ";
+						$query = "SELECT m.firstname AS firstname, m.lastname AS lastname, m.email AS email FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.{$value}='1' ";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -162,7 +143,8 @@ $default = false;
 							}
 						}
 					}else{
-						$query = "SELECT * FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.member_id IS NOT NULL ";
+
+						$query = "SELECT m.firstname AS firstname, m.lastname AS lastname, m.email AS email FROM membership AS m INNER JOIN membership_years AS my ON m.id=my.member_id WHERE my.member_id IS NOT NULL ";
 						if($year != 'all'){
 							if($paid == 'both'){
 								$query .=" AND my.membership_year='".$year."'";
@@ -261,33 +243,21 @@ $default = false;
 			$default = true;
 			break;
 	}
-	if(is_member('member')){
+
+	if(permission_level() >= 0){
 		if(!$default AND ($action != 'report')){
 		$result = null;
-		$members = null;
-		if($result = $db->query($query)){
-			$members=array();
-			while($row = mysqli_fetch_array($result)){
-			$members[] = $row;
-			}
-			if (count($members)>0) {
-				foreach ($members[0] as $i => $v) {
-					$members[0][$i] = html_entity_decode($v, ENT_QUOTES);
-				}
-			}
-		}
+
+            $members = null;
+		if($result = $db->query($query)) {
+            $members = $result->fetch_all(MYSQL_ASSOC);
+        }
 		echo json_encode($members);
 		$result->close();
 		}
 	}else{
 		echo "you don't have permission";
 	}
-		
-	
-	
-
-
-/*}*/
 
 
 ?>

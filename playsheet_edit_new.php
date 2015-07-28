@@ -54,6 +54,7 @@ if ($actionSet && $action == 'edit' || $action == 'datadump') {
     $loaded_crtc = "";
     $loaded_lang = "";
   }
+
 } else {
   // making a new PS
 
@@ -62,7 +63,8 @@ if ($actionSet && $action == 'edit' || $action == 'datadump') {
 
     //check to see if this unix time already has a playsheet saved - if so, load that one with action=edit
 
-    $check_query = "SELECT id FROM playlists WHERE unix_time='" . $unix_start_time . "'";
+
+    $check_query = "SELECT id FROM playsheets WHERE unix_time='" . $unix_start_time . "'";
     if ($check = mysqli_query($db, $check_query)) {
       $checked = mysqli_fetch_assoc($check);
       if ($yesnumber = $checked['id']) {
@@ -135,6 +137,7 @@ echo "<div id=loaded_crtc_test style='display:none'>" . $crtc_pl . "</div>";
 if ($ps_id && $_GET['action'] != 'datadump') {
   // VIEW IS NOT RAW DATA
   printf("<br><div class=buttonContainer>");
+
   printf("<div class=nav><ul><li><a href=\"playsheet.php?action=datadump&id=%s\">&nbsp;View Tracklist&nbsp;</a></li></ul></div></div>", $ps_id);
 } else if ($ps_id) {
   // VIEW IS RAW DATA
@@ -166,6 +169,7 @@ if (count($matches) > 1) {
 // Raw Data view
 printf("<br>");
 if ($SOCAN_FLAG) {
+
   printf("<div class=playsheetSOCAN ng-app='djLand'>");
 } else {
   printf("<div class=playsheet ng-app='djLand'>");
@@ -246,6 +250,7 @@ else {
 
   <span id='ps_header'>
 <table border=0 align=center width=100%% >
+
   <tr>
   <td>
   Show: <select id='showSelector' name="showtitle">
@@ -319,7 +324,7 @@ else {
           <?php
 
   echo "<br/><select style='height:25px' class=invisible id='select-playsheet' >";
-  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playlists AS p ON s.id = p.show_id order by start_time desc limit 3000";
+  $query = "SELECT s.id AS id, s.name AS name, p.id AS playsheet_id, p.start_time AS start_time  FROM shows AS s INNER JOIN playsheets AS p ON s.id = p.show_id order by start_time desc limit 3000";
   if ($result = $db->query($query)) {
     while ($row = mysqli_fetch_array($result)) {
       echo "\n<option value='" . $row['playsheet_id'] . "' data='" . $row['start_time'] . "'>" . $row['start_time'] . " - " . $row['name'] . "</option>";
@@ -353,6 +358,7 @@ else {
   for ($i = 0; $i <= 23; $i++) printf("\n<OPTION value=%02d >%02d", $i, $i);
   printf("</SELECT>:");
   printf("<SELECT id=end_date_min NAME=end_date_min >\n<OPTION>%02d", $end_date_min);
+
   for ($i = 0; $i <= 59; $i++) printf("\n<OPTION value=%02d>%02d", $i, $i);
   ?>
         </SELECT>]
@@ -700,6 +706,7 @@ else {
   <?php if ($enabled['podcast_tools']) { ?>
 
 
+
     <div id='podcast-tools' ng-controller="playsheet_podcast" >
       <h2>Podcast Tools</h2>
       <?php if (is_numeric($podcast_id)) {
@@ -777,7 +784,7 @@ else {
   }// end of podcast tools creation block
 
 
-  if (!$ps_id || is_member("editdj")) {
+  if (!$ps_id || permission_level() >= $djland_permission_levels['dj']) {
     echo "<center><br/><span id='submitMsg'>This is an incomplete playsheet. <br/>Please fill in all music fields:
 <b>artist</b>, <b>album</b> (release title), and <b>song</b>. Also delete all empty rows by clicking the '-' button.<br/>
 You may temporarily save a draft and resume at another time by clicking 'Save draft' in the top right corner</span><br/>

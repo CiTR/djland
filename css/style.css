@@ -1,11 +1,19 @@
 /*PLAYSHEET TEST */
 body { 
-background-color: #3434A4;
-background-image: url('../images/wallpaper.jpg');
 background-repeat: repeat;
 font-family: Helvetica,Arial;
-color:white;
+
 }
+.lightblue{
+	background-color: #3434A4;
+}
+.grey{
+	background-color: grey;
+}
+.white{
+	background-color: white;
+}
+
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
@@ -46,9 +54,17 @@ div#main {
 	font-size:0.77em;
 	vertical-align: top;
 }
-
-
-
+.wallpaper{
+	background-image: url('../images/wallpaper.jpg');
+	color:white;
+}
+ul{
+    padding:0px;
+    margin:0px;
+}
+li{
+    margin:0px;
+}
 h1,h2,h3,h4{
 	text-align: center;
 }
@@ -75,6 +91,85 @@ input, select, textarea, option{
 .ie select, .ie input, .ie textarea {
 	background-color: #000977;
 }
+
+/* CSS for general page layout */
+
+#wrapper {
+    background-color: rgba(0,0,0,.2);
+    width: 800px;
+    height: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top:10px;
+    padding-top:10px;
+    padding-left:10px;
+    padding-right:10px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-right-color: #FFFFFF;
+    border-left-color: #FFFFFF;
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.wrapper{
+    position: relative;
+    width:940px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    overflow: visible;
+}
+.inner{
+    display:inline-block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: grey;
+    width:90%;
+}
+.inner > li{
+    min-height:20px;
+}
+.small{
+    width:100%;
+    height:auto;
+}
+.wrapper:after{
+    background-color: grey;
+}
+
+.clean-list{
+    list-style: none;
+}
+.inline-list *{
+	display:inline;
+}
+.text-left{
+	text-align:left;
+}
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}
+.center{
+	margin-left:auto;
+	margin-right:auto;
+}
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+.text-center{
+    text-align: center;
+}
+
 
 
 #ps_status{
@@ -103,15 +198,37 @@ input, select, textarea, option{
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
     z-index:5;
-}
-#nav{
-	border-radius: 10px;
-	-moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
 }
-#tab-nav{
-	list-style:none;
+.nav.mini{
+    list-style:none;
     width:940px;
+    margin:0px auto 0px auto;
+    height:25px;
+    font-size: 16px;
+    background: #A4A4A4;
+    background: -moz-linear-gradient(top, #343434, #101010);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#cccccc), to(#343434));
+    border: 1px solid #002232;
+    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
+    z-index:5;
+
+}
+.nav.mini li{
+    position: relative;
+    float: left;
+    height: 25px;
+    z-index:20;
+    padding: 0px 10px;
+}
+#tab-nav{
+    position:relative;
+	list-style:none;
+    width:1024px;
     margin:0px auto 0px auto;
     min-height:35px;
     height:auto;
@@ -121,9 +238,14 @@ input, select, textarea, option{
 #nav li, #tab-nav li{
 	float:left;
 	position:relative;
-	padding: 4px 10px 4px 10px;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:4px;
+    padding-bottom: 4px;
 	text-align:center;
-	margin-right:20px;
+    margin-left:10px;
+	margin-right:10px;
+
 	margin-top:7px;
 	border:none;
 }
@@ -150,7 +272,7 @@ input, select, textarea, option{
 	
 #nav li:hover{
 	border: 1px solid #555555;
-    padding: 4px 9px 4px 9px;
+    padding: 4px 4px 4px 4px;
     background: #F4F4F4;
     -moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
@@ -158,6 +280,7 @@ input, select, textarea, option{
 }
 #nav .nodrop,.drop, #tab-nav .nodrop,.drop {
 	right:8px;
+	cursor: pointer;
 }
 #nav .nodrop:hover {
 	-moz-border-radius: 5px 5px 5px 5px;
@@ -190,9 +313,9 @@ input, select, textarea, option{
 }
 
 
-.dropdown_small,
-.dropdown_medium,
-.dropdown_large {
+.dropdown.small,
+.dropdown.medium,
+.dropdown.large {
 	float:left;
     position:absolute;
     left:-999em;
@@ -207,29 +330,29 @@ input, select, textarea, option{
     -webkit-border-radius: 0px 5px 5px 5px;
     border-radius: 0px 5px 5px 5px;
 }
-.dropdown_small {width: 140px;}
-.dropdown_medium {width: 280px;}
-.dropdown_large {width: 420px;}
+.dropdown.small {width: 140px;}
+.dropdown.medium {width: 280px;}
+.dropdown.large {width: 420px;}
 
-#nav li:hover .dropdown_small, 
-#nav li:hover .dropdown_medium , 
-#nav li:hover .dropdown_large{
+#nav li:hover .dropdown.small,
+#nav li:hover .dropdown.medium ,
+#nav li:hover .dropdown.large{
     left:-1px;
     top:auto;
 }
 
-.small,
-.medium,
-.large{
+.dropdown > .small,
+.dropdown > .medium,
+.dropdown > .large{
     display:inline;
     float: left;
     position: relative;
     margin-left: 5px;
     margin-right: 5px;
 }
-.small {width:130px;}
-.medium {width:270px;}
-.large {width:410px;}
+.dropdown > .small {width:130px;}
+.dropdown > .medium {width:270px;}
+.dropdown > .large {width:410px;}
 
 #nav .menu_right {
     float:right;
@@ -362,10 +485,7 @@ div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
 			/*	text-align:center;*/
 				}
 				
-				
-				form{
-	/*				text-align:center;*/
-					}
+
 				
 table#playsheet-table { 
 	width:880px; 
@@ -486,50 +606,82 @@ button#submit_user.red{
 	overflow:hidden;
 	text-align:left;
 }
-#container{
+.container{
 	height:auto;
 	padding-left:10px;
 	width:95%;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom:25px;
 }
 
 .containerrow{
+    text-align:right;
 	display:inline-block;
 	width:100%;
 	overflow:visible;
 	margin-bottom:2px;
 }
-#membership{
-	width:916px;
-	background-color: grey;
-	height:auto;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top:-2px;
-	margin-bottom:25px;
-	z-index: 3;
+#print_friendly{
+	position:absolute;
+	right:0px;
+	top:80px;
 }
+.membership{
+	width:1024px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -2px;
+	z-index: 3;
+	margin-bottom: 15px;
+}
+
+.membership ul{
+	background-color:inherit;
+}
+
 #membership_header{
+    list-style: none;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	width:100%;
+    margin-top:0px;
 	}
+#membership_header li,#search_header li{
+    float:left;
+    position:relative;
+    margin-right:2px;
+    border:none;
+}
 #search_container{
 	width:auto;
 	display:inline-block;
 }
-#member_result{
+#membership_result{
+	float:left;
 	width:100%;
-	overflow-y: auto;
-	overflow-x:hidden;
-	max-height:500px;
+ 	background:inherit;
 	margin-left:auto;
 	margin-right:auto;
 	text-align:center;
-	padding-bottom:15px;
+	margin-bottom:10px;
+}
+.height_cap{
+	max-height:80%;
+}
+.overflow_hidden{
+	overflow:hidden;
+}
+.overflow_show{
+	overflow:visible;
+}
+.overflow_auto{
+	overflow:auto;
+}
+.inline_block{
+	display:inline-block;
+}
+#member_password_change{
+	padding-bottom:10px;
 }
 #email_list{
 	min-height:400px;
@@ -539,23 +691,30 @@ button#submit_user.red{
 	padding-bottom:15px;
 }
 .member_result_row{
-	display:inline-block;
 	margin-left:auto;
 	margin-right:auto;
 	width:95%;
 	text-align:left;
-
+	overflow:hidden;
 }
 #headerrow{
 	background-color: #a4a4a4;
 }
-#membership_table{
-	position:relative;
-	margin-left:30px;
+#membership_table tr td,#membership_table tr th{
+    padding-right:5px;
+}
+.staff_comment{
+	width:250px;
+}
+.report_row:hover>div{
+	background-color:blue;
 }
 .member_row:hover{
 	cursor: pointer; cursor: hand;
 	background-color:blue;
+}
+.member_row.delete{
+    background-color:red;
 }
 #membership_year{
 	margin-left:auto;
@@ -574,16 +733,13 @@ button#submit_user.red{
 	display:inline-block;
 	position:relative;
 	float:left;
-	text-align:right;
-	height:auto;
-	left:2px;
+	height:auto;	
 	overflow:visible;
 }
 div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 	max-width:140px;
 }
 .col1{
-	text-align:center;
 	width:100%;
 }
 .col2{
@@ -634,9 +790,10 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	font-size:70%;
 }
 .largeinput{
-	width:550px;
+
+	width:750px;
 	max-width:83%;
-	height:100px;
+	height:50px;
 	max-height:75px;
 }
 .padded{
@@ -653,7 +810,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-
+.hidden{
+	display:none;
+}
 
 /*----------------------------*/
 /*----PLAYLIST TABLE RULES----*/
@@ -680,9 +839,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	}
 
 	li.playsheetrow
-	{	
-		top:-15px;
-		left:-38px;
+	{
 		float:left;
 		width:914px;
 		position:relative;
@@ -706,8 +863,8 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 		width: 175px;
 	}
 	.inputboxes input{
-		height:1.5em;
-		font-size: 15;
+		height:22px;
+		font-size: 15em;
 	}
 	
 	.inputboxesinner	{	
@@ -1063,7 +1220,7 @@ div.editform {
 	margin: 0 auto 0 auto;
 	border-style:ridge;
 	border-color: #c3c3c3;
-	padding: 0 50px 40px 50px;
+	padding: 0 50px 0px 50px;
 }
 
 .editform h1 {
@@ -1102,7 +1259,7 @@ div.editform {
 /*	display:block;*/
 	display:none;
 	background-color:beige;
-	border-width:3;
+	border-width: medium;
 	border-style:solid;
 	border-color:#BBB;
 	height:80%;
@@ -1330,11 +1487,36 @@ width: 55px;
 	width:45px;
 }
 
-
-div#ui-datepicker-div, div#up-datepicker-div * {
-	position:relative;
-	margin-top:-150px;
+div#ui-datepicker-div{
+	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+    box-shadow:inset 0px 0px 1px #BEBEBE;
+	display:inline-block;
+		position:relative;
+	max-width:200px;
+	max-height:200px;
+	margin-top:0px;
+	z-index:50 !important;
 }
+
+div.ui-datepicker{
+	width:100%;
+	background:grey;
+}
+
+.ui-datepicker-header{
+	width:100%;
+}
+.ui-datepicker-next{
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+.ui-datepicker-prev{
+	text-align:left;
+	display:inline-block;
+	width:100px;
+}	
 
 .invisible *{
 display:none;
@@ -1599,7 +1781,7 @@ width:20px;
 /*	display:block;*/
 	text-align: center;
 	background-color:beige;
-	border-width:3;
+	border-width:3px;
 	border-style:solid;
 	border-color:#BBB;
 	position:fixed;
@@ -1660,7 +1842,7 @@ max-width:120px;
 }
 
 div.adType, div.adType input{
-max-width:110px;
+max-width:80px;
 }
 input.adInput{
 
@@ -1673,7 +1855,7 @@ overflow-x: visible;
 div.adName, div.adName input{
 
 background-color:transparent;
-width:270px;
+width:330px;
 }
 
 .adName input{
@@ -1771,7 +1953,7 @@ font-weight:bold;
 	font-size: 0.70em;
 }
 .report-entry{
-	margin:2;
+	margin:2px;
 	padding:0;
 	width:600px;
 	z-index: 2;
@@ -1822,26 +2004,6 @@ span#show-percent{
 #report-show-compliance{
 	margin-left: 30px;
 	font-style: italic;
-}
-
-/* CSS for general page layout */
-
-#wrapper {
-  background-color: rgba(0,0,0,.2);
-  width: 800px;
-  height: 1000px;
-  margin-right: auto;
-  margin-left: auto;
-	padding-top:10px;
-	margin-top:10px;
-  border-right-width: 1px;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-left-style: solid;
-  border-right-color: #FFFFFF;
-  border-left-color: #FFFFFF;
-	border-top-width: 1px;
-	border-top-style: solid;
 }
 
 
@@ -1910,15 +2072,11 @@ border-width:0;
 
 .selectanad{
 	background-color: transparent;
-	border-width:1;
+	border-width:1px;
 }
 
 .selectanad option{
 background-color:black;
-}
-
-invisible-tempalate{
-		
 }
 
 #adcount{
@@ -1963,5 +2121,10 @@ height:20px;
 
 .large-button{
 	font-size:3em;
-
+}
+.form_wrap{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
 }

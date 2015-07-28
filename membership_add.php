@@ -9,11 +9,11 @@
 		<title>DJLAND | Sign Up</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
-		<script type='text/javascript' src='js/membership-add.js'></script>
+		<script type='text/javascript' src='js/membership_add.js'></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	</head>
-	<body>
+	<body class='wallpaper'>
 		<div id='membership' >
 			<h1> CiTR Member Signup </h1>
 			<hr>
@@ -75,7 +75,7 @@
 						</select>
 					
 						<select id='member_type'>
-							<option value='Student'>Student</option>
+							<option value='Student'>UBC Student</option>
 							<option value='Community'>Community</option>
 							<option value='Staff'>Staff</option>
 						</select>

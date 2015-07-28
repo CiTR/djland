@@ -1,5 +1,5 @@
 <?php
-
+	include_once("../headers/session_header.php");
 $library_post_key = 'dopeysecurity';
 $library_post_val = 'something';
 
