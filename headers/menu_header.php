@@ -29,7 +29,12 @@ function print_menu(){
 			if( (permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership'] ): 
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
-		<?php endif; ?>
+		
+		<?php 
+			endif; 
+
+			if(permission_level() > $djland_permission_levels['member']): ?>
+
 		<li class=drop><a href="library.php">Library</a>
 			<div class="dropdown small">
 				<div class=small>
@@ -45,56 +50,63 @@ function print_menu(){
 			</div>
 		</li>
 
-	<?php if(permission_level() >= $djland_permission_levels['workstudy']) : 
-		if($enabled['shows']) :?>
-			<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
-		<?php endif; 
-		if($enabled['adscheduler']) : ?>
-			<li class=drop><a href="adscheduler.php">Manage Ads</a>
-				<div class="dropdown small">
-					<div class=small>
-						<ul>
-							<li><a href="adscheduler.php">Ad Scheduler</a></li>
-							<li><a href="adreport.php">Ad Reporting</a></li>
-							<li><a href="samAds.php">Sam Ad History</a></li>
-						</ul>
+		<?php 
+			endif;
+			if(permission_level() >= $djland_permission_levels['workstudy']) : 
+				if($enabled['shows']) :?>
+					<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
+		<?php 
+				endif; 
+				if($enabled['adscheduler']) : ?>
+					<li class=drop><a href="adscheduler.php">Manage Ads</a>
+						<div class="dropdown small">
+							<div class=small>
+								<ul>
+									<li><a href="adscheduler.php">Ad Scheduler</a></li>
+									<li><a href="adreport.php">Ad Reporting</a></li>
+									<li><a href="samAds.php">Sam Ad History</a></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+		<?php 
+				endif; 
+				if($enabled['charts']) :?>
+					<li class=nodrop><a href="charting.php">Charts</a></li>
+		<?php 
+				endif;
+			endif; 
+			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['report']): ?>
+				<li class=drop ><a href="report.php">Reports</a>
+					<div class="dropdown small">
+						<div class=small>
+							<ul>
+								<li><a href="report.php">Show Report</a></li>
+		<?php
+							if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
+								<li><a href="crtcreport.php">CRTC Report</a></li> 
+		<?php 
+							endif; ?>
+							</ul>
+						</div>
 					</div>
-				</div>
-			</li>
-		<?php endif; 
-		if($enabled['charts']) :?>
-			<li class=nodrop><a href="charting.php">Charts</a></li>
-		<?php endif;
-	endif; 
-	if($enabled['report']): ?>
-		<li class=drop ><a href="report.php">Reports</a>
-			<div class="dropdown small">
-				<div class=small>
-					<ul>
-						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?> 
-							<li><a href="report.php">Show Report</a></li> 
-						<?php endif;
-						if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
-							<li><a href="crtcreport.php">CRTC Report</a></li> 
-						<?php endif; ?>
-					</ul>
-				</div>
-			</div>
-		</li>
-		<?php endif; ?>
-		<li class=drop><a href="playsheet.php">Playsheets</a>
-			<div class="dropdown small">
-				<div class=small>
-					<ul>
-						<?php if(permission_level() >= $djland_permission_levels['dj'] && ($enabled['playsheets'])) : ?> 
-							<li><a href="playsheet.php">New Playsheet</a></li>
-							<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
-							<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			</div>
-		</li>
+				</li>
+		<?php 
+			endif; 
+			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
+				<li class=drop><a href="playsheet.php">Playsheets</a>
+					<div class="dropdown small">
+						<div class=small>
+							<ul>
+									<li><a href="playsheet.php">New Playsheet</a></li>
+									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
+									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+		<?php 
+			endif; ?>
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 		<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>

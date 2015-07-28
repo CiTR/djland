@@ -53,41 +53,46 @@ function permission_level(){
 	$level = -1; //failure return value
 	if($result){
 		$permissions = $result->fetch_object();
-	    
-		foreach($permissions as $level => $value){
-			if( $value == '1'){
-				$level = $djland_permission_levels[$level];
-				break;
+		foreach($permissions as $perm_level => $value){
+			
+			if( $value == '1' && $djland_permission_levels[$perm_level] > $level ){
+				$level = $djland_permission_levels[$perm_level];
 			}	
 		}
 
-	    if(is_paid()==false && ( $level < $djland_permission_levels['staff'] )){
-	        $level = 0;
-	    }
 	}else{
 		echo "Database Error:".mysqli_error($db);
 	}
 
+	if(!is_paid() && ($level < $djland_permission_levels['staff'])){
+		$level = 0;
+	}
     return $level;
 }
 
 function is_paid(){
     global $pdo_db;
     //Session contains member id.
-    $query = "SELECT paid FROM membership_years WHERE member_id=:member_id ORDER BY membership_year DESC";
+
+
+    $query = "SELECT CASE paid WHEN '1' THEN '1' ELSE '0' END AS paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
         $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_NUM);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
     }catch(PDOException $pdoe){
         echo $pdoe->getMessage();
     }
-    if($result[0][0] == '1'){
-        return true;
+
+    if(sizeof($result)>0){
+
+    	return true;
     }else{
-        return false;
+    	return false;
     }
+
 }
 
 function has_show_access($show_id){
