@@ -114,11 +114,7 @@
       .controller('apiTest', ['$scope','testService','API_URL_BASE',function($scope,testService,API_URL_BASE){
 
         $scope.public_api_pluralized_lists = [
-<<<<<<< HEAD
-          {endpoint:'playlist',data:[], error:'', links:[]},
-=======
           {endpoint:'playsheet',data:[], error:'', links:[]},
->>>>>>> dev
           {endpoint:'show',data:[], error:'',links:[]},
           {endpoint:'episode',data:[], error:'', links:[]}
 //          {endpoint:'user',data:[], error:'',links:[]},
@@ -127,11 +123,7 @@
         ];
 
         $scope.public_api_pluralized_lists_offset = [
-<<<<<<< HEAD
-          {endpoint:'playlist',data:[], error:'', links:[]},
-=======
           {endpoint:'playsheet',data:[], error:'', links:[]},
->>>>>>> dev
           {endpoint:'show',data:[], error:'', links:[]},
           {endpoint:'episode',data:[], error:'', links:[]},];
 
@@ -148,15 +140,7 @@
         ];
 
         $scope.error_requests = [
-<<<<<<< HEAD
-          {request:'playlist',status:'',body:''},
-          {request:'show',status:'',body:''},
-          {request:'episode',status:'',body:''},
-          {request:'playlist?ID=cars',status:'',body:''},
-          {request:'show?ID=doge',status:'',body:''},
-          {request:'episode?ID=dingus',status:'',body:''},
-          {request:'playlist?ID=9999999999999',status:'',body:''},
-=======
+
           {request:'playsheet',status:'',body:''},
           {request:'show',status:'',body:''},
           {request:'episode',status:'',body:''},
@@ -164,7 +148,6 @@
           {request:'show?ID=doge',status:'',body:''},
           {request:'episode?ID=dingus',status:'',body:''},
           {request:'playsheet?ID=9999999999999',status:'',body:''},
->>>>>>> dev
           {request:'episode?ID=999999999999',status:'',body:''},
           {request:'show?ID=999999999999',status:'',body:''}
         ]

@@ -71,33 +71,13 @@ $queries = array(
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
                                   ADD PRIMARY KEY (`id`);',
-<<<<<<< HEAD
-  ' remove unnecessary permissions' => "ALTER TABLE `group_members`
-=======
+
     'edit membership permissions' => "ALTER TABLE `group_members`
->>>>>>> dev
                                     DROP COLUMN `editlibrary`,
                                     DROP COLUMN `membership`,
                                     DROP COLUMN `library`,
                                     DROP COLUMN `editdj`,
                                     DROP COLUMN `addshow`,
-<<<<<<< HEAD
-                                    DROP COLUMN `adduser`",
-    'add staff to permissions' => "ALTER TABLE `group_members`
-                                    ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`",
-    'edit more of the permissions' => "ALTER TABLE `group_members`
-                                    ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
-                                    ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
-                                    CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
-                                    CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
-                                    CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
-                                    CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0' ",
-
-    'add string based host field' => 'ALTER TABLE `playlists`
-        ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
-    'add slug field to channel' => 'ALTER TABLE `podcast_channels`
-        ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
-=======
                                     DROP COLUMN `adduser`,
                                     CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
                                     CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
@@ -137,8 +117,11 @@ $queries = array(
                                         FOREIGN KEY (`user_id`)
                                         REFERENCES user (`id`)
                                             ON DELETE CASCADE
-                                            ON UPDATE CASCADE;"
->>>>>>> dev
+                                            ON UPDATE CASCADE;",
+    'add string based host field' => 'ALTER TABLE `playlists`
+        ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
+    'add slug field to channel' => 'ALTER TABLE `podcast_channels`
+        ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
 
 
 
