@@ -1,6 +1,5 @@
 
 
-
 <div id=mainpodcast>
   <a href='playsheet.php'><center>+ new podcast</center></a>
 <br/><br/>

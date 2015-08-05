@@ -13,51 +13,16 @@ font-family: Helvetica,Arial;
 .white{
 	background-color: white;
 }
-
-
-[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
-
-div#main {
-	width:50%;
-	position:relative;
-	margin-left:auto;
-	margin-right:auto;
-}
-
-
-#mainleft {
-	font-size:1em;
-	line-height:1.3em;
-	width:90%;
-	position:relative;
-	margin-left:10px;
-}
-
-#mainleft input, #mainleft textarea{
-	width:75%;
-	margin: 5px;
-	padding:5px;
-}
-#mainleft label{
-	font-size:0.95em;
-	text-align:right;
-	display:inline-block;
-	width:100px;
-}
-
-#mainleft input{
-	font-size: 1em;
-}
-
-#mainleft textarea{
-
-	font-size:0.77em;
-	vertical-align: top;
-}
 .wallpaper{
 	background-image: url('../images/wallpaper.jpg');
 	color:white;
 }
+
+ ul, li {
+    list-style-type: none;
+    padding-left: 0
+  }
+
 ul{
     padding:0px;
     margin:0px;
@@ -92,6 +57,10 @@ input, select, textarea, option{
 	background-color: #000977;
 }
 
+.spaced > td{
+  min-width:100px;
+  margin: 10 10 10 10;
+}
 /* CSS for general page layout */
 
 #wrapper {
@@ -166,24 +135,37 @@ input, select, textarea, option{
    height: 0; 
    clear: both;
 }
+.overflow_hidden{
+	overflow:hidden;
+}
+.overflow_show{
+	overflow:visible;
+}
+.overflow_auto{
+	overflow:auto;
+}
+.inline_block{
+	display:inline-block;
+}
 .text-center{
     text-align: center;
 }
-
-
-
-#ps_status{
-	position:fixed;
-	top:0;
-	left:35%;
-	width:15%;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: lightyellow;
-	color:black;
-	padding:3px 15px 3px 15px;
-
+.smalltext{
+	top:3px;
+	font-size:70%;
 }
+.largeinput{
+
+	width:750px;
+	max-width:83%;
+	height:50px;
+	max-height:75px;
+}
+.hidden{
+	display:none;
+}
+
+/* MENU STYLING CSS */
 #nav{ 
 	list-style:none;
     width:940px;
@@ -392,9 +374,47 @@ input, select, textarea, option{
     margin:0;
 }
 
+/* Playsheet Angular CSS */
+
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+
+div#main {
+	width:50%;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+}
 
 
+#mainleft {
+	font-size:1em;
+	line-height:1.3em;
+	width:90%;
+	position:relative;
+	margin-left:10px;
+}
 
+#mainleft input, #mainleft textarea{
+	width:75%;
+	margin: 5px;
+	padding:5px;
+}
+#mainleft label{
+	font-size:0.95em;
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+
+#mainleft input{
+	font-size: 1em;
+}
+
+#mainleft textarea{
+
+	font-size:0.77em;
+	vertical-align: top;
+}
 .buttonContainer{
 	list-style:none;
 	margin:30px auto 0px auto;
@@ -431,9 +451,18 @@ input, select, textarea, option{
 	margin-left:auto;
 	margin-right:auto;
 }
+#ps_status{
+	position:fixed;
+	top:0;
+	left:35%;
+	width:15%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: lightyellow;
+	color:black;
+	padding:3px 15px 3px 15px;
 
-
-
+}
 
 #ps_header td, #ps_header input, #ps_header select{
 	font-size: 15px;
@@ -445,6 +474,412 @@ margin:10px;
 #ps-loading-image{
 display:none;
 }
+
+
+  #totals {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background-color: beige;
+    border-color: black;
+    border-width: 2px;
+    border-style: groove;
+    text-align: center;
+    padding: 3px;
+  }
+
+  #totals div {
+    display: inline;
+    padding-right: 20px;
+  }
+
+  #totals .req {
+    font-weight: bold;
+
+    color: darkgreen;
+  }
+
+  #totals .bad {
+    background-color: black;
+    color: red;
+  }
+
+  .crtc, .tools {
+    cursor: pointer;
+    background-color: lightblue;
+    padding: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    round-clip: 2;
+    border-style: outset;
+    border-width: 2px;
+    border-color: lightblue;
+  }
+
+  .crtc:hover {
+    border-color: black;
+  }
+
+  .lang {
+    width: 50px;
+    font-size: 0.8em;
+  }
+
+  .music_row {
+
+    max-width: 990px;
+    /*
+          background-color:rgba(150,150,150,0.8);*/
+  }
+
+  .music_row, .music_row * {
+
+    font-size: 1.1em;
+  }
+
+  .music_row_heading {
+    background-color: lightgrey;
+  }
+
+  .music_row_heading .crtc, .lang {
+    font-size: 0.7em;
+  }
+
+  .music_row_heading input, .music_row_heading span {
+    text-align: center;
+    background: none;
+    border-width: 0;
+  }
+
+  input {
+
+    display: inline;
+    width: auto;
+  }
+
+  .playsheet_block, .spokenword_block, .podcast_block,.save_block {
+    max-width: 1000px;
+    width:100%;
+    min-height:200px;
+    position:relative;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+    float:left;
+
+  }
+
+  .podcast_block_inner{
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+    display:block;
+    position:relative;
+  }
+
+  .spokenword_block{
+    min-height:400px;
+  }
+
+
+  .dragzone {
+    cursor: default;
+
+  }
+
+  button.box {
+    display: inline-block;
+    height: 27px;
+    width: 27px;
+    border-width: 1px;
+    border-style: dotted;
+    cursor: default;
+    background-color: white;
+    background-size: 100%;
+    margin-bottom: 2px;
+  }
+
+  button.box.new:hover {
+    background-image: url('../images/pl.png');
+    opacity: 0.5;
+  }
+
+  button.box.cancon:hover {
+    background-image: url('../images/CAN.png');
+    opacity: 0.5;
+  }
+
+  button.box.femcon:hover {
+    background-image: url('../images/fe.png');
+    opacity: 0.5;
+  }
+
+  button.box.instrumental:hover {
+    background-image: url('../images/inst.png');
+    opacity: 0.5;
+  }
+
+  button.box.hit:hover {
+    background-image: url('../images/hit.png');
+    opacity: 0.5;
+  }
+
+  button.box.partial:hover {
+    background-image: url('../images/part.png');
+    opacity: 0.5;
+  }
+
+
+  button.box.background:hover {
+    background-image: url('../images/BACKGROUND.png');
+    opacity: 0.5;
+  }
+
+  button.box.theme:hover {
+    background-image: url('../images/THEME.png');
+    opacity: 0.5;
+  }
+
+  button.box.new.filled {
+    background-image: url('../images/pl.png');
+    opacity: 1;
+  }
+
+  button.box.cancon.filled {
+    background-image: url('../images/cc.png');
+    opacity: 1;
+  }
+
+  button.box.femcon.filled {
+    background-image: url('../images/fe.png');
+    opacity: 1;
+  }
+
+  button.box.instrumental.filled {
+    background-image: url('../images/inst.png');
+    opacity: 1;
+  }
+
+  button.box.hit.filled {
+    background-image: url('../images/hit.png');
+    opacity: 1;
+  }
+
+  button.box.partial.filled {
+    background-image: url('../images/part.png');
+    opacity: 1;
+  }
+
+  button.box.background.filled {
+    background-image: url('../images/BACKGROUND.png');
+    opacity: 1;
+  }
+
+  button.box.theme.filled {
+    background-image: url('../images/THEME.png');
+    opacity: 1;
+  }
+
+  button.box {
+    background-color: transparent;
+    background-image: none;;
+  }
+
+  li.socan{
+width:1200px;
+  }
+
+  .socan select, .socan button, .socan input, .music_row_socan input, .music_row_socan button{
+    font-size:0.75em;
+    max-width:80px;
+  }
+
+  .socan_cue select{
+    width:46px;
+
+  }
+  .playsheet_block_socan, .music_row_socan, .music_row_socan .music_row{
+    max-width:1200px;
+    margin-left:10px;
+    padding-left:10px;
+  }
+
+  input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 20px;
+  }
+
+  .adPlay {
+    /* Checkbox text */
+    text-align: center;
+  }
+
+  #sam_title {
+    color: black;
+    font-size: 1.2em;
+    position: fixed;
+    padding: 5px;
+    height: 40px;
+    background-color:beige;
+  }
+
+  #sam_title span {
+    border: black 1px solid;
+    cursor: default;
+    padding: 6px;
+    background-color: white;
+  }
+
+  #sam_title span:hover {
+    border: red 1px solid;
+    color: red;
+    background-color: lightred;
+  }
+
+  div#sam_picker {
+    position: fixed;
+    top: 60px;
+    right: 40px;
+    height: 80%;
+    overflow: scroll;
+    width: 400px;
+    background-color: beige;
+  }
+
+  #sam_range {
+    color: black;
+    text-align: right;
+  }
+
+  span.one_sam {
+    overflow: hidden;
+    display: inline-block;
+
+  }
+
+  div.floating {
+    position: fixed;
+    right: 0;
+    top: 30px;
+    width: auto;
+    z-index:20;
+  }
+
+  .sam_row {
+    color: black;
+
+    border-top: black 1px solid;
+  }
+
+  .blocker{
+    position:relative;
+    bottom:30px;
+    background-color:black;
+    color:red;
+  }
+  .sam_row button {
+
+    vertical-align: top;
+    cursor: default;
+  }
+
+  .sam_row button:hover {
+
+  }
+
+  #totals{
+    color:black;
+  }
+
+  button {
+    color:black;
+  }
+
+  #message{
+    padding:6px;
+    color:black;
+    position:fixed;
+    top:0;
+    left:40%;
+    background-color:mintcream;
+    font-size:1.2em;
+  }
+
+  #left, #right{
+    width:48%;
+    float:left;
+  }
+
+  .vars{
+    position:absolute;
+    top:5000px;
+  }
+
+  .tracklist_overlay{
+    position:fixed;
+    overflow:scroll;
+    top:40px;
+    left:10%;
+    width:80%;
+    background-color:lightsteelblue;
+    z-index:21;
+    padding:20px;
+    color:darkblue;
+  }
+  .tracklist_overlay span{
+    margin-left:40px;
+  }
+  .tracklist_overlay a{
+    background-color:steelblue;
+    padding:2px;
+  }
+  .tracklist_overlay a:hover{
+    color:greenyellow;
+  }
+
+  .dark{
+    position:fixed;
+    top:50px;
+    left:0;
+    height:100%;
+    width:100%;
+    opacity: 0.8;
+    background-color:black;
+  }
+
+  th small{
+    color:black;
+  }
+
+  .ps_wrapper{
+    margin-left:15px;
+  }
+
+  .admin_picker{
+    position:absolute;
+    top:0px;
+
+    height:30%;
+    width:100%;
+    z-index:60;
+  }
+
+  .admin_picker span{
+    position: relative;
+    display:block;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:100px;
+    padding-top:50px;
+    text-align:center;
+    height:300px;
+    background-color: darkslategray;
+    width:100%;
+  }
     
     
 #login{
@@ -458,15 +893,14 @@ table, td, tr{
 text-align:left;
 }
 
-
+/*-------------------*/
+/* Old Playsheet CSS */
+/*-------------------*/ 
 
 table.menu { border-collapse: separate; border-color: #6666CC; background-color: #000000; }
 td.menu { background-color: #FF9999; font-weight: bold; }
 td.reqmeet {  }
 td.reqfail { background-color: #CC9999; }
-
-
-
 div.playsheet { background-color:rgba(30,30,30,.1);
 				width:920px; 
 				border-color:#c3c3c3; 
@@ -475,7 +909,6 @@ div.playsheet { background-color:rgba(30,30,30,.1);
 				margin-right: auto;
 			/*	text-align:center;*/
 				}
-
 div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
 				width:1024px; 
 				border-color:#c3c3c3; 
@@ -484,9 +917,6 @@ div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
 				margin-right: auto;
 			/*	text-align:center;*/
 				}
-				
-
-				
 table#playsheet-table { 
 	width:880px; 
 	margin-left: auto;
@@ -668,18 +1098,7 @@ button#submit_user.red{
 .height_cap{
 	max-height:80%;
 }
-.overflow_hidden{
-	overflow:hidden;
-}
-.overflow_show{
-	overflow:visible;
-}
-.overflow_auto{
-	overflow:auto;
-}
-.inline_block{
-	display:inline-block;
-}
+
 #member_password_change{
 	padding-bottom:10px;
 }
@@ -785,17 +1204,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .span9col10{
 	width:90%;
 }
-.smalltext{
-	top:3px;
-	font-size:70%;
-}
-.largeinput{
 
-	width:750px;
-	max-width:83%;
-	height:50px;
-	max-height:75px;
-}
 .padded{
 	padding-top:5px;
 }
@@ -810,262 +1219,8 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-.hidden{
-	display:none;
-}
 
-/*----------------------------*/
-/*----PLAYLIST TABLE RULES----*/
-/*----------------------------*/
-	.bannerforsort
-	{
-	/*top:15px;*/
-	width:920px;
-	background-color: #3434A4;
-	position:relative;
-	height:21px;
-	padding-top:1px;
- 	border-style:solid;
-	border-width: 1px 0px 1px 0px;
-	border-color:black; 
-	}
-	.sortable
-	{ 	
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
-	width:914px; 
-	position:relative;
-	}
-
-	li.playsheetrow
-	{
-		float:left;
-		width:914px;
-		position:relative;
-		border-style:solid;
-		border-width: 1px;
-		border-color:black;
-		background-color: #3434A4;
-		height:25px;
-		list-style-type: none;
-		margin: 1px 0px 1px 0px;
-	}
-
-
-	
-
-	.inputboxes
-	{	
-		float: left;
-		text-align: center;
-		position: relative;
-		width: 175px;
-	}
-	.inputboxes input{
-		height:22px;
-		font-size: 15em;
-	}
-	
-	.inputboxesinner	{	
-		float: left;
-		top:2px;
-		position: relative;
-		width: 170px;
-		text-align: left;
-		
-	}
-
-	.mousedragclick
-	{
-	position: relative;
-	top:3px;
-	}
-
-	.CRTCicons, 
-	.CRTCicons2,
-	.CRTCicons3,
-	.CRTCtools,
-	.CRTCtext,
-	.CRTCradios,
-	.CRTCradios2,
-	.numbering{
-		float: left;
-		position: relative;
-		text-align: center;
-	}
-	.CRTCicons, .CRTCicons2{
-		width:20px;
-		height:25px;
-		padding-left: 1px;
-		padding-right: 1px;
-		
-	}
-	.CRTCicons3{
-		top:3px;
-		width:15px;
-	}
-	.CRTCtools{
-		width:60px;
-	}	
-		
-	.CRTCtext{
-		width: 50px;
-	}
-	.summaryspacer{
-		border-color:white;
-		background-color:lightgray;
-		height:0.3em;
-		line-height:0.3em;
-		
-	}
-	.langInput{
-		position: relative;
-		top:2px;
-	}
-	.CRTCradios{
-		width: 80px;
-	}
-	.CRTCradios2{
-		float: left;
-		width: 40px;
-		position: relative;
-		text-align: center;
-		
-	}
-	.numbering{	
-		left:0px;
-		top:2px;
-		width:25px;
-	}
-	/* SOCAN playsheet classes */
-	
-	.bannerforsortSOCAN
-	{
-	/*top:15px;*/
-	width:1024px;
-	background-color: #3434A4;
-	position:relative;
-	height:21px;
-	padding-top:1px;
- 	border-style:solid;
-	border-width: 1px 0px 1px 0px;
-	border-color:black; 
-	}
-	.sortableSOCAN
-	{ 
-	display: inline-block;
-	float:left;
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
-	width:1018px; 
-	position:relative;
-	}
-
-	li.playsheetrowSOCAN
-	{
-		/*left:-38px;*/
-		
-		width:1018px;
-		position:relative;
-		border-style:solid;
-		border-width: 1px;
-		border-color:black;
-		background-color: #3434A4;
-		height:25px;
-		list-style-type: none;
-		margin: 1px 0px 1px 0px;
-	}
-	
-	
-	.inputboxesinnerSOCAN{
-		float: left;
-		top:2px;
-		position: relative;
-		width: 87px;
-		text-align: left;
-	
-	}
-		.inputboxesSOCAN	{	
-		float: left;
-		text-align: center;
-		position: relative;
-		width: 92px;
-	}
-	.timeBox,
-	.timeBoxHalf,
-	.timeInner,
-	.nowButton,
-	.delRow,
-	.addRow{
-		text-align: center;
-		float:left;
-		position: relative;
-	}
-	
-
-	.timeBox{
-		width: 240px;	
-	}
-	.timeBoxHalf{
-		width: 120px;
-	}
-	.timeInner{
-		top:2px;
-		width: 40px;
-	}
-	.nowButton{
-		top:2px;
-		font-size:0.6em;
-		width:39px;	
-		height:20px;
-	}
-	.delRow{
-		top:2px;
-		height:20px;
-		font-size:0.9em;
-		width:25px;
-	}
-	.addRow{
-		top:2px;
-		height:20px;
-		font-size:0.9em;
-		width:25px;
-	}
-/* Area below playsheet li area */	
-	
-	
-	
-	.topChart
-	{
-	position:relative;
-	width:300px;
-	height:150px;
-	color: white;
-	float:right;
-	}
-	.bugs
-	{
-	position:relative;
-	float:left;
-	width:300px;
-	height:150px;
-	color: white;
-	
-	}
-	.bugsAndTopChart{
-	width:600px;
-	margin-left:auto;
-	margin-right:auto;
-	}
-	
-
-
-
-/* */
-
-/* QA STYLINGS */
+/* HELP PAGE CC */
  
 #qalist
 {
@@ -1136,114 +1291,8 @@ height:auto;
 }
  
 
- /*--------------------------------------------------*/
- /*--------------------------------------------------*/
- /*-----------SOCAN SET PAGE CSS---------------------*/
- /*--------------------------------------------------*/
- /*--------------------------------------------------*/
- .socanTable{
- width:100%;
- background-color:blue;
-display:inline-block;
- }
- 
- .socanTable*{
- color:white;
-}
- 
- .socanRow{
- height: 20px;
- position: relative;
- padding-bottom:5px;
-}
+/* PLAYSHEET SAM CSS */
 
-.idSOCAN{
-width: 30px;
- float:left;
- 
- position: relative;
-}
-
-.socanField{
-width: 200px;
- float:left;
- position: relative;
-}
-.socanField2{
-width: 80px;
- float:left;
- position: relative;
-}
-.socanButton{
-width: 70px;
- position: relative;
- color:black;
- height:20px;
- margin:0px;
-}
-
-
-
-#rowHeader{
-background-color:black;
-}
- 
- 
- 
- 
-
-table.rawdata{
-	background-color: rgba(10,10,10,.65);
-border-color: black;
-border-style: solid;
-padding: 50px;
-margin: 25px;
-margin-left: auto;
-margin-right: auto;
-}
-
-td.rawdata {
-padding-left: 15px;
-    padding-right: 15px;
-    border-color: darkblue;
-    border-style: solid;
-    border-width: 0 0 1px 0;
-border-bottom-width: 1px;
-}
-
-tr.playlisted {
-    background-color:darkblue;    
-}
-
-div.editform {
-	width: 640px;
-	margin: 0 auto 0 auto;
-	border-style:ridge;
-	border-color: #c3c3c3;
-	padding: 0 50px 0px 50px;
-}
-
-.editform h1 {
-	text-align: center;
-	margin-bottom: 0px;
-}
-
-.editform p {
-	margin-bottom: 10px;
-}
-
-.table {
-	display: table;
-	margin-bottom: 5px;
-}
-.table p, .table div {
-	display: table-row;
-}
-.table select, .table span, .table textarea {
-	display: table-cell;
-	padding: 3px;
-	vertical-align: top;
-}
 #sam-box{
 	display:none;
 }
@@ -1410,59 +1459,7 @@ font-family: Arial;
 float:right;
 }
 
-.tDnD_whileDrag{
-	background-color: #ccc !important;
-}
 
-#table-headers, .adhead{
-	background-color: rgba(10,10,10,.4);
-}
-
-span#ads{
-	border:none;
-border-width:0;
-}
-
-li#table-headers, tr.playsheetRow{
-	border-style:solid;
-	border-width: 1px;
-	border-color:black;
-	background-color: blue;
-	top:0px;
-	
-	/*max-height:20px !important;*/
-	padding:2px;
-}
-
-
-li.playsheetRow input{
-}
-.draghandle{
- cursor:hand;
-cursor:grab!important;
-cursor:-moz-grab;
-cursor: url('../images/openhand.cur'), pointer!important;
-cursor:-webkit-grab;
-cursor:move;
-}
-.draghandle:active {
-cursor:hand;
-cursor:grabbing!important;
-cursor:-moz-grabbing;
-cursor:-webkit-grabbing;
-cursor: url('../images/closedhand.cur'), pointer!important;
-cursor: move;
-}
-
-.dragrows{
-	
-}
-.scroll-pane{
-background-color:green;
-height:500px;
-	width:600px;
-overflow:auto;
-}
 
 #inputbox
 {
@@ -1471,20 +1468,6 @@ width: 55px;
 #checkbox
 {
 	width: 22px;
-}
-
-
-#debug{
-	position:fixed;
-	top:0;
-	left:0;
-	font-size: 10px;
-	background-color: rgba(200,200,200,0.75);
-	display:none;
-}
-
-.crtcdropdown{
-	width:45px;
 }
 
 div#ui-datepicker-div{
@@ -1518,52 +1501,7 @@ div.ui-datepicker{
 	width:100px;
 }	
 
-.invisible *{
-display:none;
-}
 
-.invisible{
-display:none;
-}
-
-.inlineradio {
-margin:0px;
-width:30px;
-display:inline;
-
-
-}
-
-
-.inlineradio-td  {
-	display:inline-block;
-	width:80px;
- }
-
-.radio .ie{
-	position:relative;
-	left:-40px;
-}
-
- table.sw-table tr, table.se-table td{
-	border:solid;
-	border-width:2px;
-	margin-top: 0;
-}
-
-div#crtcdiv{
-	white-space: nowrap;
-	position:relative;	/*position:absolute;*/
-	left: 0px;
-	width:70px;
-}
-
-div#crtcdiv *{
-
-
-	
-	
-}
 
 .bad{
 /*	color:red;*/
@@ -1588,67 +1526,6 @@ table#ads{
 }
 
 
-table#ads td{
-	text-align: left;
-	padding:0;
-}
-
-tr.adsHeader{
-	text-align: center;
-}
-
-
-div.adstime{
-}
-
-div.adDescription{
-	width:200px;
-}
-
-div#spokenword{
-	height:300px;
-}
-
-textarea#spokenword{
-	height:150px;
-}
-span#ads, span#swcontent{
-/*	border-style:solid;
-	border-width:1px;
-	border-color: black;
-*/	margin-left: 0;
-	margin-right: 0;
-}
-span#swcontent{
-	width:280px;
-}
-table#spokenwordtable {
-	width:50px;
-	display:inline;
-	position: relative;
-	top:20px;
-}
-
-#sw-content, #sw-content-td{
-	height:150px;
-	vertical-align:top;
-}
-
-#addfive{
-	display:inline-block;
-	padding-bottom: 30px;
-	position:relative;
-    float:right;
-	text-decoration: underline;
-	padding-right: 30px;
-	width:150px;
-}
-
-#addfive:hover{
-	color:yellow;
-	cursor: default;
-}
-
 #submitMsg{
 	position:relative;
 	top:50px;
@@ -1663,137 +1540,6 @@ table#spokenwordtable {
 height:60px;
 width:300px;
 }
-#samAds{
-	display:inline-block;
-	margin-left:auto;
-	margin-right:auto;
-	width:70%;
-	height:auto;
-	min-height:30px;
-	overflow:visible;
-	position:relative;
-}
-.samrow{
-	display:inline-block;
-	width:100%;
-	height:25px;
-	padding:5px;
-	background-color: rgba(10,10,10,.30);
-}
-.samtitleh,.samplayedh{
-	font-size:2em;
-	position:relative;
-	display:inline-block;
-	float:left;
-	width:50%;
-}
-.samtitle,.samplayed{
-	position:relative;
-	display:inline-block;
-	float:left;
-	width:50%;
-}
-
-	#helpbox,
-	#copybox,
-	#helpboxARTIST,
-	#helpboxALBUM,
-	#helpboxSONG,
-	#helpboxPL,
-	#helpboxCC,
-	#helpboxFE,
-	#helpboxINST,
-	#helpboxPART,
-	#helpboxHIT,
-	#helpboxCRTC,
-	#helpboxLANG,
-	#helpboxTOOLS,
-	#helpboxGUEST,
-	#helpboxAD{	
-		font-size: 0.8em;
-		display:none;
-		position:absolute;
-		background-color: beige;
-		color:black;
-		border-style: solid;
-		border-width: 2px;
-		border-color: grey;
-		text-align: left;
-		z-index: 11;
-		padding:6px;
-	}
-div#helpbox,div#helpboxCC,div#helpboxFE{
-	width:200px;
-	height:100px;
-}
-
-div#copybox{
-	width:40px;
-	height:20px;
-}
-/* HELP BOX CODE */
-div#helpboxARTIST,div#helpboxSONG,div#helpboxLANG{
-	width:200px;
-	height:15px;
-}
-div#helpboxALBUM{
-	width:300px;
-	height:150px;
-	top:-50px;
-}
-div#helpboxPL,div#helpboxTOOLS,div#helpboxGUEST,div#helpboxAD{
-	width:200px;
-	height:50px;
-}
-div#helpboxINST{
-	width:200px;
-	height:30px;
-}
-div#helpboxPART,div#helpboxHIT{
-	width:200px;
-	height:60px;
-}
-div#helpboxCRTC{
-	width:200px;
-	height:90px;
-}
-
-
-span.popup{
-cursor:default;
-}
-
-.popup img{
-height:20px;
-width:20px;
-}
-
-.playedYes{
-	background-color: green;
-}
-
-.playedNo{
-	background-color: red;
-}
-
-
-#cancon {
-/*	display:block;*/
-	text-align: center;
-	background-color:beige;
-	border-width:3px;
-	border-style:solid;
-	border-color:#BBB;
-	position:fixed;
-
-	bottom:0;
-	left:0px;
-	height:40px;
-	width:100%;
-	overflow: auto;
-	color:black;
-}
-
 #autosave{
 	position:absolute;
 	top:0px; 

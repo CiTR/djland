@@ -1,0 +1,30 @@
+<ul class='inline-list clean-list'>
+	<li><input ng-model='playitem.id' class='hidden'></input></li>
+	<li>{{$index + 1}}</li>
+	<li><input ng-model='playitem.title'></input></li>
+	<li><input ng-model='playitem.artist'></input></li>
+	<li><input ng-model='playitem.album'></input></li>
+	<li ng-show='playsheet.socan'>
+		<input ng-model='playitem.composer'></input>
+	</li>
+	<li ng-repeat="(tag,value) in playitem.tags">
+		<button ng-model='tag' class='icon-clickable {{tag}}'>{{value}}</button>
+	</li>
+	<li>
+		<select ng-model='playitem.crtc_category'>
+			<div ng-if='playitem.crtc_category==20'>
+				<option selected='true' value='20'>20</option>
+				<option value='30'>30</option>
+			</div>
+			<div ng-if='playitem.crtc_category!=20'>
+				<option value='20'>20</option>
+				<option selected='true' value='30'>30</option>
+			</div>
+			
+		</select>
+	</li>
+	<li><input ng-model='playitem.language'>{{playitem.language}}</input></li>
+	<li><button ng-click="add($index)"> + row </button></li>
+	<li><button ng-click="remove($index)"> - row </button></li>
+	<li>Drag Me</li>
+</ul>

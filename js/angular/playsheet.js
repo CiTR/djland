@@ -4,6 +4,7 @@
 
 djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $interval, apiService, show_id, channel_id, MAX_PODCAST_DURATION_HOURS, adminStatus) {
   $scope.adminStatus = adminStatus;
+  
   var loadAds = function (time) {
     show_message('loading the ads...');
     apiService.getAdsFromBlock(time)
