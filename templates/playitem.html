@@ -1,30 +1,34 @@
-<ul class='inline-list clean-list'>
-	<li><input ng-model='playitem.id' class='hidden'></input></li>
-	<li>{{$index + 1}}</li>
-	<li><input ng-model='playitem.title'></input></li>
-	<li><input ng-model='playitem.artist'></input></li>
-	<li><input ng-model='playitem.album'></input></li>
-	<li ng-show='playsheet.socan'>
-		<input ng-model='playitem.composer'></input>
-	</li>
-	<li ng-repeat="(tag,value) in playitem.tags">
-		<button ng-model='tag' class='icon-clickable {{tag}}'>{{value}}</button>
-	</li>
-	<li>
-		<select ng-model='playitem.crtc_category'>
-			<div ng-if='playitem.crtc_category==20'>
-				<option selected='true' value='20'>20</option>
-				<option value='30'>30</option>
-			</div>
-			<div ng-if='playitem.crtc_category!=20'>
-				<option value='20'>20</option>
-				<option selected='true' value='30'>30</option>
-			</div>
-			
-		</select>
-	</li>
-	<li><input ng-model='playitem.language'>{{playitem.language}}</input></li>
-	<li><button ng-click="add($index)"> + row </button></li>
-	<li><button ng-click="remove($index)"> - row </button></li>
-	<li>Drag Me</li>
-</ul>
+
+<td><input ng-model='playitem.id' class='hidden'></input></td>
+<td><input ng-model='playitem.title'></input></td>
+<td><input ng-model='playitem.artist'></input></td>
+<td><input ng-model='playitem.album'></input></td>
+<td ng-show='playsheet.socan'>
+	<input ng-model='playitem.composer'></input>
+</td>
+<td ng-show='playsheet.socan'>
+	<select ng-model="playitem.start_hour" ng-options="n for n in [] | range:0:24 "
+                        ng-change="updateNow(row);"></select>:
+    <select ng-model="playitem.start_minute" ng-options="n for n in [] | range:0:60 "
+            ng-change="updateNow(row);"></select>
+    <button ng-click="cue(row)">CUE</button>
+
+</td>
+<td ng-show='playsheet.socan'>
+	<select ng-model="playitem.length_minute" ng-options="n for n in [] | range:0:60 "></select>:
+                <select ng-model="playitem.length_second" ng-options="n for n in [] | range:0:60 "></select>
+                <button ng-click="end(row)">END</button>
+</td>
+<td ng-repeat="(tag,value) in playitem.tags">
+	<button ng-model='tag' ng-click='playitem.tags.value=!playitem.tags.value' ng-class="{filled:{{value}} }" class='box {{tag}} pad-top'></button>
+</td>
+<td>
+	<select ng-model='playitem.cancon_category'>
+		<option value='20'>20</option>
+		<option value='30'>30</option>
+	</select>
+</td>
+<td><input class='lang' ng-model='playitem.language'></input></td>
+<td><button ng-click="add($index)"><img src='images/collapsed.png'></button></td>
+<td><button ng-click="remove($index)"><img src='images/expanded.png'></button></td>
+<td>Drag Me</td>

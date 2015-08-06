@@ -48,7 +48,6 @@ a:active { color: #660000; }
 input, select, textarea, option{ 
 	background-color: #000977;
 	background-color: rgba(1,1,2,.4);
-
 	color:white;
 	border-style: solid;
 	border-width: 0;
@@ -65,8 +64,10 @@ input, select, textarea, option{
 
 #wrapper {
     background-color: rgba(0,0,0,.2);
-    width: 800px;
-    height: 1000px;
+    width: 1024px;
+    min-height:80%;
+    overflow:auto;
+    max-height:100%;
     margin-right: auto;
     margin-left: auto;
     margin-top:10px;
@@ -81,14 +82,27 @@ input, select, textarea, option{
     border-left-color: #FFFFFF;
     border-top-width: 1px;
     border-top-style: solid;
+    border-bottom-width:1px;
+    border-bottom-style: solid;
+}
+#wrapper.socan{
+  width:1200px;
+}
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
 }
 
 .wrapper{
     position: relative;
-    width:940px;
+    width:1024px;
     margin-left: auto;
     margin-right: auto;
     background-color: grey;
+    color: white;
     overflow: visible;
 }
 .inner{
@@ -106,16 +120,20 @@ input, select, textarea, option{
     width:100%;
     height:auto;
 }
-.wrapper:after{
-    background-color: grey;
+.small-input{
+  width:80px;
+}
+.wrapper:after{    background-color: grey;
 }
 
 .clean-list{
     list-style: none;
 }
 .inline-list *{
-	display:inline;
+	display:inline-block;
+
 }
+
 .text-left{
 	text-align:left;
 }
@@ -135,6 +153,15 @@ input, select, textarea, option{
    height: 0; 
    clear: both;
 }
+.border{
+  border-style:solid;
+  border-width:1px;
+  border-color: white;
+}
+.pad-top{
+  padding-top:2px;
+}
+
 .overflow_hidden{
 	overflow:hidden;
 }
@@ -155,12 +182,20 @@ input, select, textarea, option{
 	font-size:70%;
 }
 .largeinput{
-
 	width:750px;
 	max-width:83%;
 	height:50px;
 	max-height:75px;
 }
+.fill{
+  position:relative;
+  min-height:100px;
+  height:auto;
+  width:100%;
+  max-height:100%;
+  max-width: 100%;
+}
+
 .hidden{
 	display:none;
 }
@@ -521,42 +556,31 @@ display:none;
   }
 
   .lang {
-    width: 50px;
+    width: 60px;
     font-size: 0.8em;
   }
 
-  .music_row {
-
-    max-width: 990px;
-    /*
-          background-color:rgba(150,150,150,0.8);*/
-  }
 
   .music_row, .music_row * {
-
-    font-size: 1.1em;
+    
+    /* font-size: 1.1em; */
   }
 
+tr.playitem > th > input.socan,tr.playitem > td > input.socan{
+  width:150px;
+}
+
+
   .music_row_heading {
+    height:30px;
     background-color: lightgrey;
   }
 
-  .music_row_heading .crtc, .lang {
-    font-size: 0.7em;
-  }
-
-  .music_row_heading input, .music_row_heading span {
-    text-align: center;
+  .music_row_heading input{
+    margin-left:5px;
     background: none;
     border-width: 0;
   }
-
-  input {
-
-    display: inline;
-    width: auto;
-  }
-
   .playsheet_block, .spokenword_block, .podcast_block,.save_block {
     max-width: 1000px;
     width:100%;
@@ -599,84 +623,84 @@ display:none;
     margin-bottom: 2px;
   }
 
-  button.box.new:hover {
-    background-image: url('../images/pl.png');
+  button.box.playlist:hover {
+    background-image: url('../images/tags/playlist.png');
     opacity: 0.5;
   }
 
   button.box.cancon:hover {
-    background-image: url('../images/CAN.png');
+    background-image: url('../images/tags/can.png');
     opacity: 0.5;
   }
 
   button.box.femcon:hover {
-    background-image: url('../images/fe.png');
+    background-image: url('../images/tags/fe.png');
     opacity: 0.5;
   }
 
   button.box.instrumental:hover {
-    background-image: url('../images/inst.png');
+    background-image: url('../images/tags/inst.png');
     opacity: 0.5;
   }
 
   button.box.hit:hover {
-    background-image: url('../images/hit.png');
+    background-image: url('../images/tags/hit.png');
     opacity: 0.5;
   }
 
   button.box.partial:hover {
-    background-image: url('../images/part.png');
+    background-image: url('../images/tags/part.png');
     opacity: 0.5;
   }
 
 
   button.box.background:hover {
-    background-image: url('../images/BACKGROUND.png');
+    background-image: url('../images/tags/background.png');
     opacity: 0.5;
   }
 
   button.box.theme:hover {
-    background-image: url('../images/THEME.png');
+    background-image: url('../images/tags/theme.png');
     opacity: 0.5;
   }
 
-  button.box.new.filled {
-    background-image: url('../images/pl.png');
+  button.box.playlist.filled {
+    background-image: url('../images/tags/playlist.png');
     opacity: 1;
   }
 
   button.box.cancon.filled {
-    background-image: url('../images/cc.png');
+    background-image: url('../images/tags/can.png');
     opacity: 1;
   }
 
   button.box.femcon.filled {
-    background-image: url('../images/fe.png');
+    background-image: url('../images/tags/fe.png');
     opacity: 1;
   }
 
   button.box.instrumental.filled {
-    background-image: url('../images/inst.png');
+    background-image: url('../images/tags/inst.png');
     opacity: 1;
   }
 
   button.box.hit.filled {
-    background-image: url('../images/hit.png');
+    background-image: url('../images/tags/hit.png');
     opacity: 1;
   }
 
   button.box.partial.filled {
-    background-image: url('../images/part.png');
+    background-image: url('../images/tags/part.png');
     opacity: 1;
   }
 
   button.box.background.filled {
-    background-image: url('../images/BACKGROUND.png');
+    background-image: url('../images/tags/BACKGROUND.png');
     opacity: 1;
   }
 
   button.box.theme.filled {
-    background-image: url('../images/THEME.png');
+    background-image: url('../images/tags/THEME.png');
     opacity: 1;
   }
 
@@ -684,14 +708,9 @@ display:none;
     background-color: transparent;
     background-image: none;;
   }
-
-  li.socan{
-width:1200px;
-  }
-
   .socan select, .socan button, .socan input, .music_row_socan input, .music_row_socan button{
     font-size:0.75em;
-    max-width:80px;
+    max-width:90px;
   }
 
   .socan_cue select{
@@ -704,14 +723,6 @@ width:1200px;
     padding-left:10px;
   }
 
-  input[type=checkbox] {
-    /* Double-sized Checkboxes */
-    -ms-transform: scale(2); /* IE */
-    -moz-transform: scale(2); /* FF */
-    -webkit-transform: scale(2); /* Safari and Chrome */
-    -o-transform: scale(2); /* Opera */
-    padding: 20px;
-  }
 
   .adPlay {
     /* Checkbox text */
@@ -1149,7 +1160,7 @@ button#submit_user.red{
 }
 
 .col1,.col2,.col3,.col4,.col5,.col6,.col7,.col8,.col15,.col20,.span5col6,.span3col4,.span3col5,.span4col5{
-	display:inline-block;
+  display:inline-block;
 	position:relative;
 	float:left;
 	height:auto;	

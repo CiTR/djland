@@ -142,7 +142,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <span ng-show="socan" class="socan_cue" ><span tooltip="{{timeHelp1}}">Time Start (H:M)&nbsp; </span>|&nbsp;<span tooltip="{{timeHelp2}}"> Duration (M:S)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
         <button class="box new filled">&nbsp;</button>
-        <button class="box cancon filled" ">&nbsp;</button>
+        <button class="box cancon filled">&nbsp;</button>
         <button class="box femcon filled">&nbsp;</button>
         <button class="box instrumental filled">&nbsp;</button>
         <button class="box partial filled">&nbsp;</button>
