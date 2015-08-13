@@ -37,11 +37,11 @@ if ($error != '') finish();
 $rawdata = array();
 
 
-$query_for_playsheet = 'SELECT playlists.*,
+$query_for_playsheet = 'SELECT playsheets.*,
             hosts.name as host_name
-            FROM playlists
-            LEFT JOIN hosts on hosts.id = playlists.host_id
-            WHERE playlists.id = '.$id;
+            FROM playsheets
+            LEFT JOIN hosts on hosts.id = playsheets.host_id
+            WHERE playsheets.id = '.$id;
 
 if ( $result = mysqli_query($db,$query_for_playsheet)){
   $rawdata['playlist'] = mysqli_fetch_assoc($result);
@@ -122,8 +122,8 @@ error_reporting(E_ALL);
     $rawdata['plays'][$i]['insert_song_length_second'] = str_pad(strval($play['insert_song_length_second']), 2, "0", STR_PAD_LEFT);
 
   }
-
-  foreach($rawdata['ads'] as $i => $ad){
+  if($using_sam){
+      foreach($rawdata['ads'] as $i => $ad){
 
     $rawdata['ads'][$i]['played'] = ($ad['played'] == 1) ? true : false;
 
@@ -140,9 +140,9 @@ error_reporting(E_ALL);
             }
           }
         }
-
-
     }
+  }
+
 
   $start_unix = strtotime($rawdata['playlist']['start_time']);
   $start = getdate($start_unix);

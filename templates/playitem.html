@@ -1,10 +1,10 @@
 
 <td><input ng-model='playitem.id' class='hidden'></input></td>
-<td><input ng-model='playitem.title'></input></td>
-<td><input ng-model='playitem.artist'></input></td>
-<td><input ng-model='playitem.album'></input></td>
+<td><input ng-model='playitem.song.title'></input></td>
+<td><input ng-model='playitem.song.artist'></input></td>
+<td><input ng-model='playitem.song.album'></input></td>
 <td ng-show='playsheet.socan'>
-	<input ng-model='playitem.composer'></input>
+	<input ng-model='playitem.song.composer'></input>
 </td>
 <td ng-show='playsheet.socan'>
 	<select ng-model="playitem.start_hour" ng-options="n for n in [] | range:0:24 "
@@ -19,9 +19,12 @@
                 <select ng-model="playitem.length_second" ng-options="n for n in [] | range:0:60 "></select>
                 <button ng-click="end(row)">END</button>
 </td>
-<td ng-repeat="(tag,value) in playitem.tags">
-	<button ng-model='tag' ng-click='playitem.tags.value=!playitem.tags.value' ng-class="{filled:{{value}} }" class='box {{tag}} pad-top'></button>
-</td>
+<td><button ng-model="playitem.tags.cancon" ng-click='playitem.tags.cancon=!playitem.tags.cancon' ng-class="{filled: playitem.tags.cancon==true}" class="box cancon pad-top"></button></td>
+<td><button ng-model="playitem.tags.femcon" ng-click='playitem.tags.femcon=!playitem.tags.femcon' ng-class="{filled:playitem.tags.femcon==true}" class="box femcon pad-top"></button></td>
+<td><button ng-model="playitem.tags.hit" ng-click='playitem.tags.hit=!playitem.tags.hit' ng-class="{filled:playitem.tags.hit==true}" class="box hit pad-top"></button></td>
+<td><button ng-model="playitem.tags.instrumental" ng-click='playitem.tags.instrumental=!playitem.tags.instrumental' ng-class="{filled:playitem.tags.instrumental==true}" class="box instrumental pad-top"></button></td>
+<td><button ng-model="playitem.tags.partial" ng-click='playitem.tags.partial=!playitem.tags.partial' ng-class="{filled:playitem.tags.partial==true}" class="box partial pad-top"></button></td>
+<td><button ng-model="playitem.tags.playlist" ng-click='playitem.tags.playlist=!playitem.tags.playlist' ng-class="{filled:playitem.tags.playlist==true}" class="box playlist pad-top"></button></td>
 <td>
 	<select ng-model='playitem.cancon_category'>
 		<option value='20'>20</option>

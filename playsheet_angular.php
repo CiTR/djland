@@ -1,4 +1,4 @@
-<html ng-app='editplaysheet'>
+<html ng-app='djland.editPlaysheet'>
 	<?php
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
@@ -15,7 +15,10 @@
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
 	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
-	<script type='text/javascript' src='js/playsheet.js'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
+	<script type='text/javascript' src='js/playsheet/constants.js'></script>
+	<script type='text/javascript' src='js/api-factory.js'></script>
+	<script type='text/javascript' src='js/utils.js'></script>
 	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<?php print_menu() ?>
@@ -46,7 +49,7 @@
 					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
 		      	</div>
 		      	<div class='col2'>
-			        <!-- 
+			        
 			        <div ng-controller="datepicker" >
 			        	Start Time:
 			        	[<select ng-model="$parent.start_hour" ng-options="n for n in [] | range:0:24"
@@ -68,30 +71,28 @@
 			         	{{playsheet.start_time | date:'EEE, MMM d, y'}}
 				        <button ng-click="open($event)"  >change date</button><br/>
 			        </div>
-			    	-->
+			    	
 			    </div>
 			</div>
-
-
-
-
 		    <div class='container'>
 				<h3> Playsheet Items </h3>
-				<table>
+				<table class='playitem'>
 					<tr class='music_row_heading playitem' >
 						<th><input class='hidden'></th>
-						<th><input value="Artist"readonly tooltip="{{playsheet.help.artistHelp}}"></input></th>
-						<th><input value="Song" readonly tooltip="{{playsheet.help.songHelp}}"></input></th>
+						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.songHelp}}"></input></th>
+						<th><input value="Artist"readonly  placement:'bottom' tooltip="{{playsheet.help.artistHelp}}"></input></th>
 						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.albumHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}"></input></th>
-						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip="{{playsheet.help.timeHelp1}}"></input></th>
+						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}"></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}"></input></th>
 						<th ng-repeat='tag in playsheet.tags'><button class="box {{tag}} filled pad-top"></th>
 						<th><input class="lang" value="Category"></th>
 						<th><input class="lang" value="Language"></th>
 						<th><th><th></th>
 					</tr>
-					<tr class='playitem' playitem ng-model='playsheet.playitems' ng-repeat="playitem in playsheet.playitems track by $index"></tr>
+					<tbody ui-sortable ng-model='playsheet.playitems'>
+					<tr class='playitem' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
+					</tbody>
 				</table>
 				<br/>
 			</div>
@@ -110,7 +111,8 @@
 			</div>
 		</div>
 		<div class='col1'>
-			{{playsheet}}
+			<div ng-model='playsheet.shows' ng-repeat='show in playsheet.shows'>{{show.show_name}} {{show.start_time}}</div>
 		</div>
+
 	</body>
 </html>

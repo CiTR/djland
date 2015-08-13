@@ -132,8 +132,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     <h2>Music </h2>
 
     <div class="playsheet_block" ng-hide="music_hidden" ng-class="{playsheet_block_socan: socan}">
-
-
       <div class="music_row_heading music_row" ng-class="{music_row_socan: socan}">
         <input value="artist" class="music" readonly tooltip="{{artistHelp}}"></input>
         <input value="album" class="music" readonly tooltip="{{albumHelp}}"></input>
@@ -156,7 +154,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
-
+      {{playsheet.plays}}
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">
@@ -170,14 +168,14 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
             <span ng-show="socan" class="socan_cue">
 
-                <select ng-model="row.insert_song_start_hour" ng-options="n for n in [] | range:0:24 "
+                <select ng-model="row.insert_song_start_hour" ng-options="n for n in [] | range:0:24"
                         ng-change="updateNow(row);"></select>:
-                <select ng-model="row.insert_song_start_minute" ng-options="n for n in [] | range:0:60 "
+                <select ng-model="row.insert_song_start_minute" ng-options="n for n in [] | range:0:60"
                         ng-change="updateNow(row);"></select>
                 <button ng-click="cue(row)">CUE</button>
 
-                <select ng-model="row.insert_song_length_minute" ng-options="n for n in [] | range:0:60 "></select>:
-                <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60 "></select>
+                <select ng-model="row.insert_song_length_minute" ng-options="n for n in [] | range:0:60"></select>:
+                <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60"></select>
                 <button ng-click="end(row)">END</button>
             </span>
             <button class="box new" ng-model="row.is_playlist" ng-class="{filled: row.is_playlist}"
@@ -416,7 +414,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
   var djland = angular.module('djLand', ['ui.bootstrap', 'ui.sortable']);
 </script>
 
-<script type="text/javascript" src="js/angular-djland.js"></script>
+<script type="text/javascript" src="js/api-service.js"></script>
 
 <script type="text/javascript">
 
