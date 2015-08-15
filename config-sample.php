@@ -64,6 +64,110 @@ $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not implemented yet
 
+$djland_permission_levels = array(
+    'operator'=> '6',
+    'administrator'=> '5',
+    'staff'=>'4',
+    'workstudy'=>'3',
+    'volunteer'=>'2',
+    'dj'=>'1',
+    'member'=>'0');
+$djland_training = array(
+	'Station Tour' => 'station_tour',
+	'Technical' => 'technical_training',
+	'Production'=> 'production_training',
+	'Programming'=> 'programming_training',
+	'Spoken Word'=> 'spoken_word_training');
+$djland_interests = array(
+	'Arts'=>'arts',
+	'Ads and PSAs'=>'ads_psa',
+	'Digital Library'=>'digital_library',
+	'DJ101.9'=>'dj',
+	'Illustrate for Discorder'=>'discorder',
+	'Writing for Discorder'=>'discorder_2',
+	'Live Broadcasting'=>'live_broadcast',
+	'Music'=>'music',
+	'News'=>'news',
+	'Photography'=>'photography',
+	'Programming Committee'=>'programming_committee',
+	'Promos and Outreach'=>'promotions_outreach',
+	'Show Hosting'=>'show_hosting',
+	'Sports'=>'sports',
+	'Tabling'=>'tabling',
+	'Web and Tech'=>'tech',
+	"Women's Collective"=>'womens_collective',
+	"Indigenous Collective"=>"indigenous_collective",
+	"Accessibility Collective"=>"accessibility_collective",
+	"Other"=>"other");
+$djland_member_types = array(
+	'UBC Student'=>'Student',
+	'Community Member'=>'Community',
+	'Staff'=>'Staff');
+$djland_program_years = array(
+	'1'=>'1',
+	'2'=>'2',
+	'3'=>'3',
+	'4'=>'4',
+	'5+'=>'5');
+$djland_faculties = array(
+	"Arts",
+	"Applied Science",
+	"Architecture",
+	"Archival Studies",
+	"Audiology",
+	"Business",
+	"Community Planning",
+	"Continuing Studies",
+	"Dentistry",
+	"Doctoral Studies",
+	"Education",
+	"Environmental Health",
+	"Forestry",
+	"Graduate Studies",
+	"Journalism",
+	"Kinesiology",
+	"Land and Food Systems",
+	"Law","Medicine",
+	"Music",
+	"Nursing",
+	"Pharmaceutical",
+	"Public Health",
+	"Science",
+	"Social Work",
+	"Other");
+$djland_provinces = array(
+	'AB',
+	'BC',
+	'MAN',
+	'NB',
+	'NFL',
+	'NS',
+	'NVT',
+	'NWT',
+	'ONT',
+	'QUE',
+	'SASK',
+	'YUK');
+$djland_primary_genres = [
+	'Blues',
+	'Classical',
+	'Electronic',
+	'Experimental',
+	'Folk',
+	'Hip Hop',
+	'Hardcore',
+	'Indie',
+	'International',
+	'Jazz',
+	'Metal',
+	'Pop',
+	'Punk',
+	'R&B',
+	'Rock',
+	'Soul',
+	'Spoken Word'
+	];
+
 //*******************************************
 //* 4) optional station-wide login
 //*******************************************
