@@ -64,6 +64,38 @@ $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not implemented yet
 
+
+//*******************************************
+//* 4) optional station-wide login
+//*******************************************
+//
+// if your station has many DJ's that play live on the air in a row you might opt
+// to create a station-wide login so that DJ's don't have to log in and out everytime the show slot changes.
+// Although it would be more secure if DJ's are trained from the get-go
+// to always log out and log in using their own username at the start of the show,
+// this is just not what happened at CiTR so we leave this option available.
+
+// Filling this out just disables changing the password for this specific username.
+// You still have to create this user yourself.
+$station_wide_login_name = 'djs';
+
+//*******************************************
+//* 5) Optional SAM Broadcaster integration - http://spacial.com/sam-broadcaster
+//*******************************************
+// This enables access to items played from a SAM installation
+// DJ's can pull individual items into playsheets for "typing-free" playsheet logging
+// Playsheet entries from SAM can be edited and re-ordered just like manually entered items
+// DJ's can pull individual plays from a 'most recent' list or specify a time range and bulk-load plays
+
+$using_sam = false; // <- change to true if you want to integrate SAM with djland
+// if SAM Broadcaster is being used, it must be installed using the MySQL option
+// SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
+// Highly recommended to use local network. 
+$samDB_ip = 'ip address of computer running SAM mysql database';
+$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
+$samDB_pass = 'password for that user';
+$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
+
 $djland_permission_levels = array(
     'operator'=> '6',
     'administrator'=> '5',
@@ -167,38 +199,6 @@ $djland_primary_genres = [
 	'Soul',
 	'Spoken Word'
 	];
-
-//*******************************************
-//* 4) optional station-wide login
-//*******************************************
-//
-// if your station has many DJ's that play live on the air in a row you might opt
-// to create a station-wide login so that DJ's don't have to log in and out everytime the show slot changes.
-// Although it would be more secure if DJ's are trained from the get-go
-// to always log out and log in using their own username at the start of the show,
-// this is just not what happened at CiTR so we leave this option available.
-
-// Filling this out just disables changing the password for this specific username.
-// You still have to create this user yourself.
-$station_wide_login_name = 'djs';
-
-//*******************************************
-//* 5) Optional SAM Broadcaster integration - http://spacial.com/sam-broadcaster
-//*******************************************
-// This enables access to items played from a SAM installation
-// DJ's can pull individual items into playsheets for "typing-free" playsheet logging
-// Playsheet entries from SAM can be edited and re-ordered just like manually entered items
-// DJ's can pull individual plays from a 'most recent' list or specify a time range and bulk-load plays
-
-$using_sam = false; // <- change to true if you want to integrate SAM with djland
-// if SAM Broadcaster is being used, it must be installed using the MySQL option
-// SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
-// Highly recommended to use local network. 
-$samDB_ip = 'ip address of computer running SAM mysql database';
-$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-$samDB_pass = 'password for that user';
-$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-
 
 // debug time operations? leave false unless you
 // are developing and need to fake the current time
