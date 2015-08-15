@@ -1,5 +1,6 @@
 headers/config.php
 config.php
+podcast-config.php
 JSONDATA
 JSONDATA/*
 Thumbs.db
