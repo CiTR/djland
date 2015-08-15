@@ -287,7 +287,7 @@ if(is_member("addshow") ) {
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
 		
 		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$primary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_genre_tags") : "";
+		$primary_genre_tag = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_genre_tags") : "";
 		$secondary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
 		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
 		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
@@ -405,11 +405,23 @@ if(is_member("addshow") ) {
 			echo 'cannot get usernames. '.mysqli_error($db);
 		}
 
+		echo "<br/><br/><br/><p><span></span><span> show tags (comma separated list)</span>";
 
-		echo "<br/><br/><br/>
-					<p><span></span><span> show tags (comma separated list)</span>";
-
-		printf("<p><span>High Level: </span><input name=\"t_primary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_genre_tags);
+		echo "<p><span>High Level: </span>";
+		echo "<select name = 't_primary_genre_tags'>";
+		$allowed_genre = false;
+		foreach($djland_primary_genres as $genre){
+				if($primary_genre_tag == $genre){
+					echo "<option selected value='{$genre}'>{$genre}</option>";
+					$allowed_genre = true;
+				}else{
+					echo "<option value='{$genre}'>{$genre}</option>";
+				}
+			}
+		if(!$allowed_genre){
+			echo "<option selected value={$primary_genre_tag}>{$primary_genre_tag}</option>";
+		}
+		echo "</select>";
 		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $secondary_genre_tags);
 		echo "<br><br>";
 		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
