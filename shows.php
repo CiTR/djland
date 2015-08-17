@@ -4,6 +4,8 @@ include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
+
+
 function fieldComplete($arr, $curr) {
 	// status codes
 	// -1: not started
@@ -98,7 +100,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
 	echo "</head><body class='wallpaper'>";
-
 	print_menu();
 }
 
@@ -111,8 +112,8 @@ if (isset($_POST['id'])){
 }
 // -------- POST handling code ---------------------------------
 
-if(permission_level() >= $djland_permission_levels['staff'] ) {
-
+if(permission_level() >= $djland_permission_levels['workstudy'] ) {
+//	print_r($_POST);
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
 		echo "<center><h1>Show Deleted</h1>";		
@@ -144,30 +145,18 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
 		$sponsor_name = fas($_POST['t_sponsor_name']);
-		$sponsor_url = fas($_POST['t_sponsor_url']);	
+		$sponsor_url = fas($_POST['t_sponsor_url']);
+		
 		$times = processFields(array("sd","sh","sm","ed","eh","em","alt"));
 		$socials = processFields(array("socialName","socialURL"));
-		$p_xml = fas($_POST['t_xml']);
-		$p_subtitle = fas($_POST['t_subtitle']);
-		$p_description = fas($_POST['t_description']);
-		$p_keywords = fas($_POST['t_keywords']);
-		$p_link = fas($_POST['t_link']);
-		$p_image = fas($_POST['t_podcast_img']);
-		$podcast_channel_id = fas($_POST['t_pod_id']);
+
 		if(isset($_POST['id']) && $_POST['id']) {
 			$show_id = $_POST['id'];
 		}
 		else {
-
-			$insert_channel_q = "INSERT INTO `podcast_channels` (id) VALUES (NULL)";
-			if (mysqli_query($db,$insert_channel_q) ) echo "<br/>podcast channel created <br/>";
-			else echo "<br/>there was an error creating the podcast channel <br/>";
-//			echo "inserted: ".$insert_q;
-			$podcast_channel_id = mysqli_insert_id($db);
-
-			$insert_q = "INSERT INTO `shows` (id, create_date, create_name, podcast_channel_id) VALUES (NULL, '$create_date', '$create_name', '$podcast_channel_id')";
+			$insert_q = "INSERT INTO `shows` (id, create_date, create_name) VALUES (NULL, '$create_date', '$create_name')";
 			if (mysqli_query($db,$insert_q) ) echo "show created <br/>";
-			else echo "there was an error creating the show <br/>";
+				else echo "there was an error";
 //			echo "inserted: ".$insert_q;
 			$show_id = mysqli_insert_id($db);
 		}
@@ -226,34 +215,33 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 			}
 		}
 		if (!$weekday) $weekday = 0;
-			$update_q = "UPDATE `shows` SET name='$show_name',host_id='$host_id',weekday='$weekday',pl_req='$pl_req',cc_req='$cc_req',indy_req='$indy_req',fem_req='$fem_req',edit_name='$edit_name',crtc_default=$crtc_default,
-				lang_default='$lang_default',active=$active,primary_genre_tags='$primary_genre_tags',secondary_genre_tags='$secondary_genre_tags',website='$website',rss='$rss',show_desc='$show_desc',notes='$notes',show_img='$show_img',
-				sponsor_name='$sponsor_name',sponsor_url='$sponsor_url' WHERE id='$show_id'";
-			$update_podcast_q = "UPDATE `podcast_channels` SET 
-				subtitle='$p_subtitle',
-				summary='$p_description',
-				keywords='$p_keywords',
-				link='$p_link',
-				image_url='$p_image',
-				xml='$p_xml'
-				 WHERE id='$podcast_channel_id'";
+		$update_q = "UPDATE `shows` SET
+			name='$show_name',
+			host_id='$host_id',
+			weekday='$weekday',
+			pl_req='$pl_req',
+			cc_req='$cc_req',
+			indy_req='$indy_req',
+			fem_req='$fem_req',
+			edit_name='$edit_name',
+			crtc_default=$crtc_default,
+			lang_default='$lang_default',
+			active=$active,
+			primary_genre_tags='$primary_genre_tags',
+			secondary_genre_tags='$secondary_genre_tags',
+			website='$website',
+			rss='$rss',
+			show_desc='$show_desc',
+			notes='$notes',
+			show_img='$show_img',
+			sponsor_name='$sponsor_name',
+			sponsor_url='$sponsor_url' WHERE id='$show_id'";
+		
 		if( mysqli_query($db, $update_q) ) {
 			echo "show successfuly edited";
 			write_new_showlist_file();
-
-
-			if( mysqli_query($db, $update_podcast_q)){
-
-				if (mysqli_affected_rows($db) >= 1){
-					echo "<br/>show podcast channel successfully edited<br/>";
-				} else {
-					echo '<br/>did not change the podcast channel<br/>';
-				}
-			} else {
-				echo "<br/>error updating podcast channel.<br/>query is ".$update_podcast_q."<br/>";
-			}
 		} else {
-			echo "there has been an error updating show info. (".$update_q.")";
+			echo "there has been an error";
 		}
 //		echo "updated: $update_q </center>";
 
@@ -268,7 +256,6 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 		if($_GET['action'] == 'edit') {
 			$show_id = fas($_GET['id']);
 			$result = mysqli_query($db,"SELECT *,HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min, HOUR(start_time) AS start_hour, MINUTE(start_time) AS start_min FROM shows WHERE id='$show_id'");
-			$show_data = mysqli_fetch_assoc($result);
 		}
 		else {
 			$show_id = 0;
@@ -278,49 +265,33 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 		$socials = mysqli_query($db,"SELECT * FROM `social` WHERE show_id=$show_id");
 		$socialRows = mysqli_num_rows($socials);
 
-
-		$show_name = $show_id ? $show_data["name"] : "";
-		$host_name = $show_id ? $fhost_name[$show_data["host_id"]] : "";
+		$show_name = $show_id ? mysqli_result_dep($result, 0, "name") : "";
+		$host_name = $show_id ? $fhost_name[mysqli_result_dep($result, 0, "host_id")] : "";
 		$pl_req = $show_id ? mysqli_result_dep($result, 0, "pl_req") : "60";
 		$cc_req = $show_id ? mysqli_result_dep($result, 0, "cc_req") : "35";
 		$indy_req = $show_id ? mysqli_result_dep($result, 0, "indy_req") : "70";
 		$fem_req = $show_id ? mysqli_result_dep($result, 0, "fem_req") : "30";
-
-		$weekday = $show_id ? $show_data["weekday"] : date('w');
-		$start_hour = $show_id ? $show_data["start_hour"] : date('H');
-		$start_min = $show_id ? $show_data["start_min"] : date('i');
-		$end_hour = $show_id ? $show_data["end_hour"] : date('H');
-		$end_min = $show_id ? $show_data["end_min"] : date('i');
-		$active = $show_id ? $show_data["active"] : 1;
-		$crtc_num = $show_id ? $show_data["crtc_default"] : "";
+		$weekday = $show_id ? mysqli_result_dep($result, 0, "weekday") : date('w');
+//		echo "weekday is ".$weekday;
+		$start_hour = $show_id ? mysqli_result_dep($result, 0, "start_hour") : date('H');
+		$start_min = $show_id ? mysqli_result_dep($result, 0, "start_min") : date('i');
+		$end_hour = $show_id ? mysqli_result_dep($result, 0, "end_hour") : date('H');
+		$end_min = $show_id ? mysqli_result_dep($result, 0, "end_min") : date('i');
+		$active = $show_id ? mysqli_result_dep($result, 0, "active") : 1;
+		$crtc_num = $show_id ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
-		$lang_default = $show_id ? $show_data["lang_default"] : "";
-		$primary_genre_tags = ($show_id && !is_null($show_data["primary_genre_tags"])) ? $show_data["primary_genre_tags"] : "";
-		$secondary_genre_tags = ($show_id && !is_null($show_data["secondary_genre_tags"])) ? $show_data["secondary_genre_tags"] : "";
-		$website = ($show_id && !is_null($show_data["website"])) ? $show_data["website"] : "";
-		$rss = ($show_id && !is_null($show_data["rss"])) ? $show_data["rss"] : "";
-		$show_desc = ($show_id && !is_null($show_data["show_desc"])) ? $show_data["show_desc"] : "";
-		$sponsor_name = ($show_id && !is_null($show_data["sponsor_name"])) ? $show_data["sponsor_name"] : "";
-		$sponsor_url = ($show_id && !is_null($show_data["sponsor_url"])) ? $show_data["sponsor_url"] : "";
-		$notes = ($show_id && !is_null($show_data["notes"])) ? $show_data["notes"] : "";
-		$show_img = ($show_id && !is_null($show_data["show_img"])) ? $show_data["show_img"] : "";
-		$podcast_channel_id = $show_id ? $show_data['podcast_channel_id'] : "";
-		$podcast_query = 'SELECT * from podcast_channels where id = "'.$podcast_channel_id.'";';
-		if ($podcast_result = mysqli_query($db, $podcast_query)){
-			$podcast_data = mysqli_fetch_array($podcast_result);
-		} else {
-
-		}
-		$p_xml = $podcast_channel_id ? $podcast_data['xml'] : "" ;
-		$p_subtitle = $podcast_channel_id ? $podcast_data['subtitle'] : "" ;
-		$p_description = $podcast_channel_id ? $podcast_data['summary'] : "" ;
-		$p_keywords= $podcast_channel_id ? $podcast_data['keywords'] : "" ;
-		$p_link = $podcast_channel_id ? $podcast_data['link'] : "" ;
-		$p_image = $podcast_channel_id ? $podcast_data['image_url'] : "" ;
-
-		$p_episode_default_title = $podcast_channel_id ? $podcast_data['episode_default_title'] : "" ;
-		$p_episode_default_subtitle = $podcast_channel_id ? $podcast_data['episode_default_subtitle'] : "" ;
-		$p_episode_default_author = $podcast_channel_id ? $podcast_data['episode_default_author'] : "CiTR 101.9fm" ;
+		
+		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
+		$primary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_genre_tags") : "";
+		$secondary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
+		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
+		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
+		$show_desc = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
+		$sponsor_name = ($show_id && !is_null(mysqli_result_dep($result, 0, "sponsor_name"))) ? mysqli_result_dep($result, 0, "sponsor_name") : "";
+		$sponsor_url = ($show_id && !is_null(mysqli_result_dep($result, 0, "sponsor_url"))) ? mysqli_result_dep($result, 0, "sponsor_url") : "";
+		$notes = ($show_id && !is_null(mysqli_result_dep($result, 0, "notes"))) ? mysqli_result_dep($result, 0, "notes") : "";
+		$show_img = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_img"))) ? mysqli_result_dep($result, 0, "show_img") : "";
+		
 		// Special HTML head (for javascript functions)
 		$weeks_elapsed = floor((time() - 1341100800)/(7*24*60*60));
 		$week_num = ($weeks_elapsed%2) + 1;
@@ -329,10 +300,13 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 		$member_result = mysqli_query($db,"SELECT * FROM member_show WHERE show_id = '".$show_id."'");
 		$member_row = mysqli_fetch_assoc($member_result);
 		$member_id = $member_row['member_id'];
+		?>
 
-		echo '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>';
-
-		echo '<script type="text/javascript">';
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="js/shows.js"></script>
+		<script type="text/javascript">
+		<?php
 
 		// Schedule Functions
 		if ($timeRows > 0) {
@@ -412,7 +386,7 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 
 		echo "<br/>
 		<p><span>Member Owner: </span>
-			<select name='member_access'><option value='no one'>no one</option>";
+			<input name='member_access' value=""></input><select name='member_access_select'><option value='no one'>no one</option>";
 
 		$q = 'SELECT id, firstname, lastname FROM membership order by lastname asc';
 		if ($result = mysqli_query($db,$q)){
@@ -429,23 +403,18 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 			echo 'cannot get usernames. '.mysqli_error($db);
 		}
 
-		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
 
-
-		echo "<br/><br/>
+		echo "<br/><br/><br/>
 					<p><span></span><span> show tags (comma separated list)</span>";
 
-
-		printf("<p><span>Primary Genre: </span><input name=\"t_primary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_genre_tags);
-		printf("<p><span>Secondary Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $secondary_genre_tags);
-		echo "<br>";
-
-		echo "<p><span>(P) Keywords: </span><input name='t_keywords' type='text' maxlength='255' size='80' value='{$p_keywords}'></p>";
-		echo "<p><span>(P) Subtitle: </span><input name='t_subtitle' type='text' maxlength='255' size='80' value='{$p_subtitle}'></p>";
-		echo "<br/><p><span>(P) Summary: </span><textarea name='t_description' type='text' maxlength='255' rows='10' cols='55' value=''>{$p_description}</textarea></p>";
-
-		printf("<br/><p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
-
+		printf("<p><span>High Level: </span><input name=\"t_primary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_genre_tags);
+		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $secondary_genre_tags);
+		echo "<br><br>";
+		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
+		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
+		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $show_img);
+		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $website);
+		printf("<p><span>Podcast: </span><input name=\"t_rss\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $rss);
 		printf("<p><span>Language: </span><input name=\"t_lang_default\" type='text' size='35' value=\"%s\"></p>", $lang_default);
 		echo "<p><span>CRTC Default: </span>20<input name=\"r_crtc_default\" type='radio' value=\"20\" ".($crtc_num == 20 ? "checked='checked'" : "")." /> 30<input name=\"r_crtc_default\" type='radio' value=\"30\" ".($crtc_num == 30 ? "checked='checked'" : "")." /></p>";
 		printf("<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value=\"%s\">%%</p>", $pl_req);
@@ -535,28 +504,7 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 			echo '<button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
 		}
 		echo "</div>";
-
-
-		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $show_img);
-		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $website);
-
-
-
-
-		echo '<br/><br/><br/><div id=show_edit_podcast >From Podcast Data:';
-
-
-		echo "<p><span>Feedburner: </span><input name='t_rss' type='text' maxlength='255' size='80' value='{$rss}'></p>";
-		echo "<p><span>Local XML: </span><input name='t_xml' type='text' maxlength='255' size='80' value='{$p_xml}'></p>";
-
-		echo "<p><span>channel id: <input name='t_pod_id' readonly value ='{$podcast_channel_id}'></p>";
-
-	echo '</div> <br/><br/><br/>';
-
-
-
-
-
+		
 		printf("<p>Notes:</p><textarea name=\"t_notes\" cols=\"78\" rows=\"14\">%s</textarea>", $notes);
 		echo "<br><p style=\"float:left\"><input type=submit value=\"Save Show\"></p>
 		</form>";
@@ -649,7 +597,8 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 	?>
 
 
-<div ng-app="djLand" id="mainpodcast">
+<div ng-app="djLand">
+
 	<div ng-controller="showCtrl" class="form_wrap show_form">
 		<br ng-init="formData.show_id = <?php echo $show_id;?>" />
 		<h3>editing show information</h3>
@@ -661,8 +610,8 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 		Description:<br/>
   <textarea class="description" ng-model="formData.show_desc" >
   </textarea><br/>
-		secondary genre tags:<br/>
 
+		genre:<br/>
 		<input ng-model="formData.secondary_genre_tags" >
 		</input><br/>
 
@@ -682,9 +631,10 @@ if(permission_level() >= $djland_permission_levels['staff'] ) {
 </div>
 	<script src="js/angular.js"></script>
 	<script type="text/javascript">
-		var djland = angular.module('djLand', []);
+		var app = angular.module('djLand', []);
 	</script>
-	<script src="js/angular-djland.js"></script>
+	<script src="js/angular-common.js"></script>
+	<script src="js/show_edit.js"></script>
 
 	<?php
 } else {
