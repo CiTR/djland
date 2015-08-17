@@ -11,4 +11,7 @@ class Show extends Model
     public function playsheet(){
     	return $this->hasMany('App\Playsheet');
     }
+    public function hosts(){
+    	return $this->hasMany('App\Host','id','host_id');
+    }
 }

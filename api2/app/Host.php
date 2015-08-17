@@ -11,4 +11,7 @@ class Host extends Model
     public function playsheet(){
     	return $this->hasMany('App\Playsheet');
     }
+    public function shows(){
+    	return $this->belongsToMany('App\Show','id','host_id');
+    }
 }

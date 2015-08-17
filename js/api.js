@@ -8,11 +8,10 @@
       getUserPlaysheets: function (host_id) {
         return $http.get(API_URL_BASE + '/playsheet/host/' + host_id);
       },
-      getEveryonesPlaysheets: function (limit,offset) {
-        limit = limit || 100; offset = offset || 0;
-        return $http.get(API_URL_BASE + '/playlists/all.php?LIMIT='+limit+'&offset='+offset);
+      getPlaysheets: function (limit) {
+        limit = limit || 100;
+        return $http.get(API_URL_BASE + '/playsheet/list' + (limit!=null? '/'+limit : ''));
       },
-
       getPlaylistData: function (id) {
         return $http.get(API_URL_BASE+ '/playlist?ID='+id);
       },

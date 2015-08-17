@@ -38,27 +38,36 @@ Route::get('/playsheet',function(){
 Route::get('/playsheet/list',function(){
 	return DB::table('playsheets')
 	->join('hosts','hosts.id','=','playsheets.host_id')
-	->select('playsheets.id','hosts.name','playsheets.start_time'
+	->select('playsheets.id','hosts.name','playsheets.start_time')
 	->limit('100')
 	->orderBy('playsheets.id','desc')
 	->get();
 });
 Route::get('/playsheet/list/{limit}',function($limit = limit){
-	$playsheet = new stdClass();
-	$playsheet = Playsheet::orderBy('id','desc')->limit($limit)->select('*')->get();
-	//$playsheet->host  = Playsheet::orderBy('id','desc')->limit($limit)->hosts->name;
-	//$playsheet->show = Playsheet::orderBy('id','desc')->limit($limit)->shows->name;
-	//$playsheet-> Playsheet::all()->hosts;
-	//$playsheet = Playsheet::all()->shows;
-	return $playsheet;
-
+	$playsheets = Playsheet::limit($limit)->get();
+	foreach($playsheets as $playsheet){
+		if($playsheet != null){
+			$ps = $playsheet;
+			$ps -> show = Show::find($ps->show_id);
+			echo $playsheet->id."\n";
+			$ps-> hosts = Show::find($ps->show_id)->hosts;
+			//$ps -> show = Playsheet::find($ps->id)->show;
+			//if(!is_null($ps->show->id))	$ps -> hosts = Show::find($ps->show->id)->hosts;
+			$list[] = $ps;
+		}
+	}
+	return $list;
 	//return DB::table('playsheets')->join('hosts','hosts.id','=','playsheets.host_id')->select('playsheets.id','hosts.name','playsheets.start_time')->limit($limit)->orderBy('playsheets.id','desc')->get();
 });
 Route::get('/playsheet/{id}',function($id = id){
-	//return DB::table('playsheets')->select('*')->where('id','=',$id)->get();
 	$playsheet = new stdClass();
-	$playsheet = Playsheet::find($id);
-	$playsheet->playitems = Playsheet::find($id)->playitems;
+	$playsheet -> playsheet = Playsheet::find($id);
+	if($playsheet -> playsheet != null){
+		$playsheet -> playitems = Playsheet::find($id)->playitems;
+		$playsheet -> show = Playsheet::find($id)->show;
+		$playsheet -> hosts = Playsheet::find($id)->show->hosts;
+		
+	}
 	return Response::json($playsheet);
 });
 

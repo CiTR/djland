@@ -9,6 +9,6 @@ class Playitem extends Model
     //
     protected $table = 'playitems';
     public function playsheet(){
-    	return $this->hasOne('App\Playsheet');
+    	return $this->belongsTo('App\Playsheet');
     }
 }

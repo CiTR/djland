@@ -111,7 +111,7 @@ if (isset($_POST['id'])){
 }
 // -------- POST handling code ---------------------------------
 
-if(is_member("addshow") ) {
+if(permission_level() >= $djland_permission_levels['staff'] ) {
 
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
@@ -226,28 +226,9 @@ if(is_member("addshow") ) {
 			}
 		}
 		if (!$weekday) $weekday = 0;
-			$update_q = "UPDATE `shows` SET
-				name='$show_name',
-				host_id='$host_id',
-				weekday='$weekday',
-				pl_req='$pl_req',
-				cc_req='$cc_req',
-				indy_req='$indy_req',
-				fem_req='$fem_req',
-				edit_name='$edit_name',
-				crtc_default=$crtc_default,
-				lang_default='$lang_default',
-				active=$active,
-				primary_genre_tags='$primary_genre_tags',
-				secondary_genre_tags='$secondary_genre_tags',
-				website='$website',
-				rss='$rss',
-				show_desc='$show_desc',
-				notes='$notes',
-				show_img='$show_img',
-				sponsor_name='$sponsor_name',
-				sponsor_url='$sponsor_url'
-				 WHERE id='$show_id'";
+			$update_q = "UPDATE `shows` SET name='$show_name',host_id='$host_id',weekday='$weekday',pl_req='$pl_req',cc_req='$cc_req',indy_req='$indy_req',fem_req='$fem_req',edit_name='$edit_name',crtc_default=$crtc_default,
+				lang_default='$lang_default',active=$active,primary_genre_tags='$primary_genre_tags',secondary_genre_tags='$secondary_genre_tags',website='$website',rss='$rss',show_desc='$show_desc',notes='$notes',show_img='$show_img',
+				sponsor_name='$sponsor_name',sponsor_url='$sponsor_url' WHERE id='$show_id'";
 			$update_podcast_q = "UPDATE `podcast_channels` SET 
 				subtitle='$p_subtitle',
 				summary='$p_description',
@@ -271,8 +252,6 @@ if(is_member("addshow") ) {
 			} else {
 				echo "<br/>error updating podcast channel.<br/>query is ".$update_podcast_q."<br/>";
 			}
-
-
 		} else {
 			echo "there has been an error updating show info. (".$update_q.")";
 		}
@@ -325,21 +304,13 @@ if(is_member("addshow") ) {
 		$sponsor_url = ($show_id && !is_null($show_data["sponsor_url"])) ? $show_data["sponsor_url"] : "";
 		$notes = ($show_id && !is_null($show_data["notes"])) ? $show_data["notes"] : "";
 		$show_img = ($show_id && !is_null($show_data["show_img"])) ? $show_data["show_img"] : "";
-
 		$podcast_channel_id = $show_id ? $show_data['podcast_channel_id'] : "";
-
-
 		$podcast_query = 'SELECT * from podcast_channels where id = "'.$podcast_channel_id.'";';
-
 		if ($podcast_result = mysqli_query($db, $podcast_query)){
-
 			$podcast_data = mysqli_fetch_array($podcast_result);
-
 		} else {
 
 		}
-
-
 		$p_xml = $podcast_channel_id ? $podcast_data['xml'] : "" ;
 		$p_subtitle = $podcast_channel_id ? $podcast_data['subtitle'] : "" ;
 		$p_description = $podcast_channel_id ? $podcast_data['summary'] : "" ;
