@@ -12,8 +12,8 @@
         limit = limit || 50;
         return $http.get(API_URL_BASE + '/playsheet/list/' + limit);
       },
-      getPlaylistData: function (id) {
-        return $http.get(API_URL_BASE+ '/playlist?ID='+id);
+      getPlaysheetData: function (id) {
+        return $http.get(API_URL_BASE+ '/playsheet/' + id);
       },
 
       getFullPlaylistData: function (id) {
