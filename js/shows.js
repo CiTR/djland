@@ -28,14 +28,23 @@ $('.add_owner').unbind().click(function(){
 	if($('#member_access_select option:selected').text() != 'no one'){
 		var member_id = $('#member_access_select').val();
 		var member_name = $('#member_access_select option:selected').text();
-		$('#member_access_list').append(
-			"<li class='member_owner' id="+member_id+"><input class='invisible' name='member_access[]' value='"+member_id+"'></input>"+member_name+"<button type='button' class='remove_owner'>Remove</button></li>"
-		);
-		addHandlers();
-		var ids = $('#member_access').val().split(',');
-		ids.push(member_id);
-		$('#access_holder').html("<input id='member_access' class='invisible' name='member_access' value='"+ids.join()+"'></input>");
-
+		var member_array = $('#member_access').val().indexOf(',',$('#member_access').val()) > 0 ? $('#member_access').val().split(',') :  [$('#member_access').val()];
+		console.log(member_array);
+		if(member_array.indexOf(member_id) < 0){
+			$('#member_access_list').append(
+				"<li class='member_owner' id="+member_id+"><input class='invisible' name='member_access[]' value='"+member_id+"'></input>"+member_name+"<button type='button' class='remove_owner'>Remove</button></li>"
+			);
+			addHandlers();
+			var ids = $('#member_access').val();
+			if(ids.length > 0){
+				ids = ids.split(',');
+				ids.push(member_id);
+				$('#access_holder').html("<input id='member_access' class='invisible' name='member_access' value='"+ids.join()+"'></input>");
+			}else{
+				$('#access_holder').html("<input id='member_access' class='invisible' name='member_access' value='"+member_id+"'></input>");
+			}
+			
+		}
 	}
 });
 }
