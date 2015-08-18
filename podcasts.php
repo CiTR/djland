@@ -99,7 +99,7 @@ error_reporting(E_ALL);
 
 </head>
 
-<body>
+<body class='wallpaper'>
 
 <?php print_menu();
 
