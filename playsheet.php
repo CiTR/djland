@@ -154,7 +154,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
-      {{playsheet.plays}}
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">

@@ -160,20 +160,23 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 //			echo "inserted: ".$insert_q;
 			$show_id = mysqli_insert_id($db);
 		}
-
-
-		if(isset($_POST['member_access']) && $_POST['member_access'] != 'no one' ){
-			$member_id = $_POST['member_access'];
-
+		if(isset($_POST['member_access'])){
+			$member_id = explode(',',$_POST['member_access']);
 			$q = 'DELETE FROM member_show WHERE show_id = "'.$show_id.'"';
 			mysqli_query($db,$q);
-
-			$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$member_id.','.$show_id.')';
-			if($r = mysqli_query($db, $q)){
-				echo 'member owner has been set. <br/>';
-			} else {
-				echo mysqli_error($db).'<br/>'.$q;
+			$success = true;
+			foreach($member_id as $owner){
+				if(!is_null($owner) && $owner != '')
+				$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$owner.','.$show_id.')';
+				if($r = mysqli_query($db, $q)){
+					
+				} else {
+					$success = false;
+					echo mysqli_error($db).'<br/>'.$q;
+				}
 			}
+			echo 'member owners have been updated. <br/>';
+			
 		}
 		
 		if ($times == -1) { // Error has occured when processing time fields
@@ -260,6 +263,7 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		else {
 			$show_id = 0;
 		}
+		$show = mysqli_fetch_assoc($result);
 		$times = mysqli_query($db,"SELECT *, HOUR(start_time) AS sh, MINUTE(start_time) AS sm, HOUR(end_time) AS eh, MINUTE(end_time) AS em FROM `show_times` WHERE show_id=$show_id");
 		$timeRows = mysqli_num_rows($times);
 		$socials = mysqli_query($db,"SELECT * FROM `social` WHERE show_id=$show_id");
@@ -280,242 +284,251 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		$active = $show_id ? mysqli_result_dep($result, 0, "active") : 1;
 		$crtc_num = $show_id ? mysqli_result_dep($result, 0, "crtc_default") : "";
 		$crtc_default = $crtc_num == 20 ? 20 : 30;
-		
-		$lang_default = $show_id ? mysqli_result_dep($result, 0, "lang_default") : "";
-		$primary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "primary_genre_tags"))) ? mysqli_result_dep($result, 0, "primary_genre_tags") : "";
-		$secondary_genre_tags = ($show_id && !is_null(mysqli_result_dep($result, 0, "secondary_genre_tags"))) ? mysqli_result_dep($result, 0, "secondary_genre_tags") : "";
-		$website = ($show_id && !is_null(mysqli_result_dep($result, 0, "website"))) ? mysqli_result_dep($result, 0, "website") : "";
-		$rss = ($show_id && !is_null(mysqli_result_dep($result, 0, "rss"))) ? mysqli_result_dep($result, 0, "rss") : "";
-		$show_desc = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_desc"))) ? mysqli_result_dep($result, 0, "show_desc") : "";
-		$sponsor_name = ($show_id && !is_null(mysqli_result_dep($result, 0, "sponsor_name"))) ? mysqli_result_dep($result, 0, "sponsor_name") : "";
-		$sponsor_url = ($show_id && !is_null(mysqli_result_dep($result, 0, "sponsor_url"))) ? mysqli_result_dep($result, 0, "sponsor_url") : "";
 		$notes = ($show_id && !is_null(mysqli_result_dep($result, 0, "notes"))) ? mysqli_result_dep($result, 0, "notes") : "";
-		$show_img = ($show_id && !is_null(mysqli_result_dep($result, 0, "show_img"))) ? mysqli_result_dep($result, 0, "show_img") : "";
 		
 		// Special HTML head (for javascript functions)
 		$weeks_elapsed = floor((time() - 1341100800)/(7*24*60*60));
 		$week_num = ($weeks_elapsed%2) + 1;
 
-
-		$member_result = mysqli_query($db,"SELECT * FROM member_show WHERE show_id = '".$show_id."'");
-		$member_row = mysqli_fetch_assoc($member_result);
-		$member_id = $member_row['member_id'];
+		$member_result = mysqli_query($db,"SELECT m.id,m.firstname,m.lastname FROM member_show AS ms INNER JOIN membership AS m ON ms.member_id=m.id WHERE show_id = '".$show_id."'");
+		while($row = mysqli_fetch_assoc($member_result)){
+			$member_owners[] = $row;
+		}
 		?>
-
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/shows.js"></script>
 		<script type="text/javascript">
-		<?php
-
-		// Schedule Functions
-		if ($timeRows > 0) {
-			echo "timeRows=$timeRows;";
-		}
-		else {
-			echo "timeRows=1;";
-		}
-		echo "str_dow = '$str_dow';";
-		echo "str_hour = '$str_hour';";
-		echo "str_min = '$str_min';";
-		echo 'function addTimeRow() {var row = $("#time"+timeRows);$("#time"+timeRows+" .controls").css("display", "none");timeRows += 1;row.after(genTimeRow(timeRows));}';
-		echo 'function minusTimeRow() {$("#time"+timeRows).remove();timeRows -= 1;$("#time"+timeRows+" .controls").css("display", "inline")}';
-		echo "function genTimeRow(num) {
-		var output = '<div id=\"time'+num+'\">'+num+'. ';
-		// Start
-		output += '<select name=\"sd'+num+'\">'+str_dow+'</select>';
-		output += '<span><select name=\"sh'+num+'\">'+str_hour+'</select>:<select name=\"sm'+num+'\">'+str_min+'</select></span>';
-		// Spacing
-		output += '<span></span>';
-		// End
-		output += '<select name=\"ed'+num+'\">'+str_dow+'</select>';
-		output += '<span><select name=\"eh'+num+'\">'+str_hour+'</select>:<select name=\"em'+num+'\">'+str_min+'</select></span>';
-		// Alternating
-		output += '<span></span><select name=\"alt'+num+'\"><option value=\"0\">None</option><option value=\"1\">Week 1</option><option value=\"2\">Week 2</option></select>';
-		// Buttons
-		output += '<span class=\"controls\"><button class=\"minus\" type=\"button\" onclick=\"minusTimeRow()\">-</button><button class=\"plus\" type=\"button\" onclick=\"addTimeRow()\">+</button></span></div>';
-		return output;}";
-		
-		// Social Functions
-		if ($socialRows > 0) {
-			echo "socialRows=$socialRows;";
-		}
-		else {
-			echo "socialRows=1;";
-		}
-		echo 'function addSocialRow() {var row = $("#social"+socialRows);$("#social"+socialRows+" .controls").css("display", "none");socialRows += 1;row.after(genSocialRow(socialRows));}';
-		echo 'function minusSocialRow() {$("#social"+socialRows).remove();socialRows -= 1;$("#social"+socialRows+" .controls").css("display", "inline")}';
-		echo "function genSocialRow(num) {
-		var output = '<div id=\"social'+num+'\"><span>'+num+'. ';
-		// Start
-		output += '<input type=\"text\" name=\"socialName'+num+'\" maxlength=\"90\" size=\"10\" /></span>';
-		output += '<span><input type=\"text\" name=\"socialURL'+num+'\" maxlength=\"190\" size=\"40\" /></span>';
-		output += '<span><input type=\"text\" name=\"socialShortName'+num+'\" maxlength=\"90\" size=\"10\" /></span>';
-		output += '<span><input type=\"checkbox\" name=\"unlink'+num+'\" value=\"1\" /></span>';
-		// Buttons
-		output += '<span class=\"controls\"><button class=\"minus\" type=\"button\" onclick=\"minusSocialRow()\">-</button><button class=\"plus\" type=\"button\" onclick=\"addSocialRow()\">+</button></span></div>';
-		return output;}";
-		echo '</script>';
-		echo "</head><body class='wallpaper'>";
-		print_menu();
-		// End of head
-
-		printf("<br><div class=\"editform\"><h1>%s Show</h1>", ($show_id ? "Edit" : "Add New"));
-
-		echo "<br><FORM METHOD=\"POST\" ACTION=\"{$_SERVER['SCRIPT_NAME']}?action=submit\" name=\"the_form\">\n";
-		if($show_id) {
-			echo "<INPUT type=hidden name=id value=$show_id>";
-		}
-		// Start of table section
-		echo "<div class=\"table\">";
-
-
-
-		printf("<p ><span style='font-size: 1.5em;'>Show Title: </span>
-				<input name=\"showtitle\" type='text' size=25 value=\"%s\" style='font-size: 1.5em;' >
-				</input>
-				</p><br/>", $show_name);
-
-
-		if ($active == 1) {
-			echo "<p><span>Active: </span><input type='checkbox' name='c_active' value='1' checked=\"checked\" /></p>";
-		}
-		else {
-			echo "<p><span>Active: </span><input type='checkbox' name='c_active' value='1' /></p>";
-		}
-
-		echo "<br/>
-		<p><span>Member Owner: </span>
-			<input name='member_access' ></input><select name='member_access_select'><option value='no one'>no one</option>";
-
-		$q = 'SELECT id, firstname, lastname FROM membership order by lastname asc';
-		if ($result = mysqli_query($db,$q)){
-			$members = array();
-			while($row = $result->fetch_assoc()){
-				$members []= $row;
-				echo '<option value="'.$row['id'].'"';
-				if ($row['id'] == $member_id ) echo ' selected ';
-				echo '>'.$row['firstname'].' '.$row['lastname'].'</option>';
+			<?php
+				if ($timeRows > 0) { echo "timeRows=$timeRows;"; }
+				else {	echo "timeRows=1;"; 	}
+			?>
+			str_dow = '$str_dow';
+			str_hour = '$str_hour';
+			str_min = '$str_min';
+			function addTimeRow() {var row = $("#time"+timeRows);$("#time"+timeRows+" .controls").css("display", "none");timeRows += 1;row.after(genTimeRow(timeRows));}
+			function minusTimeRow() {$("#time"+timeRows).remove();timeRows -= 1;$("#time"+timeRows+" .controls").css("display", "inline")}
+			function genTimeRow(num) {
+				var output = '<div id=time'+num+'>'+num+'. ';
+				// Start
+				output += '<select name=sd'+num+'>'+str_dow+'</select>';
+				output += '<span><select name=\"sh'+num+'\">'+str_hour+'</select>:<select name=\"sm'+num+'\">'+str_min+'</select></span>';
+				// Spacing
+				output += '<span></span>';
+				// End
+				output += '<select name=ed'+num+'>'+str_dow+'</select>';
+				output += '<span><select name=eh'+num+'>'+str_hour+'</select>:<select name=em'+num+'>'+str_min+'</select></span>';
+				// Alternating
+				output += '<span></span><select name=alt'+num+'><option value="0">None</option><option value="1">Week 1</option><option value="2">Week 2</option></select>';
+				// Buttons
+				output += '<span class="controls"><button class="minus" type="button" onclick="minusTimeRow()">-</button><button class="plus" type="button" onclick="addTimeRow()">+</button></span></div>';
+				return output;
 			}
-			echo "</select>";
-		} else {
-			echo "</select>";
-			echo 'cannot get usernames. '.mysqli_error($db);
-		}
+			<?php
+				if ($socialRows > 0) {	echo "socialRows=$socialRows;"; }
+				else {	echo "socialRows=1;";	}
+			?>
+			function addSocialRow() {var row = $("#social"+socialRows);$("#social"+socialRows+" .controls").css("display", "none");socialRows += 1;row.after(genSocialRow(socialRows));}
+			function minusSocialRow() {$("#social"+socialRows).remove();socialRows -= 1;$("#social"+socialRows+" .controls").css("display", "inline")}
+			function genSocialRow(num) {
+				var output = '<div id="social'+num+'"><span>'+num+'.';
+				// Start
+				output += '<input type="text" name="socialName'+num+'" maxlength="90" size="10" /></span>';
+				output += '<span><input type="text" name="socialURL'+num+'" maxlength="190" size="40" /></span>';
+				output += '<span><input type="text" name="socialShortName'+num+'" maxlength="90" size="10" /></span>';
+				output += '<span><input type="checkbox" name="unlink'+num+'" value="1" /></span>';
+				// Buttons
+				output += '<span class="controls"><button class="minus" type="button" onclick="minusSocialRow()">-</button><button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
+				return output;
+			}
+		</script>
+		</head>
+		<body class='wallpaper'>
+		<?php print_menu(); 
+			// End of head
+			printf("<br><div class=\"editform\"><h1>%s Show</h1>", ($show_id ? "Edit" : "Add New"));
+			echo "<br><FORM METHOD=\"POST\" ACTION=\"{$_SERVER['SCRIPT_NAME']}?action=submit\" name=\"the_form\">\n";
+			if($show_id) {
+				echo "<INPUT type=hidden name=id value=$show_id>";
+			}
+		?>
+		<div id='wrapper'>
+			<p>
+				<span style='font-size: 1.5em;'>Show Title: </span>
+				<input name=\"showtitle\" type='text' size=25 value='<?php echo $show_name ?>' style='font-size: 1.5em;' ></input>
+			</p>
+			<?php if($active == 1): ?>
+				<p><span>Active: </span><input type='checkbox' name='c_active' value='1' checked=\"checked\" /></p>
+			<?php else: ?>
+				<p><span>Active: </span><input type='checkbox' name='c_active' value='1' /></p>
+			<?php endif; ?>
+			<hr/>
+			<p><span>Member Owners: </span>
+			<?php
 
-
-		echo "<br/><br/><br/>
-					<p><span></span><span> show tags (comma separated list)</span>";
-
-		printf("<p><span>High Level: </span><input name=\"t_primary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $primary_genre_tags);
-		printf("<p><span>Genre: </span><input name=\"t_secondary_genre_tags\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $secondary_genre_tags);
-		echo "<br><br>";
-		printf("<p><span>Host/Op: </span><input name=\"host\" type=text size=35 value=\"%s\"></p>", $host_name);
-		printf("<p><span>Show Description: </span><textarea name=\"t_show_desc\" cols=\"40\" rows=\"6\">%s</textarea></p>", $show_desc);
-		printf("<br/><p><span>Show Image URL: </span><input name=\"t_show_img\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $show_img);
-		printf("<p><span>Website: </span><input name=\"t_website\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $website);
-		printf("<p><span>Podcast: </span><input name=\"t_rss\" type=\"text\" maxlength=\"255\" size=\"55\" value=\"%s\"></p>", $rss);
-		printf("<p><span>Language: </span><input name=\"t_lang_default\" type='text' size='35' value=\"%s\"></p>", $lang_default);
-		echo "<p><span>CRTC Default: </span>20<input name=\"r_crtc_default\" type='radio' value=\"20\" ".($crtc_num == 20 ? "checked='checked'" : "")." /> 30<input name=\"r_crtc_default\" type='radio' value=\"30\" ".($crtc_num == 30 ? "checked='checked'" : "")." /></p>";
-		printf("<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value=\"%s\">%%</p>", $pl_req);
-		printf("<p><span>CC Requirement: </span><input name=\"cc_req\" type=text size=3 value=\"%s\">%%</p>", $cc_req);
-		printf("<p><span>Indy Requirement: </span><input name=\"indy_req\" type=text size=3 value=\"%s\">%%</span></p>", $indy_req);
-		printf("<p><span>Female Requirement: </span><input name=\"fem_req\" type=text size=3 value=\"%s\">%%</span></p>", $fem_req);
-		echo "<p><span></span><span style=\"font-size:0.77em\">(Eg. sponsor1; sponsor2 - put sponsors with no links at the end)</span>";
-		printf("<p><span>Sponsor Name(s): </span><input name=\"t_sponsor_name\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $sponsor_name);
-		echo "<p><span></span><span style=\"font-size:0.77em\">(Eg. url1; url2 - separate with semicolons)</span>";
-		printf("<p><span>Sponsor Url: </span><input name=\"t_sponsor_url\" type=\"text\" maxlength=\"255\" size=\"35\" value=\"%s\"></p>", $sponsor_url);
-
-		echo "</div>";
-		
-		// Times section
-		echo "<p style=\"text-decoration:underline\">Times (current week is Week $week_num):</p>";
-		echo '<div class="table">
-		<span class="head">Start Day</span><span class="head">Start Time</span><span class="head">&nbsp;&nbsp;&nbsp;</span><span class="head">End Day</span><span class="head">End Time</span><span class="head">&nbsp;&nbsp;&nbsp;</span><span class="head">Alternating</span>';
-		
-		$count = 1;
-		while($row = mysqli_fetch_assoc($times)) {
-			echo "<div id=\"time$count\">$count. <select name=\"sd$count\"><option value=\"{$row['start_day']}\">{$dow[$row['start_day']]}</option>$str_dow</select>&nbsp;";//Start of table div
-			echo "<span><select name=\"sh$count\">",sprintf("<option>%02d</option>",$row['sh']),"$str_hour</select>:<select name=\"sm$count\">",sprintf("<option>%02d</option>",$row['sm']),"$str_min</select></span>";
-			echo "<span></span>";// Spacing
-			echo "<select name=\"ed$count\"><option value=\"{$row['end_day']}\">{$dow[$row['end_day']]}</option>$str_dow</select>&nbsp;";//End times
-			echo "<span><select name=\"eh$count\">",sprintf("<option>%02d</option>",$row['eh']),"$str_hour</select>:<select name=\"em$count\">",sprintf("<option>%02d</option>",$row['em']),"$str_min</select></span>";
-			echo "<span></span>";// Spacing
-			echo "<select name=\"alt$count\"><option value=\"{$row['alternating']}\">{$alt_val[$row['alternating']]}</option><option value=\"0\">None</option><option value=\"1\">Week 1</option><option value=\"2\">Week 2</option></select>"; // Alternating
-			if ($count == $timeRows) {
+				//Query for users
+				$q = 'SELECT id, firstname, lastname FROM membership order by lastname asc';
+				if ($result = mysqli_query($db,$q)){
+					$members = array();
+					while($row = $result->fetch_assoc()){
+						$members []= $row;
+					}
+				} else {
+					echo 'Could not query member names . '.mysqli_error($db);
+				}
+			echo "<ul id='member_access_list'>";
+				foreach($member_owners as $owner){
+					$ids[] = $owner['id'];
+					echo "<li class='member_owner' id=owner".$owner['id'].">".$owner['firstname']." ".$owner['lastname']."<button type='button' class='remove_owner'>Remove</button></li>";
+				}
+				?>
+			</ul>
+			<div id='access_holder'>
+				<input id='member_access' class='invisible' name='member_access' value='<?php echo implode(',',$ids) ?>'></input>
+			</div>
+			<select id='member_access_select' name='member_access_select'>
+					<option value='Add New'>no one</option>
+				<?php
+					foreach($members as $member){
+						echo "<option value=".$member['id'].">".$member['firstname']." ".$member['lastname']."</option>";
+					}
+				?>
+			</select>
+			<button type='button' class='add_owner'>Add</button>
+			<hr/>
+			<p><span>High Level: </span>
+			<select name = 't_primary_genre_tags'>
+			<?php
+				$set = false;
+				foreach($djland_primary_genres as $genre){
+					if( $show["primary_genre_tags"] == $genre){
+						echo "<option selected value={$genre}>{$genre}</option>";
+						$set = true;
+					}else{
+						echo "<option value={$genre}>{$genre}</option>";
+					}
+				}
+				if(!$set){
+					echo "<option selected value=''>No Genre Set</option>";
+				}
+			?>
+			</select>
+			<p>
+				<span>Secondary Genres: </span>
+				<input name='t_secondary_genre_tags' type='text' size='55' value='<?php echo $show["secondary_genre_tags"]; ?>' ></input>
+			</p>
+			<hr/>
+			<p><span>Host/Op: </span><input name="host" type=text size=35 value='<?php echo $host_name; ?>' ></p>
+			<p><span>Show Description: </span><br/><textarea name="t_show_desc" cols="100" rows="6"><?php echo  $show["show_desc"]; ?></textarea></p>
+			<br/><p><span>Show Image URL: </span><input name="t_show_img" type="text" maxlength="255" size="55" value=<?php echo  $show["show_img"]; ?> ></p>
+			<p><span>Website: </span><input name="t_website" type="text" maxlength="255" size="55" value='<?php echo  $show["website"]; ?>' ></p>
+			<p><span>Podcast: </span><input name="t_rss" type="text" maxlength="255" size="55" value='<?php echo  $show["rss"]; ?>' ></p>
+			<p><span>Language: </span><input name="t_lang_default" type='text' size='35' value='<?php echo  $show["lang_default"]; ?>' ></p>
+			<p><span>CRTC Default: </span>
+				20<input name="r_crtc_default" type='radio' value="20" <?php echo ($crtc_num == 20 ? "checked='checked'" : ""); ?> /> 
+				30<input name="r_crtc_default" type='radio' value="30" <?php echo ($crtc_num == 30 ? "checked='checked'" : ""); ?> />
+			</p>
+			<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value='<?php echo $pl_req ?>'>%</p>
+			<p><span>CC Requirement: </span><input name=\"cc_req\" type=text size=3 value='<?php echo $cc_req ?>'>%</p>
+			<p><span>Indy Requirement: </span><input name=\"indy_req\" type=text size=3 value='<?php echo $indy_req ?>'>%</span></p>
+			<p><span>Female Requirement: </span><input name=\"fem_req\" type=text size=3 value='<?php echo $fem_req ?>'>%</span></p>
+			<p><span></span><span style=\"font-size:0.77em\">(Eg. sponsor1; sponsor2 - put sponsors with no links at the end)</span>";
+			<p><span>Sponsor Name(s): </span><input name=\"t_sponsor_name\" type=\"text\" maxlength=\"255\" size=\"35\" value='<?php echo  $show["sponsor_name"] ?>'></p>
+			<p><span></span><span style=\"font-size:0.77em\">(Eg. url1; url2 - separate with semicolons)</span>";
+			<p><span>Sponsor Url: </span><input name=\"t_sponsor_url\" type=\"text\" maxlength=\"255\" size=\"35\" value='<?php echo  $show["sponsor_url"] ?>'></p>
+			<p style="text-decoration:underline">Times (current week is Week <?php echo $week_num ?>):</p>
+			<div class="table">
+			<span class="head">Start Day</span>
+			<span class="head">Start Time</span>
+			<span class="head">&nbsp;&nbsp;&nbsp;</span>
+			<span class="head">End Day</span>
+			<span class="head">End Time</span>
+			<span class="head">&nbsp;&nbsp;&nbsp;</span>
+			<span class="head">Alternating</span>
+			<?php
+			$count = 1;
+			while($row = mysqli_fetch_assoc($times)) {
+				echo "<div id=\"time$count\">$count. <select name=\"sd$count\"><option value=\"{$row['start_day']}\">{$dow[$row['start_day']]}</option>$str_dow</select>&nbsp;";
+				echo "<span><select name=\"sh$count\">",sprintf("<option>%02d</option>",$row['sh']),"$str_hour</select>:<select name=\"sm$count\">",sprintf("<option>%02d</option>",$row['sm']),"$str_min</select></span>";
+				echo "<span></span>";// Spacing
+				echo "<select name=\"ed$count\"><option value=\"{$row['end_day']}\">{$dow[$row['end_day']]}</option>$str_dow</select>&nbsp;";//End times
+				echo "<span><select name=\"eh$count\">",sprintf("<option>%02d</option>",$row['eh']),"$str_hour</select>:<select name=\"em$count\">",sprintf("<option>%02d</option>",$row['em']),"$str_min</select></span>";
+				echo "<span></span>";// Spacing
+				echo "<select name=\"alt$count\"><option value=\"{$row['alternating']}\">{$alt_val[$row['alternating']]}</option><option value=\"0\">None</option><option value=\"1\">Week 1</option><option value=\"2\">Week 2</option></select>"; // Alternating
+				if ($count == $timeRows) {
+					echo '<span class="controls">';
+				}
+				else {
+					echo '<span class="controls" style="display:none">';
+				}
+				if ($count > 1) { // Echo minus button if more than one row
+					echo '<button class="minus" type="button" onclick="minusTimeRow()">-</button>';
+				}
+				echo '<button class="plus" type="button" onclick="addTimeRow()">+</button></span></div>'; // Buttons
+				$count++;
+			}
+			
+			if ($timeRows == 0) {
+				echo "<div id=\"time1\">1. <select name=\"sd1\"><option value=\"",date("w"),"\">",$dow[date("w")],"</option>$str_dow</select>&nbsp;";//Start of table div
+				echo "<span><select name=\"sh1\">",sprintf("<option>%02d</option>",date("H")),"$str_hour</select>:<select name=\"sm1\">$str_min</select></span>";
+				echo "<span></span>";// Spacing
+				echo "<select name=\"ed1\"><option value=\"",date("w"),"\">",$dow[date("w")],"</option>$str_dow</select>&nbsp;";//End times
+				echo "<span><select name=\"eh1\">",sprintf("<option>%02d</option>",date("H")),"$str_hour</select>:<select name=\"em1\">$str_min</select></span>";
+				echo "<span></span>";// Spacing
+				echo '<select name="alt1"><option value="0">None</option><option value="1">Week 1</option><option value="2">Week 2</option></select>'; // Alternating
+				echo '<span class="controls"><button class="plus" type="button" onclick="addTimeRow()">+</button></span></div>'; // Buttons
+			}
+			echo "</div>";
+			
+			// Social section
+			echo '<p style="text-decoration:underline">Social + Contact Info</p>';
+			echo '<div>
+			<span class="head">Service Name</span><span class="head">Address (include http/https if not email)</span><span class="head">Short Name</span><span class="head">Unlink</span>'; //start of table div
+			$count = 1;
+			while ($row = mysqli_fetch_assoc($socials)) { // Generate social rows
+				echo "<div id=\"social$count\"><span>$count. <input type=\"text\" name=\"socialName$count\" value=\"{$row['social_name']}\" maxlength=\"90\" size=\"10\" /></span>";
+				echo "<span><input type=\"text\" name=\"socialURL$count\" value=\"{$row['social_url']}\" maxlength=\"190\" size=\"40\" /></span>";
+				echo "<span><input type=\"text\" name=\"socialShortName$count\" value=\"{$row['short_name']}\" maxlength=\"90\" size=\"10\" /></span>";
+				if ($row['unlink'] == 1) {
+					echo "<span><input type='checkbox' name='unlink$count' checked='checked' value='1' /></span>";
+				}
+				else {
+					echo "<span><input type='checkbox' name='unlink$count' value='1' /></span>";
+				}
+				if ($count == $socialRows) {
+					echo '<span class="controls">';
+				}
+				else {
+					echo '<span class="controls" style="display:none">';
+				}
+				if ($count > 1) { // Echo minus button if more than one row
+					echo '<button class="minus" type="button" onclick="minusSocialRow()">-</button>';
+				}
+				echo '<button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
+				$count++;
+			}
+			
+			if ($socialRows == 0) { // Generate fields if no database entry
+				echo "<div id=\"social1\"><span>1. <input type=\"text\" name=\"socialName1\" maxlength=\"90\" size=\"10\" /></span>";
+				echo "<span><input type=\"text\" name=\"socialURL1\" maxlength=\"190\" size=\"40\" /></span>";
+				echo "<span><input type=\"text\" name=\"socialShortName1\" maxlength=\"90\" size=\"10\" /></span>";
+				echo "<span><input type='checkbox' name='unlink1' value='1' /></span>";
 				echo '<span class="controls">';
+				echo '<button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
 			}
-			else {
-				echo '<span class="controls" style="display:none">';
-			}
-			if ($count > 1) { // Echo minus button if more than one row
-				echo '<button class="minus" type="button" onclick="minusTimeRow()">-</button>';
-			}
-			echo '<button class="plus" type="button" onclick="addTimeRow()">+</button></span></div>'; // Buttons
-			$count++;
-		}
+			echo "</div>";
 		
-		if ($timeRows == 0) {
-			echo "<div id=\"time1\">1. <select name=\"sd1\"><option value=\"",date("w"),"\">",$dow[date("w")],"</option>$str_dow</select>&nbsp;";//Start of table div
-			echo "<span><select name=\"sh1\">",sprintf("<option>%02d</option>",date("H")),"$str_hour</select>:<select name=\"sm1\">$str_min</select></span>";
-			echo "<span></span>";// Spacing
-			echo "<select name=\"ed1\"><option value=\"",date("w"),"\">",$dow[date("w")],"</option>$str_dow</select>&nbsp;";//End times
-			echo "<span><select name=\"eh1\">",sprintf("<option>%02d</option>",date("H")),"$str_hour</select>:<select name=\"em1\">$str_min</select></span>";
-			echo "<span></span>";// Spacing
-			echo '<select name="alt1"><option value="0">None</option><option value="1">Week 1</option><option value="2">Week 2</option></select>'; // Alternating
-			echo '<span class="controls"><button class="plus" type="button" onclick="addTimeRow()">+</button></span></div>'; // Buttons
-		}
-		echo "</div>";
-		
-		// Social section
-		echo '<p style="text-decoration:underline">Social + Contact Info</p>';
-		echo '<div class="table">
-		<span class="head">Service Name</span><span class="head">Address (include http/https if not email)</span><span class="head">Short Name</span><span class="head">Unlink</span>'; //start of table div
-		$count = 1;
-		while ($row = mysqli_fetch_assoc($socials)) { // Generate social rows
-			echo "<div id=\"social$count\"><span>$count. <input type=\"text\" name=\"socialName$count\" value=\"{$row['social_name']}\" maxlength=\"90\" size=\"10\" /></span>";
-			echo "<span><input type=\"text\" name=\"socialURL$count\" value=\"{$row['social_url']}\" maxlength=\"190\" size=\"40\" /></span>";
-			echo "<span><input type=\"text\" name=\"socialShortName$count\" value=\"{$row['short_name']}\" maxlength=\"90\" size=\"10\" /></span>";
-			if ($row['unlink'] == 1) {
-				echo "<span><input type='checkbox' name='unlink$count' checked='checked' value='1' /></span>";
-			}
-			else {
-				echo "<span><input type='checkbox' name='unlink$count' value='1' /></span>";
-			}
-			if ($count == $socialRows) {
-				echo '<span class="controls">';
-			}
-			else {
-				echo '<span class="controls" style="display:none">';
-			}
-			if ($count > 1) { // Echo minus button if more than one row
-				echo '<button class="minus" type="button" onclick="minusSocialRow()">-</button>';
-			}
-			echo '<button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
-			$count++;
-		}
-		
-		if ($socialRows == 0) { // Generate fields if no database entry
-			echo "<div id=\"social1\"><span>1. <input type=\"text\" name=\"socialName1\" maxlength=\"90\" size=\"10\" /></span>";
-			echo "<span><input type=\"text\" name=\"socialURL1\" maxlength=\"190\" size=\"40\" /></span>";
-			echo "<span><input type=\"text\" name=\"socialShortName1\" maxlength=\"90\" size=\"10\" /></span>";
-			echo "<span><input type='checkbox' name='unlink1' value='1' /></span>";
-			echo '<span class="controls">';
-			echo '<button class="plus" type="button" onclick="addSocialRow()">+</button></span></div>';
-		}
-		echo "</div>";
-		
-		printf("<p>Notes:</p><textarea name=\"t_notes\" cols=\"78\" rows=\"14\">%s</textarea>", $notes);
-		echo "<br><p style=\"float:left\"><input type=submit value=\"Save Show\"></p>
-		</form>";
+			printf("<p>Notes:</p><textarea name=\"t_notes\" cols=\"78\" rows=\"14\">%s</textarea>", $notes);
+			echo "<br><p style=\"float:left\"><input type=submit value=\"Save Show\"></p>
+			</form>";
 
-		if($show_id) {
-			printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return confirm('PERMANENTLY DELETE this show and associated playsheets?')\" ACTION=\"%s?action=delete\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
-			printf("<p style=\"float:right\"><INPUT type=hidden name=id value=%s>", $show_id);
-			echo "warning: deleting a show will delete all of the show's playsheets ever made";
-			printf("<input type=submit value=\"Delete Show\"></p>");
-			printf("</form>");
-		}
+			if($show_id) {
+				printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return confirm('PERMANENTLY DELETE this show and associated playsheets?')\" ACTION=\"%s?action=delete\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+				printf("<p style=\"float:right\"><INPUT type=hidden name=id value=%s>", $show_id);
+				echo "warning: deleting a show will delete all of the show's playsheets ever made";
+				printf("<input type=submit value=\"Delete Show\"></p>");
+				printf("</form>");
+			}
+			echo "</div>";
 		echo "</div>";
 	}
 	// LISTING INACTIVE SHOWS --------
@@ -595,8 +608,6 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 } else if(has_show_access($show_id)){
 	print_menu();
 	?>
-
-
 <div ng-app="djLand">
 
 	<div ng-controller="showCtrl" class="form_wrap show_form">

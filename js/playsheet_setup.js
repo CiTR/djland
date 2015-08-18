@@ -467,23 +467,12 @@
 					},				function(){
 					helpDown($helpboxTOOLS);
 					});
-					
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
 	//READY
 	$(document).ready(function() {
 

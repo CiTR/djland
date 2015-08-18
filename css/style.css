@@ -17,6 +17,9 @@ font-family: Helvetica,Arial;
 	background-image: url('../images/wallpaper.jpg');
 	color:white;
 }
+.invisible{
+  display:none;
+}
 
  ul, li {
     list-style-type: none;
@@ -32,6 +35,11 @@ li{
 }
 h1,h2,h3,h4{
 	text-align: center;
+  padding:0px;
+  margin:0px;
+}
+h1{
+  font-size:2.2em;
 }
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}
@@ -93,7 +101,6 @@ input, select, textarea, option{
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
-
   display: flex;
   align-items: center;
 }
@@ -148,6 +155,8 @@ input, select, textarea, option{
 .center{
 	margin-left:auto;
 	margin-right:auto;
+  display:inline-center;
+  width:; 90%;
 }
 .clearfix:after { 
    content: " ";
@@ -1028,7 +1037,57 @@ table { border-collapse: collapse; }
 .charting-status{
 	width:30px;
 }
+/*------------------*/
+/*	Show Edit Page--*/
+/*------------------*/
+.member_owner div{
+  width:50%;
+}
 
+/*----------------------------*/
+/*--------CHARTING (OLD)------------*/
+/*----------------------------*/
+.chartBanner
+*{
+	background-color: #004080;
+}
+
+.chartSong
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartArtist
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartAlbum
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartShow
+{
+	float: left;
+	width: 300px;
+	position:relative;
+}
+.chartDate
+{
+	float: left;
+	width: 150px;
+	position:relative;
+}
+.chartCC
+{
+	float: left;
+	width:35px;
+	position:relative;
+}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
@@ -1309,6 +1368,19 @@ height:auto;
 
 /* PLAYSHEET SAM CSS */
 
+
+.table {
+  display:table;
+	margin-bottom: 5px;
+}
+.table p, .table div {
+	display: table-row;
+}
+.table select, .table span, .table textarea {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
 #sam-box{
 	display:none;
 }
