@@ -17,17 +17,19 @@
 		<script type='text/javascript' src='js/open_playsheet/open_playsheet.js'></script>
 		<script type='text/javascript' src='js/api.js'></script>
 	    <?php print_menu(); ?>
-		<table class='table-hover table'>
-			<tr><th>Show<th>Host<th>Date</tr>
-			<tbody >
-				<tr ng-model='playsheet.playsheets' ng-repeat='item in playsheet.playsheets'>
-					<td>{{item.show.name}}</td>
-					<td><div ng-repeat='host in item.hosts'>{{host}}</div></td>
-					<td>{{item.start_time}}</td>
-				</tr>
-			<tbody>
-		</table>
-		{{playsheet.playsheets}}
+		<div id='wrapper'>
+			<table class='table-hover table'>
+				<tr><th>Show<th>Host<th>Date</tr>
+				<tbody >
+					<tr ng-model='playsheet.playsheets' ng-repeat='item in playsheet.playsheets track by $index'>
+						<td>{{item.show.name}}</td>
+						<td><div ng-repeat='host in item.hosts'>{{host.name}}</div></td>
+						<td>{{item.start_time}}</td>
+					</tr>
+				<tbody>
+			</table>
+		</div>
+		
 	</body>
 
 </html>

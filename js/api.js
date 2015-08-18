@@ -9,8 +9,8 @@
         return $http.get(API_URL_BASE + '/playsheet/host/' + host_id);
       },
       getPlaysheets: function (limit) {
-        limit = limit || 100;
-        return $http.get(API_URL_BASE + '/playsheet/list' + (limit!=null? '/'+limit : ''));
+        limit = limit || 50;
+        return $http.get(API_URL_BASE + '/playsheet/list/' + limit);
       },
       getPlaylistData: function (id) {
         return $http.get(API_URL_BASE+ '/playlist?ID='+id);

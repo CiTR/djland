@@ -44,19 +44,18 @@ Route::get('/playsheet/list',function(){
 	->get();
 });
 Route::get('/playsheet/list/{limit}',function($limit = limit){
-	$playsheets = Playsheet::limit($limit)->get();
+	$playsheets = Playsheet::orderBy('id','desc')->limit($limit)->get();
 	foreach($playsheets as $playsheet){
 		if($playsheet != null){
-			$ps = $playsheet;
-			$ps -> show = Show::find($ps->show_id);
-			echo $playsheet->id."\n";
-			$ps-> hosts = Show::find($ps->show_id)->hosts;
-			//$ps -> show = Playsheet::find($ps->id)->show;
-			//if(!is_null($ps->show->id))	$ps -> hosts = Show::find($ps->show->id)->hosts;
+			$ps = new stdClass();
+			$ps -> id = $playsheet -> id;
+			$ps -> start_time = $playsheet->start_time;
+			$ps -> show = Show::find($playsheet->show_id);
+			$ps -> hosts = Show::find($playsheet->show_id)->hosts;
 			$list[] = $ps;
 		}
 	}
-	return $list;
+	return Response::json($list);
 	//return DB::table('playsheets')->join('hosts','hosts.id','=','playsheets.host_id')->select('playsheets.id','hosts.name','playsheets.start_time')->limit($limit)->orderBy('playsheets.id','desc')->get();
 });
 Route::get('/playsheet/{id}',function($id = id){

@@ -386,7 +386,7 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 
 		echo "<br/>
 		<p><span>Member Owner: </span>
-			<input name='member_access' value=""></input><select name='member_access_select'><option value='no one'>no one</option>";
+			<input name='member_access' ></input><select name='member_access_select'><option value='no one'>no one</option>";
 
 		$q = 'SELECT id, firstname, lastname FROM membership order by lastname asc';
 		if ($result = mysqli_query($db,$q)){
