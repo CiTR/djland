@@ -34,7 +34,7 @@ $('.add_owner').unbind().click(function(){
 		addHandlers();
 		var ids = $('#member_access').val().split(',');
 		ids.push(member_id);
-		$('#member_access').val = ids.join();
+		$('#access_holder').html("<input id='member_access' class='invisible' name='member_access' value='"+ids.join()+"'></input>");
 
 	}
 });

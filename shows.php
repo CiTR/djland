@@ -169,16 +169,17 @@ if(is_member("addshow") ) {
 			$member_id = explode(',',$_POST['member_access']);
 			$q = 'DELETE FROM member_show WHERE show_id = "'.$show_id.'"';
 			mysqli_query($db,$q);
-
+			$success = true;
 			foreach($member_id as $owner){
-				echo $owner;
 				$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$owner.','.$show_id.')';
 				if($r = mysqli_query($db, $q)){
-					echo 'member owner has been set. <br/>';
+					
 				} else {
+					$success = false;
 					echo mysqli_error($db).'<br/>'.$q;
 				}
 			}
+			echo 'member owners have been updated. <br/>';
 			
 		}
 		
