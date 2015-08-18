@@ -50,18 +50,12 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 ?>
 
 <div class="wrapper">
-
-
 <div ng-app="djLand" ng-cloak >
 
   <div ng-controller="playsheetCtrl" >
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}} </h2>
-
-
     <div >
-
-
       <div id="left">
         Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
           <option value="Syndicated">Syndicated</option>

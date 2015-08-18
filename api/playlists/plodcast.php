@@ -1,8 +1,6 @@
 <?php
 
-
 require_once('../api_common_private.php');
-
 //$rawdata = get_array('playlists');
 
 $rawdata = array();
@@ -13,21 +11,19 @@ global $db;
 
 if(isset($_GET['show'])) $show_id = $_GET['show']; else $show_id = 0;
 
-
 if (!has_show_access($show_id) ){
   $error .= 'sorry, you do not have access to this show\'s podcasts';
   finish();
 }
 $query = '
     SELECT *
-    FROM playlists
-    WHERE playlists.show_id = '.$show_id.'
+    FROM playsheets
+    WHERE playsheets.show_id = '.$show_id.'
     ORDER BY
-      playlists.start_time
+      playsheets.start_time
     DESC ';
 
 if ($result = mysqli_query($db, $query) ) {
-
   $playlists = array();
 
   while ($row = mysqli_fetch_assoc($result)) {

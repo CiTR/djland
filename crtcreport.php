@@ -1,5 +1,6 @@
 <?php // CRTC REPORT PAGE
-if( permission_level() >= $djland_permission_levels['dj']){
+
+
 //***************************************************
 // see handlers/crtcreport.php to change requirement values
 //***************************************************
@@ -13,7 +14,7 @@ require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
-
+if( permission_level() >= $djland_permission_levels['dj']){
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 
@@ -32,7 +33,7 @@ printf("<link rel=stylesheet href=css/style.css type=text/css>");
  CiTR 101.9fm, Vancouver, British Columbia, Canada - www.citr.ca</title>
 
  
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/jquery.form.js"></script> 
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />

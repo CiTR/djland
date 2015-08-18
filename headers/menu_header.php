@@ -20,7 +20,6 @@ function print_menu(){
 	global $enabled,$djland_permission_levels;
     //admin_menu();
 ?>
-	
 	<ul id=nav>
 		<?php 
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
@@ -101,7 +100,10 @@ function print_menu(){
 					</div>
 				</li>
 		<?php 
-			endif; ?>
+			endif;
+			if (permission_level() >= $djland_permission_levels['dj']) : ?>
+				<li class="menu_right nodrop"><a href="podcasts.php"> Podcasts </a></li>
+		<?php endif; ?>
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 		<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>

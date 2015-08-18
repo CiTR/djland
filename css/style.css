@@ -520,7 +520,16 @@ margin:10px;
 #ps-loading-image{
 display:none;
 }
-
+#result {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* max-height: 500px; */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-bottom: 15px;
+}
 
   #totals {
     position: fixed;
@@ -736,6 +745,83 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     margin-left:10px;
     padding-left:10px;
   }
+
+
+/*
+  Podcasts Page CSS
+
+*/
+#popup{
+      position:fixed;
+      bottom:0;
+      right:0;
+      width:700px;
+      height:100%;
+      background-color: #88d2ba;
+      overflow:scroll;
+      z-index:20;
+    }
+
+    #closer{
+      position:fixed;
+      top:30px;
+      right:700px;
+      background-color:lightsteelblue;
+      color:black;
+      cursor:default;
+      font-size:2em;
+      line-height: 2em;
+    }
+    #closer:hover{
+      color:red;
+    }
+
+    .title{
+      font-size:1.2em;
+    }
+
+    .subtitle{
+      font-size:0.9em;
+      font-style: italic;
+    }
+    .podcast_date{
+      margin-left:-20px;
+      font-color:lightgrey;
+      font-size:0.8em;
+    }
+
+    .podcast_list_entry{
+      padding-left: 35px;
+    }
+    .tiny{
+      font-size:0.7em;
+      width:100%;
+      background-color:black;
+      overflow-wrap: break-word;
+    }
+
+    .lit{
+      background-color:darkblue;
+    }
+    button{
+      color:black;
+    }
+
+    .large-button{
+      height:40px;
+      font-size: 1.5em;
+    }
+
+    #mainleft a{
+      background-color:steelblue;
+      padding:2px;
+    }
+    #mainleft  a:hover{
+      color:greenyellow;
+    }
+    #message{
+      font-size:2em;
+    }
 
 
   .adPlay {
@@ -1565,8 +1651,8 @@ div#ui-datepicker-div{
     box-shadow:inset 0px 0px 1px #BEBEBE;
 	display:inline-block;
 		position:relative;
-	max-width:200px;
-	max-height:200px;
+	max-width:300px;
+	max-height:300px;
 	margin-top:0px;
 	z-index:50 !important;
 }
