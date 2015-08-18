@@ -165,8 +165,6 @@ if(is_member("addshow") ) {
 //			echo "inserted: ".$insert_q;
 			$show_id = mysqli_insert_id($db);
 		}
-
-		print_r($_POST);
 		if(isset($_POST['member_access'])){
 			$member_id = explode(',',$_POST['member_access']);
 			$q = 'DELETE FROM member_show WHERE show_id = "'.$show_id.'"';
