@@ -166,19 +166,22 @@ if(is_member("addshow") ) {
 			$show_id = mysqli_insert_id($db);
 		}
 
-
-		if(isset($_POST['member_access']) && $_POST['member_access'] != 'no one' ){
-			$member_id = $_POST['member_access'];
-
+		print_r($_POST);
+		if(isset($_POST['member_access'])){
+			$member_id = explode(',',$_POST['member_access']);
 			$q = 'DELETE FROM member_show WHERE show_id = "'.$show_id.'"';
 			mysqli_query($db,$q);
 
-			$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$member_id.','.$show_id.')';
-			if($r = mysqli_query($db, $q)){
-				echo 'member owner has been set. <br/>';
-			} else {
-				echo mysqli_error($db).'<br/>'.$q;
+			foreach($member_id as $owner){
+				echo $owner;
+				$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$owner.','.$show_id.')';
+				if($r = mysqli_query($db, $q)){
+					echo 'member owner has been set. <br/>';
+				} else {
+					echo mysqli_error($db).'<br/>'.$q;
+				}
 			}
+			
 		}
 		
 		if ($times == -1) { // Error has occured when processing time fields
@@ -302,14 +305,15 @@ if(is_member("addshow") ) {
 		$week_num = ($weeks_elapsed%2) + 1;
 
 
-		$member_result = mysqli_query($db,"SELECT * FROM member_show WHERE show_id = '".$show_id."'");
-		$member_row = mysqli_fetch_assoc($member_result);
-		$member_id = $member_row['member_id'];
-
-		echo '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>';
-
-		echo '<script type="text/javascript">';
-
+		$member_result = mysqli_query($db,"SELECT m.id,m.firstname,m.lastname FROM member_show AS ms INNER JOIN membership AS m ON ms.member_id=m.id WHERE show_id = '".$show_id."'");
+		while($row = mysqli_fetch_assoc($member_result)){
+			$member_owners[] = $row;
+		}
+		?>
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="js/shows.js"></script>
+		<script type="text/javascript">
+		<?php
 		// Schedule Functions
 		if ($timeRows > 0) {
 			echo "timeRows=$timeRows;";
@@ -369,7 +373,7 @@ if(is_member("addshow") ) {
 			echo "<INPUT type=hidden name=id value=$show_id>";
 		}
 		// Start of table section
-		echo "<div class=\"table\">";
+		echo "<div>";
 
 
 
@@ -385,28 +389,41 @@ if(is_member("addshow") ) {
 		else {
 			echo "<p><span>Active: </span><input type='checkbox' name='c_active' value='1' /></p>";
 		}
+		?>
+		<br/>
+		<p><span>Member Owners: </span>
 
-		echo "<br/>
-		<p><span>Member Owner: </span>
-			<select name='member_access'><option value='no one'>no one</option>";
-
+		<?php
 		$q = 'SELECT id, firstname, lastname FROM membership order by lastname asc';
 		if ($result = mysqli_query($db,$q)){
 			$members = array();
 			while($row = $result->fetch_assoc()){
 				$members []= $row;
-				echo '<option value="'.$row['id'].'"';
-				if ($row['id'] == $member_id ) echo ' selected ';
-				echo '>'.$row['firstname'].' '.$row['lastname'].'</option>';
 			}
-			echo "</select>";
+			
 		} else {
-			echo "</select>";
 			echo 'cannot get usernames. '.mysqli_error($db);
 		}
 
-		echo "<br/><br/><br/><p><span></span><span> show tags (comma separated list)</span>";
+		?>
 
+		<ul id='member_access_list'>
+			<?php
+				foreach($member_owners as $owner){
+					$ids[] = $owner['id'];
+					echo "<li class='member_owner' id=owner".$owner['id'].">".$owner['firstname']." ".$owner['lastname']."<button type='button' class='remove_owner'>Remove</button></li>";
+				}
+			
+		echo "</ul>";
+
+		echo "<div id=access_holder><input id='member_access' class='invisible' name='member_access' value='".implode(',',$ids)."'></input></div>";
+		echo "<select id=member_access_select>name='member_access_select'><option value='Add New'>no one</option>";
+			foreach($members as $member){
+				echo "<option value=".$member['id'].">".$member['firstname']." ".$member['lastname']."</option>";
+			}
+		echo "</select><button type='button' class='add_owner'>Add</button>";
+
+		echo "<br/><br/><br/><p><span></span><span> show tags (comma separated list)</span>";
 		echo "<p><span>High Level: </span>";
 		echo "<select name = 't_primary_genre_tags'>";
 		$allowed_genre = false;
@@ -609,8 +626,6 @@ if(is_member("addshow") ) {
 } else if(has_show_access($show_id)){
 	print_menu();
 	?>
-
-
 <div ng-app="djLand">
 
 	<div ng-controller="showCtrl" class="form_wrap show_form">
@@ -643,26 +658,6 @@ if(is_member("addshow") ) {
 
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<script src="js/angular.js"></script>
 	<script type="text/javascript">
 		var app = angular.module('djLand', []);
