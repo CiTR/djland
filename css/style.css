@@ -418,7 +418,12 @@ table { border-collapse: collapse; }
 .charting-status{
 	width:30px;
 }
-
+/*------------------*/
+/*	Show Edit Page--*/
+/*------------------*/
+.member_owner{
+	width:300px;
+}
 
 /*----------------------------*/
 /*--------CHARTING (OLD)------------*/
@@ -522,7 +527,7 @@ button#submit_user.red{
 	width:auto;
 	display:inline-block;
 }
-#member_result{
+#result{
 	width:100%;
 	overflow-y: auto;
 	overflow-x:hidden;
@@ -1077,7 +1082,7 @@ div.editform {
 }
 
 .table {
-	display: table;
+
 	margin-bottom: 5px;
 }
 .table p, .table div {
