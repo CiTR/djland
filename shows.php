@@ -171,6 +171,7 @@ if(is_member("addshow") ) {
 			mysqli_query($db,$q);
 			$success = true;
 			foreach($member_id as $owner){
+				if(!is_null($owner) && $owner != '')
 				$q = 'INSERT INTO member_show (member_id, show_id) VALUES ('.$owner.','.$show_id.')';
 				if($r = mysqli_query($db, $q)){
 					
