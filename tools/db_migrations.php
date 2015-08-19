@@ -5,12 +5,12 @@
  * Date: 3/5/15
  * Time: 5:34 PM
  */
-require_once('headers/db_header.php');
+require_once('../headers/db_header.php');
 
 $queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
     'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
-
+    'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
                                 `title` text,
@@ -99,6 +99,8 @@ $queries = array(
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
                                 ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",
+'rename userid to user_id in group_members' => 'ALTER TABLE group_members CHANGE COLUMN userid to user_id INT(10) UNSIGNED NOT NULL;',
+'add foreign key to group members' => 'ALTER TABLE group_members ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES user.(`id`) ON DELETE CASCADE ON UPDATE CASCADE;',
 
     'rename userid to id' =>    "BEGIN TRANSACTION;
                                     ALTER TABLE group_members 
@@ -115,7 +117,7 @@ $queries = array(
                                         REFERENCES user (`id`)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE;",
-    'add string based host field' => 'ALTER TABLE `playlists`
+    'add string based host field' => 'ALTER TABLE `sheets`
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
         ADD COLUMN `slug` TEXT NULL AFTER `xml`;'

@@ -26,12 +26,19 @@ org.eclipse.wst.common.project.facet.core.xml
 web.config
 .htaccess
 .htpasswd
+awstats*
+disabled_by_virtualmin.html
+icon
+
+#Ignore phpmyadmin
+phpmyadmin/
 
 #Ignore Python Development ENV
 PY
 
 #Ignore Generated XML Content
 *.xml
+
 
 
 
