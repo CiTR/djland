@@ -2,7 +2,7 @@
 //SECURITY HEADER
 
 include_once("session_header.php");
-require_once("config.php");
+//require_once("../config.php");
 require_once("db_header.php");
 require_once("login_header.php");
 date_default_timezone_set($station_info['timezone']);
@@ -75,9 +75,7 @@ function permission_level(){
 function is_paid(){
     global $pdo_db;
     //Session contains member id.
-
-
-    $query = "SELECT CASE paid WHEN '1' THEN '1' ELSE '0' END AS paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
+    $query = "SELECT paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
@@ -87,9 +85,7 @@ function is_paid(){
     }catch(PDOException $pdoe){
         echo $pdoe->getMessage();
     }
-
     if(sizeof($result)>0){
-
     	return true;
     }else{
     	return false;
@@ -103,14 +99,15 @@ function has_show_access($show_id){
 
 	if (permission_level() >= $djland_permission_levels['staff']) return true;
 
-	$query = 'SELECT member_id FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
-
-
+	$query = 'SELECT count(member_id) AS count FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
 	if ( !isset($show_id) || $result = mysqli_query($db, $query)) {
-		$access = mysqli_fetch_assoc($result);
-		$access = $access['member_id'] == $_SESSION['sv_id'];
-		return $access;
-			} else {
+		$count = mysqli_fetch_assoc($result);
+		if($count > 0){
+			return true;
+		}else {
+			return false; 
+		}
+	} else {
 		echo ' could not check for show access - db problem:'.$query;
 		return false;
 	}

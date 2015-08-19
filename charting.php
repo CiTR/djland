@@ -21,7 +21,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 <body class='wallpaper'>
 
 <?php	print_menu(); ?>
-    <center>
+ <center>
         <input id="now" type="hidden" value="<?php echo get_time();?>">
         <div id="loadbar">loading charts...</div>
         <div id='charting-container' style='display:none;'>
@@ -39,6 +39,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
             </div>
         </div>
     </center>
+
 
 </body></html>
 <?php }else{

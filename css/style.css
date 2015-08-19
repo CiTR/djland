@@ -17,6 +17,9 @@ font-family: Helvetica,Arial;
 	background-image: url('../images/wallpaper.jpg');
 	color:white;
 }
+.invisible{
+  display:none;
+}
 
  ul, li {
     list-style-type: none;
@@ -32,6 +35,11 @@ li{
 }
 h1,h2,h3,h4{
 	text-align: center;
+  padding:0px;
+  margin:0px;
+}
+h1{
+  font-size:2.2em;
 }
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}
@@ -41,7 +49,9 @@ a:link { color: #FFFFFF;  }
 a:visited { color: #FFFFFF; }
 a:hover { color: #000000; background-color: #BEBEBE; }
 a:active { color: #660000; }
-
+.table-hover > tbody > tr:hover {
+  background-color: #222299;
+}
 .header-left{
 	text-align:left;
 }
@@ -67,7 +77,7 @@ input, select, textarea, option{
     width: 1024px;
     min-height:80%;
     overflow:auto;
-    max-height:100%;
+    max-height:80%;
     margin-right: auto;
     margin-left: auto;
     margin-top:10px;
@@ -91,7 +101,6 @@ input, select, textarea, option{
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
-
   display: flex;
   align-items: center;
 }
@@ -146,6 +155,8 @@ input, select, textarea, option{
 .center{
 	margin-left:auto;
 	margin-right:auto;
+  display:inline-center;
+  width:; 90%;
 }
 .clearfix:after { 
    content: " ";
@@ -509,7 +520,16 @@ margin:10px;
 #ps-loading-image{
 display:none;
 }
-
+#result {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* max-height: 500px; */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-bottom: 15px;
+}
 
   #totals {
     position: fixed;
@@ -725,6 +745,83 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     margin-left:10px;
     padding-left:10px;
   }
+
+
+/*
+  Podcasts Page CSS
+
+*/
+#popup{
+      position:fixed;
+      bottom:0;
+      right:0;
+      width:700px;
+      height:100%;
+      background-color: #88d2ba;
+      overflow:scroll;
+      z-index:20;
+    }
+
+    #closer{
+      position:fixed;
+      top:30px;
+      right:700px;
+      background-color:lightsteelblue;
+      color:black;
+      cursor:default;
+      font-size:2em;
+      line-height: 2em;
+    }
+    #closer:hover{
+      color:red;
+    }
+
+    .title{
+      font-size:1.2em;
+    }
+
+    .subtitle{
+      font-size:0.9em;
+      font-style: italic;
+    }
+    .podcast_date{
+      margin-left:-20px;
+      font-color:lightgrey;
+      font-size:0.8em;
+    }
+
+    .podcast_list_entry{
+      padding-left: 35px;
+    }
+    .tiny{
+      font-size:0.7em;
+      width:100%;
+      background-color:black;
+      overflow-wrap: break-word;
+    }
+
+    .lit{
+      background-color:darkblue;
+    }
+    button{
+      color:black;
+    }
+
+    .large-button{
+      height:40px;
+      font-size: 1.5em;
+    }
+
+    #mainleft a{
+      background-color:steelblue;
+      padding:2px;
+    }
+    #mainleft  a:hover{
+      color:greenyellow;
+    }
+    #message{
+      font-size:2em;
+    }
 
 
   .adPlay {
@@ -1026,7 +1123,57 @@ table { border-collapse: collapse; }
 .charting-status{
 	width:30px;
 }
+/*------------------*/
+/*	Show Edit Page--*/
+/*------------------*/
+.member_owner div{
+  width:50%;
+}
 
+/*----------------------------*/
+/*--------CHARTING (OLD)------------*/
+/*----------------------------*/
+.chartBanner
+*{
+	background-color: #004080;
+}
+
+.chartSong
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartArtist
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartAlbum
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartShow
+{
+	float: left;
+	width: 300px;
+	position:relative;
+}
+.chartDate
+{
+	float: left;
+	width: 150px;
+	position:relative;
+}
+.chartCC
+{
+	float: left;
+	width:35px;
+	position:relative;
+}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
@@ -1307,6 +1454,20 @@ height:auto;
 
 /* PLAYSHEET SAM CSS */
 
+
+.table {
+  display:table;
+	margin-bottom: 5px;
+}
+.table p, .table div {
+	display: table-row;
+}
+.table select, .table span, .table textarea {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
+
 #sam-box{
 	display:none;
 }
@@ -1490,8 +1651,8 @@ div#ui-datepicker-div{
     box-shadow:inset 0px 0px 1px #BEBEBE;
 	display:inline-block;
 		position:relative;
-	max-width:200px;
-	max-height:200px;
+	max-width:300px;
+	max-height:300px;
 	margin-top:0px;
 	z-index:50 !important;
 }

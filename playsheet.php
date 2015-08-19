@@ -50,18 +50,12 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 ?>
 
 <div class="wrapper">
-
-
 <div ng-app="djLand" ng-cloak >
 
   <div ng-controller="playsheetCtrl" >
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}} </h2>
-
-
     <div >
-
-
       <div id="left">
         Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
           <option value="Syndicated">Syndicated</option>
@@ -154,7 +148,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
-      {{playsheet.plays}}
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">

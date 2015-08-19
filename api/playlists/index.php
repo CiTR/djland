@@ -11,10 +11,8 @@ $rawdata = array();
 global $_GET;
 global $db;
 
-if(isset($_GET['OFFSET'])) $offset = $_GET['OFFSET']; else $offset = 0;
-if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
-
-
+$offset = isset($_GET['OFFSET']) && is_numeric($_GET['OFFSET']) ? $_GET['OFFSET'] * 1 : 0;
+$limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']  * 1 : 100;
 
   $query = 'SELECT playsheets.id,
       GREATEST(playsheets.edit_date, podcast_episodes.edit_date) as edit_date
@@ -35,6 +33,7 @@ if ($result = mysqli_query($db, $query) ) {
 } else {
   $error .= mysqli_error($db);
 }
+
 $data = $rawdata;
 
 finish();

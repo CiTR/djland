@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
@@ -99,7 +99,7 @@ error_reporting(E_ALL);
 
 </head>
 
-<body>
+<body class='wallpaper'>
 
 <?php print_menu();
 
@@ -113,12 +113,9 @@ if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staf
   }
 
 } else {
+    echo "choose a podcast to edit";
 
 }
-
-
-
-
 
 ?>
 
@@ -166,13 +163,7 @@ if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staf
 
 
       <hr/>
-
-
-
-
     </div>
-
-
     <div id="popup"  ng-show="editing">
 
       <p ng-click="editing = false;" id="closer"> X </p>
@@ -240,11 +231,6 @@ if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staf
       <button class='large-button' ng-click="save(editing.podcast);" > save </button>
       <button ng-show="{{adminStatus}}" ng-click="deactivate(editing.podcast);"> deactivate </button>
 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
-
-
-
-
-
     </div>
   </div>
 

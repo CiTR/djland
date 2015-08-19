@@ -13,10 +13,10 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
         case "POST":
             //If it is a general "get" return all members. Else return info for a member.
             if(isset($_POST['member_id']) && isset($_POST['password'])){
-            	if(trim($_POST['password']).length != 0){
+            	if(sizeOf(trim($_POST['password'])) > 0){
                         
                     //Create Query
-                    $insert_query = "UPDATE user SET password=:password WHERE id=(SELECT id FROM user WHERE member_id=:member_id)";
+                    $insert_query = "UPDATE user SET password=:password WHERE member_id=:member_id";
 
                     //Prepare statement
                     $statement = $pdo_db->prepare($insert_query);
@@ -31,8 +31,8 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                         echo json_encode(true);
                         exit();
                     }catch(PDOException $pdoe){
-                        http_response_code(404);
-                        echo json_encode($e->getMessage());
+                        http_response_code(400);
+                        echo json_encode($pdoe->getMessage());
                         exit();
                     }
                 }else{

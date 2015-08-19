@@ -20,20 +20,13 @@
 
             if($scope.dj_edit_fields_only){
               for(var i in editable_by_dj){
-
                 Object.defineProperty(
                     $scope.formData,editable_by_dj[i],
                     { value:$scope.showData[editable_by_dj[i]],
                       enumerable:true,writable:true
                     }
                 )
-
-
-
-
-
               }
-
             } else {
               // Robin view formData gets everything in showData...
               // also load 'notes' field (sensitive data)
@@ -53,12 +46,4 @@
               $scope.message = 'sorry, saving did not work';
             });
       }
-
-
-
-    }])
-
-
-//
-
-;
+    }]);

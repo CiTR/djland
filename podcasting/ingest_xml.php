@@ -40,7 +40,7 @@
 
 error_reporting(1);
 require_once('../headers/db_header.php');
-
+    echo "<a href='writexml.php?channel=all'>Write XML After Completion</a>";
     $dir = './burli-xml/';
     $extension = 'xml';
     $dir_contents = scandir($dir);
@@ -257,6 +257,7 @@ function file_extension($filename){
 
 
 function ingest_episodes($episodes,$channel_id, $db){
+
     foreach($episodes as $i => $episode){
         $episode_insert = "INSERT into podcast_episodes (title,subtitle,summary,date,channel_id,url,duration,length) ";
         $episode_insert .= "VALUES ('".
@@ -270,7 +271,7 @@ function ingest_episodes($episodes,$channel_id, $db){
             $episode['LENGTH']."');";
 
         if ($result = mysqli_query($db,$episode_insert)){
-            echo '<br/>episode inserted<br/>';
+            echo 'episode "'$episode['TITLE']'" inserted, ';
         } else {
             echo '<br/>problem inserting episode. Query:<br/>'.$episode_insert;
         }

@@ -5,12 +5,12 @@
  * Date: 3/5/15
  * Time: 5:34 PM
  */
-require_once('headers/db_header.php');
+require_once('../headers/db_header.php');
 
 $queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
     'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
-    'change playlists table to playsheets' => 'ALTER TABLE 'playlists' RENAME TO 'playsheets',
+    'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
                                 `title` text,
@@ -61,10 +61,9 @@ $queries = array(
                                 PRIMARY KEY (`id`));',
     'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
     'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
-    'add top_tags to show'  => 'ALTER TABLE `shows` ADD COLUMN `primary_genre_tags` TINYTEXT NULL AFTER `lang_default`;',
     'rename genre tables to tags' => "ALTER TABLE `shows`
-                                  CHANGE COLUMN `top_tags` `primary_genre_tags` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
-                                  CHANGE COLUMN `genre` `secondary_genre_tags` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;",
+                                  ADD COLUMN `primary_genre_tags` TINYTEXT NULL DEFAULT NULL AFTER `lang_default` ,
+                                  CHANGE COLUMN `genre` `secondary_genre_tags` TEXT DEFAULT NULL;",
     'adjust member_show' => 'ALTER TABLE `member_show`
                                   CHANGE COLUMN `member_id` `member_id` INT(11) NOT NULL ,
                                   CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
@@ -96,13 +95,13 @@ $queries = array(
                             `id` INT NOT NULL AUTO_INCREMENT,
                             `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
                             PRIMARY KEY (`id`));",
-    'additional committees' => "ALTER TABLE `citr_dev`.`membership_years` 
+    'additional committees' => "ALTER TABLE membership_years 
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
                                 ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",
-    
-    'other rework' => "ALTER TABLE `membership_years`
-                            DELETE COLUMN `other`",
+'rename userid to user_id in group_members' => 'ALTER TABLE group_members CHANGE COLUMN userid to user_id INT(10) UNSIGNED NOT NULL;',
+'add foreign key to group members' => 'ALTER TABLE group_members ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES user.(`id`) ON DELETE CASCADE ON UPDATE CASCADE;',
+
     'rename userid to id' =>    "BEGIN TRANSACTION;
                                     ALTER TABLE group_members 
                                         DROP FOREIGN KEY `user_id`;
