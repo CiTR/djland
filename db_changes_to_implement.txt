@@ -1,0 +1,60 @@
+Current Changes to DB:
+
+Add: `host` to playsheets
+
+ALTER TABLE playsheets
+ADD COLUMN `host` AFTER `end_time`;
+
+Add: `edit_date` to podcast_episodes
+
+ALTER TABLE podcast_episodes 
+ADD COLUMN `edit_date` AFTER `duration`;
+
+Alter: Some Columns => NOT NULL to throw DB level error.
+
+ALTER TABLE playsheets 
+CHANGE COLUMN `show_id` `show_id` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `host_id` `host_id` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `start_time` `start_time` DATETIME NOT NULL ,
+CHANGE COLUMN `end_time` `end_time` TIME NOT NULL,
+CHANGE COLUMN `host` `host` VARCHAR(45) NOT NULL AFTER `end_time`,
+CHANGE COLUMN `status` `status` TINYINT(4) NOT NULL ,
+CHANGE COLUMN `unix_time` `unix_time` INT(11) NOT NULL ,
+CHANGE COLUMN `crtc` `crtc` INT(11) NOT NULL DEFAULT '30' ;
+
+Alter: Set podcast channel to be part of primary key, and make it a foreign key.
+
+ALTER TABLE podcast_episodes 
+CHANGE COLUMN `channel_id` `channel_id` INT(11) NOT NULL AFTER `id`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `channel_id`);
+
+ALTER TABLE podcast_episodes 
+ADD CONSTRAINT `channel_id`
+  FOREIGN KEY (`channel_id`)
+  REFERENCES `djland`.`podcast_channels` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+
+Alter: Convert Shows to INNODB and add foreign key.
+
+ALTER TABLE shows 
+ENGINE = InnoDB;
+
+ALTER TABLE hosts 
+ENGINE = InnoDB ;
+
+ALTER TABLE shows 
+CHANGE COLUMN `host_id` `host_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `podcast_channel_id` `podcast_channel_id` INT(11) NOT NULL AFTER `host_id`;
+
+ALTER TABLE shows 
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `host_id`, `podcast_channel_id`);
+
+
+
+
+
+

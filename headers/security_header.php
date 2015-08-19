@@ -108,22 +108,24 @@ function has_show_access($show_id){
 			return false; 
 		}
 	} else {
-		echo ' could not check for show access - db problem:'.$query;
+		echo 'function has_show_access() could not check for show access - db problem:'.$query;
 		return false;
 	}
 }
 
 function users_show(){
-	global $db;
-	$query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];
-
+	global $db,$djland_permission_levels;
+	if(permission_level() >= $djland_permission_levels['staff']){
+		$query = "SELECT show_id FROM shows WHERE active ='1'";
+	}else{
+		$query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];
+	}
 	if ( $result = mysqli_query($db, $query)) {
 		if(mysqli_num_rows($result) <= 0) return false;
 		$show = mysqli_fetch_assoc($result);
-		$show = $show['show_id'];
-		return $show;
+		return $show['show_id'];
 	} else {
-		echo ' could not check for show access - db problem:'.$query;
+		echo 'function users_show() could not check for show access - db problem:'.$query;
 		return false;
 	}
 }
@@ -143,7 +145,7 @@ function users_channel($show = false){
 			$channel = $channel['podcast_channel_id'];
 			return $channel;
 		} else {
-			echo ' could not check for show access - db problem:'.$query;
+			echo ' function users_channel() could not check for show access - db problem:'.$query;
 			return false;
 		}
 

@@ -76,6 +76,7 @@ function convertEntities($data){
     }
   return $data;
 }
+
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
   global $db;

@@ -2,7 +2,7 @@
 
 include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/function_header.php");
+require_once("headers/functions.php");
 require_once("headers/menu_header.php");
 
 error_reporting(E_ALL);
@@ -12,132 +12,46 @@ error_reporting(E_ALL);
   <base href='podcasts.php'>
   <link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'>
   <link rel="stylesheet" href="css/style.css" type="text/css">
-
-  <style type="text/css">
-
-    #popup{
-      position:fixed;
-      bottom:0;
-      right:0;
-      width:700px;
-      height:100%;
-      background-color: #88d2ba;
-      overflow:scroll;
-      z-index:20;
-    }
-
-    #closer{
-      position:fixed;
-      top:30px;
-      right:700px;
-      background-color:lightsteelblue;
-      color:black;
-      cursor:default;
-      font-size:2em;
-      line-height: 2em;
-    }
-    #closer:hover{
-      color:red;
-    }
-
-    .title{
-      font-size:1.2em;
-    }
-
-    .subtitle{
-      font-size:0.9em;
-      font-style: italic;
-    }
-    .podcast_date{
-      margin-left:-20px;
-      font-color:lightgrey;
-      font-size:0.8em;
-    }
-
-    .podcast_list_entry{
-      padding-left: 35px;
-    }
-
-    .button{
-      cursor:default;
-    }
-
-    .tiny{
-      font-size:0.7em;
-      width:100%;
-      background-color:black;
-      overflow-wrap: break-word;
-    }
-
-    .lit{
-      background-color:darkblue;
-
-
-    }
-    button{
-      color:black;
-    }
-
-    .large-button{
-      height:40px;
-      font-size: 1.5em;
-    }
-
-    #mainleft a{
-      background-color:steelblue;
-      padding:2px;
-    }
-    #mainleft  a:hover{
-      color:greenyellow;
-    }
-    #message{
-      font-size:2em;
-    }
-
-  </style>
-
-
 </head>
-
+  
 <body class='wallpaper'>
 
 <?php print_menu();
+/*if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staff']){
 
-
-if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staff']){
-
-  echo '<center> <br/><br/>since you are staff, you can edit any show\'s podcasts <br/><br/><br/> ';
-
-  foreach($fshow_name as $i => $v){
-    echo '<a href=podcasts.php?id='.$i.'>'.$v.'</a><br/>';
-  }
-
+  	echo '<center> <br/><br/>since you are staff, you can edit any show\'s podcasts <br/><br/><br/> ';
+  	
 } else {
     echo "choose a podcast to edit";
+}*/
 
-}
+if(!isset($_GET['id'])){
+    ?>
+    <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready ( function() {
+        $(".clickable-row").click(function() {
+            window.document.location = $(this).data("href");
+        });
+    });
+    </script>
+    <div id='wrapper'><table class='table-condensed table-hover'><th>Show Name</th><th>Number of Episodes</th>
+    <?php
+    $shows = getPodcasts($_SESSION['sv_id']);
+    foreach($shows as $show){
+        echo "<tr class='clickable-row' data-href='podcasts.php?id=".$show['id']."'><td>".$show['name']."</td><td>(".$show['num_episodes']." episodes)</td></tr>";
+    }
+    echo "</table></div>";
+}else{
 
 ?>
-
-
 <div ng-app="djLand" id="mainleft" ng-cloak>
-
-  <div ng-controller="episodeList as list">
-    <br/><br/>
-    <p>{{status}}</p>
-    <p>
+    <div class='text-center'>{{status}}</div>
+    <br/>
+    <div id='wrapper' ng-controller="episodeList as list">
 <!--      <button ng-click='deferred();'> defer me </button> --></p>
-
-    <div >
-
-      <br/>
-    </div>
-
     <div ng-repeat="plodcast in plodcasts track by plodcast.playlist.id" class="podcast_list_entry"
          ng-class="{lit: plodcast.playlist.id === editing.playlist.id}"  >
-
-
-
       <span class="podcast_date">{{plodcast.playlist.start_time | date: "medium"}}</span>
 
 
@@ -496,5 +410,8 @@ $scope.adminStatus = adminStatus;
 
 
 </script>
+
+<?php
+}
 
 

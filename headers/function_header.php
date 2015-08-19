@@ -5,7 +5,6 @@ error_reporting(0);
 
 date_default_timezone_set($station_info['timezone']);
 
-
 //Music format types, index by Name/ID
 $fresult = mysqli_query($db,"SELECT * FROM types_format ORDER BY 'sort', 'name'");
 $fnum_rows = mysqli_num_rows($fresult);
@@ -29,9 +28,7 @@ if( $result = $db->query($query) ){
 		$thisName = $row["name"];
 		$thisID = $row["id"];
 		$thisActive = $row["active"];
-		
 		$fshow_id[$thisName]= $thisID;
-		
 		if($row["active"]==1) 
 			$fshow_id_active[$thisName] = $thisID;
 	}
