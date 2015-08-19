@@ -10,7 +10,7 @@ require_once('headers/db_header.php');
 $queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
     'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
-
+    'change playlists table to playsheets' => 'ALTER TABLE 'playlists' RENAME TO 'playsheets',
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
                                 `title` text,
@@ -118,7 +118,7 @@ $queries = array(
                                         REFERENCES user (`id`)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE;",
-    'add string based host field' => 'ALTER TABLE `playlists`
+    'add string based host field' => 'ALTER TABLE `sheets`
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
         ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
