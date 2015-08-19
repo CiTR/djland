@@ -80,10 +80,6 @@ input, select, textarea, option{
     max-height:80%;
     margin-right: auto;
     margin-left: auto;
-    margin-top:10px;
-    padding-top:10px;
-    padding-left:10px;
-    padding-right:10px;
     border-right-width: 1px;
     border-left-width: 1px;
     border-right-style: solid;
@@ -233,6 +229,7 @@ input, select, textarea, option{
 .nav.mini{
     list-style:none;
     width:940px;
+    margin: 0 auto;
     margin:0px auto 0px auto;
     height:25px;
     font-size: 16px;
@@ -435,9 +432,7 @@ div#main {
 #mainleft {
 	font-size:1em;
 	line-height:1.3em;
-	width:90%;
 	position:relative;
-	margin-left:10px;
 }
 
 #mainleft input, #mainleft textarea{

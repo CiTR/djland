@@ -5,8 +5,8 @@
 
     return {
 
-      getUserPlaysheets: function (host_id) {
-        return $http.get(API_URL_BASE + '/playsheet/host/' + host_id);
+      getMemberPlaysheets: function (member_id) {
+        return $http.get(API_URL_BASE + '/playsheet/member/' + member_id);
       },
       getPlaysheets: function (limit) {
         limit = limit || 50;

@@ -19,7 +19,6 @@ if (!$id) {
 	exit;
 }
 
-<<<<<<< HEAD
 $query = 'SELECT
           playsheets.id as playlist_id,
           playsheets.show_id,
@@ -28,35 +27,15 @@ $query = 'SELECT
           playsheets.edit_date,
           playsheets.type as playlist_type,
           playsheets.spokenword as transcript,
-=======
-$query = "SELECT
-          playlists.id as playlist_id,
-          playlists.show_id,
-		  playlists.show_name,
-          playlists.start_time,
-          playlists.end_time,
-          GREATEST(playlists.edit_date, COALESCE(podcast_episodes.edit_date,'0000-00-00 00:00:00')) as edit_date,
-          playlists.type as playlist_type,
-          playlists.spokenword as transcript,
->>>>>>> master
           hosts.name as host_name,
           playsheets.podcast_episode as episode_id,
           podcast_episodes.summary as episode_description,
           podcast_episodes.title as episode_title,
           podcast_episodes.url as episode_audio
-<<<<<<< HEAD
           FROM playsheets
           LEFT JOIN hosts on hosts.id = playsheets.host_id
           LEFT JOIN podcast_episodes on podcast_episodes.id = playsheets.podcast_episode
           WHERE playsheets.status = 2 AND playsheets.id ='.$id;
-=======
-          FROM playlists
-          join shows on shows.id = playlists.show_id
-          LEFT JOIN hosts on hosts.id = playlists.host_id
-          LEFT JOIN podcast_episodes on podcast_episodes.id = playlists.podcast_episode
-
-          WHERE playlists.status = 2 AND playlists.id=$id";
->>>>>>> master
 
 $rawdata = array();
 

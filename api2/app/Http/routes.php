@@ -1,8 +1,11 @@
 <?php
+use App\User as User;
 use App\Playsheet as Playsheet;
 use App\Show as Show;
 use App\Host as Host;
 use App\Playitem as Playitem;
+use App\Member as Member;
+use App\Permission as Permission;
 Route::get('/', function () {
     //return view('welcome');
     return "welcome to laravel";
@@ -23,6 +26,24 @@ Route::get('/show',function(){
 	return Show::all('id','name');
 });
 /* Playsheet Routes */
+Route::get('/playsheet/member/{member_id}',function($member_id = member_id){
+	//$permission = Member::find($member_id)->user->permission;
+	//echo $permission;
+	$user = Member::find($member_id)->user->permission;
+	//$user =  User::where('member_id','=',$member_id)->select('id')->first();
+	echo $user;
+	$permission = Permission::find($user->id);
+	echo $permission;
+//echo $user;
+	//echo Member::with('permissions','user')->where('id','=',$member_id)->get();;
+
+	$shows = Member::find($member_id)->shows;
+	foreach($shows as $show){
+		$playsheets[] = Show::find($show->id)->playsheets;
+	}
+	//return $playsheets;
+	
+});
 Route::get('/playsheet/host/{id}',function($id = id){
 	return  DB::table('playsheets')
 	->join('hosts','hosts.id','=','playsheets.host_id')

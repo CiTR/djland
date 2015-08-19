@@ -3,10 +3,8 @@
 	
 	app.controller('openPlaysheetController',function(call){
 		this_=this;
-		call.getPlaysheets().then(function(playsheets){
+		call.getMemberPlaysheets().then(function(playsheets){
 			this_.playsheets = playsheets.data;
 		});
 	});
-	
-
 })();

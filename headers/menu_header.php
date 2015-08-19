@@ -10,7 +10,7 @@ function admin_menu()
     if (permission_level() >= $djland_permission_levels['administrator']) : ?>
         <ul id="admin-nav" class="nav mini">
             <li class="nodrop"><a href="../admin.php">Membership Admin</a></li>
-            <li class="nodrop"><a href="data_structures">Data Structures</a></li>
+            <li class="nodrop"><a href="data_structures.php">Data Structures</a></li>
         </ul>
     <?php
     endif;
@@ -94,7 +94,7 @@ function print_menu(){
 							<ul>
 									<li><a href="playsheet.php">New Playsheet</a></li>
 									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
-									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
+									<li><a href="open_playsheet.php">Open a Playsheet</a></li>
 							</ul>
 						</div>
 					</div>

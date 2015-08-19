@@ -354,7 +354,7 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		<div id='wrapper'>
 			<p>
 				<span style='font-size: 1.5em;'>Show Title: </span>
-				<input name=\"showtitle\" type='text' size=25 value='<?php echo $show_name ?>' style='font-size: 1.5em;' ></input>
+				<input name="showtitle" type='text' size=25 value='<?php echo $show_name ?>' style='font-size: 1.5em;' ><?php echo $show_name ?></input>
 			</p>
 			<?php if($active == 1): ?>
 				<p><span>Active: </span><input type='checkbox' name='c_active' value='1' checked=\"checked\" /></p>
@@ -401,10 +401,10 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 				$set = false;
 				foreach($djland_primary_genres as $genre){
 					if( $show["primary_genre_tags"] == $genre){
-						echo "<option selected value={$genre}>{$genre}</option>";
+						echo "<option selected value='{$genre}'>{$genre}</option>";
 						$set = true;
 					}else{
-						echo "<option value={$genre}>{$genre}</option>";
+						echo "<option value='{$genre}'>{$genre}</option>";
 					}
 				}
 				if(!$set){
@@ -427,14 +427,14 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 				20<input name="r_crtc_default" type='radio' value="20" <?php echo ($crtc_num == 20 ? "checked='checked'" : ""); ?> /> 
 				30<input name="r_crtc_default" type='radio' value="30" <?php echo ($crtc_num == 30 ? "checked='checked'" : ""); ?> />
 			</p>
-			<p><span>Playlist Requirement: </span><input name=\"pl_req\" type=text size=3 value='<?php echo $pl_req ?>'>%</p>
-			<p><span>CC Requirement: </span><input name=\"cc_req\" type=text size=3 value='<?php echo $cc_req ?>'>%</p>
-			<p><span>Indy Requirement: </span><input name=\"indy_req\" type=text size=3 value='<?php echo $indy_req ?>'>%</span></p>
-			<p><span>Female Requirement: </span><input name=\"fem_req\" type=text size=3 value='<?php echo $fem_req ?>'>%</span></p>
-			<p><span></span><span style=\"font-size:0.77em\">(Eg. sponsor1; sponsor2 - put sponsors with no links at the end)</span>";
-			<p><span>Sponsor Name(s): </span><input name=\"t_sponsor_name\" type=\"text\" maxlength=\"255\" size=\"35\" value='<?php echo  $show["sponsor_name"] ?>'></p>
-			<p><span></span><span style=\"font-size:0.77em\">(Eg. url1; url2 - separate with semicolons)</span>";
-			<p><span>Sponsor Url: </span><input name=\"t_sponsor_url\" type=\"text\" maxlength=\"255\" size=\"35\" value='<?php echo  $show["sponsor_url"] ?>'></p>
+			<p><span>Playlist Requirement: </span><input name="pl_req" type=text size=3 value='<?php echo $pl_req ?>'>%</p>
+			<p><span>CC Requirement: </span><input name="cc_req" type=text size=3 value='<?php echo $cc_req ?>'>%</p>
+			<p><span>Indy Requirement: </span><input name="indy_req" type=text size=3 value='<?php echo $indy_req ?>'>%</span></p>
+			<p><span>Female Requirement: </span><input name="fem_req" type=text size=3 value='<?php echo $fem_req ?>'>%</span></p>
+			<p><span></span><span style="font-size:0.77em">(Eg. sponsor1; sponsor2 - put sponsors with no links at the end)</span>";
+			<p><span>Sponsor Name(s): </span><input name="t_sponsor_name" type="text" maxlength="255" size="35" value='<?php echo  $show["sponsor_name"] ?>'></p>
+			<p><span></span><span style="font-size:0.77em">(Eg. url1; url2 - separate with semicolons)</span>";
+			<p><span>Sponsor Url: </span><input name="t_sponsor_url" type="text" maxlength="255" size="35" value='<?php echo  $show["sponsor_url"] ?>'></p>
 			<p style="text-decoration:underline">Times (current week is Week <?php echo $week_num ?>):</p>
 			<div class="table">
 			<span class="head">Start Day</span>

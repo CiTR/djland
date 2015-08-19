@@ -67,9 +67,9 @@ if($playlist_id == -1){
   $playlist['create_date'] = date("Y-m-d H:i:s", time());
   $playlist['create_name'] = array_key_exists('sv_username',$_SESSION)? $_SESSION['sv_username'] : 'unknown user';
   $playlist['edit_name'] = array_key_exists('sv_username',$_SESSION)? $_SESSION['sv_username'] : 'unknown user';
-  $playlist_id = insert_row_in_table('playlists',$playlist);
+  $playlist_id = insert_row_in_table('playsheets',$playlist);
 }
-update_row_in_table('playlists',$playlist,$playlist_id);
+update_row_in_table('playsheets',$playlist,$playlist_id);
 
 foreach($ads as $i => $ad){
 

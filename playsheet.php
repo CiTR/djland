@@ -7,7 +7,7 @@ require_once("headers/menu_header.php");
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <base href='shows.php'>
-	<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+  <link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">";
 
 ?>
@@ -18,7 +18,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
     $show_id = users_show();
     $channel_id = users_channel();
-
     if ( is_numeric($show_id) && $show_id >0 ){
       // good, member owns a show
     } else if (permission_level() >= $djland_permission_levels['staff']){
