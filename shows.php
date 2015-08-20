@@ -606,7 +606,7 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 
 	}
 } else if(has_show_access($show_id)){
-	print_menu();
+
 	?>
 <div ng-app="djLand">
 

@@ -1,5 +1,13 @@
 /vendor
 /node_modules
 Homestead.yaml
+
 Homestead.json
 .env
+
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock  # Remove this one after you create a project
+.env.*.php
+.env.php

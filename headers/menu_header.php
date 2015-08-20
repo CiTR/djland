@@ -46,11 +46,12 @@ function print_menu(){
 		</li>
 		<?php 
 			endif;
-			if(permission_level() >= $djland_permission_levels['workstudy']) : 
-				if($enabled['shows']) :?>
+			
+				if($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']) :?>
 					<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
 		<?php 
 				endif; 
+			if(permission_level() >= $djland_permission_levels['workstudy']) : 
 				if($enabled['adscheduler']) : ?>
 					<li class=drop><a href="adscheduler.php">Manage Ads</a>
 						<div class="dropdown small">
