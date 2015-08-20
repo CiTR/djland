@@ -11,4 +11,8 @@ class Playitem extends Model
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
     }
+    public function song(){
+    	return $this->hasOne('App\Song');
+    }
+
 }

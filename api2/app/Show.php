@@ -9,13 +9,16 @@ class Show extends Model
     //
     protected $table = 'shows';
 
-    public function playsheets(){
-    	return $this->hasMany('App\Playsheet');
-    }
-    public function hosts(){
-    	return $this->hasMany('App\Host','id','host_id');
-    }
     public function members(){
-    	return $this->hasMany('App\Member');
+        return $this->belongsToMany('App\Member','member_show');
     }
+
+    public function playsheets(){
+    	return $this->hasMany('App\Playsheet','show_id','id');
+    }
+
+    public function host(){
+    	return $this->hasOne('App\Host','id','host_id');
+    }
+
 }

@@ -2,16 +2,15 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	var shows;
 	app.controller('PlaysheetController',function($filter,call){
-   
-    	this.id = id;
-    	this.socan = socan;
+       	this.id = playsheet_id;
+        console.log(playsheet_id);
+        this.socan = socan;
     	this.name = name;
     	this.tags = tags;
     	this.help = help;
 		this.shows = Array();
 		var this_ = this;
-
-		call.getPlaysheetData(5000).then(function(data){
+		call.getPlaysheetData(this.id).then(function(data){
 			//this_.shows = data;
 			//this_.playsheet_id = data.data.playsheet_id;
 			var playsheet = data.data;
@@ -38,6 +37,6 @@
     });
     var socan = true;
     
-	var id = '101';
+    
 	var name = 'Test Show';
 })();

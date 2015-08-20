@@ -20,7 +20,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
     $channel_id = users_channel();
     if ( is_numeric($show_id) && $show_id >0 ){
       // good, member owns a show
-    } else if (permission_level() >= $djland_permission_levels['staff']){
+    } else if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staff']){
       // ok user is admin.. fine, but you need to select a show...
 
       if (array_key_exists('show',$_GET)){

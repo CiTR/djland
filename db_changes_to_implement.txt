@@ -1,5 +1,51 @@
 Current Changes to DB:
 
+Alter:
+
+No foreign key in playsheets pointing to show.
+
+There are some playsheets that link to lost shows, make them fill-in, then add foreign key.
+
+UPDATE playsheets SET show_id =284 WHERE show_id = "";
+UPDATE playsheets SET show_id=284 WHERE show_id NOT IN (select id from shows);
+
+
+ALTER TABLE `djland`.`playsheets` 
+ADD INDEX `show_id_idx` (`show_id` ASC);
+ALTER TABLE `djland`.`playsheets` 
+ADD CONSTRAINT `show_id`
+  FOREIGN KEY (`show_id`)
+  REFERENCES `djland`.`shows` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+
+Alter:
+Setting up foreign keys in member_show
+
+ALTER TABLE `djland`.`member_show` 
+CHANGE COLUMN `member_id` `member_id` INT(11) UNSIGNED NOT NULL ,
+CHANGE COLUMN `show_id` `show_id` INT(10) UNSIGNED NOT NULL ;
+
+ALTER TABLE `djland`.`member_show` 
+ADD CONSTRAINT `member_link_id`
+  FOREIGN KEY (`member_id`)
+  REFERENCES `djland`.`membership` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `show_link_id`
+  FOREIGN KEY (`show_id`)
+  REFERENCES `djland`.`shows` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+  ALTER TABLE `djland`.`member_show` 
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `show_id`, `member_id`);
+
+
+
+
 Add: `host` to playsheets
 
 ALTER TABLE playsheets

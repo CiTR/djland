@@ -10,6 +10,9 @@
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 	</head>
+	<script type='text/javascript'>
+		var playsheet_id = <?php echo $_GET['id']; ?>;
+	</script>
 	<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
@@ -21,7 +24,9 @@
 	<script type='text/javascript' src='js/utils.js'></script>
 	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
-		<?php print_menu() ?>
+		<?php print_menu(); 
+		print_r($_GET);
+		?>
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
 			 <div class='col1' >
 		      	<div class='col2'>

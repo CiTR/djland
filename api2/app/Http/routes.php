@@ -27,22 +27,23 @@ Route::get('/show',function(){
 });
 /* Playsheet Routes */
 Route::get('/playsheet/member/{member_id}',function($member_id = member_id){
-	//$permission = Member::find($member_id)->user->permission;
-	//echo $permission;
-	$user = Member::find($member_id)->user->permission;
-	//$user =  User::where('member_id','=',$member_id)->select('id')->first();
-	echo $user;
-	$permission = Permission::find($user->id);
-	echo $permission;
-//echo $user;
-	//echo Member::with('permissions','user')->where('id','=',$member_id)->get();;
-
-	$shows = Member::find($member_id)->shows;
-	foreach($shows as $show){
-		$playsheets[] = Show::find($show->id)->playsheets;
+	$permissions = Member::find($member_id)->user->permission;
+	if($permissions->staff ==1 || $permissions->administrator==1){
+		$shows = Show::all();
+	}else{
+		$shows =  Member::find($member_id)->shows;
 	}
-	//return $playsheets;
-	
+	foreach($shows as $show){
+		$show_ids[] = $show->id;
+	}
+	foreach(Playsheet::orderBy('id','desc')->whereIn('show_id',$show_ids)->limit('500')->get() as $ps){
+		$playsheet = new stdClass();
+		$playsheet = $ps;
+		$playsheet -> show_info = Show::find($ps->show_id);
+		$playsheet -> host_info = Show::find($ps->show_id)->host;
+		$playsheets[] = $playsheet;
+	}
+	return Response::json($playsheets);	
 });
 Route::get('/playsheet/host/{id}',function($id = id){
 	return  DB::table('playsheets')
@@ -83,7 +84,10 @@ Route::get('/playsheet/{id}',function($id = id){
 	$playsheet = new stdClass();
 	$playsheet -> playsheet = Playsheet::find($id);
 	if($playsheet -> playsheet != null){
+		$playitem = Playsheet::find($id)->playitems;
+		$playitem -> song = Playsheet::find($id)->playitems->song;
 		$playsheet -> playitems = Playsheet::find($id)->playitems;
+
 		$playsheet -> show = Playsheet::find($id)->show;
 		$playsheet -> hosts = Playsheet::find($id)->show->hosts;
 		
@@ -92,7 +96,7 @@ Route::get('/playsheet/{id}',function($id = id){
 });
 
 
-/* Table Helper Routes */
+// Table Helper Routes 
 Route::get('/table',function(){
 	return  DB::select('SHOW TABLES');
 });
