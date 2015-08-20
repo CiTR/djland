@@ -44,6 +44,36 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`, `show_id`, `member_id`);
 
 
+Alter:
+setting up foreign key for playitem -> playlist
+ALTER TABLE `djland`.`playitems` 
+ENGINE = InnoDB ;
+ALTER TABLE `djland`.`songs` 
+ENGINE = InnoDB ;
+
+UPDATE playitems SET playsheet_id = '20' WHERE !playsheet_id
+
+DELETE FROM playitems WHERE playsheet_id not in (SELECT id FROM playsheets)
+
+ALTER TABLE `djland`.`playitems` 
+ADD INDEX 
+ALTER TABLE `djland`.`playitems` 
+ADD CONSTRAINT `playitem_playsheet_id`
+  FOREIGN KEY (`playsheet_id`)
+  REFERENCES `djland`.`playsheets` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+Alter:
+setting up foreign key for playitem->song
+
+ALTER TABLE `djland`.`playitems` 
+ADD CONSTRAINT `playitem_song_id`
+  FOREIGN KEY (`song_id`)
+  REFERENCES `djland`.`songs` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
 
 
 Add: `host` to playsheets

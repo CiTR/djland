@@ -16,7 +16,8 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <?php
     print_menu();
 
-    $show_id = users_show();
+    $show_id = '325';
+    //users_show();
     $channel_id = users_channel();
     if ( is_numeric($show_id) && $show_id >0 ){
       // good, member owns a show
