@@ -51,8 +51,7 @@ ENGINE = InnoDB ;
 ALTER TABLE `djland`.`songs` 
 ENGINE = InnoDB ;
 
-UPDATE playitems SET playsheet_id = '20' WHERE !playsheet_id
-
+UPDATE playitems SET playsheet_id = '20' WHERE !playsheet_id;
 DELETE FROM playitems WHERE playsheet_id not in (SELECT id FROM playsheets)
 
 ALTER TABLE `djland`.`playitems` 
@@ -66,6 +65,12 @@ ADD CONSTRAINT `playitem_playsheet_id`
 
 Alter:
 setting up foreign key for playitem->song
+insert fake song 1 which catches all lost playitems
+
+
+INSERT INTO `djland`.`songs` (`id`, `artist`, `title`, `song`, `composer`) VALUES ('1', 'song no longer exists', 'song no longer exists', 'song no longer exists', 'song no longer exists');
+UPDATE playitems SET song_id = 1 WHERE song_id not in (SELECT id FROM songs);
+
 
 ALTER TABLE `djland`.`playitems` 
 ADD CONSTRAINT `playitem_song_id`

@@ -19,6 +19,7 @@
 			this_.ads = playsheet.ads;
 			this_.edit_date = playsheet.edit_date;
 			this_.host_names = playsheet.hosts;
+            console.log(this_);
 		});  
     });
 
@@ -35,7 +36,7 @@
     		templateUrl: 'templates/ad.html'
     	}
     });
-    var socan = true;
+    var socan = false;
     
     
 	var name = 'Test Show';

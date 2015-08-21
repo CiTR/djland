@@ -62,6 +62,10 @@ input, select, textarea, option{
 	border-style: solid;
 	border-width: 0;
 }
+.playitem > td >input{
+  font-size:0.8em;
+  width:95%;
+}
 .ie select, .ie input, .ie textarea {
 	background-color: #000977;
 }

@@ -8,11 +8,12 @@ class Playitem extends Model
 {
     //
     protected $table = 'playitems';
+
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
     }
     public function song(){
-    	return $this->hasOne('App\Song');
+    	return $this->belongsTo('App\Song','song_id','id');
     }
 
 }

@@ -1,11 +1,15 @@
 <?php
 use App\User as User;
-use App\Playsheet as Playsheet;
-use App\Show as Show;
-use App\Host as Host;
-use App\Playitem as Playitem;
 use App\Member as Member;
 use App\Permission as Permission;
+use App\Show as Show;
+use App\Host as Host;
+use App\Playsheet as Playsheet;
+use App\Playitem as Playitem;
+use App\Song as Song;
+
+
+
 Route::get('/', function () {
     //return view('welcome');
     return "welcome to laravel";
@@ -14,17 +18,22 @@ Route::get('/', function () {
 Route::get('/member',function(){
 	return  DB::table('membership')->select('id','firstname','lastname')->get();
 });
+
 Route::get('/member/{id}',function($id=id){
 	return DB::table('membership')
 	->select('*')
 	->where('id','=',$id)
 	->get();
 });
+
+
 /* Show Routes */
 Route::get('/show',function(){
 	//return DB::table('shows')->select('id','name'->get();
 	return Show::all('id','name');
 });
+
+
 /* Playsheet Routes */
 Route::get('/playsheet/member/{member_id}',function($member_id = member_id){
 	$permissions = Member::find($member_id)->user->permission;
@@ -45,6 +54,7 @@ Route::get('/playsheet/member/{member_id}',function($member_id = member_id){
 	}
 	return Response::json($playsheets);	
 });
+
 Route::get('/playsheet/host/{id}',function($id = id){
 	return  DB::table('playsheets')
 	->join('hosts','hosts.id','=','playsheets.host_id')
@@ -53,10 +63,11 @@ Route::get('/playsheet/host/{id}',function($id = id){
 	->where('hosts.id','=',$id)
 	->get();
 });
+
 Route::get('/playsheet',function(){
 	return Playsheet::orderBy('id','desc')->select('id')->get();
-	//return DB::table('playsheets')->select('id')->orderBy('playsheets.id','desc')->get();
 });
+
 Route::get('/playsheet/list',function(){
 	return DB::table('playsheets')
 	->join('hosts','hosts.id','=','playsheets.host_id')
@@ -65,6 +76,7 @@ Route::get('/playsheet/list',function(){
 	->orderBy('playsheets.id','desc')
 	->get();
 });
+
 Route::get('/playsheet/list/{limit}',function($limit = limit){
 	$playsheets = Playsheet::orderBy('id','desc')->limit($limit)->get();
 	foreach($playsheets as $playsheet){
@@ -78,16 +90,17 @@ Route::get('/playsheet/list/{limit}',function($limit = limit){
 		}
 	}
 	return Response::json($list);
-	//return DB::table('playsheets')->join('hosts','hosts.id','=','playsheets.host_id')->select('playsheets.id','hosts.name','playsheets.start_time')->limit($limit)->orderBy('playsheets.id','desc')->get();
 });
+
 Route::get('/playsheet/{id}',function($id = id){
 	$playsheet = new stdClass();
 	$playsheet -> playsheet = Playsheet::find($id);
 	if($playsheet -> playsheet != null){
-		$playitem = Playsheet::find($id)->playitems;
-		$playitem -> song = Playsheet::find($id)->playitems->song;
-		$playsheet -> playitems = Playsheet::find($id)->playitems;
-
+		$playitems = Playsheet::find($id)->playitems;
+		foreach($playitems as $playitem){
+			$playitem->song = Playitem::find($playitem->id)->song;
+		}
+		$playsheet -> playitems = $playitems;
 		$playsheet -> show = Playsheet::find($id)->show;
 		$playsheet -> hosts = Playsheet::find($id)->show->hosts;
 		
@@ -100,6 +113,7 @@ Route::get('/playsheet/{id}',function($id = id){
 Route::get('/table',function(){
 	return  DB::select('SHOW TABLES');
 });
+
 Route::get('/table/{table}',function($table_name =table){
 	return  DB::select('DESCRIBE '.$table_name);
 });

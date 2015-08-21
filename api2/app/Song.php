@@ -8,7 +8,8 @@ class Song extends Model
 {
     //
     protected $table = 'songs';
+
     public function playitem(){
-    	return $this->belongsTo('App\Playitem');
+    	return $this->hasOne('App\Playitem');
     }
 }
