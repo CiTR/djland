@@ -7,18 +7,10 @@
 		this_=this;
 		call.getMemberPlaysheets(this_.member_id).then(function(playsheets){
 			this_.playsheets = playsheets.data;
-		});
-
-		function go(){
-			var href = $(this).getAttribute('data-href');
-			window.document.location = href;
-		}
-
-		
+		});		
 	});
-
-
-
-
 })();
 
+function go(href){
+	window.document.location = href;
+	}
