@@ -62,10 +62,7 @@ input, select, textarea, option{
 	border-style: solid;
 	border-width: 0;
 }
-.playitem > td >input{
-  font-size:0.8em;
-  width:95%;
-}
+
 .ie select, .ie input, .ie textarea {
 	background-color: #000977;
 }
@@ -478,6 +475,11 @@ div#main {
     box-shadow:inset 0px 0px 1px #BEBEBE;
 
 }
+.playitem > td >input{
+  font-size:0.8em;
+  width:95%;
+}
+
 .buttonContainer ul{
 	margin:0;
 	padding:0;

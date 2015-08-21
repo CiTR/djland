@@ -110,7 +110,7 @@
 					</table>
 				</div>
 				<div class='col2'>
-					<h3>Show Content & Spoken Word</h3>
+					<h3>Episode Description</h3>
 					<textarea class='fill' ng-model='spoken_word'></textarea>
 				</div>
 			</div>
