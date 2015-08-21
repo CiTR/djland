@@ -426,7 +426,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         }
 
       echo "  djland.value('show_id', ".$show_id.");".
-              "djland.value('channel_id', ".$channel_id.");";
+              "djland.value('channel_id', ".($channel_id || 1).");";
 
   ?>
 

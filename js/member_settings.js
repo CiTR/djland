@@ -56,7 +56,7 @@ function addListeners() {
                 }
             });
         } else {
-            updateMember(member.getInfo(), member.getInterests());
+            member.update();
         }
 
     });
