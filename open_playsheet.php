@@ -21,7 +21,7 @@
 			<table class='table-hover table'>
 				<tr><th>Show<th>Host<th>Date</tr>
 				<tbody >
-					<tr class='clickable-row' ng-click=go('playsheet.php?action=edit&id={{item.id}}') ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
+					<tr class='clickable-row' onclick=go('playsheet_angular.php?id={{item.id}}') ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 
 							<td ng-click=go('playsheet.php?action=edit&id={{item.id}}')>{{item.show_info.name}}</td>
 							<td>{{item.host_info.name}}</td>
