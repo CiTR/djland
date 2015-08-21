@@ -46,7 +46,7 @@ print_menu();
 	}
 	printf("</select>");
 
-	printf("<br><input type=submit align=right value=\"Generate Report\">");
+	printf("<br><input type=submit value=\"Generate Report\">");
 	printf("</td></tr></table>");
 	printf("</FORM>");
 

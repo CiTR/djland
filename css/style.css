@@ -163,7 +163,8 @@ input, select, textarea, option{
 .border{
   border-style:solid;
   border-width:1px;
-  border-color: white;
+  border-colo
+  r: white;
 }
 .pad-top{
   padding-top:2px;
