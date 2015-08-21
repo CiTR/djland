@@ -155,8 +155,7 @@ input, select, textarea, option{
 .center{
 	margin-left:auto;
 	margin-right:auto;
-  display:inline-center;
-  width:; 90%;
+  width: 90%;
 }
 .clearfix:after { 
    content: " ";
@@ -1826,8 +1825,6 @@ border-width:0 0 2px 2px;
 border-color:black;
 border-style:solid;
 }
-
-
 
 div#report-summary{
 width:800px;
