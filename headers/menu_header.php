@@ -44,6 +44,20 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
+		<li class=drop><a href="member_resources.php">Member Resources</a>
+			<div class="dropdown small">
+				<div class=small>
+					<ul>
+						<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>
+						<li><a href="member_resources.php">Resources</a></li>
+						<?php endif; ?>
+						<?php if(permission_level() >= $djland_permission_levels['member']) : ?>
+						<li><a href="studio_booking.php">Book a Studio</a></li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+		</li>
 		<?php 
 			endif;
 			
