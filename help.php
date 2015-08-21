@@ -108,15 +108,15 @@ if($SOCAN_FLAG)
 {
 array_push( $data, $socan);
 }
-if(is_member("editlibrary")){
+if(permission_level() >= $djland_permission_levels['volunteer'] ){
 array_push( $data, $editLibrary );
 }
-if(is_member("addshow")){
+if(permission_level() >= $djland_permission_levels['workstudy']){
 array_push($data, $showlist);
 array_push($data, $reporting);
 array_push($data, $ads);
 }
-if(is_member("member") && get_username() != "citrdjs") {
+if(permission_level() >= $djland_permission_levels['dj']) {
 array_push($data, $memberAdd);
 }
 
