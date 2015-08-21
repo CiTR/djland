@@ -97,13 +97,12 @@ Route::get('/playsheet/{id}',function($id = id){
 	$playsheet -> playsheet = Playsheet::find($id);
 	if($playsheet -> playsheet != null){
 		$playitems = Playsheet::find($id)->playitems;
-		foreach($playitems as $playitem){
-			$playitem->song = Playitem::find($playitem->id)->song;
+		foreach($playitems as $p){
+			$p->song = Playitem::find($p->id)->song;
 		}
 		$playsheet -> playitems = $playitems;
 		$playsheet -> show = Playsheet::find($id)->show;
-		$playsheet -> hosts = Playsheet::find($id)->show->hosts;
-		
+		$playsheet -> hosts = Host::find($playsheet->show->host_id);		
 	}
 	return Response::json($playsheet);
 });
@@ -115,6 +114,7 @@ Route::get('/table',function(){
 });
 
 Route::get('/table/{table}',function($table_name =table){
-	return  DB::select('DESCRIBE '.$table_name);
+	echo "<pre>";
+	print_r(DB::select('DESCRIBE '.$table_name));
 });
 

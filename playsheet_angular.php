@@ -47,8 +47,8 @@
 
 					<button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1 ? '<-- load plays from this playsheet' : '...'}}</button>
 					</span>
-					<br/>Show: {{playsheet.show_id}}
-					<br/>Host: <input ng-model="playsheet.host"></input>
+					<br/>Show: {{playsheet.show.name}}
+					<br/>Host: <input ng-model="playsheet.hosts.name"></input>
 					<br/>Language: <input ng-model="playsheet.lang"></input>
 					<br/>CRTC Category: 
 					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
