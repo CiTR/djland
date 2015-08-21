@@ -416,12 +416,9 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
       if (permission_level() >= $djland_permission_levels['staff']){
         // ADMIN
-
         echo "djland.value('adminStatus',true);";
-
       } else {
         // REGULAR DJ
-
         echo "djland.value('adminStatus',false);";
         }
 

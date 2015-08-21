@@ -44,38 +44,43 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`, `show_id`, `member_id`);
 
 
-Alter:
-setting up foreign key for playitem -> playlist
+Alter: setting up foreign key for playitem -> playlist
+
+ALTER TABLE `djland`.`playsheets` 
+ENGINE = InnoDB ;
 ALTER TABLE `djland`.`playitems` 
 ENGINE = InnoDB ;
 ALTER TABLE `djland`.`songs` 
 ENGINE = InnoDB ;
 
 UPDATE playitems SET playsheet_id = '20' WHERE !playsheet_id;
-DELETE FROM playitems WHERE playsheet_id not in (SELECT id FROM playsheets)
+UPDATE playitems SET playsheet_id = '20' WHERE playsheet_id not in (SELECT id FROM playsheets);
 
-ALTER TABLE `djland`.`playitems` 
-ADD INDEX 
-ALTER TABLE `djland`.`playitems` 
+ALTER TABLE `playitems` 
+CHANGE COLUMN `playsheet_id` `playsheet_id` BIGINT(20) UNSIGNED NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `playsheet_id`);
+
+ALTER TABLE `playitems` 
 ADD CONSTRAINT `playitem_playsheet_id`
   FOREIGN KEY (`playsheet_id`)
   REFERENCES `djland`.`playsheets` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
-Alter:
-setting up foreign key for playitem->song
+Alter: setting up foreign key for playitem->song
 insert fake song 1 which catches all lost playitems
 
 
 INSERT INTO `djland`.`songs` (`id`, `artist`, `title`, `song`, `composer`) VALUES ('1', 'song no longer exists', 'song no longer exists', 'song no longer exists', 'song no longer exists');
 UPDATE playitems SET song_id = 1 WHERE song_id not in (SELECT id FROM songs);
+UPDATE playitems SET song_id = 1 WHERE !song_id;
 
 
-ALTER TABLE `djland`.`playitems` 
+ALTER TABLE `playitems` 
 ADD CONSTRAINT `playitem_song_id`
   FOREIGN KEY (`song_id`)
-  REFERENCES `djland`.`songs` (`id`)
+  REFERENCES `songs` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 

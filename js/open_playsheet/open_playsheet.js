@@ -9,14 +9,16 @@
 			this_.playsheets = playsheets.data;
 		});
 
-		function go(href){
-   			window.document.location = href;
-   			console.log(href);
+		function go(){
+			var href = $(this).getAttribute('data-href');
+			window.document.location = href;
 		}
+
+		
 	});
 
 
 
 
-
 })();
+
