@@ -83,7 +83,7 @@
 				<h3> Playsheet Items </h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem' >
-						<th><input class='hidden'></th>
+						<th>#</th>
 						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.songHelp}}"></input></th>
 						<th><input value="Artist"readonly  placement:'bottom' tooltip="{{playsheet.help.artistHelp}}"></input></th>
 						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.albumHelp}}"></input></th>

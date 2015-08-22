@@ -32,9 +32,6 @@
 
 
     });
-
-
-
     //Declares <playitem> tag
     app.directive('playitem',function(){
     	return{
