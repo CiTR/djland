@@ -80,12 +80,12 @@
 			    </div>
 			</div>
 		    <div class='container'>
-				<h3> Playsheet Items </h3>
+				<h3>Music</h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem' >
 						<th>#</th>
-						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.songHelp}}"></input></th>
 						<th><input value="Artist"readonly  placement:'bottom' tooltip="{{playsheet.help.artistHelp}}"></input></th>
+						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.songHelp}}"></input></th>
 						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.albumHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}"></input></th>
@@ -103,9 +103,9 @@
 			</div>
 			<div class='col1'>
 				<div class='col2'>
-					<h3> Ads and PSAs </h3>
+					<h3> Ads, PSAs, Station IDs </h3>
 					<table class='table table-responsive border'>
-						</th><th>#</th><th>Time</th><th>Name</th><th>Type</th><th>Played</th>
+						</th><th>#</th><th>Time</th><th>Type</th><th>Name</th><th>Played</th>
 						<tr ad ng-model='playsheet.ads' ng-repeat="ad in playsheet.ads track by $index"></tr>
 					</table>
 				</div>
