@@ -11,6 +11,7 @@
 	});
 })();
 
-function go(href){
+function go(element){
+	href = element.getAttribute('data-href');
 	window.document.location = href;
 	}

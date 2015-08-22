@@ -44,6 +44,7 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
+		
 		<?php 
 			endif;
 			
@@ -96,20 +97,34 @@ function print_menu(){
 									<li><a href="playsheet.php">New Playsheet</a></li>
 									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 									<li><a href="open_playsheet.php">Open a Playsheet</a></li>
+									<li><a href="podcasts.php"> Podcasts </a></li>
+
 							</ul>
 						</div>
 					</div>
 				</li>
 		<?php 
 			endif;
-			if (permission_level() >= $djland_permission_levels['dj']) : ?>
-				<li class="menu_right nodrop"><a href="podcasts.php"> Podcasts </a></li>
-		<?php endif; ?>
-		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
-		<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
-			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
-		<?php endif; ?>
-		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
+			 ?>
+		 <li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+		 <li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
+			<div class="dropdown small">
+				<div class=small>
+					<ul>
+						<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>
+						<li><a href="member_resources.php">Resources</a></li>				
+						<li><a href="studio_booking.php">Book a Studio</a></li>
+						<?php endif; ?>
+						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
+						<li><a href="help.php" target="_blank"> Help </a></li>
+						<?php endif; ?>
+						<li><a href="member_settings.php">My Info</a></li>
+					</ul>
+				</div>
+			</div>
+		</li>
+		
+		
 
 	</ul>
 

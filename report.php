@@ -10,7 +10,7 @@ printf("<title>DJLAND | Report</title></head><body class='wallpaper'>");
 
 print_menu();
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	printf("<center>");
 	printf("<FORM METHOD=POST ONSUBMIT=\"\" ACTION=\"%s?action=report\" name=\"playsheet\">", $_SERVER['SCRIPT_NAME']);
 	printf("<center><h1>DJ PLAYSHEET REPORT</h1></center>");

@@ -14,15 +14,24 @@
 			//this_.shows = data;
 			//this_.playsheet_id = data.data.playsheet_id;
 			var playsheet = data.data;
-			this_.playsheet = playsheet.playsheet;
-			this_.playitems = playsheet.playitems;
+			for(var item in playsheet.playsheet){
+                this_[item] = playsheet.playsheet[item];
+			}
+            this_.show = playsheet.show;
+            this_.playitems = playsheet.playitems;
 			this_.ads = playsheet.ads;
-			this_.edit_date = playsheet.edit_date;
-			this_.host_names = playsheet.hosts;
+			this_.hosts = playsheet.hosts;
             console.log(this_);
-		});  
-    });
 
+		});
+        this.add = function(id){
+            var row_template = angular.copy(this.playitems[id]);
+            this.playitems.splice(id,1,row_template); 
+            console.log("adding");
+        }
+
+
+    });
     //Declares <playitem> tag
     app.directive('playitem',function(){
     	return{
@@ -41,3 +50,7 @@
     
 	var name = 'Test Show';
 })();
+
+
+
+    

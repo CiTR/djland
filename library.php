@@ -25,7 +25,7 @@ print_menu();
 // *** If action=search, get search terms from URL and query database ***
 if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['action']) && $_GET['action'] == "search") {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	printf("<center><h1>Search Results</h1></center>");
 
 	$record_limit = 100; // the number of search results to display per page
@@ -130,8 +130,6 @@ if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['act
 	$scount = 0;
 	
 foreach($dbarray as $i => $row){
-	
-	
 		
 		if(permission_level() >= $djland_permission_levels['volunteer']) {
 //			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], $row["id"], $row["catalog"] ? $row["catalog"] : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".$row["id"]."\" name=id".$scount."><input type=hidden value=\"".$row["catalog"]."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
@@ -220,7 +218,7 @@ foreach($dbarray as $i => $row){
 
 }
 else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && $_GET['action'] == "bulkedit") {
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table align=center class=center><tr><td>");
 	printf("<center><br><h1>Bulk Catalog Edit</h1></center>");
 	$scount = 0;
 	while(isset($_POST['id'.$scount]) && isset($_POST['newcat'.$scount])) {
@@ -243,7 +241,7 @@ else if(permission_level() >= $djland_permission_levels['member'] && isset($_GET
 
 	$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	printf("<center><br><h1>Library Record</h1></center>");
 	if(mysqli_num_rows($sresult)) {
 			printf("<table align=center border=0>");
@@ -272,7 +270,7 @@ else if(permission_level() >= $djland_permission_levels['member'] && isset($_GET
 }
 else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'submit') {
 		$current_date = date('Y-m-d');
@@ -326,7 +324,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 			printf("<br>No Such Record...");
 		}
 
-		printf("</center><hr width=90%%>");
+		printf("</center><hr width=50%%>");
 
 		$ed = 0;
 	}
@@ -414,7 +412,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 }
 	// *** VIEW MODE ***
 else if(permission_level() >= $djland_permission_levels['member']){
-	printf("<br><table align=center class=playsheet><tr><td><center><br><h1>Search Library</h1></center>");
+	printf("<br><table align=center class=center><tr><td><center><br><h1>Search Library</h1></center>");
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
@@ -422,12 +420,12 @@ else if(permission_level() >= $djland_permission_levels['member']){
 	printf(" <INPUT TYPE=submit VALUE=\"Basic Search\">\n");
 	printf("</FORM></CENTER>\n");
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
 	printf("<INPUT TYPE=submit VALUE=\"Recent Entries\">\n");
 	printf("</FORM></CENTER>\n");
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 ?>
 	<table border=0 align=center><tr><td align=left nowrap>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
