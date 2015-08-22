@@ -37,7 +37,7 @@ function print_menu(){
 						<?php if(permission_level() >=  $djland_permission_levels['member'] && $enabled['library']) : ?>
 						<li><a href="library.php"> View Library</a></li>
 						<?php endif; ?>
-						<?php if( permission_level() >= $djland_permission_levels['volunteer'] && $enabled['library']) : ?>
+						<?php if( permission_level() >= $djland_bleghpermission_levels['volunteer'] && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 						<?php endif; ?>
 					</ul>
@@ -90,12 +90,12 @@ function print_menu(){
 		<?php 
 			endif; 
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
-				<li class=drop><a href="playsheet.php">Playsheets</a>
+				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
 							<ul>
-									<li><a href="playsheet.php">New Playsheet</a></li>
-									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
+									<li><a href="playsheet_angular.php">New Playsheet</a></li>
+									<!-- Temp Removed <li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li> -->
 									<li><a href="open_playsheet.php">Open a Playsheet</a></li>
 									<li><a href="podcasts.php"> Podcasts </a></li>
 
