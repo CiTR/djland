@@ -149,10 +149,22 @@ input, select, textarea, option{
 .text-center{
 	text-align: center;
 }
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
 .center{
 	margin-left:auto;
 	margin-right:auto;
   width: 90%;
+}
+.padded{
+  padding-top:5px;
+}
+.side-padded{
+  padding:0 5 0 5;
 }
 .clearfix:after { 
    content: " ";
@@ -629,7 +641,9 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     min-height:400px;
   }
 
-
+.tooltip-inner{
+  max-width:350px;
+}
   .dragzone {
     cursor: default;
 
@@ -1367,9 +1381,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	width:90%;
 }
 
-.padded{
-	padding-top:5px;
-}
+
 .memlabel{
 	padding-left:15px;
 }

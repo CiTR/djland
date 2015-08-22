@@ -11,7 +11,7 @@
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 	</head>
 	<script type='text/javascript'>
-		var playsheet_id = <?php echo $_GET['id']; ?>;
+		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
 	</script>
 	<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
@@ -25,7 +25,6 @@
 	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<?php print_menu(); 
-		print_r($_GET);
 		?>
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
 			 <div class='col1' >
@@ -83,22 +82,23 @@
 				<h3>Music</h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem' >
-						<th>#</th>
-						<th><input value="Artist"readonly  placement:'bottom' tooltip="{{playsheet.help.artistHelp}}"></input></th>
-						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.songHelp}}"></input></th>
-						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.albumHelp}}"></input></th>
+						<th class='side-padded'>#</th>
+						<th><input value="Artist"readonly tooltip="{{playsheet.help.artist}}"></input></th>
+						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.song}}"></input></th>
+						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.album}}"></input></th>
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}"></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}"></input></th>
-						<th ng-repeat='tag in playsheet.tags'><button class="box {{tag}} filled pad-top"></th>
-						<th><input class="lang" value="Category"></th>
-						<th><input class="lang" value="Language"></th>
+						<th ng-repeat='tag in playsheet.tags'><button tooltip="{{playsheet.help[tag]}}"class="box {{tag}} filled pad-top"></th>
+						<th><a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
+						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"></th>
 						<th><th><th></th>
 					</tr>
 					<tbody ui-sortable ng-model='playsheet.playitems'>
 					<tr class='playitem' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
+				<button class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
 				<br/>
 			</div>
 			<div class='col1'>

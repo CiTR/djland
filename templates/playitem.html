@@ -1,5 +1,5 @@
 
-<td><input ng-model='playitem.id' class='hidden'>{{$index}}</input></td>
+<td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
 <td><input ng-model='playitem.song.artist'></input></td>
 <td><input ng-model='playitem.song.title'></input></td>
 <td><input ng-model='playitem.song.album'></input></td>
@@ -33,5 +33,5 @@
 </td>
 <td><input class='lang' ng-model='playitem.lang'></input></td>
 <td><button ng-click=playsheet.add($index)><img src='images/collapsed.png'></button></td>
-<td><button ng-click="remove($index)"><img src='images/expanded.png'></button></td>
+<td><button ng-click=playsheet.remove($index)><img src='images/expanded.png'></button></td>
 <td></td>

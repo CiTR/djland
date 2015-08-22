@@ -202,7 +202,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
             <button class="tools right" ng-click="add(0)" ng-show="playsheet.plays.length == 0" >&nbsp;+&nbsp;music</button>
     </div>
-
     <div class="spokenword_block">
     <h2>Spoken Word</h2>
 <span class="left" id="ads" >
