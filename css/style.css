@@ -208,6 +208,9 @@ input, select, textarea, option{
 	top:3px;
 	font-size:70%;
 }
+.wideinput{
+  width:300px;
+}
 .largeinput{
 	width:750px;
 	max-width:83%;

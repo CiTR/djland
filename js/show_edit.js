@@ -28,6 +28,7 @@ var this_ = this;
             for(var prop in response.data){
               this_[prop] = response.data[prop];
             }
+            console.log(this_);
             //this_.show = response.data;
           });
 

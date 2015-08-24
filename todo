@@ -5,16 +5,16 @@ Emails:
 
 
 General:	
-	-Update permission level to check for paid of this year
-	-move student_no-handler to member
+	- move student_no-handler to member
 
-SQL:
+Add from CiTR:
+	- Member Resources and Links
+	- Training signup / Studio Bookings
 
+CiTR Podcasting:
+	- Need multiple show owners
+	- Show Alerts in show page
 
-
-Make Open Playsheet
-Fix Tooltips
-Re-do API
-
-
-Test
+Extra:
+	- Check Brads Email
+	- 
