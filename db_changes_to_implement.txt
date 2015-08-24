@@ -87,6 +87,8 @@ ADD CONSTRAINT `playitem_song_id`
 Alter: Fixing Hosts Table
 UPDATE `hosts` SET `name`='Fill In' WHERE `id`='2';
 UPDATE `hosts` SET `name`='Fill In' WHERE `id`='4';
+INSERT INTO `hosts` (`id`, `name`) VALUES ('2322', 'hostname');
+INSERT INTO `hosts` (`id`, `name`) VALUES ('2323', 'hostname');
 
 Add: `host` to playsheets
 

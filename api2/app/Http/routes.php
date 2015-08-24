@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
+				//echo Show::find($show->id)->host->name;
 				$shows->shows[$show->id] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
 			}
 		}else{
