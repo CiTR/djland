@@ -648,6 +648,8 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		<br/>
 		<h4 class='text-left'>Show Image</h4>
 		<input class='wideinput' ng-model='show.show_img'></input>
+		<br/>
+		<br/>
 
 		<h3 class='text-left'>Links</h3>
 		<div ng-repeat='social in show.social track by $index'>
