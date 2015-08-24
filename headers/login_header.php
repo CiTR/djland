@@ -9,7 +9,7 @@ $cookiename_pass = "pass";*/
 include_once("session_header.php");
 //include_once('password.php');
 function is_logged_in() {
-	return isset($_SESSION['sv_username']) ? true : false;
+	return (isset($_SESSION['sv_username']) && isset($_SESSION['sv_id']) ) ? true : false;
 }
 function get_username() {
 	return (is_logged_in() ? $_SESSION['sv_username'] : "Unknown");
@@ -45,7 +45,7 @@ function login ($username, $raw_password, $set_cookie) {
 			}
 			$_SESSION['sv_username'] = $user_result['username'];
 			$_SESSION['sv_id'] = $user_result['member_id'];
-			$_SESSION['sv_login_fails'] = $user_result['login_fails'];
+			$_SESSION['sv_login_fails'] = $user_result['login_fails']; 
 			/*	NOT USING COOKIES
 				$cookie_value = hash(time());
 				$insert_cookie = "UPDATE users SET cookie = :cookie WHERE username = :username";

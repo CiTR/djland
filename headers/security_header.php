@@ -49,7 +49,9 @@ function is_member($test_group) {
 
 function permission_level(){
 	global $db, $sv_username, $djland_permission_levels;
-
+	if(!isset($_SESSION['sv_id'])){
+		return -1;
+	}
 	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
 	$result = $db->query($query);
 	$level = -1; //failure return value

@@ -1,5 +1,5 @@
 (function (){
-    var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
+    var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','djland.datepicker','ui.sortable','ui.bootstrap']);
 	var shows;
 	app.controller('PlaysheetController',function($filter,call){
        	this.id = playsheet_id;
@@ -52,6 +52,12 @@
                 });
             }else{
                 //TODO: Check member id, find possible shows. Load info of next show they have.
+                var date = new Date();
+                date.setMinutes(0);
+                date.setSeconds(0);
+                this.start_time = date.getTime();
+                this.start_hour = date.getHours();
+                console.log(this.start_hour);
                 this.type='Live';
                 this.crtc = 30;
                 this.lang = 'English';

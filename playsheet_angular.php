@@ -22,6 +22,7 @@
 	<script type='text/javascript' src='js/playsheet/constants.js'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
+	<script type='text/javascript' src='js/controllers/datepicker.js'></script>
 	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<?php print_menu(); 
@@ -53,27 +54,27 @@
 					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
 		      	</div>
 		      	<div class='col2'>
-			        <div class='col1'ng-controller="datepicker" >
+			        <div class='col1'ng-controller="datepicker as datepicker" >
 			        	<h4 class='text-left'>Show Time</h4>
 
 			        	Start Time:
-			        	[<select ng-model="$parent.start_hour" ng-options="n for n in [] | range:0:24"
-			                 ng-change="$parent.adjust_times();"></select> :
-			       	 	<select ng-model="$parent.start_minute" ng-options="n for n in [] | range:0:60"
-			                ng-change="$parent.adjust_times();"></select>]
+			        	[<select ng-model="playsheet.start_hour" ng-options="n for n in [] | range:0:24"
+			                 ng-change="datepicker.adjust_times();"></select> :
+			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60"
+			                ng-change="datepicker.adjust_times();"></select>]
 				        End Time:
-				        [<select ng-model="$parent.end_hour" ng-options="n for n in [] | range:0:24 "
-				                 ng-change="$parent.adjust_times();"></select> :
-				        <select ng-model="$parent.end_minute" ng-options="n for n in [] | range:0:60"
-				                ng-change="$parent.adjust_times();"></select>]
+				        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 "
+				                 ng-change="$datepicker.adjust_times();"></select> :
+				        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60"
+				                ng-change="datepicker.adjust_times();"></select>]
 
 			          	<input class="date_picker" type="text" datepicker-popup="{{format}}"
-				                 ng-model="playsheet.start_time"  is-open="opened"
+				                 ng-model="playsheet.start_time"  is-open="datepicker.opened"
 				                 ng-required="true" close-text="Close" ng-hide="true"
-				                 ng-change="$parent.date_change();" />
+				                 ng-change="datepicker.date_change();" />
 			          	<br/>
 			         	{{playsheet.start_time | date:'EEE, MMM d, y'}}
-				        <button ng-click="open($event)"  >change date</button><br/>
+				        <button ng-click="datepicker.open($event)" >change date</button><br/>
 			        </div>
 			        <br>&nbsp </br>
 			        <div class="col1 podcast_block_inner">

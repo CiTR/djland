@@ -94,8 +94,6 @@ djland.factory('apiService', function ($http, $location) {
         getArchiverTime: function(){
           return $http.get('http://archive.citr.ca/time/')
         },
-
-
         updatePodcast: function(data, updateAudio){
           data.updateAudio = updateAudio;
           return $http.post(API_URL_BASE + '/podcasting/update_podcast.php', data)
@@ -116,7 +114,7 @@ djland.config(function($locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('!');
 });
 
-djland.controller('showCtrl', ['$scope','apiService','$location',function($scope, apiService, $location){
+djland.controller('showCtrl', ['c','apiService','$location',function($scope, apiService, $location){
 
   $scope.dj_edit_fields_only = true;// TODO - if robin editing, set to false, migrate markup from php
 

@@ -100,7 +100,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
                 ng-change="$parent.adjust_times();"></select>]
 
           <input class="date_picker" type="text" datepicker-popup="{{format}}"
-                 ng-model="playsheet.start_time"  is-open="opened"
+                 ng-model="playsheet.start_time"  is-open="datepicker.opened"
                  ng-required="true" close-text="Close" ng-hide="true"
                  ng-change="$parent.date_change();" />
           <br/>
