@@ -29,31 +29,44 @@
 		?>
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
 			 <div class='col1 padded side-padded'>
-		      	<div class='col2'>
-		      		<!-- <<h4 class='text-left'>Show Data</h4> -->
-			        Type: 
-			        <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
-			          	<option value="Syndicated">Syndicated</option>
-			          	<option value="Live">Live</option>
-			          	<option value="Rebroadcast">Rebroadcast</option>
-			          	<option value="Simulcast">Simulcast</option>
-			    	</select>
-		        	<span ng-show="playsheet.type == 'Rebroadcast'">
-		          	<br/>
-			          <select ng-model="desired_playsheet"
-			                  ng-options="playsheet.playlist_id as playsheet.start_time + ' - ' + playsheet.show_name
-			                   for playsheet
-			                   in available_playsheets ">
-			          </select>
-					<button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1 ? '<-- load plays from this playsheet' : '...'}}</button>
-					</span>
-					<br/>Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()" ng-options="id as show.name for (id,show) in playsheet.member_shows">
-					</select>
-					<br/>Show Host(s): <input ng-model="playsheet.active_show.host"></input>
-					<br/>Language: <input ng-model="playsheet.lang"></input>
-					<br/>CRTC Category: 
-					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
-		      	</div>
+		      	<div class='col2 padded'>
+		      		
+					<div class='col1'>
+						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()" ng-options="id as show.name for (id,show) in playsheet.member_shows">
+						</select>
+					</div>
+					<div class='col1'>
+						Show Host(s): <input ng-model="playsheet.active_show.host"></input>
+					</div>
+					
+					<div class='col1 double-padded-top'>
+						Type: 
+				        <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
+				          	<option value="Syndicated">Syndicated</option>
+				          	<option value="Live">Live</option>
+				          	<option value="Rebroadcast">Rebroadcast</option>
+				          	<option value="Simulcast">Simulcast</option>
+				    	</select>
+			        	<span ng-show="playsheet.type == 'Rebroadcast'">
+			          	         <select ng-model="desired_playsheet"
+				                  ng-options="playsheet.playlist_id as playsheet.start_time + ' - ' + playsheet.show_name
+				                   for playsheet
+				                   in available_playsheets ">
+				          </select>
+						<button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1 ? '<-- load plays from this playsheet' : '...'}}</button>
+						</span>
+						
+					</div>
+					<div class='col1'>
+						Language: <input ng-model="playsheet.lang"></input>
+					</div>
+					<div class='col1'>
+						CRTC Category: 
+						<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
+					</div>
+					<!-- <<h4 class='text-left'>Show Data</h4> -->
+			        
+					</div>
 		      	<div class='col2'>
 			        <div class='col1' >
 			        	<div class='col1'>
@@ -83,7 +96,7 @@
 				                 ng-required="true" close-text="Close" ng-hide="true"
 				                 ng-change="datepicker.date_change();" />
 			          	<br/>
-			         	{{playsheet.start_time | date:'EEE, MMM d, y'}}
+
 			         </div>
 			        <br>&nbsp </br>
 			        <div class="col1 podcast_block_inner">
@@ -117,7 +130,6 @@
 			</div>
 		    <div class='container'>
 				<h2>Music</h2>
-				{{playsheet.playitems}}
 				<table class='playitem'>
 					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>

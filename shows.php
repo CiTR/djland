@@ -623,7 +623,7 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		
 		<h3 class='text-left'> Show name </h3>
 
-		<input ng-model='show.name'/>
+		<input readonly ng-model='show.name'/>
 		<h3 class='text-left'>Show Host/Operator</h3>
 		<input class='wideinput' ng-model='show.host'>
 		<h3 class='text-left'>Primary Genre</h3>

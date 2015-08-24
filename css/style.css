@@ -167,7 +167,10 @@ input, select, textarea, option{
   width: 90%;
 }
 .padded{
-  padding-top:5px;
+  padding-top:10px;
+}
+.double-padded-top{
+  padding-top:20px;
 }
 .side-padded{
   padding-left:5px;
