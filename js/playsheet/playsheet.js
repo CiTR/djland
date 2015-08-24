@@ -67,7 +67,10 @@
                     for(var item in playsheet.playsheet){
                         this_[item] = playsheet.playsheet[item];
                     }
-
+                    this.start_hour =  $filter('pad')(this_.start_time.getHours(),2);
+                    this.start_minute = $filter('pad')(this_.start_time.getMinutes(),2);
+                    this.end_hour =  $filter('pad')(this_.end_time.getHours(),2);
+                    this.end_minute = $filter('pad')(this_.end_time.getMinutes(),2);
                     this_.show = playsheet.show;
                     this_.playitems = playsheet.playitems;
                     if(this_.playitems < 1){
