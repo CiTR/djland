@@ -239,8 +239,8 @@ input, select, textarea, option{
   position: relative;
   margin-left: auto;
   margin-right:auto;
-  /*Don't touch - anything below 50% induces a scrollbar, any over makes it too long*/
-  padding-bottom: 50%;
+  /*Don't touch - anything below 56% induces a scrollbar on 100%zoom, 1080p chrome, any over makes it too long*/
+  padding-bottom: 56%;
   /* Padding top is sometimes req'd by things like youtube videos */
   padding-top: 0;
   height: 0;
