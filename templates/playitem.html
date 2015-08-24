@@ -1,8 +1,8 @@
 
 <td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
 <td><input ng-model='playitem.song.artist'></input></td>
+<td><input ng-model='playitem.song.song'></input></td>
 <td><input ng-model='playitem.song.title'></input></td>
-<td><input ng-model='playitem.song.album'></input></td>
 <td ng-show='playsheet.socan'>
 	<input ng-model='playitem.song.composer'></input>
 </td>
@@ -20,7 +20,7 @@
                 <button ng-click="end(row)">END</button>
 </td>
 <td><button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' ng-class="{filled:playitem.is_playlist==true}" class="box playlist pad-top"></button></td>
-<td><button ng-model="playitem.is_canadian" ng-click='playitem.is_canadian=!playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button></td>
+<td><button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button></td>
 <td><button ng-model="playitem.is_fem" ng-click='playitem.is_fem=!playitem.is_fem' ng-class="{filled:playitem.is_fem==true}" class="box femcon pad-top"></button></td>
 <td><button ng-model="playitem.is_instrumental" ng-click='playitem.tags.instrumental=!playitem.is_instrumental' ng-class="{filled:playitem.is_instrumental==true}" class="box instrumental pad-top"></button></td>
 <td><button ng-model="playitem.is_part" ng-click='playitem.is_part=!playitem.is_part' ng-class="{filled:playitem.is_part==true}" class="box partial pad-top"></button></td>
