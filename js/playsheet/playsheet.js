@@ -67,10 +67,12 @@
                     for(var item in playsheet.playsheet){
                         this_[item] = playsheet.playsheet[item];
                     }
-                    this.start_hour =  $filter('pad')(this_.start_time.getHours(),2);
-                    this.start_minute = $filter('pad')(this_.start_time.getMinutes(),2);
-                    this.end_hour =  $filter('pad')(this_.end_time.getHours(),2);
-                    this.end_minute = $filter('pad')(this_.end_time.getMinutes(),2);
+                    var start = new Date(this_.start_time);
+                    var end = new Date(start.getFullYear() +'-'+start.getMonth()+'-'+start.getDate() + " " +this_.end_time);
+                    this_.start_hour =  $filter('pad')(start.getHours(),2);
+                    this_.start_minute = $filter('pad')(start.getMinutes(),2);
+                    this_.end_hour =  $filter('pad')(end.getHours(),2);
+                    this_.end_minute = $filter('pad')(end.getMinutes(),2);
                     this_.show = playsheet.show;
                     this_.playitems = playsheet.playitems;
                     if(this_.playitems < 1){
