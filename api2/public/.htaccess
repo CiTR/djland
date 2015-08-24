@@ -1,18 +1,16 @@
-<IfModule mod_rewrite.c>
+<IFModule mod_rewrite.c>
 <IfModule mod_negotiation.c>
-  Options -MultiViews
+	Options -MultiViews
 </IfModule>
 
-
-RewriteEngine On
-RewriteBase /api2/
+RewriteEngine ON
+#RewriteBase /api2/
 #Trailing Slashes
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)/$ /1$ [L,R=301]
+RewrieRule ^(.*)/$ /1$ [l,R=301]
 
 #Front Controller
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ public/index.php [L]
 </IfModule>
-
