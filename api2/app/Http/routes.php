@@ -8,24 +8,23 @@ use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
 use App\Song as Song;
 
-
-
 Route::get('/', function () {
     //return view('welcome');
     return "welcome to laravel";
 });
-/* Member Routes */
-Route::get('/member',function(){
-	return  DB::table('membership')->select('id','firstname','lastname')->get();
-});
+Route::group(['middleware' => 'auth'], function(){
+	/* Member Routes */
+	Route::get('/member',function(){
+		return  DB::table('membership')->select('id','firstname','lastname')->get();
+	});
 
-Route::get('/member/{id}',function($id=id){
-	return DB::table('membership')
-	->select('*')
-	->where('id','=',$id)
-	->get();
+	Route::get('/member/{id}',function($id=id){
+		return DB::table('membership')
+		->select('*')
+		->where('id','=',$id)
+		->get();
+	});
 });
-
 
 /* Show Routes */
 Route::get('/show',function(){
@@ -117,4 +116,5 @@ Route::get('/table/{table}',function($table_name =table){
 	echo "<pre>";
 	print_r(DB::select('DESCRIBE '.$table_name));
 });
+
 

@@ -164,7 +164,8 @@ input, select, textarea, option{
   padding-top:5px;
 }
 .side-padded{
-  padding:0 5 0 5;
+  padding-left:5px;
+  padding-right:5px;
 }
 .clearfix:after { 
    content: " ";
