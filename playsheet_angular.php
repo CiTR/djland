@@ -117,6 +117,7 @@
 			</div>
 		    <div class='container'>
 				<h2>Music</h2>
+				{{playsheet.playitems}}
 				<table class='playitem'>
 					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>

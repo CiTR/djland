@@ -619,7 +619,6 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 	</script>
 	<div ng-controller="editShow as show">
-		{{show}}
 		<h3> Show name </h3>
 		<input ng-model='show.name'/>
 		<h3>Show Description</h3>

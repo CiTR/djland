@@ -72,7 +72,7 @@ function print_menu(){
 		<?php 
 				endif;
 			endif; 
-			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['report']): ?>
+			if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']): ?>
 				<li class=drop ><a href="report.php">Reports</a>
 					<div class="dropdown small">
 						<div class=small>
