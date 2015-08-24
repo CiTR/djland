@@ -4,10 +4,10 @@
 </IfModule>
 
 RewriteEngine ON
-#RewriteBase /api2/
+RewriteBase /api2/
 #Trailing Slashes
 RewriteCond %{REQUEST_FILENAME} !-d
-RewrieRule ^(.*)/$ /1$ [l,R=301]
+RewriteRule ^(.*)/$ /1$ [l,R=301]
 
 #Front Controller
 RewriteCond %{REQUEST_FILENAME} !-d
