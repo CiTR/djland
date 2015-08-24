@@ -6,45 +6,37 @@ $library_post_val = 'something-else';
 
 
 
-include_once("/headers/session_header.php");
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 
-if(is_member("editlibrary")){
-printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
-printf("<link rel=stylesheet href=css/style.css type=text/css>");
-printf("<title>dupe nukem!</title>");
-
-echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
-
-echo '</head>';
-print_menu();
-echo '<body class='wallpaper'><h1>dupe nuke-em!</h1>';
-echo '<p>select from the options and then click LOAD to load some duplicate albums that can be nuked! (It will take a couple minutes to load the dupes)</p>';
-echo '<form id=dupenuker><input type="hidden" name="action" value="dupenuking"></input>
-<input type="hidden" name="'.$library_post_key.'" value="'.$library_post_val.'"></input>
-		Date Range:<br/>
-		<input id=date_start name=date_start value=2012-00-00></input> to 
-		<input id=date_end name=date_end value=2013-00-00></input><br/>
-		Exclude Text: (character sequences between the semicolons will not be included in the duplicate search)<br/>
-		<input id=exclude name=exclude value=" ;  ;s/t;"></input><br/>
-		<br/><br/><a id=nukem name=submit value=submit>nuke \'em!</a>';
-
-
-echo '</form>';
-
-echo '<div id="result">&nbsp;</div>';
-
-}
-echo '</body>';
-
-
-
-
-	
-?>
+if(permission_level() >= $djland_permission_levels['volunteer']){
+    ?>
+<html>
+    <head>
+        <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+        <link rel='stylesheet' href='css/style.css' type='text/css'>
+        <title>dupe nukem!</title>
+    </head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <body class='wallpaper'>
+    
+        <?php print_menu() ?>
+        <h1>dupe nuke-em!</h1>
+        <p>select from the options and then click LOAD to load some duplicate albums that can be nuked! (It will take a couple minutes to load the dupes)</p>
+        <form id='dupenuker'><input type="hidden" name="action" value="dupenuking"></input>
+            <input type="hidden" name="'.$library_post_key.'" value="'.$library_post_val.'"></input>
+    		Date Range:<br/>
+    		<input id='date_start' name='date_start' value='2012-00-00'></input> to 
+    		<input id='date_end' name='date_end' value='2013-00-00'></input><br/>
+    		Exclude Text: (character sequences between the semicolons will not be included in the duplicate search)<br/>
+    		<input id='exclude' name='exclude' value=" ;  ;s/t;"></input><br/>
+    		<br/><br/><a id='nukem' name='submit' value='submit'>nuke \'em!</a>
+        </form>
+    <div id="result">&nbsp;</div>
+    <?php } ?>
 <script src="js/jquery.form.js"></script> 
 <script>
  $(function() {

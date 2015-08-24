@@ -8,8 +8,8 @@ printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJLAND | music library</title>");
 
-echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="js/library-js.js"></script>';
+echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
+echo '<script src="js/library-js.js"></script>';
 
 //<script src="js/jquery.form.js"></script> 
 //<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
@@ -475,7 +475,7 @@ else if(permission_level() >= $djland_permission_levels['member']){
 	<input type=submit VALUE="Advanced Search">
 	<?php
 	if(permission_level() >= $djland_permission_levels['volunteer']) {
-		echo "<br/><br/><br/><br/><a href='.tools/dupenuker.php'> --&gt; duplicate finder </a>";
+		echo "<br/><br/><br/><br/><a href='dupenuker.php'>duplicate finder </a>";
 	}
 	?>
 	</center>

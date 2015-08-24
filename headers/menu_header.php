@@ -123,11 +123,8 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
-		
-		
-
 	</ul>
-
+	<br/>
 <?php } 
 // useful when testing time-related things while faking time
 //echo date('l jS \of F Y h:i:s A', get_time());
