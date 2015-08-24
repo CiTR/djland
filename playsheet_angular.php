@@ -12,6 +12,7 @@
 	</head>
 	<script type='text/javascript'>
 		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
+		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 	</script>
 	<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
@@ -22,7 +23,6 @@
 	<script type='text/javascript' src='js/playsheet/constants.js'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
-	<script type='text/javascript' src='js/controllers/datepicker.js'></script>
 	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<?php print_menu(); 
@@ -47,20 +47,19 @@
 			          </select>
 					<button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1 ? '<-- load plays from this playsheet' : '...'}}</button>
 					</span>
-					<br/>Show: <select ng-model='playsheet.show.name'></select>
-					<br/>Host: <input ng-model="playsheet.hosts.name"></input>
+					<br/>Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()" ng-options="id as show.name for (id,show) in playsheet.member_shows">
+					</select>
+					<br/>Host: <input ng-model="playsheet.active_show.host"></input>
 					<br/>Language: <input ng-model="playsheet.lang"></input>
 					<br/>CRTC Category: 
 					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
 		      	</div>
 		      	<div class='col2'>
-			        <div class='col1'ng-controller="datepicker as datepicker" >
+			        <div class='col1' >
 			        	<h4 class='text-left'>Show Time</h4>
-
 			        	Start Time:
-			        	[<select ng-model="playsheet.start_hour" ng-options="n for n in [] | range:0:24"
-			                 ng-change="datepicker.adjust_times();"></select> :
-			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60"
+			        	[<select ng-options="n for n in [] | range:00:24"  ng-model="playsheet.start_hour"></select> :
+			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60 "
 			                ng-change="datepicker.adjust_times();"></select>]
 				        End Time:
 				        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 "
@@ -74,7 +73,9 @@
 				                 ng-change="datepicker.date_change();" />
 			          	<br/>
 			         	{{playsheet.start_time | date:'EEE, MMM d, y'}}
-				        <button ng-click="datepicker.open($event)" >change date</button><br/>
+			         	<div ng-controller="datepicker as datepicker">
+				        	<button ng-click="datepicker.open($event)" >change date</button><br/>
+				    	</div>
 			        </div>
 			        <br>&nbsp </br>
 			        <div class="col1 podcast_block_inner">
@@ -126,7 +127,7 @@
 					<tr class='playitem' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
-				<button class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
+				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
 				<br/>
 			</div>
 			<div class='col1'>

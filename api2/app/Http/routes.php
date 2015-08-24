@@ -24,6 +24,23 @@ Route::group(['middleware' => 'auth'], function(){
 		->where('id','=',$id)
 		->get();
 	});
+	Route::get('member/{id}/shows',function($member_id=id){
+		$permissions = Member::find($member_id)->user->permission;
+		if($permissions->staff ==1 || $permissions->administrator==1){
+			$all_shows = Show::all();
+			foreach($all_shows as $show){
+				$shows->shows[$show->id] = $show->name;
+			}
+		}else{
+			$member_shows =  Member::find($member_id)->shows;
+			foreach($member_shows as $show){
+
+				$shows->shows[$show->id] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
+
+			}
+		}
+		return  Response::json($shows);
+	});
 });
 
 /* Show Routes */
@@ -101,7 +118,7 @@ Route::get('/playsheet/{id}',function($id = id){
 		}
 		$playsheet -> playitems = $playitems;
 		$playsheet -> show = Playsheet::find($id)->show;
-		$playsheet -> hosts = Host::find($playsheet->show->host_id);		
+		$playsheet -> host = Host::find($playsheet->show->host_id);		
 	}
 	return Response::json($playsheet);
 });
