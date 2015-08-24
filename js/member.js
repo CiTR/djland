@@ -92,6 +92,7 @@ Member.prototype = {
 			if(interest != 'Other'){my[interests[interest]] = getCheckbox(interests[interest]);}
 			else{my[interests[interest]] = getVal(interests[interest]);}
 		}
+		my['paid'] = get('paid');
 		this.membership_years[membership_year] = my;
 	},
 	getPermissions:function(){

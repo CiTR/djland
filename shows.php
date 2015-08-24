@@ -622,45 +622,29 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 	<div id='wrapper' ng-controller="editShow as show" ng-show='show.id'>
 		
 
-		<h3 class='text-left double-padded-top'> Show name </h3>
+		<h4 class='text-left double-padded-top'> Show name </h4>
 		<input readonly ng-model='show.name'/>
 		<h3 class='text-left double-padded-top'>Show Host/Operator</h3>
 		<input class='wideinput' ng-model='show.host'>
-		<br/>
-		<br/>
-		<h4 class='text-left'>Primary Genre</h4>
+		<h4 class='text-left double-padded-top'>Primary Genre</h4>
 		<select ng-model='show.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
-		<br/>
-		<br/>
-		<h4 class='text-left'>Secondary Genres</h4>
+		<h4 class='text-left double-padded-top'>Secondary Genres</h4>
 		<input class='wideinput' ng-model='show.secondary_genre_tags'></input>
-		<br/>
-		<br/>
-		<h4 class='text-left'>Show Description</h4>
+		<h4 class='text-left double-padded-top'>Show Description</h4>
 		<!-- I am sorry for such hack method for spacing this. Will fix properly when time avail. -->
 		<textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.show_desc'></textarea>
-		<br/>
-		<br/>
-		<h4 class='text-left'>Website</h4>
+		<h4 class='text-left double-padded-top'>Website</h4>
 		<input class='wideinput' ng-model='show.website'></input>
-		<br/>
-		<br/>
-		<h4 class='text-left'>Show Image</h4>
+		<h4 class='text-left double-padded-top'>Show Image</h4>
 		<input class='wideinput' ng-model='show.show_img'></input>
-		<br/>
-		<br/>
-
-		<h3 class='text-left'>Links</h3>
+		<h4 class='text-left double-padded-top'>Links</h3>
 		<div ng-repeat='social in show.social track by $index'>
 			<input ng-model='social.social_name'></input>
 			<input ng-model='social.social_url'></input>
 			<input ng-model='social.short_name'></input>
 		</div>
-
-		<h3 class='text-left'></h3>
-
+		<h4 class='text-left double-padded-top'></h3>
 		<button ng-click="save();" >save info (tba)</button>
-
 	</div>
 </div>
 
