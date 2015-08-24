@@ -46,9 +46,7 @@ function finish(){
       echo utf8_json_encode( $data );
     }
   }
-
   mysqli_close($db);
-
   die();
 }
 
@@ -77,6 +75,7 @@ function convertEntities($data){
     }
   return $data;
 
+  return;
 }
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
@@ -158,5 +157,8 @@ function getIDbyRow($table,$array){
 
   }
 }
+$incoming_data =  (array) json_decode(file_get_contents('php://input'));
+
+
 $incoming_data =  (array) json_decode(file_get_contents('php://input'));
 

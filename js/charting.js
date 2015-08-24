@@ -3,11 +3,14 @@ $(document).ready ( function() {
 });
 
 function loadCharts(){
-		var now = 1000*parseInt($('#now').val());
+
+		/*var now = 1000*parseInt($('#now').val());
 		$('#loadbar').show();
 		var today = new Date(now); //get the current day
 	console.log(now);
-	console.log(today);
+	console.log(today);*/
+		var today = new Date();
+
 		var from_ = today.getDate() - today.getDay() + 5 -14; //two fridays ago
 		var start = today.getDate() - today.getDay();
 		var friday = today.getDate() - today.getDay() + 5;
@@ -32,7 +35,9 @@ function loadCharts(){
 		console.log("To: "+to);
 		$.ajax({
 			type:"POST",
-			url: "api/charts-data.php",
+
+			url: "form-handlers/charting_handler.php",
+
 			data: {"from":from,"to":to},
 			dataType: "json"
 		}).success(function(data){

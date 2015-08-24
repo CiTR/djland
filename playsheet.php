@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
@@ -11,424 +11,8 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">";
 
 ?>
-
-
-
-<style type="text/css">
-
-  ul, li {
-    list-style-type: none;
-    padding-left: 0
-  }
-
-  #totals {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background-color: beige;
-    border-color: black;
-    border-width: 2px;
-    border-style: groove;
-    text-align: center;
-    padding: 3px;
-  }
-
-  #totals div {
-    display: inline;
-    padding-right: 20px;
-  }
-
-  #totals .req {
-    font-weight: bold;
-
-    color: darkgreen;
-  }
-
-  #totals .bad {
-    background-color: black;
-    color: red;
-  }
-
-  .crtc, .tools {
-    cursor: pointer;
-    background-color: lightblue;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    round-clip: 2;
-    border-style: outset;
-    border-width: 2px;
-    border-color: lightblue;
-  }
-
-  .crtc:hover {
-    border-color: black;
-  }
-
-  .lang {
-    width: 50px;
-    font-size: 0.8em;
-  }
-
-  .music_row {
-
-    max-width: 990px;
-    /*
-          background-color:rgba(150,150,150,0.8);*/
-  }
-
-  .music_row, .music_row * {
-
-    font-size: 1.1em;
-  }
-
-  .music_row_heading {
-    background-color: lightgrey;
-  }
-
-  .music_row_heading .crtc, .lang {
-    font-size: 0.7em;
-  }
-
-  .music_row_heading input, .music_row_heading span {
-    text-align: center;
-    background: none;
-    border-width: 0;
-  }
-
-  input {
-
-    display: inline;
-    width: auto;
-  }
-
-  .playsheet_block, .spokenword_block, .podcast_block,.save_block {
-    max-width: 1000px;
-    width:100%;
-    min-height:200px;
-    position:relative;
-    margin-left: auto;
-    margin-right:auto;
-    display:block;
-    float:left;
-
-  }
-
-  .podcast_block_inner{
-    margin-left:auto;
-    margin-right:auto;
-    width:50%;
-    display:block;
-    position:relative;
-  }
-
-  .spokenword_block{
-    min-height:400px;
-  }
-
-
-  .dragzone {
-    cursor: default;
-
-  }
-
-  button.box {
-    display: inline-block;
-    height: 27px;
-    width: 27px;
-    border-width: 1px;
-    border-style: dotted;
-    cursor: default;
-    background-color: white;
-    background-size: 100%;
-    margin-bottom: 2px;
-  }
-
-  button.box.new:hover {
-    background-image: url('images/pl.png');
-    opacity: 0.5;
-  }
-
-  button.box.cancon:hover {
-    background-image: url('images/CAN.png');
-    opacity: 0.5;
-  }
-
-  button.box.femcon:hover {
-    background-image: url('images/fe.png');
-    opacity: 0.5;
-  }
-
-  button.box.instrumental:hover {
-    background-image: url('images/inst.png');
-    opacity: 0.5;
-  }
-
-  button.box.hit:hover {
-    background-image: url('images/hit.png');
-    opacity: 0.5;
-  }
-
-  button.box.partial:hover {
-    background-image: url('images/part.png');
-    opacity: 0.5;
-  }
-
-
-  button.box.background:hover {
-    background-image: url('images/BACKGROUND.png');
-    opacity: 0.5;
-  }
-
-  button.box.theme:hover {
-    background-image: url('images/THEME.png');
-    opacity: 0.5;
-  }
-
-  button.box.new.filled {
-    background-image: url('images/pl.png');
-    opacity: 1;
-  }
-
-  button.box.cancon.filled {
-    background-image: url('images/cc.png');
-    opacity: 1;
-  }
-
-  button.box.femcon.filled {
-    background-image: url('images/fe.png');
-    opacity: 1;
-  }
-
-  button.box.instrumental.filled {
-    background-image: url('images/inst.png');
-    opacity: 1;
-  }
-
-  button.box.hit.filled {
-    background-image: url('images/hit.png');
-    opacity: 1;
-  }
-
-  button.box.partial.filled {
-    background-image: url('images/part.png');
-    opacity: 1;
-  }
-
-  button.box.background.filled {
-    background-image: url('images/BACKGROUND.png');
-    opacity: 1;
-  }
-
-  button.box.theme.filled {
-    background-image: url('images/THEME.png');
-    opacity: 1;
-  }
-
-  button.box {
-    background-color: transparent;
-    background-image: none;;
-  }
-
-  li.socan{
-width:1200px;
-  }
-
-  .socan select, .socan button, .socan input, .music_row_socan input, .music_row_socan button{
-    font-size:0.75em;
-    max-width:80px;
-  }
-
-  .socan_cue select{
-    width:46px;
-
-  }
-  .playsheet_block_socan, .music_row_socan, .music_row_socan .music_row{
-    max-width:1200px;
-    margin-left:10px;
-    padding-left:10px;
-  }
-
-  input[type=checkbox] {
-    /* Double-sized Checkboxes */
-    -ms-transform: scale(2); /* IE */
-    -moz-transform: scale(2); /* FF */
-    -webkit-transform: scale(2); /* Safari and Chrome */
-    -o-transform: scale(2); /* Opera */
-    padding: 20px;
-  }
-
-  .adPlay {
-    /* Checkbox text */
-    text-align: center;
-  }
-
-  #sam_title {
-    color: black;
-    font-size: 1.2em;
-    position: fixed;
-    padding: 5px;
-    height: 40px;
-    background-color:beige;
-  }
-
-  #sam_title span {
-    border: black 1px solid;
-    cursor: default;
-    padding: 6px;
-    background-color: white;
-  }
-
-  #sam_title span:hover {
-    border: red 1px solid;
-    color: red;
-    background-color: lightred;
-  }
-
-  div#sam_picker {
-    position: fixed;
-    top: 60px;
-    right: 40px;
-    height: 80%;
-    overflow: scroll;
-    width: 400px;
-    background-color: beige;
-  }
-
-  #sam_range {
-    color: black;
-    text-align: right;
-  }
-
-  span.one_sam {
-    overflow: hidden;
-    display: inline-block;
-
-  }
-
-  div.floating {
-    position: fixed;
-    right: 0;
-    top: 30px;
-    width: auto;
-    z-index:20;
-  }
-
-  .sam_row {
-    color: black;
-
-    border-top: black 1px solid;
-  }
-
-  .blocker{
-    position:relative;
-    bottom:30px;
-    background-color:black;
-    color:red;
-  }
-  .sam_row button {
-
-    vertical-align: top;
-    cursor: default;
-  }
-
-  .sam_row button:hover {
-
-  }
-
-  #totals{
-    color:black;
-  }
-
-  button {
-    color:black;
-  }
-
-  #message{
-    padding:6px;
-    color:black;
-    position:fixed;
-    top:0;
-    left:40%;
-    background-color:mintcream;
-    font-size:1.2em;
-  }
-
-  #left, #right{
-    width:48%;
-    float:left;
-  }
-
-  .vars{
-    position:absolute;
-    top:5000px;
-  }
-
-  .tracklist_overlay{
-    position:fixed;
-    overflow:scroll;
-    top:40px;
-    left:10%;
-    width:80%;
-    background-color:lightsteelblue;
-    z-index:21;
-    padding:20px;
-    color:darkblue;
-  }
-  .tracklist_overlay span{
-    margin-left:40px;
-  }
-  .tracklist_overlay a{
-    background-color:steelblue;
-    padding:2px;
-  }
-  .tracklist_overlay a:hover{
-    color:greenyellow;
-  }
-
-  .dark{
-    position:fixed;
-    top:50px;
-    left:0;
-    height:100%;
-    width:100%;
-    opacity: 0.8;
-    background-color:black;
-  }
-
-  th small{
-    color:black;
-  }
-
-  .wrapper{
-    margin-left:15px;
-  }
-
-  .admin_picker{
-    position:absolute;
-    top:0px;
-
-    height:30%;
-    width:100%;
-    z-index:60;
-  }
-
-  .admin_picker span{
-    position: relative;
-    display:block;
-    margin-left:auto;
-    margin-right: auto;
-    margin-top:100px;
-    padding-top:50px;
-    text-align:center;
-    height:300px;
-    background-color: darkslategray;
-    width:100%;
-  }
-</style>
-
 </head>
-<body>
+<body class='wallpaper'>
 <?php
     print_menu();
 
@@ -548,8 +132,6 @@ width:1200px;
     <h2>Music </h2>
 
     <div class="playsheet_block" ng-hide="music_hidden" ng-class="{playsheet_block_socan: socan}">
-
-
       <div class="music_row_heading music_row" ng-class="{music_row_socan: socan}">
         <input value="artist" class="music" readonly tooltip="{{artistHelp}}"></input>
         <input value="album" class="music" readonly tooltip="{{albumHelp}}"></input>
@@ -558,7 +140,7 @@ width:1200px;
         <span ng-show="socan" class="socan_cue" ><span tooltip="{{timeHelp1}}">Time Start (H:M)&nbsp; </span>|&nbsp;<span tooltip="{{timeHelp2}}"> Duration (M:S)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
         <button class="box new filled">&nbsp;</button>
-        <button class="box cancon filled" ">&nbsp;</button>
+        <button class="box cancon filled">&nbsp;</button>
         <button class="box femcon filled">&nbsp;</button>
         <button class="box instrumental filled">&nbsp;</button>
         <button class="box partial filled">&nbsp;</button>
@@ -572,7 +154,7 @@ width:1200px;
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
-
+      {{playsheet.plays}}
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">
@@ -586,14 +168,14 @@ width:1200px;
 
             <span ng-show="socan" class="socan_cue">
 
-                <select ng-model="row.insert_song_start_hour" ng-options="n for n in [] | range:0:24 "
+                <select ng-model="row.insert_song_start_hour" ng-options="n for n in [] | range:0:24"
                         ng-change="updateNow(row);"></select>:
-                <select ng-model="row.insert_song_start_minute" ng-options="n for n in [] | range:0:60 "
+                <select ng-model="row.insert_song_start_minute" ng-options="n for n in [] | range:0:60"
                         ng-change="updateNow(row);"></select>
                 <button ng-click="cue(row)">CUE</button>
 
-                <select ng-model="row.insert_song_length_minute" ng-options="n for n in [] | range:0:60 "></select>:
-                <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60 "></select>
+                <select ng-model="row.insert_song_length_minute" ng-options="n for n in [] | range:0:60"></select>:
+                <select ng-model="row.insert_song_length_second" ng-options="n for n in [] | range:0:60"></select>
                 <button ng-click="end(row)">END</button>
             </span>
             <button class="box new" ng-model="row.is_playlist" ng-class="{filled: row.is_playlist}"
@@ -832,7 +414,7 @@ width:1200px;
   var djland = angular.module('djLand', ['ui.bootstrap', 'ui.sortable']);
 </script>
 
-<script type="text/javascript" src="js/angular-djland.js"></script>
+<script type="text/javascript" src="js/api-service.js"></script>
 
 <script type="text/javascript">
 

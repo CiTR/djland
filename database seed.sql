@@ -385,9 +385,9 @@ AUTO_INCREMENT = 1628736
 DEFAULT CHARACTER SET = latin1;
 
 -- ----------------------------------------------------------------------------
--- Table citr_live.playlists
+-- Table citr_live.playsheets
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `citr_live`.`playlists` (
+CREATE TABLE IF NOT EXISTS `citr_live`.`playsheets` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `show_id` INT(10) UNSIGNED NULL DEFAULT NULL,
   `host_id` INT(10) UNSIGNED NULL DEFAULT NULL,

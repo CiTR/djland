@@ -1,4 +1,5 @@
 <?php 
+	include_once("../headers/session_header.php");
 if (file_exists('config.php')){ 
 // this check is because sometimes this script is accessed from the root 
 // and sometimes from a subfolder (like with an AJAX handler inside form-handlers)

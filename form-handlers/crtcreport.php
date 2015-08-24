@@ -1,5 +1,5 @@
 <?php // CRTC REPORT REQUEST HANDLER
-
+	include_once("../headers/session_header.php");
 //***************************************************
 //***********      REQUIREMENTS       ***************
 //***************************************************
@@ -66,7 +66,7 @@ $adsLogged = array();
 
 // see headers/function_header.php
 // available fields: id, show_id, start_time, end_time, unix_time
-$showList = grabPlaylists($from,$to, $db);
+$showList = grabPlaysheets($from,$to, $db);
 $plays = grabPlayitems($from,$to, $db);
 echo 'FROM: '.$from.', TO: '.$to;
 

@@ -33,7 +33,7 @@ function loadSamAds(from,to){
 		var adname = $('#adname').val();
 		$.ajax({
 			type:"POST",
-			url: "form-handlers/samAds-handler.php",
+			url: "form-handlers/samAds_handler.php",
 			data: {"from":from,"to":to,"adname":adname},
 			dataType: "json"
 		}).success(function(data) {

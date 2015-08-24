@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
@@ -128,7 +129,7 @@ $numObjects = sizeOf($data);
 
 
 
-print("<body>");
+print("<body class='wallpaper'>");
 print("<div id='wrapper'>");
 
 print("<h1><center>DJLand Help</center></h1>");

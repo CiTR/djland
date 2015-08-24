@@ -6,7 +6,7 @@ echo '<pre>';
 
 require_once('../api_common.php');
 
-$q = 'SELECT id,start_time, status, show_id from playlists where status =2 order by show_id asc';
+$q = 'SELECT id,start_time, status, show_id from playsheets where status =2 order by show_id asc';
 
 $r = mysqli_query($db,$q);
 
@@ -23,15 +23,15 @@ $q2 = 'SELECT podcast_episodes.id as episode_id ,
 $r2 = mysqli_query($db,$q2);
 
 $episodes = array();
-$playlists = array();
+$playsheets = array();
 
 while($row = mysqli_fetch_assoc($r)){
 
-  $playlists []= $row;
+  $playsheets []= $row;
 
 }
 
-$total_playsheets = count($playlists);
+$total_playsheets = count($playsheets);
 
 while($row = mysqli_fetch_assoc($r2)){
 
@@ -48,7 +48,7 @@ foreach($episodes as $i => $ep){
 
 $playsheets_by_show = array();
 
-foreach($playlists as $i => $pl){
+foreach($playsheets as $i => $pl){
   $playsheets_by_show[$pl['show_id']] []= $pl;
 }
 
@@ -68,16 +68,16 @@ foreach($playsheets_by_show as $i => $pl_group){
 
         // foreach podcast episode under the matching show id
 
-        $playlist_date = strtotime($playsheet['start_time']);
+        $playsheet_date = strtotime($playsheet['start_time']);
         $episode_date = strtotime($episode['date']);
 
-        $pl_date_max = $playlist_date + $shift_minutes*60;
-        $pl_date_min = $playlist_date - $shift_minutes*60;
+        $pl_date_max = $playsheet_date + $shift_minutes*60;
+        $pl_date_min = $playsheet_date - $shift_minutes*60;
         $ep_date_max = $episode_date + $shift_minutes*60;
         $ep_date_min = $episode_date - $shift_minutes*60;
 
 
-        if ($playlist_date == $episode_date){
+        if ($playsheet_date == $episode_date){
           $matches []= array('type' => 'exact', 'episode' => $episode, 'playsheet' => $playsheet);
           /*
           echo "\n";
@@ -89,7 +89,7 @@ foreach($playsheets_by_show as $i => $pl_group){
           */
         } else if (  ( ($pl_date_max >= $ep_date_min ) && ($pl_date_max <= $ep_date_max) ) || ( ($pl_date_min >= $ep_date_min ) && ($pl_date_min <= $ep_date_max ) ) ){
 
-          $matches []= array('type' => 'approx','difference'=> $playlist_date - $episode_date, 'episode' => $episode, 'playsheet' => $playsheet);
+          $matches []= array('type' => 'approx','difference'=> $playsheet_date - $episode_date, 'episode' => $episode, 'playsheet' => $playsheet);
 
           /*
           echo "\n";
@@ -137,7 +137,7 @@ echo '<h2>'.$total_playsheets.' playsheets. '.$total_episodes.' episodes. '.$sin
 function connect($playsheet,$episode){
 
   global $db;
-  $connect_q = 'UPDATE playlists SET podcast_episode ='.$episode['episode_id'].' WHERE id = '.$playsheet['id'].'';
+  $connect_q = 'UPDATE playsheets SET podcast_episode ='.$episode['episode_id'].' WHERE id = '.$playsheet['id'].'';
 
   if($connect_r = mysqli_query($db,$connect_q)){
 

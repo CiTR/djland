@@ -5,6 +5,7 @@ Emails:
 
 
 General:	
+<<<<<<< HEAD
 	-move student_no-handler to member
 
 Add from CiTR:
@@ -18,3 +19,18 @@ CiTR Podcasting:
 Extra:
 	- Check Brads Email
 	- 
+=======
+	-Update permission level to check for paid of this year
+	-move student_no-handler to member
+
+SQL:
+
+
+
+Make Open Playsheet
+Fix Tooltips
+Re-do API
+
+
+Test
+>>>>>>> 87a4987235618363e79be465923b04c856026851

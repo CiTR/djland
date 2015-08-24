@@ -2,21 +2,18 @@
 
 <?php
 
-
-session_start();
-
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
-
 require_once("headers/showlib.php");
 require_once('adLib.php');
 
 echo '<html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">';
 echo "<link rel=stylesheet href='css/style.css' type='text/css' />";
 
-?>
+if( permission_level() >= $djland_permission_levels['staff']){ ?>
 
 <title>Ad Scheduler</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -39,7 +36,7 @@ background-color: lime;
 </style>
  
 </head>
-<body>
+<body class='wallpaper'>
 
 <?php
 
@@ -136,4 +133,8 @@ $db->close();
 
 </body>
 </html>
+
+<?php }else{
+    header("Location: main.php");
+}?>
 

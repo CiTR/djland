@@ -1,10 +1,9 @@
 <?php
 
-session_start();
+include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
-
 function fieldComplete($arr, $curr) {
 	// status codes
 	// -1: not started
@@ -77,6 +76,7 @@ function processFields($arr) {
 	return $o_arr;
 }
 
+if( permission_level() >= $djland_permission_levels['dj']){
 // Used to populate time schedule
 $alt_val = array(0=>"None",1=>"Week 1",2=>"Week 2");
 
@@ -97,7 +97,8 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">
 <title>DJ LAND | Shows</title>";
 if (!(isset($_GET['action']) && ($_GET['action'] == 'edit'||$_GET['action'] == 'add'))) {
-	echo "</head><body>";
+	echo "</head><body class='wallpaper'>";
+
 	print_menu();
 }
 
@@ -114,14 +115,7 @@ if(is_member("addshow") ) {
 
 	// DELETING SHOWS --------
 	if(isset($_GET['action']) && $_GET['action'] == "delete") {
-		echo "<center><h1>Show Deleted</h1>";
-
-		mysqli_query($db, "DELETE FROM `playitems` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `playlists` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `shows` WHERE id='$show_id'");
-		mysqli_query($db, "DELETE FROM `social` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `show_times` WHERE show_id='$show_id'");
-		mysqli_query($db, "DELETE FROM `member_show` WHERE show_id='$show_id'");
+		echo "<center><h1>Show Deleted</h1>";		
 	}
 	// SUBMITTING SHOWS -------
 	else if(isset($_GET['action']) && $_GET['action'] == "submit") {
@@ -150,11 +144,9 @@ if(is_member("addshow") ) {
 		$notes = fas($_POST['t_notes']);
 		$show_img = fas($_POST['t_show_img']);
 		$sponsor_name = fas($_POST['t_sponsor_name']);
-		$sponsor_url = fas($_POST['t_sponsor_url']);
-		
+		$sponsor_url = fas($_POST['t_sponsor_url']);	
 		$times = processFields(array("sd","sh","sm","ed","eh","em","alt"));
 		$socials = processFields(array("socialName","socialURL"));
-
 		$p_xml = fas($_POST['t_xml']);
 		$p_subtitle = fas($_POST['t_subtitle']);
 		$p_description = fas($_POST['t_description']);
@@ -162,8 +154,6 @@ if(is_member("addshow") ) {
 		$p_link = fas($_POST['t_link']);
 		$p_image = fas($_POST['t_podcast_img']);
 		$podcast_channel_id = fas($_POST['t_pod_id']);
-
-
 		if(isset($_POST['id']) && $_POST['id']) {
 			$show_id = $_POST['id'];
 		}
@@ -180,7 +170,6 @@ if(is_member("addshow") ) {
 			else echo "there was an error creating the show <br/>";
 //			echo "inserted: ".$insert_q;
 			$show_id = mysqli_insert_id($db);
-
 		}
 
 
@@ -237,36 +226,36 @@ if(is_member("addshow") ) {
 			}
 		}
 		if (!$weekday) $weekday = 0;
-		$update_q = "UPDATE `shows` SET
-			name='$show_name',
-			host_id='$host_id',
-			weekday='$weekday',
-			pl_req='$pl_req',
-			cc_req='$cc_req',
-			indy_req='$indy_req',
-			fem_req='$fem_req',
-			edit_name='$show_idit_name',
-			crtc_default=$crtc_default,
-			lang_default='$lang_default',
-			active=$active,
-			primary_genre_tags='$primary_genre_tags',
-			secondary_genre_tags='$secondary_genre_tags',
-			website='$website',
-			rss='$rss',
-			show_desc='$show_desc',
-			notes='$notes',
-			show_img='$show_img',
-			sponsor_name='$sponsor_name',
-			sponsor_url='$sponsor_url' WHERE id='$show_id'";
-
-			$update_podcast_q = "UPDATE `podcast_channels` SET subtitle='$p_subtitle',
-			summary='$p_description',
-			keywords='$p_keywords',
-			link='$p_link',
-			image_url='$p_image',
-			xml='$p_xml' WHERE id='$podcast_channel_id'";
-
-
+			$update_q = "UPDATE `shows` SET
+				name='$show_name',
+				host_id='$host_id',
+				weekday='$weekday',
+				pl_req='$pl_req',
+				cc_req='$cc_req',
+				indy_req='$indy_req',
+				fem_req='$fem_req',
+				edit_name='$edit_name',
+				crtc_default=$crtc_default,
+				lang_default='$lang_default',
+				active=$active,
+				primary_genre_tags='$primary_genre_tags',
+				secondary_genre_tags='$secondary_genre_tags',
+				website='$website',
+				rss='$rss',
+				show_desc='$show_desc',
+				notes='$notes',
+				show_img='$show_img',
+				sponsor_name='$sponsor_name',
+				sponsor_url='$sponsor_url'
+				 WHERE id='$show_id'";
+			$update_podcast_q = "UPDATE `podcast_channels` SET 
+				subtitle='$p_subtitle',
+				summary='$p_description',
+				keywords='$p_keywords',
+				link='$p_link',
+				image_url='$p_image',
+				xml='$p_xml'
+				 WHERE id='$podcast_channel_id'";
 		if( mysqli_query($db, $update_q) ) {
 			echo "show successfuly edited";
 			write_new_showlist_file();
@@ -300,7 +289,6 @@ if(is_member("addshow") ) {
 		if($_GET['action'] == 'edit') {
 			$show_id = fas($_GET['id']);
 			$result = mysqli_query($db,"SELECT *,HOUR(end_time) AS end_hour, MINUTE(end_time) AS end_min, HOUR(start_time) AS start_hour, MINUTE(start_time) AS start_min FROM shows WHERE id='$show_id'");
-
 			$show_data = mysqli_fetch_assoc($result);
 		}
 		else {
@@ -311,14 +299,13 @@ if(is_member("addshow") ) {
 		$socials = mysqli_query($db,"SELECT * FROM `social` WHERE show_id=$show_id");
 		$socialRows = mysqli_num_rows($socials);
 
+
 		$show_name = $show_id ? $show_data["name"] : "";
 		$host_name = $show_id ? $fhost_name[$show_data["host_id"]] : "";
-
 		$pl_req = $show_id ? mysqli_result_dep($result, 0, "pl_req") : "60";
 		$cc_req = $show_id ? mysqli_result_dep($result, 0, "cc_req") : "35";
 		$indy_req = $show_id ? mysqli_result_dep($result, 0, "indy_req") : "70";
 		$fem_req = $show_id ? mysqli_result_dep($result, 0, "fem_req") : "30";
-
 
 		$weekday = $show_id ? $show_data["weekday"] : date('w');
 		$start_hour = $show_id ? $show_data["start_hour"] : date('H');
@@ -363,11 +350,6 @@ if(is_member("addshow") ) {
 		$p_episode_default_title = $podcast_channel_id ? $podcast_data['episode_default_title'] : "" ;
 		$p_episode_default_subtitle = $podcast_channel_id ? $podcast_data['episode_default_subtitle'] : "" ;
 		$p_episode_default_author = $podcast_channel_id ? $podcast_data['episode_default_author'] : "CiTR 101.9fm" ;
-
-
-
-
-
 		// Special HTML head (for javascript functions)
 		$weeks_elapsed = floor((time() - 1341100800)/(7*24*60*60));
 		$week_num = ($weeks_elapsed%2) + 1;
@@ -429,7 +411,7 @@ if(is_member("addshow") ) {
 		output += '<span class=\"controls\"><button class=\"minus\" type=\"button\" onclick=\"minusSocialRow()\">-</button><button class=\"plus\" type=\"button\" onclick=\"addSocialRow()\">+</button></span></div>';
 		return output;}";
 		echo '</script>';
-		echo "</head><body>";
+		echo "</head><body class='wallpaper'>";
 		print_menu();
 		// End of head
 
@@ -697,7 +679,6 @@ if(is_member("addshow") ) {
 
 
 <div ng-app="djLand" id="mainpodcast">
-
 	<div ng-controller="showCtrl" class="form_wrap show_form">
 		<br ng-init="formData.show_id = <?php echo $show_id;?>" />
 		<h3>editing show information</h3>
@@ -709,8 +690,8 @@ if(is_member("addshow") ) {
 		Description:<br/>
   <textarea class="description" ng-model="formData.show_desc" >
   </textarea><br/>
-
 		secondary genre tags:<br/>
+
 		<input ng-model="formData.secondary_genre_tags" >
 		</input><br/>
 
@@ -728,15 +709,11 @@ if(is_member("addshow") ) {
 
 
 </div>
-
-
-
 	<script src="js/angular.js"></script>
 	<script type="text/javascript">
 		var djland = angular.module('djLand', []);
 	</script>
 	<script src="js/angular-djland.js"></script>
-
 
 	<?php
 } else {
@@ -764,4 +741,7 @@ function write_new_showlist_file(){
 		echo "<br/>Show list successfully updated";
 	}
 }
-?>
+
+}else{
+    header("Location: main.php");
+}?>

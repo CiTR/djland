@@ -3,9 +3,8 @@
 
 require_once('../api_common.php');
 
-session_start();
-
-
+include_once("../../headers/session_header.php");
+//$rawdata = get_array('playsheets');
 
 $rawdata = array();
 
@@ -17,16 +16,14 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 
 
-  $query = '
-    SELECT playlists.id,
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date) as edit_date
-    FROM playlists
-    LEFT JOIN podcast_episodes on playlists.podcast_episode = podcast_episodes.id
+  $query = 'SELECT playsheets.id,
+      GREATEST(playsheets.edit_date, podcast_episodes.edit_date) as edit_date
+    FROM playsheets
+    LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
 
     ORDER BY
-      GREATEST(playlists.edit_date, podcast_episodes.edit_date)
+      GREATEST(playsheets.edit_date, podcast_episodes.edit_date)
     DESC limit ' . $limit . ' OFFSET ' . $offset;
-
 
 if ($result = mysqli_query($db, $query) ) {
 
@@ -38,10 +35,6 @@ if ($result = mysqli_query($db, $query) ) {
 } else {
   $error .= mysqli_error($db);
 }
-
-
-
-
 $data = $rawdata;
 
 finish();
