@@ -114,7 +114,7 @@
                     console.log(shows);
                     for(var show in shows){
                         this_.active_show = shows[show];
-                        this_.show_value = ""+shows[show]['id'];
+                        this_.show_value = ""+shows[show]['id'] || 'Fill In Host';
                         break;
                     }
                 });

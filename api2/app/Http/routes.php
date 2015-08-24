@@ -27,16 +27,14 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('member/{id}/shows',function($member_id=id){
 		$permissions = Member::find($member_id)->user->permission;
 		if($permissions->staff ==1 || $permissions->administrator==1){
-			$all_shows = Show::all();
+			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
-				$shows->shows[$show->id] = $show->name;
+				$shows->shows[$show->id] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
 			}
 		}else{
 			$member_shows =  Member::find($member_id)->shows;
 			foreach($member_shows as $show){
-
 				$shows->shows[$show->id] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
-
 			}
 		}
 		return  Response::json($shows);
