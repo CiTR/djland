@@ -20,5 +20,8 @@ class Show extends Model
     public function host(){
     	return $this->hasOne('App\Host','id','host_id');
     }
+    public function social(){
+        return $this->hasMany('App\Social');
+    }
 
 }
