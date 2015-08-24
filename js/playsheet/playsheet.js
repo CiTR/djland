@@ -112,7 +112,12 @@
                 this.crtc = 30;
                 this.lang = 'English';
                 this.id = 1;
+
                this.addStartRow();
+
+                for(var i = 0; i<4; i++) {
+                    this.add(this.playitems.length-1);
+                }
                 call.getMemberShows(this.member_id).then(function(data){
                     var shows = data.data.shows;
                     this_.member_shows = shows;

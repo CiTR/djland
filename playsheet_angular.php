@@ -56,12 +56,18 @@
 		      	</div>
 		      	<div class='col2'>
 			        <div class='col1' >
-			        	
-			        		<h4 class='text-left'>Date:</h4>
-			        	
-			        	<div class="right" ng-controller="datepicker as datepicker">
-				        	<button ng-click="datepicker.open($event)" >Change Date</button><br/>
-				    	</div>
+			        	<div class='col1'>
+			        		<div class='col4'>
+			        			<h4 class='text-left'>Date:</h4>
+			        		</div>
+				            <div class="col2" ng-controller="datepicker as datepicker">
+				        		{{playsheet.start_time | date:'EEE, MMM d, y'}}
+					        	<button ng-click="datepicker.open($event)" >Change Date</button>
+					        	</br>
+					    	</div>
+					    </div>
+				    	</br>
+				   		</br>
 			        	Start Time:
 			        	[<select ng-options="n for n in [] | range:00:24"  ng-model="playsheet.start_hour"></select> :
 			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60 "
