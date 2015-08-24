@@ -4,6 +4,7 @@ use App\Member as Member;
 use App\Permission as Permission;
 use App\Show as Show;
 use App\Host as Host;
+use App\Social as Social;
 use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
 use App\Song as Song;
@@ -29,6 +30,7 @@ Route::group(['middleware' => 'auth'], function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
+				//echo Show::find($show->id)->host->name;
 				$shows->shows[$show->id] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
 			}
 		}else{
@@ -48,9 +50,23 @@ Route::get('/show',function(){
 });
 Route::get('/show/{id}',function($show_id = id){
 	//return DB::table('shows')->select('id','name'->get();
-	return Show::find($show_id);
+	$show = Show::find($show_id);
+	$host = Show::find($show_id)->host->name;
+	$social = Show::find($show_id)->social;
+	$show->host = $host;
+	$show->social = $social;
+	return Response::json($show);
 });
 
+Route::get('/show/{id}/social',function($show_id = id){
+	//return DB::table('shows')->select('id','name'->get();
+	return Show::find($show_id)->social;
+});
+
+Route::get('/social/{id}',function($show_id = id){
+	//return DB::table('shows')->select('id','name'->get();
+	return Social::where('show_id','=',$show_id)->get();
+});
 
 /* Playsheet Routes */
 Route::get('/playsheet/member/{member_id}',function($member_id = member_id){

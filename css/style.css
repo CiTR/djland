@@ -208,6 +208,9 @@ input, select, textarea, option{
 	top:3px;
 	font-size:70%;
 }
+.wideinput{
+  width:300px;
+}
 .largeinput{
 	width:750px;
 	max-width:83%;
@@ -256,7 +259,7 @@ input, select, textarea, option{
 /* MENU STYLING CSS */
 #nav{ 
 	list-style:none;
-    width:940px;
+    width:1020px;
     margin:30px auto 0px auto;
     height:43px;
     padding:0px 20px 0px 20px;

@@ -1,9 +1,10 @@
 (function (){
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 
-    var row_template = {"show_id":this.show_id,"playsheet_id":this.id,"song_id":null,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":this.start_time,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.crtc,"lang":this.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":null,"insert_song_start_minute":null,"insert_song_length_minute":null,"insert_song_length_second":null,"song":{"id":null,"artist":null,"title":null,"song":null,"composer":null}};
 	app.controller('PlaysheetController',function($filter,$scope,call){
-       	this.id = playsheet_id;
+       	var row_template = {"show_id":this.show_id,"playsheet_id":this.id,"song_id":null,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":this.start_time,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.crtc,"lang":this.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":null,"insert_song_start_minute":null,"insert_song_length_minute":null,"insert_song_length_second":null,"song":{"id":null,"artist":null,"title":null,"song":null,"composer":null}};
+
+        this.id = playsheet_id;
         this.member_id = member_id;
 
         this.socan = socan;
@@ -20,8 +21,11 @@
 
             }
             for(var item in row){
-                if(item != 'lang' && item != 'crtc_category'){
+                if(item != 'is_new' && item != 'lang' && item != 'crtc_category'){
                     row[item]=null;
+                }else if(item =='is_new'){
+                    row[item] == false;
+
                 }else if(item == 'lang'){
                     row[item] = this.lang;
                 }else{
