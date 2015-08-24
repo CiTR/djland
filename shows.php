@@ -608,10 +608,28 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 } else if(has_show_access($show_id)){
 
 	?>
-<div ng-app="djLand">
+<div ng-app="djland.editShow">
+	
+	<script src='js/jquery-1.11.3.min.js'></script>
+	<script src='js/constants.js'></script>
+	<script src="js/angular.js"></script>
+	<script src="js/show_edit.js"></script>
+	<script src="js/api.js"></script>
+	<script>
+		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
+	</script>
+	<div ng-controller="editShow as show">
+		{{show}}
+		<h3> Show name </h3>
+		<input ng-model='show.name'/>
+		<h3>Show Description</h3>
+		<input ng-model='show.description'>
+		<h3>Primary Genre</h3>
+		<select ng-model='show.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
 
-	<div ng-controller="showCtrl" class="form_wrap show_form">
-		<br ng-init="formData.show_id = <?php echo $show_id;?>" />
+	</div>
+	<!-- <div ng-controller="showCtrl" class="form_wrap show_form">
+		<br ng-init="formData.show_id = <?php //echo $show_id;?>" />
 		<h3>editing show information</h3>
 
 		<h3>{{showData.name}}</h3>
@@ -635,17 +653,12 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 
 		<button ng-click="save();" >save info (tba)</button>
 		<textarea cols="100" rows="20">{{formData}}</textarea>
-	</div>
+	</div> -->
 
 
 
 </div>
-	<script src="js/angular.js"></script>
-	<script type="text/javascript">
-		var app = angular.module('djLand', []);
-	</script>
-	<script src="js/angular-common.js"></script>
-	<script src="js/show_edit.js"></script>
+
 
 	<?php
 } else {

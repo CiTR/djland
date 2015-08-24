@@ -10,5 +10,6 @@
 	$constants->faculties = $djland_faculties;
 	$constants->program_years = $djland_program_years;
 	$constants->provinces = $djland_provinces;
+	$constants->primary_genres = $djland_primary_genres;
 	echo json_encode($constants);
 ?>

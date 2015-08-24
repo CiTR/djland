@@ -4,6 +4,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 var API_URL_BASE = 'api2/public'; // api.citr.ca when live
 
 return {
+	getConstants: function(){
+		return $http.get('/headers/constants.php');
+	},
 	getMemberPlaysheets: function (member_id) {
 		return $http.get(API_URL_BASE + '/playsheet/member/' + member_id);
 	},
@@ -16,6 +19,9 @@ return {
 	},
 	getMemberShows: function(member_id){
 		return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
+	},
+	getShow: function(show_id){
+		return $http.get(API_URL_BASE+'/show/'+show_id);
 	},
 	getFullPlaylistData: function (id) {
 	return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);

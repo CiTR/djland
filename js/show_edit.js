@@ -1,37 +1,35 @@
 
-
-    app.controller('showCtrl', ['$scope','API_URL_BASE','apiService','$location',function($scope, API_URL_BASE, apiService, $location){
-
-      $scope.dj_edit_fields_only = true;// TODO - if robin editing, set to false, migrate markup from php
+(function(){
+  var app = angular.module('djland.editShow',['djland.api']);
+    app.controller('editShow', function($scope, call, $location){
+      /*$scope.dj_edit_fields_only = true;// TODO - if robin editing, set to false, migrate markup from php
 
       $scope.showData = {}; // <- gets all loaded from server
       $scope.formData = {}; // <- all private
-      $scope.formData.show_id = $location.search().id;
-      var editable_by_dj = [
+      $scope.formData.show_id = $location.search().id;*/
+/*      var editable_by_dj = [
         'name',
         'show_desc',
         'secondary_genre_tags',
         'alerts'
-      ];
-
-      apiService.getShowData($scope.formData.show_id)
-          .then(function(response){
-              $scope.showData = response.data;
-
-            if($scope.dj_edit_fields_only){
-              for(var i in editable_by_dj){
-                Object.defineProperty(
-                    $scope.formData,editable_by_dj[i],
-                    { value:$scope.showData[editable_by_dj[i]],
-                      enumerable:true,writable:true
-                    }
-                )
-              }
-            } else {
-              // Robin view formData gets everything in showData...
-              // also load 'notes' field (sensitive data)
-              // need to add that to private api, accessible only by Robin
+      ];*/
+var this_ = this;
+      this.member_id = member_id;
+      call.getConstants().then(function(response){
+        this_.primary_genres = response.data.primary_genres;
+      });
+      
+      call.getMemberShows(this.member_id).then(function(response){
+          var shows_list = response.data.shows;
+          for(var show in shows_list){
+             var show_id = shows_list[show]['id'];
+          }
+          call.getShow(show_id).then(function(response){
+            for(var prop in response.data){
+              this_[prop] = response.data[prop];
             }
+            //this_.show = response.data;
+          });
 
       });
 
@@ -46,4 +44,6 @@
               $scope.message = 'sorry, saving did not work';
             });
       }
-    }]);
+    });
+
+})();

@@ -46,6 +46,10 @@ Route::get('/show',function(){
 	//return DB::table('shows')->select('id','name'->get();
 	return Show::all('id','name');
 });
+Route::get('/show/{id}',function($show_id = id){
+	//return DB::table('shows')->select('id','name'->get();
+	return Show::find($show_id);
+});
 
 
 /* Playsheet Routes */
