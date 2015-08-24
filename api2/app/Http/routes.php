@@ -4,6 +4,7 @@ use App\Member as Member;
 use App\Permission as Permission;
 use App\Show as Show;
 use App\Host as Host;
+use App\Social as Social;
 use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
 use App\Song as Song;
@@ -57,6 +58,15 @@ Route::get('/show/{id}',function($show_id = id){
 	return Response::json($show);
 });
 
+Route::get('/show/{id}/social',function($show_id = id){
+	//return DB::table('shows')->select('id','name'->get();
+	return Show::find($show_id)->social;
+});
+
+Route::get('/social/{id}',function($show_id = id){
+	//return DB::table('shows')->select('id','name'->get();
+	return Social::where('show_id','=',$show_id)->get();
+});
 
 /* Playsheet Routes */
 Route::get('/playsheet/member/{member_id}',function($member_id = member_id){
