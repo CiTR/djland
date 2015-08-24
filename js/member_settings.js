@@ -47,9 +47,16 @@ function addListeners() {
 
     $('#submit_user').click(function () {
         if ($(this).text() == 'Renew') {
-            member.renew();
+            $.when(member.renew()).then(function(data){
+                if(data=true){
+                    alert("Sucessfully Renewed!\n Please pay your membership fee to re-gain access.");
+                    
+                }else{
+                    alert("Please try again");
+                }
+            });
         } else {
-            updateMember(member.getInfo(), member.getInterests());
+            member.update();
         }
 
     });
@@ -137,8 +144,7 @@ function renew_membership_form(){
     var exists = false;
     $('#membership_year option').each(function(){
         console.log(this.value + " ?=" +date);
-        if (this.value == date) {
-            
+        if (this.value === date) {
             exists = true;
             return false;
         }

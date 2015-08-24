@@ -8,8 +8,8 @@ printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 printf("<title>DJLAND | music library</title>");
 
-echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="js/library-js.js"></script>';
+echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
+echo '<script src="js/library-js.js"></script>';
 
 //<script src="js/jquery.form.js"></script> 
 //<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
@@ -23,9 +23,9 @@ print_menu();
 
 // *** SEARCH MODE ***
 // *** If action=search, get search terms from URL and query database ***
-if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search") {
+if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['action']) && $_GET['action'] == "search") {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	printf("<center><h1>Search Results</h1></center>");
 
 	$record_limit = 100; // the number of search results to display per page
@@ -74,7 +74,7 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	$scount = 0;
 
 	printf("<table border=0>");
-	if(is_member("editlibrary") && isset($_GET['bulkedit'])) {
+	if(permission_level() >= $djland_permission_levels['workstudy'] && isset($_GET['bulkedit'])) {
 
 		?>
 		<!--JAVASCRIPT HELPER CALLS-->
@@ -130,10 +130,8 @@ if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "search"
 	$scount = 0;
 	
 foreach($dbarray as $i => $row){
-	
-	
 		
-		if(is_member("editlibrary")) {
+		if(permission_level() >= $djland_permission_levels['volunteer']) {
 //			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], $row["id"], $row["catalog"] ? $row["catalog"] : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".$row["id"]."\" name=id".$scount."><input type=hidden value=\"".$row["catalog"]."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
 
 		echo "<tr><td align=right>[<a href=".$_SERVER['SCRIPT_NAME'].
@@ -206,7 +204,7 @@ foreach($dbarray as $i => $row){
 
 	
 	
-	if(is_member("editlibrary") && isset($_GET['bulkedit'])) {
+	if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['bulkedit'])) {
 		?><tr><td align=right><input type=submit VALUE="Update" tabindex=32767></td><td></td></tr><?php
 		
 	}
@@ -219,8 +217,8 @@ foreach($dbarray as $i => $row){
 	}
 
 }
-else if(is_member("editlibrary") && isset($_GET['action']) && $_GET['action'] == "bulkedit") {
-	printf("<br><table align=center class=playsheet><tr><td>");
+else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && $_GET['action'] == "bulkedit") {
+	printf("<br><table align=center class=center><tr><td>");
 	printf("<center><br><h1>Bulk Catalog Edit</h1></center>");
 	$scount = 0;
 	while(isset($_POST['id'.$scount]) && isset($_POST['newcat'.$scount])) {
@@ -232,7 +230,7 @@ else if(is_member("editlibrary") && isset($_GET['action']) && $_GET['action'] ==
 	}
 	?></td></tr></table><?php
 }
-else if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "view") {
+else if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['action']) && $_GET['action'] == "view") {
 
 	if(isset($_GET['id']) && $_GET['id']) {
 		$id = fas($_GET['id']);
@@ -243,7 +241,7 @@ else if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "vi
 
 	$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	printf("<center><br><h1>Library Record</h1></center>");
 	if(mysqli_num_rows($sresult)) {
 			printf("<table align=center border=0>");
@@ -270,9 +268,9 @@ else if(is_member("library") && isset($_GET['action']) && $_GET['action'] == "vi
 	?></td></tr></table><?php
 
 }
-else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
+else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
 
-	printf("<br><table align=center class=playsheet><tr><td>");
+	printf("<br><table class=center><tr><td>");
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'submit') {
 		$current_date = date('Y-m-d');
@@ -326,7 +324,7 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 			printf("<br>No Such Record...");
 		}
 
-		printf("</center><hr width=90%%>");
+		printf("</center><hr width=50%%>");
 
 		$ed = 0;
 	}
@@ -413,8 +411,8 @@ else if(is_member("editlibrary") && isset($_GET['action']) && ($_GET['action'] =
 	}	
 }
 	// *** VIEW MODE ***
-else if(is_member("library")){
-	printf("<br><table align=center class=playsheet><tr><td><center><br><h1>Search Library</h1></center>");
+else if(permission_level() >= $djland_permission_levels['member']){
+	printf("<br><table align=center class=center><tr><td><center><br><h1>Search Library</h1></center>");
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
@@ -422,12 +420,12 @@ else if(is_member("library")){
 	printf(" <INPUT TYPE=submit VALUE=\"Basic Search\">\n");
 	printf("</FORM></CENTER>\n");
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
 	printf("<INPUT TYPE=submit VALUE=\"Recent Entries\">\n");
 	printf("</FORM></CENTER>\n");
 
-	printf("<hr width=90%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 ?>
 	<table border=0 align=center><tr><td align=left nowrap>
 	<INPUT TYPE=hidden NAME=action VALUE=search>
@@ -469,15 +467,15 @@ else if(is_member("library")){
 	</td></tr></table>
 	<center>
 <?php
-	if(is_member("editlibrary")) {
+	if(permission_level() >= $djland_permission_levels['volunteer']) {
 		echo "Edit<input type=checkbox name=bulkedit>";
 		
 	}
 ?>
 	<input type=submit VALUE="Advanced Search">
 	<?php
-	if(is_member("editlibrary")) {
-		echo "<br/><br/><br/><br/><a href='./dupenuker.php'> --&gt; duplicate finder </a>";
+	if(permission_level() >= $djland_permission_levels['volunteer']) {
+		echo "<br/><br/><br/><br/><a href='dupenuker.php'>duplicate finder </a>";
 	}
 	?>
 	</center>

@@ -2,7 +2,7 @@
 //SECURITY HEADER
 
 include_once("session_header.php");
-require_once("config.php");
+//require_once("../config.php");
 require_once("db_header.php");
 require_once("login_header.php");
 date_default_timezone_set($station_info['timezone']);
@@ -49,7 +49,9 @@ function is_member($test_group) {
 
 function permission_level(){
 	global $db, $sv_username, $djland_permission_levels;
-
+	if(!isset($_SESSION['sv_id'])){
+		return -1;
+	}
 	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
 	$result = $db->query($query);
 	$level = -1; //failure return value
@@ -75,9 +77,7 @@ function permission_level(){
 function is_paid(){
     global $pdo_db;
     //Session contains member id.
-
-
-    $query = "SELECT CASE paid WHEN '1' THEN '1' ELSE '0' END AS paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
+    $query = "SELECT paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
@@ -87,9 +87,7 @@ function is_paid(){
     }catch(PDOException $pdoe){
         echo $pdoe->getMessage();
     }
-
     if(sizeof($result)>0){
-
     	return true;
     }else{
     	return false;
@@ -103,30 +101,33 @@ function has_show_access($show_id){
 
 	if (permission_level() >= $djland_permission_levels['staff']) return true;
 
-	$query = 'SELECT member_id FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
-
-
+	$query = 'SELECT count(member_id) AS count FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
 	if ( !isset($show_id) || $result = mysqli_query($db, $query)) {
-		$access = mysqli_fetch_assoc($result);
-		$access = $access['member_id'] == $_SESSION['sv_id'];
-		return $access;
-			} else {
-		echo ' could not check for show access - db problem:'.$query;
+		$count = mysqli_fetch_assoc($result);
+		if($count > 0){
+			return true;
+		}else {
+			return false; 
+		}
+	} else {
+		echo 'function has_show_access() could not check for show access - db problem:'.$query;
 		return false;
 	}
 }
 
 function users_show(){
-	global $db;
-	$query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];
-
+	global $db,$djland_permission_levels;
+	if(permission_level() >= $djland_permission_levels['staff']){
+		$query = "SELECT show_id FROM shows WHERE active ='1'";
+	}else{
+		$query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];
+	}
 	if ( $result = mysqli_query($db, $query)) {
 		if(mysqli_num_rows($result) <= 0) return false;
 		$show = mysqli_fetch_assoc($result);
-		$show = $show['show_id'];
-		return $show;
+		return $show['show_id'];
 	} else {
-		echo ' could not check for show access - db problem:'.$query;
+		echo 'function users_show() could not check for show access - db problem:'.$query;
 		return false;
 	}
 }
@@ -146,7 +147,7 @@ function users_channel($show = false){
 			$channel = $channel['podcast_channel_id'];
 			return $channel;
 		} else {
-			echo ' could not check for show access - db problem:'.$query;
+			echo ' function users_channel() could not check for show access - db problem:'.$query;
 			return false;
 		}
 

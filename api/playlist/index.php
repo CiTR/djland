@@ -9,19 +9,15 @@
 
 require_once('../api_common.php');
 
-if (isset($_GET['ID'])){
-  $id = $_GET['ID'];
-} else {
-  $error .= ' please supply playlist id ( /playlist?ID=## ) ';
-  $blame_request = true;
-}
 
-if (!is_numeric($id)){
-  $error .= ' ID parameter should not be a string ';
-  $blame_request = true;
-}
+$id = isset($_GET['ID']) && is_numeric($_GET['ID']) ? $_GET['ID'] * 1 : 0;
 
-if ($error != '') finish();
+if (!$id) {
+	$error = "[ERROR] please supply a numeric playlist id ( /playlist?ID=##) ";
+	$blame_request = true;
+	finish();
+	exit;
+}
 
 $query = 'SELECT
           playsheets.id as playlist_id,
@@ -45,22 +41,28 @@ $rawdata = array();
 
 if ( $result = mysqli_query($db, $query) ) {
   if (mysqli_num_rows($result) == 0) {
-    $error .= "no finished playlist found with this ID: ".$id;
-    $blame_request = true;
+    //$error = " no playlist found with this ID: ".$id;
+    //$blame_request = true;
+    $data = array(
+    	'api_message' => '[NO RECORD FOUND]',
+    	'message'     => 'no playlist found with this ID: '.$id,
+    );
+    finish();
+	exit;
   }
   while ($row = mysqli_fetch_assoc($result)) {
     $rawdata = $row;
-
+    break;
   }
 
   $plays = array();
 
-  $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id;
+  $query = 'SELECT songs.artist, songs.title, songs.song, songs.composer, playitems.id FROM playitems JOIN songs ON playitems.song_id = songs.id WHERE playitems.playsheet_id='.$id .' order by playitems.id asc';
 
   if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
-        $error .= " no plays in this playlist! ";
-        $blame_request = true;
+        //$error .= " no plays in this playlist! ";
+        //$blame_request = true;
       } else {
 
         while ($row = mysqli_fetch_assoc($result2)){
@@ -97,6 +99,5 @@ if(isset($rawdata['episode_audio']) && $rawdata['episode_audio'] == ""){
 }
 
 $data = $rawdata;
-
 
 finish();

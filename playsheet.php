@@ -7,7 +7,7 @@ require_once("headers/menu_header.php");
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <base href='shows.php'>
-	<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+  <link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">";
 
 ?>
@@ -16,12 +16,12 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <?php
     print_menu();
 
-    $show_id = users_show();
+    $show_id = '325';
+    //users_show();
     $channel_id = users_channel();
-
     if ( is_numeric($show_id) && $show_id >0 ){
       // good, member owns a show
-    } else if (permission_level() >= $djland_permission_levels['staff']){
+    } else if (!isset($_GET['id']) && permission_level() >= $djland_permission_levels['staff']){
       // ok user is admin.. fine, but you need to select a show...
 
       if (array_key_exists('show',$_GET)){
@@ -50,18 +50,12 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 ?>
 
 <div class="wrapper">
-
-
 <div ng-app="djLand" ng-cloak >
 
   <div ng-controller="playsheetCtrl" >
 
     <h2> Playsheet {{playsheet.status == 1 ? "(draft)" : ""}} </h2>
-
-
     <div >
-
-
       <div id="left">
         Playsheet Type: <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
           <option value="Syndicated">Syndicated</option>
@@ -106,7 +100,7 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
                 ng-change="$parent.adjust_times();"></select>]
 
           <input class="date_picker" type="text" datepicker-popup="{{format}}"
-                 ng-model="playsheet.start_time"  is-open="opened"
+                 ng-model="playsheet.start_time"  is-open="datepicker.opened"
                  ng-required="true" close-text="Close" ng-hide="true"
                  ng-change="$parent.date_change();" />
           <br/>
@@ -154,7 +148,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <button class="tools">+</button>
         <button class="tools">-</button>
       </div>
-      {{playsheet.plays}}
       <ul ui-sortable ng-model="playsheet.plays">
         <li ng-repeat="row in playsheet.plays track by $index" class="music_li" ng-class="{socan: socan}">
           <div class="music_row" ng-class="{music_row_socan: socan}">
@@ -209,7 +202,6 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
             <button class="tools right" ng-click="add(0)" ng-show="playsheet.plays.length == 0" >&nbsp;+&nbsp;music</button>
     </div>
-
     <div class="spokenword_block">
     <h2>Spoken Word</h2>
 <span class="left" id="ads" >
@@ -423,17 +415,14 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 
       if (permission_level() >= $djland_permission_levels['staff']){
         // ADMIN
-
         echo "djland.value('adminStatus',true);";
-
       } else {
         // REGULAR DJ
-
         echo "djland.value('adminStatus',false);";
         }
 
       echo "  djland.value('show_id', ".$show_id.");".
-              "djland.value('channel_id', ".$channel_id.");";
+              "djland.value('channel_id', ".($channel_id || 1).");";
 
   ?>
 

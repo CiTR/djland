@@ -59,8 +59,8 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     echo json_encode($statement->fetchObject());
                     
                 } catch (PDOException $pdoe) {
-                    http_response_code(500);
-                    echo json_encode(__FILE__." ".$pdoe->getMessage());
+                    http_response_code(400);
+                    echo json_encode(__FILE__." GET REQUEST ERROR ".$pdoe->getMessage());
                 }
             }
             break;
@@ -93,6 +93,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                 //Bind variables to values in query
                 $statement->bindValue(":member_id",$_POST['member_id']);
                 foreach($member as $key => $value){
+                        if($member[$key] = '') $member[$key] = 'null';
                         $statement->bindValue(":".$key,$member[$key]);     
                 }
 
@@ -102,8 +103,8 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     http_response_code(200);
                     echo json_encode(true);
                 }catch(PDOException $pdoe){
-                    http_response_code(404);
-                    echo json_encode($pdoe->getMessage());
+                    http_response_code(400);
+                    echo json_encode(__FILE__." POST REQUEST ERROR ".$pdoe->getMessage());
                 }
             }else{
                 http_response_code(400);
@@ -136,7 +137,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                         }
                     }catch(PDOException $e){
                         //Return error message if error occurs
-                        $result = $e->getMessage();
+                        $result = __FILE__." PUT REQUEST ERROR ".$e->getMessage();
                     }
                     
                     echo json_encode($result); 

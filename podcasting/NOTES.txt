@@ -7,7 +7,6 @@ channel='id' [or 'all' to update all xml files]
 
 	Write RSS xml files corresponding to the data in djland's podcast channel + episode tables.  Will update (overwrite) one channel's file or every single file if 'all' is given for channel id#
 
-
 ************************************
 
 /episode.php
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `podcast_episodes` (
 
 3) open djland.citr.ca/podcasting/ingest_xml.php in browser
 
-4) open djland.citr.ca/podcasting/write_xml.php?channel=all
+4) open djland.citr.ca/podcasting/writexml.php?channel=all
 
 5) open djland.citr.ca/podcasting/connect-shows-with-channels.php
 

@@ -37,7 +37,7 @@ print_menu();
 $adLib = new AdLib($mysqli_sam,$db);
 
 $today = date('m/d/Y', get_time());
-echo '<h1>ad  report</h1>';;
+echo '<h1>Ad Report</h1>';;
 
 	echo "First select a date range:<br/>";
 	echo '<form id="adreport">
@@ -47,12 +47,12 @@ echo '<h1>ad  report</h1>';;
 			<label for="to">End Date: </label>
 			<input type="text" id="to" name="to" value="'.$today.'"/>
 			<br/>
-			(optional) Filter by ad: '.
+			(optional) Filter by Ad: '.
 			
 			$adLib->generateAdSelector()
 			.'</form>
 			
-			<button id="submitDates">Get ad report</button><span id="loadStatus">&nbsp;</span>
+			<button id="submitDates">Get Ad Report</button><span id="loadStatus">&nbsp;</span>
 			
 			<br/><br/>
 			<div id="result">&nbsp;</div>';

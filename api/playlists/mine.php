@@ -17,13 +17,13 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
 
 $query = '
     SELECT *,
-    playlists.id as ps_id,
+    playsheets.id as ps_id,
     podcast_episodes.id as ep_id
-    FROM playlists
-    LEFT JOIN podcast_episodes on playlists.podcast_episode = podcast_episodes.id
-    WHERE playlists.show_id = '.users_show().'
+    FROM playsheets
+    LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
+    WHERE playsheets.show_id = '.users_show().'
     ORDER BY
-      playlists.start_time
+      playsheets.start_time
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 

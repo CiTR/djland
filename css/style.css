@@ -17,21 +17,35 @@ font-family: Helvetica,Arial;
 	background-image: url('../images/wallpaper.jpg');
 	color:white;
 }
+.invisible{
+  display:none;
+}
 
  ul, li {
-    list-style-type: none;
     padding-left: 0
   }
 
 ul{
+    list-style-type: disc;
     padding:0px;
     margin:0px;
 }
 li{
     margin:0px;
 }
+ol{
+    list-style-type: decimal;
+    padding: 0px;
+    margin: 0px;
+}
+
 h1,h2,h3,h4{
 	text-align: center;
+  padding:0px;
+  margin:0px;
+}
+h1{
+  font-size:2.2em;
 }
 td.menu a:link{ color: #000000; text-decoration: underline; }
 td.menu a:visited { color: #000000; text-decoration: underline;}
@@ -41,7 +55,9 @@ a:link { color: #FFFFFF;  }
 a:visited { color: #FFFFFF; }
 a:hover { color: #000000; background-color: #BEBEBE; }
 a:active { color: #660000; }
-
+.table-hover > tbody > tr:hover {
+  background-color: #222299;
+}
 .header-left{
 	text-align:left;
 }
@@ -52,6 +68,7 @@ input, select, textarea, option{
 	border-style: solid;
 	border-width: 0;
 }
+
 .ie select, .ie input, .ie textarea {
 	background-color: #000977;
 }
@@ -67,13 +84,9 @@ input, select, textarea, option{
     width: 1024px;
     min-height:80%;
     overflow:auto;
-    max-height:100%;
+    max-height:80%;
     margin-right: auto;
     margin-left: auto;
-    margin-top:10px;
-    padding-top:10px;
-    padding-left:10px;
-    padding-right:10px;
     border-right-width: 1px;
     border-left-width: 1px;
     border-right-style: solid;
@@ -91,7 +104,6 @@ input, select, textarea, option{
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
-
   display: flex;
   align-items: center;
 }
@@ -143,9 +155,23 @@ input, select, textarea, option{
 .text-center{
 	text-align: center;
 }
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
 .center{
 	margin-left:auto;
 	margin-right:auto;
+  width: 90%;
+}
+.padded{
+  padding-top:5px;
+}
+.side-padded{
+  padding-left:5px;
+  padding-right:5px;
 }
 .clearfix:after { 
    content: " ";
@@ -156,7 +182,8 @@ input, select, textarea, option{
 .border{
   border-style:solid;
   border-width:1px;
-  border-color: white;
+  border-colo
+  r: white;
 }
 .pad-top{
   padding-top:2px;
@@ -200,6 +227,32 @@ input, select, textarea, option{
 	display:none;
 }
 
+/* CSS to make the YCBM Links not look bad and take up all the page width */  
+.youCanBookMe_Container iframe{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height:850px;
+}
+.youCanBookMe_Container{
+  position: relative;
+  margin-left: auto;
+  margin-right:auto;
+  /*Don't touch - anything below 56% induces a scrollbar on 100%zoom, 1080p chrome, any over makes it too long*/
+  padding-bottom: 56%;
+  /* Padding top is sometimes req'd by things like youtube videos */
+  padding-top: 0;
+  height: 0;
+  overflow: hidden;
+  /* YCBM Adds stupidly wide margins in it's iframe if you don't limit the contianer width */
+  max-width: 830px;
+}
+.poweredByFooter{
+  !important display:none;
+}
+
 /* MENU STYLING CSS */
 #nav{ 
 	list-style:none;
@@ -222,6 +275,7 @@ input, select, textarea, option{
 .nav.mini{
     list-style:none;
     width:940px;
+    margin: 0 auto;
     margin:0px auto 0px auto;
     height:25px;
     font-size: 16px;
@@ -424,9 +478,7 @@ div#main {
 #mainleft {
 	font-size:1em;
 	line-height:1.3em;
-	width:90%;
 	position:relative;
-	margin-left:10px;
 }
 
 #mainleft input, #mainleft textarea{
@@ -468,6 +520,11 @@ div#main {
     box-shadow:inset 0px 0px 1px #BEBEBE;
 
 }
+.playitem > td >input{
+  font-size:0.8em;
+  width:95%;
+}
+
 .buttonContainer ul{
 	margin:0;
 	padding:0;
@@ -509,7 +566,16 @@ margin:10px;
 #ps-loading-image{
 display:none;
 }
-
+#result {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* max-height: 500px; */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-bottom: 15px;
+}
 
   #totals {
     position: fixed;
@@ -576,7 +642,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .music_row_heading {
     height:30px;
-    background-color: lightgrey;
+    background-color: none;
   }
 
   .music_row_heading input{
@@ -608,7 +674,9 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     min-height:400px;
   }
 
-
+.tooltip-inner{
+  max-width:350px;
+}
   .dragzone {
     cursor: default;
 
@@ -727,6 +795,83 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
   }
 
 
+/*
+  Podcasts Page CSS
+
+*/
+#popup{
+      position:fixed;
+      bottom:0;
+      right:0;
+      width:700px;
+      height:100%;
+      background-color: #88d2ba;
+      overflow:scroll;
+      z-index:20;
+    }
+
+    #closer{
+      position:fixed;
+      top:30px;
+      right:700px;
+      background-color:lightsteelblue;
+      color:black;
+      cursor:default;
+      font-size:2em;
+      line-height: 2em;
+    }
+    #closer:hover{
+      color:red;
+    }
+
+    .title{
+      font-size:1.2em;
+    }
+
+    .subtitle{
+      font-size:0.9em;
+      font-style: italic;
+    }
+    .podcast_date{
+      margin-left:-20px;
+      font-color:lightgrey;
+      font-size:0.8em;
+    }
+
+    .podcast_list_entry{
+      padding-left: 35px;
+    }
+    .tiny{
+      font-size:0.7em;
+      width:100%;
+      background-color:black;
+      overflow-wrap: break-word;
+    }
+
+    .lit{
+      background-color:darkblue;
+    }
+    button{
+      color:black;
+    }
+
+    .large-button{
+      height:40px;
+      font-size: 1.5em;
+    }
+
+    #mainleft a{
+      background-color:steelblue;
+      padding:2px;
+    }
+    #mainleft  a:hover{
+      color:greenyellow;
+    }
+    #message{
+      font-size:2em;
+    }
+
+
   .adPlay {
     /* Checkbox text */
     text-align: center;
@@ -791,9 +936,10 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .blocker{
     position:relative;
-    bottom:30px;
+    bottom:40px;
     background-color:black;
     color:red;
+    height:70px;
   }
   .sam_row button {
 
@@ -1026,7 +1172,57 @@ table { border-collapse: collapse; }
 .charting-status{
 	width:30px;
 }
+/*------------------*/
+/*	Show Edit Page--*/
+/*------------------*/
+.member_owner div{
+  width:50%;
+}
 
+/*----------------------------*/
+/*--------CHARTING (OLD)------------*/
+/*----------------------------*/
+.chartBanner
+*{
+	background-color: #004080;
+}
+
+.chartSong
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartArtist
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartAlbum
+{
+	float: left;
+	width: 200px;
+	position:relative;
+}
+.chartShow
+{
+	float: left;
+	width: 300px;
+	position:relative;
+}
+.chartDate
+{
+	float: left;
+	width: 150px;
+	position:relative;
+}
+.chartCC
+{
+	float: left;
+	width:35px;
+	position:relative;
+}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
@@ -1219,9 +1415,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	width:90%;
 }
 
-.padded{
-	padding-top:5px;
-}
+
 .memlabel{
 	padding-left:15px;
 }
@@ -1306,6 +1500,20 @@ height:auto;
  
 
 /* PLAYSHEET SAM CSS */
+
+
+.table {
+  display:table;
+	margin-bottom: 5px;
+}
+.table p, .table div {
+	display: table-row;
+}
+.table select, .table span, .table textarea {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
 
 #sam-box{
 	display:none;
@@ -1490,8 +1698,8 @@ div#ui-datepicker-div{
     box-shadow:inset 0px 0px 1px #BEBEBE;
 	display:inline-block;
 		position:relative;
-	max-width:200px;
-	max-height:200px;
+	max-width:300px;
+	max-height:300px;
 	margin-top:0px;
 	z-index:50 !important;
 }
@@ -1666,8 +1874,6 @@ border-width:0 0 2px 2px;
 border-color:black;
 border-style:solid;
 }
-
-
 
 div#report-summary{
 width:800px;

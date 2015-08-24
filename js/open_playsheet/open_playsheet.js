@@ -2,11 +2,16 @@
 	var app = angular.module('openPlaysheet',['djland.api']);
 	
 	app.controller('openPlaysheetController',function(call){
+		this.member_id = $('#member_id').attr('value');
+		console.log(this.member_id);
 		this_=this;
-		call.getUserPlaysheets(15).then(function(playsheets){
+		call.getMemberPlaysheets(this_.member_id).then(function(playsheets){
 			this_.playsheets = playsheets.data;
-		});
+		});		
 	});
-	
-
 })();
+
+function go(element){
+	href = element.getAttribute('data-href');
+	window.document.location = href;
+	}

@@ -80,7 +80,9 @@ Member.prototype = {
 	},
 	getInfo:function(){
 		for(var field in this.member_info){
-			this['member_info'][field] = get(field);
+			if(!(this['member_info']['member_type'] != 'Student' && field == 'student_no')){
+				this['member_info'][field] = get(field);
+			}
 		}
 	},
 	getInterests:function(){
@@ -155,6 +157,15 @@ Member.prototype = {
         dataType: "json"
 		});
         
+    },update:function(){
+    	$.when(this.updateInfo(),this.updateInterests()).then(function(r1,r2){
+    		alert("Successfully Updated");
+    		console.log(r1.data,r2.data);
+    	},function(err1,err2){
+    		alert("Something Went Wrong");
+    		console.log(err1);
+    		console.log(err2);
+    	});    	
     },updateInfo:function(){
     	this.getInfo();
 		$_this = this;
@@ -166,7 +177,7 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},updateInterests:function(membership_year){
+	},updateInterests:function(){
 		this.getInterests();
 		$_this = this;
 		return $.ajax({
@@ -188,8 +199,7 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},
-	updatePassword:function(){
+	},updatePassword:function(){
 		$_this = this;
 		return $.ajax({
 			type:"POST",

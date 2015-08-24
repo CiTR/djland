@@ -54,7 +54,7 @@ if($using_sam){
 	$adLib = new AdLib(false, $db );
 }
 
-echo '<h1>ad scheduler';
+echo '<h1>Ad Scheduler';
 echo '</h1>';
 
 

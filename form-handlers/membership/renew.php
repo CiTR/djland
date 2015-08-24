@@ -71,7 +71,7 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                     echo json_encode(true);
                     exit();
                 }catch(PDOException $pdoe){
-                    http_response_code(404);
+                    http_response_code(400);
                     echo json_encode($pdoe->getMessage());
                     exit();
                 }

@@ -1,31 +1,186 @@
 (function (){
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
-	var shows;
-	app.controller('PlaysheetController',function($filter,call){
-   
-    	this.id = id;
-    	this.socan = socan;
-    	this.name = name;
+
+    var row_template = {"show_id":this.show_id,"playsheet_id":this.id,"song_id":null,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":this.start_time,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.crtc,"lang":this.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":null,"insert_song_start_minute":null,"insert_song_length_minute":null,"insert_song_length_second":null,"song":{"id":null,"artist":null,"title":null,"song":null,"composer":null}};
+	app.controller('PlaysheetController',function($filter,$scope,call){
+       	this.id = playsheet_id;
+        this.member_id = member_id;
+
+        this.socan = socan;
     	this.tags = tags;
     	this.help = help;
 		this.shows = Array();
 		var this_ = this;
+      	
+        this.add = function(id){
+            if(id > 0){
+                var row = angular.copy(this.playitems[id]);
+            }else{
+                var row = row_template;
 
-		call.getEveryonesPlaysheets(10).then(function(data){
-			//this_.shows = data;
-			this_.playsheet_id = data.data[0].playsheet_id;
-			return call.getFullPlaylistData(data.data[3].playsheet_id)	
-		}).then(function(data){
-			var playsheet = data.data;
-			this_.playsheet = playsheet;
-			this_.playitems = playsheet.plays;
-			this_.ads = playsheet.ads;
-			this_.edit_date = playsheet.edit_date;
-			this_.host_name = playsheet.hostname;
-		});  
-	  	
+            }
+            for(var item in row){
+                if(item != 'lang' && item != 'crtc_category'){
+                    row[item]=null;
+                }else if(item == 'lang'){
+                    row[item] = this.lang;
+                }else{
+                    row[item] = this.crtc;
+                }
+            }
+            this.playitems.splice(id+1,0,row_template); 
+        }
+        this.remove = function(id){
+            this.playitems.splice(id,1);
+            if(this.playitems.length < 1){
+                $('#addRows').text("Add Row");
+            }
+
+        }
+        this.addFiveRows = function(){
+            if($('#addRows').text() == "Add Five More Rows"){
+                for(var i=0;i<5;i++){
+                    this.add(this.playitems.length-1);
+                } 
+            }else{
+                this.add(0);
+                $('#addRows').text("Add Five More Rows");
+            }
+
+            
+        }
+        this.addStartRow = function(){
+            this.playitems = Array();
+            this.playitems[0] = row_template;
+        }  
+        this.updateShowValues = function(){
+            this.active_show=this.member_shows[this.show_value];
+        }
+        
+
+        this.init = function(){
+            if(this.id > 0){
+                call.getPlaysheetData(this.id).then(function(data){
+                    //this_.shows = data;
+                    //this_.playsheet_id = data.data.playsheet_id;
+                    var playsheet = data.data;
+                    for(var item in playsheet.playsheet){
+                        this_[item] = playsheet.playsheet[item];
+                    }
+                    var start = new Date(this_.start_time);
+                    var end = new Date(start.getFullYear() +'-'+start.getMonth()+'-'+start.getDate() + " " +this_.end_time);
+                    this_.start_hour =  $filter('pad')(start.getHours(),2);
+                    this_.start_minute = $filter('pad')(start.getMinutes(),2);
+                    this_.end_hour =  $filter('pad')(end.getHours(),2);
+                    this_.end_minute = $filter('pad')(end.getMinutes(),2);
+                    this_.show = playsheet.show;
+                    this_.playitems = playsheet.playitems;
+                    if(this_.playitems < 1){
+                        $('#addRows').text("Add Row");
+                    }
+                    this_.ads = playsheet.ads;
+                    this_.host = playsheet.host;
+                    call.getMemberShows(this.member_id).then(function(data){
+                        var shows = data.data.shows;
+                        this_.member_shows = shows;
+                        for(var show in shows){
+                            if(this_.show.name.toString() == shows[show].name.toString()){
+                                this_.active_show = shows[show];
+                                this_.show_value = show;   
+                            }
+                        }
+                    });
+                });
+
+
+            }else{
+                //TODO: Check member id, find possible shows. Load info of next show they have.
+                var start = new Date();
+                start.setMinutes(0);
+                start.setSeconds(0);
+                var end = new Date(start);
+                end.setHours(end.getHours()+1);
+                this.start_time = start;
+                this.end_time = end;
+
+                this.start_hour =  $filter('pad')(start.getHours(),2);
+                this.start_minute = $filter('pad')(start.getMinutes(),2);
+                this.end_hour =  $filter('pad')(end.getHours(),2);
+                this.end_minute = $filter('pad')(end.getMinutes(),2);
+
+                this.type='Live';
+                this.crtc = 30;
+                this.lang = 'English';
+                this.id = 1;
+               this.addStartRow();
+                call.getMemberShows(this.member_id).then(function(data){
+                    var shows = data.data.shows;
+                    this_.member_shows = shows;
+                    console.log(shows);
+                    for(var show in shows){
+                        this_.active_show = shows[show];
+                        this_.show_value = ""+shows[show]['id'] || 'Fill In Host';
+                        break;
+                    }
+                });
+            }
+
+
+        }
+        
+
+        this.init();
+
     });
 
+    app.controller('datepicker', function($filter,playsheet_time) {
+      this.today = function() {
+        this.dt = new Date();
+      };
+      this.clear = function () {
+        this.dt = null;
+      };
+      this.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.opened = true;
+      };
+      this.format = 'medium';
+      this.start_time = playsheet_time.start_time;
+      this.end_time = playsheet_time.end_time;
+      this.start_hour = playsheet_time.start_hour;
+
+    });
+
+    app.service('playsheet_time',function(){
+        this.start_time;
+        this.end_time
+        this.start_hour;
+        this.end_minute;
+        this.end_hour;
+        this.end_minute;
+        return{
+            getStart: function(){
+                this.start_time.setHours(this.start_hour);
+                this.start_time.setMinutes(this.start_minute);
+                return this.start_time;
+            },
+            getEnd: function(){
+                this.end_time.setHours(this.end_hour);
+                this.end_time.setMinutes(this.end_minute);
+                return this.end_time;
+            },setTime: function(start_time,end_time){
+                this.start_time = start_time;
+                this.end_time=end_time;
+
+                this.start_hour = start_time.getHours();
+                this.start_minute = new Date(start_time).getMinutes();
+
+                this.end_hour = new Date(end_time).getHours();
+                this.end_minute = new Date(end_time).getMinutes();
+            }
+        }
+    });
     //Declares <playitem> tag
     app.directive('playitem',function(){
     	return{
@@ -39,35 +194,12 @@
     		templateUrl: 'templates/ad.html'
     	}
     });
-    var socan = true;
+    var socan = false;
     
-	var id = '101';
+    
 	var name = 'Test Show';
-	var tags = ['cancon','femcon','hit','instrumental','partial','playlist'];
-	var help = {
-	albumHelp:			"Enter the title of the album, EP, or single that the track is released on."
-    +"If playing an mp3 or streaming from youtube, soundcloud etc, please take a moment to find the title of the album,"
-    +"EP, or single that the track is released on. If it is unreleased, enter 'unreleased'. "
-    +"If you are confused about what to enter here, please contact music@citr.ca This will help the artist chart "
-    +"and help provide listeners with information about the release."
-    ,artistHelp:		"Enter the name of the artist"
-    ,compHelp: 			"Enter the name of the composer or author"
-    ,timeHelp1:			"Hit the CUE button when the song starts playing . Or enter the start time. Time Format is HOUR:MIN"
-    ,timeHelp2:			"Hit the END button when the song stops playing. Enter the duration of the song.Time Format is MIN:SECOND"
-    ,plHelp:			"Playlist (New) Content: Was the song released in the last 6 months? "
-    ,ccHelp:			"Cancon: two of the following must apply: Music written by a Canadian, Artist performing it is Canadian, Performance takes place in Canada, Lyrics Are written by a Canadian"
-    ,feHelp:			"Femcon: two of the following must apply: Music is written by a female, Performers (at least one) are female, Words are written by a female, Recording is made by a female engineer."
-    ,instHelp:			"Is the song instrumental? (no vocals)"
-    ,partHelp:			"Partial songs: For a track to count as cancon, you need to play the whole thing and it must be at least 1 minute."
-    ,hitHelp:			"Has the song ever been a hit in Canada?  By law, the maximum is 10% Hits played, but we aim for 0% - you really shouldn't play hits!"
-    ,themeHelp:			"Is the song your themesong?"
-    ,backgroundHelp:	"Is the song playing in the background? Talking over the intro to a song does not count as background"
-    ,crtcHelp:			"Category 2: Rock, Pop, Dance, Country, Acoustic, Easy Listening.  Category 3: Concert, Folk, World Beat, Jazz, Blues, Religious, Experimental. <a href':'http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target':'_blank'>Click for more info</a>"
-    ,songHelp:			"Enter the name of the song"
-    ,langHelp:			"The language of the song"
-    ,adsHelp:			"Station IDs must be played or spoken in the first ten minutes of every hour"
-    ,guestsHelp:		"Any non-music features on your show.  This helps us to reach our 15% local spoken word minimum"
-    ,toolsHelp:			"Tools: [-] Delete the row  [+]Add a new row below"
-
-	} 
 })();
+
+
+
+    

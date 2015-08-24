@@ -1,5 +1,5 @@
 window.myNameSpace = window.myNameSpace || { };
-var faculties,training,interests,provinces,member_types,permission_levels,program_years;
+var faculties,training,interests,provinces,member_types,permission_levels,program_years,primary_genres;
 $(document).ready ( function() {
 	getConstants();
 	function getConstants(){
@@ -17,6 +17,7 @@ $(document).ready ( function() {
 			member_types = data['member_types'];
 			permission_levels = data['permission_levels'];
 			program_years = data['program_years'];
+			primary_genres = data['primary_genres'];
 		}).fail(function(data){
 			console.log("failed to load constants");
 		});

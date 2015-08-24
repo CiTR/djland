@@ -1,6 +1,6 @@
 <?php
 //MENU HEADER
-require_once(dirname(__DIR__).'\config.php');
+require_once(dirname(__DIR__).'/config.php');
 //require_once(__DIR__.'\function_header.php');
 require_once('security_header.php');
 
@@ -10,7 +10,7 @@ function admin_menu()
     if (permission_level() >= $djland_permission_levels['administrator']) : ?>
         <ul id="admin-nav" class="nav mini">
             <li class="nodrop"><a href="../admin.php">Membership Admin</a></li>
-            <li class="nodrop"><a href="data_structures">Data Structures</a></li>
+            <li class="nodrop"><a href="data_structures.php">Data Structures</a></li>
         </ul>
     <?php
     endif;
@@ -20,7 +20,6 @@ function print_menu(){
 	global $enabled,$djland_permission_levels;
     //admin_menu();
 ?>
-	
 	<ul id=nav>
 		<?php 
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
@@ -45,13 +44,15 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
+		
 		<?php 
 			endif;
-			if(permission_level() >= $djland_permission_levels['workstudy']) : 
-				if($enabled['shows']) :?>
+			
+				if($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']) :?>
 					<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
 		<?php 
 				endif; 
+			if(permission_level() >= $djland_permission_levels['workstudy']) : 
 				if($enabled['adscheduler']) : ?>
 					<li class=drop><a href="adscheduler.php">Manage Ads</a>
 						<div class="dropdown small">
@@ -89,27 +90,41 @@ function print_menu(){
 		<?php 
 			endif; 
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
-				<li class=drop><a href="playsheet.php">Playsheets</a>
+				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
 							<ul>
-									<li><a href="playsheet.php">New Playsheet</a></li>
-									<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
-									<li><a href="playsheet.php?action=list">Open a Playsheet</a></li>
+									<li><a href="playsheet_angular.php">New Playsheet</a></li>
+									<!-- Temp Removed <li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li> -->
+									<li><a href="open_playsheet.php">Open a Playsheet</a></li>
+									<li><a href="podcasts.php"> Podcasts </a></li>
+
 							</ul>
 						</div>
 					</div>
 				</li>
 		<?php 
-			endif; ?>
-		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
-		<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
-			<li class="menu_right nodrop"><a href="help.php" target="_blank"> Help </a></li>
-		<?php endif; ?>
-		<li class="menu_right nodrop"><a href="member_settings.php">My Info</a></li>
-
+			endif;
+			 ?>
+		 <li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+		 <li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
+			<div class="dropdown small">
+				<div class=small>
+					<ul>
+						<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>
+						<li><a href="member_resources.php">Resources</a></li>				
+						<li><a href="studio_booking.php">Book a Studio</a></li>
+						<?php endif; ?>
+						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
+						<li><a href="help.php" target="_blank"> Help </a></li>
+						<?php endif; ?>
+						<li><a href="member_settings.php">My Info</a></li>
+					</ul>
+				</div>
+			</div>
+		</li>
 	</ul>
-
+	<br/>
 <?php } 
 // useful when testing time-related things while faking time
 //echo date('l jS \of F Y h:i:s A', get_time());

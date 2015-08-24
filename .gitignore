@@ -1,18 +1,53 @@
+#Ignore Config Files
 headers/config.php
 config.php
+podcast-config.php
+
+#Ignore Any generated static pages.
 JSONDATA
 JSONDATA/*
+static
+logs/log.html
+php_errors.log
+
+#Ignore Windows Crap
+Thumbs.db
+
+#Ignore Project Files from Various IDE's
 *.sublime-project
 *.sublime-workspace
-static
-web.config
-logs/log.html
 *.idea
 .buildpath
 .project
-.gitignore
 org.eclipse.php.core.prefs
 org.eclipse.wst.common.project.facet.core.xml
-php_errors.log
+
+#Ignore Web Configuration Files
+web.config
+.htaccess
+.htpasswd
+awstats*
+disabled_by_virtualmin.html
+icon
+
+#Ignore phpmyadmin
+phpmyadmin/
+
+#Ignore Python Development ENV
 PY
-Thumbs.db
+
+#Ignore Generated XML Content
+*.xml
+
+
+
+
+
+
+
+
+
+
+
+
+

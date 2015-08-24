@@ -1,84 +1,90 @@
 
-  angular.module('djland.api',[]).factory('call', function ($http, $location) {
+angular.module('djland.api',[]).factory('call', function ($http, $location) {
 
-    var API_URL_BASE = 'api2/public'; // api.citr.ca when live
+var API_URL_BASE = 'api2/public'; // api.citr.ca when live
 
-    return {
+return {
+	getConstants: function(){
+		return $http.get('/headers/constants.php');
+	},
+	getMemberPlaysheets: function (member_id) {
+		return $http.get(API_URL_BASE + '/playsheet/member/' + member_id);
+	},
+	getPlaysheets: function (limit) {
+		limit = limit || 50;
+		return $http.get(API_URL_BASE + '/playsheet/list/' + limit);
+	},
+	getPlaysheetData: function (playsheet_id) {
+		return $http.get(API_URL_BASE+ '/playsheet/' + playsheet_id);
+	},
+	getMemberShows: function(member_id){
+		return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
+	},
+	getShow: function(show_id){
+		return $http.get(API_URL_BASE+'/show/'+show_id);
+	},
+	getFullPlaylistData: function (id) {
+	return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);
+	},
 
-      getUserPlaysheets: function (host_id) {
-        return $http.get(API_URL_BASE + '/playsheet/host/' + host_id);
-      },
-      getEveryonesPlaysheets: function (limit,offset) {
-        limit = limit || 100; offset = offset || 0;
-        return $http.get(API_URL_BASE + '/playlists/all.php?LIMIT='+limit+'&offset='+offset);
-      },
+	getEpisodes: function () {
+	return $http.get(API_URL_BASE + '/episodes/mine.php');
+	},
 
-      getPlaylistData: function (id) {
-        return $http.get(API_URL_BASE+ '/playlist?ID='+id);
-      },
+	getSpecialBroadcasts: function () {
+	return $http.get(API_URL_BASE + '/specialevents');
+	},
 
-      getFullPlaylistData: function (id) {
-        return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);
-      },
+	saveSpecialBroadcast: function (data) {
+	return $http.post(API_URL_BASE + '/specialevents/save.php', data);
+	},
 
-      getEpisodes: function () {
-        return $http.get(API_URL_BASE + '/episodes/mine.php');
-      },
+	createSpecialBroadcast: function (data) {
+	return $http.post(API_URL_BASE + '/specialevents/create.php', data);
+	},
 
-      getSpecialBroadcasts: function () {
-        return $http.get(API_URL_BASE + '/specialevents');
-      },
+	getRecentSamPlays: function () {
+	return $http.get(API_URL_BASE + '/sam/recent.php');
+	},
 
-      saveSpecialBroadcast: function (data) {
-        return $http.post(API_URL_BASE + '/specialevents/save.php', data);
-      },
+	getSamFromRange: function(min, max) {
+	return $http.post(API_URL_BASE + '/sam/range.php',angular.toJson({'min':min,'max':max}));
 
-      createSpecialBroadcast: function (data) {
-        return $http.post(API_URL_BASE + '/specialevents/create.php', data);
-      },
+	},
 
-      getRecentSamPlays: function () {
-        return $http.get(API_URL_BASE + '/sam/recent.php');
-      },
+	savePlaylist: function(data) {
+	return $http.post(API_URL_BASE + '/playlist/save.php', data);
+	},
 
-      getSamFromRange: function(min, max) {
-        return $http.post(API_URL_BASE + '/sam/range.php',angular.toJson({'min':min,'max':max}));
+	getNextShow: function(time){
+	return $http.get(API_URL_BASE + '/schedule/nextshow.php?time='+time)
+	},
 
-      },
+	getAdsFromBlock: function(time){
+	return $http.get(API_URL_BASE + '/ad/scheduled.php?timeblock='+time)
+	},
 
-      savePlaylist: function(data) {
-        return $http.post(API_URL_BASE + '/playlist/save.php', data);
-      },
+	savePodcast: function(podcast){
+	return $http.post(API_URL_BASE + '/episode/create.php')
+	},
 
-      getNextShow: function(time){
-        return $http.get(API_URL_BASE + '/schedule/nextshow.php?time='+time)
-      },
-
-      getAdsFromBlock: function(time){
-        return $http.get(API_URL_BASE + '/ad/scheduled.php?timeblock='+time)
-      },
-
-      savePodcast: function(podcast){
-        return $http.post(API_URL_BASE + '/episode/create.php')
-      },
-
-      getArchiverTime: function(){
-        return $http.get('http://archive.citr.ca/time/')
-      },
+	getArchiverTime: function(){
+	return $http.get('http://archive.citr.ca/time/')
+	},
 
 
-      updatePodcast: function(data, updateAudio){
-        data.updateAudio = updateAudio;
-        return $http.post(API_URL_BASE + '/podcasting/update_podcast.php', data)
-      },
+	updatePodcast: function(data, updateAudio){
+	data.updateAudio = updateAudio;
+	return $http.post(API_URL_BASE + '/podcasting/update_podcast.php', data)
+	},
 
-      logout: function(){
-        return $http.post('')
-      },
+	logout: function(){
+	return $http.post('')
+	},
 
-      def: function(){
-        return $http.post(API_URL_BASE + '/deferMe.php',{data: 'some data'});
-      }
+	def: function(){
+	return $http.post(API_URL_BASE + '/deferMe.php',{data: 'some data'});
+	}
 
-    };
-  });
+	};
+});

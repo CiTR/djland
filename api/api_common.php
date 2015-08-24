@@ -31,7 +31,7 @@ function finish(){
             }
   } else {
 
-    if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
+    //if ( is_array($data) && sizeof($data) == 1 ) $data = $data[0];
 
     $data = convertEntities($data);
 
@@ -59,12 +59,13 @@ function utf8_json_encode($arr, $option = false)
   return mb_decode_numericentity(json_encode($arr, $option), array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
 }
 
-function convertEntities($data){
 
+function convertEntities($data){
   if( is_string($data)){
     if( defined('ENT_HTML5')) {
        return html_entity_decode(html_entity_decode($data, ENT_QUOTES), ENT_HTML5);
     } else {
+
       return   html_entity_decode($data,ENT_QUOTES);
     }
   } else if(is_array($data)){
@@ -74,9 +75,8 @@ function convertEntities($data){
       }
     }
   return $data;
-
-  return;
 }
+
 function get_array($table, $idfield = 'id', $fields = 'basic'){
   global $_GET;
   global $db;
@@ -158,7 +158,3 @@ function getIDbyRow($table,$array){
   }
 }
 $incoming_data =  (array) json_decode(file_get_contents('php://input'));
-
-
-$incoming_data =  (array) json_decode(file_get_contents('php://input'));
-

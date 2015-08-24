@@ -9,6 +9,7 @@ if(isset($_GET['channel'])){
 } else {
 	echo ' need channel id or "all"';
 }
+    echo "<a href='connect-shows-with-channels.php'>Connect shows to channels (or try)</a>";
 
 if ($channel_id == 'all'){
 $query = "SELECT * FROM podcast_channels ";
@@ -88,8 +89,6 @@ function make_podcast($channel,$episodes){
 	$xml .= '<link>'.$channel['link'].'</link>';
 	$xml .= '<generator> podcast mate 2000 </generator>';
 
-
-
 	foreach($episodes as $i => $episode){
 
 		foreach($episode as $in => $val){
@@ -114,8 +113,13 @@ function make_podcast($channel,$episodes){
 
 	$xml.= '</channel></rss>';
 
-
 //	$filename = urlencode(html_entity_decode(str_replace(' ','',$channel['title'])).'.xml';
+	/*
+	$remote_prefix = "http://playlist.citr.ca/podcasting/xml/";
+	$local_channel_xml = substr($channel['xml'],strlen($remote_prefix));
+	$file = fopen('podcast-media/xml/'.$local_channel_xml,'wb');
+	*/
+
 	$file = fopen('podcast-media/xml/'.$channel['xml'],'wb');
 
 	if($file){
