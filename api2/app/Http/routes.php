@@ -49,7 +49,12 @@ Route::get('/show',function(){
 });
 Route::get('/show/{id}',function($show_id = id){
 	//return DB::table('shows')->select('id','name'->get();
-	return Show::find($show_id);
+	$show = Show::find($show_id);
+	$host = Show::find($show_id)->host->name;
+	$social = Show::find($show_id)->social;
+	$show->host = $host;
+	$show->social = $social;
+	return Response::json($show);
 });
 
 

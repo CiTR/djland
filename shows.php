@@ -618,45 +618,31 @@ if(permission_level() >= $djland_permission_levels['workstudy'] ) {
 	<script>
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 	</script>
-	<div ng-controller="editShow as show">
-		{{show}}
-		<h3> Show name </h3>
+	<div id='wrapper' ng-controller="editShow as show" ng-show='show.id'>
+		
+		<h3 class='text-left'> Show name </h3>
 		<input ng-model='show.name'/>
-		<h3>Show Description</h3>
-		<input ng-model='show.description'>
-		<h3>Primary Genre</h3>
+		<h3 class='text-left'>Show Host/Operator</h3>
+		<input class='wideinput' ng-model='show.host'>
+		<h3 class='text-left'>Primary Genre</h3>
 		<select ng-model='show.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
+		<h3 class='text-left'>Secondary Genres</h3>
+		<input class='wideinput' ng-model='show.secondary_genre_tags'></input>
+		<h3 class='text-left'>Show Description</h3>
+		<textarea class='col1' rows='10'  ng-model='show.show_desc'></textarea>
+		<h3 class='text-left'>Website</h3>
+		<input class='wideinput' ng-model='show.website'></input>
+		<h3 class='text-left'>Show Image</h3>
+		<input class='wideinput' ng-model='show.show_img'></input>
 
-	</div>
-	<!-- <div ng-controller="showCtrl" class="form_wrap show_form">
-		<br ng-init="formData.show_id = <?php //echo $show_id;?>" />
-		<h3>editing show information</h3>
+		{{show}}
 
-		<h3>{{showData.name}}</h3>
-		Show Name:<br/>
-		<input ng-model="formData.name">
-		</input><br/>
-		Description:<br/>
-  <textarea class="description" ng-model="formData.show_desc" >
-  </textarea><br/>
-
-		genre:<br/>
-		<input ng-model="formData.secondary_genre_tags" >
-		</input><br/>
-
-		website:<br/>
-		<input ng-model="formData.website">
-		</input><br/>
-
-		message:{{message}}<br/>
-
+		<h3 class='text-left'></h3>
 
 		<button ng-click="save();" >save info (tba)</button>
-		<textarea cols="100" rows="20">{{formData}}</textarea>
-	</div> -->
 
 
-
+	</div>
 </div>
 
 
