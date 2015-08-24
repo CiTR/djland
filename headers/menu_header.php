@@ -107,6 +107,7 @@ function print_menu(){
 			endif;
 			 ?>
 		 <li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+		 <li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
 		 <li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
 			<div class="dropdown small">
 				<div class=small>
@@ -118,7 +119,6 @@ function print_menu(){
 						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 						<li><a href="help.php" target="_blank"> Help </a></li>
 						<?php endif; ?>
-						<li><a href="member_settings.php">My Info</a></li>
 					</ul>
 				</div>
 			</div>
