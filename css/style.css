@@ -239,12 +239,13 @@ input, select, textarea, option{
   position: relative;
   margin-left: auto;
   margin-right:auto;
+  /*Don't touch - anything below 50% induces a scrollbar, any over makes it too long*/
   padding-bottom: 50%;
   /* Padding top is sometimes req'd by things like youtube videos */
   padding-top: 0;
   height: 0;
   overflow: hidden;
-  /* YCBM Adds stupidly wide margins in it's iframe if you don't limit the contianer width;= */
+  /* YCBM Adds stupidly wide margins in it's iframe if you don't limit the contianer width */
   max-width: 830px;
 }
 

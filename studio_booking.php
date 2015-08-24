@@ -24,7 +24,7 @@ error_reporting(E_ALL);
 		<h1>Studio Booking</h1>
 
 		<div class="center">
-			<div class="center" style="max-width:830px">
+				<div class="center" style="max-width:830px">
 				<p><i>*If you book studio time, you have a fifteen minute grace period to show up on time. If not, the studio will be claimed on a first-come, first-serve basis for interested members.</i><br/>
 			</div>
 			<div class="youCanBookMe_Container">
