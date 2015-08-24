@@ -30,8 +30,8 @@
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
 			 <div class='col1 padded side-padded'>
 		      	<div class='col2'>
-		      		<h4 class='text-left'>Show Data</h4>
-			        Playsheet Type: 
+		      		<!-- <<h4 class='text-left'>Show Data</h4> -->
+			        Type: 
 			        <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
 			          	<option value="Syndicated">Syndicated</option>
 			          	<option value="Live">Live</option>
@@ -49,14 +49,19 @@
 					</span>
 					<br/>Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()" ng-options="id as show.name for (id,show) in playsheet.member_shows">
 					</select>
-					<br/>Host: <input ng-model="playsheet.active_show.host"></input>
+					<br/>Show Host(s): <input ng-model="playsheet.active_show.host"></input>
 					<br/>Language: <input ng-model="playsheet.lang"></input>
 					<br/>CRTC Category: 
 					<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
 		      	</div>
 		      	<div class='col2'>
 			        <div class='col1' >
-			        	<h4 class='text-left'>Show Time</h4>
+			        	
+			        		<h4 class='text-left'>Date:</h4>
+			        	
+			        	<div class="right" ng-controller="datepicker as datepicker">
+				        	<button ng-click="datepicker.open($event)" >Change Date</button><br/>
+				    	</div>
 			        	Start Time:
 			        	[<select ng-options="n for n in [] | range:00:24"  ng-model="playsheet.start_hour"></select> :
 			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60 "
@@ -73,10 +78,7 @@
 				                 ng-change="datepicker.date_change();" />
 			          	<br/>
 			         	{{playsheet.start_time | date:'EEE, MMM d, y'}}
-			         	<div ng-controller="datepicker as datepicker">
-				        	<button ng-click="datepicker.open($event)" >change date</button><br/>
-				    	</div>
-			        </div>
+			         </div>
 			        <br>&nbsp </br>
 			        <div class="col1 podcast_block_inner">
 			        	<h4 class='text-left'>Podcast Time</h4>
@@ -110,7 +112,7 @@
 		    <div class='container'>
 				<h2>Music</h2>
 				<table class='playitem'>
-					<tr class='music_row_heading playitem' >
+					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>
 						<th><input value="Artist"readonly tooltip="{{playsheet.help.artist}}"></input></th>
 						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.song}}"></input></th>
@@ -124,30 +126,32 @@
 						<th><th><th></th>
 					</tr>
 					<tbody ui-sortable ng-model='playsheet.playitems'>
-					<tr class='playitem' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
+						<tr class='playitem border' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
 				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
 				<br/>
 			</div>
-			<div class='col1'>
+		</br>
+			<div class='col1' style="padding-bottom: 5px">
 				<div class='col2 side-padded'>
-					<h2> Ads, PSAs, Station IDs </h2>
+					<h3> Ads, PSAs, Station IDs </h3>
 					<table class='table table-responsive border'>
 						</th><th>#</th><th>Time</th><th>Type</th><th>Name</th><th>Played</th>
 						<tr ad ng-model='playsheet.ads' ng-repeat="ad in playsheet.ads track by $index"></tr>
 					</table>
 				</div>
 				<div class='col2 side-padded'>
-					<h2>Episode Info</h2>
-					<h4 class='text-left'>Title: </h4>
+					<h3>Episode Info</h3>
+					<!-- <h4 class='text-left'>Title: </h4>
 					<input ng-model="playsheet.podcast.title" required ng-change="isTheFormAcceptible()" placeholder="(required)"><br/>
           			<h4 class='text-left'>Subtitle:</h4>
-          			<input ng-model="playsheet.podcast.subtitle" size="60" >
+          			<input ng-model="playsheet.podcast.subtitle" size="60" > -->
 					<h4 class='text-left'>Episode Description</h4>
 					<textarea class='fill' ng-model='spoken_word'></textarea>
 				</div>
 			</div>
+			<hr style="padding:15px">
 			<div class='col1 text-center'>
 				<button class="large-button" ng-click="submit()" ng-hide="submitting">Save Show</button>
 				<p ng-show="submitting">Submitting...</p>

@@ -642,7 +642,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .music_row_heading {
     height:30px;
-    background-color: lightgrey;
+    background-color: none;
   }
 
   .music_row_heading input{
@@ -936,9 +936,10 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .blocker{
     position:relative;
-    bottom:30px;
+    bottom:40px;
     background-color:black;
     color:red;
+    height:70px;
   }
   .sam_row button {
 
