@@ -230,10 +230,11 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 
 				<hr>
 				<div class='containerrow'>
-					<div class='col1'>
-						<div class='col6'>Interests for:</div><select id ='membership_year'></select> 
+					
+					<div class='col2'>
+						<div class='col4'>Interests for: </div><div class='side-padded'><select class='left' id ='membership_year'></select></div> 
 					</div>
-
+					<div class='col2'><div class='left'>Paid<input type='checkbox' id='paid'></div> </div>
 					
 					<div class='col1'>
 						<?php foreach($djland_interests as $key=>$interest): ?> 

@@ -64,7 +64,7 @@ if(!isset($_GET['id'])){
         <span class="subtitle" >{{plodcast.podcast.subtitle? plodcast.podcast.subtitle : '(no subtitle)'}}</span>
       </p>
       <br />
-      <a ng-href="playsheet.php?action=edit&id={{plodcast.playlist.id}}" target="_self">go to playsheet</a>
+      <a ng-href="playsheet_angular.php?id={{plodcast.playlist.id}}" target="_self">go to playsheet</a>
       <span >
       <button ng-click="edit_episode(plodcast);" >edit podcast </button>
       </span>

@@ -54,10 +54,10 @@ function loadCharts(){
 				$('#charting-row'+$j).append('<div id=charting-playlist'+$j+' class=charting-playlist> </div>');
 				$('#charting-row'+$j).append('<div id=charting-status'+$j+' class=charting-status> </div>');
 				if(data[$j].is_can==true){
-					$('#charting-cancon'+$j).append('<img src=images/CAN.png>');
+					$('#charting-cancon'+$j).append('<img src=./images/tags/is_can.png>');
 				}
 				if(data[$j].is_pl==true){
-					$('#charting-playlist'+$j).append('<img src=images/PL.png>');
+					$('#charting-playlist'+$j).append('<img src=./images/tags/playlist.png>');
 				}
 				if(data[$j].status==1){
 					$('#charting-status'+$j).append('Draft')
