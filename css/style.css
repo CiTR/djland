@@ -82,9 +82,8 @@ input, select, textarea, option{
 #wrapper {
     background-color: rgba(0,0,0,.2);
     width: 1024px;
-    min-height:80%;
+    height:auto;
     overflow:auto;
-    max-height:80%;
     margin-right: auto;
     margin-left: auto;
     border-right-width: 1px;
@@ -527,8 +526,8 @@ div#main {
 
 }
 .playitem > td >input{
-  font-size:0.8em;
   width:95%;
+  
 }
 
 .buttonContainer ul{

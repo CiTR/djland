@@ -28,7 +28,7 @@
 		<?php print_menu(); 
 		?>
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
-			 <div class='col1 padded side-padded'>
+			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
@@ -67,69 +67,56 @@
 					<!-- <<h4 class='text-left'>Show Data</h4> -->
 			        
 					</div>
-		      	<div class='col2'>
+		      	<div class='col2 padded'>
 			        <div class='col1' >
-			        	<div class='col1'>
-			        		<div class='col4'>
-			        			<h4 class='text-left'>Date:</h4>
-			        		</div>
-				            <div class="col2" ng-controller="datepicker as datepicker">
-				        		{{playsheet.start_time | date:'EEE, MMM d, y'}}
+					    <div class='col2 side-padded'>
+			        		<div class="col1" ng-controller="datepicker as datepicker">
+					        	Date: {{playsheet.start_time | date:'EEE, MMM d, y'}}
+					    	</div>
+					    	<div class='col1 padded'>
 					        	<button ng-click="datepicker.open($event)" >Change Date</button>
-					        	</br>
 					    	</div>
 					    </div>
-				    	</br>
-				   		</br>
-			        	Start Time:
-			        	[<select ng-options="n for n in [] | range:00:24"  ng-model="playsheet.start_hour"></select> :
-			       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60 "
-			                ng-change="datepicker.adjust_times();"></select>]
-				        End Time:
-				        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 "
-				                 ng-change="$datepicker.adjust_times();"></select> :
-				        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60"
-				                ng-change="datepicker.adjust_times();"></select>]
+					    <div class='col2'>
+				        	<div>
+					        	Start Time:
+					        	[<select ng-options="n for n in [] | range:00:24"  ng-model="playsheet.start_hour"></select> :
+					       	 	<select ng-model="playsheet.start_minute" ng-options="n for n in [] | range:0:60 "
+					                ng-change="datepicker.adjust_times();"></select> :
+				                 <select ng-model="playsheet.start_second" ng-options="n for n in [] | range:0:60"
+					                ng-change="datepicker.adjust_times();"></select>]
+			                </div>
+			                <div class='padded'>
+						        End Time:
+						        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 "
+						                 ng-change="$datepicker.adjust_times();"></select> :
+						        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60"
+						                ng-change="datepicker.adjust_times();"></select> :
+						        <select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60"
+						                ng-change="datepicker.adjust_times();"></select>]
+					          	<input class="date_picker" type="text" datepicker-popup="{{format}}"
+						                 ng-model="playsheet.start_time"  is-open="datepicker.opened"
+						                 ng-required="true" close-text="Close" ng-hide="true"
+						                 ng-change="datepicker.date_change();" />
+			                </div>
+			          	</div>
+		        		<div class='col1 double-padded-top'>
+		        			<div class='right'>
+		        				Podcast Timing
+						    	<button ng-click="startShow()">
+		          						Start Show Now
+		          				</button>
+								<button ng-click="endShow()">
+									End Show Now
+								</button>
+							</div>
 
-			          	<input class="date_picker" type="text" datepicker-popup="{{format}}"
-				                 ng-model="playsheet.start_time"  is-open="datepicker.opened"
-				                 ng-required="true" close-text="Close" ng-hide="true"
-				                 ng-change="datepicker.date_change();" />
-			          	<br/>
-
-			         </div>
-			        <br>&nbsp </br>
-			        <div class="col1 podcast_block_inner">
-			        	<h4 class='text-left'>Podcast Time</h4>
-	          			<div class='col2'>
-	          				<button ng-click="startPodcast()"  ng-hide="startClicked">
-	          					Start Podcast at {{currentTime | date: 'mediumTime'}}
-	          				</button>
-	          			</div>
-	          			<div class='col2'>
-	          				<span ng-show="startClicked">
-	          					podcast start : {{playsheet.start_time | date: 'mediumTime'}}
-	          				</span>
-	          			</div>
-	          			<div class='col2'>
-							<button ng-click="endPodcast()" ng-show="startClicked && !endClicked">
-								End Podcast at {{currentTime | date: 'mediumTime'}}
-							</button>
-						</div>
-						<div class='col2'>
-							<span ng-show="endClicked">
-								podcast end : {{playsheet.end_time | date: 'mediumTime'}}
-							</span>
-						</div>
-	            		(podcast times can also be adjusted from Podcasts page)
-	        			<span ng-show="adminStatus"> podcast will be created:
-	            			<input type="checkbox" ng-model="playsheet.podcast.active" ng-true-value="'1'" ng-false-value="'0'"></input>
-		        		</span>
-          			</div>
+					    </div>
+				    </div>
 			    </div>
 			</div>
 		    <div class='container'>
-				<h2>Music</h2>
+				<h3 class='double-padded-top'>Music</h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>
@@ -151,26 +138,26 @@
 				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
 				<br/>
 			</div>
-		</br>
-			<div class='col1' style="padding-bottom: 5px">
-				<div class='col2 side-padded'>
-					<h3> Ads, PSAs, Station IDs </h3>
+		
+			<div class='col1 double-padded-top'>
+				<div class='span4col5 side-padded double-padded-top'>
+					<h4> Ads, PSAs, Station IDs </h4>
 					<table class='table table-responsive border'>
 						</th><th>#</th><th>Time</th><th>Type</th><th>Name</th><th>Played</th>
 						<tr ad ng-model='playsheet.ads' ng-repeat="ad in playsheet.ads track by $index"></tr>
 					</table>
 				</div>
-				<div class='col2 side-padded'>
-					<h3>Episode Info</h3>
-					<!-- <h4 class='text-left'>Title: </h4>
-					<input ng-model="playsheet.podcast.title" required ng-change="isTheFormAcceptible()" placeholder="(required)"><br/>
-          			<h4 class='text-left'>Subtitle:</h4>
-          			<input ng-model="playsheet.podcast.subtitle" size="60" > -->
-					<h4 class='text-left'>Episode Description</h4>
-					<textarea class='fill' ng-model='spoken_word'></textarea>
+				<div class='col5 side-padded right double-padded-top'>
+					<h4>Spoken Word Duration</h4>
+        			<div class='col2 text-center'>Hours<select ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select></div>
+      				<div class='col2 text-center'>Minutes<select ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select></div>
 				</div>
 			</div>
-			<hr style="padding:15px">
+			<div class='col1 side-padded double-padded-top'>
+					<h4>Episode Description</h4>
+					<textarea class='fill' ng-model='spoken_word'></textarea>
+			</div>
+			<hr style="side-padded">
 			<div class='col1 text-center'>
 				<button class="large-button" ng-click="submit()" ng-hide="submitting">Save Show</button>
 				<p ng-show="submitting">Submitting...</p>
