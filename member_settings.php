@@ -17,9 +17,9 @@
 		<script src="js/jquery.form.js"></script>
         <script type='text/javascript' src='js/test.js'></script>
  		<script type='text/javascript' src='js/constants.js'/></script>
-        <script type='text/javascript' src='js/member.js'></script>
-        <script type='text/javascript' src='js/membership_functions.js'></script>
-		<script src="js/member_settings.js"></script>
+        <script type='text/javascript' src='js/membership/member.js'></script>
+        <script type='text/javascript' src='js/membership/functions.js'></script>
+		<script type='text/javascript' src="js/membership/settings.js"></script>
 	</head>
 	<body class='wallpaper'>
 		<?php 

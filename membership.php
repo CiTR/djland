@@ -17,10 +17,10 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 		<script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
         <script type='text/javascript' src='js/constants.js'/></script>
-        <script type='text/javascript' src='js/member.js'></script>
-        <script type='text/javascript' src='js/membership_functions.js'></script>
-		<script type='text/javascript' src='js/membership.js'></script>
-		<script type="text/javascript" src="js/admin.js"></script>
+        <script type='text/javascript' src='js/membership/member.js'></script>
+        <script type='text/javascript' src='js/membership/functions.js'></script>
+		<script type='text/javascript' src='js/membership/membership.js'></script>
+		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
 		
 		
