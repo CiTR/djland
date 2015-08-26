@@ -60,8 +60,38 @@
         this.updateShowValues = function(){
             this.active_show=this.member_shows[this.show_value];
         }
+        this.updateStart = function(){
+            var start = new Date(this.start_time);
+            start.setHours(this.start_hour);
+            start.setMinutes(this.start_minute);
+            start.setSeconds(this.start_second);
+            this.start_time = start;
+        }
+        this.updateEnd = function(){
+            var end = new Date(this.end_time);
+            end.setHours(this.end_hour);
+            end.setMinutes(this.end_minute);
+            end.setSeconds(this.end_second);
+            this.end_time = end;
+        }
+        this.startShow = function(){
+            var start = new Date();
+            this.start_hour =  $filter('pad')(start.getHours(),2);
+            this.start_minute = $filter('pad')(start.getMinutes(),2);
+            this.start_second = $filter('pad')(start.getSeconds(),2);
+            this.start_time = start;
+        }
+        this.endShow = function(){
+            var end = new Date();
+            this.end_hour =  $filter('pad')(end.getHours(),2);
+            this.end_minute = $filter('pad')(end.getMinutes(),2);
+            this.end_second = $filter('pad')(end.getSeconds(),2);
+            //this.end_time = $filter('date')(end, 'HH:mm:ss');
+            this.end_time = end;
+        }
         
 
+        
         this.init = function(){
             if(this.id > 0){
                 call.getPlaysheetData(this.id).then(function(data){
@@ -74,12 +104,7 @@
                     var start = new Date(this_.start_time);
                     var end = new Date(start.getFullYear() +'-'+start.getMonth()+'-'+start.getDate() + " " +this_.end_time);
                     
-                    this_.start_hour =  $filter('pad')(start.getHours(),2);
-                    this_.start_minute = $filter('pad')(start.getMinutes(),2);
-                    this_.start_second = $filter('pad')(start.getSeconds(),2);
-                    this_.end_hour =  $filter('pad')(end.getHours(),2);
-                    this_.end_minute = $filter('pad')(end.getMinutes(),2);
-                    this_.end_second = $filter('pad')(end.getSeconds(),2);
+                   
                     
                     this_.show = playsheet.show;
                     this_.playitems = playsheet.playitems;
@@ -107,16 +132,10 @@
                 start.setMinutes(0);
                 start.setSeconds(0);
                 var end = new Date(start);
+                console.log(start);
                 end.setHours(end.getHours()+1);
                 this.start_time = start;
                 this.end_time = end;
-
-                this_.start_hour =  $filter('pad')(start.getHours(),2);
-                this_.start_minute = $filter('pad')(start.getMinutes(),2);
-                this_.start_second = $filter('pad')(start.getSeconds(),2);
-                this_.end_hour =  $filter('pad')(end.getHours(),2);
-                this_.end_minute = $filter('pad')(end.getMinutes(),2);
-                this_.end_second = $filter('pad')(end.getSeconds(),2);
                     
                 this.type='Live';
                 this.crtc = 30;
@@ -141,6 +160,14 @@
                 });
             }
 
+            this.start_hour =  $filter('pad')(start.getHours(),2);
+            this.start_minute = $filter('pad')(start.getMinutes(),2);
+            this.start_second = $filter('pad')(start.getSeconds(),2);
+            this.end_hour =  $filter('pad')(end.getHours(),2);
+            this.end_minute = $filter('pad')(end.getMinutes(),2);
+            this.end_second = $filter('pad')(end.getSeconds(),2);
+        
+
 
         }
         
@@ -149,7 +176,7 @@
 
     });
 
-    app.controller('datepicker', function($filter,playsheet_time) {
+    app.controller('datepicker', function($filter) {
       this.today = function() {
         this.dt = new Date();
       };
@@ -157,15 +184,12 @@
         this.dt = null;
       };
       this.open = function($event) {
+        console.log('event');
         $event.preventDefault();
         $event.stopPropagation();
         this.opened = true;
       };
       this.format = 'medium';
-      this.start_time = playsheet_time.start_time;
-      this.end_time = playsheet_time.end_time;
-      this.start_hour = playsheet_time.start_hour;
-
     });
 
     app.service('playsheet_time',function(){
