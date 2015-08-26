@@ -103,8 +103,14 @@
                     }
                     var start = new Date(this_.start_time);
                     var end = new Date(start.getFullYear() +'-'+start.getMonth()+'-'+start.getDate() + " " +this_.end_time);
-                    
+                    this_.start_hour =  $filter('pad')(start.getHours(),2);
+                    this_.start_minute = $filter('pad')(start.getMinutes(),2);
+                    this_.start_second = $filter('pad')(start.getSeconds(),2);
+                    this_.end_hour =  $filter('pad')(end.getHours(),2);
+                    this_.end_minute = $filter('pad')(end.getMinutes(),2);
+                    this_.end_second = $filter('pad')(end.getSeconds(),2);
                    
+                             
                     
                     this_.show = playsheet.show;
                     this_.playitems = playsheet.playitems;
@@ -116,7 +122,9 @@
                     call.getMemberShows(this.member_id).then(function(data){
                         var shows = data.data.shows;
                         this_.member_shows = shows;
+
                         for(var show in shows){
+
                             if(this_.show.name.toString() == shows[show].name.toString()){
                                 this_.active_show = shows[show];
                                 this_.show_value = show;   
@@ -136,7 +144,12 @@
                 end.setHours(end.getHours()+1);
                 this.start_time = start;
                 this.end_time = end;
-                    
+                this.start_hour =  $filter('pad')(start.getHours(),2);
+                this.start_minute = $filter('pad')(start.getMinutes(),2);
+                this.start_second = $filter('pad')(start.getSeconds(),2);
+                this.end_hour =  $filter('pad')(end.getHours(),2);
+                this.end_minute = $filter('pad')(end.getMinutes(),2);
+                this.end_second = $filter('pad')(end.getSeconds(),2);
                 this.type='Live';
                 this.crtc = 30;
                 this.lang = 'English';
@@ -155,17 +168,14 @@
                     for(var show in shows){
                         this_.active_show = shows[show];
                         this_.show_value = ""+shows[show]['id'] || 'Fill In Host';
+
                         break;
                     }
                 });
+
             }
 
-            this.start_hour =  $filter('pad')(start.getHours(),2);
-            this.start_minute = $filter('pad')(start.getMinutes(),2);
-            this.start_second = $filter('pad')(start.getSeconds(),2);
-            this.end_hour =  $filter('pad')(end.getHours(),2);
-            this.end_minute = $filter('pad')(end.getMinutes(),2);
-            this.end_second = $filter('pad')(end.getSeconds(),2);
+           
         
 
 
@@ -190,36 +200,6 @@
         this.opened = true;
       };
       this.format = 'medium';
-    });
-
-    app.service('playsheet_time',function(){
-        this.start_time;
-        this.end_time
-        this.start_hour;
-        this.end_minute;
-        this.end_hour;
-        this.end_minute;
-        return{
-            getStart: function(){
-                this.start_time.setHours(this.start_hour);
-                this.start_time.setMinutes(this.start_minute);
-                return this.start_time;
-            },
-            getEnd: function(){
-                this.end_time.setHours(this.end_hour);
-                this.end_time.setMinutes(this.end_minute);
-                return this.end_time;
-            },setTime: function(start_time,end_time){
-                this.start_time = start_time;
-                this.end_time=end_time;
-
-                this.start_hour = start_time.getHours();
-                this.start_minute = new Date(start_time).getMinutes();
-
-                this.end_hour = new Date(end_time).getHours();
-                this.end_minute = new Date(end_time).getMinutes();
-            }
-        }
     });
     //Declares <playitem> tag
     app.directive('playitem',function(){

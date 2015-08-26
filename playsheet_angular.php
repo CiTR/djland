@@ -102,7 +102,7 @@
 			                </div>
 			          	</div>
 		        		<div class='col1 double-padded-top'>
-		        			<div class='right'>
+		        			<div >
 		        				Podcast Timing
 						    	<button ng-click="playsheet.startShow()">
 		          						Start Show Now
@@ -122,8 +122,8 @@
 					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>
 						<th><input value="Artist"readonly tooltip="{{playsheet.help.artist}}"></input></th>
-						<th><input value="Song" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.song}}"></input></th>
-						<th><input value="Album" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.album}}"></input></th>
+						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}"></input></th>
+						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}"></input></th>
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}"></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}"></input></th>
@@ -167,7 +167,6 @@
 					Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
 					<span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span>
 				</span>
-				<span ng-show="!formAcceptible">&nbsp;&nbsp;&nbsp;&nbsp;You did not set a podcast title (this is now required)</span>
 				<span ng-show="!(playsheet.end_time < currentTime)"><br/>Cannot save a future podcast - please save a draft and submit later. </span>
 				</div>
 				<br/>
