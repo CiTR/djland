@@ -629,7 +629,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
 
             <div id='wrapper' ng-controller="editShow as show" ng-show='show.id'>
                 <h4 class='text-left double-padded-top'> Show name </h4>
-                <input readonly ng-model='show.name'/>
+                <input readonly id='show_name' ng-model='show.name'/>
                 <h4 class='text-left double-padded-top'>Show Host/Operator</h4>
                 <input class='wideinput' ng-model='show.host'>
                 <h4 class='text-left double-padded-top'>Primary Genre</h4>
@@ -642,8 +642,30 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input class='wideinput' ng-model='show.show_img'>
-                <input type ='file' name='imageToUpload' id='imageToUpload'/><button ng-click='show.uploadImage()'>Upload Image</button>
+                <input class='wideinput' id='show_image' ng-model='show.show_img'>
+                <div ng-controller="FileUploadCtrl">
+                    <div class="row">
+                        <label for="fileToUpload">Either Choose files, or Drag Files</label><br />
+                        <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+                    </div>
+                    <div id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
+                    <div ng-show="files.length">
+                        <div ng-repeat="file in files.slice(0)">
+                            <span>{{file.webkitRelativePath || file.name}}</span>
+                            (<span ng-switch="file.size > 1024*1024">
+                            <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+                            <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+                            </span>)
+                        </div>
+                    <input type="button" ng-click="uploadFile()" value="Upload" />
+                    <div ng-show="progressVisible">
+                        <div class="percent">{{progress}}%</div>
+                            <div class="progress-bar">
+                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h4 class='text-left double-padded-top'>Links</h4>
                 <div ng-repeat='social in show.social track by $index'>
                     <input ng-model='social.social_name'>
