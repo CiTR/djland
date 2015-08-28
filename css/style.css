@@ -1203,7 +1203,7 @@ table { border-collapse: collapse; }
     border-image: initial;
 }
 .dropbox {
-    width: 15em;
+    max-width:8em;
     height: 3em;
     border: 2px solid #DDD;
     border-radius: 8px;

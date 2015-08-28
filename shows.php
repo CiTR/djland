@@ -667,10 +667,12 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     </div>
                 </div>
                 <h4 class='text-left double-padded-top'>Links</h4>
+                <button ng-click='show.addFirst()' ng-hide='show.social.length > 0'>+</button>
                 <div ng-repeat='social in show.social track by $index'>
                     <input ng-model='social.social_name'>
                     <input ng-model='social.social_url'>
-                    <input ng-model='social.short_name'>
+                    <button ng-click='show.addSocial($index)'>+</button>
+                    <button ng-click='show.removeSocial($index)'>-</button>
                 </div>
                 <h4 class='text-left double-padded-top'></h4>
                 <button ng-click="save();" >save info (tba)</button>

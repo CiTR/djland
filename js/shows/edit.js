@@ -3,27 +3,43 @@
     var app = angular.module('djland.editShow',['djland.api']);
     
     app.controller('editShow', function($scope, call, $location){
-        this.is_admin = false;
-        var this_ = this;
-        this.member_id = member_id;
-        call.getConstants().then(function(response){
-            this_.primary_genres = response.data.primary_genres;
-        });
-
-        call.getMemberShows(this.member_id).then(function(response){
-            var shows_list = response.data.shows;
-            for(var show in shows_list){
-                var show_id = shows_list[show]['id'];
-            }
-            call.getShow(show_id).then(function(response){
-                for(var prop in response.data){
-                    this_[prop] = response.data[prop];
-                }
-                console.log(this_);
-                //this_.show = response.data;
+        
+        
+        this.init = function(){
+            this.is_admin = false;
+            var this_ = this;
+             this.member_id = member_id;
+            call.getConstants().then(function(response){
+                this_.primary_genres = response.data.primary_genres;
             });
-        });
 
+            call.getMemberShows(this.member_id).then(function(response){
+                var shows_list = response.data.shows;
+
+                call.getShow(369).then(function(response){
+                    for(var prop in response.data){
+                        this_[prop] = response.data[prop];
+                    }
+                    console.log(this_);
+                    this_.social_template = {show_id: this_.id, social_name: null , social_url:null, short_name: null, unlink: 0};
+                    //this_.show = response.data;
+                });
+            });
+        }
+        this.addSocial = function(id){
+            var row = angular.copy(this.social_template);
+            if(id < 1){
+                this.social.push(row);
+            }else{
+                this.social.splice(id+1,0,row);
+            }
+        }
+        this.removeSocial = function(id){
+            this.social.splice(id,1);
+        }
+        this.addFirst = function(){
+            this.addSocial(0);
+        }
         this.save = function(){
             this.message = 'saving...';
             apiService.saveShowData($scope.formData)
@@ -39,6 +55,7 @@
             console.log('here');
 
         }
+        this.init();
     });
     app.controller('FileUploadCtrl',function($scope){
 
@@ -138,8 +155,6 @@
             if(upload_ok){
                 $('#show_image').val(web_path);
             }
-            
-
         }
 
         function uploadFailed(evt) {
@@ -153,6 +168,5 @@
             alert("The upload has been canceled by the user or the browser dropped the connection.")
         }
     });
-
 
 })();
