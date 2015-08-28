@@ -634,10 +634,11 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <input class='wideinput' ng-model='show.host'>
                 <h4 class='text-left double-padded-top'>Primary Genre</h4>
                 <select ng-model='show.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
-                <h4 class='text-left double-padded-top'>Secondary Genres</h4>
-                <input class='wideinput' ng-model='show.secondary_genre_tags'>
+                <h4 class='text-left'>Secondary Genres</h4>
+                <input class='wideinput' ng-model='show.secondary_genre_tags'/>
+                <h4 class='text-left double-padded-top'>Show Alert</h4>
+                <input ng-model='show.alerts'/>
                 <h4 class='text-left double-padded-top'>Show Description</h4>
-                <!-- I am sorry for such hack method for spacing this. Will fix properly when time avail. -->
                 <textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.show_desc'></textarea>
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.website'>
@@ -666,14 +667,19 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         </div>
                     </div>
                 </div>
-                <h4 class='text-left double-padded-top'>Links</h4>
-                <button ng-click='show.addFirst()' ng-hide='show.social.length > 0'>+</button>
-                <div ng-repeat='social in show.social track by $index'>
-                    <input ng-model='social.social_name'>
-                    <input ng-model='social.social_url'>
-                    <button ng-click='show.addSocial($index)'>+</button>
-                    <button ng-click='show.removeSocial($index)'>-</button>
-                </div>
+                <h4 class='text-left double-padded-top'>Social Media Links</h4>
+                <table class='table-condensed'>
+                    <tr><td>Social Media Type<td>URL<td>Add/Remove</tr>
+                    <tr><td><td><td><button ng-click='show.addFirst()' ng-hide='show.social.length > 0'>+</button></td></tr>
+                    <tr ng-repeat='social in show.social track by $index'>
+                    <td><input ng-model='social.social_name'></td>
+                    <td><input ng-model='social.social_url'></td>
+                    <td>
+                        <button ng-click='show.addSocial($index)'>+</button>
+                        <button ng-click='show.removeSocial($index)'>-</button>
+                    </td>
+                </tr>
+                </table>
                 <h4 class='text-left double-padded-top'></h4>
                 <button ng-click="save();" >save info (tba)</button>
             </div>
