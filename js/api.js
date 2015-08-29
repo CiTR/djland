@@ -23,6 +23,12 @@ return {
 	getShow: function(show_id){
 		return $http.get(API_URL_BASE+'/show/'+show_id);
 	},
+	getMemberPermissions: function(member_id){
+		return $http.get(API_URL_BASE+'/member/'+member_id+'/permission');
+	},
+	saveShow: function(show_object,social_objects){
+		return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects}));
+	},
 	getFullPlaylistData: function (id) {
 	return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);
 	},

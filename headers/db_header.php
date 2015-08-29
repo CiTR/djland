@@ -1,19 +1,8 @@
 <?php
 include_once("session_header.php");
 //DB HEADER
-if (file_exists('config.php')){ 
-// this check is because sometimes this script is accessed from the root 
-// and sometimes from a subfolder (like with an AJAX handler inside form-handlers)
-	require_once('config.php');
-} else if (file_exists('../config.php')) {
-	require_once('../config.php');
-} else if (file_exists('../../config.php')){
-	require_once('../../config.php');
-} else if (file_exists('../../../config.php')){
-	require_once('../../../config.php');
-}else if (file_exists('../../../../config.php')){
-	require_once('../../../config.php');
-}
+include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+global $station_info;
 date_default_timezone_set($station_info['timezone']);
 //*******************************************
 //*******************************************

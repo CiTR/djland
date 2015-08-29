@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function(){
 		->get();
 	});
 	Route::get('member/{id}/shows',function($member_id=id){
+		global $djland_permission_levels;
 		$permissions = Member::find($member_id)->user->permission;
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
@@ -41,15 +42,21 @@ Route::group(['middleware' => 'auth'], function(){
 		}
 		return  Response::json($shows);
 	});
+	Route::get('member/{id}/permission',function($member_id = id){
+		
+		$permission_levels = Member::find($member_id)->user->permission;
+		unset($permission_levels->user_id);
+		$permission = new stdClass();
+		$permission->permissions = $permission_levels;
+		return $permission_levels;
+	});
 });
 
 /* Show Routes */
 Route::get('/show',function(){
-	//return DB::table('shows')->select('id','name'->get();
 	return Show::all('id','name');
 });
 Route::get('/show/{id}',function($show_id = id){
-	//return DB::table('shows')->select('id','name'->get();
 	$show = Show::find($show_id);
 	$host = Show::find($show_id)->host->name;
 	$social = Show::find($show_id)->social;
@@ -58,13 +65,27 @@ Route::get('/show/{id}',function($show_id = id){
 	return Response::json($show);
 });
 
+Route::post('/show/{id}',function($show_id = id){
+	$show = Input::get()['show'];
+	$social = Input::get()['social'];
+
+	$s = Show::find($show_id);
+	$s->update($show);
+	$delete = Social::find($show_id);
+	$delete->delete();
+	foreach($social as $item){
+		Social::create($item);
+	}
+
+	
+
+});
+
 Route::get('/show/{id}/social',function($show_id = id){
-	//return DB::table('shows')->select('id','name'->get();
 	return Show::find($show_id)->social;
 });
 
 Route::get('/social/{id}',function($show_id = id){
-	//return DB::table('shows')->select('id','name'->get();
 	return Social::where('show_id','=',$show_id)->get();
 });
 
@@ -148,8 +169,21 @@ Route::get('/table',function(){
 });
 
 Route::get('/table/{table}',function($table_name =table){
-	echo "<pre>";
-	print_r(DB::select('DESCRIBE '.$table_name));
+	echo "<table>";
+	echo "<tr><th>Field<th>Type<th>Null<th>Key<th>Extra</tr>";
+	$table = DB::select('DESCRIBE '.$table_name);
+	foreach($table as $column){
+		echo "<tr>";
+		foreach($column as $item){
+			echo "<td>".$item."</td>";
+		}
+		echo "</tr>";
+	}
+	echo "</table>";
+	foreach($table as $column){
+		echo "'".$column->Field."', ";
+	}
+
 });
 
 

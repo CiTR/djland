@@ -1204,7 +1204,6 @@ table { border-collapse: collapse; }
 }
 .dropbox {
     max-width:8em;
-    height: 3em;
     border: 2px solid #DDD;
     border-radius: 8px;
     background-color: #FEFFEC;
@@ -1212,10 +1211,6 @@ table { border-collapse: collapse; }
     color: #BBB;
     font-size: 2em;
     font-family: Arial, sans-serif;
-}
-.dropbox span {
-    margin-top: 0.9em;
-    display: block;
 }
 .dropbox.not-available {
     background-color: #F88;
