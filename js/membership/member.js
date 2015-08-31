@@ -205,7 +205,7 @@ Member.prototype = {
 		});
 	},updatePassword:function(){
 		$_this = this;
-		if($('#password').length > 1){
+		if($('#password').val().length > 0){
 
 			return $.ajax({
 				type:"POST",

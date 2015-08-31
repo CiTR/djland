@@ -58,11 +58,9 @@ function permission_level(){
 	if($result){
 		$permissions = $result->fetch_object();
 		foreach($permissions as $perm_level => $value){
-			
 			if( $value == '1' && $djland_permission_levels[$perm_level] > $level ){
 				$level = $djland_permission_levels[$perm_level];
 			}	
-
 		}
 	}else{
 		echo "Database Error:".mysqli_error($db);

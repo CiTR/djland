@@ -81,7 +81,7 @@ function addListeners() {
             $.ajax({
                 type: "POST",
                 url: "form-handlers/student_no-handler.php",
-                data: {"student_no": student_no},
+                data: {"member_id":member.member_id,"student_no": student_no},
                 dataType: "json"
             }).success(function (data) {
 
@@ -116,6 +116,7 @@ function checkBlocking(){
         $('.required').each(function(){
             if($.trim($(this).val()).length <=0) allOkay=false;
         });
+        console.log("Required Okay?"+ allOkay);
 		if(getVal('member_type')=='Student'){
 			if(!$.trim(getVal('student_no'))){
 				allOkay=false;
@@ -124,6 +125,8 @@ function checkBlocking(){
 				allOkay=false;
 			}
 		}
+
+        console.log("Student No?"+ allOkay);
 		if (allOkay){
 		$('#submit_user').attr('disabled',false);
             if($('#renew').is(':visible')){

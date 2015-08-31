@@ -5,20 +5,38 @@
 	
 	if(isset($_POST['student_no'])){
 		$student_no = $_POST['student_no'];
-		if($student_no!=null){
-			$query = "SELECT id FROM membership WHERE student_no ='".$student_no."'";
-			$result = $db->query($query);
-			if(mysqli_num_rows($result)>=1){
-				echo json_encode(true);
+		if($student_no != null){
+			if(isset($_POST['member_id'])){
+				$query = "SELECT id FROM membership WHERE student_no =:student_no AND id !=:id";
+			}else{
+				$query = "SELECT id FROM membership WHERE student_no =:student_no";
 			}
-			else{
-				echo json_encode(false);
+			$statement = $pdo_db->prepare($query);
+			$statement->bindValue(':student_no',$student_no);
+			if(isset($_POST['member_id'])){
+				$statement->bindValue(':id',$_POST['member_id']);
 			}
-			$result->close();
+			try{
+				$statement->execute();
+				$num = count($statement->fetchAll());
+			}catch(PDOException $pdoe){
+				http_response_code(400);
+				echo $pdoe->getMessage();
+			}
+			if($num > 0){
+				http_response_code(200);
+				echo "true";
+			}else{
+				http_response_code(200);
+				echo "false";
+			}
 		}else{
-			echo json_encode(false);
+			http_response_code(400);
+			echo "Student Number is Null";
 		}
-		
+	}else{
+		http_response_code(400);
+		echo "Student Number is not set";
 	}
 ?>
 
