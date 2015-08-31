@@ -79,10 +79,13 @@ Member.prototype = {
 		});
 	},
 	getInfo:function(){
+		if(this['member_info']['member_type'] != 'Student'){
+			delete this['member_info'].student_no;
+			delete this['member_info'].schoolyear;
+			delete this['member_info'].faculty;
+		}
 		for(var field in this.member_info){
-			if(!(this['member_info']['member_type'] != 'Student' && field == 'student_no')){
-				this['member_info'][field] = get(field);
-			}
+			this['member_info'][field] = get(field);
 		}
 	},
 	getInterests:function(){
@@ -202,13 +205,17 @@ Member.prototype = {
 		});
 	},updatePassword:function(){
 		$_this = this;
-		return $.ajax({
-			type:"POST",
-			url: "form-handlers/membership/password.php",
-			data: {
-			"member_id": _this.member_id,"password":getVal('password')
-		 	},
-			dataType: "json"
-		});
+		if($('#password').length > 1){
+
+			return $.ajax({
+				type:"POST",
+				url: "form-handlers/membership/password.php",
+				data: {
+				"member_id": _this.member_id,"password":getVal('password')
+			 	},
+				dataType: "json"
+			});
+		}else console.log($('#password').length)
+		
 	}
 }

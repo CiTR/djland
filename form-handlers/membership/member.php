@@ -93,7 +93,6 @@ if( permission_level() >= $djland_permission_levels['member'] ) {
                 //Bind variables to values in query
                 $statement->bindValue(":member_id",$_POST['member_id']);
                 foreach($member as $key => $value){
-                        if($member[$key] = '') $member[$key] = 'null';
                         $statement->bindValue(":".$key,$member[$key]);     
                 }
 

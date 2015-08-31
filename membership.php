@@ -112,7 +112,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			</div>
    		</div>
 		<!-- Begin Tab 2 "member view" -->   		
-   		<div id='view' class='membership grey clearfix'>
+   		<div id='view' class='hidden membership grey clearfix'>
    			<div class='col1'>
    				<h4>Edit Member</h4>
    			</div>
@@ -289,7 +289,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				<hr>
 				<div class='containerrow'>
 					<div class='col1 text-center'>
-						Change Current Password: <input id='password' placeholder='Enter new password.'/> 
+						Change Current Password: <input id='password' placeholder='Enter new password.'> 
 					</div>
 				</div>
 
@@ -308,7 +308,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    		</div>
 
    		<!-- Begin Tab 3 "report view" -->  
-		<div id='report' class='membership grey clearfix'>
+		<div id='report' class='hidden membership grey clearfix'>
 			<div class='col1'>
    				<h4>Yearly Report</h4>
    			</div>
@@ -362,11 +362,10 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    		</div>
 
    		<!-- Begin Tab 4 "member admin" -->  
-   		<div id='admin' class='membership grey clearfix'>
+   		<div id='admin' class='hidden membership grey clearfix'>
    			<div class='col1'>
    				<h4>Admin Panel</h4>
    			</div>
-
    			<ul class="inner clean-list text-center">
 	            <li class="col4"><button id="year_rollover">Start new membership year</button></li>
 	            <li class="col4" id="current_year">Loading Current Membership Year...</li>
@@ -377,7 +376,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    		</div>
         <!-- Begin Tab 5 "email view" -->  
    		<?php endif; ?>
-   		<div id='email' class='membership grey clearfix'>
+   		<div id='email' class='hidden membership grey clearfix'>
    			<div class='col1'>
    				<h4>Email List</h4>
    			</div>

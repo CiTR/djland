@@ -32,6 +32,11 @@ Route::group(['middleware' => 'auth'], function(){
 		->where('id','=',$id)
 		->get();
 	});
+	Route::post('/member/{id}',function($id = id){
+		$member = new Member(Input::get());
+		$m = Member::find($id);
+		return $m->update($member);
+	});
 	Route::get('member/{id}/shows',function($member_id=id){
 		global $djland_permission_levels;
 		$permissions = Member::find($member_id)->user->permission;
