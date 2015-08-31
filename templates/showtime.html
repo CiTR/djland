@@ -1,0 +1,41 @@
+<td>
+	<select ng-model='showtime.start_day'>
+		<option value='0'>Sunday</input>
+		<option value='1'>Monday</input>
+		<option value='2'>Tuesday</input>
+		<option value='3'>Wednesday</input>
+		<option value='4'>Thursday</input>
+		<option value='5'>Friday</input>
+		<option value='6'>Saturday</input>
+	</select>
+</td>
+<td>
+	<select ng-model='showtime.start_hour' ng-change='show.updateShowtime(showtime)' ng-options="n for n in [] | range:00:24"></select>
+	<select ng-model='showtime.start_minute' ng-change='show.updateShowtime(showtime)' ng-options="n for n in [] | range:0:60"></select>
+</td>
+<td>
+	<select ng-model='showtime.end_day'>
+		<option value='0'>Sunday</input>
+		<option value='1'>Monday</input>
+		<option value='2'>Tuesday</input>
+		<option value='3'>Wednesday</input>
+		<option value='4'>Thursday</input>
+		<option value='5'>Friday</input>
+		<option value='6'>Saturday</input>
+	</select>
+</td>
+<td>
+	<select ng-model='showtime.end_hour' ng-change='show.updateShowtime(showtime)' ng-options="n for n in [] | range:00:24"></select>
+	<select ng-model='showtime.end_minute' ng-change='show.updateShowtime(showtime)' ng-options="n for n in [] | range:0:60"></select>
+</td>
+<td>
+	<select ng-model='showtime.alternating'>
+		<option value='0'>No Alternation</option>
+		<option value='1'>Week 1</option>
+		<option value='2'>Week 2</option>
+	</select>
+</td>
+<td>		
+	<button type='button' ng-click='show.removeShowTime($index)'>-</button>
+	<button type='button' ng-click='show.addShowTime($index)'>+</button>
+</td>

@@ -25,5 +25,8 @@ class Show extends Model
     public function social(){
         return $this->hasMany('App\Social');
     }
+    public function showtimes(){
+        return $this->hasMany('App\Showtime');
+    }
 
 }

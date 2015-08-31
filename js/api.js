@@ -23,11 +23,20 @@ return {
 	getShow: function(show_id){
 		return $http.get(API_URL_BASE+'/show/'+show_id);
 	},
+	getShowOwners: function(show_id){
+		return $http.get(API_URL_BASE+"/show/"+show_id+"/owners");
+	},
+	getShowTimes: function(show_id){
+		return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
+	},
 	getMemberPermissions: function(member_id){
 		return $http.get(API_URL_BASE+'/member/'+member_id+'/permission');
 	},
-	saveShow: function(show_object,social_objects){
-		return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects}));
+	getMemberList: function(){
+		return $http.get(API_URL_BASE+"/member/list");
+	},
+	saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
+		return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}));
 	},
 	getFullPlaylistData: function (id) {
 	return $http.get(API_URL_BASE+ '/playlist/full.php?ID='+id);

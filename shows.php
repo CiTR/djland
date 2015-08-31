@@ -22,18 +22,45 @@ if( permission_level() >= $djland_permission_levels['dj']){
             <script src='js/jquery-1.11.3.min.js'></script>
             <script src='js/constants.js'></script>
             <script src="js/angular.js"></script>
+            <script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
             <script src="js/shows/edit.js"></script>
             <script src="js/api.js"></script>
+            <script src="js/utils.js"></script>
+            
             <script>
                 var member_id = "<?php echo $_SESSION['sv_id']; ?>";
                 var username = "<?php echo $_SESSION['sv_username']; ?>";
             </script>
             <div id='wrapper' ng-controller="editShow as show" ng-show='show.info.id'>
-               Select show to edit: <select ng-model="show.show_value" ng-change="show.changeShow()" ng-options="id as show.name for (id,show) in show.member_shows">
+               Select show to edit: <select ng-model="show.show_value" ng-change="show.changeShow()" >
+                <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
                         </select>
                 <h4 class='text-left double-padded-top'> Show name </h4>
-                <input readonly id='show_name' ng-model='show.info.name'/>
-                <h4 class='text-left double-padded-top'>Show Host/Operator</h4>
+                <div ng-switch on='show.is_admin'>
+                    <div ng-switch-when="true">
+                        <input id='show_name' ng-model='show.info.name'/>
+                    </div>
+                    <div ng-switch-when="false">
+                        <input readonly id='show_name' ng-model='show.info.name'/>
+                    </div>
+                </div>
+                    
+                <div ng-show="show.is_admin">
+                    <h4 class='text-left double-padded-top'>Is show active?</h4>
+                    <input type='checkbox' ng-model="show.info.active" ng-true-value="1" ng-false-value="0"/>
+                    <h4 class='text-left double-padded-top'>Member Owners</h4>
+                    <ul id='member_access_list'>
+                        <li ng-repeat='member in show.show_owners track by $index'>
+                            {{member.firstname + " " + member.lastname}}
+                            <button type='button' ng-click='show.removeOwner(member.id)'>Remove</button>
+                        </li>
+                    </ul>
+                    <select id='member_access_select'>
+                        <option ng-repeat="member in show.member_list | orderBy:'lastname'" value='{{member.id}}' >{{member.firstname +" "+ member.lastname}} </option>
+                    </select>
+                    <button ng-click='show.addOwner()' type='button'>Add</button>
+                </div>
+                <h4 class='text-left double-padded-top'>Show Host(s)</h4>
                 <input class='wideinput' ng-model='show.info.host'>
                 <h4 class='text-left double-padded-top'>Primary Genre</h4>
                 <select ng-model='show.info.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
@@ -47,9 +74,9 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
                 <input class='wideinput' id='show_image' ng-model='show.info.show_img'>
-                <div ng-controller="FileUploadCtrl">
+                <div class='double-padded-top' ng-controller="FileUploadCtrl">
                     <div  class="row">
-                        <label for="fileToUpload">Either Choose files, or Drag Files</label><br />
+                        <label for="fileToUpload">Either choose files, or drag files</label><br/>
                         <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
                     </div>
                     <div  id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
@@ -70,11 +97,10 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         </div>
                     </div>
                 </div>
-                {{show.show_img}}
                 <h4 class='text-left double-padded-top'>Social Media Links</h4>
                 <table class='table-condensed'>
                     <tr><td>Social Media Type<td>URL<td>Add/Remove</tr>
-                    <tr><td><td><td><button ng-click='show.addFirst()' ng-hide='show.social.length > 0'>+</button></td></tr>
+                    <tr><td><td><td><button ng-click='show.addFirstSocial()' ng-hide='show.social.length > 0'>+</button></td></tr>
                     <tr ng-repeat='social in show.social track by $index'>
                     <td><input ng-model='social.social_name'></td>
                     <td><input ng-model='social.social_url'></td>
@@ -84,6 +110,35 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     </td>
                 </tr>
                 </table>
+                <div ng-show='show.is_admin'>
+                    <h4 class='text-left double-padded-top'>Podcast URL</h4>
+                    <input class='wideinput' ng-model='show.info.rss'>
+                    <h4 class='text-left double-padded-top'>Sponsor</h4>
+                    <label for 'sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
+                    <label for 'sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>
+                    <h4 class='text-left double-padded-top'>Show Times (Current week:{{show.current_week}})</h4>
+                    <button ng-click='show.addFirstShowTime()' ng-hide='show.show_times.length > 0'>Add Show Time </button>
+                    <table class='table'>
+                        <tr><th> Start Day<th>Start Time<th>End Day<th>End Time<th>Alternation Week <th>+/-</tr>
+                            <tr showtime ng-repeat='showtime in show.show_times track by $index'></tr>
+                    </table>
+                    <h4 class='text-left double-padded-top'>Default Language</h4>
+                    <input ng-model='show.info.lang_default'>
+                    <h4 class='text-left double-padded-top'>Default CRTC Category</h4>
+                    <select ng-model='show.info.crtc_default'>
+                        <option value='20'>20</option><option value='30'>30</option>
+                    </select>
+                    <h4 class='text-left double-padded-top'>Show Requirements</h4>
+                    
+                    <table >
+                        <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
+                        <tr><td>Cancon<td><input class='smallinput' name='cancon' ng-model='show.info.cc_req'>%</tr>
+                        <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
+                        <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
+                    </table>
+                    <h4 class='text-left double-padded-top'>Staff Notes</h4>
+                    <textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.notes'></textarea>
+                </div>
                 <h4 class='text-left double-padded-top'></h4>
                 <button ng-click="show.save();" >Save Show</button>
             </div>

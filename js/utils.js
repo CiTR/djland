@@ -67,6 +67,18 @@ app.filter('range', function($filter) {
   };
 });
 
+app.filter('rangeByFives', function($filter) {
+  return function(input, min, max) {
+    min = parseInt(min); //Make string input int
+    max = parseInt(max);
+    for (var i=min; i<max;){
+      input.push($filter('pad')(i,2));
+      i+=5;
+    }
+    return input;
+  };
+});
+
 app.filter('rangeNoPad', function() {
   return function(input, min, max) {
     min = parseInt(min); //Make string input int

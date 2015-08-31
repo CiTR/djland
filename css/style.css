@@ -96,7 +96,9 @@ input, select, textarea, option{
     border-top-style: solid;
     border-bottom-width:1px;
     border-bottom-style: solid;
+    padding:10 10 10 10;
 }
+
 #wrapper.socan{
   width:1200px;
 }
@@ -218,6 +220,10 @@ input, select, textarea, option{
 	max-width:83%;
 	height:50px;
 	max-height:75px;
+}
+.smallinput{
+  width:30px;
+  margin-left:10px;
 }
 .fill{
   position:relative;
