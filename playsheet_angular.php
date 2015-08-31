@@ -172,6 +172,21 @@
 				<br/>
 				<div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
 			</div>
+			<div class="floating">
+				<input type="button" ng-click="saveDraft();" value="{{(saving)? 'saving....':'Save Draft'}}" ng-hide="playsheet.status == 2" >
+				<br/><br/><br/>
+				<input type="button" ng-click="samVisible = !samVisible;" value=" SAM ">
+				
+			</div>
+			<div id="sam_picker" ng-show="samVisible">
+				<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
+
+					<button ng-click="samRange()">add all plays from {{playsheet.start_time | date:'mediumTime'}} to {{playsheet.end_time | date:'mediumTime'}}	</button>
+				<div ng-repeat="sam in samRecent" class="sam_row">
+					<button ng-click="sam_add(sam);">&nbsp;+&nbsp;</button>
+					<span class="one_sam">{{sam.song.artist}} - {{sam.song.song}}</span>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

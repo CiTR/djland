@@ -887,7 +887,9 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     /* Checkbox text */
     text-align: center;
   }
-
+  #sam_picker{
+    width:200px;
+  }
   #sam_title {
     color: black;
     font-size: 1.2em;

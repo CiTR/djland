@@ -6,7 +6,7 @@
         this.id = playsheet_id;
         this.member_id = member_id;
         var row_template = {"show_id":this.show_id,"playsheet_id":this.id,"song_id":null,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":this.start_time,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.crtc|'30',"lang":this.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":null,"insert_song_start_minute":null,"insert_song_length_minute":null,"insert_song_length_second":null,"song":{"id":null,"artist":null,"title":null,"song":null,"composer":null}};
-
+        this.sam_visible = false;
         this.socan = socan;
     	this.tags = tags;
     	this.help = help;
@@ -174,16 +174,9 @@
                 });
 
             }
-
-           
-        
-
-
         }
-        
-
+        // Call Initialization function at end of controller
         this.init();
-
     });
 
     app.controller('datepicker', function($filter) {
@@ -201,23 +194,24 @@
       };
       this.format = 'medium';
     });
-    //Declares <playitem> tag
+
+    //Declares playitem attribute
     app.directive('playitem',function(){
     	return{
     		restrict: 'A',
     		templateUrl: 'templates/playitem.html'
     	};
     });
+    //Declares ad attribute
     app.directive('ad',function(){
     	return{
     		restrict: 'A',
     		templateUrl: 'templates/ad.html'
     	}
     });
+
+    //TODO: Use Socan Call to get socan status
     var socan = false;
-    
-    
-	var name = 'Test Show';
 })();
 
 
