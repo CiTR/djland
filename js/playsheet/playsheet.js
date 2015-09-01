@@ -166,6 +166,7 @@
                 this.end_hour =  $filter('pad')(this.end.getHours(),2);
                 this.end_minute = $filter('pad')(this.end.getMinutes(),2);
                 this.end_second = $filter('pad')(this.end.getSeconds(),2);
+                this.info.status = '1';
                 this.info.type='Live';
                 this.info.crtc = 30;
                 this.info.lang = 'English';
@@ -250,8 +251,21 @@
                 this.complete = false;
             }
         }
+        this.saveDraft = function(){
+            if(this.id > 1){
+                 //New Playsheet
+                call.saveNewPlaysheet(angular.toJson(this_.info.id),angular.toJson(this_.playitems)).then(function(response){
+                    alert("Draft Saved");
+                },function(error){
+                    alert(error.responseText);
+                });
+            }else{
+                alert("You have already submitted this playsheet");
+            }
+        }
         //Submit a Playsheet
         this.submit = function () {
+            this.status = 2;
             var this_ = this;
             var date = $filter('date')(this.start,'yyyy-MM-dd');
             console.log(date);
@@ -275,44 +289,7 @@
                     alert(error.responseText);
                 });
             }
-            
-            /*apiService.savePlaylist($scope.playsheet)
-                .then(function (result) {
-
-                  $scope.playsheet.id = result.data.playsheet_id;
-                  $scope.playsheet.podcast.id = result.data.podcast_id;
-                  $scope.show_the_tracklist_overlay = true;
-
-                  $scope.podcast_status = 'Getting the podcast audio...' ;
-
-                  var now = new Date();
-                  if($scope.playsheet.end_time.getTime() <= now.getTime()) {
-                    $scope.playsheet.podcast.active = 1;
-                    apiService.updatePodcast($scope.playsheet.podcast)
-                        .then(function (result) {
-
-                          $scope.podcast_status = 'Podcast has been updated';
-
-
-                        })
-                        .catch(function (result) {
-
-                          $scope.podcast_status = 'Something went wrong. Please try again later from the Podcasts page.';
-
-                        });
-                  } else {
-                    $scope.podcast_status = 'Future Episode will be created later.';
-                  }
-
-
-                })
-                .catch(function(result){
-                  show_message('sorry, something went wrong while saving. Please try saving a draft');
-                  $scope.submitting = false;
-                });
-
-      }*/
-    }
+        }   
 
         this.addSamPlay = function (sam_playitem) {
             this.playitems.splice(this.playitems.length,0,sam_playitem); 

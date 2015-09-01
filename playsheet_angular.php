@@ -172,8 +172,7 @@
 			</div>
 
 			<div class="floating">
-				<input type="button" ng-click="saveDraft();" value="{{(saving)? 'saving....':'Save Draft'}}" ng-hide="playsheet.status == 2" >
-				<br/><br/><br/>
+				<input type="button" ng-click="this.saveDraft();" value="{{(saving)? 'saving....':'Save Draft'}}" ng-hide="playsheet.status == 2" >
 				<input type="button" ng-click="samVisible = !samVisible;" value=" SAM ">
 				
 			</div>

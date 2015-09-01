@@ -83,7 +83,7 @@ input, select, textarea, option{
     background-color: rgba(0,0,0,.2);
     width: 1024px;
     height:auto;
-    overflow:auto;
+    overflow:hidden;
     margin-right: auto;
     margin-left: auto;
     border-right-width: 1px;
@@ -533,8 +533,11 @@ div#main {
 }
 .playitem > td >input{
   width:95%;
-  
 }
+.hand:hover{
+  cursor: pointer; cursor: hand;
+}
+
 
 .buttonContainer ul{
 	margin:0;
@@ -870,7 +873,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     }
 
     .large-button{
-      height:40px;
+      height:2.0em;
       font-size: 1.5em;
     }
 
@@ -997,7 +1000,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .tracklist_overlay{
     position:fixed;
-    overflow:scroll;
+    overflow:auto;
     top:40px;
     left:10%;
     width:80%;
@@ -1005,6 +1008,8 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     z-index:21;
     padding:20px;
     color:darkblue;
+    border-size:1px;
+    border-color:white;
   }
   .tracklist_overlay span{
     margin-left:40px;
@@ -1019,11 +1024,11 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .dark{
     position:fixed;
-    top:50px;
+    top:0;
     left:0;
     height:100%;
     width:100%;
-    opacity: 0.8;
+    opacity: 0.7;
     background-color:black;
   }
 
