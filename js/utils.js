@@ -1,5 +1,16 @@
 
 var app = angular.module('djland.utils',[]);
+app.factory('tools',function(){
+  return{
+    decodeHTML : function (str){
+            str = str.replace('&quot;','"');
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+      }
+  }
+});
+
 app.controller('datepicker', function($scope, $filter) {
 
 	var today = function() {

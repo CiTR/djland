@@ -16,8 +16,7 @@
             return input;
         };
     });
-    app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared){
-        
+    app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
         var this_ = this;
         this.init = function(){
             this.is_admin = false;
@@ -34,10 +33,17 @@
             //Get Shows Member can see
             call.getMemberShows(this.member_id).then(function(response){
                 this_.member_shows = response.data.shows;
+                for(var show in this_.member_shows){
+                    if(this_.member_shows[show].name != null) this_.member_shows[show].name = tools.decodeHTML(this_.member_shows[show].name);
+                    if(this_.member_shows[show].host != null) this_.member_shows[show].host = tools.decodeHTML(this_.member_shows[show].host);
+                }
+
                 //Get First show in member_shows
                 for(var show in this_.member_shows){
-                    this_.active_show = this_.member_shows[show];   
+                    this_.active_show = this_.member_shows[show];
+                    break;   
                 }
+                
                 //Need to make the id a string
                 this_.show_value = ""+this_.active_show.id;
                 this_.loadShow();
@@ -64,6 +70,7 @@
             var this_ = this;
             call.getShow(this_.active_show.id).then(function(response){
                     this_.info = response.data;
+                    this_.info.name = tools.decodeHTML(this_.info.name);
                     this_.social = response.data.social;
                     delete this_.info.social;
                     this_.social_template = {show_id: this_.info.id, social_name: null , social_url:null};
@@ -167,7 +174,6 @@
             console.log(element.files);
             console.log('here');
         }
-
         $scope.$on('image_upload', function() {
            
             $scope.$apply(function() { 

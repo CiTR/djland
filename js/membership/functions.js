@@ -1,6 +1,7 @@
 window.myNameSpace = window.myNameSpace || { };
 var member;
 
+
 function getVal($varname){
 	$temp = $varname;
 	if( $('#'+$temp).val()!=null){
@@ -196,6 +197,14 @@ function numbersonly(myfield, e, dec)
 		else
 		   return false;
 		}
+
+
+function decodeHTML(str){
+            str = str.replace('&quot;','"');
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+      }
 function queryMembers(search_by,value,paid,year,order_by){
 	return $.ajax({
 		type:"GET",
@@ -259,7 +268,7 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
 			
-			for(var item in data[member]){
+			for(var item in decodeHTML(data[member])){
 				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
 			}	
