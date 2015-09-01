@@ -8,8 +8,6 @@ class Song extends Model
 {
     //
     protected $table = 'songs';
+    public $timestamps = false;
 
-    public function playitem(){
-    	return $this->hasOne('App\Playitem');
-    }
 }

@@ -556,7 +556,6 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
     var time = $interval(function(){
       $scope.currentTime = new Date();
-
     },1000);
 
 

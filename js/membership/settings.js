@@ -84,7 +84,6 @@ function addListeners() {
                 data: {"member_id":member.member_id,"student_no": student_no},
                 dataType: "json"
             }).success(function (data) {
-
                 if (data == true) {
                     $('#student_no_ok').remove();
                     $('#student_no_check').append("<div id='student_no_ok'></div>");

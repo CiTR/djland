@@ -188,19 +188,57 @@ Route::group(['middleware' => 'auth'], function(){
 		$playsheet = new stdClass();
 		$playsheet -> playsheet = Playsheet::find($id);
 		if($playsheet -> playsheet != null){
-			$playitems = Playsheet::find($id)->playitems;
-			foreach($playitems as $p){
-				$p->song = Playitem::find($p->id)->song;
-			}
-			$playsheet -> playitems = $playitems;
+			$playsheet -> playitems = Playsheet::find($id)->playitems;
 			$playsheet -> show = Playsheet::find($id)->show;
 			$playsheet -> host = Host::find($playsheet->show->host_id);		
 		}
 		return Response::json($playsheet);
 	});
+	Route::post('/playsheet/{id}',function($playsheet_id = id){
+		$ps = Playsheet::find($playsheet_id);
+		$ps->update(Input::get()['playsheet']);
+
+		$playitems = Input::get()['playitems'];
+		foreach($ps->playitems as $delete){
+			$delete->delete();
+		}
+		foreach($playitems as $playitem){
+			Playitem::create($playitem);
+		}
+		/*$old_playitems = Playsheet::find($playsheet_id)->playitems;
+		foreach($old_playitems as $i){
+			$ids[] = $i['id'];
+		}
+		foreach($playitems as $playitem){
+			if(isset($playitem['id'])){
+				$pi = Playitem::find($playitem['id']);
+				$pi->update($playitem);
+
+			}else{
+				$pi = Playitem::create($playitem);
+				if($key = array_search($pi['id'],$ids) !== false){
+				unset($ids[$key]);
+			}
+			
+		}
+		print_r($ids);*/
 
 
-// Table Helper Routes 
+		
+		
+
+		/*$ads = Input::get('ads');
+		$playitems = Input::get('playitems');*/
+
+		
+	});
+	Route::post('/playsheet',function(){
+		Playsheet::create(Input::get()['playsheet']);
+	});
+
+
+
+	// Table Helper Routes 
 	Route::get('/table',function(){
 		return  DB::select('SHOW TABLES');
 	});

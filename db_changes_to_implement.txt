@@ -1,4 +1,13 @@
 Current Changes to DB:
+Alter: Move song data into playitems
+
+ALTER TABLE `playitems` 
+ADD COLUMN `artist` VARCHAR(45) NULL AFTER `insert_song_length_second`,
+ADD COLUMN `song` VARCHAR(45) NULL AFTER `artist`,
+ADD COLUMN `album` VARCHAR(45) NULL AFTER `song`
+ADD COLUMN `composer` VARCHAR(80) NULL AFTER `album`;
+
+UPDATE playitems as p INNER JOIN songs as s ON s.id = p.song_id SET p.artist = s.artist, p.song = s.song, p.album = s.title, p.composer = s.composer;
 
 Alter:
 

@@ -790,10 +790,13 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     background-color: transparent;
     background-image: none;;
   }
-  .socan select, .socan button, .socan input, .music_row_socan input, .music_row_socan button{
+ .socan button, .socan input, .music_row_socan input, .music_row_socan button{
     font-size:0.75em;
     max-width:90px;
   }
+   .socan select{
+      font-size:0.75em;
+   }
 
   .socan_cue select{
     width:46px;

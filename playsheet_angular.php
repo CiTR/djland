@@ -32,7 +32,7 @@
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
-						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()" ng-options="id as show.name for (id,show) in playsheet.member_shows">
+						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()"><option ng-repeat="show in playsheet.member_shows | orderBy:'name'">{{show.name}}</option>
 						</select>
 					</div>
 					<div class='col1'>
@@ -41,15 +41,15 @@
 					
 					<div class='col1 double-padded-top'>
 						Type: 
-				        <select ng-model="playsheet.type" ng-change="loadIfRebroadcast()">
+				        <select ng-model="playsheet.info.type" ng-change="loadIfRebroadcast()">
 				          	<option value="Syndicated">Syndicated</option>
 				          	<option value="Live">Live</option>
 				          	<option value="Rebroadcast">Rebroadcast</option>
 				          	<option value="Simulcast">Simulcast</option>
 				    	</select>
-			        	<span ng-show="playsheet.type == 'Rebroadcast'">
+			        	<span ng-show="playsheet.info.type == 'Rebroadcast'">
 			          	         <select ng-model="desired_playsheet"
-				                  ng-options="playsheet.playlist_id as playsheet.start_time + ' - ' + playsheet.show_name
+				                  ng-options="playsheet.info.playlist_id as playsheet.info.start_time + ' - ' + playsheet.info.show_name
 				                   for playsheet
 				                   in available_playsheets ">
 				          </select>
@@ -58,11 +58,11 @@
 						
 					</div>
 					<div class='col1'>
-						Language: <input ng-model="playsheet.lang"></input>
+						Language: <input ng-model="playsheet.info.lang"></input>
 					</div>
 					<div class='col1'>
 						CRTC Category: 
-						<button class="crtc" ng-model="playsheet.crtc" ng-click="playsheet.crtc == 30? playsheet.crtc = 20 : playsheet.crtc = 30;">{{playsheet.crtc}}</button>
+						<button class="crtc" ng-model="playsheet.info.crtc" ng-click="playsheet.info.crtc == 30? playsheet.info.crtc = 20 : playsheet.info.crtc = 30;">{{playsheet.info.crtc}}</button>
 					</div>
 					<!-- <<h4 class='text-left'>Show Data</h4> -->
 			        
@@ -71,12 +71,12 @@
 			        <div class='col1' >
 					    <div class='col2 side-padded' >
 			        		<div class="col1" >
-					        	Date: {{playsheet.start_time | date:'EEE, MMM d, y'}}
+					        	Date: {{playsheet.info.start_time | date:'EEE, MMM d, y'}}
 					    	</div>
 					    	<div class='col1 padded' ng-controller="datepicker as date">
 					        	<button ng-click="date.open($event)" >Change Date</button>
 					        	<input class="date_picker" type="text" datepicker-popup="{{format}}"
-						                 ng-model="playsheet.start_time"  is-open="date.opened"
+						                 ng-model="playsheet.info.start_time"  is-open="date.opened"
 						                 ng-required="true" close-text="Close" ng-hide="true"
 						                 ng-change="date.date_change();" />
 					    	</div>
@@ -122,8 +122,8 @@
 					<tr class='music_row_heading playitem border'>
 						<th class='side-padded'>#</th>
 						<th><input value="Artist"readonly tooltip="{{playsheet.help.artist}}"></input></th>
-						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}"></input></th>
 						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}"></input></th>
+						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}"></input></th>
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}"></input></th>
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}"></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}"></input></th>
@@ -132,7 +132,7 @@
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"></th>
 						<th><th><th></th>
 					</tr>
-					<tbody ui-sortable ng-model='playsheet.playitems'>
+					<tbody ui-sortable ng-change='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
 						<tr class='playitem border' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
@@ -150,43 +150,60 @@
 				</div>
 				<div class='col5 side-padded right double-padded-top'>
 					<h4>Spoken Word Duration</h4>
-        			<div class='col2 text-center'>Hours<select ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select></div>
-      				<div class='col2 text-center'>Minutes<select ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select></div>
+        			<div class='col2 text-center'>Hours<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select></div>
+      				<div class='col2 text-center'>Minutes<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select></div>
 				</div>
 			</div>
 			<div class='col1 side-padded double-padded-top'>
 					<h4>Episode Description</h4>
-					<textarea class='fill' ng-model='spoken_word'></textarea>
+					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.spokenword'></textarea>
 			</div>
+
 			<hr style="side-padded">
+
 			<div class='col1 text-center'>
-				<button class="large-button" ng-click="submit()" ng-hide="submitting">Save Show</button>
+				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
 				<p ng-show="submitting">Submitting...</p>
-				<div class="blocker" ng-hide="(songsComplete && formAcceptible && (playsheet.end_time < currentTime) )">
-				<span ng-show="!songsComplete">
-					Music Incomplete: (<b>{{socan? 'composer, ':''}}artist</b>, <b>album / release title</b>, and <b>song</b>)
-					<span ng-show="socan"><br/>Since it's socan period, you must also set the start time and duration of each track</span>
-				</span>
-				<span ng-show="!(playsheet.end_time < currentTime)"><br/>Cannot save a future podcast - please save a draft and submit later. </span>
+				<div class="blocker" ng-hide="playsheet.complete">
+					{{ playsheet.missing }}
 				</div>
 				<br/>
 				<div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
 			</div>
+
 			<div class="floating">
 				<input type="button" ng-click="saveDraft();" value="{{(saving)? 'saving....':'Save Draft'}}" ng-hide="playsheet.status == 2" >
 				<br/><br/><br/>
 				<input type="button" ng-click="samVisible = !samVisible;" value=" SAM ">
 				
 			</div>
+
 			<div id="sam_picker" ng-show="samVisible">
 				<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
-
 					<button ng-click="samRange()">add all plays from {{playsheet.start_time | date:'mediumTime'}} to {{playsheet.end_time | date:'mediumTime'}}	</button>
-				<div ng-repeat="sam in samRecent" class="sam_row">
-					<button ng-click="sam_add(sam);">&nbsp;+&nbsp;</button>
+				<div ng-repeat="sam_playitem in samRecent" class="sam_row">
+					<button class='side-padded' ng-click="sam_add(sam_playitem);">+</button>
 					<span class="one_sam">{{sam.song.artist}} - {{sam.song.song}}</span>
 				</div>
 			</div>
+
+			<!-- Popup Overlay during submission -->
+			<div class="tracklist_overlay" ng-show="playsheet.tracklist_overlay">
+				<button ng-click='playsheet.tracklist_overlay = !playsheet.tracklist_overlay'> X </button>
+				<h3>Thanks for submitting your playsheet</h3>
+				<h3>If you're done, please <a href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
+				A podcast episode is now being created.
+				<div class='text-center'> {{podcast_status}}</div>
+				To modify the episode timing, title, subtitle, or summary,
+				
+				<h4>Tracklist:</h4>
+				<ul>
+					<li ng-repeat="playitem in playsheet.playitems track by $index">{{playitem.artist}} "{{playitem.song}}" from {{playitem.album}}</li>
+				</ul>
+			</div>
+			<!-- Darkens Background during submission popup -->
+			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
+
 		</div>
 	</body>
 </html>

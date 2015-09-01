@@ -1,23 +1,20 @@
 
 <td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
-<td><input ng-model='playitem.song.artist'></input></td>
-<td><input ng-model='playitem.song.song'></input></td>
-<td><input ng-model='playitem.song.title'></input></td>
+<td><input ng-model='playitem.artist' class='required'></input></td>
+<td><input ng-model='playitem.song' class='required'></input></td>
+<td><input ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.socan'>
-	<input ng-model='playitem.song.composer'></input>
+	<input ng-model='playitem.song.composer' ng-class='{required: playsheet.socan}'></input>
 </td>
 <td ng-show='playsheet.socan'>
-	<select ng-model="playitem.start_hour" ng-options="n for n in [] | range:0:24 "
-                        ng-change="updateNow(row);"></select>:
-    <select ng-model="playitem.start_minute" ng-options="n for n in [] | range:0:60 "
-            ng-change="updateNow(row);"></select>
-    <button ng-click="cue(row)">CUE</button>
-
+	<select ng-model="playitem.insert_song_start_hour" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateTrackStart(playitem);"></select>:
+    <select ng-model="playitem.insert_song_start_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 " ng-change="playsheet.updateTrackStart(playitem);"></select>
+    <button ng-click="playsheet.cueTrack(playitem)">CUE</button>
 </td>
 <td ng-show='playsheet.socan'>
-	<select ng-model="playitem.length_minute" ng-options="n for n in [] | range:0:60 "></select>:
-                <select ng-model="playitem.length_second" ng-options="n for n in [] | range:0:60 "></select>
-                <button ng-click="end(row)">END</button>
+	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "></select>:
+    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "></select>
+    <button ng-click="playsheet.endTrack(playitem)">END</button>
 </td>
 <td><button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' ng-class="{filled:playitem.is_playlist==true}" class="box playlist pad-top"></button></td>
 <td><button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button></td>
