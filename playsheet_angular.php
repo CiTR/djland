@@ -32,8 +32,7 @@
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
-						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()">
-						<option ng-repeat="show in playsheet.member_shows | orderBy:'name'" value='{{show.id}}'>{{show.name}}</option>
+						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.name for show in playsheet.member_shows | orderBy:'name'">
 						</select>
 					</div>
 					<div class='col1'>
@@ -203,6 +202,8 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
+			{{playsheet.info}}
+			{{playsheet.playitems}}
 
 		</div>
 	</body>

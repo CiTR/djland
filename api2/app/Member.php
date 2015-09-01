@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $table = 'membership';
-    
+    const CREATED_AT = 'create_date';
+    const UPDATED_AT = 'edit_date';
     public function shows(){
         return $this->belongsToMany('App\Show','member_show');
     }

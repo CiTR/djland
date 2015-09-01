@@ -2,8 +2,8 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 
 	app.controller('PlaysheetController',function($filter,$scope,$interval,$timeout,call){
-        this.info = Array();
-        this.shows = Array();
+        this.info = {};
+        this.playitems = {};
         this.info.id = playsheet_id;
         this.member_id = member_id;
         var this_ = this;
@@ -64,11 +64,11 @@
             playitem.start.setMinutes(playitem.insert_song_start_minute);
             playitem.start.setSeconds(0);
         };
-        this.updateShowValues = function(){
-
-            this.active_show = this.member_shows.filter(function(object){if(object.id == this.show_value) return object;})[0];
-            this.info.show_id = this.active_show.id;
+        this.updateShowValues = function(element){
+            this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
+            this.info.show_id = parse_int(this.active_show.id);
             this.info.host_id = this.active_show.host_id;
+            this.info.host_name = this.active_show.host;
         }
         this.updateSpokenword = function(){
             this.info.spokenword_duration = this.spokenword_hours * 60 + this.spokenword_minutes;
@@ -105,7 +105,7 @@
 
         //Initialization of Playsheet
         this.init = function(){
-            console.log(this.info.id);
+            var this_ = this;
             //If playsheet exists, load it.
             if(this.info.id > 0){
                 call.getPlaysheetData(this.info.id).then(function(data){
@@ -142,27 +142,29 @@
                         //Find what show this playsheet is for, and set it as active show to load information.
                         for(var show in this_.member_shows){
                             if(this_.show.name.toString() == shows[show].name.toString()){
-                                this_.active_show = this_.member_shows[show]; 
-                                this_.show_value = ""+this_.active_show['id'];
-                            }
+                                this_.active_show = this_.member_shows[show];
+                                this_.show_value = shows[show]['id'];
+                            }                                  
                         }
+                        //this_.show_value = this_.info.show_id;
                         //Populate the template row
                         var show_date = this_.start.getDate();
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
+                        console.log(this_.active_show);
                     });
+
                 });
             }else{
                 //TODO: Check member id and find possible upcoming show time. Load info of next show they have.
-                
                 //Create Extra Variables to allow proper display in UI
                 this.start = new Date();
                 this.start.setMinutes(0);
                 this.start.setSeconds(0);
                 this.end = new Date(this.start);
                 this.end.setHours(this.end.getHours()+1);
-                this.info.start_time = this.start;
-                this.info.end_time = this.end.getHours + ":" + this.end.getMinutes() + ":" + this.end.getSeconds;
+                this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+                this.info.end_time = $filter('date')(this.end,'HH:mm:ss');
                 this.start_hour =  $filter('pad')(this.start.getHours(),2);
                 this.start_minute = $filter('pad')(this.start.getMinutes(),2);
                 this.start_second = $filter('pad')(this.start.getSeconds(),2);
@@ -173,7 +175,6 @@
                 this.info.type='Live';
                 this.info.crtc = 30;
                 this.info.lang = 'English';
-                this.info.id = -1;
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
                 //Get Shows Listing
@@ -183,9 +184,11 @@
                     //Cheat Code to get first active show.
                     for(var show in this_.member_shows){
                         this_.active_show = this_.member_shows[show];
+                        this_.show_value = shows[show]['id'];
+                        this_.info.show_id = shows[show]['id'];
                         break;
                     }
-                    this_.show_value = this_.active_show['id'];
+                    
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();
                     this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
@@ -256,7 +259,8 @@
         }
         this.saveDraft = function(){
             var this_ = this;
-            if(this.info.id < 1){
+            console.log(this.playitems);
+            if(this.info.id < 1 ){
                  //New Playsheet
                 call.saveNewPlaysheet(this_.info,this_.playitems).then(function(response){
                     alert("Draft Saved");

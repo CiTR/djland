@@ -15,7 +15,7 @@ Route::get('/', function () {
     return "Welcome to DJLand API 2.0";
 });
 Route::group(['middleware' => 'auth'], function(){
-	/* Member Routes */
+	//Member Routes 
 	Route::get('/member',function(){
 		return  DB::table('membership')->select('id','firstname','lastname')->get();
 	});
@@ -37,23 +37,7 @@ Route::group(['middleware' => 'auth'], function(){
 		$m = Member::find($id);
 		return $m->update($member);
 	});
-	Route::get('member/{id}/shows',function($member_id=id){
-		global $djland_permission_levels;
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
-			$all_shows = Show::orderBy('name','asc')->get();
-			foreach($all_shows as $show){
-				//echo Show::find($show->id)->host->name;
-				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
-			}
-		}else{
-			$member_shows =  Member::find($member_id)->shows;
-			foreach($member_shows as $show){
-				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
-			}
-		}
-		return  Response::json($shows);
-	});
+	
 	Route::get('member/{id}/permission',function($member_id = id){
 		
 		$permission_levels = Member::find($member_id)->user->permission;
@@ -62,8 +46,32 @@ Route::group(['middleware' => 'auth'], function(){
 		$permission->permissions = $permission_levels;
 		return $permission_levels;
 	});
-
+	Route::get('member/{id}/shows', function($member_id = id){
+		$permissions = Member::find($member_id)->user->permission;
+		if($permissions->staff ==1 || $permissions->administrator==1){
+			$all_shows = Show::orderBy('name','asc')->get();
+			foreach($all_shows as $show){
+				//echo Show::find($show->id)->host->name;
+				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
+			}
+		}else{
+			$member_shows = Member::find($member_id)->shows;
+			foreach($member_shows as $show){
+				//$show = (Object) $show->getAttributes();
+				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
+			}
+			//return $member_shows;
+/*			foreach($member_shows->getAttributes as $show){
+				$shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
+			}
+			return($shows);*/
+		}
+		return  Response::json($shows);
+	});
 });
+
+
+
 
 /* Show Routes */
 	Route::get('/show',function(){
@@ -207,7 +215,11 @@ Route::group(['middleware' => 'auth'], function(){
 		}		
 	});
 	Route::post('/playsheet',function(){
-		Playsheet::create(Input::get()['playsheet']);
+		$ps = Playsheet::create(Input::get()['playsheet']);
+		foreach(Input::get()['playitems'] as $playitem){
+			$playitem['playsheet_id'] = $ps->id;
+			Playitem::create($playitem);
+		}
 	});
 	
 	// Table Helper Routes 

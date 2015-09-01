@@ -39,10 +39,10 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},
 		savePlaysheet: function(playsheet,playitems){
-			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems}) );
+			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems}));
 		},
-		saveNewPlaysheet: function(playsheet){
-			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet}) );
+		saveNewPlaysheet: function(playsheet,playitems){
+			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems}) );
 		}
 	};
 });
