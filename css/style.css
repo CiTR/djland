@@ -872,10 +872,6 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
       color:black;
     }
 
-    .large-button{
-      height:2.0em;
-      font-size: 1.5em;
-    }
 
     #mainleft a{
       background-color:steelblue;
@@ -955,7 +951,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
 
   .blocker{
     position:relative;
-    bottom:40px;
+    bottom:66px;
     background-color:black;
     color:red;
     height:70px;

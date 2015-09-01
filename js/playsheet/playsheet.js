@@ -65,7 +65,10 @@
             playitem.start.setSeconds(0);
         };
         this.updateShowValues = function(){
-            this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
+
+            this.active_show = this.member_shows.filter(function(object){if(object.id == this.show_value) return object;})[0];
+            this.info.show_id = this.active_show.id;
+            this.info.host_id = this.active_show.host_id;
         }
         this.updateSpokenword = function(){
             this.info.spokenword_duration = this.spokenword_hours * 60 + this.spokenword_minutes;
@@ -140,7 +143,7 @@
                         for(var show in this_.member_shows){
                             if(this_.show.name.toString() == shows[show].name.toString()){
                                 this_.active_show = this_.member_shows[show]; 
-                                this_.show_value = this_.active_show['name'];
+                                this_.show_value = ""+this_.active_show['id'];
                             }
                         }
                         //Populate the template row
@@ -178,11 +181,11 @@
                     var shows = data.data.shows;
                     this_.member_shows = shows;
                     //Cheat Code to get first active show.
-                    for(var show in shows){
-                        this_.active_show = shows[show];
+                    for(var show in this_.member_shows){
+                        this_.active_show = this_.member_shows[show];
                         break;
                     }
-                    this_.show_value = this_.active_show['name'];
+                    this_.show_value = this_.active_show['id'];
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();
                     this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
@@ -252,9 +255,10 @@
             }
         }
         this.saveDraft = function(){
-            if(this.id > 1){
+            var this_ = this;
+            if(this.info.id < 1){
                  //New Playsheet
-                call.saveNewPlaysheet(angular.toJson(this_.info.id),angular.toJson(this_.playitems)).then(function(response){
+                call.saveNewPlaysheet(this_.info,this_.playitems).then(function(response){
                     alert("Draft Saved");
                 },function(error){
                     alert(error.responseText);
@@ -265,13 +269,16 @@
         }
         //Submit a Playsheet
         this.submit = function () {
-            this.status = 2;
             var this_ = this;
+
+            //Fix date on all playitems for consistency's sake.
             var date = $filter('date')(this.start,'yyyy-MM-dd');
-            console.log(date);
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
+            //Update Status to submitted playsheet
+            this.status = 2;
+
             if(this.id > 1){
                 //New Playsheet
                 call.saveNewPlaysheet(angular.toJson(this_.info.id),angular.toJson(this_.playitems)).then(function(response){

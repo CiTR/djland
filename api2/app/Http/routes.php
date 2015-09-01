@@ -204,40 +204,12 @@ Route::group(['middleware' => 'auth'], function(){
 		}
 		foreach($playitems as $playitem){
 			Playitem::create($playitem);
-		}
-		/*$old_playitems = Playsheet::find($playsheet_id)->playitems;
-		foreach($old_playitems as $i){
-			$ids[] = $i['id'];
-		}
-		foreach($playitems as $playitem){
-			if(isset($playitem['id'])){
-				$pi = Playitem::find($playitem['id']);
-				$pi->update($playitem);
-
-			}else{
-				$pi = Playitem::create($playitem);
-				if($key = array_search($pi['id'],$ids) !== false){
-				unset($ids[$key]);
-			}
-			
-		}
-		print_r($ids);*/
-
-
-		
-		
-
-		/*$ads = Input::get('ads');
-		$playitems = Input::get('playitems');*/
-
-		
+		}		
 	});
 	Route::post('/playsheet',function(){
 		Playsheet::create(Input::get()['playsheet']);
 	});
-
-
-
+	
 	// Table Helper Routes 
 	Route::get('/table',function(){
 		return  DB::select('SHOW TABLES');

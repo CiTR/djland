@@ -310,24 +310,16 @@ $djland_provinces = array(
 	'YUK');
 
 $djland_primary_genres = array(
-    'Blues',
-    'Classical',
-    'Electronic',
-    'Experimental',
-    'Folk',
-    'Hip Hop',
-    'Hardcore',
-    'Indie',
-    'International',
-    'Jazz',
-    'Metal',
-    'Pop',
-    'Punk',
-    'R&B',
-    'Rock',
-    'Soul',
-    'Spoken Word'
-);
+	"Rock / Pop / Indie",
+	"Electronic",
+	"Experimental",
+	"Hip Hop / R&B / Soul",
+	"International",
+	"Jazz / Classical" ,
+	"Punk / Hardcore / Metal" ,
+	"Roots / Blues / Folk",
+	"Talk"
+	);
 
 // debug time operations? leave false unless you
 // are developing and need to fake the current time

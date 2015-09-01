@@ -7,6 +7,16 @@
  */
 require_once('../headers/db_header.php');
 
+
+$cutoff_date = date('04/31/'.idate('Y'));
+$year = idate('Y');
+$today_date = date('m/d/Y',strtotime("today"));
+//Check to see if we are in a this years membership year or not.
+if(strtotime($today_date) < strtotime($cutoff_date)){
+    $year--;
+}
+$initial_cutoff_year = $year."/".($year+1);
+
 $queries = array(
     'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
     'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
@@ -93,8 +103,9 @@ $queries = array(
                           ADD COLUMN `spoken_word_training` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`;",                        
     'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
                             `id` INT NOT NULL AUTO_INCREMENT,
-                            `membership_year` VARCHAR(16) NOT NULL DEFAULT '2013/2014',
+                            `membership_year` VARCHAR(16) NOT NULL DEFAULT '',
                             PRIMARY KEY (`id`));",
+    'insert initial cutoff' => "UPDATE year_rollover SET membership_year = '{$initial_cutoff_year}' WHERE id = 1",
     'additional committees' => "ALTER TABLE membership_years 
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,

@@ -32,7 +32,8 @@
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
-						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()"><option ng-repeat="show in playsheet.member_shows | orderBy:'name'">{{show.name}}</option>
+						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues()">
+						<option ng-repeat="show in playsheet.member_shows | orderBy:'name'" value='{{show.id}}'>{{show.name}}</option>
 						</select>
 					</div>
 					<div class='col1'>
@@ -172,8 +173,8 @@
 			</div>
 
 			<div class="floating">
-				<input type="button" ng-click="this.saveDraft();" value="{{(saving)? 'saving....':'Save Draft'}}" ng-hide="playsheet.status == 2" >
-				<input type="button" ng-click="samVisible = !samVisible;" value=" SAM ">
+				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.status == 2" >Save Draft</button><br/><br/>
+				<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
 				
 			</div>
 
