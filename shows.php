@@ -52,7 +52,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     <ul id='member_access_list'>
                         <li ng-repeat='member in show.show_owners track by $index'>
                             {{member.firstname + " " + member.lastname}}
-                            <button type='button' ng-click='show.removeOwner(member.id)'>Remove</button>
+                            <button type='button' ng-click='show.removeOwner($index)'>Remove</button>
                         </li>
                     </ul>
                     <select id='member_access_select'>

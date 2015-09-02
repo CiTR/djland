@@ -125,9 +125,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				
 				<div id='row2' class='containerrow'>
 					<div class='col5'>First Name: </div>
-					<div class='col5' id='firstname'></div>
+					<div class='col5' ><input id='firstname' class='required' placeholder='firstname' maxlength='50'/></div>
 					<div class='col5'>Last Name: </div>
-					<div class='col5' id='lastname'></div>					
+					<div class='col5' ><input id='lastname' class='required' placeholder='lastname' maxlength='50'/></div>					
 				</div>
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>

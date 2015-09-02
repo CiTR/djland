@@ -71,6 +71,7 @@
             call.getShow(this_.active_show.id).then(function(response){
                     this_.info = response.data;
                     this_.info.name = tools.decodeHTML(this_.info.name);
+                    this_.info.show_desc = tools.decodeHTML(this_.info.show_desc);
                     this_.social = response.data.social;
                     delete this_.info.social;
                     this_.social_template = {show_id: this_.info.id, social_name: null , social_url:null};
@@ -78,7 +79,12 @@
             });
             call.getShowOwners(this_.active_show.id).then(function(response)
             {
-                this_.show_owners = response.data;
+                if(response.data != null){
+                    this_.show_owners = response.data.owners;
+                    console.log(this_.show_owners);
+                }else{
+                    this_.show_owners = {};
+                }
             },function(error){
 
             });
@@ -92,7 +98,7 @@
                     this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
                     this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
                 }
-                console.log(this_.show_times);
+
             },function(error){
 
             });
@@ -127,14 +133,18 @@
         this.addOwner = function(){
             //No need to check for duplicates, as there is only one id per member
             var id = $('#member_access_select').val();
-            console.log(this.member_list);
-            /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
+             /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
             Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */    
-            this.show_owners[id] = this.member_list.filter(function(object){if(object.id == id) return object;})[0];
+
+            this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
+            console.log(this.show_owners);
+            
+           
         }
-        this.removeOwner = function(id){
+        this.removeOwner = function($index){
             //Is Object, not array. Must use delete instead of splice.
-            delete this.show_owners[id];
+
+            this.show_owners.splice($index,1);
         }
         this.addFirstShowTime = function(){
             this.show_times.push(this.showtime_template);

@@ -28,7 +28,8 @@ Member.prototype = {
 		this.fullname = member.firstname + " " + member.lastname;
 		for(var item in member){
 			if(item != 'username' && item != 'member_id')
-				member_info[item] = decodeHTML(member[item]);
+				if(item == 'firstname' && member[item] != null || item == 'lastname' && item != null) member[item] = decodeHTML(member[item]);
+				member_info[item] = member[item];
 		}
 		this.member_info = member_info;
 	},

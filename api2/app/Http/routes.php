@@ -121,10 +121,12 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::get('show/{id}/owners',function($show_id = id){
 		$members = Show::find($show_id)->members;
+		$owners = new stdClass();
+		$owners->owners = [];
 		foreach ($members as $member) {
-			$owners[$member->id] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
+			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
 		}
-		return $owners;
+		return Response::json( $owners );
 	});
 	Route::get('/show/{id}/social',function($show_id = id){
 		return Show::find($show_id)->social;

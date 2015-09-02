@@ -16,12 +16,24 @@
     <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "></select>
     <button ng-click="playsheet.endTrack(playitem)">END</button>
 </td>
-<td><button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' ng-class="{filled:playitem.is_playlist==true}" class="box playlist pad-top"></button></td>
-<td><button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button></td>
-<td><button ng-model="playitem.is_fem" ng-click='playitem.is_fem=!playitem.is_fem' ng-class="{filled:playitem.is_fem==true}" class="box femcon pad-top"></button></td>
-<td><button ng-model="playitem.is_instrumental" ng-click='playitem.tags.instrumental=!playitem.is_instrumental' ng-class="{filled:playitem.is_instrumental==true}" class="box instrumental pad-top"></button></td>
-<td><button ng-model="playitem.is_part" ng-click='playitem.is_part=!playitem.is_part' ng-class="{filled:playitem.is_part==true}" class="box partial pad-top"></button></td>
-<td><button ng-model="playitem.is_hit" ng-click='playitem.is_hit=!playitem.is_hit' ng-class="{filled:playitem.is_==true}" class="box hit pad-top"></button></td>
+<td>
+	<button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' 			ng-class="{filled:playitem.is_playlist==true}" 	class="box playlist pad-top"></button>
+</td>
+<td>
+	<button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button>
+</td>
+<td>
+	<button ng-model="playitem.is_fem" 		ng-click='playitem.is_fem=!playitem.is_fem' 					ng-class="{filled:playitem.is_fem==true}" 		class="box femcon pad-top"></button>
+</td>
+<td>
+	<button ng-model="playitem.is_inst" 	ng-click='playitem.is_inst=!playitem.is_inst' 					ng-class="{filled:playitem.is_inst==true}" 		class="box instrumental pad-top"></button>
+</td>
+<td>
+	<button ng-model="playitem.is_part" 	ng-click='playitem.is_part=!playitem.is_part' 					ng-class="{filled:playitem.is_part==true}" 		class="box partial pad-top"></button>
+</td>
+<td>
+	<button ng-model="playitem.is_hit" 		ng-click='playitem.is_hit=!playitem.is_hit' 					ng-class="{filled:playitem.is_hit==true}" 		class="box hit pad-top"></button>
+</td>
 <td>
 	<select ng-model='playitem.crtc_category'>
 		<option value='20'>20</option>

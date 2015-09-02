@@ -200,7 +200,9 @@ function numbersonly(myfield, e, dec)
 
 
 function decodeHTML(str){
-            str = str.replace('&quot;','"');
+            str = str.replace(new RegExp('&quot;','gi'),'"');
+            str = str.replace(new RegExp('&Atilde;','gi'),'Ã');
+            str = str.replace(new RegExp('&copy;','gi'),'©');
             return str.replace(/&#(\d+);/g, function(match, dec) {
                 return String.fromCharCode(dec);
             });
@@ -268,7 +270,7 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
 			
-			for(var item in decodeHTML(data[member])){
+			for(var item in data[member]){
 				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
 			}	
