@@ -181,10 +181,10 @@ foreach($dbarray as $i => $row){
 		echo "<center>|".$row['format']."|</center></td><td><a href=".$_SERVER['SCRIPT_NAME'].
 				"?action=view&id=".$row['id']." title='".$title."'>(".$row["artist"].") - ".$row["title"].
 				"</a> ";
-	if ($row['cancon']==1) echo '<img src="images/cc.png" title="Canadian Content"  height="15"/>';
-	if ($row['femcon']==1) echo '<img src="images/fe.png" title="Female Content" height="15"/>';
-	if ($row['local']==1) echo '<img src="images/local.png" title="Local Content" height="15"/>';
-	if ($row['digitized']==1) echo '<img src="images/sam.png" title="Available to play in SAM" height="15"/>';
+	if ($row['cancon']==1) echo '<img src="images/tags/cc.png" title="Canadian Content"  height="15"/>';
+	if ($row['femcon']==1) echo '<img src="images/tags/fe.png" title="Female Content" height="15"/>';
+	if ($row['local']==1) echo '<img src="images/tags/local.png" title="Local Content" height="15"/>';
+	if ($row['digitized']==1) echo '<img src="images/tags/sam.png" title="Available to play in SAM" height="15"/>';
 		if (isset($_GET['bulkedit'])){
 		echo "<a class='lib-delete' id=".$row['id'].">delete</a>";
 		}

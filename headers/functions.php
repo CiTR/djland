@@ -21,6 +21,8 @@ function getPodcasts($member_id){
 		echo $pdoe->getMessage();
 		return -1;
 	}
+	echo $query;
+
 	return $result;
 }
 

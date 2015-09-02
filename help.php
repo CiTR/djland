@@ -48,12 +48,12 @@ $playsheet = array(
 "What do I do with the ad section?",
 "If I played a song in SAM, can I import it directly to my playsheet along with artist, album, song info?",
 "I was told to add a podcast marker to help me find my show's audio. Where is this?"), 
-"answer"=>array("Fill in the spoken word section. Approximate how long you talked for (using the hour and minute drop downs), then delete the empty rows (using the '-' button) to be able to submit.<br><img src='images/SPOKENWORD.png'>", 
+"answer"=>array("Fill in the spoken word section. Approximate how long you talked for (using the hour and minute drop downs), then delete the empty rows (using the '-' button) to be able to submit.<br><img src='images/help/SPOKENWORD.png'>", 
 "Click the plus button located to the far right, or 'Add five rows' to add five at a time",
 "You probably haven't filled out all the fields, make sure you have filled out Song, Artist, and Album. If you have an empty row, delete it. If you haven't found all the info to fill in (ie. album) you can save it as a draft and come back to it.",
-"Play your scheduled ads around the time it suggests, and once you have played it check it off. <strong>We log the ads that are played, so this is important.</strong><br><img src='images/CheckAds.png'>",
-"Yes, you can add SAM plays one at a time by clicking the SAM plays button in the top right, the '+' beside the track you want. You can also import all the songs from a period of time with the 'SAM period' button.<br><img src='images/SAMinPLAYSHEET.png'> ",
-"Click the 'Add Time Marker' button<br><img src='images/ADDINGPODCAST.png'>")
+"Play your scheduled ads around the time it suggests, and once you have played it check it off. <strong>We log the ads that are played, so this is important.</strong><br><img src='images/help/CheckAds.png'>",
+"Yes, you can add SAM plays one at a time by clicking the SAM plays button in the top right, the '+' beside the track you want. You can also import all the songs from a period of time with the 'SAM period' button.<br><img src='images/help/SAMinPLAYSHEET.png'> ",
+"Click the 'Add Time Marker' button<br><img src='images/help/ADDINGPODCAST.png'>")
 );
 $SAM  = array(
 "title" =>array("SAM"), 
@@ -65,18 +65,18 @@ $SAM  = array(
 "After a song finishes, nothing happens. It won't play the next song automatically.",
 "I've loaded all of my songs into the queue, and it keeps playing a random son instead, what do I do?" ) , 
 "answer"=>array(
-"Click on layout (found in the top menu bar), then hover over load, and click 'load default'. It should now go back to normal.<br> <img src='images/LAYOUT.png'>",
-"Check the faders on the board for SAM A and SAM B are up and turned on, also make sure that 'Air' is lighter on Deck A, and 'Cue' is lighter on Deck B. If there's still no sound, check the volume faders within SAM.<br><img src='images/AIRandCUE.png'>", 
-"Drag it to the queue first, then to a deck and hit play, to play songs from the queue. In the Auto DJ mode, once a song from the queue is playing and comes to an end, the next song from the queue will load automatically. Once the queue is empty, it will continue playing songs from our library in a special sequence ensuring we have no dead air. <br><img src='images/ADDtoPLAYLIST.png'><br><img src='images/PLAYLISTtoDECK.png'>",
-"Most likely someone has changed the 'pitch' and 'tempo' settings. This can be found to the right of the decks. Ensure they look like the image below (click on P to change pitch, T to change tempo).<br> <img src='images/PITCHandTEMPO.png'>",
-"Click on the triangle in the top menu, and select 'AutoDJ'. <br><img src='images/AutoDJ.png'>",
+"Click on layout (found in the top menu bar), then hover over load, and click 'load default'. It should now go back to normal.<br> <img src='images/help/LAYOUT.png'>",
+"Check the faders on the board for SAM A and SAM B are up and turned on, also make sure that 'Air' is lighter on Deck A, and 'Cue' is lighter on Deck B. If there's still no sound, check the volume faders within SAM.<br><img src='images/help/AIRandCUE.png'>", 
+"Drag it to the queue first, then to a deck and hit play, to play songs from the queue. In the Auto DJ mode, once a song from the queue is playing and comes to an end, the next song from the queue will load automatically. Once the queue is empty, it will continue playing songs from our library in a special sequence ensuring we have no dead air. <br><img src='images/help/ADDtoPLAYLIST.png'><br><img src='images/help/PLAYLISTtoDECK.png'>",
+"Most likely someone has changed the 'pitch' and 'tempo' settings. This can be found to the right of the decks. Ensure they look like the image below (click on P to change pitch, T to change tempo).<br> <img src='images/help/PITCHandTEMPO.png'>",
+"Click on the triangle in the top menu, and select 'AutoDJ'. <br><img src='images/help/AutoDJ.png'>",
 "Drag the first song of your queue to the deck that isn't playing anything, and it will then play from your queue from now on!"
 )
 );
 $editLibrary = array(
 "title" =>array("Editing the Library"), 
 "question"=>array("How do I add a song?","How do I edit a song?","There are lots of duplicates, how do I remove them?" ) , 
-"answer"=>array("Click update library, and enter the information", "Find an entry through the library, click on the Catalogue number to edit, change the info and hit update<br><img src='images/EDITSONG.png'>","Click on 'Library' and under the search options, there is a 'duplicate finder'. Click delete on an album that is a duplicate to remove if from the system.") 
+"answer"=>array("Click update library, and enter the information", "Find an entry through the library, click on the Catalogue number to edit, change the info and hit update<br><img src='images/help/EDITSONG.png'>","Click on 'Library' and under the search options, there is a 'duplicate finder'. Click delete on an album that is a duplicate to remove if from the system.") 
 );
 $memberAdd = array(
 "title" =>array("User Management"), 
