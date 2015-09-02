@@ -8,173 +8,74 @@
 
 
 require_once('../api_common.php');
-
 $id = isset($_GET['ID']) && is_numeric($_GET['ID']) ? $_GET['ID'] * 1 : 0;
+if (!$id) {
+  $error = "[ERROR] please supply a numeric show id ( show?ID=##) ";
+  $blame_request = true;
+  finish();
+  exit;
+}
 
-$rawdata = array();
-$query = 'SELECT '.
-    "shows.id as show_id,
-       shows.name,
-       shows.last_show,
-       shows.create_date,
-       shows.edit_date,
-       shows.active,
-       shows.primary_genre_tags,
-       shows.secondary_genre_tags,
-       shows.website,
-       shows.rss,
-       shows.show_desc,
-       shows.alerts,
-       shows.show_img,
-       shows.crtc_default,
-       shows.lang_default,
-       shows.showtype,
-       hosts.name as host_name,
-        podcast_channels.title as podcast_title,
-        podcast_channels.subtitle as podcast_subtitle,
-        podcast_channels.summary as podcast_summary,
-        podcast_channels.keywords as podcast_keywords,
-        podcast_channels.image_url as podcast_image_url,
-        podcast_channels.xml as podcast_xml,
-        podcast_channels.edit_date as podcast_edit_date,
-       social.social_name,
-       social.social_url,
-       social.short_name,
-       social.unlink  ".
-    "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id ".
-    "JOIN social on show_id = shows.id
-    LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
-if ( isset($_GET['ID'])){
-//  fetch id
-  $id = $_GET['ID'];
-
-  $query .=' WHERE shows.id = '.$id.'';
-
-  } else {
-    $error .= " please supply show id ( show?ID=##) ";
-   $blame_request = true;
-  }
-  $query =   "SELECT
-			shows.id as show_id,
-			shows.name,
-			shows.last_show,
-			shows.create_date,
-			GREATEST(shows.edit_date,COALESCE(podcast_channels.edit_date,'0000-00-00 00:00:00')) as edit_date,
-			shows.active,
-			shows.primary_genre_tags,
-			shows.secondary_genre_tags,
-			shows.website,
-			shows.rss,
-			shows.show_desc,
-			shows.alerts,
-			shows.show_img,
-			hosts.name as host_name,
-			podcast_channels.title as podcast_title,
-			podcast_channels.subtitle as podcast_subtitle,
-			podcast_channels.summary as podcast_summary,
-			podcast_channels.keywords as podcast_keywords,
-			podcast_channels.image_url as podcast_image_url,
-			podcast_channels.xml as podcast_xml
-
-			FROM shows
-
-			LEFT JOIN hosts on hosts.id = shows.host_id
-			LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id
-
-			WHERE shows.id=$id";
+$query =   "SELECT
+      shows.id as show_id,
+      shows.name,
+      shows.last_show,
+      shows.create_date,
+      GREATEST(shows.edit_date,COALESCE(podcast_channels.edit_date,'0000-00-00 00:00:00')) as edit_date,
+      shows.active,
+      shows.primary_genre_tags,
+      shows.secondary_genre_tags,
+      shows.website,
+      shows.rss,
+      shows.show_desc,
+      shows.alerts,
+      shows.show_img,
+      hosts.name as host_name,
+      podcast_channels.title as podcast_title,
+      podcast_channels.subtitle as podcast_subtitle,
+      podcast_channels.summary as podcast_summary,
+      podcast_channels.keywords as podcast_keywords,
+      podcast_channels.image_url as podcast_image_url,
+      podcast_channels.xml as podcast_xml
+      FROM shows
+      LEFT JOIN hosts on hosts.id = shows.host_id
+      LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id
+      WHERE shows.id=$id";
 
 $data = array();
 
 if ($result = mysqli_query($db, $query) ) {
-  if (mysqli_num_rows($result) == 0) {
-
-    // now try again without socials
-    $query = 'SELECT '.
-        "shows.id as show_id,
-       shows.name,
-       shows.last_show,
-       shows.create_date,
-       shows.edit_date,
-       shows.active,
-       shows.primary_genre_tags,
-       shows.secondary_genre_tags,
-       shows.website,
-       shows.rss,
-       shows.show_desc,
-       shows.alerts,
-       shows.show_img,
-       shows.crtc_default,
-       shows.lang_default,
-       shows.showtype,
-       hosts.name as host_name,
-        podcast_channels.title as podcast_title,
-        podcast_channels.subtitle as podcast_subtitle,
-        podcast_channels.summary as podcast_summary,
-        podcast_channels.keywords as podcast_keywords,
-        podcast_channels.image_url as podcast_image_url,
-        podcast_channels.xml as podcast_xml,
-        podcast_channels.edit_date as podcast_edit_date ".
-
-        "FROM shows LEFT JOIN hosts on hosts.id = shows.host_id
-                    LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id";
-    $query .=' WHERE shows.id = '.$id.'';
-
-    if($result2 = mysqli_query($db, $query)){
-
-      if (mysqli_num_rows($result2) == 0) {
-
-        $error .= 'no show with this id:'.$id;
-        $blame_request = true;
-        finish();
-
-      } else {
-
-        while ($row = mysqli_fetch_assoc($result2)) {
-
-          $rawdata [] = $row;
-
-        }
-
+  $data = mysqli_fetch_assoc($result);
+  $show_id = isset($data['show_id']) ? $data['show_id'] : 0;
+  if ($show_id) {
+    $query = "SELECT
+          social_name,
+          social_url,
+          short_name
+          from social
+          where show_id = $show_id";
+    $social = array();
+    if ($result = mysqli_query($db, $query)) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $social[] = array(
+            'type'  =>  html_entity_decode($row['social_name'],ENT_QUOTES),
+              'url'   =>  html_entity_decode($row['social_url'],ENT_QUOTES),
+              'name'  =>  html_entity_decode($row['short_name'],ENT_QUOTES)
+        );
       }
-
     }
-
-  } else {
-
-    while ($row = mysqli_fetch_assoc($result)) {
-
-      $rawdata [] = $row;
-
-    }
-
+    $data['social_links'] = $social;
   }
-
-} else {
-
-  $error .= "\n database error. the problematic query is: ".$query." \n".mysqli_error($db);
-
 }
 
-
-
-$data = $rawdata[0];
-
-
-if ($data['alerts'] == ''){
-  $data['alerts'] = 'I am the show alert text for '.$data['name'].'! Check out an upcoming episode with a special interview and very exclusive music!';
-}
-
-$social_array = array();
-
-foreach($rawdata as $i => $show){
-  if (isset($show['social_name'])){
-    $social_array []= array(
-        'type'  =>  html_entity_decode($show['social_name'],ENT_QUOTES),
-        'url'   =>  html_entity_decode($show['social_url'],ENT_QUOTES),
-        'name'  =>  html_entity_decode($show['short_name'],ENT_QUOTES)
+if (empty($data)) {
+  //$error = ' no show with this id:'.$id;
+    //$blame_request = true;
+    $data = array(
+      'api_message' => '[NO RECORD FOUND]',
+      'message'     => 'no show with this id:'.$id,
     );
     finish();
     exit;
 }
-
 finish();
