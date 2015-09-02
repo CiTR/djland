@@ -7,15 +7,6 @@
             templateUrl: 'templates/showtime.html'
         };
     });
-    app.filter('range', function($filter) {
-        return function(input, min, max) {
-            min = parseInt(min); //Make string input int
-            max = parseInt(max);
-            for (var i=min; i<max; i++)
-                input.push($filter('pad')(i,2));
-            return input;
-        };
-    });
     app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
         var this_ = this;
         this.init = function(){
@@ -28,7 +19,7 @@
             this.getMemberList();
             //Get List of primary genres
             call.getConstants().then(function(response){
-                this_.primary_genres = response.data.primary_genres;
+                this_.genres = response.data.genres;
             });
             //Get Shows Member can see
             call.getMemberShows(this.member_id).then(function(response){
@@ -56,6 +47,7 @@
         }
         this.isAdmin = function(){
             var this_ = this;
+            //Call API to obtain permissions
             call.getMemberPermissions(this.member_id).then(function(response){
                 if(response.data.administrator == '1' || response.data.staff == '1' ){
                     this_.is_admin = true;
@@ -70,35 +62,44 @@
             var this_ = this;
             call.getShow(this_.active_show.id).then(function(response){
                     this_.info = response.data;
+
+                    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
                     this_.info.name = tools.decodeHTML(this_.info.name);
                     this_.info.show_desc = tools.decodeHTML(this_.info.show_desc);
+
+                    //Split genres on comma to allow user management
+                    this_.primary_genres = this_.info.primary_genre_tags.split(',');
+                    this_.secondary_genres = this_.info.secondary_genre_tags.split(',');
+
+
+                    //Remove Social array from the show object.
                     this_.social = response.data.social;
                     delete this_.info.social;
                     this_.social_template = {show_id: this_.info.id, social_name: null , social_url:null};
-
             });
+            //Call API to get show owners
             call.getShowOwners(this_.active_show.id).then(function(response)
             {
+                //If no response make an empty object
                 if(response.data != null){
                     this_.show_owners = response.data.owners;
-                    console.log(this_.show_owners);
                 }else{
                     this_.show_owners = {};
                 }
             },function(error){
 
             });
+            //Call API to get show times
             call.getShowTimes(this_.active_show.id).then(function(response){
                 this_.show_times = response.data;
                 this_.showtime_template = {show_id:this_.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-                //Allowing show times to be displayed in UI
+                //Allowing show times to be displayed in UI by splitting on colon
                 for(var showtime in this_.show_times){
                     this_.show_times[showtime].start_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
                     this_.show_times[showtime].start_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
                     this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
                     this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
                 }
-
             },function(error){
 
             });
@@ -110,14 +111,13 @@
                 this_.member_list = response.data;
             });
         }
-        this.changeShow = function(){
-            var this_ = this;
-            this.active_show=this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
-            this.loadShow();
-        }
+        
         this.addFirstSocial = function(){
             //Add template row for social
             this.addSocial(0);
+        }
+        this.addFirstShowTime = function(){
+            this.show_times.push(this.showtime_template);
         }
         this.addSocial = function(id){
             var row = angular.copy(this.social_template);
@@ -127,41 +127,68 @@
                 this.social.splice(id+1,0,row);
             }
         }
-        this.removeSocial = function(id){
-            this.social.splice(id,1);
-        }
         this.addOwner = function(){
             //No need to check for duplicates, as there is only one id per member
             var id = $('#member_access_select').val();
              /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
-            Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */    
-
+            Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */ 
             this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
-            console.log(this.show_owners);
-            
-           
-        }
-        this.removeOwner = function($index){
-            //Is Object, not array. Must use delete instead of splice.
-
-            this.show_owners.splice($index,1);
-        }
-        this.addFirstShowTime = function(){
-            this.show_times.push(this.showtime_template);
         }
         this.addShowTime = function($index){
             this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
         }
+        this.addPrimaryGenre = function(){
+            var genre = this.genres[this.primary_genre_select];
+            if( !(this.primary_genres[0] == genre || this.primary_genres[1] == genre)){
+                this.primary_genres.splice(this.primary_genres.length,0,genre);
+            }
+            this.updatePrimaryGenres();
+        }
+        this.addSecondaryGenre = function(){
+            var genre = this.secondary_genre_input;
+            var exists = false;
+            for(var g in this.secondary_genres){
+                if(g == genre) exists = true;
+            }
+            if(!exists){
+                this.secondary_genres.splice(this.secondary_genres.length,0,genre);
+                this.secondary_genre_input = '';
+            }
+            this.updateSecondaryGenres();
+        }
+        this.removeSocial = function(id){
+            this.social.splice(id,1);
+        }
+        this.removeOwner = function($index){
+            this.show_owners.splice($index,1);
+        }
         this.removeShowTime = function($index){
             this.show_times.splice($index,1);
         }
-
+        this.removePrimaryGenre= function($index){
+            this.primary_genres.splice($index,1);
+            this.updatePrimaryGenres();
+        }
+        this.removeSecondaryGenre= function($index){
+            this.secondary_genres.splice($index,1);
+            this.updateSecondaryGenres();
+        }
+        this.updateShow = function(){
+            var this_ = this;
+            this.active_show=this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
+            this.loadShow();
+        }
         this.updateShowtime = function(showtime){
-            console.log(showtime);
             showtime.start_time = showtime.start_hour + ":" + showtime.start_minute + ":00";
             showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
-            console.log(this.show_times);
         }
+        this.updatePrimaryGenres = function(){
+            this.info.primary_genre_tags = this.primary_genres.join(',');
+        }
+        this.updateSecondaryGenres = function(){
+            this.info.secondary_genre_tags = this.secondary_genres.join(',');
+        }
+        
         this.save = function(){
             var this_ = this;         
             this.info.edit_name = this.username;
@@ -192,6 +219,8 @@
         });
         this.init();
     });
+
+    //FILE UPLOAD CONTROLLER
     app.controller('FileUploadCtrl',function($scope,$rootScope,shared){
 
         //============== DRAG & DROP =============

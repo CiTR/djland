@@ -32,7 +32,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 var username = "<?php echo $_SESSION['sv_username']; ?>";
             </script>
             <div id='wrapper' ng-controller="editShow as show" ng-show='show.info.id'>
-               Select show to edit: <select ng-model="show.show_value" ng-change="show.changeShow()" >
+               Select show to edit: <select ng-model="show.show_value" ng-change="show.updateShow()" >
                 <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
                         </select>
                 <h4 class='text-left double-padded-top'> Show name </h4>
@@ -62,10 +62,26 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 </div>
                 <h4 class='text-left double-padded-top'>Show Host(s)</h4>
                 <input class='wideinput' ng-model='show.info.host'>
-                <h4 class='text-left double-padded-top'>Primary Genre</h4>
-                <select ng-model='show.info.primary_genre_tags' ng-options='value for (key,value) in show.primary_genres'></select>
-                <h4 class='text-left'>Secondary Genres</h4>
-                <input class='wideinput' ng-model='show.info.secondary_genre_tags'/>
+                <h4 class='text-left double-padded-top'>Primary Genres</h4>
+                <ul>
+                    <li ng-repeat='genre in show.primary_genres track by $index'>
+                        {{genre}}
+                        <button type='button' ng-click='show.removePrimaryGenre($index)'>Remove</button>
+                    </li>
+                </ul>
+                <select ng-model='show.primary_genre_select' ng-show='show.primary_genres.length < 2'>
+                        <option ng-repeat="genre in show.genres track by $index | orderBy:'genre.toString()'" value='{{$index}}' >{{genre}} </option>
+                </select>
+                <button ng-click='show.addPrimaryGenre()' ng-show='show.primary_genres.length < 2' type='button'>Add Primary Genre</button>
+                <h4 class='text-left double-padded-top'>Secondary Genres</h4>
+                <ul>
+                    <li ng-repeat='genre in show.secondary_genres track by $index'>
+                        {{genre}}
+                        <button type='button' ng-click='show.removeSecondaryGenre($index)'>Remove</button>
+                    </li>
+                </ul>
+                <input placeholder="Secondary Genre Name" ng-model='show.secondary_genre_input'/>
+                <button ng-click='show.addSecondaryGenre()' type='button'>Add Secondary Genre</button>
                 <h4 class='text-left double-padded-top'>Show Alert</h4>
                 <input ng-model='show.info.alerts'/>
                 <h4 class='text-left double-padded-top'>Show Description</h4>
