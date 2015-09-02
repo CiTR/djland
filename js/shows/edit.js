@@ -183,8 +183,8 @@
             showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
         }
         this.updatePrimaryGenres = function(){
-            this.info.primary_genre_tags = this.primary_genres.join(',');
-        }
+            this.info.primary_genre_tags = this.primary_genres.join(',')
+;        }
         this.updateSecondaryGenres = function(){
             this.info.secondary_genre_tags = this.secondary_genres.join(',');
         }
