@@ -38,13 +38,13 @@ function finish(){
 //    header('Access-Control-Allow-Origin: *',false);
     header("Content-Type:application/json; charset=utf-8",true);
 
-    if( defined('JSON_PRETTY_PRINT') ){
+/*    if( defined('JSON_PRETTY_PRINT') ){
 
       echo utf8_json_encode($data, JSON_PRETTY_PRINT);
 
-    } else {
+    } else {*/
       echo utf8_json_encode( $data );
-    }
+    //}
   }
   mysqli_close($db);
   die();
