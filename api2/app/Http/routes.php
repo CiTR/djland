@@ -51,20 +51,13 @@ Route::group(['middleware' => 'auth'], function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
-				//echo Show::find($show->id)->host->name;
 				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
 			}
 		}else{
 			$member_shows = Member::find($member_id)->shows;
 			foreach($member_shows as $show){
-				//$show = (Object) $show->getAttributes();
 				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
 			}
-			//return $member_shows;
-/*			foreach($member_shows->getAttributes as $show){
-				$shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host->name];
-			}
-			return($shows);*/
 		}
 		return  Response::json($shows);
 	});
@@ -204,6 +197,7 @@ Route::group(['middleware' => 'auth'], function(){
 		}
 		return Response::json($playsheet);
 	});
+
 	Route::post('/playsheet/{id}',function($playsheet_id = id){
 		$ps = Playsheet::find($playsheet_id);
 		$ps->update(Input::get()['playsheet']);
@@ -222,6 +216,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
+		return $ps->id;
 	});
 	
 	// Table Helper Routes 

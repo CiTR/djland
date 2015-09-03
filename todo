@@ -3,18 +3,10 @@ TODO:
 Emails:
 	-rework, make sure retrieving proper lists.
 
+Migration: 
+ - change podcast script to set show_id in podcast channels instead of podcast channel in shows
 
-General:	
-	- move student_no-handler to member
 
-Add from CiTR:
-	- Member Resources and Links
-	- Training signup / Studio Bookings
 
-CiTR Podcasting:
-	- Need multiple show owners
-	- Show Alerts in show page
 
-Extra:
-	- Check Brads Email
-	- 
+

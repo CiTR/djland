@@ -155,22 +155,22 @@
 				</div>
 			</div>
 			<div class='col1 side-padded double-padded-top'>
+					<h4>Episode Title</h4>
+					<input class='wideinput required' ng-model = 'playsheet.info.title'/>
 					<h4>Episode Description</h4>
-					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.spokenword'></textarea>
+					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
 			</div>
 
 			<hr style="side-padded">
 
 			<div class='col1 text-center'>
 				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
-				<p ng-show="submitting">Submitting...</p>
 				<div class="blocker" ng-hide="playsheet.complete">
 					{{ playsheet.missing }}
 				</div>
 				<br/>
 				<div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
 			</div>
-
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.status == 2" >Save Draft</button><br/><br/>
 				<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
@@ -202,9 +202,6 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
-			{{playsheet.info}}
-			{{playsheet.playitems}}
-
 		</div>
 	</body>
 </html>

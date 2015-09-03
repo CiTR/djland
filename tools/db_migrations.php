@@ -18,11 +18,12 @@ if(strtotime($today_date) < strtotime($cutoff_date)){
 $initial_cutoff_year = $year."/".($year+1);
 
 $queries = array(
-    'remove obsolete scheduled_ads table'=>'DROP TABLE `scheduled_ads`;',
-    'remove obsolete ncrc data' => 'DROP TABLE `ncrcdata`;',
+    'remove obsolete scheduled_ads table'=>'DROP TABLE IF EXISTS `scheduled_ads`;',
+    'remove obsolete ncrc data' => 'DROP TABLE IF EXISTS `ncrcdata`;',
     'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                `show_id` INT(10) UNSIGNED NULL AFTER `id`,
                                 `title` text,
                                 `subtitle` text,
                                 `summary` text,
@@ -44,11 +45,12 @@ $queries = array(
 
     'create podcast episodes table'=>'CREATE TABLE IF NOT EXISTS `podcast_episodes` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                `playsheet_id` BIGINT(20) UNSIGNED NOT NULL,
+                                `channel_id` int(11) DEFAULT NULL,
                                 `title` text,
                                 `subtitle` text,
                                 `summary` text,
                                 `date` text,
-                                `channel_id` int(11) DEFAULT NULL,
                                 `url` text,
                                 `length` int(11) DEFAULT NULL,
                                 `author` text,
@@ -57,8 +59,6 @@ $queries = array(
                                 PRIMARY KEY (`id`)
                               ) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
     'add alert field to shows'=>'ALTER TABLE `shows` ADD COLUMN `alerts` TEXT NULL;',
-    'add podcast channel id to shows' => 'ALTER TABLE `shows` ADD COLUMN `podcast_channel_id` int(11) DEFAULT NULL',
-    'add podcsat episode id to playsheet' => 'ALTER TABLE `playsheets` ADD COLUMN `podcast_episode` INT NULL',
     'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
                                 `id` INT NOT NULL AUTO_INCREMENT,
                                 `name` VARCHAR(455) NULL,
@@ -69,8 +69,8 @@ $queries = array(
                                 `image` VARCHAR(455) NULL,
                                 `url` VARCHAR(455) NULL,
                                 PRIMARY KEY (`id`));',
-    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
-    'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
     'rename genre tables to tags' => "ALTER TABLE `shows`
                                   ADD COLUMN `primary_genre_tags` TINYTEXT NULL DEFAULT NULL AFTER `lang_default` ,
                                   CHANGE COLUMN `genre` `secondary_genre_tags` TEXT DEFAULT NULL;",
@@ -80,7 +80,17 @@ $queries = array(
                                   ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   DROP PRIMARY KEY,
                                   ADD PRIMARY KEY (`id`);',
-
+    'rename userid to user_id in group_members' => '
+                                    ALTER TABLE user
+                                        CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
+                                    ALTER TABLE group_members 
+                                        CHANGE COLUMN userid to user_id INT(10) UNSIGNED NOT NULL;
+                                        ALTER TABLE group_members 
+                                    ADD CONSTRAINT `user_id`
+                                    FOREIGN KEY (`user_id`)
+                                    REFERENCES user (`id`)
+                                        ON DELETE CASCADE
+                                        ON UPDATE CASCADE;"',
     'edit membership permissions' => "ALTER TABLE `group_members`
                                     DROP COLUMN `editlibrary`,
                                     DROP COLUMN `membership`,
@@ -95,6 +105,7 @@ $queries = array(
                                     ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
                                     CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
                                     CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0'",
+    'add foreign key to group members' => 'ALTER TABLE group_members ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES user.(`id`) ON DELETE CASCADE ON UPDATE CASCADE;',
     'add training' => "ALTER TABLE `membership`
                           ADD COLUMN `station_tour` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
                           ADD COLUMN `technical_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `station_tour`,
@@ -103,31 +114,12 @@ $queries = array(
                           ADD COLUMN `spoken_word_training` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`;",                        
     'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
                             `id` INT NOT NULL AUTO_INCREMENT,
-                            `membership_year` VARCHAR(16) NOT NULL DEFAULT '',
+                            `membership_year` VARCHAR(16) NOT NULL DEFAULT $initial_cutoff_year,
                             PRIMARY KEY (`id`));",
-    'insert initial cutoff' => "UPDATE year_rollover SET membership_year = '{$initial_cutoff_year}' WHERE id = 1",
     'additional committees' => "ALTER TABLE membership_years 
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
-                                ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",
-'rename userid to user_id in group_members' => 'ALTER TABLE group_members CHANGE COLUMN userid to user_id INT(10) UNSIGNED NOT NULL;',
-'add foreign key to group members' => 'ALTER TABLE group_members ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES user.(`id`) ON DELETE CASCADE ON UPDATE CASCADE;',
-
-    'rename userid to id' =>    "BEGIN TRANSACTION;
-                                    ALTER TABLE group_members 
-                                        DROP FOREIGN KEY `user_id`;
-                                    ALTER TABLE group_members
-                                        DROP INDEX `userid_idx`;
-                                    ALTER TABLE user
-                                        CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
-                                    ALTER TABLE group_members
-                                        ADD INDEX `user_id_idx` (`user_id` ASC);
-                                    ALTER TABLE group_members 
-                                        ADD CONSTRAINT `user_id`
-                                        FOREIGN KEY (`user_id`)
-                                        REFERENCES user (`id`)
-                                            ON DELETE CASCADE
-                                            ON UPDATE CASCADE;",
+                                ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",                                    
     'add string based host field' => 'ALTER TABLE `sheets`
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`

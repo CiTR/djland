@@ -1,4 +1,14 @@
 Current Changes to DB:
+
+////////PRE POPULATE
+
+INSERT INTO `djland`.`shows` (`id`, `name`, `host_id`, `weekday`, `start_time`, `end_time`, `pl_req`, `cc_req`, `indy_req`, `fem_req`, `last_show`, `create_date`, `create_name`, `edit_date`, `edit_name`, `active`, `crtc_default`) VALUES ('1', 'Deleted Show', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `djland`.`playsheets` (`id`, `show_id`, `host_id`, `edit_date`) VALUES ('1', '1', '2', '0');
+INSERT INTO `djland`.`songs` (`id`, `artist`, `title`, `song`, `composer`) VALUES ('1', 'song no longer exists', 'song no longer exists', 'song no longer exists', 'song no longer exists');
+
+///// 
+
+
 ///////Alter: Move song data into playitems
 
 ALTER TABLE `playitems` 
@@ -9,10 +19,12 @@ ADD COLUMN `composer` VARCHAR(80) NULL AFTER `album`;
 
 UPDATE playitems as p INNER JOIN songs as s ON s.id = p.song_id SET p.artist = s.artist, p.song = s.song, p.album = s.title, p.composer = s.composer;
 
+DROP TABLE songs;
+
 //////////Alter: No foreign key in playsheets pointing to show.There are some playsheets that link to lost shows, make them fill-in, then add foreign key.
 
-UPDATE playsheets SET show_id =284 WHERE show_id = "";
-UPDATE playsheets SET show_id=284 WHERE show_id NOT IN (select id from shows);
+UPDATE playsheets SET show_id =1 WHERE show_id = "";
+UPDATE playsheets SET show_id=1 WHERE show_id NOT IN (select id from shows);
 
 
 ALTER TABLE `djland`.`playsheets` 
@@ -49,16 +61,8 @@ ADD PRIMARY KEY (`id`, `show_id`, `member_id`);
 
 
 ///////////Alter: setting up foreign key for playitem -> playlist
-
-ALTER TABLE `djland`.`playsheets` 
-ENGINE = InnoDB ;
-ALTER TABLE `djland`.`playitems` 
-ENGINE = InnoDB ;
-ALTER TABLE `djland`.`songs` 
-ENGINE = InnoDB ;
-
-UPDATE playitems SET playsheet_id = '20' WHERE !playsheet_id;
-UPDATE playitems SET playsheet_id = '20' WHERE playsheet_id not in (SELECT id FROM playsheets);
+UPDATE playitems SET playsheet_id = '1' WHERE !playsheet_id;
+UPDATE playitems SET playsheet_id = '1' WHERE playsheet_id not in (SELECT id FROM playsheets);
 
 ALTER TABLE `playitems` 
 CHANGE COLUMN `playsheet_id` `playsheet_id` BIGINT(20) UNSIGNED NOT NULL ,
@@ -72,11 +76,7 @@ ADD CONSTRAINT `playitem_playsheet_id`
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
-Alter: setting up foreign key for playitem->song
-insert fake song 1 which catches all lost playitems
-
-
-INSERT INTO `djland`.`songs` (`id`, `artist`, `title`, `song`, `composer`) VALUES ('1', 'song no longer exists', 'song no longer exists', 'song no longer exists', 'song no longer exists');
+//////////////Alter: setting up foreign key for playitem->song insert fake song 1 which catches all lost playitems
 UPDATE playitems SET song_id = 1 WHERE song_id not in (SELECT id FROM songs);
 UPDATE playitems SET song_id = 1 WHERE !song_id;
 
@@ -88,7 +88,8 @@ ADD CONSTRAINT `playitem_song_id`
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
-Alter: Fixing Hosts Table
+///////////////Alter: Fixing Hosts Table
+
 UPDATE `hosts` SET `name`='Fill In' WHERE `id`='2';
 UPDATE `hosts` SET `name`='Fill In' WHERE `id`='4';
 INSERT INTO `hosts` (`id`, `name`) VALUES ('2322', 'hostname');
@@ -133,11 +134,6 @@ ADD CONSTRAINT `channel_id`
 
 //////////Alter: Convert Shows to INNODB and add foreign key.
 
-ALTER TABLE shows 
-ENGINE = InnoDB;
-
-ALTER TABLE hosts 
-ENGINE = InnoDB ;
 
 ALTER TABLE shows 
 CHANGE COLUMN `host_id` `host_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
@@ -148,12 +144,39 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`, `host_id`, `podcast_channel_id`);
 
 ////////Alter: Add foreign key to membership_years
+
 ALTER TABLE `membership_years` 
 ADD CONSTRAINT `membership_years_member_id`
   FOREIGN KEY (`member_id`)
   REFERENCES `djland`.`membership` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+////////////Alter: Merge Spokenword Subtitle, and Summary HAS TO HAPPEN AFTER CONNECT PLAYLISTS W/ EPISODES SCRIPT
+
+ALTER TABLE `playsheets` 
+CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL,
+ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;
+
+UPDATE playsheets AS p INNER JOIN podcast_episodes AS pe ON p.podcast_episode = pe.id SET p.title = pe.title, p.summary = concat(pe.subtitle," \n",p.summary," \n",pe.summary);
+
+ALTER TABLE `podcast_episodes`
+DROP COLUMN `title`, 
+DROP COLUMN `summary`,
+DROP COLUMN `subtitle`;
+
+
+ALTER TABLE `podcast_episodes` 
+CHANGE COLUMN `channel_id` `channel_id` INT(11) NOT NULL AFTER `playsheet_id`,
+CHANGE COLUMN `playsheet_id` `playsheet_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '1' ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `channel_id`, `playsheet_id`);
+
+ALTER TABLE `playsheets`
+DROP COLUMN `podcast_episode`;
+
+
+
 
 
 

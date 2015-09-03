@@ -74,66 +74,57 @@ if(!isset($_GET['id'])){
             </div>
             <div id="popup"  ng-show="editing">
                 <p ng-click="editing = false;" id="closer"> X </p>
-                Title:<br/>
-                <input ng-model="editing.podcast.title">
-                </input><br/>
-                Subtitle:<br/>
-                <input  ng-model="editing.podcast.subtitle" >
-                </textarea><br/>
-                Episode Summary:<br/>
-                <textarea ng-model="editing.podcast.summary" rows="8">
-                </textarea><br/>
+                <h4 class='text-left'>Episode Title</h4>
+                <input ng-model="editing.playlist.title"/>
+                <h4 class='text-left'>Episode Summary</h4>
+                <textarea ng-model="editing.playlist.summary" rows="8">
+                </textarea>
 
+                <h4 class='text-left double-padded-top'>Broadcast Date</h4>
                 <div ng-controller='datepicker' >
-
                     <input class="date_picker" type="text" datepicker-popup="{{format}}"
                            ng-model="editing.podcast.date"  is-open="opened"
                            ng-required="true" close-text="Close" ng-hide="true"
                            ng-change="$parent.date_change();" />
-                    <br/>
-                    <i>broadcasted on <br/></i><b>{{editing.podcast.date | date:'mediumDate'}}</b>
-                    <button ng-click="open($event)" ng-model="editing.podcast.date"  >change date</button>
-                    <br/>
-
+                    <b>{{editing.podcast.date | date:'mediumDate'}}</b>
+                    <button ng-click="open($event)" ng-model="editing.podcast.date"  >Change Date</button>
 
                 </div>
+                <div >
+                    Start Time:
+                    h:<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
+                              ng-change="editing.podcast.date.setHours(editing.start_hour);"></select>
+                    m:<select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
+                              ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>
+                    s:<select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
+                              ng-change="editing.podcast.date.setSeconds(editing.start_second);"></select>
 
-                Start Time:
-                h:<select ng-model="editing.start_hour" ng-options="n for n in [] | range:0:24"
-                          ng-change="editing.podcast.date.setHours(editing.start_hour);"></select>
-                m:<select ng-model="editing.start_minute" ng-options="n for n in [] | range:0:60"
-                          ng-change="editing.podcast.date.setMinutes(editing.start_minute);"></select>
-                s:<select ng-model="editing.start_second" ng-options="n for n in [] | range:0:60"
-                          ng-change="editing.podcast.date.setSeconds(editing.start_second);"></select>
 
+                    End Time:
+                    h:<select ng-model="editing.end_hour" ng-options="n for n in [] | range:0:24 "
+                              ng-change="editing.end_time.setHours(editing.end_hour);"></select>
+                    m:<select ng-model="editing.end_minute" ng-options="n for n in [] | range:0:60"
+                              ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>
+                    s:<select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
+                              ng-change="editing.end_time.setSeconds(editing.end_second);"></select>
+                </div>
 
-                End Time:
-                h:<select ng-model="editing.end_hour" ng-options="n for n in [] | range:0:24 "
-                          ng-change="editing.end_time.setHours(editing.end_hour);"></select>
-                m:<select ng-model="editing.end_minute" ng-options="n for n in [] | range:0:60"
-                          ng-change="editing.end_time.setMinutes(editing.end_minute);"></select>
-                s:<select ng-model="editing.end_second" ng-options="n for n in [] | range:0:60"
-                          ng-change="editing.end_time.setSeconds(editing.end_second);"></select>
-                <br/>
-                <br/>
-                <i> duration: </i>
-                <b>{{Math.floor( editing.podcast.duration /60/60 )  | number:0 }}:{{(editing.podcast.duration /60)%60 | number:0 | pad:2}} , {{(editing.podcast.duration )%60 | pad:2 }}s</b>
+                <h4 class='text-left double-padded-top'>Episode Duration</h4>
+                <b>{{Math.floor( editing.podcast.duration /60/60 )  | number:0 }}h:{{(editing.podcast.duration /60)%60 | number:0 | pad:2}}m: {{(editing.podcast.duration )%60 | pad:2 }}s</b>
 
-                <br/>
-
+                <div class='double-padded-top'>
                 <button ng-click="preview_start()">preview start</button>
                 <button ng-click="preview_end()">preview end</button>
                 <button ng-click="stop_sound()">stop playback</button>
-
-                <br/><br/>audio file:<br/>
+                </div>
+                
+                <h4 class='text-left double-padded-top'>Audio File Link</h4>
                 <input ng-model="editing.podcast.url" readonly>
                 </input><br/>
 
                 <span id="message">{{message}}</span><br/><br/>
-
-
-                <button class='large-button' ng-click="save(editing.podcast);" > save </button>
-                <button ng-show="{{adminStatus}}" ng-click="deactivate(editing.podcast);"> deactivate </button>
+                <button ng-click="save(editing.podcast);" >Save Episode</button>
+                <button ng-show="{{adminStatus}}" ng-click="deactivate(editing.podcast);">Make this pddcast inactive</button>
                 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
             </div>
         </div>
@@ -182,7 +173,7 @@ if(!isset($_GET['id'])){
 
                 if (show_id = $location.search().id){
 
-                    $scope.status = 'loading playlists and podcasts...';
+                    $scope.status = 'loading sheets and podcasts...';
 
                     apiService.getPlodcasts(show_id)
                         .then(function (response) {
