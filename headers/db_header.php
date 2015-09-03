@@ -17,6 +17,7 @@ try{
 	$hostandaddress = "mysql:dbname=".$djland_db_dbname.";host=".$djland_db_address;
 	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$pdo_db -> exec("set names utf8");
 }catch(PDOException $e){
 	echo $e->getMessage();
 	if ( extension_loaded('pdo') ){

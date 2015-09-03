@@ -70,47 +70,52 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                     $query.=" ORDER BY m.id DESC";
                     break;
             }
-            
             //Prepare the statement
-            $statement = $pdo_db->prepare($query);
+            $prepare = $statement = $pdo_db->prepare($query);
 
-            //Binding Variables
-            if(isset($_GET['search_by']) && isset($_GET['value'])){
-                switch($_GET['search_by']){
-                    case 'name':
-                        if($_GET['value'] != "" && isset($_GET['value'])){
-                            $size = sizeof($keywords);
-                            for($i = 0; $i<$size; $i++){
-                                $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+            if($prepare){
+                //Binding Variables
+                if(isset($_GET['search_by']) && isset($_GET['value'])){
+                    switch($_GET['search_by']){
+                        case 'name':
+                            if($_GET['value'] != "" && isset($_GET['value'])){
+                                $size = sizeof($keywords);
+                                for($i = 0; $i<$size; $i++){
+                                    $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+                                }
                             }
-                        }
-                        break;
-                    case 'interest':
-                        $statement->bindValue(':value', "my.".$_GET['value']);
-                        break;
-                    case 'member_type':
-                        $statement->bindValue(':value', $_GET['value']);
-                        break;
-                    default:
-                        break;
+                            break;
+                        case 'interest':
+                            $statement->bindValue(':value', "my.".$_GET['value']);
+                            break;
+                        case 'member_type':
+                            $statement->bindValue(':value', $_GET['value']);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                $statement->bindParam(':year', $_GET['year']);
+                if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
+                    $statement->bindValue(':value', $_GET['paid']);
+                }
+              
+                //echo $statement->debugDumpParams();
+                
+                try {
+                    http_response_code(200);
+                    $statement->execute();
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    echo json_encode($result);
+                } catch (PDOException $e) {
+                    http_response_code(500);
+                    echo json_encode($e->getMessage());
+                }
+            }else{
+                echo "error";
+                print_r(PDO::errorInfo());
             }
-            $statement->bindValue(':year', $_GET['year']);
-            if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
-                $statement->bindValue(':value', $_GET['paid']);
-            }
-          
-            //echo $statement->debugDumpParams();
-            
-            try {
-                http_response_code(200);
-                $statement->execute();
-                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-                echo json_encode($result);
-            } catch (PDOException $e) {
-                http_response_code(500);
-                echo json_encode($e->getMessage());
-            }
+
             break;
         default:
             break;
