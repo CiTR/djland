@@ -1,5 +1,5 @@
 Current Changes to DB:
-Alter: Move song data into playitems
+///////Alter: Move song data into playitems
 
 ALTER TABLE `playitems` 
 ADD COLUMN `artist` VARCHAR(80) NULL AFTER `insert_song_length_second`,
@@ -9,11 +9,7 @@ ADD COLUMN `composer` VARCHAR(80) NULL AFTER `album`;
 
 UPDATE playitems as p INNER JOIN songs as s ON s.id = p.song_id SET p.artist = s.artist, p.song = s.song, p.album = s.title, p.composer = s.composer;
 
-Alter:
-
-No foreign key in playsheets pointing to show.
-
-There are some playsheets that link to lost shows, make them fill-in, then add foreign key.
+//////////Alter: No foreign key in playsheets pointing to show.There are some playsheets that link to lost shows, make them fill-in, then add foreign key.
 
 UPDATE playsheets SET show_id =284 WHERE show_id = "";
 UPDATE playsheets SET show_id=284 WHERE show_id NOT IN (select id from shows);
@@ -29,8 +25,7 @@ ADD CONSTRAINT `show_id`
   ON UPDATE CASCADE;
 
 
-Alter:
-Setting up foreign keys in member_show
+/////////Alter: Setting up foreign keys in member_show
 
 ALTER TABLE `djland`.`member_show` 
 CHANGE COLUMN `member_id` `member_id` INT(11) UNSIGNED NOT NULL ,
@@ -53,7 +48,7 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`, `show_id`, `member_id`);
 
 
-Alter: setting up foreign key for playitem -> playlist
+///////////Alter: setting up foreign key for playitem -> playlist
 
 ALTER TABLE `djland`.`playsheets` 
 ENGINE = InnoDB ;
@@ -99,7 +94,7 @@ UPDATE `hosts` SET `name`='Fill In' WHERE `id`='4';
 INSERT INTO `hosts` (`id`, `name`) VALUES ('2322', 'hostname');
 INSERT INTO `hosts` (`id`, `name`) VALUES ('2323', 'hostname');
 
-Add: `host` to playsheets
+////////Add: `host` to playsheets
 
 ALTER TABLE playsheets
 ADD COLUMN `host` AFTER `end_time`;
@@ -109,7 +104,7 @@ Add: `edit_date` to podcast_episodes
 ALTER TABLE podcast_episodes 
 ADD COLUMN `edit_date` AFTER `duration`;
 
-Alter: Some Columns => NOT NULL to throw DB level error.
+//////////Alter: Some Columns => NOT NULL to throw DB level error.
 
 ALTER TABLE playsheets 
 CHANGE COLUMN `show_id` `show_id` INT(10) UNSIGNED NOT NULL ,
@@ -121,7 +116,7 @@ CHANGE COLUMN `status` `status` TINYINT(4) NOT NULL ,
 CHANGE COLUMN `unix_time` `unix_time` INT(11) NOT NULL ,
 CHANGE COLUMN `crtc` `crtc` INT(11) NOT NULL DEFAULT '30' ;
 
-Alter: Set podcast channel to be part of primary key, and make it a foreign key.
+///////////Alter: Set podcast channel to be part of primary key, and make it a foreign key.
 
 ALTER TABLE podcast_episodes 
 CHANGE COLUMN `channel_id` `channel_id` INT(11) NOT NULL AFTER `id`,
@@ -136,7 +131,7 @@ ADD CONSTRAINT `channel_id`
   ON UPDATE CASCADE;
 
 
-Alter: Convert Shows to INNODB and add foreign key.
+//////////Alter: Convert Shows to INNODB and add foreign key.
 
 ALTER TABLE shows 
 ENGINE = InnoDB;
@@ -152,7 +147,13 @@ ALTER TABLE shows
 DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`, `host_id`, `podcast_channel_id`);
 
-
+////////Alter: Add foreign key to membership_years
+ALTER TABLE `membership_years` 
+ADD CONSTRAINT `membership_years_member_id`
+  FOREIGN KEY (`member_id`)
+  REFERENCES `djland`.`membership` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
 
 
 

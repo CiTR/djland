@@ -32,6 +32,8 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                                 }   
                             }
                             $query.=")";
+                        }else{
+                            echo "value null or emtpy";
                         }
                        
                         break;
@@ -50,7 +52,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
 
             }
 
-           
+            
             //Do we want all members, paid, or unpaid?
             if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                 $query.=" AND my.paid=:paid";
@@ -71,7 +73,8 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                     $query.=" ORDER BY m.id DESC";
                     break;
             }
-
+            echo $query;
+            print_r($_GET);
             //Prepare the statement
             $statement = $pdo_db->prepare($query);
 

@@ -88,7 +88,7 @@ $queries = array(
                                     DROP COLUMN `editdj`,
                                     DROP COLUMN `addshow`,
                                     DROP COLUMN `adduser`,
-                                    CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `userid`,
+                                    CHANGE COLUMN `operator` `operator` VARCHAR(1) NULL DEFAULT '0' AFTER `user_id`,
                                     CHANGE COLUMN `administrator` `administrator` VARCHAR(1) NULL DEFAULT '0' AFTER `operator`,
                                     ADD COLUMN `staff` VARCHAR(1) NULL DEFAULT '0' AFTER `administrator`,
                                     ADD COLUMN `workstudy` VARCHAR(1) NULL DEFAULT '0' AFTER `staff`,
