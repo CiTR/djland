@@ -295,7 +295,7 @@
             */
 
 
-            this.save().then(function(){
+           /* this.save().then(function(){
                 this_.tracklist_overlay = true;
 
                 if(this.podcast.id > 1){
@@ -303,7 +303,7 @@
                         //TODO:: Handle Podcast Request ?
                     });
                 }                
-            });
+            });*/
 
         }
         this.save = function(){
