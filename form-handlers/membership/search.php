@@ -32,10 +32,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                                 }   
                             }
                             $query.=")";
-                        }else{
-                            echo "value null or emtpy";
                         }
-                       
                         break;
                     case 'interest':
                         $query.="WHERE :value='1'";
@@ -73,8 +70,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                     $query.=" ORDER BY m.id DESC";
                     break;
             }
-            echo $query;
-            print_r($_GET);
+            
             //Prepare the statement
             $statement = $pdo_db->prepare($query);
 
