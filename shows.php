@@ -89,7 +89,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input class='wideinput' id='show_image' ng-model='show.info.show_img'>
+                <input readonly class='wideinput' id='show_image' ng-model='show.info.show_img'>
                 <div class='double-padded-top' ng-controller="FileUploadCtrl">
                     <div  class="row">
                         <label for="fileToUpload">Either choose files, or drag files</label><br/>
