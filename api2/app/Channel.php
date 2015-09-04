@@ -27,9 +27,8 @@ class Channel extends Model
 		$ftp->url_path = 'http://playlist.citr.ca/podcasting/xml/';
 
 		//Get objects
-		print_r($this->show);
 		$host = $this->show->host;
-		$show = $this->show->getAttributes();
+		$show = $this->show;
 		$channel = $this;
 		$episodes = $this->podcasts;
 	    $channel = $channel->getAttributes();

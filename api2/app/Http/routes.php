@@ -255,7 +255,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/channels/write_xml',function(){
 		$channels = Channel::all();
 		foreach($channels as $channel){
-			echo $channel->make_xml();
+			if($channel->make_xml()){
+				echo "Successfully wrote {$channel->name}";
 			}
 	});
 	// Table Helper Routes 
