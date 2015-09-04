@@ -274,7 +274,6 @@ episode duration: {{episode.duration | date: 'medium'}}<br/><br/><br/>
 		.factory('archiveService', function($filter) {
 			return {
 				url: function(date, end) {
-
 					return 'http://archive.citr.ca/py-test/archbrad/download?'+
 						'archive=%2Fmnt%2Faudio-stor%2Flog'+
 						'&startTime='+$filter('date')(date,'dd-MM-yyyy HH:mm:ss')+

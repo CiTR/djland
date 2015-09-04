@@ -125,6 +125,7 @@ if(!isset($_GET['id'])){
                 <span id="message">{{message}}</span><br/><br/>
                 <button ng-click="save(editing.podcast);" >Save Episode</button>
                 <button ng-show="{{adminStatus}}" ng-click="deactivate(editing.podcast);">Make this pddcast inactive</button>
+                {{editing}}
                 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
             </div>
         </div>

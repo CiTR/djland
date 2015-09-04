@@ -90,7 +90,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
                 $found = true;
 
-                $update_q = 'UPDATE shows SET podcast_channel_id = "'.$pod['id'].'" WHERE name = "'.$show['name'].'"';
+                $update_q = 'UPDATE podcast_channels SET show_id = "'.$show['id'].'" WHERE id = "'.$pod['id'].'"';
 
                 unset($pod_chans[$j]);
                 unset($shows[$i]);

@@ -32,7 +32,7 @@
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
-						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.name for show in playsheet.member_shows | orderBy:'name'">
+						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'">
 						</select>
 					</div>
 					<div class='col1'>
@@ -132,7 +132,7 @@
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"></th>
 						<th><th><th></th>
 					</tr>
-					<tbody ui-sortable ng-change='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
+					<tbody ui-sortable id='playitems' ng-change='playsheet.checkIfComplete()' ng-update='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
 						<tr class='playitem border' playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
@@ -191,7 +191,7 @@
 				<button ng-click='playsheet.tracklist_overlay = !playsheet.tracklist_overlay'> X </button>
 				<h3>Thanks for submitting your playsheet</h3>
 				<h3>If you're done, please <a href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
-				A podcast episode is now being created.
+				
 				<div class='text-center'> {{podcast_status}}</div>
 				To modify the episode timing, title, subtitle, or summary,
 				
@@ -202,6 +202,20 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
+			{{playsheet.start | date:'EEE, MMM d, y HH:mm:ss'}}<br/>
+			{{playsheet.end | date:'EEE, MMM d, y HH:mm:ss'}}
+			<h4>Info</h4>
+			{{playsheet.info}}
+			<h4>Show</h4>
+			{{playsheet.show}}
+			<h4>Channel</h4>
+			{{playsheet.channel}}
+			<h4>Podcast</h4>
+			{{playsheet.podcast}}
+			<h4>Playitems</h4>
+			{{playsheet.playitems}}
+			<h4>Ads</h4>
+			{{playsheet.ads}}
 		</div>
 	</body>
 </html>

@@ -36,13 +36,13 @@ if ($result = mysqli_query($db, $query) ) {
   finish();
 }
 
-$query = 'SELECT podcast_channel_id FROM shows WHERE id = '.$show_id;
+$query = 'SELECT id FROM podcast_channels WHERE show_id = '.$show_id;
 
 
 if ($result = mysqli_query($db, $query) ) {
 
   $channel_id = mysqli_fetch_assoc($result);
-  $channel_id = $channel_id['podcast_channel_id'];
+  $channel_id = $channel_id['id'];
 
 } else {
   $error .= ' cannot get channel id ';

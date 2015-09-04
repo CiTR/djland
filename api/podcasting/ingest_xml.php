@@ -272,7 +272,8 @@ function remove_same_url($episodes){
                 }
 
                 // now check to see if one has more characters then the other (bias towards larger description / summary )
-                $chars_in_j = 0; $chars_in_k = 0;
+                $chars_in_j = 0; 
+                $chars_in_k = 0;
 
                 foreach($episode as $key => $value){
                     $chars_in_j += strlen($value);

@@ -23,7 +23,7 @@ $queries = array(
     'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'create podcast channels table'=>'CREATE TABLE IF NOT EXISTS `podcast_channels` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
-                                `show_id` INT(10) UNSIGNED NULL AFTER `id`,
+                                `show_id` INT(10) UNSIGNED NOT NULL,
                                 `title` text,
                                 `subtitle` text,
                                 `summary` text,
@@ -40,6 +40,7 @@ $queries = array(
                                 `keep_n_episodes` int(4) DEFAULT NULL,
                                 `active` tinyint(1) DEFAULT NULL,
                                 `xml` text,
+                                `slug` TEXT NULL,
                                 PRIMARY KEY (`id`)
                               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;',
 

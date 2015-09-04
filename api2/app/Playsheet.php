@@ -21,4 +21,10 @@ class Playsheet extends Model
     public function playitems(){
     	return $this->hasMany('App\Playitem');
     }
+    public function podcast(){
+        return $this->hasOne('App\Podcast');
+    }
+    public function channel(){
+        return $this->belongsTo('App\Show')->join('podcast_channels','shows.id','='.'podcast_channels.show_id');
+    }
 }

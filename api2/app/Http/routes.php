@@ -3,11 +3,13 @@ use App\User as User;
 use App\Member as Member;
 use App\Permission as Permission;
 use App\Show as Show;
+use App\Channel as Channel;
 use App\Showtime as Showtime;
 use App\Host as Host;
 use App\Social as Social;
 use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
+use App\Podcast as Podcast;
 use App\Song as Song;
 
 Route::get('/', function () {
@@ -51,12 +53,12 @@ Route::group(['middleware' => 'auth'], function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
-				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
+				$shows->shows[] = ['id'=>$show->id,'show'=>$show,'host'=>Show::find($show->id)->host['name'],'channel'=>$show->channel];
 			}
 		}else{
 			$member_shows = Member::find($member_id)->shows;
 			foreach($member_shows as $show){
-				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name']];
+				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name'],'channel'=>$show->channel];
 			}
 		}
 		return  Response::json($shows);
@@ -72,10 +74,9 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::get('/show/{id}',function($show_id = id){
 		$show = Show::find($show_id);
-		$host = Show::find($show_id)->host->name;
-		$social = Show::find($show_id)->social;
-		$show->host = $host;
-		$show->social = $social;
+		$show->host = Show::find($show_id)->host->name;
+		$show->social = Show::find($show_id)->social;
+		$show->channel = $show->channel;
 		return Response::json($show);
 	});
 	Route::post('/show/{id}',function($show_id = id){
@@ -192,8 +193,11 @@ Route::group(['middleware' => 'auth'], function(){
 		$playsheet -> playsheet = Playsheet::find($id);
 		if($playsheet -> playsheet != null){
 			$playsheet -> playitems = Playsheet::find($id)->playitems;
-			$playsheet -> show = Playsheet::find($id)->show;
-			$playsheet -> host = Host::find($playsheet->show->host_id);		
+			$show = Playsheet::find($id)->show;
+			$playsheet -> show = $show;
+			$playsheet -> channel = $show->channel;
+			$playsheet -> host = Host::find($playsheet->show->host_id);
+			$playsheet -> podcast = Playsheet::find($id)->podcast;
 		}
 		return Response::json($playsheet);
 	});
@@ -212,13 +216,28 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::post('/playsheet',function(){
 		$ps = Playsheet::create(Input::get()['playsheet']);
+		$podcast_in = Input::get()['podcast'];
+		$podcast_in ['playsheet_id'] = $ps->id;
+		
+		$podcast = Podcast::create($podcast_in);
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
-		return $ps->id;
+		$response = new stdClass();
+		$response->id = $ps->id;
+		$response->podcast_id = $podcast->id;
+		return Response::json($response);
 	});
-	
+	Route::post('/podcast/{id}',function($id = id){
+		$podcast = Podcast::find($id);
+		$podcast->update(Input::get()['podcast']);
+	});
+	Route::post('/podcast/{id}/audio',function($id = id){
+		$podcast = Podcast::find($id);
+		$result = $podcast->make_podcast();
+		//return $result;
+	});
 	// Table Helper Routes 
 	Route::get('/table',function(){
 		return  DB::select('SHOW TABLES');

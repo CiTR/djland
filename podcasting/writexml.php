@@ -119,7 +119,7 @@ function make_podcast($channel,$episodes){
 	$local_channel_xml = substr($channel['xml'],strlen($remote_prefix));
 	$file = fopen('podcast-media/xml/'.$local_channel_xml,'wb');
 	*/
-
+	//$mkdir('/podcast-media/xml');
 	$file = fopen('podcast-media/xml/'.$channel['xml'],'wb');
 
 	if($file){

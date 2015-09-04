@@ -17,7 +17,6 @@ class Show extends Model
     public function playsheets(){
     	return $this->hasMany('App\Playsheet','show_id','id');
     }
-
     public function host(){
     	return $this->hasOne('App\Host','id','host_id');
     }
@@ -26,6 +25,9 @@ class Show extends Model
     }
     public function showtimes(){
         return $this->hasMany('App\Showtime');
+    }
+    public function channel(){
+        return $this->hasOne('App\Channel');
     }
 
 }

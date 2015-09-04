@@ -1,10 +1,10 @@
 
 <td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
-<td><input ng-model='playitem.artist' class='required'></input></td>
-<td><input ng-model='playitem.song' class='required'></input></td>
-<td><input ng-model='playitem.album' class='required'></input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.artist' class='required'></input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.socan'>
-	<input ng-model='playitem.song.composer' ng-class='{required: playsheet.socan}'></input>
+	<input ng-change='playsheet.update()' ng-model='playitem.song.composer' ng-class='{required: playsheet.socan}'></input>
 </td>
 <td ng-show='playsheet.socan'>
 	<select ng-model="playitem.insert_song_start_hour" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateTrackStart(playitem);"></select>:

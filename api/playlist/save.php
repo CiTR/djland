@@ -24,14 +24,10 @@ $podcast['edit_date'] = date('Y-m-d H:i:s');
 $podcast['date'] = date(DATE_RSS, strtotime($podcast['date']));
 
 if ( $podcast_id != 0 && $podcast_id != '0'){
-
-
     update_row_in_table('podcast_episodes',$podcast, $podcast_id);
 
 } else {
-
     $podcast_id = insert_row_in_table('podcast_episodes', $podcast);
-
 }
 
 $playlist = $incoming_data;

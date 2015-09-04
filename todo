@@ -3,8 +3,10 @@ TODO:
 Emails:
 	-rework, make sure retrieving proper lists.
 
-Migration: 
- - change podcast script to set show_id in podcast channels instead of podcast channel in shows
+
+
+ Check what itunes pulls:
+ - Is it title/subtitle?
 
 
 

@@ -43,7 +43,6 @@ if(array_key_exists('edit_date', $episode)){
 // create audio file
 
 if($update_audio){
-
     $tags = array(
         'title'         => array($episode['title']),
         'artist'        => array($channel_info['title']),
@@ -53,69 +52,49 @@ if($update_audio){
         'comment'       => array('citr.ca')
     );
 
-
     if($error == '') {
-
         $audio_result = make_audio($start, $end, $slug.'-'.$episode_id.'-', $tags);
-
         if($audio_result){
             $episode['url'] = $audio_path_online . $audio_result['filename'];
             $episode['length'] = $audio_result['size'];
         }
-
     }
-
     $episode['date'] = date(DATE_RSS,strtotime($episode['date']));
     update_row_in_table('podcast_episodes',$episode, $episode_id);
-
-
 }
 
 
 
 if ($error == ''){
-
     $query = "SELECT * FROM podcast_episodes WHERE channel_id = ".$channel_info['id']." order by date asc";
-
     $episodes = array();
     if ($result2 = mysqli_query($db, $query) ){
-
         while($row = mysqli_fetch_assoc($result2)) {
             $episodes []= $row;
         }
-
     } else {
         $error .= ' db problem. query is '.$query.'  ';
     }
 
-
-    $xml_file_data = make_podcast($channel_info, $episodes);
-
-    $result = writeFile($xml_path_local, $xml_file_data, $channel_info['slug'].'.xml');
+    $xml_file_data = make_podcast_xml($channel_info, $episodes);
+    $result = write_xml_file($xml_path_local, $xml_file_data, $channel_info['slug'].'.xml');
 
 }
 
 if ($error == '') {
-
     $data = $result;
-
     if($update_audio){
         $data['new_audio_url'] = $audio_path_online . $audio_result['filename'];;
     }
     finish();
-
 } else {
-
     finish();
 
 }
 
 
-
-function make_podcast($channel,$episodes){
-
+function make_podcast_xml($channel,$episodes){
     global $PREFIX, $error, $xml_path_local;
-
     foreach ($channel as $i => $v) {
         $channel[$i] = htmlspecialchars(html_entity_decode($v));
     }
@@ -125,7 +104,6 @@ function make_podcast($channel,$episodes){
 	<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" >';
 
     $xml = '';
-
     $xml .= $xml_head;
     $xml .= '<channel>';
     $xml .= '<title>' . $PREFIX . $channel['title'] . '</title>';
@@ -146,8 +124,7 @@ function make_podcast($channel,$episodes){
         '<title>' . $channel['title'] . '</title>' .
         '</image>';
     $xml .= '<link>' . $channel['link'] . '</link>';
-    $xml .= '<generator> podcast mate 2000 </generator>';
-
+    $xml .= '<generator>CiTR Radio Podcaster</generator>';
 
     foreach ($episodes as $i => $episode) {
 
@@ -179,7 +156,7 @@ function make_podcast($channel,$episodes){
 }
 
 
-function writeFile($local_path,$file_data, $file_name){
+function write_xml_file($local_path,$file_data, $file_name){
     global $ftp_url, $ftp_user, $ftp_pass, $error, $ftp_port;
 
     $ftp_connection = ftp_connect($ftp_url, $ftp_port);
