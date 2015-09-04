@@ -202,7 +202,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$ads = Playsheet::find($id)->ads;
 			foreach($ads as $key => $value){
 				//Get Ad Names From SAM
-				if(is_numeric($value['name']){
+				if(is_numeric($value['name'])){
 					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
 					$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
 				}
