@@ -238,7 +238,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 		$ads = Ad::where('time_block','=',strtotime($unixtime))->get(); 
 		foreach($ads as $key => $value){
-			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
+			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 			$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
 		}
 		return $ads;
