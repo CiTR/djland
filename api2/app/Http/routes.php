@@ -203,7 +203,7 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach($ads as $key => $value){
 				//Get Ad Names From SAM
 				if(is_numeric($value['name'])){
-					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
+					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 					$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
 				}
 			}
