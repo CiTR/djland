@@ -19,7 +19,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		getAds: function (time){
 			return $http.get(API_URL_BASE+ '/ads/' + time);
-		}
+		},
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
 		},

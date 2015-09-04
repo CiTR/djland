@@ -173,7 +173,7 @@
 
                 });
             }else{
-                //TODO: Check member id and find possible upcoming show time. Load info of next show they have.
+
                 this.podcast = {};
 
                 //TODO load ads.
@@ -182,26 +182,6 @@
                 this.info.type='Live';
                 this.info.crtc = 30;
                 this.info.lang = 'English';
-
-
-
-                //Create Extra Variables to allow proper display in UI
-                this.start = new Date();
-                this.start.setMinutes(0);
-                this.start.setSeconds(0);
-                this.end = new Date(this.start);
-                this.end.setHours(this.end.getHours()+1);
-                this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
-                this.info.end_time = $filter('date')(this.end,'HH:mm:ss');
-                this.start_hour =  $filter('pad')(this.start.getHours(),2);
-                this.start_minute = $filter('pad')(this.start.getMinutes(),2);
-                this.start_second = $filter('pad')(this.start.getSeconds(),2);
-                this.end_hour =  $filter('pad')(this.end.getHours(),2);
-                this.end_minute = $filter('pad')(this.end.getMinutes(),2);
-                this.end_second = $filter('pad')(this.end.getSeconds(),2);
-               
-                this.updateEnd();
-                this.updateStart();
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
 
@@ -218,6 +198,29 @@
                         this_.channel = shows[show]['channel'];
                         break;
                     }
+                    //TODO: Check member id and find possible upcoming show time. Load info of next show they have.
+
+                    //Create Extra Variables to allow proper display in UI
+                    this.start = new Date();
+                    this.start.setMinutes(0);
+                    this.start.setSeconds(0);
+                    this.end = new Date(this.start);
+                    this.end.setHours(this.end.getHours()+1);
+                    this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+                    this.info.end_time = $filter('date')(this.end,'HH:mm:ss');
+                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
+                    this.start_minute = $filter('pad')(this.start.getMinutes(),2);
+                    this.start_second = $filter('pad')(this.start.getSeconds(),2);
+                    this.end_hour =  $filter('pad')(this.end.getHours(),2);
+                    this.end_minute = $filter('pad')(this.end.getMinutes(),2);
+                    this.end_second = $filter('pad')(this.end.getSeconds(),2);
+                   
+                    this.updateEnd();
+                    this.updateStart();
+
+
+
+                    call.getAdds(this_.start_time);
                     
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();
@@ -225,7 +228,6 @@
                     this_.addStartRow();
                     for(var i = 0; i<4; i++) {
                         this_.add(this_.playitems.length-1);
-                        
                     }
                     //Update Podcast information
                     this_.podcast.date = this_.info.start_time;
@@ -299,7 +301,7 @@
                 + '.';
                 this.complete = false;
             }
-            this.complete = true;
+            this.complete = playsheet_okay;
         }
         this.saveDraft = function(){
             var this_ = this;

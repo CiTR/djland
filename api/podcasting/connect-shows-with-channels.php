@@ -10,7 +10,17 @@ $r = mysqli_query($db,$q);
 $q2 = 'SELECT id,title from podcast_channels';
 
 $r2 = mysqli_query($db,$q2);
+?>
+<html>
+    <head>
+        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+    </head>
+    <body>
+        <a href='api/podcasting/connect-playsheets-with-episodes.php'>Connect Playlists with Episodes</a>
+        <table class='table-condensed table-hover'>
+            <th> Show Name </th><th> Matching</th> <th> Outcome </th>
 
+<?php
 $pod_chans = array();
 $shows = array();
 
@@ -24,13 +34,17 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
 
     while ($show_row = mysqli_fetch_assoc($r) ){
-        $is_fillin = strpos($show_row['name'],'Fill-in')!==false;
+        
+
+        $is_fillin = strpos(strtolower($show_row['name']),'fill-in')!==false;
 
         if(!$is_fillin)
         $shows []= $show_row;
     }
 //    $shows = array_reverse($shows);
     foreach($shows as $i => $show){
+        $tr_out = "<tr>";
+        $out = '<td>'.$show['name'].'....</td>';
 
         $found = false;
 
@@ -79,14 +93,13 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
 
             if (!$found && (
-                        (levenshtein($this_show_name, $pod_name) < 3)
-                        || $pos_1!==false || $pos_2!==false
-//                        (strpos($this_show_name,$pod_name)) ||
-//                        (strpos($pod_name,$this_show_name))
+                        (levenshtein($this_show_name, $pod_name) < 3)|| $pos_1!==false || $pos_2!==false
+//                        (strpos($this_show_name,$pod_name)) || (strpos($pod_name,$this_show_name)) 
                     )
                 ){
+                $out.='<td>is the same as: ('.$pod['id'].') '.$pod['title'].'</td>';
 
-                echo '<br/>'.$this_show_name.'(show # '.$show['id'].')  equals  '.$pod['title'].'(pod#'.$pod['id'].')<br/>';
+                //echo '<br/>'.$this_show_name.'(show # '.$show['id'].')  equals  '.$pod['title'].'(pod#'.$pod['id'].')<br/>';
 
                 $found = true;
 
@@ -95,36 +108,74 @@ echo count($pod_chans).' podcast channels found.<br/>';
                 unset($pod_chans[$j]);
                 unset($shows[$i]);
 
-                if ($up_res = mysqli_query($db,$update_q)){} else {}
+                if ($up_res = mysqli_query($db,$update_q)){
+                    $out.='<td>.. updated the db</td>';
+                } else {
+                    
+                }
 
             } else {
+                            
+            }   
 
-
-
-            }
 
 
         }
         if (!$found){
-//                echo '<h2>no podcast automatically found: '.$show['name'].'</h2><br/><br/><br/>';
-            echo $show['name'].' - not found.(show #'.$show['id'].')...<br/>';
+           $out.="<td>No Match Found</td>";     
+           //echo '<h2>no podcast automatically found: '.$show['name'].'</h2><br/><br/><br/>';
+            //echo $show['name'].' - not found.(show #'.$show['id'].')...<br/>';
+            
+            $show_str_lower = strtolower($show['name']);
+            if(strpos($show_str_lower,'fill-in') !== false){
+                    $query = "UPDATE podcast_channels SET podcast_channel.show_id = '284' WHERE id = '".$pod['id']."'";
+                    if ($up_res = mysqli_query($db,$query)){
+                        $out.='<td>.. Caught Fill-In!</td>';
+                    }else{
+                         $out .='<td><h4>no podcast automatically found: '.$show['name'].' Setting show_id to 1</h4></td>';
+                       $query = "Update podcast_channels SET show_id = 1  where show_id = 0";
+                        if(mysqli_query($db,$query)){
+                            $tr_out = "<tr class=warning>";
+                        }else{
+                            $tr_out = "<tr class=danger>";
+                        }
+                    }
+            }else{
+                $out .='<td><h4>podcast not automatically found: '.$show['name'].' Setting show_id to 1</h4></td>';
+                $query = "Update podcast_channels SET show_id = 1  where show_id = 0";
+                if(mysqli_query($db,$query)){
+                    $tr_out = "<tr class=warning>";
+                }else{
+                    $tr_out = "<tr class=danger>";
+                }
+            }  
             if($show['active'] == 0) {
                 unset($shows[$i]);
             }
-
         }
-
-
-
-
+        $out.= "</tr>";
+        echo $tr_out.$out;
     }
+    echo "</table>";
+  /* $final_query = "
+    UPDATE `podcast_channels` SET `show_id`='284' WHERE `id`='294';
+    UPDATE `podcast_channels` SET `show_id`='154' WHERE `id`='290';
+    UPDATE `podcast_channels` SET `show_id`='14' WHERE `id`='425';
+    UPDATE `podcast_channels` SET `show_id`='284' WHERE `id`='320';
+    UPDATE `podcast_channels` SET `show_id`='343' WHERE `id`='331';
+    UPDATE `podcast_channels` SET `show_id`='294' WHERE `id`='393';
+    UPDATE `podcast_channels` SET `show_id`='233' WHERE `id`='411';
+    UPDATE `podcast_channels` SET `show_id`='183' WHERE `id`='442';";
+    
+    if(mysqli_query($db,$final_query)){
+        echo "<p>Successfully Updated Manually</p>";
+    }else{
+        echo "<p> Manual update failed </p>";
+    }*/
 
-echo '</hr><h3>';
+?>
+
+</body>
+</html>
 
 
-echo count($shows).' currently active shows need to have a podcast channel id set manually: (discorder radio is also wrong)<br/></h3><pre>';
-print_r($shows);
-
-
-echo count($pod_chans).' podcast channels need to have a show set manually:<br/><pre>';
-print_r($pod_chans);

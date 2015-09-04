@@ -11,15 +11,15 @@ $q = 'SELECT id,start_time, status, show_id from playsheets where status =2 orde
 $r = mysqli_query($db,$q);
 
 $q2 = 'SELECT podcast_episodes.id as episode_id ,
-        title,
-        date,
-        channel_id,
-        url,
-        summary,
-        shows.id as show_id
+        podcast_episodes.title,
+        podcast_episodes.date,
+        podcast_episodes.channel_id,
+        podcast_episodes.url,
+        podcast_episodes.summary,
+        podcast_channels.show_id
         FROM podcast_episodes
-        JOIN shows ON shows.podcast_channel_id = podcast_episodes.channel_id order by show_id asc';
-
+        JOIN podcast_channels ON podcast_episodes.channel_id = podcast_channels.id
+        JOIN shows ON shows.id = podcast_channels.show_id order by show_id asc';
 $r2 = mysqli_query($db,$q2);
 
 $episodes = array();
@@ -76,29 +76,10 @@ foreach($playsheets_by_show as $i => $pl_group){
         $ep_date_max = $episode_date + $shift_minutes*60;
         $ep_date_min = $episode_date - $shift_minutes*60;
 
-
         if ($playsheet_date == $episode_date){
           $matches []= array('type' => 'exact', 'episode' => $episode, 'playsheet' => $playsheet);
-          /*
-          echo "\n";
-          print_r($playsheet);
-          echo "\n exactly matches \n";
-          print_r($episode);
-          echo "\n ";
-          echo "\n~~~~~~~~~\n\n\n\n";
-          */
         } else if (  ( ($pl_date_max >= $ep_date_min ) && ($pl_date_max <= $ep_date_max) ) || ( ($pl_date_min >= $ep_date_min ) && ($pl_date_min <= $ep_date_max ) ) ){
-
           $matches []= array('type' => 'approx','difference'=> $playsheet_date - $episode_date, 'episode' => $episode, 'playsheet' => $playsheet);
-
-          /*
-          echo "\n";
-          print_r($playsheet);
-          echo "\n approximately matches \n";
-          print_r($episode);
-          echo "\n ";
-          echo "\n~~~~~~~~~\n\n\n\n";
-          */
         }
 
 

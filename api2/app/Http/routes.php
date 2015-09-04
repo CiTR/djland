@@ -11,6 +11,7 @@ use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
 use App\Podcast as Podcast;
 use App\Song as Song;
+use App\Ad as Ad;
 
 Route::get('/', function () {
     //return view('welcome');
@@ -198,6 +199,12 @@ Route::group(['middleware' => 'auth'], function(){
 			$playsheet -> channel = $show->channel;
 			$playsheet -> host = Host::find($playsheet->show->host_id);
 			$playsheet -> podcast = Playsheet::find($id)->podcast;
+			$ads = Playsheet::find($id)->ads;
+			foreach($ads as $key => $value){
+				$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
+				$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+			}
+			$playsheet -> ads = $ads;
 		}
 		return Response::json($playsheet);
 	});
@@ -218,7 +225,6 @@ Route::group(['middleware' => 'auth'], function(){
 		$ps = Playsheet::create(Input::get()['playsheet']);
 		$podcast_in = Input::get()['podcast'];
 		$podcast_in ['playsheet_id'] = $ps->id;
-		
 		$podcast = Podcast::create($podcast_in);
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
@@ -229,6 +235,14 @@ Route::group(['middleware' => 'auth'], function(){
 		$response->podcast_id = $podcast->id;
 		return Response::json($response);
 	});
+	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
+		$ads = Ad::where('time_block','=',strtotime($unixtime))->get(); 
+		foreach($ads as $key => $value){
+			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
+			$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+		}
+		return $ads;
+	});
 	Route::post('/podcast/{id}',function($id = id){
 		$podcast = Podcast::find($id);
 		$podcast->update(Input::get()['podcast']);
@@ -237,6 +251,12 @@ Route::group(['middleware' => 'auth'], function(){
 		$podcast = Podcast::find($id);
 		$result = $podcast->make_podcast();
 		//return $result;
+	});
+	Route::get('/channels/write_xml',function(){
+		$channels = Channel::all();
+		foreach($channels as $channel){
+			echo $channel->make_xml();
+			}
 	});
 	// Table Helper Routes 
 	Route::get('/table',function(){

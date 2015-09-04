@@ -44,13 +44,11 @@ return [
     |
     */
 
+
+
     'connections' => [
 
-        'sqlite' => [
-            'driver'   => 'sqlite',
-            'database' => storage_path('database.sqlite'),
-            'prefix'   => '',
-        ],
+        
 
         'mysql' => [
             'driver'    => 'mysql',
@@ -63,27 +61,19 @@ return [
             'prefix'    => '',
             'strict'    => false,
         ],
+        'samdb' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', '192.168.25.69'),
+            'database'  => env('DB_DATABASE', 'samdb-live'),
+            'username'  => env('DB_USERNAME', 'samuser'),
+            'password'  => env('DB_PASSWORD', 'sam101.9'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ]
 
-        'pgsql' => [
-            'driver'   => 'pgsql',
-            'host'     => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset'  => 'utf8',
-            'prefix'   => '',
-            'schema'   => 'public',
-        ],
-
-        'sqlsrv' => [
-            'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset'  => 'utf8',
-            'prefix'   => '',
-        ],
+        
 
     ],
 

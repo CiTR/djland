@@ -15,7 +15,6 @@ if(isset($_GET['playsheet'])){
       $ad_info = singleRowByIDFromSam('songlist',$v['name']);
       $data[$i]['name'] = $ad_info['artist'].' '.$ad_info['title'];
     }
-
   }
   finish();
 

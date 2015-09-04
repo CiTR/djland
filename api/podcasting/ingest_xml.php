@@ -60,8 +60,6 @@ foreach ($xml_urls as $key => $xml_url) {
 
                 $channel_info['title'] = $values[$index['TITLE'][0]]['value'];
                 $channel_info['subtitle'] = isset($index['ITUNES:SUBTITLE'][0]) && isset($values[$index['ITUNES:SUBTITLE'][0]]['value']) ? $values[$index['ITUNES:SUBTITLE'][0]]['value'] : '';
-
-
                 $channel_info['summary'] = intval($values[$index['DESCRIPTION'][0]]['level']) <= 3 ? $values[$index['DESCRIPTION'][0]]['value'] : '';
                 $channel_info['author'] = $values[$index['ITUNES:AUTHOR'][0]]['value'];
                 $channel_info['keywords'] = isset($index['ITUNES:KEYWORDS'][0]) ? $values[$index['ITUNES:KEYWORDS'][0]]['value'] : '';
@@ -303,7 +301,7 @@ function remove_same_day($episodes){
     foreach($episodes as $j => $episode){
 
         if($episode['URL'] == 'http://playlist.citr.ca/podcasting/audio/20140722-113000-to-20140722-130200.mp3'){
-            xdebug_break();
+            
         }
 
         foreach($episodes as $k => $otherepisode){
