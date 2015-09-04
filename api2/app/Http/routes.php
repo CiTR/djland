@@ -258,6 +258,7 @@ Route::group(['middleware' => 'auth'], function(){
 			if($channel->make_xml()){
 				echo "Successfully wrote {$channel->name}";
 			}
+		}
 	});
 	// Table Helper Routes 
 	Route::get('/table',function(){
