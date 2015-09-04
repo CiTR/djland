@@ -259,7 +259,7 @@ Route::group(['middleware' => 'auth'], function(){
 		$channels = Channel::all();
 		foreach($channels as $channel){
 			if($channel->make_xml()){
-				echo "Successfully wrote {$channel->name}";
+				echo "Successfully wrote".$channel->show->name;
 			}
 		}
 	});
