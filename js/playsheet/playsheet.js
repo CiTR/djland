@@ -304,7 +304,6 @@
                 + '.';
                 this.complete = false;
             }
-            this.complete = playsheet_okay;
         }
         this.saveDraft = function(){
             var this_ = this;

@@ -156,7 +156,7 @@
 			</div>
 			<div class='col1 side-padded double-padded-top'>
 					<h4>Episode Title</h4>
-					<input class='wideinput required' ng-model = 'playsheet.info.title'/>
+					<input class='wideinput required' ng-change='playsheet.checkIfComplete()' ng-model = 'playsheet.info.title'/>
 					<h4>Episode Description</h4>
 					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
 			</div>

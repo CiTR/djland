@@ -117,6 +117,7 @@ class Channel extends Model
 	                		'size' => $num_bytes,
 	                		'url' => $ftp->url_path.$file_name
 	                		);
+
             		}else{
             			$response = "Failed to write to FTP server";
             		}
@@ -131,6 +132,6 @@ class Channel extends Model
 	    	ftp_close($ftp_connection);
 	    	
 	    }
-	    return json_encode($response);
+	    return $response;
 	}
 }
