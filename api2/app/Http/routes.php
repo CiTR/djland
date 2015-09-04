@@ -204,7 +204,7 @@ Route::group(['middleware' => 'auth'], function(){
 				//Get Ad Names From SAM
 				if(is_numeric($value['name'])){
 					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-					$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+					$ads[$key]['name'] = $ad_info['title'];
 				}
 			}
 			$playsheet -> ads = $ads;
@@ -242,7 +242,7 @@ Route::group(['middleware' => 'auth'], function(){
 		$ads = Ad::where('time_block','=',strtotime($unixtime))->get(); 
 		foreach($ads as $key => $value){
 			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-			$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+			$ads[$key]['name'] = $ad_info['title'];
 		}
 		return $ads;
 	});
