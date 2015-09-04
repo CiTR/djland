@@ -1,9 +1,7 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
-
 class Show extends Model
 {
     protected $table = 'shows';
@@ -28,6 +26,64 @@ class Show extends Model
     }
     public function channel(){
         return $this->hasOne('App\Channel');
+    }
+    public function nextShowTime(){
+        $time = $this->start_time;
+        $showtimes = $this->showtimes;
+
+        foreach($showtime as $key=>$value){
+            //Get Current week since Epoch
+            $current_week = Date('W', strtotime('tomorrow',strtotime($time)));
+            if ((int) $current_week % 2 == 0){
+                $current_week_is_even = true;
+            } else {
+                $current_week_is_even = false;
+            };
+            
+            //See if show is this week
+            $this_week = ( $value['alternating'] == '0' ) || ($current_week_is_even && $value['alternating'] == '2') || (!$current_week_is_even && $value['alternating'] == '1');
+            //Get Previous Sunday
+            $sunday_before_request = strtotime('sunday  -1 week  ', strtotime('tomorrow',strtotime($time)));
+            
+            //Offest start day by 7 if show is next week
+            $startday =  (int) $value['start_day'];
+            if (!$this_week) $startday +=7;
+
+            $showtime_if_it_was_on_last_sunday = strtotime($value['start_time'],  $sunday_before_request);
+            $actual_show_time = strtotime('+'.$startday.' days',$showtime_if_it_was_on_last_sunday);
+            $start_time = strtotime($value['start_time'], $sunday_before_request );
+
+            //If unix string is greater than the actual show time we have had our show this week. Go to next show time
+            if ($actual_show_time < strtotime($time)){
+                if ( $value['alternating'] == '0') {
+                    $actual_show_time = strtotime('+ 1 week', $actual_show_time);
+                } else {
+                    $actual_show_time = strtotime('+ 2 week', $actual_show_time);
+                }
+            }
+
+            //Add days since last sunday start
+            $start = $sunday_before_request + $startday*24*60*60;
+            
+            //Add days since last sunday to end
+            $end = strtotime($value['end_time'], 'last sunday '.strtotime($time));
+            $endday = (int) $value['end_day'];
+            $end = ($endday)*24*60*60 + $end;
+
+            //Overrwite it? wtf.
+            $end = strtotime($value['end_time'], $actual_show_time);
+            
+
+            $candidates []= array('start' => $actual_show_time, 'end' => $end);
+        }
+        //Find the minimum start time
+        $min = $candidates[0];
+        foreach($candidates as $i => $v){
+            if ($v['start'] < $min['start']){
+                $min = $candidates[$i];
+            }
+        }
+        return $min;
     }
 
 }
