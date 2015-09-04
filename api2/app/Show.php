@@ -31,7 +31,7 @@ class Show extends Model
         $time = $this->start_time;
         $showtimes = $this->showtimes;
 
-        foreach($showtime as $key=>$value){
+        foreach($showtimes as $key=>$value){
             //Get Current week since Epoch
             $current_week = Date('W', strtotime('tomorrow',strtotime($time)));
             if ((int) $current_week % 2 == 0){

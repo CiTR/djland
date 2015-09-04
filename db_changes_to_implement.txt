@@ -4,7 +4,6 @@ Current Changes to DB:
 
 INSERT INTO `djland`.`shows` (`id`, `name`, `host_id`, `weekday`, `start_time`, `end_time`, `pl_req`, `cc_req`, `indy_req`, `fem_req`, `last_show`, `create_date`, `create_name`, `edit_date`, `edit_name`, `active`, `crtc_default`) VALUES ('1', 'Deleted Show', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `djland`.`playsheets` (`id`, `show_id`, `host_id`, `edit_date`) VALUES ('1', '1', '2', '0');
-INSERT INTO `djland`.`songs` (`id`, `artist`, `title`, `song`, `composer`) VALUES ('1', 'song no longer exists', 'song no longer exists', 'song no longer exists', 'song no longer exists');
 
 ///// 
 

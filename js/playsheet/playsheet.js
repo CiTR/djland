@@ -157,7 +157,7 @@
                         this_.member_shows = shows;
                         //Find what show this playsheet is for, and set it as active show to load information.
                         for(var show in this_.member_shows){
-                            if(this_.show.name.toString() == shows[show].show.name.toString()){
+                            if(this_.show.name.toString() == shows[show].name.toString()){
                                 this_.active_show = this_.member_shows[show];
                                 this_.show_value = shows[show]['id'];
                                 this_.show = shows[show]['show'];
@@ -199,28 +199,31 @@
                         break;
                     }
                     //TODO: Check member id and find possible upcoming show time. Load info of next show they have.
+                    call.getNextShowTime(this_.active_show.id).then(function(){
 
+                    });
                     //Create Extra Variables to allow proper display in UI
-                    this.start = new Date();
-                    this.start.setMinutes(0);
-                    this.start.setSeconds(0);
-                    this.end = new Date(this.start);
-                    this.end.setHours(this.end.getHours()+1);
-                    this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
-                    this.info.end_time = $filter('date')(this.end,'HH:mm:ss');
-                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
-                    this.start_minute = $filter('pad')(this.start.getMinutes(),2);
-                    this.start_second = $filter('pad')(this.start.getSeconds(),2);
-                    this.end_hour =  $filter('pad')(this.end.getHours(),2);
-                    this.end_minute = $filter('pad')(this.end.getMinutes(),2);
-                    this.end_second = $filter('pad')(this.end.getSeconds(),2);
-                   
-                    this.updateEnd();
-                    this.updateStart();
+                    this_.start = new Date();
+                    this_.start.setMinutes(0);
+                    this_.start.setSeconds(0);
+                    this_.end = new Date(this_.start);
+                    this_.end.setHours(this_.end.getHours()+1);
+                    this_.info.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
+                    this_.info.end_time = $filter('date')(this_.end,'HH:mm:ss');
+                    this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
+                    this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
+                    this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
+                    this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
+                    this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
+                    this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
+                    console.log(this_.start_hour);
+                    
+                    this_.updateEnd();
+                    this_.updateStart();
 
 
 
-                    call.getAdds(this_.start_time);
+                    //call.getAds(this_.start_time);
                     
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();

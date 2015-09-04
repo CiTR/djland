@@ -1,4 +1,5 @@
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 use App\User as User;
 use App\Member as Member;
 use App\Permission as Permission;
@@ -130,6 +131,9 @@ Route::group(['middleware' => 'auth'], function(){
 		//return Showtimes::where('show_id','=',$show_id)->get();
 		return Show::find($show_id)->showtimes;
 	});
+	Route::get('/show/{id}/nextshow',function($show_id = id){
+		return Show::find($show_id)->nextShowTime();
+	});
 	Route::get('/social/{id}',function($show_id = id){
 		return Social::where('show_id','=',$show_id)->get();
 	});
@@ -190,6 +194,7 @@ Route::group(['middleware' => 'auth'], function(){
 		return Response::json($list);
 	});
 	Route::get('/playsheet/{id}',function($id = id){
+		global $using_sam;
 		$playsheet = new stdClass();
 		$playsheet -> playsheet = Playsheet::find($id);
 		if($playsheet -> playsheet != null){
@@ -199,19 +204,20 @@ Route::group(['middleware' => 'auth'], function(){
 			$playsheet -> channel = $show->channel;
 			$playsheet -> host = Host::find($playsheet->show->host_id);
 			$playsheet -> podcast = Playsheet::find($id)->podcast;
-			$ads = Playsheet::find($id)->ads;
-			foreach($ads as $key => $value){
-				//Get Ad Names From SAM
-
-				if(is_numeric($value['name'])){
-					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get()[0];
-					
-					$ads[$key]['name'] = $ad_info->title;
-				}else{
-					$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+			if($using_sam){
+				$ads = Playsheet::find($id)->ads;
+				foreach($ads as $key => $value){
+					//Get Ad Names From SAM
+					if(is_numeric($value['name'])){
+						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get()[0];
+						$ads[$key]['name'] = $ad_info->title;
+					}else{
+						$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+					}
 				}
+				$playsheet -> ads = $ads;
 			}
-			$playsheet -> ads = $ads;
+			
 		}
 		return Response::json($playsheet);
 	});

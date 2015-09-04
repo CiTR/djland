@@ -32,7 +32,7 @@
 		      	<div class='col2 padded'>
 		      		
 					<div class='col1'>
-						Show: <select ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'">
+						Show: <select id='show_select' ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.name for show in playsheet.member_shows | orderBy:'name'">
 						</select>
 					</div>
 					<div class='col1'>
