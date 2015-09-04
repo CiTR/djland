@@ -201,8 +201,11 @@ Route::group(['middleware' => 'auth'], function(){
 			$playsheet -> podcast = Playsheet::find($id)->podcast;
 			$ads = Playsheet::find($id)->ads;
 			foreach($ads as $key => $value){
-				$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
-				$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+				//Get Ad Names From SAM
+				if(is_numeric($value['name']){
+					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where($value['name'],'=','id')->get();
+					$ads[$key]['name'] = $ad_info['artist'].' '.$ad_info['title'];
+				}
 			}
 			$playsheet -> ads = $ads;
 		}
