@@ -191,6 +191,7 @@
                         this_.member_shows = shows;
                         //Find what show this playsheet is for, and set it as active show to load information.
                         for(var show in this_.member_shows){
+                            
                             if(this_.show.name.toString() == shows[show].show.name.toString()){
                                 this_.active_show = this_.member_shows[show];
                                 this_.show_value = shows[show]['id'];
@@ -225,19 +226,20 @@
                     this_.member_shows = shows;
                     //Cheat Code to get first active show.
                     for(var show in this_.member_shows){
+                        console.log(shows[show].show.name.toString());
                         this_.active_show = this_.member_shows[show];
-                        this.show = this.active_show.show;
-                        this.channel = this.active_show.channel;
+                        this_.show = this_.active_show.show;
+                        this_.channel = this_.active_show.channel;
+                        this_.show_value = this_.active_show['id'];
+                        this_.info.show_id = parseInt(this_.active_show.id);
+                        this_.info.host = this_.active_show.host.name;
+                        this_.info.host_id = this_.active_show.host.id;
+                        this_.info.create_name = this_.info.host;
 
-                        this.info.show_id = parseInt(this.active_show.id);
-                        this.info.host = this.active_show.host.name;
-                        this.info.host_id = this.active_show.host.id;
-                        this.info.create_name = this.info.host;
-
-                        this.podcast.channel_id = this.channel.id;
-                        this.podcast.author = this.info.host;
-                        for(var playitem in this.playitems){
-                            this.playitems[playitem].show_id = this.info.show_id;
+                        this_.podcast.channel_id = this_.channel.id;
+                        this_.podcast.author = this_.info.host;
+                        for(var playitem in this_.playitems){
+                            this_.playitems[playitem].show_id = this_.info.show_id;
                         }
                         break;
                     }
