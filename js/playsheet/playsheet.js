@@ -68,12 +68,17 @@
         };
         this.updateShowValues = function(element){
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
-            this.info.show_id = parseInt(this.active_show.id);
-            this.info.host_id = this.active_show.host_id;
+            
             this.show = this.active_show.show;
-            //this.info.host_name = this.active_show.host;
             this.channel = this.active_show.channel;
+
+            this.info.show_id = parseInt(this.active_show.id);
+            this.info.host = this.active_show.host.name;
+            this.info.host_id = this.active_show.host.id;
+            this.info.create_name = this.info.host;
+
             this.podcast.channel_id = this.channel.id;
+            this.podcast.author = this.info.host;
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_id = this.info.show_id;
             }
@@ -157,7 +162,7 @@
                         this_.member_shows = shows;
                         //Find what show this playsheet is for, and set it as active show to load information.
                         for(var show in this_.member_shows){
-                            if(this_.show.name.toString() == shows[show].name.toString()){
+                            if(this_.show.name.toString() == shows[show].show.name.toString()){
                                 this_.active_show = this_.member_shows[show];
                                 this_.show_value = shows[show]['id'];
                                 this_.show = shows[show]['show'];

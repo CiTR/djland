@@ -28,11 +28,13 @@ class Channel extends Model
 
 		//Get objects
 		$host = $this->show->host;
-		$show = $this->show;
+		$show = $this->show->getAttributes();
 		$channel = $this;
 		$episodes = $this->podcasts;
 	    $channel = $channel->getAttributes();
 	    $file_name = $channel['slug'].'.xml';
+
+	    $response['show_name'] = $this->show->name;
 
 	    //Remove Legacy Encoding issues
 	    foreach ($channel as $field) {
@@ -91,7 +93,6 @@ class Channel extends Model
 	    }
 	    $xml .= '</channel></rss>';
 
-
 	    $ftp_connection = ftp_connect($ftp->url, $ftp->port);
 	    if($ftp_connection){
 	    	if(ftp_login($ftp_connection,$ftp->username ,$ftp->password)){
@@ -110,28 +111,29 @@ class Channel extends Model
 						ftp_chdir($ftp_connection,"/");
 						ftp_mkdir($ftp_connection, $ftp->target_path);
 					}*/
+					
 					if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
             			//Successfully Uploaded the file
-						$response = array(
+						$response['reponse'] = array(
 	            			'filename' => $file_name,
 	                		'size' => $num_bytes,
 	                		'url' => $ftp->url_path.$file_name
 	                		);
 
             		}else{
-            			$response = "Failed to write to FTP server";
+            			$response['reponse'] = "Failed to write to FTP server";
             		}
     			}else{
-    				$response = "Failed to connect to write temp file";
+    				$response['reponse'] = "Failed to connect to write temp file";
     			}
 
 	    	}else{
-	    		$response = "Failed to login";
+	    		$response['reponse'] = "Failed to login";
 	    	}
     		//Make sure we close our connection
 	    	ftp_close($ftp_connection);
 	    	
 	    }
-	    return $response;
+	    return($response);
 	}
 }

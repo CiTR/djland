@@ -10,7 +10,7 @@ class Podcast extends Model
 {
     protected $table = 'podcast_episodes';
     const CREATED_AT = null;
-    const UPDATED_AT = 'edit_date';
+    const UPDATED_AT = null;
     protected $fillable = array('playsheet_id', 'title', 'subtitle', 'summary', 'date', 'channel_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
 
     public function playsheet(){
@@ -21,7 +21,7 @@ class Podcast extends Model
     }
     public function make_podcast(){
     	$response['audio'] = $this->make_audio();
-    	$response['xml'] = $this->channel->make_xml();
+    	
     	return $response;
     }
     private function make_audio(){
@@ -48,7 +48,7 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Set File Name
-	    $file_name = html_entity_decode($this->playsheet->show->name,ENT_QUOTES).'-'.$date.'.mp3';
+	    $file_name = html_entity_decode(str_replace(' ','-',$this->playsheet->show->name),ENT_QUOTES).'-'.$date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
@@ -73,7 +73,9 @@ class Podcast extends Model
 	    		if(strlen($file_from_archive) > 1){
 	    			//Create a temporary file to hold the mp3
     				$temporary_file = tmpfile();
-        			$num_bytes = fwrite($temporary_file,$file_from_archive);
+					$metaDatas = stream_get_meta_data($temporary_file);
+					$temporary_file_name = $metaDatas['uri'];
+        			$num_bytes =file_put_contents($temporary_file_name,$file_from_archive);
     				
     				//Attempt to add ID3 Tags
     				/*if($tags && $error == '') {
@@ -91,7 +93,7 @@ class Podcast extends Model
 
     					if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
 	            			//Successfully Uploaded the file
-    						$response = array(
+    						$response['audio'] = array(
 		            			'filename' => $file_name,
 		                		'size' => $num_bytes,
 		                		'start' => $start_date,
@@ -99,21 +101,22 @@ class Podcast extends Model
 		                		'url' => $ftp->url_path.$file_name
 		                		);
 	            		}else{
-	            			$response = "Failed to write to FTP server";
+	            			$response['audio'] = "Failed to write to FTP server";
 	            		}
         			}else{
-        				$response = "Failed to connect to write temp file";
+        				$response['audio'] = "Failed to connect to write temp file";
         			}
 	    		}else{
-	    			$response = "Failed to connect to archiver";
+	    			$response['audio'] = "Failed to connect to archiver";
 	    		}
 	    	}else{
-	    		$response = "Failed to login";
+	    		$response['audio'] = "Failed to login";
 	    	}
     		//Make sure we close our connection
 	    	ftp_close($ftp_connection);
 	    	
 	    }
+	    $response['xml'] = $this->channel->make_xml();
 	    return json_encode($response);
 
 	}

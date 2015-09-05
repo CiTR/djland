@@ -11,11 +11,9 @@
 </p><p>	
 3. Run Ingest Podcast XML script <a href='../api/podcasting/ingest_xml.php' target='_blank'>Ingest XML files<a>
 </p><p>	
-4. Run XML writer <a href='../api2/public/channels/write_xml' target='_blank'>Write new XML files</a>
+4. Run Channel->Show connector <a href='../api/podcasting/connect-shows-with-channels.php' target='_blank'>Connect Shows to Channels</a>
 </p><p>	
-5. Run Channel->Show connector <a href='../api/podcasting/connect-shows-with-channels.php' target='_blank'>Connect Shows to Channels</a>
-</p><p>	
-6. Manually connect the 10-15 remaining channels to shows.
+5. Manually connect the 10-15 remaining channels to shows.
 
 Make sure you drop channels to reset autoincrement!
 <pre>
@@ -28,9 +26,13 @@ UPDATE `podcast_channels` SET `show_id`='294' WHERE `id`='161';
 UPDATE `podcast_channels` SET `show_id`='14' WHERE `id`='193';
 UPDATE `podcast_channels` SET `show_id`='233' WHERE `id`='179';
 </pre>
+
 </p><p>	
-7. (Ensure PHP max script execution > 3 minutes). Connect playsheets to podcast episodes <a href='../api/podcasting/connect-playsheets-with-episodes.php' target='_blank'>Connect Podcasts to Playsheets</a>
+6. (Ensure PHP max script execution > 3 minutes). Connect playsheets to podcast episodes <a href='../api/podcasting/connect-playsheets-with-episodes.php' target='_blank'>Connect Podcasts to Playsheets</a>
 </p><p>	
+7. Run XML writer <a href='../api2/public/channels/write_xml' target='_blank'>Write new XML files</a>
+</p><p>	
+
 8. Run Second set of Database migrations <a href='db_migrations_2.php' target='_blank'>Fix Tables</a>
 	<ul>
 		<li>Deletes Songs Table

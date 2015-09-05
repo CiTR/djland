@@ -55,12 +55,12 @@ Route::group(['middleware' => 'auth'], function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$all_shows = Show::orderBy('name','asc')->get();
 			foreach($all_shows as $show){
-				$shows->shows[] = ['id'=>$show->id,'show'=>$show,'host'=>Show::find($show->id)->host['name'],'channel'=>$show->channel];
+				$shows->shows[] = ['id'=>$show->id,'show'=>$show,'host'=>Show::find($show->id)->host,'channel'=>$show->channel];
 			}
 		}else{
 			$member_shows = Member::find($member_id)->shows;
 			foreach($member_shows as $show){
-				$shows->shows[] = ['id'=>$show->id,'name'=>$show->name,'host'=>Show::find($show->id)->host['name'],'channel'=>$show->channel];
+				$shows->shows[] = ['id'=>$show->id,'show'=>$show,'host'=>Show::find($show->id)->host,'channel'=>$show->channel];
 			}
 		}
 		return  Response::json($shows);
@@ -263,7 +263,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('/podcast/{id}/audio',function($id = id){
 		$podcast = Podcast::find($id);
 		$result = $podcast->make_podcast();
-		//return $result;
+		return $result;
 	});
 	Route::get('/channels/write_xml',function(){
 		$channels = Channel::all();
@@ -271,7 +271,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$result = $channel->make_xml();
 			$results[] = $result;
 		}
-		return json_encode($results);
+		//return json_encode($results);
 	});
 	// Table Helper Routes 
 	Route::get('/table',function(){
