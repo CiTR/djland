@@ -171,7 +171,7 @@ if(!isset($_GET['id'])){
                 alert($scope.editing.start_hour);
             }
             $scope.load = function() {
-
+                
                 if (show_id = $location.search().id){
 
                     $scope.status = 'loading sheets and podcasts...';
