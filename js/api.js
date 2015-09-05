@@ -29,7 +29,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShowOwners: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/owners");
 		},
-		getShowTime: function(show_id){
+		getShowTimes: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
 		},
 		getNextShowTime: function(show_id,current_time){
