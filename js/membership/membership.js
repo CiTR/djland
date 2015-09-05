@@ -3,19 +3,25 @@ window.myNameSpace = window.myNameSpace || { };
 	
 //PAGE CREATION
 $(document).ready ( function() {
-	var year_callback = loadYearSelect();
+	var permission_level = $('#permission_level').text();
+	console.log(permission_level);
+	if(permission_level > 5){
 
-	$.when(year_callback).then(
-		function(){
-			displayMemberList("name","","both",get(undefined,'year_select','search'),'id');
-		},function(){	
+		var year_callback = loadYearSelect();
 
-		});
-	//displayMemberList();
-	loadMember(1);
+		$.when(year_callback).then(
+			function(){
+				displayMemberList("name","","both",get(undefined,'year_select','search'),'id');
+			},function(){	
 
-	add_handlers();	
-	yearlyReport(year_callback);
+			});
+		//displayMemberList();
+		loadMember(1);
+		add_handlers();	
+		yearlyReport(year_callback);
+	}else{
+		$('.membership#email').show();
+	}
 });
 
 window.setInterval(checkBlocking,1000);
