@@ -115,17 +115,23 @@ function checkBlocking(){
         $('.required').each(function(){
             if($.trim($(this).val()).length <=0) allOkay=false;
         });
-        console.log("Required Okay?"+ allOkay);
+
 		if(getVal('member_type')=='Student'){
 			if(!$.trim(getVal('student_no'))){
 				allOkay=false;
+                console.log("Empty");
 			}
-			if($('#student_no_ok').text().length != 8 && $('#student_no_ok').text() != "Okay"){
+			if($('#student_no').val().length != 8){
 				allOkay=false;
+                console.log("Not 8 long");
+                console.log($('#student_no').text().length);
 			}
+            if($('#student_no_ok').text() > 0 && $('#student_no_ok').text() != "Okay"){
+                allOkay=false;
+                console.log("OKAY text");
+            }
 		}
 
-        console.log("Student No?"+ allOkay);
 		if (allOkay){
 		$('#submit_user').attr('disabled',false);
             if($('#renew').is(':visible')){

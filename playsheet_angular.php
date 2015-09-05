@@ -202,20 +202,7 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
-			{{playsheet.start | date:'EEE, MMM d, y HH:mm:ss'}}<br/>
-			{{playsheet.end | date:'EEE, MMM d, y HH:mm:ss'}}
-			<h4>Info</h4>
-			{{playsheet.info}}
-			<h4>Show</h4>
-			{{playsheet.show}}
-			<h4>Channel</h4>
-			{{playsheet.channel}}
-			<h4>Podcast</h4>
-			{{playsheet.podcast}}
-			<h4>Playitems</h4>
-			{{playsheet.playitems}}
-			<h4>Ads</h4>
-			{{playsheet.ads}}
+			{{playsheet.spokenword_hour}}
 		</div>
 	</body>
 </html>

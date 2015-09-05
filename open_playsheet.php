@@ -19,13 +19,14 @@
 	    <?php print_menu(); ?>
 		<div id='wrapper'>
 			<table class='table-hover table'>
-				<tr><th>Show<th>Host<th>Date</tr>
+				<tr><th>Show<th>Host<th>Date<th>Status</tr>
 				<tbody >
 					<tr class='clickable-row' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}' ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 
 							<td ng-click=go('playsheet.php?id={{item.id}}')>{{item.show_info.name}}</td>
 							<td>{{item.host_info.name}}</td>
 							<td>{{item.start_time}}</td>
+							<td>{{item.status != 2 ? "(Draft)" : "" }}</td>
 
 					</tr>
 					

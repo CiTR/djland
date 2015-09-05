@@ -71,6 +71,7 @@
                     console.log(response.data);
                     var start_unix = response.data.start;
                     var end_unix = response.data.end;
+                    this_.info.unix_time = response.data.start;
                     this_.start = new Date(start_unix * 1000);
                     this_.end = new Date(end_unix * 1000);
 
@@ -171,8 +172,10 @@
                     this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
                     
-                    this_.spokenword_hours = Math.round(this_.info.spokenword / 60);
-                    this_.spokenword_minutes = this_.info.spokenword % 60;
+
+                    this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
+                    this_.spokenword_minutes = this_.info.spokenword_duration % 60;
+
                     //Set Show Data
                     this_.show = playsheet.show;
                     console.log(this_.show);
@@ -203,7 +206,6 @@
                         var show_date = this_.start.getDate();
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
-                        console.log(this_.active_show);
                     });
 
                 });
@@ -219,6 +221,7 @@
                 this.info.lang = 'English';
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
+                this.podcast.active = 0;
 
                 //Get Shows Listing
                 call.getMemberShows(this.member_id).then(function(data){
@@ -251,6 +254,7 @@
                         this_.start = new Date(start_unix * 1000);
                         this_.end = new Date(end_unix * 1000);
 
+                        this_.info.unix_time = this_.start.getTime() / 1000;
                         this_.info.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
                         this_.info.end_time = $filter('date')(this_.end,'HH:mm:ss');
                         this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
@@ -259,6 +263,7 @@
                         this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
                         this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                         this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
+
                         console.log(this_.start_hour);
                         //Populate Template Row, then add 5 rows
                         var show_date = this_.start.getDate();
@@ -275,7 +280,7 @@
                             this_.ads = response.data;
                         });
                         this_.podcast.channel_id = this_.channel.id;
-                        this_.checkIfComplete();
+                        this_.update();
                     });         
                 });
             }
@@ -355,41 +360,40 @@
                 this_.playitems[playitem].show_date = date;
             }
             this.podcast.date = this.info.start_time;
-            if(this.info.id < 1){
-                //New Playsheet
-                callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
-                    for(var playitem in this_.playitems){
-                        this_.playitems[playitem].playsheet_id = this_.info.id;
-                    }
-                    this_.info.id = response.data.id;
-                    this_.podcast.id = response.data.podcast_id;
-                    this_.podcast.playsheet_id = response.data.id;
-                    
-                    call.makePodcastAudio(this_.podcast).then(function(reponse){
-                        console.log(response.data);
+            if(this.info.status <= 1){
+                if(this.info.id < 1){
+                    //New Playsheet
+                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                        for(var playitem in this_.playitems){
+                            this_.playitems[playitem].playsheet_id = this_.info.id;
+                        }
+                        this_.info.id = response.data.id;
+                        this_.podcast.id = response.data.podcast_id;
+                        this_.podcast.playsheet_id = response.data.id;
+                        alert("Draft Saved");
+                        
+                    },function(error){
+                        alert(error.responseText);
                     });
-                },function(error){
-                    alert(error.responseText);
-                });
+                }else{
+                    //Existing Playsheet
+                    call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                        alert("Draft Saved");
+                    },function(error){
+                        alert(error.responseText);
+                    });
+                }
             }else{
-                //Existing Playsheet
-                call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
-
-                },function(error){
-                    alert(error.responseText);
-                });
+                alert("You've already submitted this playsheet, please submit it instead");
             }
-            this.save().then(function(){
-                this_.info.id = response.data.id;
-                alert("Draft Saved");
-            });
+            
         }
         //Submit a Playsheet
         this.submit = function () {
             
             var this_ = this;
             //Update Status to submitted playsheet
-            this.status = 2;
+            this.info.status = 2;
             var date = $filter('date')(this.start,'yyyy-MM-dd');
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
@@ -405,7 +409,7 @@
                     this_.podcast.id = response.data.podcast_id;
                     this_.podcast.playsheet_id = response.data.id;
 
-
+                    this.tracklist_overlay = true;
                     call.makePodcastAudio(this_.podcast).then(function(reponse){
                         console.log(response.data);
                     });
@@ -415,7 +419,17 @@
             }else{
                 //Existing Playsheet
                 callback = call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                    for(var playitem in this_.playitems){
+                        this_.playitems[playitem].playsheet_id = this_.info.id;
+                    }
+                    this_.info.id = response.data.id;
+                    this_.podcast.id = response.data.podcast_id;
+                    this_.podcast.playsheet_id = response.data.id;
 
+                    this.tracklist_overlay = true;
+                    call.makePodcastAudio(this_.podcast).then(function(reponse){
+                        console.log(response.data);
+                    });
                 },function(error){
                     alert(error.responseText);
                 });

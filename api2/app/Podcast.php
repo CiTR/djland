@@ -20,7 +20,7 @@ class Podcast extends Model
     	return $this->belongsTo('App\Channel');
     }
     public function make_podcast(){
-    	$response['audio'] = $this->make_audio();
+    	$response = $this->make_audio();
     	
     	return $response;
     }
@@ -40,7 +40,7 @@ class Podcast extends Model
 
 	    //Set up FTP access
 		$ftp = $ftp_audio;
-		$ftp->target_path = '/'.$year.'/';
+		$ftp->target_path = 'audio/'.$year.'/';
 		$ftp->url_path = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/';
 
 	    //Archiver URL to download from
@@ -48,7 +48,7 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Set File Name
-	    $file_name = html_entity_decode(str_replace(' ','-',$this->playsheet->show->name),ENT_QUOTES).'-'.$date.'.mp3';
+	    $file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
@@ -68,15 +68,24 @@ class Podcast extends Model
 	    		ftp_pasv($ftp_connection, true);
 	    		
 	    		//Download the file from the server
-	    		$file_from_archive = file_get_contents($archive_url);
+	    		$file_from_archive = fopen($archive_url,'r');
 	    		
-	    		if(strlen($file_from_archive) > 1){
+
+	    		
+	    		if($file_from_archive){
 	    			//Create a temporary file to hold the mp3
-    				$temporary_file = tmpfile();
-					$metaDatas = stream_get_meta_data($temporary_file);
+    				$num_bytes = 0;
+					$temporary_file = tmpfile();
+		    		$metaDatas = stream_get_meta_data($temporary_file);
+					
 					$temporary_file_name = $metaDatas['uri'];
-        			$num_bytes =file_put_contents($temporary_file_name,$file_from_archive);
+		    		while (!feof($file_from_archive)) {
+					   $buffer = fread($file_from_archive, 1024);  // use a buffer of 1024 bytes
+					   $num_bytes += fwrite($temporary_file, $buffer);
+					   echo $num_bytes;
+					}
     				
+
     				//Attempt to add ID3 Tags
     				/*if($tags && $error == '') {
 			            rewind($file_handle);
@@ -91,15 +100,17 @@ class Podcast extends Model
     						ftp_mkdir($ftp_connection, $ftp->target_path);
     					}*/
 
-    					if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
+    					if(ftp_put($ftp_connection, $ftp->target_path.$file_name, $temporary_file_name, FTP_BINARY)){
 	            			//Successfully Uploaded the file
     						$response['audio'] = array(
 		            			'filename' => $file_name,
 		                		'size' => $num_bytes,
 		                		'start' => $start_date,
 		                		'end' => $end_date,
-		                		'url' => $ftp->url_path.$file_name
+		                		'url' => $ftp->url_path.$file_name,
+		                		'length' => $num_bytes
 		                		);
+						 	$response['xml'] = $this->channel->make_xml();
 	            		}else{
 	            			$response['audio'] = "Failed to write to FTP server";
 	            		}
@@ -116,8 +127,8 @@ class Podcast extends Model
 	    	ftp_close($ftp_connection);
 	    	
 	    }
-	    $response['xml'] = $this->channel->make_xml();
-	    return json_encode($response);
+	   
+	    return $response;
 
 	}
 	

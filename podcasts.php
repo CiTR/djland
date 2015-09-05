@@ -56,7 +56,7 @@ if(!isset($_GET['id'])){
                 <p>
                     <span ng-show="plodcast.playlist.status == 1"> ( DRAFT ) <br/></span>
                     <span ng-show="plodcast.podcast.active == 0"> ( INACTIVE ) <br/></span>
-                    <span class="title" >{{plodcast.podcast.title? plodcast.podcast.title : '(no title)'}}</span>
+                    <span class="title" >{{plodcast.playlist.title? plodcast.playlist.title : '(no title)'}}</span>
                     <br/>
                     <span class="subtitle" >{{plodcast.podcast.subtitle? plodcast.podcast.subtitle : '(no subtitle)'}}</span>
                 </p>
