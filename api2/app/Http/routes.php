@@ -131,8 +131,8 @@ Route::group(['middleware' => 'auth'], function(){
 		//return Showtimes::where('show_id','=',$show_id)->get();
 		return Show::find($show_id)->showtimes;
 	});
-	Route::get('/show/{id}/nextshow',function($show_id = id){
-		return Show::find($show_id)->nextShowTime();
+	Route::get('/show/{id}/nextshow/{current_time}',function($show_id = id,$time = current_time){
+		return Response::json(Show::find($show_id)->nextShowTime($time));
 	});
 	Route::get('/social/{id}',function($show_id = id){
 		return Social::where('show_id','=',$show_id)->get();
@@ -254,7 +254,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 			$ads[$key]['name'] = $ad_info['title'];
 		}
-		return $ads;
+		return Response::json($ads);
 	});
 	Route::post('/podcast/{id}',function($id = id){
 		$podcast = Podcast::find($id);

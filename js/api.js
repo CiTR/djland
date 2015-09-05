@@ -32,8 +32,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShowTime: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
 		},
-		getNextShowTime: function(show_id){
-			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow");
+		getNextShowTime: function(show_id,current_time){
+			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow/"+current_time);
 		},
 		getMemberPermissions: function(member_id){
 			return $http.get(API_URL_BASE+'/member/'+member_id+'/permission');
