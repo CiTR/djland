@@ -25,13 +25,14 @@
             call.getMemberShows(this.member_id).then(function(response){
                 this_.member_shows = response.data.shows;
                 for(var show in this_.member_shows){
-                    if(this_.member_shows[show].name != null) this_.member_shows[show].name = tools.decodeHTML(this_.member_shows[show].name);
-                    if(this_.member_shows[show].host != null) this_.member_shows[show].host = tools.decodeHTML(this_.member_shows[show].host);
+                    if(this_.member_shows[show].show.name != null) this_.member_shows[show].show.name = tools.decodeHTML(this_.member_shows[show].show.name);
+                    if(this_.member_shows[show].host.name != null) this_.member_shows[show].host.name = tools.decodeHTML(this_.member_shows[show].host.name);
                 }
 
                 //Get First show in member_shows
                 for(var show in this_.member_shows){
                     this_.active_show = this_.member_shows[show];
+                    
                     break;   
                 }
                 

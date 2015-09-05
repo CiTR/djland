@@ -11,9 +11,7 @@ global $db;
 
 if(isset($_GET['show'])) $show_id = $_GET['show']; else $show_id = 0;
 
-
-$query = '
-    SELECT * FROM playsheets WHERE playsheets.show_id = '.$show_id.' ORDER BY playsheets.start_time DESC ';
+$query = 'SELECT * FROM playsheets WHERE playsheets.show_id = '.$show_id.' ORDER BY playsheets.start_time DESC ';
 
 if ($result = mysqli_query($db, $query) ) {
   $playlists = array();

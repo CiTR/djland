@@ -1,6 +1,5 @@
 (function (){
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
-
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.info = {};
         this.playitems = {};
@@ -227,10 +226,19 @@
                     //Cheat Code to get first active show.
                     for(var show in this_.member_shows){
                         this_.active_show = this_.member_shows[show];
-                        this_.show_value = shows[show]['id'];
-                        this_.info.show_id = shows[show]['id'];
-                        this_.show = shows[show]['show'];
-                        this_.channel = shows[show]['channel'];
+                        this.show = this.active_show.show;
+                        this.channel = this.active_show.channel;
+
+                        this.info.show_id = parseInt(this.active_show.id);
+                        this.info.host = this.active_show.host.name;
+                        this.info.host_id = this.active_show.host.id;
+                        this.info.create_name = this.info.host;
+
+                        this.podcast.channel_id = this.channel.id;
+                        this.podcast.author = this.info.host;
+                        for(var playitem in this.playitems){
+                            this.playitems[playitem].show_id = this.info.show_id;
+                        }
                         break;
                     }
                     var now = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
@@ -266,10 +274,7 @@
                         });
                         this_.podcast.channel_id = this_.channel.id;
                         this_.checkIfComplete();
-                    });
-                    
-                   
-                    
+                    });         
                 });
             }
         }
