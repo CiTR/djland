@@ -1,5 +1,5 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+
 use App\User as User;
 use App\Member as Member;
 use App\Permission as Permission;
@@ -194,7 +194,7 @@ Route::group(['middleware' => 'auth'], function(){
 		return Response::json($list);
 	});
 	Route::get('/playsheet/{id}',function($id = id){
-		global $using_sam;
+		require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 		$playsheet = new stdClass();
 		$playsheet -> playsheet = Playsheet::find($id);
 		if($playsheet -> playsheet != null){
@@ -249,12 +249,16 @@ Route::group(['middleware' => 'auth'], function(){
 		return Response::json($response);
 	});
 	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
-		global $using_sam;
+		require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 		$ads = Ad::where('time_block','=',$unixtime)->get(); 
 		if($using_sam){
 			foreach($ads as $key => $value){
-				$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-				$ads[$key]['name'] = $ad_info['title'];
+				if(is_numeric($value['name'])){
+					$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
+					$ads[$key]['name'] = $ad_info->title;
+				}else{
+					$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+				}
 			}
 		}
 		return Response::json($ads);
