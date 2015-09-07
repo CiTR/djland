@@ -249,10 +249,13 @@ Route::group(['middleware' => 'auth'], function(){
 		return Response::json($response);
 	});
 	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
-		$ads = Ad::where('time_block','=',strtotime($unixtime))->get(); 
-		foreach($ads as $key => $value){
-			$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-			$ads[$key]['name'] = $ad_info['title'];
+		global $using_sam;
+		$ads = Ad::where('time_block','=',$unixtime)->get(); 
+		if($using_sam){
+			foreach($ads as $key => $value){
+				$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
+				$ads[$key]['name'] = $ad_info['title'];
+			}
 		}
 		return Response::json($ads);
 	});

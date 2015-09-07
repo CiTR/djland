@@ -8,10 +8,11 @@ class Ad extends Model
 {
     //
     protected $table = 'adlog';
-    public function playsheet(){
-    	return $this->hasOne('App\Playsheet');
-    }
 
+    public function playsheet(){
+    	return $this->belongsTo('App\Playsheet');
+    }
+    
 
     
 }
