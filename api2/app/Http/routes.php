@@ -204,20 +204,18 @@ Route::group(['middleware' => 'auth'], function(){
 			$playsheet -> channel = $show->channel;
 			$playsheet -> host = Host::find($playsheet->show->host_id);
 			$playsheet -> podcast = Playsheet::find($id)->podcast;
-			if($using_sam){
-				$ads = Playsheet::find($id)->ads;
-				foreach($ads as $key => $value){
-					//Get Ad Names From SAM
-					if(is_numeric($value['name'])){
-						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get()[0];
-						$ads[$key]['name'] = $ad_info->title;
-					}else{
-						$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
-					}
-				}
-				$playsheet -> ads = $ads;
-			}
 			
+			$ads = Playsheet::find($id)->ads;
+			foreach($ads as $key => $value){
+				//Get Ad Names From SAM
+				if($using_sam && is_numeric($value['name'])){
+					$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get()[0];
+					$ads[$key]['name'] = $ad_info->title;
+				}else{
+					$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+				}
+			}
+			$playsheet -> ads = $ads;
 		}
 		return Response::json($playsheet);
 	});
@@ -251,16 +249,16 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 		require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 		$ads = Ad::where('time_block','=',$unixtime)->get(); 
-		if($using_sam){
-			foreach($ads as $key => $value){
-				if(is_numeric($value['name'])){
-					$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
-					$ads[$key]['name'] = $ad_info->title;
-				}else{
-					$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
-				}
+		
+		foreach($ads as $key => $value){
+			if($using_sam && is_numeric($value['name'])){
+				$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
+				$ads[$key]['name'] = $ad_info->title;
+			}else{
+				$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
 			}
 		}
+		
 		return Response::json($ads);
 	});
 	Route::post('/podcast/{id}',function($id = id){
