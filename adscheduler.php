@@ -61,7 +61,7 @@ echo '</h1>';
 echo '<div id=ad-select-template>'.$adLib->generateAdSelector().'</div>';
 
 echo '<p>"+" button template:</p>'.
-	'<div class="adRow" id="invisible-template-generic">'.
+	'<div class="hidden adRow" id="invisible-template-generic">'.
 	 '<div ><div class="adbuttons ad-delete">-</div><div class="adbuttons ad-add">+</div><div class="adbuttons ad-advert">Ad</div></div>'.
 	 '<div class="adTime"><input class="adInput" type="text"></div>'.
 	 '<div class="adType" ><input class="adInput" type="text"></div>'.
@@ -69,7 +69,7 @@ echo '<p>"+" button template:</p>'.
 	 '</div>';
 	 
 echo '<p>"Ad" button template:</p>'.
-	'<div class="adRow" id="invisible-template-ad">'.
+	'<div class="hidden adRow" id="invisible-template-ad">'.
 	 '<div ><div class="adbuttons ad-delete">-</div><div class="adbuttons ad-add">+</div><div class="adbuttons ad-advert">Ad</div></div>'.
 	 '<div class="adTime"><input class="adInput" type="text"></div>'.
 	 '<div class="adType" ><input class="adInput" type="text" value="'.

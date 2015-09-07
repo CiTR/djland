@@ -41,6 +41,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getMemberList: function(){
 			return $http.get(API_URL_BASE+"/member/list");
 		},
+		getSamRecent: function(offset){
+			return $http.get(API_URL_BASE+"/SAM/recent/"+offset);
+		}
 		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},

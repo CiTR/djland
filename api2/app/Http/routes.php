@@ -246,21 +246,7 @@ Route::group(['middleware' => 'auth'], function(){
 		$response->podcast_id = $podcast->id;
 		return Response::json($response);
 	});
-	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
-		require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		$ads = Ad::where('time_block','=',$unixtime)->get(); 
-		
-		foreach($ads as $key => $value){
-			if($using_sam && is_numeric($value['name'])){
-				$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
-				$ads[$key]['name'] = $ad_info->title;
-			}else{
-				$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
-			}
-		}
-		
-		return Response::json($ads);
-	});
+
 	Route::post('/podcast/{id}',function($id = id){
 		$podcast = Podcast::find($id);
 		$podcast->update(Input::get()['podcast']);
@@ -284,6 +270,42 @@ Route::group(['middleware' => 'auth'], function(){
 		}
 		//return json_encode($results);
 	});
+
+//SAM
+	Route::get('/ads/{unixtime}',function($unixtime = unixtime){
+		require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		$ads = Ad::where('time_block','=',$unixtime)->get(); 
+		foreach($ads as $key => $value){
+			if($using_sam && is_numeric($value['name'])){
+				$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
+				$ads[$key]['name'] = $ad_info->title;
+			}else{
+				$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+			}
+		}
+		return Response::json($ads);
+	});
+	Route::get('/SAM/recent',function(){
+		return DB::connection('samdb')
+		->table('songlist AS s')
+		->join('historylist AS h','s.id','=','h.songID')
+		->select('s.artist,s.title,s.album,s.composer,s.mood,h.date_played,h.duration')
+		->where('s.songtype="s"')
+		->limit('50')->get();
+	});
+	Route::get('/SAM/recent/{offset}',function($offset = offset){
+		return DB::connection('samdb')
+		->table('songlist AS s')
+		->join('historylist AS h','s.id','=','h.songID')
+		->select('s.artist,s.title,s.album,s.composer,s.mood,h.date_played,h.duration')
+		->where('s.songtype="s"')
+		->limit('50')
+		->offset($offset)
+		->get();
+
+	});
+
+
 	// Table Helper Routes 
 	Route::get('/table',function(){
 		return  DB::select('SHOW TABLES');
