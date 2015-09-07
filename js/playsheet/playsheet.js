@@ -440,7 +440,7 @@
             this.playitems.splice(this.playitems.length,0,sam_playitem); 
         };
         this.loadSamPlays = function () {
-            call.getRecentSamPlays().then(function (data) {
+            call.getRecent(0).then(function (data) {
                 this_.samRecentPlays = [];
                 for (var samplay in data) {
                     samRecentPlays.push(this_.formatSamPlay(samplay));
@@ -457,7 +457,9 @@
             djland_entry.insert_song_start_minute = $filter('pad')(sam_play.minute, 2);
             djland_entry.insert_song_length_minute = $filter('pad')(sam_play.durMin, 2);
             djland_entry.insert_song_length_second = $filter('pad')(sam_play.durSec, 2);
-            djland_entry.crtc_category = this_.playsheet.crtc;
+            djland_entry.is_can = indexOf('cancon',sam_play.mood) > -1 ? '1':'0';
+            djland_entry.is_fem = indexOf('femcon',sam_play.mood) > -1 ? '1':'0';
+            djland_entry.crtc_category = sam_play.category;
             djland_entry.lang = this_.playsheet.lang;
             return djland_entry;
         };

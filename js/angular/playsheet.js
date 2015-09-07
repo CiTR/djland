@@ -358,8 +358,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       djland_entry.insert_song_length_minute = $filter('pad')(sam_play.durMin, 2);
       djland_entry.insert_song_length_second = $filter('pad')(sam_play.durSec, 2);
 
-
-      djland_entry.crtc_category = $scope.playsheet.crtc;
+      djland_entry.crtc_category = sam_play.category;
       djland_entry.lang = $scope.playsheet.lang;
 
       return djland_entry;
