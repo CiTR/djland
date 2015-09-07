@@ -287,22 +287,21 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::get('/SAM/recent',function(){
 		return DB::connection('samdb')
-		->table('songlist AS s')
-		->join('historylist AS h','s.id','=','h.songID')
-		->select('s.artist,s.title,s.album,s.composer,s.mood,h.date_played,h.duration')
-		->where('s.songtype="s"')
+		->table('songlist')
+		->join('historylist','songlist.id','=','historylist.songID')
+		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
+		->where('songlist.songtype','=','S')
 		->limit('50')->get();
 	});
 	Route::get('/SAM/recent/{offset}',function($offset = offset){
 		return DB::connection('samdb')
-		->table('songlist AS s')
-		->join('historylist AS h','s.id','=','h.songID')
-		->select('s.artist,s.title,s.album,s.composer,s.mood,h.date_played,h.duration')
-		->where('s.songtype="s"')
+		->table('songlist')
+		->join('historylist','songlist.id','=','historylist.songID')
+		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
+		->where('songlist.songtype','=','S')
 		->limit('50')
 		->offset($offset)
 		->get();
-
 	});
 
 
