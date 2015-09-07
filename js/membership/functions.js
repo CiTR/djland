@@ -357,12 +357,15 @@ function emailList(){
 		function(reply){
 			console.log(reply['emails']);
 			var email_list = $('#email_list');
+			email_list.val("");
+			var email_list_out = "";
 			for(var email in reply['emails']){
-				email_list.append(reply['emails'][email]);
+				email_list_out += reply['emails'][email];
 				if(email != reply['emails'][reply['emails'].length-1]){
-					email_list.append(", ");
+					email_list_out += ", ";
 				}
 			}
+			email_list.val(email_list_out);
 		},
 		function(error){
 			console.log(error[0]);

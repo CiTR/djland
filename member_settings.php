@@ -80,7 +80,7 @@
 						<select id='member_type'>
 							<?php 
 							foreach($djland_member_types as $key=>$value){
-								echo "<option value='{$value}'>{$key}</option>";
+								if($key != 'Lifetime') echo "<option value='{$value}'>{$key}</option>";
 							}
 							?>
 						</select>

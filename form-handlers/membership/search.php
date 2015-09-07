@@ -97,10 +97,10 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 }
                 $statement->bindParam(':year', $_GET['year']);
                 if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
-                    $statement->bindValue(':value', $_GET['paid']);
+                    $statement->bindValue(':paid', $_GET['paid']);
                 }
               
-                //echo $statement->debugDumpParams();
+                //$statement->debugDumpParams();
                 
                 try {
                     http_response_code(200);

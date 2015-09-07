@@ -389,6 +389,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				</li>	
    				<li>
    					<select name='interest' class='email_select_value'>
+   						<option value='all'>All</option>
    						<?php
    							foreach($djland_interests as $key=>$value){
    								echo "<option value='{$value}'>{$key}</option>";
@@ -396,6 +397,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    						?>
    					</select>
    					<select name='member_type' class='email_select_value hidden'>
+   						<option value='all'>All</option>
    						<?php
    							foreach($djland_member_types as $key=>$value){
    								echo "<option value='{$value}'>{$key}</option>";

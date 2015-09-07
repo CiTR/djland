@@ -23,7 +23,8 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                         if(in_array($_GET['value'],$djland_interests) ) $query .=" AND my.{$_GET['value']}='1'";
                         break;
                     case 'member_type':
-                        $query .= " AND member_type=:value";
+                        if(in_array($_GET['value'],$djland_member_types)) $query .= " AND member_type=:value"; 
+                        
                         break;
                     default:
                         http_response_code(400);
@@ -48,9 +49,9 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     $statement->bindvalue(':year',$_GET['year']);
                 }
 
-                 switch($_GET['type']){
+                switch($_GET['type']){
                     case 'member_type':
-                        $statement->bindValue(':value',$_GET['value']);
+                        if($_GET['value'] != 'all' ) $statement->bindValue(':value',$_GET['value']);
                         break;
                     default:
                         break;
