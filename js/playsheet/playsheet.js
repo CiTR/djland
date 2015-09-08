@@ -8,7 +8,9 @@
         var this_ = this;
 
         //Helper Variables
+        this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
+
         this.socan = socan;
     	this.tags = tags;
     	this.help = help;
@@ -127,7 +129,7 @@
             this.end.setHours(this.end_hour);
             this.end.setMinutes(this.end_minute);
             this.end.setSeconds(this.end_second);
-            this.info.end_time = $filter('date')(this.end,'HH:mm:ss');
+            this.info.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
 
@@ -146,7 +148,7 @@
             this.end_minute = $filter('pad')(this.end.getMinutes(),2);
             this.end_second = $filter('pad')(this.end.getSeconds(),2);
             //this.end_time = $filter('date')(end, 'HH:mm:ss');
-            this.info.end_time = this.end.getHours();
+            this.info.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
 
@@ -256,7 +258,7 @@
 
                         this_.info.unix_time = this_.start.getTime() / 1000;
                         this_.info.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
-                        this_.info.end_time = $filter('date')(this_.end,'HH:mm:ss');
+                        this_.info.end_time = $filter('date')(this_.end,'yyyy-MM-dd HH:mm:ss');
                         this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
                         this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                         this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
@@ -284,6 +286,10 @@
                     });         
                 });
             }
+            if(this.using_sam){
+                this.loadSamPlays();
+            }
+            
         }
         //When a playsheet item is added or removed, check for completeness
         $scope.$watchCollection('playsheet.playitems', function () {
@@ -439,14 +445,6 @@
         this.addSamPlay = function (sam_playitem) {
             this.playitems.splice(this.playitems.length,0,sam_playitem); 
         };
-        this.loadSamPlays = function () {
-            call.getRecent(0).then(function (data) {
-                this_.samRecentPlays = [];
-                for (var samplay in data) {
-                    samRecentPlays.push(this_.formatSamPlay(samplay));
-                }
-            });
-        };
         this.formatSamPlay = function (sam_play) {
             var djland_entry = angular.copy(row_template);
             djland_entry.song.artist = sam_play.artist;
@@ -463,6 +461,26 @@
             djland_entry.lang = this_.playsheet.lang;
             return djland_entry;
         };
+        this.loadSamPlays = function () {
+            var this_ = this;
+            call.getSamRecent(0).then(function (data) {
+                this_.samRecentPlays = [];
+                for (var samplay in data) {
+                    samRecentPlays.push(this_.formatSamPlay(samplay));
+                }
+            });
+        };
+        this.samRange = function () {
+            var this_ = this;
+            get.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+                for (var play in data) {
+                    this_.addSamPlay(this_.processSam(data[play]));
+                }
+            });
+            this.sam_visible= false;
+        };
+        
+
         // Call Initialization function at end of controller
         this.init();
     });

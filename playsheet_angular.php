@@ -173,18 +173,21 @@
 			</div>
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.status == 2" >Save Draft</button><br/><br/>
-				<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
+				<div ng-show='playsheet.using_sam'>
+					<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
+				</div>
 				
 			</div>
-
-			<div id="sam_picker" ng-show="samVisible">
-				<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
-					<button ng-click="samRange()">add all plays from {{playsheet.start_time | date:'mediumTime'}} to {{playsheet.end_time | date:'mediumTime'}}	</button>
-				<div ng-repeat="sam_playitem in samRecent" class="sam_row">
-					<button class='side-padded' ng-click="sam_add(sam_playitem);">+</button>
-					<span class="one_sam">{{sam.song.artist}} - {{sam.song.song}}</span>
+		
+				<div id="sam_picker" ng-show="samVisible">
+					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
+						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'mediumTime'}} to {{playsheet.end | date:'mediumTime'}}	</button>
+					<div ng-repeat="sam_playitem in playsheet.samRecent" class="sam_row">
+						<button class='side-padded' ng-click="playsheet.addSamPlay(sam_playitem);">+</button>
+						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}}</span>
+					</div>
 				</div>
-			</div>
+
 
 			<!-- Popup Overlay during submission -->
 			<div class="tracklist_overlay" ng-show="playsheet.tracklist_overlay">

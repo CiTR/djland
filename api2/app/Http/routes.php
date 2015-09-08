@@ -305,6 +305,31 @@ Route::group(['middleware' => 'auth'], function(){
 		}
 		return $sam_plays;
 	});
+	Route::get('/SAM/recent',function(){
+		$from = Input::get()['from'];
+		$to = Input::get()['to'];
+		$sam_plays = DB::connection('samdb')
+		->table('songlist')
+		->join('historylist','songlist.id','=','historylist.songID')
+		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
+		->where('songlist.songtype','=','S')
+		->where('historylist.date_played','>=',$from)
+		->where('historylist.date_played','<=',$to)
+		->limit('50')
+		->offset($offset)
+		->get();
+		//Querying category separately, as the query ran slowly as an inner join. They are very large tables
+		foreach($sam_plays as $play){
+			$play->category =  DB::connection('samdb')
+			->table('songlist')
+			->join('categorylist','songlist.id','=','category.songID')
+			->selectRaw('categorylist.categoryID')
+			->where('songlist.id','=',$play->id)
+			->get()[0] == '24' ? '30':'20';
+		}
+		return $sam_plays;
+	});
+
 
 
 	// Table Helper Routes 
