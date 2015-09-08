@@ -10,11 +10,11 @@
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-
         this.socan = socan;
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
+
 
         this.add = function(id){
             var row = angular.copy(this_.row_template);
@@ -283,12 +283,13 @@
                         });
                         this_.podcast.channel_id = this_.channel.id;
                         this_.update();
+                        if(this_.using_sam){
+                            this_.loadSamPlays();
+                        }
                     });         
                 });
             }
-            if(this.using_sam){
-                this.loadSamPlays();
-            }
+
             
         }
         //When a playsheet item is added or removed, check for completeness
@@ -407,6 +408,7 @@
             this.podcast.date = this.info.start_time;
             if(this.info.id < 1){
                 //New Playsheet
+                this.tracklist_overlay = true;
                 callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                     for(var playitem in this_.playitems){
                         this_.playitems[playitem].playsheet_id = this_.info.id;
@@ -415,7 +417,7 @@
                     this_.podcast.id = response.data.podcast_id;
                     this_.podcast.playsheet_id = response.data.id;
 
-                    this.tracklist_overlay = true;
+                    
                     call.makePodcastAudio(this_.podcast).then(function(reponse){
                         console.log(response.data);
                     });
@@ -424,6 +426,7 @@
                 });
             }else{
                 //Existing Playsheet
+                this.tracklist_overlay = true;
                 callback = call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                     for(var playitem in this_.playitems){
                         this_.playitems[playitem].playsheet_id = this_.info.id;
@@ -432,7 +435,7 @@
                     this_.podcast.id = response.data.podcast_id;
                     this_.podcast.playsheet_id = response.data.id;
 
-                    this.tracklist_overlay = true;
+                    
                     call.makePodcastAudio(this_.podcast).then(function(reponse){
                         console.log(response.data);
                     });
@@ -446,34 +449,36 @@
             this.playitems.splice(this.playitems.length,0,sam_playitem); 
         };
         this.formatSamPlay = function (sam_play) {
-            var djland_entry = angular.copy(row_template);
-            djland_entry.song.artist = sam_play.artist;
-            djland_entry.song.title = sam_play.album;
-            djland_entry.song.song = sam_play.title;
-            djland_entry.song.composer = sam_play.composer;
-            djland_entry.insert_song_start_hour = $filter('pad')(sam_play.hour, 2);
-            djland_entry.insert_song_start_minute = $filter('pad')(sam_play.minute, 2);
-            djland_entry.insert_song_length_minute = $filter('pad')(sam_play.durMin, 2);
-            djland_entry.insert_song_length_second = $filter('pad')(sam_play.durSec, 2);
-            djland_entry.is_can = indexOf('cancon',sam_play.mood) > -1 ? '1':'0';
-            djland_entry.is_fem = indexOf('femcon',sam_play.mood) > -1 ? '1':'0';
-            djland_entry.lang = this_.playsheet.lang;
+            var djland_entry = angular.copy(this.row_template);
+            djland_entry.artist = sam_play.artist;
+            djland_entry.album = sam_play.album;
+            djland_entry.song = sam_play.title;
+            djland_entry.composer = sam_play.composer;
+            djland_entry.insert_song_start_hour = $filter('pad')( new Date(sam_play.date_played).getHours(), 2);
+            djland_entry.insert_song_start_minute = $filter('pad')( new Date(sam_play.date_played).getMinutes(), 2);
+            djland_entry.insert_song_length_minute = $filter('pad')((sam_play.durMin / 60000), 2);
+            djland_entry.insert_song_length_second = $filter('pad')( (sam_play.durSec/1000)%60 , 2);
+            djland_entry.is_can = sam_play.mood.indexOf('cancon') > -1 ? '1':'0';
+            djland_entry.is_fem = sam_play.mood.indexOf('femcon') > -1 ? '1':'0';
+            djland_entry.lang = this_.info.lang;
             return djland_entry;
         };
         this.loadSamPlays = function () {
             var this_ = this;
             call.getSamRecent(0).then(function (data) {
+                console.log(data.data);
                 this_.samRecentPlays = [];
-                for (var samplay in data) {
-                    samRecentPlays.push(this_.formatSamPlay(samplay));
+                for (var samplay in data.data) {
+                    console.log(data.data[samplay]);
+                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
                 }
             });
         };
         this.samRange = function () {
             var this_ = this;
-            get.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
-                for (var play in data) {
-                    this_.addSamPlay(this_.processSam(data[play]));
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+                for (var samplay in data.data) {
+                    this_.addSamPlay(this_.formatSamPlay(data.data[samplay]));
                 }
             });
             this.sam_visible= false;

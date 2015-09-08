@@ -293,19 +293,18 @@ Route::group(['middleware' => 'auth'], function(){
 		->where('songlist.songtype','=','S')
 		->limit('50')
 		->offset($offset)
+		->orderBy('historylist.date_played','desc')
 		->get();
-		//Querying category separately, as the query ran slowly as an inner join. They are very large tables
 		foreach($sam_plays as $play){
-			$play->category =  DB::connection('samdb')
-			->table('songlist')
-			->join('categorylist','songlist.id','=','category.songID')
-			->selectRaw('categorylist.categoryID')
-			->where('songlist.id','=',$play->id)
-			->get()[0] == '24' ? '30':'20';
+			foreach($play as $item){
+				if(is_string($item)){
+					$item = html_entity_decode($item ,ENT_QUOTES);
+				}
+			}
 		}
 		return $sam_plays;
 	});
-	Route::get('/SAM/recent',function(){
+	Route::get('/SAM/range',function(){
 		$from = Input::get()['from'];
 		$to = Input::get()['to'];
 		$sam_plays = DB::connection('samdb')
@@ -315,17 +314,14 @@ Route::group(['middleware' => 'auth'], function(){
 		->where('songlist.songtype','=','S')
 		->where('historylist.date_played','>=',$from)
 		->where('historylist.date_played','<=',$to)
-		->limit('50')
-		->offset($offset)
+		->orderBy('historylist.date_played','asc')
 		->get();
-		//Querying category separately, as the query ran slowly as an inner join. They are very large tables
 		foreach($sam_plays as $play){
-			$play->category =  DB::connection('samdb')
-			->table('songlist')
-			->join('categorylist','songlist.id','=','category.songID')
-			->selectRaw('categorylist.categoryID')
-			->where('songlist.id','=',$play->id)
-			->get()[0] == '24' ? '30':'20';
+			foreach($play as $item){
+				if(is_string($item)){
+					$item = html_entity_decode($item ,ENT_QUOTES);
+				}
+			}
 		}
 		return $sam_plays;
 	});
