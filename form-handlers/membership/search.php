@@ -35,10 +35,14 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                         }
                         break;
                     case 'interest':
-                        $query.="WHERE :value='1'";
+                        if($_GET['value'] != 'other'){
+                            if( array_search($_GET['value'],$djland_interests)) $query.=" WHERE my.{$_GET['value']}='1'";
+                        }else{
+                            $query .= ' WHERE my.other is not null AND my.other != ""';
+                        }
                         break;
                     case 'member_type':
-                        $query.="WHERE m.member_type=:value";
+                        $query.=" WHERE m.member_type=:value";
                         break;
                     default:
                         break;
@@ -86,7 +90,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                             }
                             break;
                         case 'interest':
-                            $statement->bindValue(':value', "my.".$_GET['value']);
+                           //if($_GET['value'] != 'other'){$statement->bindValue(':value', "my.".$_GET['value']);}
                             break;
                         case 'member_type':
                             $statement->bindValue(':value', $_GET['value']);
@@ -99,7 +103,8 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                     $statement->bindValue(':paid', $_GET['paid']);
                 }
-              
+                //print_r($_GET);
+                //echo "<br/>";
                 //$statement->debugDumpParams();
                 
                 try {
