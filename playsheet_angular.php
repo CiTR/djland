@@ -181,10 +181,10 @@
 		
 				<div id="sam_picker" ng-show="samVisible">
 					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
-						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'mediumTime'}} to {{playsheet.end | date:'mediumTime'}}	</button>
-					<div ng-repeat="sam_playitem in playsheet.samRecent" class="sam_row">
+						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'y-MM-dd HH:mm:ss'}} to {{playsheet.end | date:'HH:mm:ss'}}	</button>
+					<div ng-repeat="sam_playitem in playsheet.samRecentPlays" class="sam_row">
 						<button class='side-padded' ng-click="playsheet.addSamPlay(sam_playitem);">+</button>
-						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}}</span>
+						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}} ({{ sam_playitem.insert_song_start_hour}}:{{sam_playitem.insert_song_start_minute}})</span>
 					</div>
 				</div>
 
@@ -200,7 +200,7 @@
 				
 				<h4>Tracklist:</h4>
 				<ul>
-					<li ng-repeat="playitem in playsheet.playitems track by $index">{{playitem.artist}} "{{playitem.song}}" from {{playitem.album}}</li>
+					<li ng-repeat="playitem in playsheet.playitems track by $index">{{playitem.artist}} "{{playitem.song}}" - {{playitem.album}}</li>
 				</ul>
 			</div>
 			<!-- Darkens Background during submission popup -->
