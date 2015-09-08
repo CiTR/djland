@@ -323,27 +323,27 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 	   				<ul class='clean-list'>
 	   					<li class='report_row'>
 	   						<div class='col2'>Total:</div>
-	   						<div id='total' class='col2'></div>
+	   						<div id='report_total' class='col2'></div>
 	   					</li>
 	   					<li class='report_row'>
 	   						<div class='col2'>Paid:</div>
-	   						<div id='paid' class='col2'></div>
+	   						<div id='report_paid' class='col2'></div>
 	   					</li>
 	   					<li class='report_row'>
 	   						<div class='col2'>Unpaid:</div>
-	   						<div id='unpaid' class='col2'></div>
+	   						<div id='report_unpaid' class='col2'></div>
    						</li>
 	   					<li class='report_row'>
 	   						<div class='col2'>Student:</div>
-	   						<div id='student' class='col2'></div>
+	   						<div id='report_student' class='col2'></div>
 	   					</li>
 	   					<li class='report_row'>
 	   						<div class='col2'>Community:</div>
-	   						<div id='community' class='col2'></div>
+	   						<div id='report_community' class='col2'></div>
    						</li>
 	   					<li class='report_row'>
 	   						<div class='col2'>Staff:</div>
-	   						<div id='staff' class='col2'></div>
+	   						<div id='report_staff' class='col2'></div>
    						</li>
 	   				</ul>
 	   			</div>

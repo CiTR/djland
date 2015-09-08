@@ -14,12 +14,12 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
             if(isset($_GET['year'])){
                 
                 //Create Query
-                $total = "SELECT count(m.id) AS total, SUM(m.member_type='Student') AS student, 
-                        SUM(m.member_type='Community') AS community,
-                        SUM(m.member_type='Staff') AS staff FROM membership AS m INNER JOIN membership_years as my ON m.id = my.member_id WHERE my.membership_year=:year";
-                $unpaid = "SELECT count(m.id) AS unpaid FROM membership AS m INNER JOIN membership_years as my ON m.id = my.member_id WHERE my.membership_year=:year AND paid='0'";
+                $total = "SELECT count(m.id) AS report_total, SUM(m.member_type='Student') AS report_student, 
+                        SUM(m.member_type='Community') AS report_community,
+                        SUM(m.member_type='Staff') AS report_staff FROM membership AS m INNER JOIN membership_years as my ON m.id = my.member_id WHERE my.membership_year=:year";
+                $unpaid = "SELECT count(m.id) AS report_unpaid FROM membership AS m INNER JOIN membership_years as my ON m.id = my.member_id WHERE my.membership_year=:year AND paid='0'";
                 $query = "SELECT 
-                        count(m.id) AS paid, 
+                        count(m.id) AS report_paid, 
                         SUM(m.alumni = '1') AS alumni";
 
                 foreach($djland_interests AS $interest){
@@ -54,7 +54,7 @@ if( permission_level() >= $djland_permission_levels['staff'] ) {
                     foreach($result_total[0] AS $key=>$value){
                         $report->$key = $value;
                     }
-                    $report->unpaid = $result_unpaid[0]['unpaid'];
+                    $report->report_unpaid = $result_unpaid[0]['report_unpaid'];
                     foreach($result_query[0] AS $key=>$value){
                         $report->$key = $value;   
                     }

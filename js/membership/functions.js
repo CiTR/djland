@@ -77,6 +77,7 @@ function set(value,target_id,target_class,target_name){
 	switch(tag){
 		case 'DIV':
 			target.text(value);
+			if(target_id = 'paid') console.log(value);
 			break;
 		case 'SELECT':
 			target.val(value).change();
@@ -329,7 +330,7 @@ function yearlyReport(year_callback){
 			}).success(function(data){
 				console.log(data);
 				for(var item in data){
-					setText(data[item],item);
+					set(data[item],item);
 				}
 			});
 
