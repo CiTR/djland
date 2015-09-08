@@ -77,7 +77,6 @@ function set(value,target_id,target_class,target_name){
 	switch(tag){
 		case 'DIV':
 			target.text(value);
-			if(target_id = 'paid') console.log(value);
 			break;
 		case 'SELECT':
 			target.val(value).change();

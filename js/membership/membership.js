@@ -5,7 +5,7 @@ window.myNameSpace = window.myNameSpace || { };
 $(document).ready ( function() {
 	var permission_level = $('#permission_level').text();
 	console.log(permission_level);
-	if(permission_level >= 4){
+	if(permission_level >= 5){
 
 		var year_callback = loadYearSelect();
 
@@ -19,7 +19,7 @@ $(document).ready ( function() {
 		loadMember(1);
 		add_handlers();	
 		yearlyReport(year_callback);
-	}else{
+	}else if(permission_level >= 3){
 		var year_callback = loadYearSelect();
 		add_handlers();
 		$('.membership#email').show();

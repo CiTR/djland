@@ -142,6 +142,7 @@ Member.prototype = {
 				setVal(m['other'],interests[interest]);			
 			}
 		}
+		setCheckbox(m['paid'],'paid');
 		
 	},displayPermissions:function(){
 		console.log(permission_levels);
