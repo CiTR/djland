@@ -71,12 +71,22 @@
 			        <div class='col1' >
 					    <div class='col2 side-padded' >
 			        		<div class="col1" >
-					        	Date: {{playsheet.info.start_time | date:'EEE, MMM d, y'}}
+					        	Start: {{playsheet.info.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
 					    	</div>
 					    	<div class='col1 padded' ng-controller="datepicker as date">
-					        	<button ng-click="date.open($event)" >Change Date</button>
+					        	<button ng-click="date.open($event)" >Change Start Day</button>
 					        	<input class="date_picker" type="text" datepicker-popup="{{format}}"
 						                 ng-model="playsheet.info.start_time"  is-open="date.opened"
+						                 ng-required="true" close-text="Close" ng-hide="true"
+						                 ng-change="date.date_change();" />
+					    	</div>
+			        		<div class="col1" >
+					        	End: {{playsheet.info.end_time | date:'yyyy-MM-dd HH:mm:ss'}}
+					    	</div>
+					    	<div class='col1 padded' ng-controller="datepicker as date">
+					        	<button ng-click="date.open($event)" >Change End Day</button>
+					        	<input class="date_picker" type="text" datepicker-popup="{{format}}"
+						                 ng-model="playsheet.info.end_time"  is-open="date.opened"
 						                 ng-required="true" close-text="Close" ng-hide="true"
 						                 ng-change="date.date_change();" />
 					    	</div>
