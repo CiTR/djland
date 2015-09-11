@@ -47,14 +47,7 @@ function addListeners() {
 
     $('#submit_user').click(function () {
         if ($(this).text() == 'Renew') {
-            $.when(member.renew()).then(function(data){
-                if(data=true){
-                    alert("Sucessfully Renewed!\n Please pay your membership fee to re-gain access.");
-                    
-                }else{
-                    alert("Please try again");
-                }
-            });
+            member.renew();            
         } else {
             member.update();
         }

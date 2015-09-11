@@ -61,6 +61,9 @@ if( permission_level() >= $djland_permission_levels['staff']) {
 
             //How to order results   
             switch($_GET['order_by']){
+                case 'created':
+                    $query .= " ORDER BY my.create_date DESC";
+                    break;
                 case 'firstname':
                     $query.=" ORDER BY m.firstname ASC";
                     break;

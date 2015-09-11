@@ -18,7 +18,6 @@ function admin_menu()
 
 function print_menu(){
 	global $enabled,$djland_permission_levels,$using_sam;
-    //admin_menu();
 ?>
 	<ul id=nav>
 		<?php 
@@ -55,11 +54,13 @@ function print_menu(){
 				endif; 
 			if(permission_level() >= $djland_permission_levels['workstudy']) : 
 				if($enabled['adscheduler']) : ?>
-					<li class=drop><a href="adscheduler.php">Manage Ads</a>
+					<li class=drop><a href="adscheduler.php">Ads</a>
 						<div class="dropdown small">
 							<div class=small>
 								<ul>
+									<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
 									<li><a href="adscheduler.php">Ad Scheduler</a></li>
+									<?php endif; ?>
 									<li><a href="adreport.php">Ad Reporting</a></li>
 									<li><a href="samAds.php">Sam Ad History</a></li>
 								</ul>
@@ -89,17 +90,16 @@ function print_menu(){
 					</div>
 				</li>
 		<?php 
-			endif; 
+			endif;
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
 							<ul>
-									<li><a href="playsheet_angular.php">New Playsheet</a></li>
-									<!-- Temp Removed <li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li> -->
-									<li><a href="open_playsheet.php">Open a Playsheet</a></li>
-									<li><a href="podcasts.php"> Podcasts </a></li>
-
+								<li><a href="playsheet_angular.php">New Playsheet</a></li>
+								<!-- Temp Removed <li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li> -->
+								<li><a href="open_playsheet.php">Open a Playsheet</a></li>
+								<li><a href="podcasts.php"> Podcasts </a></li>
 							</ul>
 						</div>
 					</div>
@@ -107,23 +107,28 @@ function print_menu(){
 		<?php 
 			endif;
 			 ?>
-		 <li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
-		 <li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
-		 <li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
+	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
+	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
+		<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>
+		<li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
 			<div class="dropdown small">
 				<div class=small>
 					<ul>
-						<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>
+
 						<li><a href="member_resources.php">Resources</a></li>				
+						<?php if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()): ?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
 						<?php endif; ?>
+						
 						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 						<li><a href="help.php" target="_blank"> Help </a></li>
 						<?php endif; ?>
+
 					</ul>
 				</div>
 			</div>
 		</li>
+		<?php endif; ?>
 	</ul>
 	<br/>
 <?php } 

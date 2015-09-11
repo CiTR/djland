@@ -92,6 +92,26 @@ function is_paid(){
     }
 
 }
+function is_trained(){
+    global $pdo_db;
+    //Session contains member id.
+    $query = "SELECT station_tour,technical_training,technical_training,production_training FROM membership WHERE id=:member_id";
+    $statement = $pdo_db->prepare($query);
+    $statement->bindValue(':member_id',$_SESSION['sv_id']);
+    try{
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result['station_tour'] != '0' &&  $result['technical_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
+        	return true;
+        }else{
+        	return false;
+        }
+
+    }catch(PDOException $pdoe){
+        echo $pdoe->getMessage();
+        return false;
+    }
+}
 
 
 function has_show_access($show_id){

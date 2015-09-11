@@ -59,21 +59,10 @@ $(document).ready ( function() {
 		faculty = getVal('faculty2');
 	}
 	var is_new = getVal('is_new');
-	if(is_new == 'new' || is_new == 'New'){
-		is_new = 1;
-	}
-	else{
-		is_new = 0;
-	}
 	var prompt = "Is this information correct? \nYour full name is "+getVal('firstname') + " " + getVal('lastname') + ". \n";
 	prompt += "Your current address is "+getVal('address')+ " "+ getVal('city') + " " + getVal('province')+ " " + getVal('postalcode') + ". \n"; 
 	prompt += "You are ";
-	if(getCheckbox('can1')==1){
-		prompt += "a ";
-	}
-	else{
-		prompt += "not a ";
-	}
+
 	prompt += "canadian citizen, who is a " + getVal('is_new') + " ";
 	if(getSelect('member_type') =='Student'){
 		prompt += "student in ";
@@ -116,85 +105,8 @@ $(document).ready ( function() {
 	prompt += ". \n \nIf this is correct, please hit 'OK', or else hit 'cancel' to edit your information.";
 
 	if(confirm(prompt)==true){	
-
-		$.ajax({
-				type:"POST",
-				url: "form-handlers/membership_add_handler.php",
-				data: {
-				"username"			:getVal('username'),
-				"password"			:getVal('password1'),
-				"firstname"			:getVal('firstname'),
-				"lastname"			:getVal('lastname'),
-				"address"			:getVal('address'),
-				"city"				:getVal('city'), 
-				"province"			:getVal('province'), 
-				"postalcode"		:getVal('postalcode'),
-				"canadian_citizen"	:getCheckbox('can1'), 
-				"member_type"		:getVal("member_type"),
-				"is_new"			:is_new,
-				"alumni"			:getCheckbox('alumni1'),
-				"since"				:getVal('since'),
-				"faculty"			:faculty,
-				"student_no"		:getVal('student_no'),
-				"schoolyear"		:getVal('schoolyear'),
-				"integrate"			:getCheckbox('integrate'),
-				"has_show"			:getCheckbox('show1'),
-				"show_name"			:getVal("show_name"),
-				"email"				:getVal('email'),
-				"primary_phone"		:getVal('phone1'),
-				"secondary_phone"	:getVal('phone2'),
-				"music"				:getCheckbox('music'),
-				"sports"			:getCheckbox("sports"),
-				"live_broadcast"	:getCheckbox("live_broadcast"),
-				"ads_psa" 			:getCheckbox("ads_psa" ),
-				"discorder" 		:getCheckbox( "discorder" ),
-				"discorder_2"		:getCheckbox( "discorder_2"),
-				"news" 				:getCheckbox( "news" ),
-				"tech" 				:getCheckbox( "tech" ),
-				"outreach"			:getCheckbox("promos"),
-				"show_hosting" 		:getCheckbox("show_hosting" ),
-				"arts"				:getCheckbox( "arts"),
-				"prog_comm"			:getCheckbox("programming"),
-				"digital_library"	:getCheckbox("digital_library"),
-				"photography"		:getCheckbox("photography"),
-				"tabling"			:getCheckbox("tabling"),
-				"dj"				:getCheckbox("dj"),
-				"other"				:getVal("other"),
-				"about"				:getVal('about'),
-				"skills"			:getVal('skills'),
-				"exposure"			:getVal('exposure')
-				 },
-				dataType: "json",
-				asynch: false
-			}).success(function(data) {
-				
-				if(data[0]=="ERROR"){
-					console.log(data);
-					
-					$.ajax({
-					type:"POST",
-					url: "form-handlers/log_handler.php",
-					data: {"data":data[2] },
-					dataType: "json"
-					}).success(function(reply) {
-						alert(data[1] + "Please contact Technical Services! This error has been logged.");
-					}).fail(function(reply){
-						alert(data[1] + "Please contact Technical Services! This error could not be logged. :(");
-					});
-				}
-				else{
-
-					if(!alert("Successful Submission!")){
-						console.log("changing window");
-						window.location='index.php';
-					}
-				}
-			
-				
-			}).fail(function(data){
-				alert("An error occurred, please submit again!");
-				console.log("error occurred" + JSON.stringify(data));
-			});
+		var member = new Member();
+		member.create();
 		}
 	});
 	$('#member_type').change(function (){
@@ -259,14 +171,10 @@ $(document).ready ( function() {
 			data: {"username":username},
 			dataType: "json"
 		    }).success( function(data){
-				console.log('success');
-				console.log(data[0]);
 				if(data[0].bool==1){
 					$('#username_ok').remove();
-						$('#username_check').append("<div id='username_ok'></div>");
-					
+					$('#username_check').append("<div id='username_ok'></div>");
 					$('#username_ok').text("username taken");
-
 				}
 				else{
 					$('#username_ok').remove();
@@ -274,7 +182,6 @@ $(document).ready ( function() {
 					$('#username_ok').text("Username okay");
 				}
 			}).fail( function(){
-				console.log('fail');
 				$('#username_ok').text('connection error');
 			
 			});
@@ -288,7 +195,6 @@ $(document).ready ( function() {
 			data: {"student_no":student_no},
 			dataType: "json"
 		    }).success( function(data){
-		    	
 				if(data == true){
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
@@ -305,7 +211,6 @@ $(document).ready ( function() {
 					$('#student_no_ok').text("Okay");
 				}
 			}).fail( function(){
-				console.log('fail');
 				$('#student_no_ok').text('connection error');
 			
 			});
@@ -323,8 +228,6 @@ $(document).ready ( function() {
 			data: {"username":username},
 			dataType: "json"
 		    }).success( function(data){
-				console.log('success');
-				console.log(data[0]);
 				if(data[0].bool==1){
 					$('#username_ok').remove();
 						$('#username_check').append("<div id='username_ok'></div>");
@@ -336,7 +239,6 @@ $(document).ready ( function() {
 					$('#username_ok').remove();
 				}
 			}).fail( function(){
-				console.log('fail');
 				$('#username_ok').text('connection error');
 			
 			});
@@ -356,7 +258,6 @@ $(document).ready ( function() {
 			data: {"student_no":student_no},
 			dataType: "json"
 		    }).success( function(data){
-		    	console.log('success');
 				if(data == true){
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
@@ -372,7 +273,6 @@ $(document).ready ( function() {
 					$('#student_no_ok').remove();
 				}
 			}).fail( function(){
-				console.log('fail');
 				$('#student_no_ok').text('connection error');
 			
 			});
@@ -418,15 +318,15 @@ $(document).ready ( function() {
 	}
 
 	function passwordCheck(){
-		var password1 = getVal('password1');
+		var password = getVal('password');
 		var password2 = getVal('password2');
 		$('#password_ok').remove();
 		
-		if(password1.length < 4){
+		if(password.length < 4){
 			$('#password_check').append("<div id='password_ok' ></div>");
 			$('#password_ok').text("Password must be more than 4 characters");
 		}
-		else if(password1 != password2){
+		else if(password != password2){
 			$('#password_check').append("<div id='password_ok' ></div>");
 			$('#password_ok').text("Passwords do not match");
 		}
@@ -467,3 +367,10 @@ $(document).ready ( function() {
 		else
 		   return false;
 		}
+
+	function alphaOnly(field,event) {
+		var key = event.keyCode;
+		//Only allowing normal letters
+		var result = ((key >= 65 && key <= 90 ) || key >=97 && key <=122) ? true : false;
+		return result;
+	};

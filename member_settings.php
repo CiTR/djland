@@ -128,8 +128,7 @@
 				</div>
 				<div class='containerrow'>
 					<div class='col5'>Do you have a show?*:</div>
-					<div class='col5'>Yes<input id='show1' class='show_select' type='radio'  />
-						No<input id='show2' class='show_select' type='radio' checked='checked'/> </div>
+					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
 				</div>

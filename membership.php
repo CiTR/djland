@@ -90,6 +90,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					<li>
 						Order By
 						<select id='order_by'>
+							<option value='created'>Renew Date</option>
 							<option value='id'>Join Date</option>
 							<option value='lastname'>Lastname</option>
 							<option value='firstname'>Firstname</option>
@@ -150,6 +151,12 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 					<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'/></div>
 				</div>
 				<div class='containerrow'>
+					<div class='col5'>UBC Alumni:</div>
+					<div class='col5'><input id='alumni' type='checkbox'/></div>
+					<div class='col5'>Member Since: </div>
+					<div class='col5' id='since'>1927</div>
+				</div>
+				<div class='containerrow'>
 					<div class='col5'>Canadian Citizen*:</div>
 					<div class='col5'>
 						<input id='canadian_citizen' type='checkbox'>						
@@ -169,14 +176,6 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 						</select>
 
 					</div>
-				</div>
-				<div class='containerrow student'>
-					<div class='col5'>Alumni:</div>
-					<div class='col5'> 
-						<input id='alumni' type='checkbox'/>
-					</div>
-					<div class='col5'>Member Since: </div>
-					<div class='col5' id='since'>1927</div>
 				</div>
 				<div class='containerrow student'>
 					<div class='col5'>Faculty*: </div>
@@ -212,9 +211,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 				</div>
 				<div class='containerrow'>
 					<div class='col5'>Do you have a show?*:</div>
-					<div class='col5'>
-						<input id='has_show' type='checkbox' >
-					</div>
+					<div class='col5'><input id='has_show' type='checkbox' ></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
 				</div>

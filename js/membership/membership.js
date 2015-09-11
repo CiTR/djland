@@ -11,11 +11,10 @@ $(document).ready ( function() {
 
 		$.when(year_callback).then(
 			function(){
-				displayMemberList("name","","both",get(undefined,'year_select','search'),'id');
+				displayMemberList("name","","both",get(undefined,'year_select','search'),'created');
 			},function(){	
 
 			});
-		//displayMemberList();
 		loadMember(1);
 		add_handlers();	
 		yearlyReport(year_callback);
@@ -77,7 +76,17 @@ function add_handlers(){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');
 		$(this).attr('class','nodrop active-tab member_action');
 		$('.membership').hide();
+		if($(this).attr('name') == 'search'){
+			var search_value;
+			$('.search_value').each(function(e){
+				if($(this).is(':visible')){
+					search_value = $(this).val();
+				}
+			});
+			displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+		}
 		$('.membership#'+$(this).attr('name')).show();
+
 	});
 	//Listener for viewing individual members from clicking on their row
     $('#search').off('click','.member_row_element').on('click','.member_row_element',function(e){
@@ -111,18 +120,28 @@ function add_handlers(){
 						search_value = $(this).val();
 					}
 				});
-				displayMemberList( getVal('search_by'), search_value, getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){
-					$.when(member.updateInfo(), member.updateInterests(), member.updatePermissions(), member.updatePassword()).then(function(d1,d2,d3){
+					$.when(member.updateInfo(), member.updateInterests(), member.updatePermissions(), member.updatePassword()).then(function(d1,d2,d3,d4){
 						alert('Successfully updated');
 						$('.member_action').attr('class','nodrop inactive-tab member_action');
 						$(".member_action[name=search]").attr('class','nodrop active-tab member_action');
 						$('.membership').hide();
 						$('.membership#search').show();
-					},function(e1,e2,e3){
-					
+						var search_value;
+						$('.search_value').each(function(e){
+							if($(this).is(':visible')){
+								search_value = $(this).val();
+							}
+						});
+						displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+					},function(e1,e2,e3,e4){
+						console.log(e1);
+						console.log(e2);
+						console.log(e3);
+						console.log(e4);
 					});
 				}
 				break;
@@ -250,8 +269,9 @@ function add_handlers(){
       defaultDate: "+0d",
       changeMonth: true,
       numberOfMonths: 1,
+      dateFormat: "yy-mm-dd 00:00:00",
       onClose: function( selectedDate ) {
-        $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        $( "#to" ).datepicker( "option", "minDate",selectedDate);
       }
     });
 		
@@ -259,8 +279,9 @@ function add_handlers(){
       defaultDate: "+0d",
       changeMonth: true,
       numberOfMonths: 1,
+      dateFormat: "yy-mm-dd 00:00:00",
       onClose: function( selectedDate ) {
-        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#from" ).datepicker( "option", "maxDate", selectedDate);
       }
     });
 

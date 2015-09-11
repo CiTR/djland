@@ -16,7 +16,7 @@ if( permission_level() >= $djland_permission_levels['volunteer'] ) {
             }
             //Get Permissions for a user
             if(isset($_GET['type']) && isset($_GET['value'])){
-                $query = (isset($_GET['from'])  && isset($_GET['to']))==true ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE m.joined>=:from AND m.joined <=:to" : "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.membership_year=:year"; 
+                $query = (isset($_GET['from'])  && isset($_GET['to']))==true ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE m.create_date >=:from AND m.create_date <= :to AND my.paid = '1'" : "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.membership_year=:year AND my.paid='1'"; 
               
                 switch($_GET['type']){
                     case 'interest':
@@ -35,13 +35,6 @@ if( permission_level() >= $djland_permission_levels['volunteer'] ) {
                 //Prepare statement
                 $statement = $pdo_db->prepare($query);
 
-               
-                
-                //Bind variables to values in query
-               
-                        //$statement->bindValue(':value', "my.".$_GET['value']"");
-                /*$statement->bindValue(":value",($_GET['type'] == 'interest' ? "my.".$_GET['value']: $_GET['value']));
-*/
                 if(isset($_GET['from']) && isset($_GET['to'])){
                     $statement->bindValue(':from',$_GET['from']);
                     $statement->bindValue(':to',$_GET['to']);
