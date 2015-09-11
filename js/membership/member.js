@@ -168,11 +168,9 @@ Member.prototype = {
 		if(request == null){
 			setText(this.username,'username');
 			for(var field in this.member_info){
-				if(field == 'faculty' && faculties.indexOf(field) < 0){
+				if(field == 'faculty' && faculties.indexOf(this['member_info'][field]) < 0){
 					setVal('Other','faculty');
 					set(this['member_info'][field],'faculty2');
-					console.log(this['member_info']['faculty']);
-					//console.log('other');
 				}else{
 					set(this['member_info'][field],field);
 				}	

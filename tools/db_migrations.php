@@ -133,7 +133,8 @@ $queries = array(
     'timestampts to membership' => 
             'ALTER TABLE `membership` 
                 CHANGE COLUMN `joined` `create_date` TIMESTAMP NOT NULL AFTER `spoken_word_training`,
-                ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;'
+                ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;',
+    'fill in membership_year timestamps' => "update membership_years as my inner join membership as m on my.member_id = m.id SET my.create_date = m.create_date;"
 
 
 
