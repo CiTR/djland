@@ -26,7 +26,7 @@ class Podcast extends Model
     }
     private function make_audio(){
 		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		
+		date_default_timezone_set('America/Vancouver');
 		if($this->duration > 8 * 60 * 60 || $this->duration < 0){
 			return "Duration Wrong";
 		}
@@ -35,20 +35,17 @@ class Podcast extends Model
 		$end = $start + $this->duration;
 	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
 	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
-	    $date = date('F-d-Y',$start);
+	    $file_date = date('F-d-H-m-s',$start);
 	    $year = date('Y',$start);
 
-	    //Set up FTP access
-		$ftp = $ftp_audio;
-		$ftp->target_path = '/audio/'.$year.'/';
-		$ftp->url_path = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/';
+	    $date = date('M, d Y H:m:s O',$start);
 
 	    //Archiver URL to download from
 		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Set File Name
-	    $file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$date.'.mp3';
+	    $file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$file_date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
@@ -63,117 +60,46 @@ class Podcast extends Model
     	$target_dir = '/home/podcast/audio/'.$year.'/'; 	
     	$target_file_name = $target_dir.$file_name;
 		
+    	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;
+
     	$file_from_archive = fopen($archive_url,'r');
     	echo "Writing ".$target_file_name;
 		if($file_from_archive){
 			echo "Successfully opened ".$file_from_archive;
 			//print_r(scandir($target_dir));
-				$target_file = fopen($target_file_name,'wb');
-				$num_bytes = 0;
-				if($target_file){
-					echo "Successfully opened ".$target_file_name;
-					while (!feof($file_from_archive)) {
-					   $buffer = fread($file_from_archive, 1024*8);  // use a buffer of 1024 bytes
-					   $num_bytes += fwrite($target_file, $buffer);
-					}
-					$response['audio'] = array(
-		            			'filename' => $file_name,
-		                		'size' => $num_bytes,
-		                		'start' => $start_date,
-		                		'end' => $end_date,
-		                		'url' => $ftp->url_path.$file_name,
-		                		'length' => $num_bytes
-		                		);
-				}	
+			$target_file = fopen($target_file_name,'wb');
+			$num_bytes = 0;
+			if($target_file){
+				echo "Successfully opened ".$target_file_name;
+				//Attempt to add ID3 Tags
+				//if($tags && $error == '') {
+		        //    rewind($target_file);
+		        //    write_tags($tags,$info['uri']);
+		        //    rewind($target_file);
+
+				while (!feof($file_from_archive)) {
+				   $buffer = fread($file_from_archive, 1024*8);  // use a buffer of 1024 bytes
+				   $num_bytes += fwrite($target_file, $buffer);
+				}
+
+		        
+
+				$this->url = $target_url;
+				$this->length = $num_bytes;
+				$this->date = $date;
+				$this->save();
+				$response['audio'] = array('url' => $target_url	);
+				$response['xml'] = $this->channel->make_xml();
+			}	
 		}
-
-
-			//Create a temporary file to hold the mp3
-			/*$num_bytes = 0;
-			$temporary_file = tmpfile();
-    		$metaDatas = stream_get_meta_data($temporary_file);
-			
-			$temporary_file_name = $metaDatas['uri'];
-    		while (!feof($file_from_archive)) {
-			   $buffer = fread($file_from_archive, 1024);  // use a buffer of 1024 bytes
-			   $num_bytes += fwrite($temporary_file, $buffer);
-			   echo $num_bytes;
-			}
-			rename($temporary_file_name,$target_dir+$file_name);*/
-		
+	
 		if($file_from_archive){
 			fclose($file_from_archive);
 		}
 		if($target_file){
 			fclose($target_file);
 		}
-	    /*$ftp_connection = ftp_connect($ftp->url, $ftp->port);
-	    if($ftp_connection){
-	    	if(ftp_login($ftp_connection,$ftp->username ,$ftp->password)){
-	    		//Set to passive mode? It worked...
-	    		ftp_pasv($ftp_connection, true);
-	    		
-	    		//Download the file from the server
-	    		$file_from_archive = fopen($archive_url,'r');
-	    		
-
-	    		
-	    		if($file_from_archive){
-	    			//Create a temporary file to hold the mp3
-    				$num_bytes = 0;
-					$temporary_file = tmpfile();
-		    		$metaDatas = stream_get_meta_data($temporary_file);
-					
-					$temporary_file_name = $metaDatas['uri'];
-		    		while (!feof($file_from_archive)) {
-					   $buffer = fread($file_from_archive, 1024);  // use a buffer of 1024 bytes
-					   $num_bytes += fwrite($temporary_file, $buffer);
-					   echo $num_bytes;
-					}
-    				
-
-    				//Attempt to add ID3 Tags
-    				//if($tags && $error == '') {
-			        //    rewind($file_handle);
-			        //    write_tags($tags,$info['uri']);
-			        //    rewind($file_handle);
-			        }
-
-    				if($num_bytes > 16){
-    					//Check to see if directory exists, if not then create it
- 						if(!ftp_chdir($ftp_connection,$ftp->target_path)){
-    						ftp_chdir($ftp_connection,"/");
-    						ftp_mkdir($ftp_connection, $ftp->target_path);
-    					}
-
-    					if(ftp_put($ftp_connection, $ftp->target_path.$file_name, $temporary_file_name, FTP_BINARY)){
-	            			//Successfully Uploaded the file
-    						$response['audio'] = array(
-		            			'filename' => $file_name,
-		                		'size' => $num_bytes,
-		                		'start' => $start_date,
-		                		'end' => $end_date,
-		                		'url' => $ftp->url_path.$file_name,
-		                		'length' => $num_bytes
-		                		);
-						 	$response['xml'] = $this->channel->make_xml();
-	            		}else{
-	            			$response['audio'] = "Failed to write to FTP server";
-	            		}
-        			}else{
-        				$response['audio'] = "Failed to connect to write temp file";
-        			}
-	    		}else{
-	    			$response['audio'] = "Failed to connect to archiver";
-	    		}
-	    	}else{
-	    		$response['audio'] = "Failed to login";
-	    	}
-    		//Make sure we close our connection
-	    	ftp_close($ftp_connection);
-	    	
-	    }*/
-	   
+  
 	    return $response;
 
 	}

@@ -254,12 +254,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('/podcast/{id}/audio',function($id = id){
 		$podcast = Podcast::find($id);
 		$result = $podcast->make_podcast();
-		if(sizeof($result['audio']) > 2){
-			$podcast->url = $result['audio']['url'];
-			$podcast->length = $result['audio']['length'];
-			$podcast->save();
-		}
-		
 		return $result;
 	});
 	Route::get('/channels/write_xml',function(){

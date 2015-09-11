@@ -16,7 +16,7 @@ app.factory('tools',function(){
 app.controller('datepicker', function($scope, $filter) {
 
 	var today = function() {
-		var dt = new Date();
+		var dt = new Date('yyyy-MM-dd HH:mm:ss');
 	};
 	var clear = function () {
 	 var dt = null;

@@ -75,7 +75,7 @@
 					    	</div>
 					    	<div class='col1 padded' ng-controller="datepicker as date">
 					        	<button ng-click="date.open($event)" >Change Start Day</button>
-					        	<input class="date_picker" type="text" datepicker-popup="{{format}}"
+					        	<input class="date_picker" type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss"
 						                 ng-model="playsheet.info.start_time"  is-open="date.opened"
 						                 ng-required="true" close-text="Close" ng-hide="true"
 						                 ng-change="date.date_change();" />
@@ -85,7 +85,7 @@
 					    	</div>
 					    	<div class='col1 padded' ng-controller="datepicker as date">
 					        	<button ng-click="date.open($event)" >Change End Day</button>
-					        	<input class="date_picker" type="text" datepicker-popup="{{format}}"
+					        	<input class="date_picker" type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss"
 						                 ng-model="playsheet.info.end_time"  is-open="date.opened"
 						                 ng-required="true" close-text="Close" ng-hide="true"
 						                 ng-change="date.date_change();" />
