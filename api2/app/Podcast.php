@@ -38,9 +38,8 @@ class Podcast extends Model
 	    $file_date = date('F-d-H-m-s',$start);
 	    $year = date('Y',$start);
 
-
 	    //Mon, 12 Jan 2015 18:00:00 -0800
-	    $date = date('M, d Y H:m:s O',$start);
+	    $date = date('M, d Y H:i:s O',$start);
 
 	    //Archiver URL to download from
 		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
@@ -59,7 +58,8 @@ class Podcast extends Model
 	        'comment'       => array('This podcast was created in part by CiTR Radio')
     	);
     	
-    	$target_dir = '/home/podcast/audio/'.$year.'/'; 	
+    	//$target_dir = '/home/podcast/audio/'.$year.'/';
+    	$target_dir = 'audio/'.$year.'/'; 	
     	$target_file_name = $target_dir.$file_name;
 		
     	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;
