@@ -399,14 +399,14 @@
                         alert("Draft Saved");
                         
                     },function(error){
-                        alert(error.responseText);
+                        alert(error);
                     });
                 }else{
                     //Existing Playsheet
                     call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                         alert("Draft Saved");
                     },function(error){
-                        alert(error.responseText);
+                        alert(error);
                     });
                 }
             }else{
@@ -442,26 +442,22 @@
                         this_.info.id = response.data.id;
                         this_.podcast.id = response.data.podcast_id;
                         this_.podcast.playsheet_id = response.data.id;
-
                         
                         call.makePodcastAudio(this_.podcast).then(function(reponse){
                             console.log(response.data);
                         });
                     },function(error){
-                        alert(error.responseText);
+                        alert(error);
                     });
                 }else{
                     //Existing Playsheet
                     this.tracklist_overlay = true;
                     callback = call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
-                        for(var playitem in this_.playitems){
-                            this_.playitems[playitem].playsheet_id = this_.info.id;
-                        }
                         call.makePodcastAudio(this_.podcast).then(function(reponse){
                             console.log(response.data);
                         });
                     },function(error){
-                        alert(error.responseText);
+                        alert(error);
                     });
                 } 
             } 

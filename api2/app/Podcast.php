@@ -38,6 +38,8 @@ class Podcast extends Model
 	    $file_date = date('F-d-H-m-s',$start);
 	    $year = date('Y',$start);
 
+
+	    //Mon, 12 Jan 2015 18:00:00 -0800
 	    $date = date('M, d Y H:m:s O',$start);
 
 	    //Archiver URL to download from
