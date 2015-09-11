@@ -29,7 +29,7 @@ app.controller('datepicker', function($scope, $filter) {
 	$scope.opened = true;
 	};
 
-	$scope.format = 'medium';
+	$scope.format = 'yyyy-MM-dd HH:mm:ss';
 
 });
 
