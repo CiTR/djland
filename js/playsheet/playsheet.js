@@ -179,9 +179,14 @@
                     this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
                     
-
-                    this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
-                    this_.spokenword_minutes = this_.info.spokenword_duration % 60;
+                    if(this_.info.spokenword_duration != null){
+                        this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
+                        this_.spokenword_minutes = this_.info.spokenword_duration % 60;
+                    }else{
+                        this_.spokenword_hours = null;
+                        this_.spokenword_minutes = null;
+                    }
+                    
 
                     //Set Show Data
                     this_.show = playsheet.show;
@@ -452,10 +457,6 @@
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
                         }
-                        this_.info.id = response.data.id;
-                        this_.podcast.id = response.data.podcast_id;
-                        this_.podcast.playsheet_id = response.data.id;
-
                         call.makePodcastAudio(this_.podcast).then(function(reponse){
                             console.log(response.data);
                         });

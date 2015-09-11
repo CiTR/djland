@@ -239,6 +239,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	
 	//Searching by Playsheet ID
 	Route::group(array('prefix'=>'{id}'),function($id = id){
+		//Get Existing Playsheet
 		Route::get('/',function($id){
 			require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 			$playsheet = new stdClass();
@@ -265,6 +266,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}
 			return Response::json($playsheet);
 		});
+		//Save Existing Playsheet
 		Route::post('/',function($id){
 			$ps = Playsheet::find($id);
 			$ps->update(Input::get()['playsheet']);
