@@ -331,7 +331,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 });
 
-<<<<<<< HEAD
+
 	Route::post('/podcast/{id}',function($id = id){
 		$podcast = Podcast::find($id);
 		$podcast->update(Input::get()['podcast']);
@@ -349,32 +349,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		}
 		//return json_encode($results);
 	});
-=======
-	
-Route::post('/podcast/{id}',function($id = id){
-	$podcast = Podcast::find($id);
-	$podcast->update(Input::get()['podcast']);
-});
-Route::post('/podcast/{id}/audio',function($id = id){
-	$podcast = Podcast::find($id);
-	$result = $podcast->make_podcast();
-	if(sizeof($result['audio']) > 2){
-		$podcast->url = $result['audio']['url'];
-		$podcast->length = $result['audio']['length'];
-		$podcast->save();
-	}
-	
-	return $result;
-});
-Route::get('/channels/write_xml',function(){
-	$channels = Channel::all();
-	foreach($channels as $channel){
-		$result = $channel->make_xml();
-		$results[] = $result;
-	}
-	//return json_encode($results);
-});
->>>>>>> 344cb01e48ce420b269a93bc2955f1ce2c8dbd59
+
 
 //SAM
 Route::get('/ads/{unixtime}',function($unixtime = unixtime){
