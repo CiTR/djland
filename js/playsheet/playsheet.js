@@ -3,6 +3,7 @@
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.info = {};
         this.playitems = {};
+        this.podcast = {};
         this.info.id = playsheet_id;
         this.member_id = member_id;
         var this_ = this;
@@ -125,8 +126,6 @@
             this.start.setSeconds(this.start_second);
             this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-            console.log(this_.info.start_time);
-            console.log(this_.info.end_time);
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -134,8 +133,6 @@
             this.end.setSeconds(this.end_second);
             this.info.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-            console.log(this_.info.start_time);
-            console.log(this_.info.end_time);
         }
 
         //Setting Show Times
@@ -171,7 +168,9 @@
 
                     //Create Extra Variables to allow proper display in UI
                     this_.start = new Date(this_.info.start_time);
-                    this_.end = new Date(this_.start.getFullYear() +'-'+this_.start.getMonth()+'-'+this_.start.getDate() + " " +this_.info.end_time);
+                    this_.end = new Date(this_.info.end_time);
+                    
+                   
                     this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
                     this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                     this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
@@ -308,11 +307,15 @@
         },true);
         $scope.$watch('playsheet.info.start_time', function () {
             this_.info.start_time = $filter('date')(this_.info.start_time,'yyyy-MM-dd HH:mm:ss');
-            console.log("Start Time"+this_.info.start_time);
+            this_.start = new Date(this_.info.start_time);
+            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+            console.log("Start Time "+this_.info.start_time);
         });
         $scope.$watch('playsheet.info.end_time', function () {
             this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy-MM-dd HH:mm:ss');
-            console.log("End Time" + this_.info.end_time);
+            this_.end = new Date(this_.info.end_time);
+            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+            console.log("End Time " + this_.info.end_time);
         });
 
 

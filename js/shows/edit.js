@@ -98,8 +98,8 @@
                 for(var showtime in this_.show_times){
                     this_.show_times[showtime].start_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
                     this_.show_times[showtime].start_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
-                    this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
-                    this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
+                    this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].end_time.split(':')[0],2);
+                    this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].end_time.split(':')[1],2);
                 }
             },function(error){
 

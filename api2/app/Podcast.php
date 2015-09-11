@@ -35,7 +35,7 @@ class Podcast extends Model
 		$end = $start + $this->duration;
 	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
 	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
-	    $file_date = date('F-d-H-m-s',$start);
+	    $file_date = date('F-d-H-i-s',$start);
 	    $year = date('Y',$start);
 
 	    //Mon, 12 Jan 2015 18:00:00 -0800
@@ -58,8 +58,8 @@ class Podcast extends Model
 	        'comment'       => array('This podcast was created in part by CiTR Radio')
     	);
     	
-    	//$target_dir = '/home/podcast/audio/'.$year.'/';
-    	$target_dir = 'audio/'.$year.'/'; 	
+    	$target_dir = '/home/podcast/audio/'.$year.'/';
+    	//$target_dir = 'audio/'.$year.'/'; 	
     	$target_file_name = $target_dir.$file_name;
 		
     	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;

@@ -171,6 +171,20 @@ ALTER TABLE `playsheets`
 DROP COLUMN `podcast_episode`;
 
 
+/////////// UPDATE: update end_time on playsheets to be datetime;
+
+ALTER TABLE `playsheets` 
+CHANGE COLUMN `end_time` `end_time` DATETIME NULL DEFAULT NULL ;
+
+UPDATE playsheets as p INNER JOIN show_times as s ON p.show_id = s.show_id 
+SET p.end_time = 
+  CASE
+    WHEN ( s.end_day = s.start_day) THEN CONCAT( SUBSTRING(p.start_time,1,10),SUBSTRING(p.end_time,11,19))  
+    WHEN ( (s.end_day > s.start_day) OR (s.end_time = '00:00:00')) THEN CONCAT( SUBSTRING( DATE(DATE_ADD(p.start_time,INTERVAL 1 DAY)),1,10) , SUBSTRING(p.end_time,11,19) )
+  END;
+
+
+
 
 
 
