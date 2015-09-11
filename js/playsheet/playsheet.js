@@ -191,7 +191,7 @@
                     this_.show = playsheet.show;
                     console.log(this_.show);
                     this_.playitems = playsheet.playitems;
-                    this_.podcast = playsheet.podcast;
+                    this_.podcast = playsheet.podcast == null ? {} : playsheet.podcast;
                     this_.channel = playsheet.channel;
                     this_.ads = playsheet.ads;
                     this_.host = playsheet.host;

@@ -95,19 +95,14 @@
 				        	<div>
 					        	Start Time:
 					        	[<select ng-options="n for n in [] | range:00:24" ng-change='playsheet.updateStart()' ng-model="playsheet.start_hour"></select> :
-					       	 	<select ng-model="playsheet.start_minute" ng-change='playsheet.updateStart()' ng-update='playsheet.updateStart()' ng-options="n for n in [] | range:0:60 "
-					                ></select> :
-				                 <select ng-model="playsheet.start_second" ng-change='playsheet.updateStart()' ng-options="n for n in [] | range:0:60"
-					                ></select>]
+					       	 	<select ng-model="playsheet.start_minute" ng-change='playsheet.updateStart()' ng-update='playsheet.updateStart()' ng-options="n for n in [] | range:0:60 "></select> :
+				                 <select ng-model="playsheet.start_second" ng-change='playsheet.updateStart()' ng-options="n for n in [] | range:0:60"></select>]
 			                </div>
 			                <div class='padded'>
 						        End Time:
-						        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 "
-						                 ng-change="playsheet.updateEnd()"></select> :
-						        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60"
-						                ng-change="playsheet.updateEnd()"></select> :
-						        <select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60"
-						                ng-change="playsheet.updateEnd()"></select>]
+						        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateEnd()"></select> :
+						        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60" ng-change="playsheet.updateEnd()"></select> :
+						        <select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60"  ng-change="playsheet.updateEnd()"></select>]
 					          	
 			                </div>
 			          	</div>
