@@ -9,7 +9,12 @@
 		<title>DJLAND | Sign Up</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
+		<script type='text/javascript' src='js/constants.js'></script>
+		<script type='text/javascript' src='js/membership/functions.js'></script>
+		<script type='text/javascript' src='js/membership/member.js'></script>
 		<script type='text/javascript' src='js/membership/add.js'></script>
+
+
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	</head>
@@ -21,10 +26,10 @@
 			<div class = 'container'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username*: </div>
-					<div id="username_check" class='col5'><input id='username' class='required' name='username' placeholder='Enter a username' maxlength='15' tabindex=1></input></div>
+					<div id="username_check" class='col5'><input onKeyPress="return alphaOnly(this, event)" id='username' class='required' name='username' placeholder='Enter a username' maxlength='15' tabindex=1></input></div>
 					<div class='col5'>Password*: </div>
-					<div class='col5'><input id='password1' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();" tabindex=2></input></div>
-					<div id="password_check" class='col6'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
+					<div class='col5'><input id='password' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();" tabindex=2></input></div>
+					<div id="password_check" class='col5'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
 				</div>
 				
 				<div id='row2' class='containerrow'>
@@ -52,36 +57,10 @@
 					<div class='col5'>Postal Code*:</div>
 					<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'></input></div>
 				</div>
-
-				<div id='row5' class='containerrow'>
-					<div class='col5'>Canadian Citizen*:</div>
-					<div class='col5'>
-						Yes<input id='can1' class='can_status' type='radio' checked='checked' />
-						No<input id='can2' class='can_status' type='radio' />
-						
-					</div>
-					<div class='col5'>Member Type*:</div>
-					
-					<div class='col5'><select id='is_new'>
-							<option value='Returning'>Returning</option>
-							<option value='New'>New</option>
-						</select>
-					
-						<select id='member_type'>
-							<?php 
-							foreach($djland_member_types as $key=>$value){
-								if($key != 'Lifetime') echo "<option value='{$value}'>{$key}</option>";
-							}
-							?>
-						</select>
-
-					</div>
-				</div>
 				<div class='containerrow'>
-					<div class='col5'>Alumni:</div>
-					<div class='col5'> Yes<input id='alumni1' class='alumni_select' type='radio'  />
-						No<input id='alumni2' class='alumni_select' type='radio' checked='checked'/> </div>
-					<div class='col5'>Member Since</div>
+					<div class='col5'>UBC Alumni:</div>
+					<div class='col5'><input id='alumni' type='checkbox'/></div>
+					<div class='col5'>Member Since: </div>
 					<div class='col5'>
 						<select id='since'>
 							<?php 
@@ -101,8 +80,31 @@
 								echo "<option value='".$i."/".$next_year."''>".$i."/".$next_year."</option>";
 							} ?>
 						</select>
+					</div>
 				</div>
-				<div id='row6' class='containerrow'>
+				<div id='row5' class='containerrow'>
+					<div class='col5'>Canadian Citizen*:</div>
+					<div class='col5'><input id='canadian_citizen' type='checkbox'/></div>
+					<div class='col5'>Member Type*:</div>
+					
+					<div class='col5'>
+						<select id='is_new'>
+							<option value='1'>New</option>
+							<option value='0'>Returning</option>
+						</select>
+					</div>
+					<div class='col5'>
+						<select id='member_type'>
+							<?php 
+							foreach($djland_member_types as $key=>$value){
+								if($key != 'Lifetime') echo "<option value='{$value}'>{$key}</option>";
+							}
+							?>
+						</select>
+
+					</div>
+				</div>
+				<div id='row6' class='containerrow student'>
 					<div class='col5'>Faculty*: </div>
 					<div class='col5'>
 						<select id='faculty' style='z-position=10;'>
@@ -124,7 +126,7 @@
 
 				</div>
 
-				<div id='row7' class='containerrow'>
+				<div id='row7' class='containerrow student'>
 						<div class='col5'>Year*:</div>			
 						<div class='col5'><select id='schoolyear'>
 							<?php foreach($djland_program_years as $key=>$value){ echo "<option value='{$value}'>{$key}</option>"; } ?>
@@ -137,8 +139,7 @@
 				</div>
 				<div class='containerrow'>
 					<div class='col5'>Do you have a show?*:</div>
-					<div class='col5'>Yes<input id='show1' class='show_select' type='radio'  />
-						No<input id='show2' class='show_select' type='radio' checked='checked'/> </div>
+					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
 				</div>
@@ -149,14 +150,14 @@
 					<div class='col7'>Email Address*: </div>
 					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input></div>
 					<div class='col6'>Primary Number*:</div>
-					<div class='col6'><input id='phone1' class='required' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='primary_phone' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 					<div class='col6'>Secondary Number:</div>
-					<div class='col6'><input id='phone2' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+					<div class='col6'><input id='secondary_phone' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 				</div>
-
 				<hr>
 				<div class='containerrow'>
 					<div class='col6'>I am interested in:</div>
+					<input class='hidden' id='membership_year' value='<?php echo idate('m') >= 5 ? idate('Y')."/".(idate('Y')+1) : (idate('Y')-1)."/".idate('Y'); ?>'/>
 					<div class='span3col4'>
 						<?php foreach($djland_interests as $key=>$interest): ?> 
 						<div class='col3 text-right'>

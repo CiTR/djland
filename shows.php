@@ -69,10 +69,10 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         <button type='button' ng-click='show.removePrimaryGenre($index)'>Remove</button>
                     </li>
                 </ul>
-                <select ng-model='show.primary_genre_select' ng-show='show.primary_genres.length < 2'>
+                <select ng-model='show.primary_genre_select' ng-show='show.primary_genres.length'>
                         <option ng-repeat="genre in show.genres track by $index | orderBy:'genre.toString()'" value='{{$index}}' >{{genre}} </option>
                 </select>
-                <button ng-click='show.addPrimaryGenre()' ng-show='show.primary_genres.length < 2' type='button'>Add Primary Genre</button>
+                <button ng-click='show.addPrimaryGenre()' ng-show='show.primary_genres.length' type='button'>Add Primary Genre</button>
                 <h4 class='text-left double-padded-top'>Secondary Genres</h4>
                 <ul>
                     <li ng-repeat='genre in show.secondary_genres track by $index'>

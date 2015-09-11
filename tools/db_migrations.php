@@ -124,7 +124,16 @@ $queries = array(
     'add string based host field' => 'ALTER TABLE `sheets`
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
-        ADD COLUMN `slug` TEXT NULL AFTER `xml`;'
+        ADD COLUMN `slug` TEXT NULL AFTER `xml`;',
+    'add timestamps to membership_years & user' => 'ALTER TABLE `membership_years` 
+            ADD COLUMN `create_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `accessibility_collective`,
+            ADD COLUMN `edit_date` TIMESTAMP NULL AFTER `create_date`;
+            ALTER TABLE `user` 
+            CHANGE COLUMN `create_date` `create_date` TIMESTAMP NULL DEFAULT NULL;',
+    'timestampts to membership' => 
+            'ALTER TABLE `membership` 
+                CHANGE COLUMN `joined` `create_date` TIMESTAMP NOT NULL AFTER `spoken_word_training`,
+                ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;'
 
 
 
