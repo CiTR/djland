@@ -48,7 +48,7 @@
 				          	<option value="Simulcast">Simulcast</option>
 				    	</select>
 			        	<span ng-show="playsheet.info.type == 'Rebroadcast'">
-			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time for (id,ps) in playsheet.existing_playsheets | orderBy:'-id' track by id"></select>
+			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time for (id,ps) in playsheet.existing_playsheets | orderBy:'-id' "></select>
 						<button ng-click="playsheet.loadRebroadcast()">Load Rebroadcast</button>
 						</span>
 						
