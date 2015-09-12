@@ -187,6 +187,9 @@ Route::group(array('prefix'=>'show'),function(){
 				Showtime::create($showtime);
 			}
 		});
+		Route::get('playsheets',function($id){
+			return Show::find($id)->playsheets;
+		});
 		Route::get('owners',function($id){
 			$members = Show::find($id)->members;
 			$owners = new stdClass();

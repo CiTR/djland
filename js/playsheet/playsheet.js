@@ -154,6 +154,24 @@
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
 
+        this.loadRebroadcast = function(){
+            call.getPlaysheetData(this.existing_playsheet).then(function(response){
+                this_.playitems = response.data.playitems; 
+                this_.info.summary = response.data.playsheet.summary;
+                this_.info.title = response.data.playsheet.title;
+                this_.info.spokenword_duration = response.data.playsheet.spokenword_duration;
+                if(this_.info.spokenword_duration != null){
+                    this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
+                    this_.spokenword_minutes = this_.info.spokenword_duration % 60;
+                }else{
+                    this_.spokenword_hours = null;
+                    this_.spokenword_minutes = null;
+                }
+                this_.ads = response.data.ads;
+
+            });
+        }
+
         //Initialization of Playsheet
         this.init = function(){
             var this_ = this;
@@ -186,7 +204,6 @@
                         this_.spokenword_minutes = null;
                     }
                     
-
                     //Set Show Data
                     this_.show = playsheet.show;
                     console.log(this_.show);
@@ -211,7 +228,12 @@
                                 this_.show_value = shows[show]['id'];
                                 this_.show = shows[show]['show'];
                                 this_.channel = shows[show]['channel'];
-                            }                                  
+                            }
+                        call.getShowPlaysheets(this_.show_value).then(function(response){
+                            //DISPLAY OLD PLAYSHEETS
+                            this_.existing_playsheets = response.data;
+                        });
+
                         }
                         //Populate the template row
                         var show_date = this_.start.getDate();
@@ -258,6 +280,12 @@
                         break;
                     }
                     var now = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+
+                    call.getShowPlaysheets(this_.show_value).then(function(response){
+                        //DISPLAY OLD PLAYSHEETS
+                        this_.existing_playsheets = response.data;
+                    });
+
                     call.getNextShowTime(this_.active_show.id,now).then(function(response){
                         console.log(response.data);
                         var start_unix = response.data.start;
