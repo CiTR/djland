@@ -46,6 +46,12 @@ Route::group(['middleware' => 'auth'], function(){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
+			Route::post('/comments',function($id){
+				$member = Member::find($id);
+				$member -> comments = json_decode(Input::get()['comments']);
+				return Response:: json($member -> save());
+
+			});
 			Route::get('training',function($id){
 				$member =  Member::find($id);
 				if($member->station_tour == '0' || $member->technical_training == '0' || $member->programming_training == '0' || $member->production_training == '0'){

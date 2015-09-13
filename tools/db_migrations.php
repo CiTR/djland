@@ -121,7 +121,7 @@ $queries = array(
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
                                 ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",                                    
-    'add string based host field' => 'ALTER TABLE `sheets`
+    'add string based host field' => 'ALTER TABLE `playsheets`
         ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
     'add slug field to channel' => 'ALTER TABLE `podcast_channels`
         ADD COLUMN `slug` TEXT NULL AFTER `xml`;',

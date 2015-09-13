@@ -293,15 +293,13 @@ function saveComments(){
 		comments[id] = {'id':id,'comments':comment};
 		$(this).removeClass('updated');
 	});
-	console.log(comments);
-
 	var requests = Array();
 	for(var comment in comments){
     	requests.push(
     		$.ajax({
 				type:"POST",
-                url: "form-handlers/membership/member.php",
-                data: {"member_id" : comment, "member": JSON.stringify(comments[comment])},
+                url: "api2/public/member/"+ comment + "/comments",
+                data: {"comments": JSON.stringify(comments[comment]['comments'])},
                 dataType: "json",
                 async: true
 			})
@@ -310,9 +308,10 @@ function saveComments(){
 
     $.when.apply($,requests).then(function(){
     	console.log(arguments);
-    	alert("Successfully updated comments for "+comments.toString());
+
+    	alert("Successfully updated comments");
     },function(err){
-    	 alert("Could not delete: "+comments.toString()+"\n"+data[0]);
+    	 alert("Could not update comments");
     });
 
 }
