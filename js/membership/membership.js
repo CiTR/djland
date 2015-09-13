@@ -79,7 +79,7 @@ function add_handlers(){
 		if($(this).attr('name') == 'search'){
 			var search_value;
 			$('.search_value').each(function(e){
-				if($(this).is(':visible')){
+				if($(this).css('display') != 'none'){
 					search_value = $(this).val();
 				}
 			});
@@ -116,7 +116,7 @@ function add_handlers(){
 			case 'search':
 				var search_value;
 				$('.search_value').each(function(e){
-					if($(this).is(':visible')){
+					if($(this).css('display') != 'none'){
 						search_value = $(this).val();
 					}
 				});
@@ -132,7 +132,7 @@ function add_handlers(){
 						$('.membership#search').show();
 						var search_value;
 						$('.search_value').each(function(e){
-							if($(this).is(':visible')){
+							if($(this).css('display') != 'none'){
 								search_value = $(this).val();
 							}
 						});
