@@ -21,9 +21,13 @@ class Podcast extends Model
     }
     public function make_podcast(){
     	$response = $this->make_audio();
-    	
     	return $response;
     }
+    public function overwrite_podcast(){
+    	$response = $this->overwrite_audio();
+    	return $response;
+    }
+
     private function make_audio(){
 		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
 		date_default_timezone_set('America/Vancouver');
@@ -64,28 +68,30 @@ class Podcast extends Model
 		
     	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;
 
+    	//Get Audio from Archiver
     	$file_from_archive = fopen($archive_url,'r');
-    	echo "Writing ".$target_file_name;
+    	
+		//If we obtain a file from archiver
 		if($file_from_archive){
-			echo "Successfully opened ".$file_from_archive;
-			//print_r(scandir($target_dir));
+			//Open local file
 			$target_file = fopen($target_file_name,'wb');
 			$num_bytes = 0;
+			
+			//If we open local file
 			if($target_file){
-				echo "Successfully opened ".$target_file_name;
 				//Attempt to add ID3 Tags
 				//if($tags && $error == '') {
 		        //    rewind($target_file);
 		        //    write_tags($tags,$info['uri']);
 		        //    rewind($target_file);
 
+				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
-				   $buffer = fread($file_from_archive, 1024*8);  // use a buffer of 1024 bytes
+				   $buffer = fread($file_from_archive, 1024*8);  // use a buffer of 8mb bytes
 				   $num_bytes += fwrite($target_file, $buffer);
 				}
 
-		        
-
+				//Update the podcast object to reflect changes
 				$this->url = $target_url;
 				$this->length = $num_bytes;
 				$this->date = $date;
@@ -94,19 +100,70 @@ class Podcast extends Model
 				$response['xml'] = $this->channel->make_xml();
 			}	
 		}
-	
 		if($file_from_archive){
 			fclose($file_from_archive);
 		}
 		if($target_file){
 			fclose($target_file);
 		}
-  
 	    return $response;
-
 	}
 	
+	private function overwrite_audio(){
+		date_default_timezone_set('America/Vancouver');
+		//Date Initialization
+		$start = strtotime($this->playsheet->start_time);
+		$end = $start + $this->duration;
+	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
+	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
 
+		//Archiver URL to download from
+		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
+	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
+
+	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
+	    $target_dir = '/home/podcast/audio/';
+	    $file_name = explode('/',$this->url,6)[5];
+	    $target_file_name = $target_dir.$file_name;
+	    
+	    //Get Audio from Archiver
+	    $file_from_archive = fopen($archive_url,'r');
+    	
+    	//If we obtain a file from archiver
+		if($file_from_archive){
+			//Open local file
+			$target_file = fopen($target_file_name,'wb');
+			$num_bytes = 0;
+			
+			//If we open local file
+			if($target_file){
+				//Attempt to add ID3 Tags
+				//if($tags && $error == '') {
+		        //    rewind($target_file);
+		        //    write_tags($tags,$info['uri']);
+		        //    rewind($target_file);
+
+				//User a buffer so we don't hit the max memory alloc limit
+				while (!feof($file_from_archive)) {
+				   $buffer = fread($file_from_archive, 1024*8);  // use a buffer of 8mb bytes
+				   $num_bytes += fwrite($target_file, $buffer);
+				}
+
+				$this->length = $num_bytes;
+				$this->save();
+			}	
+		}
+		if($file_from_archive){
+			fclose($file_from_archive);
+		}
+		if($target_file){
+			fclose($target_file);
+		}
+	    return $response;
+
+
+
+	    }
 
 
 	private function write_tags($tags,$file){

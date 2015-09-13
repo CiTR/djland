@@ -352,6 +352,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$result = $podcast->make_podcast();
 		return $result;
 	});
+	Route::post('/podcast/{id}/overwrite',function($id = id){
+		$podcast = Podcast::find($id);
+		$result = $podcast->overwrite_podcast();
+		return $result;
+	});
 	Route::get('/channels/write_xml',function(){
 		$channels = Channel::all();
 		foreach($channels as $channel){
