@@ -26,12 +26,12 @@ UPDATE playsheets SET show_id =1 WHERE show_id = "";
 UPDATE playsheets SET show_id=1 WHERE show_id NOT IN (select id from shows);
 
 
-ALTER TABLE `djland`.`playsheets` 
+ALTER TABLE `playsheets` 
 ADD INDEX `show_id_idx` (`show_id` ASC);
-ALTER TABLE `djland`.`playsheets` 
+ALTER TABLE `playsheets` 
 ADD CONSTRAINT `show_id`
   FOREIGN KEY (`show_id`)
-  REFERENCES `djland`.`shows` (`id`)
+  REFERENCES `shows` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
