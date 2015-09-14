@@ -164,7 +164,7 @@ class Podcast extends Model
 
 				$this->length = $num_bytes;
 				$this->save();
-				$response['audio'] = array('url' => $target_url	);
+				$response['audio'] = array('url'=>$this->url,'size'=>$num_bytes);
 				//Update XML to reflect new podcast data (Duration,filesize)
 				$response['xml'] = $this->channel->make_xml();
 			}	
