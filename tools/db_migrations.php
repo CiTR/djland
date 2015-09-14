@@ -70,7 +70,9 @@ $queries = array(
                                 `image` VARCHAR(455) NULL,
                                 `url` VARCHAR(455) NULL,
                                 PRIMARY KEY (`id`));',
-    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
+    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` 
+                                        ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+                                    ALTER TABLE `djland`.`podcast_episodes` DROP COLUMN `edit_date`;',
     'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
     'rename genre tables to tags' => "ALTER TABLE `shows`
                                   ADD COLUMN `primary_genre_tags` TINYTEXT NULL DEFAULT NULL AFTER `lang_default` ,
@@ -130,11 +132,12 @@ $queries = array(
             ADD COLUMN `edit_date` TIMESTAMP NULL AFTER `create_date`;
             ALTER TABLE `user` 
             CHANGE COLUMN `create_date` `create_date` TIMESTAMP NULL DEFAULT NULL;',
-    'timestampts to membership' => 
+    'timestamps to membership' => 
             'ALTER TABLE `membership` 
                 CHANGE COLUMN `joined` `create_date` TIMESTAMP NOT NULL AFTER `spoken_word_training`,
                 ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;',
-    'fill in membership_year timestamps' => "update membership_years as my inner join membership as m on my.member_id = m.id SET my.create_date = m.create_date;"
+    'fill in membership_year timestamps' => "update membership_years as my inner join membership as m on my.member_id = m.id SET my.create_date = m.create_date;",
+
 
 
 

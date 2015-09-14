@@ -15,12 +15,12 @@ $offset = isset($_GET['OFFSET']) && is_numeric($_GET['OFFSET']) ? $_GET['OFFSET'
 $limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']  * 1 : 100;
 
   $query = 'SELECT playsheets.id,
-      GREATEST(playsheets.edit_date, podcast_episodes.edit_date) as edit_date
+      GREATEST(playsheets.edit_date, podcast_episodes.UPDATED_AT) as edit_date
     FROM playsheets
     LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
 
     ORDER BY
-      GREATEST(playsheets.edit_date, podcast_episodes.edit_date)
+      GREATEST(playsheets.edit_date, podcast_episodes.UPDATED_AT)
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 if ($result = mysqli_query($db, $query) ) {
