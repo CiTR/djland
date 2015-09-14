@@ -135,16 +135,24 @@
 
 
 
-        this.elapsedTime = function(){
-            $('#elapsed').text((new Date().getTime() - this.audio_time.getTime() ) / 1000 + " seconds" );
+        this.elapsedTime = function(time){
+            this.seconds_elapsed = (new Date().getTime() / 1000) -(this.audio_start.getTime()/1000);
+            if(time == 'start'){
+                var elapsed = new Date(this.start);
+                elapsed.setSeconds(elapsed.getSeconds() + this.seconds_elapsed);
+            }else if(time == 'end'){
+                var elapsed = new Date(this.end);
+                 elapsed.setSeconds(this.end.getSeconds() - 10 + this.seconds_elapsed);
+            }         
+            $('#elapsed').text($filter('date')(elapsed,'yyyy-MM-dd HH:mm:ss'));
         }
-        this.load_and_play_sound = function(url){
+        this.load_and_play_sound = function(url,time){
             var this_ = this;
             if(typeof(this.sound) != 'undefined') {
                 this.sound.destruct();
             }
-            this.audio_time = new Date();
-            this.elapsed  = 0;
+            this.seconds_elapsed = 0;
+            this.audio_start = new Date();
             this.playing = true;
             this.message = 'playing ...';
             this.sound = sm.createSound(
@@ -158,7 +166,8 @@
                     },
 
                     whileplaying: function() {
-                        this_.elapsedInterval = $interval(this_.elapsedTime() , 500);
+
+                        this_.elapsedInterval = $interval(this_.elapsedTime(time) , 1000);
                         this_.message = 'playing ...';
                         if (this.duration == 0){
                             this_.message = 'sorry, preview not available.';
@@ -172,14 +181,14 @@
             var preview_end = new Date(this.start).setSeconds(this.start.getSeconds() + 10);
             var sound_url = this.getPreviewUrl(new Date(this.start), preview_end);
             console.log(sound_url);
-            this.load_and_play_sound(sound_url);
+            this.load_and_play_sound(sound_url,'start');
         };
 
         this.preview_end = function(){
             var preview_start = new Date(this.end).setSeconds(this.end.getSeconds() - 10);
             var sound_url = this.getPreviewUrl(preview_start,this.end);
             console.log(sound_url);
-            this.load_and_play_sound(sound_url);
+            this.load_and_play_sound(sound_url,'end');
         }
         this.getPreviewUrl = function(start,end){
             return 'http://archive.citr.ca/py-test/archbrad/download?'+
