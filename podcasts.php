@@ -15,7 +15,7 @@ error_reporting(E_ALL);
 </head>
 
 <body class='wallpaper'>
-
+ <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
 <?php print_menu();
 
 if(!isset($_GET['id'])){
@@ -37,7 +37,7 @@ if(!isset($_GET['id'])){
 }else{
 
 ?>
-    <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+   
     <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
     <script type='text/javascript' src="js/angular.js"></script>
     <script type='text/javascript' src="js/soundmanager2.js"></script>
