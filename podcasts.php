@@ -64,9 +64,9 @@ if(!isset($_GET['id'])){
                 <p>
                     <span ng-show="episode.playsheet.status == 1"> ( DRAFT ) <br/></span>
                     <span ng-show="episode.podcast.active == 0"> ( INACTIVE ) <br/></span>
-                    <span class="title" >{{episode.playsheet.title? plodcast.playlist.title : '(no title)'}}</span>
+                    <span class="title" >{{episode.playsheet.title ? episode.playsheet.title : '(no title)'}}</span>
                     <br/>
-                    <span class="subtitle" >{{episode.podcast.subtitle? episode.podcast.subtitle : '(no subtitle)'}}</span>
+                    <span class="subtitle" >{{episode.playsheet.summary ? episode.playsheet.summary : '(no summary)'}}</span>
                 </p>
                 <div audio source='episode.podcast.url'></div>
                 <br />
