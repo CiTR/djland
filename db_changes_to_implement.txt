@@ -187,6 +187,10 @@ ALTER TABLE `playsheets`
 
 
 
+ALTER TABLE `djland`.`podcast_episodes` 
+ADD COLUMN `playsheet_id` BIGINT(20) UNSIGNED NULL COMMENT '' AFTER `channel_id`;
+
+
 
 
 

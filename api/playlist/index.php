@@ -33,7 +33,7 @@ $query = 'SELECT
           podcast_episodes.url as episode_audio
           FROM playsheets
           LEFT JOIN hosts on hosts.id = playsheets.host_id
-          LEFT JOIN podcast_episodes on podcast_episodes.id = playsheets.podcast_episode
+          LEFT JOIN podcast_episodes on podcast_episodes.playsheet_id = playsheets.id
           WHERE playsheets.status = 2 AND playsheets.id ='.$id;
 
 $rawdata = array();
@@ -56,7 +56,7 @@ if ( $result = mysqli_query($db, $query) ) {
 
   $plays = array();
 
-  $query = 'SELECT artist, title, song, composer, playitems.id FROM playitems WHERE playitems.playsheet_id='.$id .' order by playitems.id asc';
+  $query = 'SELECT artist, album as title, song, composer, playitems.id FROM playitems WHERE playitems.playsheet_id='.$id .' order by playitems.id asc';
 
   if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
