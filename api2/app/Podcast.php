@@ -91,7 +91,7 @@ class Podcast extends Model
 
 				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
-				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 8mb bytes
+				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 16mb bytes
 				   $num_bytes += fwrite($target_file, $buffer);
 				}
 
@@ -105,11 +105,13 @@ class Podcast extends Model
 				$response['xml'] = $this->channel->make_xml();
 			}	
 		}
-		if($file_from_archive){
-			fclose($file_from_archive);
+		while(is_resource($file_from_archive)){
+		   //Handle still open
+		   fclose($file_from_archive);
 		}
-		if($target_file){
-			fclose($target_file);
+		while(is_resource($target_file)){
+		   //Handle still open
+		   fclose($target_file);
 		}
 	    return $response;
 	}
@@ -158,7 +160,7 @@ class Podcast extends Model
 
 				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
-				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 8mb bytes
+				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 16mb bytes
 				   $num_bytes += fwrite($target_file, $buffer);
 				}
 

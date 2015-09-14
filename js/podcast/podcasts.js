@@ -100,6 +100,8 @@
                 if(response.data = "true"){
                     call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
+                    },function(error){
+                        alert("Failed to save podcast: " + error);
                     });
                 }
             });
@@ -212,7 +214,7 @@
             restrict: 'A',
             scope: { source:'=' },
             replace: true,
-            template: '<audio ng-src="{{url}}" controls></audio>',
+            template: '<audio preload="metadata" ng-src="{{url}}" controls></audio>',
             link: function (scope) {
                 scope.$watch('source', function (newVal, oldVal) {
                    if (newVal !== undefined) {
