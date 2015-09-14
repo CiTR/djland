@@ -9,13 +9,13 @@
 require_once('../api_common.php');
 
 $offset = isset($_GET['OFFSET']) && is_numeric($_GET['OFFSET']) ? $_GET['OFFSET'] * 1 : 0;
-$limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']  * 1 : 100;
+$limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']  * 1 : 200;
 
 $query =   "SELECT 	shows.id as id,
-					GREATEST(shows.edit_date,COALESCE(podcast_channels.edit_date,'0000-00-00 00:00:00')) as edit_date
+					GREATEST(shows.edit_date,COALESCE(podcast_channels.UPDATED_AT,'0000-00-00 00:00:00')) as edit_date
 			FROM shows
-			LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id
-			ORDER BY GREATEST(shows.edit_date,COALESCE(podcast_channels.edit_date,'0000-00-00 00:00:00')) DESC
+			LEFT JOIN podcast_channels on podcast_channels.show_id = shows.id
+			ORDER BY GREATEST(shows.edit_date,COALESCE(podcast_channels.UPDATED_AT,'0000-00-00 00:00:00')) DESC
 			LIMIT $limit
 			OFFSET $offset";
 

@@ -4,7 +4,7 @@
 // populate $data to return
 // call finish()
 
-error_reporting(0);
+error_reporting(E_ALL);
 
 require_once('../../headers/db_header.php');
 
