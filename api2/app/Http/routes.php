@@ -194,7 +194,7 @@ Route::group(array('prefix'=>'show'),function(){
 			}
 		});
 		Route::get('episodes',function($id){
-			$podcasts = Show::find($id)->channel->podcasts;
+			$podcasts = Show::find($id)->channel->podcasts()->orderBy('id','desc')->get();
 
 			foreach($podcasts as $podcast){
 				$playsheet = $podcast->playsheet;
@@ -204,8 +204,6 @@ Route::group(array('prefix'=>'show'),function(){
 					}
 					unset($podcast->playsheet);
 					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
-				}else{
-					$episode = ['podcast'=>$podcast];
 				}
 				$episodes[] = $episode;
 			}

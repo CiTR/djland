@@ -30,7 +30,7 @@ class Channel extends Model
 		$host = $this->show->host;
 		$show = $this->show->getAttributes();
 		$channel = $this;
-		$episodes = $this->podcasts;
+		$episodes = $this->podcasts->where('active','=','1')->get();
 	    $channel = $channel->getAttributes();
 	    $file_name = $channel['slug'].'.xml';
 

@@ -4,7 +4,7 @@
 
 
 
-    app.controller('episodeList', function($scope, call, $location, $filter, archiveService){
+    app.controller('episodeList', function($scope, call, $interval, $location, $filter){
         this.Math = window.Math;
         this.plodcasts = [];
         this.editing  = false;
@@ -98,7 +98,7 @@
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
-                    call.overwritePodcastAudio(this_.podcast).then(function(response){
+                    call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
                     });
                 }
@@ -133,12 +133,19 @@
         };
 
 
+
+
+        this.elapsedTime = function(){
+            $('#elapsed').text((new Date().getTime() - this.audio_time.getTime() ) / 1000 + " seconds" );
+        }
         this.load_and_play_sound = function(url){
             var this_ = this;
             if(typeof(this.sound) != 'undefined') {
                 this.sound.destruct();
             }
-
+            this.audio_time = new Date();
+            this.elapsed  = 0;
+            this.playing = true;
             this.message = 'playing ...';
             this.sound = sm.createSound(
                 angular.extend(basic_sound_options,{
@@ -146,9 +153,12 @@
                     url:url,
                     onfinish:function(){
                         this_.message = '';
+                        this.playing = false;
+                        $interval.cancel(this_.elapsedInterval);
                     },
 
                     whileplaying: function() {
+                        this_.elapsedInterval = $interval(this_.elapsedTime() , 500);
                         this_.message = 'playing ...';
                         if (this.duration == 0){
                             this_.message = 'sorry, preview not available.';
@@ -161,12 +171,14 @@
         this.preview_start = function(){
             var preview_end = new Date(this.start).setSeconds(this.start.getSeconds() + 10);
             var sound_url = this.getPreviewUrl(new Date(this.start), preview_end);
+            console.log(sound_url);
             this.load_and_play_sound(sound_url);
         };
 
         this.preview_end = function(){
-            var preview_start = new Date(this.end).setSeconds(this.start.getSeconds() - 10);
-            var sound_url = this.getPreviewUrl(preview_start,new Date(this.end));
+            var preview_start = new Date(this.end).setSeconds(this.end.getSeconds() - 10);
+            var sound_url = this.getPreviewUrl(preview_start,this.end);
+            console.log(sound_url);
             this.load_and_play_sound(sound_url);
         }
         this.getPreviewUrl = function(start,end){

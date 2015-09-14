@@ -59,7 +59,7 @@ if(!isset($_GET['id'])){
            
             <!-- Left Side Episode List Code -->
             {{episodes}}
-            <div ng-repeat="episode in list.episodes track by episode.podcast.id" class="podcast_list_entry" ng-class="{lit: episode.playsheet.id === list.editing.playsheet.id}"  >
+            <div ng-repeat="episode in list.episodes track by $index" class="podcast_list_entry" ng-class="{lit: episode.podcast.id === list.editing.podcast.id}"  >
                 <span class="podcast_date">{{episode.playsheet.start_time | date: "medium"}}</span>
                 <p>
                     <span ng-show="episode.playsheet.status == 1"> ( DRAFT ) <br/></span>
@@ -117,11 +117,11 @@ if(!isset($_GET['id'])){
                            ng-change="date.date_change();" />
                         <button ng-click="date.open($event)" ng-model="list.editing.playsheet.end_time"  >Change Date</button>
                         h:<select ng-model="list.editing.end_hour" ng-options="n for n in [] | range:0:24 "
-                                  ng-change="list.updateStart()"></select>
+                                  ng-change="list.updateEnd()"></select>
                         m:<select ng-model="list.editing.end_minute" ng-options="n for n in [] | range:0:60"
-                                  ng-change="list.updateStart()"></select>
+                                  ng-change="list.updateEnd()"></select>
                         s:<select ng-model="list.editing.end_second" ng-options="n for n in [] | range:0:60"
-                                  ng-change="list.updateStart()"></select>
+                                  ng-change="list.updateEnd()"></select>
                     </div>                  
                 </div>
 
@@ -133,6 +133,7 @@ if(!isset($_GET['id'])){
                 <button ng-click="list.preview_start()">preview start</button>
                 <button ng-click="list.preview_end()">preview end</button>
                 <button ng-click="list.stop_sound()">stop playback</button>
+                <div id='elapsed' ng-show='list.playing'></div>
                 </div>
                 
                 <h4 class='text-left double-padded-top'>Audio File Link</h4>
@@ -141,7 +142,7 @@ if(!isset($_GET['id'])){
 
                 <span id="message">{{message}}</span><br/><br/>
                 <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-                <button ng-show="{{list.is_admin}}" ng-click="deactivate(list.editing.podcast);">Make this pddcast inactive</button>
+                <button ng-show="{{list.is_admin}}" ng-click="list.deactivate(list.editing.podcast);">Make this podcast inactive</button>
             
                 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
             </div>

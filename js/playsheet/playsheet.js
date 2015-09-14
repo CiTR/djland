@@ -412,6 +412,7 @@
         }
         this.saveDraft = function(){
             var this_ = this;
+            this.info.unix_time = this.start.getTime() / 1000;
             var date = $filter('date')(this.start,'yyyy-MM-dd');
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
@@ -449,9 +450,9 @@
         }
         //Submit a Playsheet
         this.submit = function () {
-            
             var this_ = this;
-
+            this.info.unix_time = this.start.getTime() / 1000;
+            this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             //Ensuring start and end times work for podcast generation

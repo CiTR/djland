@@ -128,7 +128,15 @@ class Podcast extends Model
 
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';
-	    $file_name = explode('/',$this->url,6)[5];
+	    if($this->url != null){
+	    	 $file_name = explode('/',$this->url,6)[5];
+    	}else{
+    		//Set File Name
+	    	$file_date = date('F-d-H-i-s',$start);
+	    	$file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$file_date.'.mp3';
+    	}
+	  
+	   
 	    $target_file_name = $target_dir.$file_name;
 	    
 	    //Get Audio from Archiver
