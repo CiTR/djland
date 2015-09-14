@@ -59,11 +59,17 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		savePlaysheet: function(playsheet,playitems,podcast,ads){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}));
 		},
+		saveEpisode: function(playsheet,podcast){
+			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id+'/episode', angular.toJson({'playsheet':playsheet,'podcast':podcast}));
+		},
 		saveNewPlaysheet: function(playsheet,playitems,podcast,ads){
 			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}) );
 		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');
+		},
+		overwritePodcastAudio: function(podcast){
+			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/overwrite');
 		}
 	};
 });

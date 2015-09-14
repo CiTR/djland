@@ -202,12 +202,11 @@ Route::group(array('prefix'=>'show'),function(){
 					if($podcast -> duration == 0){
 						$podcast -> duration_from_playsheet();
 					}
+					unset($podcast->playsheet);
 					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
 				}else{
 					$episode = ['podcast'=>$podcast];
 				}
-
-
 				$episodes[] = $episode;
 			}
 			return Response::json($episodes);
@@ -310,6 +309,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			foreach($playitems as $playitem){
 				Playitem::create($playitem);
 			}		
+		});
+
+		Route::post('episode',function($id){
+			$playsheet = Playsheet::find($id);
+			$podcast = $playsheet->podcast;
+			return Response::json( $playsheet -> update((array) Input::get()['playsheet']) && $podcast -> update((array) Input::get()['podcast']) ? "true" : "false");
 		});
 	});
 

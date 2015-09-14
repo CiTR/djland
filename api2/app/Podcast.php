@@ -28,7 +28,7 @@ class Podcast extends Model
     	return $response;
     }
     public function duration_from_playsheet(){
-    	$this->duration = strtotime($this->playsheet->start_time)  - strtotime($this->playsheet->end_time);
+    	$this->duration = strtotime($this->playsheet->end_time) - strtotime($this->playsheet->start_time);
     	$this->save();
     }
 

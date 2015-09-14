@@ -127,12 +127,12 @@ if(!isset($_GET['id'])){
 
 
                 <h4 class='text-left double-padded-top'>Episode Duration</h4>
-                <b>{{Math.floor( list.editing.podcast.duration /60/60 )  | number:0 }}h:{{(list.editing.podcast.duration /60)%60 | number:0 | pad:2}}m: {{(list.editing.podcast.duration )%60 | pad:2 }}s</b>
+                <b>{{list.Math.floor( list.editing.podcast.duration /60/60 )  | number:0 }}h:{{(list.editing.podcast.duration /60)%60 | pad:2}}m: {{(list.editing.podcast.duration )%60 | pad:2 }}s</b>
 
                 <div class='double-padded-top'>
-                <button ng-click="preview_start()">preview start</button>
-                <button ng-click="preview_end()">preview end</button>
-                <button ng-click="stop_sound()">stop playback</button>
+                <button ng-click="list.preview_start()">preview start</button>
+                <button ng-click="list.preview_end()">preview end</button>
+                <button ng-click="list.stop_sound()">stop playback</button>
                 </div>
                 
                 <h4 class='text-left double-padded-top'>Audio File Link</h4>
@@ -140,7 +140,7 @@ if(!isset($_GET['id'])){
                 </input><br/>
 
                 <span id="message">{{message}}</span><br/><br/>
-                <button ng-click="save(list.editing.podcast);" >Save Episode</button>
+                <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
                 <button ng-show="{{list.is_admin}}" ng-click="deactivate(list.editing.podcast);">Make this pddcast inactive</button>
             
                 <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->

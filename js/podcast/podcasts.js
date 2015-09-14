@@ -48,13 +48,14 @@
         }
 
         this.edit_episode = function (episode){
+            console.log(episode);
             this.editing = angular.copy(episode);
             this.start = new Date(this.editing.playsheet.start_time);
             this.end = new Date(this.editing.playsheet.end_time);
+
             this.editing.start_hour = $filter('pad')(this.start.getHours(),2);
             this.editing.start_minute = $filter('pad')(this.start.getMinutes(),2);
             this.editing.start_second = $filter('pad')(this.start.getSeconds(),2);
-
             this.editing.end_hour = $filter('pad')(this.end.getHours(),2);
             this.editing.end_minute = $filter('pad')(this.end.getMinutes(),2);
             this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
@@ -63,37 +64,24 @@
             this.start.setSeconds(this.editing.start_second);
             this.start.setMinutes(this.editing.start_minute);
             this.start.setHours(this.editing.start_hour);
-
-            this.editing.playsheet.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
-
+            this.editing.playsheet.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+            this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }  
+        this.updateEnd = function(){
+            this.end.setSeconds(this.editing.end_second);
+            this.end.setMinutes(this.editing.end_minute);
+            this.end.setHours(this.editing.end_hour);
+            this.editing.playsheet.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
+            this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
+        }
 
         this.date_change = function(){
-            calculate_end_from_start_and_duration();
+            this.start = new Date(this.editing.playsheet.start_time);
+            this.end = new Date(this.editing.playsheet.end_time);
+            this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }
 
-        var recalculate_duration = function(){
-            this.editing.podcast.duration = (this.editing.end_time.getTime() - this.editing.podcast.date.getTime())/1000 ;
-
-            if (this.editing.podcast.duration < 0){
-
-                this.editing.podcast.duration += 24*60*60;
-                calculate_end_from_start_and_duration();
-
-            } else if (this.editing.podcast.duration > this.MAX_PODCAST_DURATION_HOURS*60*60){
-                var diff = this.editing.podcast.duration - this.MAX_PODCAST_DURATION_HOURS*60*60;
-
-                this.editing.podcast.duration -= diff;
-                calculate_end_from_start_and_duration();
-
-            }
-
-            if(this.editing.podcast.duration == this.MAX_PODCAST_DURATION_HOURS*60*60){
-                this.message = 'maximum duration of a podcast is '+ this.MAX_PODCAST_DURATION_HOURS+' hours.';
-            } else {
-                this.message = '';
-            }
-        }
+        
 
 
 /*        $scope.$watch('editing.podcast.date', function(){
@@ -105,29 +93,16 @@
         }, true);*/
         
 
-        this.save = function(podcast){
+        this.save = function(){
             var this_ = this;
             this.message = 'saving...';
-
-            apiService.saveEpisodeData(podcast)
-                .then(function(response){
-                    this_.message = 'saved. now updating your feed...';
-
-                    apiService.updatePodcast(this_.editing.podcast,true)
-                        .then(function(result){
-
-                            this_.message = 'done updating the podcast'//result;
-
-                            this_.editing.podcast.url = result.data.new_audio_url;
-                            this_.load();
-
-                        }).catch(function(result){
-                            this_.message = 'error:' + result.data;
-                        });
-                }).catch(function(response){
-                    console.error(response.data);
-                    this_.message = 'sorry, saving did not work';
-                });
+            call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
+                if(response.data = "true"){
+                    call.overwritePodcastAudio(this_.podcast).then(function(response){
+                        alert("Successfully Saved");
+                    });
+                }
+            });
         };
 
         this.deactivate = function(podcast){
@@ -181,31 +156,28 @@
                     }
                 })
             );
-
         };
 
         this.preview_start = function(){
-
-            var start_prev_end = new Date(this.editing.podcast.date);
-            start_prev_end.setSeconds(start_prev_end.getSeconds() + 8);
-            var sound_url = archiveService.url(this.editing.podcast.date, start_prev_end);
-
-
+            var preview_end = new Date(this.start).setSeconds(this.start.getSeconds() + 10);
+            var sound_url = this.getPreviewUrl(new Date(this.start), preview_end);
             this.load_and_play_sound(sound_url);
         };
 
         this.preview_end = function(){
-            var end_date = this.editing.podcast.date.setMilliseconds(0) + this.editing.podcast.duration*1000;
-            var end_prev_start = new Date(end_date);
-            end_prev_start.setSeconds(end_prev_start.getSeconds() - 8);
-            var sound_url = archiveService.url(end_prev_start, end_date);
+            var preview_start = new Date(this.end).setSeconds(this.start.getSeconds() - 10);
+            var sound_url = this.getPreviewUrl(preview_start,new Date(this.end));
             this.load_and_play_sound(sound_url);
-
+        }
+        this.getPreviewUrl = function(start,end){
+            return 'http://archive.citr.ca/py-test/archbrad/download?'+
+                    'archive=%2Fmnt%2Faudio-stor%2Flog'+
+                    '&startTime='+$filter('date')(start,'dd-MM-yyyy HH:mm:ss')+
+                    '&endTime='+$filter('date')(end,'dd-MM-yyyy HH:mm:ss');
         }
 
         this.stop_sound = function(){
             sm.stopAll();
-
             this.message = '';
         }
 
@@ -232,19 +204,14 @@
 
     app.factory('archiveService', ['$filter', function($filter) {
         return {
-            url: function(date, end) {
+            url: function(start, end) {
+                console.warn(start);
 
-                console.warn(date);
-
-                var start_ = $filter('date')(date.getTime(),'dd-MM-yyyy HH:mm:ss');
+                var start_ = $filter('date')(start.getTime(),'dd-MM-yyyy HH:mm:ss');
                 var end_ = $filter('date')(end.getTime(),'dd-MM-yyyy HH:mm:ss');
 
-                console.warn(start_);
 
-                return 'http://archive.citr.ca/py-test/archbrad/download?'+
-                    'archive=%2Fmnt%2Faudio-stor%2Flog'+
-                    '&startTime='+start_+
-                    '&endTime='+end_;
+                
             }
         };
     }]);
