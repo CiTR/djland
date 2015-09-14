@@ -8,13 +8,14 @@
 	<head>
 		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
-		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
+		
 	</head>
 	<script type='text/javascript'>
 		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 	</script>
-	<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
+	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+    <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
 	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
@@ -23,10 +24,10 @@
 	<script type='text/javascript' src='js/playsheet/constants.js'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
-	<script type='text/javascript' src="js/jquery-ui/jquery-ui.js"></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<?php print_menu(); 
 		?>
+		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 		<div id='wrapper' ng-class="{socan: playsheet.socan}">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>

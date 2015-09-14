@@ -417,6 +417,8 @@
                 this_.playitems[playitem].show_date = date;
             }
             this.podcast.date = this.info.start_time;
+            this.podcast.title = this.info.title;
+            this.podcast.subtitle = this.info.summary;
             if(this.info.status <= 1){
                 if(this.info.id < 1){
                     //New Playsheet
@@ -449,7 +451,10 @@
         this.submit = function () {
             
             var this_ = this;
-            console.log("Start = "+new Date(this.info.start_time) + " End = "+ new Date(this.info.end_time) + " Now = " + new Date());
+
+            this.podcast.title = this.info.title;
+            this.podcast.subtitle = this.info.summary;
+            //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){

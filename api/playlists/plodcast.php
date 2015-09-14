@@ -14,24 +14,24 @@ if(isset($_GET['show'])) $show_id = $_GET['show']; else $show_id = 0;
 $query = 'SELECT * FROM playsheets WHERE playsheets.show_id = '.$show_id.' ORDER BY playsheets.start_time DESC ';
 
 if ($result = mysqli_query($db, $query) ) {
-  $playlists = array();
-  while ($row = mysqli_fetch_assoc($result)) {
-    $playlists [] = $row;
-  }
+    $playlists = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $playlists [] = $row;
+    }
 } else {
-  $error .= mysqli_error($db);
-  finish();
+    $error .= mysqli_error($db);
+    finish();
 }
 
 $query = 'SELECT id FROM podcast_channels WHERE show_id ="'.$show_id.'"';
 if ($result = mysqli_query($db, $query) ) {
-  $channel_id = mysqli_fetch_assoc($result);
-  $channel_id = $channel_id['id'];
+    $channel_id = mysqli_fetch_assoc($result);
+    $channel_id = $channel_id['id'];
 
 
 } else {
-  $error .= ' cannot get channel id ';
-  finish();
+    $error .= ' cannot get channel id ';
+    finish();
 }
 
 $query2 = '
@@ -39,31 +39,29 @@ $query2 = '
   WHERE channel_id = '.$channel_id;
 
 if ($result2 = mysqli_query($db, $query2) ) {
-  $podcasts = array();
-  while ($row = mysqli_fetch_assoc($result2)) {
-    $podcasts [] = $row;
-  }
+    $podcasts = array();
+    while ($row = mysqli_fetch_assoc($result2)) {
+        $podcasts [] = $row;
+    }
 } else {
-  $error .= mysqli_error($db);
-  finish();
+    $error .= mysqli_error($db);
+    finish();
 }
 
 
 foreach($playlists as $i => $playlist){
     foreach($podcasts as $j => $podcast){
-      if (array_key_exists('duration', $podcast) &&
-          $podcast['duration'] == 0 &&
-          array_key_exists('end_time', $playlist)){
-        $start = strtotime($podcast['date']);
-        $end = strtotime($playlist['end_time'], $start);
-        $podcast['duration'] = $end - $start;
-      }
+        if (array_key_exists('duration', $podcast) && $podcast['duration'] == 0 && array_key_exists('end_time', $playlist)){
+            $start = strtotime($podcast['date']);
+            $end = strtotime($playlist['end_time'], $start);
+            $podcast['duration'] = $end - $start;
+        }
 
-      if ($podcast['playsheet_id'] == $playlist['id']){
-        $rawdata []= ['playlist' => $playlist, 'podcast' => $podcast];
+        if ($podcast['playsheet_id'] == $playlist['id']){
+            $rawdata []= ['playlist' => $playlist, 'podcast' => $podcast];
 
 
-      }
+        }
     }
 }
 

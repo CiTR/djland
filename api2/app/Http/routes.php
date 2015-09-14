@@ -193,6 +193,26 @@ Route::group(array('prefix'=>'show'),function(){
 				Showtime::create($showtime);
 			}
 		});
+		Route::get('episodes',function($id){
+			$podcasts = Show::find($id)->channel->podcasts;
+
+			foreach($podcasts as $podcast){
+				$playsheet = $podcast->playsheet;
+				if($playsheet != null){
+					if($podcast -> duration == 0){
+						$podcast -> duration_from_playsheet();
+					}
+					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
+				}else{
+					$episode = ['podcast'=>$podcast];
+				}
+
+
+				$episodes[] = $episode;
+			}
+			return Response::json($episodes);
+
+		});
 		Route::get('playsheets',function($id){
 			return Show::find($id)->playsheets;
 		});
@@ -235,7 +255,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$ps = Playsheet::create(Input::get()['playsheet']);
 		$podcast_in = Input::get()['podcast'];
 		$podcast_in ['playsheet_id'] = $ps->id;
+		$podcast_in['title'] = $ps->title;
+		$podcast_in['subtitle'] = $ps->summary;
 		$podcast = Podcast::create($podcast_in);
+
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);

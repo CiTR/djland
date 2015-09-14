@@ -27,6 +27,10 @@ class Podcast extends Model
     	$response = $this->overwrite_audio();
     	return $response;
     }
+    public function duration_from_playsheet(){
+    	$this->duration = strtotime($this->playsheet->start_time)  - strtotime($this->playsheet->end_time);
+    	$this->save();
+    }
 
     private function make_audio(){
 		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
@@ -97,6 +101,7 @@ class Podcast extends Model
 				$this->date = $date;
 				$this->save();
 				$response['audio'] = array('url' => $target_url	);
+				//Update XML to reflect new podcast creation
 				$response['xml'] = $this->channel->make_xml();
 			}	
 		}
@@ -151,6 +156,8 @@ class Podcast extends Model
 
 				$this->length = $num_bytes;
 				$this->save();
+				//Update XML to reflect new podcast data (Duration,filesize)
+				$response['xml'] = $this->channel->make_xml();
 			}	
 		}
 		if($file_from_archive){
