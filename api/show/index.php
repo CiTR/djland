@@ -21,7 +21,7 @@ $query =   "SELECT
       shows.name,
       shows.last_show,
       shows.create_date,
-      GREATEST(shows.edit_date,COALESCE(podcast_channels.edit_date,'0000-00-00 00:00:00')) as edit_date,
+      GREATEST(shows.edit_date,COALESCE(podcast_channels.UPDATED_AT,'0000-00-00 00:00:00')) as edit_date,
       shows.active,
       shows.primary_genre_tags,
       shows.secondary_genre_tags,
