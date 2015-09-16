@@ -35,7 +35,7 @@
                 this_.member_shows = response.data.shows;
                 for(var show in this_.member_shows){
                     if(this_.member_shows[show].show.name != null) this_.member_shows[show].show.name = tools.decodeHTML(this_.member_shows[show].show.name);
-                    if(this_.member_shows[show].host.name != null) this_.member_shows[show].host.name = tools.decodeHTML(this_.member_shows[show].host.name);
+                    if(this_.member_shows[show].show.host != null) this_.member_shows[show].show.host = tools.decodeHTML(this_.member_shows[show].show.host);
                 }
 
                 //Get First show in member_shows
@@ -69,6 +69,7 @@
             });
         }
         this.newShow = function(){
+            this.show_value = 0;
             this.info = {'id':0};
             this.socials = new Array();
             this.show_times = new Array();
@@ -76,7 +77,7 @@
             this.primary_genres = new Array();
             this.secondary_genres = new Array();
             this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
-            this_.showtime_template = {show_id:this_.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+            this_.showtime_template = {show_id:this_.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
 
         }
         this.loadShow = function(){
@@ -215,7 +216,7 @@
             this.message = 'saving...';
             
             if(this.info.id == 0){
-                call.saveNewShow(this_.info,this_.social,this_.show_owners,this_.show_times).then({
+                call.saveNewShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then({
 
                 });
             }else{

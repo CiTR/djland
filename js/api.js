@@ -56,6 +56,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},
+		saveNewShow: function(show_object,social_objects,owner_objects,show_time_objects){
+			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
+		},
 		savePlaysheet: function(playsheet,playitems,podcast,ads){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}));
 		},

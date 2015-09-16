@@ -6,6 +6,7 @@
         this.podcast = {};
         this.info.id = playsheet_id;
         this.member_id = member_id;
+        this.username = username;
         var this_ = this;
 
         //Helper Variables
@@ -106,9 +107,8 @@
             this.channel = this.active_show.channel;
 
             this.info.show_id = parseInt(this.active_show.id);
-            this.info.host = this.active_show.host.name;
-            this.info.host_id = this.active_show.host.id;
-            this.info.create_name = this.info.host;
+            this.info.host = this.active_show.show.host;
+            this.info.edit_name = this.username;
 
             this.podcast.channel_id = this.channel.id;
             this.podcast.author = this.info.host;
@@ -211,7 +211,6 @@
                     this_.podcast = playsheet.podcast == null ? {} : playsheet.podcast;
                     this_.channel = playsheet.channel;
                     this_.ads = playsheet.ads;
-                    this_.host = playsheet.host;
                     //If no playitems, change "Add Five Rows" button to say "Add Row" instead
                     if(this_.playitems < 1){
                         $('#addRows').text("Add Row");
@@ -268,8 +267,7 @@
                         this_.channel = this_.active_show.channel;
                         this_.show_value = this_.active_show['id'];
                         this_.info.show_id = parseInt(this_.active_show.id);
-                        this_.info.host = this_.active_show.host.name;
-                        this_.info.host_id = this_.active_show.host.id;
+                        this_.info.host = this_.active_show.show.host;
                         this_.info.create_name = this_.info.host;
 
                         this_.podcast.channel_id = this_.channel.id;

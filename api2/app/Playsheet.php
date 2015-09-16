@@ -15,9 +15,6 @@ class Playsheet extends Model
     public function show(){
      	return $this->belongsTo('App\Show');
     }
-    public function host(){
-        return $this->hasOne('App\Host');
-    }
     public function playitems(){
     	return $this->hasMany('App\Playitem');
     }

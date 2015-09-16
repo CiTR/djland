@@ -105,12 +105,12 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'host'=>Show::find($show->id)->host,'channel'=>$show->channel];
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'channel'=>$show->channel];
 					}
 				}else{
 					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'host'=>Show::find($show->id)->host,'channel'=>$show->channel];
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'channel'=>$show->channel];
 					}
 				}
 				return  Response::json($shows);
@@ -151,7 +151,6 @@ Route::group(array('prefix'=>'show'),function(){
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];
 		$showtimes = Input::get()['showitmes'];
-
 		//Attach new owners
 		foreach($owners as $owner){
 			Show::find($show->id)->members()->attach($owner['id']);
@@ -176,7 +175,6 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id){
 		Route::get('/',function($id = id){
 			$show = Show::find($id);
-			$show->host = Show::find($id)->host->name;
 			$show->social = Show::find($id)->social;
 			$show->channel = $show->channel;
 			return Response::json($show);
@@ -299,7 +297,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show = Playsheet::find($id)->show;
 				$playsheet -> show = $show;
 				$playsheet -> channel = $show->channel;
-				$playsheet -> host = Host::find($playsheet->show->host_id);
 				$playsheet -> podcast = Playsheet::find($id)->podcast;
 				
 				$ads = Playsheet::find($id)->ads;
@@ -351,24 +348,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
-			$playsheet -> host_info = Show::find($ps->show_id)->host;
 			$playsheets[] = $playsheet;
 		}
 		return Response::json($playsheets);	
 	});
-	Route::get('host/{id}',function($id = id){
-		return  DB::table('playsheets')
-		->join('hosts','hosts.id','=','playsheets.host_id')
-		->join('shows','shows.id','=','playsheets.show_id')
-		->select('hosts.name AS host_name','playsheets.id AS id','playsheets.start_time AS start_time','shows.name AS show_name')
-		->where('hosts.id','=',$id)
-		->get();
-	});
 
 	Route::get('list',function(){
 		return DB::table('playsheets')
-		->join('hosts','hosts.id','=','playsheets.host_id')
-		->select('playsheets.id','hosts.name','playsheets.start_time')
+		->join('shows','shows.id','=','playsheets.show_id')
+		->select('playsheets.id','shows.host','playsheets.start_time')
 		->limit('100')
 		->orderBy('playsheets.id','desc')
 		->get();
@@ -381,7 +369,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$ps -> id = $playsheet -> id;
 				$ps -> start_time = $playsheet->start_time;
 				$ps -> show = Show::find($playsheet->show_id);
-				$ps -> hosts = Show::find($playsheet->show_id)->hosts;
 				$list[] = $ps;
 			}
 		}

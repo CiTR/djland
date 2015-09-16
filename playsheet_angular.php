@@ -13,6 +13,7 @@
 	<script type='text/javascript'>
 		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
+		var username = "<?php echo $_SESSION['sv_username']; ?>";
 	</script>
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
     <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
@@ -37,9 +38,8 @@
 						</select>
 					</div>
 					<div class='col1'>
-						Show Host(s): <input ng-model="playsheet.active_show.host.name"></input>
+						Show Host(s): <input ng-model="playsheet.info.host"></input>
 					</div>
-					
 					<div class='col1 double-padded-top'>
 						Type: 
 				        <select ng-model="playsheet.info.type" ng-change="loadIfRebroadcast()">

@@ -36,7 +36,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <select ng-model="show.show_value" ng-change="show.updateShow()" >
                     <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
                 </select>
-                Or <button type='button' ng-click='show.newShow()'>Create a New Show</button>
+                <button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
                 <h4 class='text-left double-padded-top'> Show name </h4>
                 <div ng-switch on='show.is_admin'>
                     <div ng-switch-when="true">
@@ -148,7 +148,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>
                     <h4 class='text-left double-padded-top'>Staff Notes</h4>
-                    <textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.notes'></textarea>
+                    <textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.info.notes'></textarea>
                 </div>
                 <h4 class='text-left double-padded-top'></h4>
                 <button ng-click="show.save();" >Save Show</button>
