@@ -20,6 +20,11 @@ if( !( isset($_POST['show_name']) ) ){
 	http_response_code(401);
 	exit();
 }else{
+	$base_dir = $_SERVER['DOCUMENT_ROOT']."/images/shows/";
+	if(!file_exists($base_dir)){
+		mkdir($base_dir,0755);
+	}
+
 	switch($_FILES['showFile']['type']){
 		case 'image/png':
 		case 'png':

@@ -31,14 +31,16 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 var member_id = "<?php echo $_SESSION['sv_id']; ?>";
                 var username = "<?php echo $_SESSION['sv_username']; ?>";
             </script>
-            <div id='wrapper' ng-controller="editShow as show" ng-show='show.info.id'>
-               Select show to edit: <select ng-model="show.show_value" ng-change="show.updateShow()" >
-                <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
-                        </select>
+            <div id='wrapper' ng-controller="editShow as show" ng-show='show.info'>
+               Select show to edit: 
+                <select ng-model="show.show_value" ng-change="show.updateShow()" >
+                    <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
+                </select>
+                Or <button type='button' ng-click='show.newShow()'>Create a New Show</button>
                 <h4 class='text-left double-padded-top'> Show name </h4>
                 <div ng-switch on='show.is_admin'>
                     <div ng-switch-when="true">
-                        <input id='show_name' ng-model='show.info.name'/>
+                        <input id='show_name' ng-change='show.shared.setShowName(show.info.name)' ng-model='show.info.name'/>
                     </div>
                     <div ng-switch-when="false">
                         <input readonly id='show_name' ng-model='show.info.name'/>
@@ -69,10 +71,10 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         <button type='button' ng-click='show.removePrimaryGenre($index)'>Remove</button>
                     </li>
                 </ul>
-                <select ng-model='show.primary_genre_select' ng-show='show.primary_genres.length'>
+                <select ng-model='show.primary_genre_select'>
                         <option ng-repeat="genre in show.genres track by $index | orderBy:'genre.toString()'" value='{{$index}}' >{{genre}} </option>
                 </select>
-                <button ng-click='show.addPrimaryGenre()' ng-show='show.primary_genres.length' type='button'>Add Primary Genre</button>
+                <button ng-click='show.addPrimaryGenre()' type='button'>Add Primary Genre</button>
                 <h4 class='text-left double-padded-top'>Secondary Genres</h4>
                 <ul>
                     <li ng-repeat='genre in show.secondary_genres track by $index'>
@@ -114,17 +116,10 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     </div>
                 </div>
                 <h4 class='text-left double-padded-top'>Social Media Links</h4>
+                <button ng-click='show.addFirstSocial()' ng-hide='show.socials.length > 0'>+</button>
                 <table class='table-condensed'>
                     <tr><td>Social Media Type<td>URL<td>Add/Remove</tr>
-                    <tr><td><td><td><button ng-click='show.addFirstSocial()' ng-hide='show.social.length > 0'>+</button></td></tr>
-                    <tr ng-repeat='social in show.social track by $index'>
-                    <td><input ng-model='social.social_name'></td>
-                    <td><input ng-model='social.social_url'></td>
-                    <td>
-                        <button ng-click='show.addSocial($index)'>+</button>
-                        <button ng-click='show.removeSocial($index)'>-</button>
-                    </td>
-                </tr>
+                    <tr social ng-repeat='social in show.socials track by $index'></tr>
                 </table>
                 <div ng-show='show.is_admin'>
                     <h4 class='text-left double-padded-top'>Podcast URL</h4>

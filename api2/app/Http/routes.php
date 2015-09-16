@@ -145,7 +145,29 @@ Route::group(['middleware' => 'auth'], function(){
 
 /* Show Routes */
 Route::group(array('prefix'=>'show'),function(){
-	
+	//Creating new Show
+	Route::post('/',function(){
+		$show = Show::create((array) Input::get()['show']);
+		$owners = Input::get()['owners'];
+		$social = Input::get()['social'];
+		$showtimes = Input::get()['showitmes'];
+
+		//Attach new owners
+		foreach($owners as $owner){
+			Show::find($show->id)->members()->attach($owner['id']);
+		}
+		//Create new social entries, this table is really dumb.
+		foreach($social as $social){
+			$social->show_id = $show->id;
+			Social::create($social);
+		}
+		//Create Showtimes
+		foreach($showtimes as $showtime){
+			$showtime->show_id = $show->id;
+			Showtime::create($showtime);
+		}
+	});
+
 	Route::get('/',function(){
 		return Show::all('id','name');
 	});
@@ -164,7 +186,6 @@ Route::group(array('prefix'=>'show'),function(){
 			$social = Input::get()['social'];
 			$owners = Input::get()['owners'];
 			$showtimes = Input::get()['showtimes'];
-			print_r($showtimes);
 			$s = Show::find($id);
 			$s->update($show);
 

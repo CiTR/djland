@@ -1,12 +1,21 @@
 
 (function(){
     var app = angular.module('djland.editShow',['djland.api','djland.utils']);
+    
     app.directive('showtime',function(){
         return{
             restrict:'A',
             templateUrl: 'templates/showtime.html'
         };
     });
+
+    app.directive('social',function(){
+        return{
+            restrict:'A',
+            templateUrl: 'templates/social.html'
+        };
+    });
+
     app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
         var this_ = this;
         this.init = function(){
@@ -59,6 +68,17 @@
                 console.log(error.data);
             });
         }
+        this.newShow = function(){
+            this.info = {'id':0};
+            this.socials = new Array();
+            this.show_times = new Array();
+            this.show_owners = new Array();
+            this.primary_genres = new Array();
+            this.secondary_genres = new Array();
+            this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
+            this_.showtime_template = {show_id:this_.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+
+        }
         this.loadShow = function(){
             var this_ = this;
             call.getShow(this_.active_show.id).then(function(response){
@@ -74,9 +94,9 @@
 
 
                     //Remove Social array from the show object.
-                    this_.social = response.data.social;
+                    this_.socials = response.data.social;
                     delete this_.info.social;
-                    this_.social_template = {show_id: this_.info.id, social_name: null , social_url:null};
+                    this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
             });
             //Call API to get show owners
             call.getShowOwners(this_.active_show.id).then(function(response)
@@ -115,18 +135,15 @@
         
         this.addFirstSocial = function(){
             //Add template row for social
-            this.addSocial(0);
+            this.socials.push(angular.copy(this.social_template));
         }
         this.addFirstShowTime = function(){
-            this.show_times.push(this.showtime_template);
+            this.show_times.push(angular.copy(this.showtime_template));
+
         }
         this.addSocial = function(id){
-            var row = angular.copy(this.social_template);
-            if(id < 1){
-                this.social.push(row);
-            }else{
-                this.social.splice(id+1,0,row);
-            }
+
+            this.socials.splice(id+1,0,angular.copy(this.social_template));
         }
         this.addOwner = function(){
             //No need to check for duplicates, as there is only one id per member
@@ -158,7 +175,7 @@
             this.updateSecondaryGenres();
         }
         this.removeSocial = function(id){
-            this.social.splice(id,1);
+            this.socials.splice(id,1);
         }
         this.removeOwner = function($index){
             this.show_owners.splice($index,1);
@@ -196,7 +213,13 @@
             this.info.edit_date = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
             console.log(this);
             this.message = 'saving...';
-            call.saveShow(this_.info,this_.social,this_.show_owners,this_.show_times).then(
+            
+            if(this.info.id == 0){
+                call.saveNewShow(this_.info,this_.social,this_.show_owners,this_.show_times).then({
+
+                });
+            }else{
+                call.saveShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
                 function(response){
 //                    console.log(response.data.message);
                     alert("Successfully Saved");
@@ -207,17 +230,20 @@
                     console.error(response.data);
                     
                 });
+            }
+            
         }
         this.log = function(element){
             console.log(element.files);
             console.log('here');
         }
         $scope.$on('image_upload', function() {
-           
             $scope.$apply(function() { 
                  this_.info.show_img = shared.getShowImg();
             });
         });
+
+
         this.init();
     });
 
@@ -229,6 +255,7 @@
         var dropbox = document.getElementById("dropbox")
         $scope.dropText = 'Drop show image file here...'
         this.shared = shared;
+
         // init event handlers
         function dragEnterLeave(evt) {
             evt.stopPropagation()
@@ -283,19 +310,23 @@
         };
 
         $scope.uploadFile = function() {
-            var fd = new FormData()
-            for (var i in $scope.files) {
-                fd.append("showFile", $scope.files[i])
+            if(shared.getShowName() == "" || shared.getShowName() == null){
+                alert("Please set a show name first!");
+            }else{
+                var fd = new FormData()
+                for (var i in $scope.files) {
+                    fd.append("showFile", $scope.files[i])
+                }
+                fd.append('show_name',$('#show_name').val());
+                var xhr = new XMLHttpRequest()
+                xhr.upload.addEventListener("progress", uploadProgress, false)
+                xhr.addEventListener("load", uploadComplete, false)
+                xhr.addEventListener("error", uploadFailed, false)
+                xhr.addEventListener("abort", uploadCanceled, false)
+                xhr.open("POST", "/form-handlers/shows/image_upload.php");
+                $scope.progressVisible = true
+                xhr.send(fd); 
             }
-            fd.append('show_name',$('#show_name').val());
-            var xhr = new XMLHttpRequest()
-            xhr.upload.addEventListener("progress", uploadProgress, false)
-            xhr.addEventListener("load", uploadComplete, false)
-            xhr.addEventListener("error", uploadFailed, false)
-            xhr.addEventListener("abort", uploadCanceled, false)
-            xhr.open("POST", "/form-handlers/shows/image_upload.php");
-            $scope.progressVisible = true
-            xhr.send(fd)
         }
 
         function uploadProgress(evt) {
@@ -339,6 +370,7 @@
     app.factory('shared',function($rootScope){
         var service = {};
         service.show_img = "";
+        service.show_name = "";
         service.setShowImg = function(image_url){
                 this.show_img = image_url;
                 $rootScope.$broadcast('image_upload');
@@ -347,6 +379,14 @@
         service.getShowImg = function(){
                 return this.show_img;
             }
+        service.setShowName = function(name){
+            this.show_name = name;
+            console.log(name);
+            $rootScope.$broadcast('show_name');
+        }
+        service.getShowName = function(){
+            return this.show_name;
+        }
         return service;
     });
 
