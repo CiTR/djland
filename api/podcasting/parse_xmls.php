@@ -59,7 +59,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 
 		//Replace Chars to make matching easier
-		$chars_to_strip = array("citr -- ","&", "citr", "radio", "and", "!","show",);
+		$chars_to_strip = array("citr -- ","&", "citr", "radio", "and", "!","shows","show","'",'"',"-");
 		$channel_name = str_replace($chars_to_strip,'',strtolower($channel->title));
 
 		$show_matches = array();
@@ -76,7 +76,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 				$show_name = html_entity_decode( str_replace($chars_to_strip,'',strtolower( $show['name'] ) ) ,ENT_QUOTES);
 				$terms = explode(' ',$channel_name);
 				foreach($terms as $key=>$value){
-					if( strlen($value) > 4){
+					if( strlen($value) > 4 && count($show_matches) == 0){
 						$match = '#\b'.$value.'\b#';
 						if( preg_match( $match, $show_name )){
 							$show_matches[] = $show;
@@ -88,41 +88,47 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 		if(count($show_matches) == 0){
 			foreach($shows as $show){
 				$show_name = html_entity_decode( str_replace($chars_to_strip,'',strtolower( $show['name'] ) ) ,ENT_QUOTES);
-				if(levenshtein($show_name, $channel_name) < 2){
+				if(levenshtein($show_name, $channel_name) < 2 && count($show_matches) == 0){
 					$show_matches[] = $show;
 				}
 			}
 		}
-		
-
-		
-
-		/*if(count($show_matches) <= 0){
+		//USE SQL LIKE on individual terms over size
+		if(count($show_matches) == 0){
 			$terms = explode(' ',$channel_name);
+			$terms = explode("'",$terms);
 
 			//If the term is 1 or 2 letters long remove it
 			foreach($terms as $key => $term){
 				if(strlen($term) <= 4) unset ($terms[$key]);
 			}
 			//If we have any terms left, lets search by them
-			if(count($terms > 0 )){
+			if(count($terms) > 0 ){
 				$search_query = "SELECT id,name FROM shows WHERE";
-				for($i = 0; $i < count($terms); $i++){
-					$search_query .= $i < 1 ? " name LIKE :term{$i}" : " OR name LIKE :term{$i}";
+				$i = 0;
+				foreach($terms as $key=>$term){
+					$search_query .= $i < 1 ? " name LIKE :term{$key}" : " OR name LIKE :term{$key}";
+					$i++;
 				}
 				$statement = $pdo_db->prepare($search_query);
-				for($i = 0; $i < count($terms); $i++){
-					$statement -> bindValue(':term'.$i,"%".$terms[$i]."%");
+				foreach($terms as $key=>$term){
+					$statement -> bindValue(':term'.$key,"%".$term."%");
 				}
-				$statement -> execute();
+				try{
+					$statement -> execute();
+				}catch(PDOException $pdoe){
+					print_r($terms);
+					$statement->debugDumpParams();
+				}		
+				
 				$match_results = $statement->fetchAll(PDO::FETCH_ASSOC);
 				foreach($match_results as $show){
 					$show_matches[] = $show;
 				}
-			}
-				
-		}*/
-		echo "<tr><td>{$xml_url}</td><td>{$channel->title}</td><td>{$channel_name}</td><td>";
+			}	
+		}
+		echo count($show_matches) == 0 ? "<tr class='danger'>": "<tr>";
+		echo "<td>{$xml_url}</td><td>{$channel->title}</td><td>{$channel_name}</td><td>";
 		
 		//Display matches
 		echo count($show_matches) > 1 ? "<ul>":"";
