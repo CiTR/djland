@@ -159,8 +159,6 @@ ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;
 
 UPDATE podcast_episodes AS p INNER JOIN podcast_episodes AS pe ON p.podcast_episode = pe.id SET pe.summary = concat(pe.subtitle," \n",p.summary," \n",pe.summary);
 
-
-
 ALTER TABLE `podcast_episodes` 
 CHANGE COLUMN `channel_id` `channel_id` INT(11) NOT NULL AFTER `playsheet_id`,
 CHANGE COLUMN `playsheet_id` `playsheet_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '1' ,
@@ -185,12 +183,22 @@ ALTER TABLE `playsheets`
   CHANGE COLUMN `end` `end_time` DATETIME NULL DEFAULT NULL ,
   CHANGE COLUMN `end_time` `end` TIME NULL DEFAULT NULL ;
 
-
-
 ALTER TABLE `djland`.`podcast_episodes` 
 ADD COLUMN `playsheet_id` BIGINT(20) UNSIGNED NULL COMMENT '' AFTER `channel_id`;
 
+//Removing useless hosts table.
 
+ALTER TABLE `shows` 
+DROP COLUMN `podcast_channel_id`,
+ADD COLUMN `host` TINYTEXT NULL COMMENT '' AFTER `name`;
 
+UPDATE shows as s INNER JOIN hosts as h ON s.host_id = h.id SET s.host = h.name;
+
+ALTER TABLE `djland`.`shows` 
+DROP COLUMN `host_id`;
+
+DROP TABLE hosts;
+
+Merging channels and shows as they are one and the same.
 
 

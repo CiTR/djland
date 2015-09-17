@@ -151,11 +151,17 @@ Route::group(array('prefix'=>'show'),function(){
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];
 		$showtimes = Input::get()['showitmes'];
-		//Attach new owners
+		
+		//Create new
+		$channel = Input::get()['channel'];
+		$channel->show_id = $show->id;
+		$channel = Channel::create((array) $channel );
+
+		//Create owners
 		foreach($owners as $owner){
 			Show::find($show->id)->members()->attach($owner['id']);
 		}
-		//Create new social entries, this table is really dumb.
+		//Create social entries, this table is really dumb.
 		foreach($social as $social){
 			$social->show_id = $show->id;
 			Social::create($social);
@@ -186,6 +192,9 @@ Route::group(array('prefix'=>'show'),function(){
 			$showtimes = Input::get()['showtimes'];
 			$s = Show::find($id);
 			$s->update($show);
+
+			//Update Podcast channel
+			$channel = Show::find($id)->channel -> update((array) Input::get()['channel']);;
 
 			//Detach current owners
 			foreach(Show::find($id)->members as $current_owner){
