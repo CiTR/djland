@@ -95,8 +95,8 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 		}
 		//USE SQL LIKE on individual terms over size
 		if(count($show_matches) == 0){
-			$terms = explode(' ',$channel_name);
-			$terms = explode("'",$terms);
+
+			$terms = preg_split("#'|[\s/]#",$channel_name);
 
 			//If the term is 1 or 2 letters long remove it
 			foreach($terms as $key => $term){
