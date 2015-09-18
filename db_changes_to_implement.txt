@@ -157,7 +157,7 @@ ALTER TABLE `playsheets`
 CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL,
 ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;
 
-UPDATE podcast_episodes AS p INNER JOIN podcast_episodes AS pe ON p.podcast_episode = pe.id SET pe.summary = concat(pe.subtitle," \n",p.summary," \n",pe.summary);
+UPDATE playsheets AS p INNER JOIN podcast_episodes AS pe ON p.id = pe.playsheet_id SET p.summary = concat(pe.subtitle," \n",p.summary," \n",pe.summary) p.title = pe.title;
 
 ALTER TABLE `podcast_episodes` 
 CHANGE COLUMN `channel_id` `channel_id` INT(11) NOT NULL AFTER `playsheet_id`,
