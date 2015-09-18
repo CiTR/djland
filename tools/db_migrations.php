@@ -1,12 +1,13 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: brad
- * Date: 3/5/15
- * Time: 5:34 PM
- */
-require_once('../headers/db_header.php');
 
+<html>
+    <head>
+        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+    </head>
+    <body>
+        <table class='table'>
+            <tr><th>Description</th><th>Query</th><th>Result</th></tr>  
+<?php
+require_once('../headers/db_header.php');
 
 $cutoff_date = date('04/31/'.idate('Y'));
 $year = idate('Y');
@@ -18,15 +19,23 @@ if(strtotime($today_date) < strtotime($cutoff_date)){
 $initial_cutoff_year = $year."/".($year+1);
 
 $queries = array(
-    'remove obsolete scheduled_ads table'=>'DROP TABLE IF EXISTS `scheduled_ads`;',
-    'remove obsolete ncrc data' => 'DROP TABLE IF EXISTS `ncrcdata`;',
     'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
+    'update playsheets' => 
+    'ALTER TABLE `playsheets` 
+        CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL,
+        ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;',
+    
     'expand shows to hold podcast channel data' => 'ALTER TABLE `shows` 
-        ADD COLUMN `podcast_xml` TINYTEXT NULL COMMENT '' AFTER `alerts`,
-        ADD COLUMN `podcast_slug` VARCHAR(45) NULL COMMENT '' AFTER `podcast_xml`,
-        ADD COLUMN `podcast_title` TINYTEXT NULL COMMENT '' AFTER `podcast_slug`,
-        ADD COLUMN `podcast_subtitle` TINYTEXT NULL COMMENT '' AFTER `podcast_title`,
-        ADD COLUMN `podcast_summary` TEXT NULL COMMENT '' AFTER `podcast_subtitle`;',
+        DROP COLUMN `podcast_channel_id`,
+        ADD COLUMN `host` TINYTEXT NULL AFTER `name`,
+        ADD COLUMN `podcast_xml` TINYTEXT NULL AFTER `alerts`,
+        ADD COLUMN `podcast_slug` VARCHAR(45) NULL AFTER `podcast_xml`,
+        ADD COLUMN `podcast_title` TINYTEXT NULL AFTER `podcast_slug`,
+        ADD COLUMN `podcast_subtitle` TINYTEXT NULL AFTER `podcast_title`,
+        ADD COLUMN `podcast_summary` TEXT NULL AFTER `podcast_subtitle`,
+        ADD COLUMN `podcast_author` TINYTEXT NULL AFTER `podcast_summary`;',   
+    'prep for removal of hosts table dependancy' => 
+        'UPDATE shows as s INNER JOIN hosts as h ON s.host_id = h.id SET s.host = h.name;',   
     'create podcast episodes table'=>'CREATE TABLE IF NOT EXISTS `podcast_episodes` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `playsheet_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -40,9 +49,9 @@ $queries = array(
         `author` text,
         `active` tinyint(1) DEFAULT 0,
         `duration` int(7) DEFAULT 0,
+        `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8;',
-    'add alert field to shows'=>'ALTER TABLE `shows` ADD COLUMN `alerts` TEXT NULL;',
     'create special events table'=>'CREATE TABLE IF NOT EXISTS `special_events` (
                                 `id` INT NOT NULL AUTO_INCREMENT,
                                 `name` VARCHAR(455) NULL,
@@ -53,30 +62,12 @@ $queries = array(
                                 `image` VARCHAR(455) NULL,
                                 `url` VARCHAR(455) NULL,
                                 PRIMARY KEY (`id`));',
-    'add edit_date to channel'  => 'ALTER TABLE `podcast_channels` 
-                                        ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-                                    ALTER TABLE `djland`.`podcast_episodes` DROP COLUMN `edit_date`;',
-    'add edit_date to episode'  => 'ALTER TABLE `podcast_episodes` ADD COLUMN `UPDATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;',
-    'rename genre tables to tags' => "ALTER TABLE `shows`
-                                  ADD COLUMN `primary_genre_tags` TINYTEXT NULL DEFAULT NULL AFTER `lang_default` ,
-                                  CHANGE COLUMN `genre` `secondary_genre_tags` TEXT DEFAULT NULL;",
-    'adjust member_show' => 'ALTER TABLE `member_show`
-                                  CHANGE COLUMN `member_id` `member_id` INT(11) NOT NULL ,
-                                  CHANGE COLUMN `show_id` `show_id` INT(11) NOT NULL ,
-                                  ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                  DROP PRIMARY KEY,
-                                  ADD PRIMARY KEY (`id`);',
-    'rename userid to user_id in group_members' => '
-                                    ALTER TABLE user
-                                        CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
-                                    ALTER TABLE group_members 
-                                        CHANGE COLUMN userid to user_id INT(10) UNSIGNED NOT NULL;
-                                        ALTER TABLE group_members 
-                                    ADD CONSTRAINT `user_id`
-                                    FOREIGN KEY (`user_id`)
-                                    REFERENCES user (`id`)
-                                        ON DELETE CASCADE
-                                        ON UPDATE CASCADE;"',
+    'rename userid to id in user' => 
+        'ALTER TABLE user
+            CHANGE COLUMN `userid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;',
+    'rename userid to user_id in group_members' =>
+        'ALTER TABLE group_members 
+            CHANGE COLUMN userid user_id INT(10) UNSIGNED NOT NULL;',
     'edit membership permissions' => "ALTER TABLE `group_members`
                                     DROP COLUMN `editlibrary`,
                                     DROP COLUMN `membership`,
@@ -91,50 +82,46 @@ $queries = array(
                                     ADD COLUMN `volunteer` VARCHAR(45) NULL DEFAULT '0' AFTER `workstudy`,
                                     CHANGE COLUMN `dj` `dj` VARCHAR(1) NULL DEFAULT '0' AFTER `volunteer`,
                                     CHANGE COLUMN `member` `member` VARCHAR(1) NULL DEFAULT '0'",
-    'add foreign key to group members' => 'ALTER TABLE group_members ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES user.(`id`) ON DELETE CASCADE ON UPDATE CASCADE;',
     'add training' => "ALTER TABLE `membership`
-                          ADD COLUMN `station_tour` VARCHAR(1) NULL DEFAULT '0' AFTER  `exposure`,
-                          ADD COLUMN `technical_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `station_tour`,
-                          ADD COLUMN `programming_training` VARCHAR(1) NULL DEFAULT '0' AFTER  `technical_training`,
-                          ADD COLUMN `production_training` VARCHAR(1) NULL DEFAULT '0' AFTER `programming_training`,
-                          ADD COLUMN `spoken_word_training` VARCHAR(1) NULL DEFAULT '0' AFTER `production_training`;",                        
-    'create cutoff' => "CREATE TABLE IF NOT EXISTS `year_rollover` (
-                            `id` INT NOT NULL AUTO_INCREMENT,
-                            `membership_year` VARCHAR(16) NOT NULL DEFAULT $initial_cutoff_year,
-                            PRIMARY KEY (`id`));",
+                        CHANGE COLUMN `joined` `create_date` TIMESTAMP NOT NULL AFTER `spoken_word_training`,
+                        ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;",                        
     'additional committees' => "ALTER TABLE membership_years 
                                 ADD COLUMN `womens_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `other`,
                                 ADD COLUMN `indigenous_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `womens_collective`,
                                 ADD COLUMN `accessibility_collective` VARCHAR(16) NULL DEFAULT '0' AFTER `indigenous_collective`;",                                    
-    'add string based host field' => 'ALTER TABLE `playsheets`
-        ADD COLUMN `host` TINYTEXT NULL AFTER `host_id`;',
-    'add slug field to channel' => 'ALTER TABLE `podcast_channels`
-        ADD COLUMN `slug` TEXT NULL AFTER `xml`;',
-    'add timestamps to membership_years & user' => 'ALTER TABLE `membership_years` 
-            ADD COLUMN `create_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `accessibility_collective`,
-            ADD COLUMN `edit_date` TIMESTAMP NULL AFTER `create_date`;
-            ALTER TABLE `user` 
+    'add timestamps to membership_years' => 
+        'ALTER TABLE `membership_years` 
+            ADD COLUMN `create_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `other`,
+            ADD COLUMN `edit_date` TIMESTAMP NULL AFTER `create_date`;',
+    'Add timestampts to user' =>
+        'ALTER TABLE `user` 
             CHANGE COLUMN `create_date` `create_date` TIMESTAMP NULL DEFAULT NULL;',
-    'timestamps to membership' => 
-            'ALTER TABLE `membership` 
-                CHANGE COLUMN `joined` `create_date` TIMESTAMP NOT NULL AFTER `spoken_word_training`,
-                ADD COLUMN `edit_date` TIMESTAMP NOT NULL AFTER `create_date`;',
     'fill in membership_year timestamps' => "update membership_years as my inner join membership as m on my.member_id = m.id SET my.create_date = m.create_date;",
+    'removing reliance on songs table' => 
+        'ALTER TABLE `playitems` 
+            ADD COLUMN `artist` VARCHAR(80) NULL AFTER `insert_song_length_second`,
+            ADD COLUMN `song` VARCHAR(80) NULL AFTER `artist`,
+            ADD COLUMN `album` VARCHAR(80) NULL AFTER `song`,
+            ADD COLUMN `composer` VARCHAR(80) NULL AFTER `album`;',
+    'move song info into playitems' =>
+        'UPDATE playitems as p INNER JOIN songs as s ON s.id = p.song_id SET 
+            p.artist = s.artist, 
+            p.song = s.song, 
+            p.album = s.title, 
+            p.composer = s.composer;',
 
 
 
 
 );
-
 foreach($queries as $description => $query){
-  echo '<hr/>';
-  echo 'task - '.$description.': ';
-
-  if($result =   mysqli_query($db,$query) ){
-    echo 'complete';
-  } else {
-    echo 'fail: '. $query;
-    echo '<br/>';
-    echo mysqli_error($db);
-  }
+    if($result =   mysqli_query($db,$query) ){
+        echo '<tr><td>'.$description.'</td><td>'.$query.'</td><td>Complete</td></tr>';
+    }else {
+        echo '<tr class="danger"><td>'.$description.'</td><td>'.$query.'</td><td> Failed: '.mysqli_error($db).'</td></tr>';
+    }
 }
+?>
+        </table>
+    </body>
+</html>
