@@ -209,10 +209,7 @@ foreach ($xml_urls as $key => $xml_url) {
 
 echo "<br/>".$big_count.' episodes inserted. '.$channel_count.' channels scanned.';
 
-function file_extension($xml_url){
-    $array = explode('.',$xml_url);
-    return $array[count($array)-1];
-}
+
 
 function ingest_episodes($episodes,$channel_id, $db){
     global $big_count;

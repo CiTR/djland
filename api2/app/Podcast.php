@@ -16,9 +16,6 @@ class Podcast extends Model
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
     }
-    public function channel(){
-    	return $this->belongsTo('App\Channel');
-    }
     public function make_podcast(){
     	$response = $this->make_audio();
     	return $response;

@@ -7,7 +7,6 @@ require_once("headers/menu_header.php");
 
 error_reporting(E_ALL);
 ?>
-
     <html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">
     <base href='podcasts.php'>
     <link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'>
@@ -64,16 +63,17 @@ if(!isset($_GET['id'])){
                 <p>
                     <span ng-show="episode.playsheet.status == 1"> ( DRAFT ) <br/></span>
                     <span ng-show="episode.podcast.active == 0"> ( INACTIVE ) <br/></span>
-                    <span class="title" >{{episode.playsheet.title ? episode.playsheet.title : '(no title)'}}</span>
+                    <span class="title" >{{episode.podcast.title || episode.playsheet.title  ? episode.playsheet.title || episode.podcast.title : '(no title)'}}</span>
                     <br/>
-                    <span class="subtitle" >{{episode.playsheet.summary ? episode.playsheet.summary : '(no summary)'}}</span>
+                    <span class="subtitle" >{{episode.podcast.summary || episode.playsheet.summary ? episode.playsheet.summary || episode.podcast.summary: '(no summary)'}}</span>
                 </p>
                 <div audio source='episode.podcast.url'></div>
                 <br />
-                <a ng-href="playsheet_angular.php?id={{episode.playsheet.id}}" target="_self">go to playsheet</a>
+                <div ng-show='episode.playsheet'><a ng-href="playsheet_angular.php?id={{episode.playsheet.id}}" target="_self">go to playsheet</a>
                 <span >
                     <button ng-click="list.edit_episode(episode);" >edit podcast </button>
                 </span>
+                </div>
                 <hr/>
             </div>
             
@@ -82,9 +82,9 @@ if(!isset($_GET['id'])){
             <div id="popup"  ng-show="list.editing">
                 <p ng-click="list.editing = false;" id="closer"> X </p>
                 <h4 class='text-left'>Episode Title</h4>
-                <input ng-model="list.editing.playsheet.title"/>
+                <input ng-model="list.editing.podcast.title"/>
                 <h4 class='text-left'>Episode Summary</h4>
-                <textarea ng-model="list.editing.playsheet.summary" rows="8">
+                <textarea ng-model="list.editing.podcast.summary" rows="8">
                 </textarea>
 
                 <h4 class='text-left double-padded-top'>Broadcast Date</h4>

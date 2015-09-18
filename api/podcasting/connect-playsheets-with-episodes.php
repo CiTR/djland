@@ -13,13 +13,11 @@ $r = mysqli_query($db,$q);
 $q2 = 'SELECT podcast_episodes.id as episode_id ,
         podcast_episodes.title,
         podcast_episodes.date,
-        podcast_episodes.channel_id,
         podcast_episodes.url,
         podcast_episodes.summary,
-        podcast_channels.show_id
+        podcast_episodes.show_id
         FROM podcast_episodes
-        JOIN podcast_channels ON podcast_episodes.channel_id = podcast_channels.id
-        JOIN shows ON shows.id = podcast_channels.show_id order by show_id asc';
+        INNER JOIN shows ON shows.id = podcast_episodes.show_id order by shows.id asc';
 $r2 = mysqli_query($db,$q2);
 
 $episodes = array();

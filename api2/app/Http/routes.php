@@ -5,7 +5,6 @@ use App\Member as Member;
 use App\MembershipYear as MembershipYear;
 use App\Permission as Permission;
 use App\Show as Show;
-use App\Channel as Channel;
 use App\Showtime as Showtime;
 use App\Host as Host;
 use App\Social as Social;
@@ -105,12 +104,12 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'channel'=>$show->channel];
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}
 				}else{
 					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'channel'=>$show->channel];
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}
 				}
 				return  Response::json($shows);
@@ -152,11 +151,6 @@ Route::group(array('prefix'=>'show'),function(){
 		$social = Input::get()['social'];
 		$showtimes = Input::get()['showitmes'];
 		
-		//Create new
-		$channel = Input::get()['channel'];
-		$channel->show_id = $show->id;
-		$channel = Channel::create((array) $channel );
-
 		//Create owners
 		foreach($owners as $owner){
 			Show::find($show->id)->members()->attach($owner['id']);
@@ -182,7 +176,6 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::get('/',function($id = id){
 			$show = Show::find($id);
 			$show->social = Show::find($id)->social;
-			$show->channel = $show->channel;
 			return Response::json($show);
 		});
 		Route::post('/',function($id){
@@ -193,8 +186,7 @@ Route::group(array('prefix'=>'show'),function(){
 			$s = Show::find($id);
 			$s->update($show);
 
-			//Update Podcast channel
-			$channel = Show::find($id)->channel -> update((array) Input::get()['channel']);;
+		
 
 			//Detach current owners
 			foreach(Show::find($id)->members as $current_owner){
@@ -222,8 +214,8 @@ Route::group(array('prefix'=>'show'),function(){
 			}
 		});
 		Route::get('episodes',function($id){
-			$podcasts = Show::find($id)->channel->podcasts()->orderBy('id','desc')->get();
-
+			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->get();
+			$episodes = array();
 			foreach($podcasts as $podcast){
 				$playsheet = $podcast->playsheet;
 				if($playsheet != null){
@@ -232,8 +224,12 @@ Route::group(array('prefix'=>'show'),function(){
 					}
 					unset($podcast->playsheet);
 					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
+					$episodes[] = $episode;
+				}else{
+					$episode = ['podcast'=>$podcast];
+					$episodes[] = $episode;
 				}
-				$episodes[] = $episode;
+				
 			}
 			return Response::json($episodes);
 
@@ -305,7 +301,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$playsheet -> playitems = Playsheet::find($id)->playitems;
 				$show = Playsheet::find($id)->show;
 				$playsheet -> show = $show;
-				$playsheet -> channel = $show->channel;
 				$playsheet -> podcast = Playsheet::find($id)->podcast;
 				
 				$ads = Playsheet::find($id)->ads;
@@ -400,10 +395,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$result = $podcast->overwrite_podcast();
 		return $result;
 	});
-	Route::get('/channels/write_xml',function(){
-		$channels = Channel::all();
-		foreach($channels as $channel){
-			$result = $channel->make_xml();
+	Route::get('/show/write_xml',function(){
+		$shows = Show::all();
+		foreach($shows as $show){
+			$result = $show->make_xml();
 			$results[] = $result;
 		}
 		//return json_encode($results);

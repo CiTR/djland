@@ -90,8 +90,9 @@
                     this_.info.show_desc = tools.decodeHTML(this_.info.show_desc);
 
                     //Split genres on comma to allow user management
-                    this_.primary_genres = this_.info.primary_genre_tags.split(',');
-                    this_.secondary_genres = this_.info.secondary_genre_tags.split(',');
+
+                    this_.primary_genres = this_.info.primary_genre_tags != null ? this_.info.primary_genre_tags.split(',') : Array();
+                    this_.secondary_genres = this_.info.secondary_genre_tags != null ? this_.info.secondary_genre_tags.split(',') : Array();
 
 
                     //Remove Social array from the show object.
