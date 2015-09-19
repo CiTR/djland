@@ -23,20 +23,11 @@ if ($result = mysqli_query($db, $query) ) {
     finish();
 }
 
-$query = 'SELECT id FROM podcast_channels WHERE show_id ="'.$show_id.'"';
-if ($result = mysqli_query($db, $query) ) {
-    $channel_id = mysqli_fetch_assoc($result);
-    $channel_id = $channel_id['id'];
 
-
-} else {
-    $error .= ' cannot get channel id ';
-    finish();
-}
 
 $query2 = '
   SELECT * FROM podcast_episodes
-  WHERE channel_id = '.$channel_id;
+  WHERE show_id = '.$show_id;
 
 if ($result2 = mysqli_query($db, $query2) ) {
     $podcasts = array();

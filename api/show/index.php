@@ -21,7 +21,7 @@ $query =   "SELECT
       shows.name,
       shows.last_show,
       shows.create_date,
-      GREATEST(shows.edit_date,COALESCE(podcast_channels.UPDATED_AT,'0000-00-00 00:00:00')) as edit_date,
+      GREATEST(shows.edit_date,'0000-00-00 00:00:00') as edit_date,
       shows.active,
       shows.primary_genre_tags,
       shows.secondary_genre_tags,
@@ -30,16 +30,14 @@ $query =   "SELECT
       shows.show_desc,
       shows.alerts,
       shows.show_img,
-      hosts.name as host_name,
-      podcast_channels.title as podcast_title,
-      podcast_channels.subtitle as podcast_subtitle,
-      podcast_channels.summary as podcast_summary,
-      podcast_channels.keywords as podcast_keywords,
-      podcast_channels.image_url as podcast_image_url,
-      podcast_channels.xml as podcast_xml
+      shows.host as host_name,
+      shows.podcast_title as podcast_title,
+      shows.podcast_subtitle as podcast_subtitle,
+      shows.podcast_summary as podcast_summary,
+      shows.secondary_genre_tags as podcast_keywords,
+      shows.show_img as podcast_image_url,
+      shows.podcast_xml as podcast_xml
       FROM shows
-      LEFT JOIN hosts on hosts.id = shows.host_id
-      LEFT JOIN podcast_channels on podcast_channels.id = shows.podcast_channel_id
       WHERE shows.id=$id";
 
 $data = array();
@@ -50,8 +48,7 @@ if ($result = mysqli_query($db, $query) ) {
   if ($show_id) {
     $query = "SELECT
           social_name,
-          social_url,
-          short_name
+          social_url
           from social
           where show_id = $show_id";
     $social = array();
@@ -59,8 +56,7 @@ if ($result = mysqli_query($db, $query) ) {
       while ($row = mysqli_fetch_assoc($result)) {
           $social[] = array(
             'type'  =>  html_entity_decode($row['social_name'],ENT_QUOTES),
-              'url'   =>  html_entity_decode($row['social_url'],ENT_QUOTES),
-              'name'  =>  html_entity_decode($row['short_name'],ENT_QUOTES)
+              'url'   =>  html_entity_decode($row['social_url'],ENT_QUOTES)
         );
       }
     }
