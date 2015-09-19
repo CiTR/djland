@@ -22,8 +22,15 @@ $queries = array(
     'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'update playsheets' => 
     'ALTER TABLE `playsheets` 
-        CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL,
-        ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;',
+        CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL
+        ADD COLUMN `host` TINYTEXT NULL DEFAULT NULL AFTER show_id,
+        ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`';
+    'expand playsheets to hold host'=>
+        'ALTER TABLE `playsheets` 
+            ADD COLUMN `host` TINYTEXT NULL DEFAULT NULL AFTER `show_id`;',
+    'update playsheets to allow host table removal' => 
+        'UPDATE playsheets as p INNER JOIN hosts as  h ON p.host_id = h.id SET 
+        p.host = h.name;',
     
     'expand shows to hold podcast channel data' => 'ALTER TABLE `shows` 
         ADD COLUMN `host` TINYTEXT NULL AFTER `name`,

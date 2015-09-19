@@ -49,14 +49,16 @@ if( !( isset($_POST['show_name']) ) ){
 
 	$uploadOk = 0;
 	//If Show Directory doesn't exist make it and set permissions
-	$target_dir = str_replace(' ','_',$_SERVER['DOCUMENT_ROOT']."/images/shows/".$_POST['show_name']."/");
+	
+	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&');
+	$target_dir = str_replace(' ','_',$_SERVER['DOCUMENT_ROOT']."/images/shows/".str_replace($strip,'',$_POST['show_name'])."/");
 	if(!file_exists($target_dir)){
 		mkdir($target_dir,0755);
 	}
 
 	//Create new filename (Show Name + Todays Date)
 	$today = date('Y-m-d');
-	$target_file = $target_dir.str_replace(' ','_',$_POST['show_name'])."-".$today.$imageFileType;
+	$target_file = $target_dir.str_replace(' ','_',str_replace($strip,'',$_POST['show_name']))."-".$today.$imageFileType;
 	$target_file_web_path = str_replace($_SERVER['DOCUMENT_ROOT'],"http://".$_SERVER['SERVER_NAME'],$target_file);
 	// Check if image file is a actual image or fake image
     $check = getimagesize($_FILES["showFile"]["tmp_name"]);

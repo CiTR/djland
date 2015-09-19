@@ -357,7 +357,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
    				</div>
    			</div>
    		</div>
-
+   		<?php if(permission_level() >= $djland_permission_levels['administrator']): ?>
    		<!-- Begin Tab 4 "member admin" -->  
    		<div id='admin' class='hidden membership grey clearfix'>
    			<div class='col1'>
@@ -371,6 +371,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
     		</ul>
 
    		</div>
+   		<?php endif; ?>
         <!-- Begin Tab 5 "email view" -->  
    		<?php endif; ?>
    		<div id='email' class='hidden membership grey clearfix'>

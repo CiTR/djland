@@ -26,13 +26,12 @@ $query = 'SELECT
           playsheets.end_time,
           playsheets.edit_date,
           playsheets.type as playlist_type,
-          hosts.name as host_name,
+          playsheets.host as host_name,
           playsheets.podcast_episode as episode_id,
           playsheets.summary as episode_description,
           playsheets.title as episode_title,
           podcast_episodes.url as episode_audio
           FROM playsheets
-          LEFT JOIN hosts on hosts.id = playsheets.host_id
           LEFT JOIN podcast_episodes on podcast_episodes.playsheet_id = playsheets.id
           WHERE playsheets.status = 2 AND playsheets.id ='.$id;
 
@@ -85,10 +84,10 @@ if ( $result = mysqli_query($db, $query) ) {
   $error .= '<br/>'.mysqli_error($db);
 }
 
-if (!(is_null($rawdata['host']) || ($rawdata['host'])=='') ){
-  $rawdata['host_name'] = $rawdata['host'];
+/*if (!(is_null($rawdata['host']) || ($rawdata['host'])=='') ){
+  $rawdata['host_name'] = $rawdata['host_name'];
 }
-unset($rawdata['host']);
+unset($rawdata['host']);*/
 
 if(isset($rawdata['episode_audio']) && $rawdata['episode_audio'] == ""){
   $rawdata['episode_description'] = '';
