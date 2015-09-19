@@ -26,7 +26,6 @@ $queries = array(
         ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`;',
     
     'expand shows to hold podcast channel data' => 'ALTER TABLE `shows` 
-        DROP COLUMN `podcast_channel_id`,
         ADD COLUMN `host` TINYTEXT NULL AFTER `name`,
         ADD COLUMN `podcast_xml` TINYTEXT NULL AFTER `alerts`,
         ADD COLUMN `podcast_slug` VARCHAR(45) NULL AFTER `podcast_xml`,

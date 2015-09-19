@@ -82,9 +82,9 @@ if(!isset($_GET['id'])){
             <div id="popup"  ng-show="list.editing">
                 <p ng-click="list.editing = false;" id="closer"> X </p>
                 <h4 class='text-left'>Episode Title</h4>
-                <input ng-model="list.editing.podcast.title"/>
+                <input ng-model="list.editing.playsheet.title"/>
                 <h4 class='text-left'>Episode Summary</h4>
-                <textarea ng-model="list.editing.podcast.summary" rows="8">
+                <textarea ng-model="list.editing.playsheet.summary" rows="8">
                 </textarea>
 
                 <h4 class='text-left double-padded-top'>Broadcast Date</h4>

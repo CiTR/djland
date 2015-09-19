@@ -94,17 +94,14 @@ class Show extends Model
         $ftp->url_path = 'http://playlist.citr.ca/podcasting/xml/';
 
         //Get objects
-        $host = $this->show->host;
-        $show = $this->show->getAttributes();
-        $channel = $this;
+        $show = $this;
         $episodes = $this->podcasts;
-        $channel = $channel->getAttributes();
         $file_name = $channel['slug'].'.xml';
 
         $response['show_name'] = $this->show->name;
 
         //Remove Legacy Encoding issues
-        foreach ($channel as $field) {
+        foreach ($show as $field) {
             $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES),ENT_QUOTES);
             }
 
@@ -113,25 +110,25 @@ class Show extends Model
         $xml = '';
         $xml .= $xml_head;
         $xml .= '<channel>';
-        $xml .= '<title>'. $channel['title'] . '</title>';
+        $xml .= '<title>'. $show['podcast_title'] . '</title>';
         
         $xml .= '<description>' . $show['show_desc'] . '</description> ';
         $xml .= '<itunes:summary>' . $show['show_desc'] . '</itunes:summary> ';
-        $xml .= '<itunes:author>' . $host['name'] . '</itunes:author> ';
-        $xml .= '<itunes:subtitle>' . $channel['subtitle'] . '</itunes:subtitle> ';
+        $xml .= '<itunes:author>' . $show['host'] . '</itunes:author> ';
+        $xml .= '<itunes:subtitle>' . $show['podcast_summary'] . '</itunes:subtitle> ';
         $xml .= '<itunes:owner> ' .
-            '<itunes:name>' . $channel['owner_name'] . '</itunes:name> ' .
-            '<itunes:email>' . $channel['owner_email'] . '</itunes:email> ' .
+            '<itunes:name>CiTR</itunes:name> ' .
+            '<itunes:email>Technicalservices@citr.ca</itunes:email> ' .
             '</itunes:owner>';
         $xml .= '<itunes:image href="' . $show['show_img'] . '"/>';
 
         $xml .= '<itunes:link rel="image" type="video/jpeg" href="' . $show['show_img'] . '">' . $show['name'] . '</itunes:link> ';
         $xml .= '<image>' .
-            '<link>' . $channel['link'] . '</link>' .
+            '<link>' . $show['website'] . '</link>' .
             '<url>' . $show['show_img'] . '</url>' .
             '<title>' . $show['name'] . '</title>' .
             '</image> ';
-        $xml .= '<link>' . $channel['link'] . '</link> ';
+        $xml .= '<link>' . $show['website'] . '</link> ';
         $xml .= '<generator>CiTR Radio Podcaster</generator> ';
 
         //Build Each Podcast

@@ -182,8 +182,8 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						$statement = $pdo_db -> prepare($insert_query);
 
 						$statement -> bindValue(":name",str_replace('CiTR -- ','',$channel->title));
-						$statement -> bindValue(":show_desc",$channel->author);
-						$statement -> bindValue(":author",$channel->summary);
+						$statement -> bindValue(":show_desc",$channel->summary);
+						$statement -> bindValue(":author",$channel->author);
 						$statement -> bindValue(":title",$channel->title);
 						$statement -> bindValue(":subtitle",$channel->subtitle);
 						$statement -> bindValue(":summary",$channel->summary);
