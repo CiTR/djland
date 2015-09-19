@@ -166,16 +166,18 @@ class Podcast extends Model
 				$response['audio'] = array('url'=>$this->url,'size'=>$num_bytes);
 				//Update XML to reflect new podcast data (Duration,filesize)
 				$response['xml'] = $this->channel->make_xml();
-			}	
+				while(is_resource($target_file)){
+				   //Handle still open
+				   fclose($target_file);
+				}
+			}
+			while(is_resource($file_from_archive)){
+			   //Handle still open
+			   fclose($file_from_archive);
+			}
 		}
-		while(is_resource($file_from_archive)){
-		   //Handle still open
-		   fclose($file_from_archive);
-		}
-		while(is_resource($target_file)){
-		   //Handle still open
-		   fclose($target_file);
-		}
+		
+		
 	    return $response;
 	    }
 
