@@ -100,13 +100,16 @@ function print_menu(){
 								<!-- Temp Removed <li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li> -->
 								<li><a href="open_playsheet.php">Open a Playsheet</a></li>
 								<li><a href="podcasts.php"> Podcasts </a></li>
+								<?php if(permission_level() >=  $djland_permission_levels['administrator']) : ?>
+									<li><a href="setSocan.php"> Socan Periods </a></li>
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
 				</li>
 		<?php 
 			endif;
-			 ?>
+		?>
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
 		<?php if(permission_level() >=  $djland_permission_levels['member']) : ?>

@@ -273,8 +273,11 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			for(var item in data[member]){
 				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
+			}
+			if($('#permission_level').text() >= permission_levels['administrator']){
+				row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
 			}	
-			row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
+			console.log(permission_levels);
 			row.append("<div class='check hidden'>&#x274F;</div>");
 		}
 		if(data.length <1){

@@ -108,7 +108,16 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 			<div id='membership_result' class='overflow_auto height_cap' name='search'>
 				<div id='search_loading' class='col1 text-center' name='search'>Loading...</div>
 				<table id='membership_table' name='search'>
-					<tr id='headerrow' class='hidden'><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Staff Comments</th><th><button id='delete_button'>Delete</button></th></tr>
+					<tr id='headerrow' class='hidden'>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Type</th>
+						<th>Staff Comments</th>
+						<?php if(permission_level() >= $djland_permission_levels['administrator']) : ?>
+							<th><button id='delete_button'>Delete</button></th>
+						<?php endif; ?>
+						</tr>
 				</table>
 			</div>
    		</div>

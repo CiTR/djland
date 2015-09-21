@@ -38,9 +38,8 @@ $rawdata = array();
 
 
 $query_for_playsheet = 'SELECT playsheets.*,
-            hosts.name as host_name
+            playsheets.host as host_name
             FROM playsheets
-            LEFT JOIN hosts on hosts.id = playsheets.host_id
             WHERE playsheets.id = '.$id;
 
 if ( $result = mysqli_query($db,$query_for_playsheet)){
