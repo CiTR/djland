@@ -73,6 +73,10 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		overwritePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/overwrite');
-		}
+		},
+		isSocan : function(unixtime){
+			return $http.get(API_URL_BASE+'/socan'+unixtime!=null? unixtime:'');
+		},
+
 	};
 });

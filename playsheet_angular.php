@@ -2,7 +2,8 @@
 	<?php
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
-	require_once("headers/function_header.php");
+	require_once("headers/functions.php");
+	require_once("headers/socan_header.php");
 	require_once("headers/menu_header.php");
 	?>
 	<head>
@@ -10,11 +11,8 @@
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 		
 	</head>
-	<script type='text/javascript'>
-		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
-		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
-		var username = "<?php echo $_SESSION['sv_username']; ?>";
-	</script>
+	
+	
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
     <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
@@ -26,10 +24,16 @@
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
-		<?php print_menu(); 
-		?>
+		<script type='text/javascript'>
+		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
+		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
+		var username = "<?php echo $_SESSION['sv_username']; ?>";
+		</script>
+		<?php print_menu(); ?>
+		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; else echo socanCheck($db); ?></div>
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
-		<div id='wrapper' ng-class="{socan: playsheet.socan}">
+		<div id='wrapper' ng-class="{socan: playsheet.socan }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 		      		

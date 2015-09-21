@@ -13,8 +13,8 @@ function socanCheck($db) {
 			
 			//$db->close();
 			$index = 0;
-		if(!count($socanrows) ) return false;
-			
+		if(!count($socanrows) ) return 'false';
+		
 		foreach($socanrows as $socanrow)
 		{
 			$id = $index++;
@@ -23,14 +23,14 @@ function socanCheck($db) {
 			$socanEnd = strtotime($socanrow['socanEnd']);
 			
 			$currentTime = strtotime("now");
-		
+			//echo "Current Time: {$currentTime} <br/> Period Start: {$socanStart} <br/> Period End: {$socanEnd} <br/>";
 			
 			if( ($socanStart <= $currentTime) && ($currentTime<=$socanEnd) )
 			{
-				return true;
+				return 'true';
 			}
 		}
-		return false;
+		return 'false';
 	}
 	else{
 	echo "database query failed";	

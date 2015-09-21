@@ -17,8 +17,9 @@ font-family: Helvetica,Arial;
 	color:white;
 }
 .invisible{
-  display:none;
+	display:none;
 }
+
 
 ul, li {
     padding-left: 0
@@ -164,6 +165,11 @@ input, select, textarea, option{
 	margin-left:auto;
 	margin-right:auto;
   width: 90%;
+}
+.rounded{
+  -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
 }
 .padded{
   padding-top:10px;
@@ -791,7 +797,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan{
     background-color: transparent;
     background-image: none;;
   }
- .socan button, .socan input, .music_row_socan input, .music_row_socan button{
+ button.socan, .socan input, .music_row_socan input, .music_row_socan button{
     font-size:0.75em;
     max-width:90px;
   }

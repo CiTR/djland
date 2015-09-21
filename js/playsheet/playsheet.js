@@ -7,12 +7,13 @@
         this.info.id = playsheet_id;
         this.member_id = member_id;
         this.username = username;
+        this.loading = true;
         var this_ = this;
 
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.socan = socan;
+        this.socan = $('#socan').text() == 'true' ? true : false;
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
@@ -104,13 +105,11 @@
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
             
             this.show = this.active_show.show;
-            this.channel = this.active_show.channel;
 
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
             this.info.edit_name = this.username;
 
-            this.podcast.channel_id = this.channel.id;
             this.podcast.author = this.info.host;
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_id = this.info.show_id;
@@ -209,7 +208,6 @@
                     console.log(this_.show);
                     this_.playitems = playsheet.playitems;
                     this_.podcast = playsheet.podcast == null ? {} : playsheet.podcast;
-                    this_.channel = playsheet.channel;
                     this_.ads = playsheet.ads;
                     //If no playitems, change "Add Five Rows" button to say "Add Row" instead
                     if(this_.playitems < 1){
@@ -226,7 +224,6 @@
                                 this_.active_show = this_.member_shows[show];
                                 this_.show_value = shows[show]['id'];
                                 this_.show = shows[show]['show'];
-                                this_.channel = shows[show]['channel'];
                             }
                         }
                         console.log(this_.active_show);
@@ -238,6 +235,7 @@
                         var show_date = this_.start.getDate();
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
+                        this_.loading = false;
                     });
 
                 });
@@ -264,13 +262,12 @@
                         console.log(shows[show].show.name.toString());
                         this_.active_show = this_.member_shows[show];
                         this_.show = this_.active_show.show;
-                        this_.channel = this_.active_show.channel;
+
                         this_.show_value = this_.active_show['id'];
                         this_.info.show_id = parseInt(this_.active_show.id);
                         this_.info.host = this_.active_show.show.host;
                         this_.info.create_name = this_.info.host;
 
-                        this_.podcast.channel_id = this_.channel.id;
                         this_.podcast.author = this_.info.host;
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].show_id = this_.info.show_id;
@@ -316,11 +313,11 @@
                         call.getAds(start_unix).then(function(response){
                             this_.ads = response.data;
                         });
-                        this_.podcast.channel_id = this_.channel.id;
                         this_.update();
                         if(this_.using_sam){
                             this_.loadSamPlays();
                         }
+                        this_.loading = false;
                     });         
                 });
             }

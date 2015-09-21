@@ -55,19 +55,5 @@ function getShowFromPlaysheet($playsheet_id){
 	}
 	return $result['show_id'];
 }
-/*function getChannelFromShow($show_id){
-	global $pdo_db,$djland_permission_levels;
-	//Get the podcast channel from the show
-	$query = "SELECT podcast_channel_id AS id FROM shows WHERE id=:show_id";
-	$statement = $pdo_db->prepare($query);
-	$statement->bindValue(":show_id",$show_id);
-	try{
-		$statement->execute();
-		$result = $statement->fetchObject();
-	}catch(PDOexception $pdoe){
-		echo $pdoe->getMessage();
-		return -1;
-	}
-	return $result['id'];
-}*/
+
 

@@ -11,8 +11,8 @@ use App\Social as Social;
 use App\Playsheet as Playsheet;
 use App\Playitem as Playitem;
 use App\Podcast as Podcast;
-use App\Song as Song;
 use App\Ad as Ad;
+use App\Socan as Socan;
 
 Route::get('/', function () {
     //return view('welcome');
@@ -348,10 +348,18 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
 		}
+		$socan = Socan::all();
 		foreach(Playsheet::orderBy('id','desc')->whereIn('show_id',$show_ids)->limit('500')->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
+			$playsheet->socan = false;
+
+			foreach($socan as $period){
+				if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
+					$playsheet->socan = true;
+				}
+			}
 			$playsheets[] = $playsheet;
 		}
 		return Response::json($playsheets);	
@@ -460,7 +468,26 @@ Route::get('/SAM/range',function(){
 	return $sam_plays;
 });
 
-
+Route::get('/socan',function(){
+	$now = strtotime('now');
+	$socan = Socan::all();
+	foreach($socan as $period){
+		if( strtotime($period['socanStart']) <= $now && strtotime($period['socanEnd']) >= $now){
+			return Response::json(true);
+		}
+	}
+	return Response::json(false);
+});
+Route::get('/socan/{time}',function($unixtime = time){
+	$now = $unixtime;
+	$socan = Socan::all();
+	foreach($socan as $period){
+		if( strtotime($period['socanStart']) <= $now && strtotime($period['socanEnd']) >= $now){
+			return Response::json(true);
+		}
+	}
+	return Response::json(false);
+});
 
 // Table Helper Routes 
 Route::get('/table',function(){
