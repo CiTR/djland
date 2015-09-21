@@ -186,8 +186,6 @@
                     //Create Extra Variables to allow proper display in UI
                     this_.start = new Date(this_.info.start_time);
                     this_.end = new Date(this_.info.end_time);
-                    
-                   
                     this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
                     this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                     this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
@@ -213,6 +211,15 @@
                     if(this_.playitems < 1){
                         $('#addRows').text("Add Row");
                     }
+                    for(var playitem in this_.playitems){
+                        console.log(this_.playitems[playitem]);
+                        this_.playitems[playitem].insert_song_start_hour = $filter('pad')( this_.playitems[playitem].insert_song_start_hour , 2);
+                        this_.playitems[playitem].insert_song_start_minute = $filter('pad')( this_.playitems[playitem].insert_song_start_minute , 2);
+                        this_.playitems[playitem].insert_song_length_minute = $filter('pad')( this_.playitems[playitem].insert_song_length_minute , 2);
+                        this_.playitems[playitem].insert_song_length_second = $filter('pad')( this_.playitems[playitem].insert_song_length_second , 2);
+                        console.log(this_.playitems[playitem]);
+                    }
+
                     //Get Member shows, and set active show
                     call.getMemberShows(this.member_id).then(function(data){
                         var shows = data.data.shows;

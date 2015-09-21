@@ -4,16 +4,16 @@
 <td><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
 <td><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.socan'>
-	<input ng-change='playsheet.update()' ng-model='playitem.song.composer' ng-class='{required: playsheet.socan}'></input>
+	<input ng-change='playsheet.update()' ng-model='playitem.composer' ng-class='{required: playsheet.socan}'></input>
 </td>
 <td ng-show='playsheet.socan'>
-	<select ng-model="playitem.insert_song_start_hour" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateTrackStart(playitem);"></select>:
-    <select ng-model="playitem.insert_song_start_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 " ng-change="playsheet.updateTrackStart(playitem);"></select>
+	<select  ng-model="playitem.insert_song_start_hour" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateTrackStart(playitem); playsheet.update();"></select>:
+    <select ng-model="playitem.insert_song_start_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 " ng-change="playsheet.updateTrackStart(playitem); playsheet.update();"></select>
     <button ng-class="{socan: playsheet.socan }" ng-click="playsheet.cueTrack(playitem)">CUE</button>
 </td>
 <td ng-show='playsheet.socan'>
-	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "></select>:
-    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "></select>
+	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>:
+    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>
     <button ng-class="{socan: playsheet.socan }" ng-click="playsheet.endTrack(playitem)">END</button>
 </td>
 <td>
