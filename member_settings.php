@@ -46,9 +46,9 @@
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
 
-					<div class='col5'><input id='address' class='required renew' placeholder='Address' maxlength='50'/></div>
+					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'/></div>
 					<div class='col5'>City*:</div>
-					<div class='col5'><input id='city' class='required renew' placeholder='City' maxlength='45'/></div>
+					<div class='col5'><input id='city' class='required' placeholder='City' maxlength='45'/></div>
 				</div>
 				<div id='row4 'class='containerrow'>
 					<div class='col5'>Province*: </div>
@@ -61,7 +61,7 @@
 							?>
 						</select></div>
 					<div class='col5'>Postal Code*:</div>
-					<div class='col5'><input id='postalcode' class='required renew' placeholder='Postal Code' maxlength='6'/></div>
+					<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'/></div>
 				</div>
 				<div class='containerrow'>
 					<div class='col5'>Canadian Citizen*:</div>
@@ -84,7 +84,6 @@
 							}
 							?>
 						</select>
-
 					</div>
 				</div>
 				<div class='containerrow student'>
@@ -132,15 +131,14 @@
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
 				</div>
-
 				<hr>
 				<div id='row8' class='containerrow'>
 					<div class='col7'>Email Address*: </div>
-					<div class='col6'><input id='email' class='required renew'  name='email' placeholder='Email Address' maxlength='40'/></div>
+					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'/></div>
 					<div class='col6'>Primary Number*:</div>
-					<div class='col6'><input id='primary_phone' class='required renew' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
+					<div class='col6'><input id='primary_phone' class='required' name='phone1' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
 					<div class='col6'>Secondary Number:</div>
-					<div class='col6'><input id='secondary_phone' name='phone2 renew' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
+					<div class='col6'><input id='secondary_phone' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
 
 				</div>
 

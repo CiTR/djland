@@ -235,6 +235,8 @@ function loadYearSelect(){
 			for(var i=0; i<data['years'].length; i++){
 				$(this).append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
 			}
+			$(this).append("<option value='all'>All Years</option>");
+
 		});
 	},function(err){
 		console.log("failed to load years");

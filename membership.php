@@ -114,6 +114,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 						<th>Phone</th>
 						<th>Type</th>
 						<th>Staff Comments</th>
+						<th>Year</th>
 						<?php if(permission_level() >= $djland_permission_levels['administrator']) : ?>
 							<th><button id='delete_button'>Delete</button></th>
 						<?php endif; ?>

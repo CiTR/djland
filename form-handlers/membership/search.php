@@ -12,7 +12,7 @@ $request = $_SERVER['REQUEST_METHOD'];
 if( permission_level() >= $djland_permission_levels['staff']) {
      switch($request){
         case "GET":
-            $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";  
+            $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments,my.membership_year FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";  
             if(isset($_GET['search_by'])){
                 switch($_GET['search_by']){
                     case 'name':
@@ -47,10 +47,18 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                     default:
                         break;
                 }
-                $query.=" AND my.membership_year=:year ";
+                if($_GET['year']!='all'){
+                    $query.=" AND my.membership_year=:year ";
+                }else{
+                    $query .=" AND my.membership_year=(SELECT membership_year FROM membership_years as ms2 INNER JOIN membership as m2 ON m2.id = ms2.member_id WHERE m.id=m2.id ORDER BY membership_year DESC LIMIT 1)";
+                }
+               
             }else{
-                $query.=" WHERE my.membership_year=:year";
-
+                if($_GET['year'] != 'all'){
+                    $query.=" WHERE my.membership_year=:year";
+                }else{
+                    $query .=" AND my.membership_year=(SELECT membership_year FROM membership_years as ms2 INNER JOIN membership as m2 ON m2.id = ms2.member_id WHERE m.id=m2.id ORDER BY membership_year DESC LIMIT 1)";
+                }
             }
 
             
@@ -102,7 +110,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                             break;
                     }
                 }
-                $statement->bindParam(':year', $_GET['year']);
+                if($_GET['year'] != 'all') $statement->bindParam(':year', $_GET['year']);
                 if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                     $statement->bindValue(':paid', $_GET['paid']);
                 }
