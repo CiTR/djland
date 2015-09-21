@@ -257,9 +257,7 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::get('nextshow/{current_time}',function($id,$time = current_time){
 			return Response::json(Show::find($id)->nextShowTime($time));
 		});
-
 	});
-	
 });
 
 Route::get('/social/{id}',function($show_id = id){
@@ -467,6 +465,60 @@ Route::get('/SAM/range',function(){
 	}
 	return $sam_plays;
 });
+Route::get('/nowplaying',function(){
+	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+	$result = array();
+	if($using_sam){
+		$last_track = DB::connection('samdb')
+			->table('historylist')
+			->selectRaw('artist,title,album,date_played,songtype,duration')
+			->orderBy('date_played','DESC')
+			->limit('1')
+			->get();
+		$now = strtotime('now');
+		if( strtotime($last_track->date_played) + ($last_track-> duration)/1000 <= $now ){
+			$result['music'] = $last_track;
+		}else{
+			$result['music'] = null;
+		}
+	}else{
+		$result['music'] = null;
+	}
+
+	
+	//Get Current week since Epoch
+    $current_week = Date('W', strtotime('tomorrow',strtotime('now')));
+    if ((int) $current_week % 2 == 0){
+        $current_week_val = 2;
+    } else {
+        $current_week_val = 1;
+    };
+
+
+	//We use 0 = Sunday instead of 7
+	$day_of_week = date('N') == 7 ? 0 : date('N');
+	$yesterday = $day_of_week == 0 ? 6 : $day_of_week - 1;
+	$tomorrow = $day_of_week == 6 ? 0 : $day_of_week + 1;
+		
+
+
+	$current_show = DB::select(DB::raw(
+		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
+			WHERE 
+				CASE 
+					WHEN s.start_day = s.end_day THEN s.start_day={$day_of_week} AND s.end_day={$day_of_week} AND s.start_time <= CURTIME() AND s.end_time > CURTIME()
+					WHEN s.start_day != s.end_day AND CURTIME() <= '23:59:59' AND CURTIME() > '12:00:00 'THEN s.start_day={$day_of_week} AND s.end_day = {$tomorrow} AND s.start_time <= CURTIME() AND s.end_time >= '00:00:00'
+					WHEN s.start_day != s.end_day AND CURTIME() < '12:00:00' AND CURTIME() >= '00:00:00' THEN s.start_day= {$yesterday} AND s.end_day = {$day_of_week} AND s.end_time > CURTIME()
+				END
+				AND sh.active = 1
+				AND (s.alternating = 0 OR s.alternating = {$current_week_val});"))[0];
+	//print_r($current_show);
+	$result['showName'] = $current_show->name;
+	$result['showTime'] = "{$current_show->start_time} - {$current_show->end_time}";
+	$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime($current_show->time));	
+	return Response::json($result);
+});
+
 
 Route::get('/socan',function(){
 	$now = strtotime('now');
