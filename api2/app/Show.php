@@ -1,13 +1,13 @@
 <?php
-
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+
 class Show extends Model
 {
     protected $table = 'shows';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array('podcast_channel_id', 'name', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'show_img', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts');
+    protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'show_img', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
     
     public function members(){
         return $this->belongsToMany('App\Member','member_show');
@@ -87,7 +87,7 @@ class Show extends Model
     }
     public function make_show_xml(){
         include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-
+        error_reporting(E_ALL);
         //Set up FTP access
         $ftp = $ftp_xml;
         $ftp->target_path = '/';
@@ -96,40 +96,43 @@ class Show extends Model
         //Get objects
         $show = $this;
         $episodes = $this->podcasts;
-        $file_name = $channel['slug'].'.xml';
+        $file_name = $this['podcast_slug'].'.xml';
 
-        $response['show_name'] = $this->show->name;
-
+        $response['show_name'] = $this->name;
         //Remove Legacy Encoding issues
+        $show = $this->getAttributes();
         foreach ($show as $field) {
             $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES),ENT_QUOTES);
+            $field = str_replace("&","&amp;",$field);
             }
 
 
-        $xml_head = '<?xml version="1.0"  ?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" > ';
+        $xml_head = '<?xml version="1.0" encoding="ISO-8859-1" ?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" > ';
         $xml = '';
         $xml .= $xml_head;
         $xml .= '<channel>';
         $xml .= '<title>'. $show['podcast_title'] . '</title>';
         
-        $xml .= '<description>' . $show['show_desc'] . '</description> ';
-        $xml .= '<itunes:summary>' . $show['show_desc'] . '</itunes:summary> ';
-        $xml .= '<itunes:author>' . $show['host'] . '</itunes:author> ';
-        $xml .= '<itunes:subtitle>' . $show['podcast_summary'] . '</itunes:subtitle> ';
-        $xml .= '<itunes:owner> ' .
-            '<itunes:name>CiTR</itunes:name> ' .
-            '<itunes:email>Technicalservices@citr.ca</itunes:email> ' .
+        $xml .= '<description>' . ($show['show_desc'] ? $show['show_desc'] : "") . '</description>';
+        $xml .= '<itunes:summary>' . ($show['show_desc'] ? $show['show_desc'] : "" ). '</itunes:summary>';
+        if($show['host']) $xml .= '<itunes:author>' . htmlspecialchars(html_entity_decode($show['host'])). '</itunes:author>';
+        $xml .= "<itunes:keywords>".$show['primary_genre_tags']."</itunes:keywords>";
+        $xml .= '<itunes:subtitle>' . htmlspecialchars(html_entity_decode($show['podcast_summary'])) . '</itunes:subtitle>';
+        $xml .= '<itunes:owner>' .
+            '<itunes:name>CiTR</itunes:name>' .
+            '<itunes:email>Technicalservices@citr.ca</itunes:email>' .
             '</itunes:owner>';
-        $xml .= '<itunes:image href="' . $show['show_img'] . '"/>';
+        if($show['show_img']) $xml .= '<itunes:image href="' . $show['show_img']. '"/>';
 
-        $xml .= '<itunes:link rel="image" type="video/jpeg" href="' . $show['show_img'] . '">' . $show['name'] . '</itunes:link> ';
+        $xml .= '<itunes:link rel="image" type="video/jpeg" href="'.$show['show_img'].'">' . $show['name'] . '</itunes:link>';
+
         $xml .= '<image>' .
-            '<link>' . $show['website'] . '</link>' .
-            '<url>' . $show['show_img'] . '</url>' .
-            '<title>' . $show['name'] . '</title>' .
-            '</image> ';
-        $xml .= '<link>' . $show['website'] . '</link> ';
-        $xml .= '<generator>CiTR Radio Podcaster</generator> ';
+            '<link>citr.ca</link>' .
+            '<url>' . $show['show_img']. '</url>' .
+            '<title>' . htmlspecialchars(html_entity_decode($show['name'])) . '</title>' .
+            '</image>';
+        $xml .= '<link>' .$show['website']. '</link> ';
+        $xml .= '<generator>CiTR Radio Podcaster</generator>';
 
         //Build Each Podcast
         foreach ($episodes as $episode) {
@@ -144,14 +147,14 @@ class Show extends Model
                 }
                 $xml .=
                     '<item>' .
-                    '<title>' . htmlspecialchars(html_entity_decode($playsheet['title'],ENT_QUOTES),ENT_QUOTES) . '</title>' .
+                    '<title>' . htmlspecialchars(html_entity_decode($episode['title'],ENT_QUOTES),ENT_QUOTES) . '</title>' .
                     '<pubDate>' . $episode['date'] . '</pubDate>' .
-                    '<description>' . htmlspecialchars(html_entity_decode($playsheet['summary'],ENT_QUOTES),ENT_QUOTES) . '</description>' .
-                    '<itunes:subtitle>' . $episode['subtitle'] . '</itunes:subtitle>';
+                    '<description>' . htmlspecialchars(html_entity_decode($episode['subtitle'],ENT_QUOTES),ENT_QUOTES) . '</description>' .
+                    '<itunes:subtitle>' . htmlspecialchars(html_entity_decode($episode['subtitle'])) . '</itunes:subtitle>';
                 $xml .= ($episode['duration'] > 0) ? '<itunes:duration>' . $episode['duration'] . '</itunes:duration> ' : '';
 
                 $xml .=
-                    '<enclosure url="' . $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg"/>' .
+                    '<enclosure url="' . $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg"></enclosure>' .
                     '<guid isPermaLink="true">' . $episode['url'] . '</guid></item>';
             }
         }
@@ -165,30 +168,38 @@ class Show extends Model
                 
                 //Create a temporary file to hold the xml
                 $temporary_file = tmpfile();
-                $metaDatas = stream_get_meta_data($temporary_file);
-                $temporary_file_name = $metaDatas['uri'];
-                $num_bytes = file_put_contents($temporary_file_name,$xml);
-                //fclose($temporary_file);
-                if($num_bytes > 16){
-                    //Check to see if directory exists, if not then create it
-                        /*if(!ftp_chdir($ftp_connection,$ftp->target_path)){
-                        ftp_chdir($ftp_connection,"/");
-                        ftp_mkdir($ftp_connection, $ftp->target_path);
-                    }*/
-                    
-                    if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
-                        //Successfully Uploaded the file
-                        $response['reponse'] = array(
-                            'filename' => $file_name,
-                            'size' => $num_bytes,
-                            'url' => $ftp->url_path.$file_name
-                            );
+                if($temporary_file){
+                    $metaDatas = stream_get_meta_data($temporary_file);
+                    $temporary_file_name = $metaDatas['uri'];
+                    $num_bytes = file_put_contents($temporary_file_name,$xml);
+                    //fclose($temporary_file);
+                    if($num_bytes > 16){
+                        //Check to see if directory exists, if not then create it
+                            /*if(!ftp_chdir($ftp_connection,$ftp->target_path)){
+                            ftp_chdir($ftp_connection,"/");
+                            ftp_mkdir($ftp_connection, $ftp->target_path);
+                        }*/
+                        
+                        if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
+                            //Successfully Uploaded the file
+                            $response['reponse'] = array(
+                                'filename' => $file_name,
+                                'size' => $num_bytes,
+                                'url' => $ftp->url_path.$file_name
+                                );
 
+                        }else{
+                            $response['reponse'] = "Failed to write to FTP server";
+                        }
                     }else{
-                        $response['reponse'] = "Failed to write to FTP server";
+                        $response['reponse'] = "Failed to connect to write temp file";
                     }
+                    while(is_resource($temporary_file)){
+                       //Handle still open
+                       fclose($temporary_file);
+                    }  
                 }else{
-                    $response['reponse'] = "Failed to connect to write temp file";
+                    $response['reponse'] = "Failed to open file";
                 }
 
             }else{

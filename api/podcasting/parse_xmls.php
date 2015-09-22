@@ -49,7 +49,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						$parser = xml_parser_create();
 						$raw_xml = file_get_contents($xml_url);
 						
-					
+						$slug_replace = array('/podcasting/xml/','.xml');
 						if($raw_xml){
 							xml_parse_into_struct($parser, $raw_xml, $parsed_xml, $index);
 							$channel -> title 		= isset($parsed_xml[$index['TITLE'][0]]['value']) ? $parsed_xml[$index['TITLE'][0]]['value'] : '';
@@ -57,7 +57,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 							$channel -> summary		= isset($parsed_xml[$index['ITUNES:SUMMARY'][0]]['value']) && $parsed_xml[$index['ITUNES:SUMMARY'][0]]['value'] != '' ? $parsed_xml[$index['ITUNES:SUMMARY'][0]]['value'] : '';
 							$channel -> author 		= $parsed_xml[$index['ITUNES:AUTHOR'][0]]['value'];
 							$channel -> xml 		= $xml_url;
-							$channel -> slug 		= str_replace('/podcasting/xml/','',$url);
+							$channel -> slug 		= str_replace($slug_replace,'',$url);
 						}
 					}
 

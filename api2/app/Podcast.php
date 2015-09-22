@@ -11,7 +11,7 @@ class Podcast extends Model
     protected $table = 'podcast_episodes';
     const CREATED_AT = null;
     const UPDATED_AT = null;
-    protected $fillable = array('playsheet_id', 'title', 'subtitle', 'summary', 'date', 'channel_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
+    protected $fillable = array('playsheet_id', 'title', 'subtitle', 'summary', 'date','show_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
 
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
@@ -99,7 +99,7 @@ class Podcast extends Model
 				$this->save();
 				$response['audio'] = array('url' => $target_url	);
 				//Update XML to reflect new podcast creation
-				$response['xml'] = $this->channel->make_xml();
+				$response['xml'] = $this->show->make_show_xml();
 			}	
 		}
 		while(is_resource($file_from_archive)){
@@ -165,7 +165,7 @@ class Podcast extends Model
 				$this->save();
 				$response['audio'] = array('url'=>$this->url,'size'=>$num_bytes);
 				//Update XML to reflect new podcast data (Duration,filesize)
-				$response['xml'] = $this->channel->make_xml();
+				$response['xml'] = $this->show->make_show_xml();
 				while(is_resource($target_file)){
 				   //Handle still open
 				   fclose($target_file);
