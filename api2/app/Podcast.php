@@ -11,10 +11,13 @@ class Podcast extends Model
     protected $table = 'podcast_episodes';
     const CREATED_AT = null;
     const UPDATED_AT = null;
-    protected $fillable = array('playsheet_id', 'title', 'subtitle', 'summary', 'date','show_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
+    protected $fillable = array('playsheet_id', 'show_id','title', 'subtitle', 'summary', 'date','show_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
 
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
+    }
+    public function show(){
+    	return $this->belongsTo('App\Show');
     }
     public function make_podcast(){
     	$response = $this->make_audio();
