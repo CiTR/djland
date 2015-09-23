@@ -426,11 +426,16 @@
             if(this.info.status <= 1){
                 if(this.info.id < 1){
                     //New Playsheet
+                    this_.info.create_name = this_.username;
                     callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                        this_.info.id = response.data.id;
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
                         }
-                        this_.info.id = response.data.id;
+                        var show_date = this_.start.getDate();
+                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+
+                        
                         this_.podcast.id = response.data.podcast_id;
                         this_.podcast.playsheet_id = response.data.id;
                         alert("Draft Saved");
@@ -440,10 +445,10 @@
                     });
                 }else{
                     //Existing Playsheet
-                    for(var playitem in this_.playitems){
-                        this_.playitems[playitem].playsheet_id = this.info.id;
-                    }
                     call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                        for(var playitem in this_.playitems){
+                            this_.playitems[playitem].playsheet_id = this_.info.id;
+                        }
                         alert("Draft Saved");
                     },function(error){
                         alert(error);
@@ -479,6 +484,7 @@
 
                 if(this.info.id < 1){
                     //New Playsheet
+                    this_.info.create_name = this_.username;
                     this.tracklist_overlay = true;
                     call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                         for(var playitem in this_.playitems){
@@ -497,11 +503,6 @@
                 }else{
                     //Existing Playsheet
                     this.tracklist_overlay = true;
-
-                    for(var playitem in this_.playitems){
-                        this_.playitems[playitem].playsheet_id = this.info.id;
-                    }
-
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
@@ -542,8 +543,8 @@
             djland_entry.composer = sam_play.composer;
             djland_entry.insert_song_start_hour = $filter('pad')( new Date(sam_play.date_played).getHours(), 2);
             djland_entry.insert_song_start_minute = $filter('pad')( new Date(sam_play.date_played).getMinutes(), 2);
-            djland_entry.insert_song_length_minute = $filter('pad')((sam_play.durMin / 60000), 2);
-            djland_entry.insert_song_length_second = $filter('pad')( (sam_play.durSec/1000)%60 , 2);
+            djland_entry.insert_song_length_minute = $filter('pad')((sam_play.duration / 60000), 2);
+            djland_entry.insert_song_length_second = $filter('pad')( (sam_play.duration/1000)%60 , 2);
             djland_entry.is_can = sam_play.mood.indexOf('cancon') > -1 ? '1':'0';
             djland_entry.is_fem = sam_play.mood.indexOf('femcon') > -1 ? '1':'0';
             djland_entry.lang = this_.info.lang;
