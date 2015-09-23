@@ -440,6 +440,9 @@
                     });
                 }else{
                     //Existing Playsheet
+                    for(var playitem in this_.playitems){
+                        this_.playitems[playitem].playsheet_id = this.info.id;
+                    }
                     call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                         alert("Draft Saved");
                     },function(error){
@@ -494,6 +497,11 @@
                 }else{
                     //Existing Playsheet
                     this.tracklist_overlay = true;
+
+                    for(var playitem in this_.playitems){
+                        this_.playitems[playitem].playsheet_id = this.info.id;
+                    }
+
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
