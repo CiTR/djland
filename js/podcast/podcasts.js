@@ -98,11 +98,15 @@
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
-                    call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
+                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime()){
+                        call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
-                    },function(error){
-                        alert("Failed to save podcast: " + error);
-                    });
+                        },function(error){
+                            alert("Failed to save podcast: " + error);
+                        });
+                    }else{
+                        alert("Saved podcast, did not re-generate audio as it is too far back");
+                    }
                 }
             });
         };

@@ -88,7 +88,7 @@
                     //If either of these have HTML chars strip them so it will save without, the user being none the wiser
                     this_.info.name = tools.decodeHTML(this_.info.name);
                     this_.info.show_desc = tools.decodeHTML(this_.info.show_desc);
-
+                    this_.shared.setShowName(this_.info.name);
                     //Split genres on comma to allow user management
 
                     this_.primary_genres = this_.info.primary_genre_tags != null ? this_.info.primary_genre_tags.split(',') : Array();
