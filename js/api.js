@@ -70,7 +70,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		saveNewPodcast: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast',angular.toJson('podcast':podcast));
-		}
+		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');
 		},
