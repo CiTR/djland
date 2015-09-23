@@ -205,7 +205,7 @@
                     this_.show = playsheet.show;
                     console.log(this_.show);
                     this_.playitems = playsheet.playitems;
-                    this_.podcast = playsheet.podcast == null ? {} : playsheet.podcast;
+                    this_.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this_.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
                     this_.ads = playsheet.ads;
                     //If no playitems, change "Add Five Rows" button to say "Add Row" instead
                     if(this_.playitems < 1){
@@ -455,10 +455,11 @@
         this.submit = function () {
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
-             this.podcast.show_id = this.info.show_id;
+            this.podcast.show_id = this.info.show_id;
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
+            this.podcast.duration = (this.info.start.getTime() / 1000) - (this.info.end.getTime() /1000);
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
@@ -476,7 +477,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.tracklist_overlay = true;
-                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                    call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
                         }
@@ -493,13 +494,31 @@
                 }else{
                     //Existing Playsheet
                     this.tracklist_overlay = true;
-                    callback = call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
-                        call.makePodcastAudio(this_.podcast).then(function(reponse){
-                            console.log(response.data);
+                    if(this.podcast.id < 1){
+                        this.podcast.playsheet_id = this.info.id;
+                        this.podcast.show_id = this.info.show_id;
+
+                        call.saveNewPodcast(this_.podcast).then(function(response){
+                            var podcast_id = reponse.data;
+                            this_.podcast_id = podcast_id['id'];
+                            call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                                call.makePodcastAudio(this_.podcast).then(function(reponse){
+                                    console.log(response.data);
+                                });
+                            },function(error){
+                                alert(error);
+                            });
                         });
-                    },function(error){
-                        alert(error);
-                    });
+                    }else{
+                        call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                            call.makePodcastAudio(this_.podcast).then(function(reponse){
+                                console.log(response.data);
+                            });
+                        },function(error){
+                            alert(error);
+                        });
+                    }
+                    
                 } 
             } 
         }

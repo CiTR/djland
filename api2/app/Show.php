@@ -111,10 +111,10 @@ class Show extends Model
         $xml = '';
         $xml .= $xml_head;
         $xml .= '<channel>';
-        $xml .= '<title>'. $show['podcast_title'] . '</title>';
+        $xml .= '<title>'. htmlspecialchars(html_entity_decode($show['podcast_title'])) . '</title>';
         
-        $xml .= '<description>' . ($show['show_desc'] ? $show['show_desc'] : "") . '</description>';
-        $xml .= '<itunes:summary>' . ($show['show_desc'] ? $show['show_desc'] : "" ). '</itunes:summary>';
+        $xml .= '<description>' . htmlspecialchars(html_entity_decode($show['show_desc']) . '</description>';
+        $xml .= '<itunes:summary>' . htmlspecialchars(html_entity_decode($show['show_desc']). '</itunes:summary>';
         if($show['host']) $xml .= '<itunes:author>' . htmlspecialchars(html_entity_decode($show['host'])). '</itunes:author>';
         $xml .= "<itunes:keywords>".$show['primary_genre_tags']."</itunes:keywords>";
         $xml .= '<itunes:subtitle>' . htmlspecialchars(html_entity_decode($show['podcast_summary'])) . '</itunes:subtitle>';

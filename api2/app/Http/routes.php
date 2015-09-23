@@ -324,14 +324,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		Route::post('/',function($id){
 			$ps = Playsheet::find($id);
 			$ps->update(Input::get()['playsheet']);
-
+			$ps->podcast->update((array) Input::get()['podcast']);
 			$playitems = Input::get()['playitems'];
 			foreach($ps->playitems as $delete){
 				$delete->delete();
 			}
 			foreach($playitems as $playitem){
 				Playitem::create($playitem);
-			}		
+			}
+			$ads = Input::get()['ads'];		
 		});
 
 		Route::post('episode',function($id){
@@ -391,7 +392,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 });
 
-
+	Route::post('/podcast',function($id = id){
+		$podcast = Podcast::create((array) Input::get()['podcast']);
+		$podcast->duration_from_playsheet();
+		return Response::json(array('id'=>$podcast->id));
+	});
 	Route::post('/podcast/{id}',function($id = id){
 		$podcast = Podcast::find($id);
 		$podcast->update(Input::get()['podcast']);

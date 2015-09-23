@@ -61,7 +61,7 @@ class Podcast extends Model
 	        'title'         => array($this->title),
 	        'artist'        => array($this->playsheet->show->name),
 	        'album'         => array('CiTR Radio Podcasts'),
-	        'year'          => array(date('Y', strtotime($this->date))),
+	        'year'          => array($year),
 	        'genre'         => array($this->playsheet->show->primary_genre_tags),
 	        'comment'       => array('This podcast was created in part by CiTR Radio')
     	);
