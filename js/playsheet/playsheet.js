@@ -459,7 +459,7 @@
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
-            this.podcast.duration = (this.info.start.getTime() / 1000) - (this.info.end.getTime() /1000);
+           
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
