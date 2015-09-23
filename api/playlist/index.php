@@ -27,7 +27,7 @@ $query = 'SELECT
           playsheets.edit_date,
           playsheets.type as playlist_type,
           playsheets.host as host_name,
-          playsheets.podcast_episode as episode_id,
+          podcast_episodes.id as episode_id,
           playsheets.summary as episode_description,
           playsheets.title as episode_title,
           podcast_episodes.url as episode_audio
