@@ -17,7 +17,7 @@ try{
 	$episodes  = $episode_statement->fetchAll(PDO::FETCH_ASSOC);
 	
 	$select_near_show_playsheets = "SELECT id,start_time FROM playsheets WHERE start_time LIKE :guess AND show_id = :show_id";
-	$match_attempt_statement->prepare($select_near_show_playsheets);
+	$match_attempt_statement = $pdo_db->prepare($select_near_show_playsheets);
 
 	$insert_fake_playsheet_query = "INSERT INTO playsheets (show_id,host,start_time,end_time,title,summary,create_date) 
 	VALUES (:show_id,:host,:start_time,:end_time,:title,:summary,:create_date);";
@@ -42,15 +42,24 @@ try{
 			if(count($matches) > 1){
 				$best_match = $matches[0];
 				foreach($matches as $match){
-					if( abs(strtotime($start_time)-strtotime($matches[$match]['start_time']) < abs(strtotime($start_time)-strtotime($matches[$best_match]['start_time'])){
-						$best_match = $matches[$match];
+					if( abs(strtotime($start_time)-strtotime($match['start_time']) ) < 
+						abs(strtotime($start_time)-strtotime($best_match['start_time']) ) ){
+						$best_match = $match;
 					}
 				}
 			}elseif(count($matches) == 1){
 				$best_match = $matches[0];
 				$playsheet_id = $best_match['id'];
+
+				$update_statement->bindValue(':playsheet_id',$playsheet_id);
+				$update_statement->bindValue(':episode_id',$episode['id']);
+				try{
+					$update_statement->execute();
+				}catch(PDOException $pdoe){
+					$error = "[QUERY] {$update_query} [THROWS] ".$pdoe->getMessage();
+				}
 			}else{		
-				$insert_statement->bindValue(':show_id',$episode['show_id']);
+				/*$insert_statement->bindValue(':show_id',$episode['show_id']);
 				$insert_statement->bindValue(':host',$episode['host']);
 				$insert_statement->bindValue(':start_time',$start_time);
 				$insert_statement->bindValue(':end_time',$end_time);
@@ -62,19 +71,16 @@ try{
 					$playsheet_id = $pdo_db->lastInsertId();
 				}catch(PDOException $pdoe){
 					$error = "[QUERY] {$insert_fake_playsheet_query} [THROWS] ".$pdoe->getMessage();
-				}
+				}*/
 
 
 			}
-			$update_statement->bindValue(':playsheet_id',$playsheet_id);
-			$update_statement->bindValue(':episode_id',$episode['id']);
 
-			try{
-				$update_statement->execute();
-			}catch(PDOException $pdoe){
-				$error = "[QUERY] {$update_query} [THROWS] ".$pdoe->getMessage();
-			}
+
 			
+			
+		}catch(PDOException $pdoe){
+			$error = "[QUERY] {$select_near_show_playsheets} [THROWS] ".$pdoe->getMessage();
 		}
 		echo "<tr". $error != "" ? " class='danger'" : "" . "><td>{$episode['id']}</td><td>".$episode['title']."</td><td>" . $error != "" ? $error : "Successful, playsheet id=".$playsheet_id. "</td></tr>";
 	}
