@@ -109,7 +109,7 @@
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
             this.info.edit_name = this.username;
-
+            this.podcast.show_id = this.info.show_id;
             this.podcast.author = this.info.host;
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_id = this.info.show_id;
@@ -419,6 +419,7 @@
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
+      
             this.podcast.date = this.info.start_time;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
@@ -454,6 +455,7 @@
         this.submit = function () {
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
+          
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
