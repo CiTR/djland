@@ -506,8 +506,6 @@ Route::get('/nowplaying',function(){
 	$yesterday = $day_of_week == 0 ? 6 : $day_of_week - 1;
 	$tomorrow = $day_of_week == 6 ? 0 : $day_of_week + 1;
 		
-
-
 	$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
 			WHERE 
