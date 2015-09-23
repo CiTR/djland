@@ -134,8 +134,11 @@ class Show extends Model
         $xml .= '<link>' .$show['website']. '</link> ';
         $xml .= '<generator>CiTR Radio Podcaster</generator>';
 
-        //Build Each Podcast
-        foreach ($episodes as $episode) {
+        //Build Each Podcas
+        $key = array_reverse(array_keys($episodes->toArray()));
+        $num = count($key);
+        for($i = 0; $i < $num; $i++) {
+            $episode = $episodes[$key[$i]];
             //Get Objects
             $playsheet = $episode->playsheet;
             $episode = $episode->getAttributes();

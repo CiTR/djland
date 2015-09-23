@@ -105,7 +105,7 @@
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
             
             this.show = this.active_show.show;
-
+            console.log(this.active_show);
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
             this.info.edit_name = this.username;
@@ -419,7 +419,7 @@
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
-      
+            this.podcast.show_id = this.info.show_id;
             this.podcast.date = this.info.start_time;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
@@ -455,7 +455,7 @@
         this.submit = function () {
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
-          
+             this.podcast.show_id = this.info.show_id;
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
