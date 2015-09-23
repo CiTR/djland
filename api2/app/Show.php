@@ -113,10 +113,10 @@ class Show extends Model
         $xml .= '<channel>';
         $xml .= '<title>'. htmlspecialchars(html_entity_decode($show['podcast_title'])) . '</title>';
         
-        $xml .= '<description>' . htmlspecialchars(html_entity_decode($show['show_desc']) . '</description>';
-        $xml .= '<itunes:summary>' . htmlspecialchars(html_entity_decode($show['show_desc']). '</itunes:summary>';
+        $xml .= '<description>' . htmlspecialchars(html_entity_decode($show['show_desc'])) . '</description>';
+        $xml .= '<itunes:summary>' . htmlspecialchars(html_entity_decode($show['show_desc'])). '</itunes:summary>';
         if($show['host']) $xml .= '<itunes:author>' . htmlspecialchars(html_entity_decode($show['host'])). '</itunes:author>';
-        $xml .= "<itunes:keywords>".$show['primary_genre_tags']."</itunes:keywords>";
+        $xml .= "<itunes:keywords>".htmlspecialchars(html_entity_decode($show['primary_genre_tags']))."</itunes:keywords>";
         $xml .= '<itunes:subtitle>' . htmlspecialchars(html_entity_decode($show['podcast_summary'])) . '</itunes:subtitle>';
         $xml .= '<itunes:owner>' .
             '<itunes:name>CiTR</itunes:name>' .
