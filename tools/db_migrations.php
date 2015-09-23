@@ -22,9 +22,8 @@ $queries = array(
     'change playlists table to playsheets' => 'ALTER TABLE playlists RENAME TO playsheets;',
     'update playsheets' => 
     'ALTER TABLE `playsheets` 
-        CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL
-        ADD COLUMN `host` TINYTEXT NULL DEFAULT NULL AFTER show_id,
-        ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`';
+        CHANGE COLUMN `spokenword` `summary` MEDIUMTEXT NULL DEFAULT NULL,
+        ADD COLUMN `title` TINYTEXT NULL DEFAULT NULL AFTER `edit_date`',
     'expand playsheets to hold host'=>
         'ALTER TABLE `playsheets` 
             ADD COLUMN `host` TINYTEXT NULL DEFAULT NULL AFTER `show_id`;',

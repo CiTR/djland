@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL);
 use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;
@@ -167,13 +167,15 @@ Route::group(array('prefix'=>'show'),function(){
 		}
 	});
 
+
 	Route::get('/',function(){
 		return Show::all('id','name');
 	});
 	
 	//Searching by Show ID
-	Route::group(array('prefix'=>'{id}'),function($id){
-		Route::get('/',function($id = id){
+	Route::group(array('prefix'=>'{id}'),function($id=id){
+		
+		Route::get('/',function($id){
 			$show = Show::find($id);
 			$show->social = Show::find($id)->social;
 			return Response::json($show);
@@ -256,6 +258,9 @@ Route::group(array('prefix'=>'show'),function(){
 		});
 		Route::get('nextshow/{current_time}',function($id,$time = current_time){
 			return Response::json(Show::find($id)->nextShowTime($time));
+		});
+		Route::get('xml',function($id){
+			return Show::find($id)->make_show_xml();
 		});
 	});
 });
@@ -401,13 +406,31 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$result = $podcast->overwrite_podcast();
 		return $result;
 	});
-	Route::get('/show/write_xml',function(){
-		$shows = Show::all();
+	Route::get('/shows/write_xml',function(){
+		$shows = Show::orderBy('id')->get();
+		echo "<pre>";
+		$index = 0;
 		foreach($shows as $show){
-			$result = $show->make_xml();
-			$results[] = $result;
+			$index++;
+			if($show->podcast_slug){
+				
+				$result = $show->make_show_xml();
+				$result['index'] = $index;
+				print_r($result);
+
+				$results[] = $result;
+			}
+		
+			
 		}
-		//return json_encode($results);
+		//return Response::json($results);
+	});
+	Route::get('/shows',function(){
+		$shows = Show::all();
+		echo "<pre>";
+		foreach($shows as $show){
+			print_r(array($show->name,$show->id,$show->podcast_slug));
+		}
 	});
 
 

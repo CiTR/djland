@@ -73,6 +73,7 @@ foreach ($xml_urls as $key => $xml_url) {
                 $channel_info['xml'] = $xml_url;
                 $slug = explode('/',$xml_url);
                 $slug = array_pop($slug);
+                $slug = str_replace('.xml','',$slug);
                 $channel_info['slug'] = $slug;
 
                 $channel_q = "INSERT into podcast_channels
