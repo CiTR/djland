@@ -52,8 +52,9 @@ else {
 	else{
 		echo "<body class='wallpaper'>";
 	}
-?>
+?>	
 	<div id = 'login'>
+		<div style='font-size:2em;'>Please do not use firefox as it does not currently work with setting playsheet times.</div>
 		<FORM METHOD=POST ACTION= <?php echo "'".$_SERVER['SCRIPT_NAME']."'"; ?> name='site_login' >
 			<h3>Welcome to DJ Land</h3>
 			<label for='username'>Login: </label><input type=text name='username'/><br/>

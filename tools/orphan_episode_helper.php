@@ -39,27 +39,11 @@ try{
 			$match_attempt_statement->execute();
 			$matches = $match_attempt_statement->fetchAll(PDO::FETCH_ASSOC);
 
-			if(count($matches) > 1){
+			if(count($matches) == 1){
 				$best_match = $matches[0];
-				foreach($matches as $match){
-					if( abs(strtotime($start_time)-strtotime($match['start_time']) ) < 
-						abs(strtotime($start_time)-strtotime($best_match['start_time']) ) ){
-						$best_match = $match;
-					}
-				}
-			}elseif(count($matches) == 1){
-				$best_match = $matches[0];
-				$playsheet_id = $best_match['id'];
-
-				$update_statement->bindValue(':playsheet_id',$playsheet_id);
-				$update_statement->bindValue(':episode_id',$episode['id']);
-				try{
-					$update_statement->execute();
-				}catch(PDOException $pdoe){
-					$error = "[QUERY] {$update_query} [THROWS] ".$pdoe->getMessage();
-				}
+				$playsheet_id = $best_match['id'];				
 			}else{		
-				/*$insert_statement->bindValue(':show_id',$episode['show_id']);
+				$insert_statement->bindValue(':show_id',$episode['show_id']);
 				$insert_statement->bindValue(':host',$episode['host']);
 				$insert_statement->bindValue(':start_time',$start_time);
 				$insert_statement->bindValue(':end_time',$end_time);
@@ -71,9 +55,15 @@ try{
 					$playsheet_id = $pdo_db->lastInsertId();
 				}catch(PDOException $pdoe){
 					$error = "[QUERY] {$insert_fake_playsheet_query} [THROWS] ".$pdoe->getMessage();
-				}*/
+				}
+			}
+			$update_statement->bindValue(':playsheet_id',$playsheet_id);
+			$update_statement->bindValue(':episode_id',$episode['id']);
 
-
+			try{
+				$update_statement->execute();
+			}catch(PDOException $pdoe){
+				$error = "[QUERY] {$update_query} [THROWS] ".$pdoe->getMessage();
 			}
 
 

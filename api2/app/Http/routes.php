@@ -353,7 +353,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$show_ids[] = $show->id;
 		}
 		$socan = Socan::all();
-		foreach(Playsheet::orderBy('id','desc')->whereIn('show_id',$show_ids)->limit('500')->get() as $ps){
+		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('500')->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
