@@ -545,8 +545,6 @@ Route::get('/nowplaying',function(){
 	$day_of_week = date('w');
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
-	$result['weekday'] = $day_of_week;
-	$result['week'] = $current_week_val;
 
 	$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
