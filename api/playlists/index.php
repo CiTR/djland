@@ -18,7 +18,7 @@ $limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']
       GREATEST(playsheets.edit_date,"0000-00-00 00:00:00") as edit_date
     FROM playsheets
     LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
-
+    WHERE status = 2 
     ORDER BY
       GREATEST(playsheets.edit_date,"0000-00-00 00:00:00")
     DESC limit ' . $limit . ' OFFSET ' . $offset;
