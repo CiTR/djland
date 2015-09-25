@@ -506,6 +506,7 @@ Route::get('/SAM/range',function(){
 });
 Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+	date_default_timezone_set('America/Los_Angeles');
 	$result = array();
 	if($using_sam){
 		$last_track = DB::connection('samdb')
@@ -534,17 +535,19 @@ Route::get('/nowplaying',function(){
 	//Get Current week since Epoch
     $current_week = Date('W', strtotime('tomorrow',strtotime('now')));
     if ((int) $current_week % 2 == 0){
-        $current_week_val = 2;
-    } else {
         $current_week_val = 1;
+    } else {
+        $current_week_val = 2;
     };
 
 
 	//We use 0 = Sunday instead of 7
-	$day_of_week = date('N') == 7 ? 0 : date('N');
-	$yesterday = $day_of_week == 0 ? 6 : $day_of_week - 1;
-	$tomorrow = $day_of_week == 6 ? 0 : $day_of_week + 1;
-		
+	$day_of_week = date('w');
+	$yesterday = ($day_of_week - 1);
+	$tomorrow = ($day_of_week + 1);
+	$result['weekday'] = $day_of_week;
+	$result['week'] = $current_week_val;
+
 	$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
 			WHERE 
