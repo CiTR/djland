@@ -287,6 +287,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
+
+		foreach(Input::get()['ads'] as $ad){
+			$ad['playsheet_id'] = $ps->id;
+
+			$a = Ad::find($ad['id']);
+			unset($ad['id']);
+			$a->update((array) $ad);
+		}
 		$response = new stdClass();
 		$response->id = $ps->id;
 		$response->podcast_id = $podcast->id;
@@ -332,7 +340,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			foreach($playitems as $playitem){
 				Playitem::create($playitem);
 			}
-			$ads = Input::get()['ads'];		
+			foreach(Input::get()['ads'] as $ad){
+				$ad['playsheet_id'] = $ps->id;
+				$a = Ad::find($ad['id'])->update((array) $ad);
+			}	
 		});
 
 		Route::post('episode',function($id){

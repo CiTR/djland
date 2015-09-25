@@ -96,9 +96,11 @@
                     this_.updateEnd();
                     this_.updateStart();
 
-                    call.getAds(start_unix).then(function(response){
-                        this_.ads = response.data;
-                    });
+                    if(id < 1){
+                        call.getAds(start_unix).then(function(response){
+                            this_.ads = response.data;
+                        });
+                    }
             });
         }
         this.updateShowValues = function(element){
