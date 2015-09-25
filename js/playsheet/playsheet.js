@@ -96,7 +96,7 @@
                     this_.updateEnd();
                     this_.updateStart();
 
-                    if(id < 1){
+                    if(this_.info.id < 1){
                         call.getAds(start_unix).then(function(response){
                             this_.ads = response.data;
                         });
