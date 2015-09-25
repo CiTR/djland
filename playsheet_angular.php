@@ -145,7 +145,6 @@
 				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
 				<br/>
 			</div>
-		
 			<div class='col1 double-padded-top'>
 				<div class='span4col5 side-padded double-padded-top'>
 					<h4> Ads, PSAs, Station IDs </h4>

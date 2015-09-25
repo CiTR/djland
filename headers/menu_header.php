@@ -119,7 +119,10 @@ function print_menu(){
 					<ul>
 
 						<li><a href="member_resources.php">Resources</a></li>				
-						<?php if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()): ?>
+						<?php 
+						//if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()): 
+						if(permission_level() >= $djland_permission_levels['member']):
+						?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
 						<?php endif; ?>
 						
