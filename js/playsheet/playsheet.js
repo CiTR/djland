@@ -126,6 +126,7 @@
             this.start.setMinutes(this.start_minute);
             this.start.setSeconds(this.start_second);
             this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+            
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
         this.updateEnd = function(){

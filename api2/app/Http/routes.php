@@ -45,6 +45,10 @@ Route::group(['middleware' => 'auth'], function(){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
+			Route::delete('/',function($id){
+				return Member::find($id)->delete() ? "true":"false";
+			});
+
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
@@ -90,7 +94,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$m = Member::find($id);
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
-				$user->save();
+				return $user->save() ? "true":"false";
 			});
 			Route::get('permission',function($member_id = id){
 				$permission_levels = Member::find($member_id)->user->permission;

@@ -191,10 +191,11 @@ function add_handlers(){
         var requests = Array();
         if(confirm(confirm_string)){
         	for(var member in members_to_delete){
+        		console.log(members_to_delete[member]);
 	        	requests.push(
 	        		$.ajax({
 						type:"DELETE",
-		                url: "form-handlers/membership/member.php",
+		                url: "api2/public/member/"+members_to_delete[member],
 		                data: {"member_id" : members_to_delete[member]},
 		                dataType: "json",
 		                async: true

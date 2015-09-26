@@ -1,20 +1,20 @@
 
-<td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.artist' class='required'></input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
+<td class='text-center'><input ng-model='playitem.id' class='hidden' >{{$index + 1}} </input></td>
+<td><input ng-change='playsheet.update()'  ng-model='playitem.artist' class='required'></input></td>
+<td><input ng-change='playsheet.update()'  ng-model='playitem.song' class='required'></input></td>
+<td><input ng-change='playsheet.update()'  ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.socan'>
 	<input ng-change='playsheet.update()' ng-model='playitem.composer' ng-class='{required: playsheet.socan}'></input>
 </td>
 <td ng-show='playsheet.socan'>
 	<select  ng-model="playitem.insert_song_start_hour" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateTrackStart(playitem); playsheet.update();"></select>:
     <select ng-model="playitem.insert_song_start_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 " ng-change="playsheet.updateTrackStart(playitem); playsheet.update();"></select>
-    <button ng-class="{socan: playsheet.socan }" ng-click="playsheet.cueTrack(playitem)">CUE</button>
+    <button ng-click="playsheet.cueTrack(playitem)">CUE</button>
 </td>
 <td ng-show='playsheet.socan'>
 	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>:
     <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>
-    <button ng-class="{socan: playsheet.socan }" ng-click="playsheet.endTrack(playitem)">END</button>
+    <button  ng-click="playsheet.endTrack(playitem)">END</button>
 </td>
 <td>
 	<button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' 			ng-class="{filled:playitem.is_playlist==true}" 	class="box playlist pad-top"></button>
@@ -40,7 +40,7 @@
 		<option value='30'>30</option>
 	</select>
 </td>
-<td><input class='lang' ng-model='playitem.lang'></input></td>
+<td><input class='lang' ng-model='playitem.lang' class="lang"></input></td>
 <td><button ng-click=playsheet.add($index)><img src='images/collapsed.png'></button></td>
 <td><button ng-click=playsheet.remove($index)><img src='images/expanded.png'></button></td>
 <td class='hand side-padded'>&#x21D5;</td>
