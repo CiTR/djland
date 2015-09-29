@@ -107,11 +107,11 @@ class Show extends Model
             }
 
 
-        $xml_head = '<?xml version="1.0" encoding="ISO-8859-1" ?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" > ';
+        $xml_head = '<?xml version="1.0" encoding="ISO-8859-1" ?>\n<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" >\n';
         $xml = '';
         $xml .= $xml_head;
-        $xml .= '<channel>';
-        $xml .= '<title>'. htmlspecialchars(html_entity_decode($show['podcast_title'])) . '</title>';
+        $xml .= '<channel>\n';
+        $xml .= '<title>'. htmlspecialchars(html_entity_decode($show['podcast_title'])) . '</title>\n';
         
         $xml .= '<description>' . htmlspecialchars(html_entity_decode($show['show_desc'])) . '</description>';
         $xml .= '<itunes:summary>' . htmlspecialchars(html_entity_decode($show['show_desc'])). '</itunes:summary>';

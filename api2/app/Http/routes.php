@@ -407,7 +407,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 });
 
-	Route::post('/podcast',function($id = id){
+	Route::put('/podcast',function(){
 		$podcast = Podcast::create((array) Input::get()['podcast']);
 		$podcast->duration_from_playsheet();
 		return Response::json(array('id'=>$podcast->id));
@@ -440,6 +440,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 				$results[] = $result;
 			}
+			break;
 		
 			
 		}
