@@ -80,8 +80,8 @@
                     this_.start = new Date(start_unix * 1000);
                     this_.end = new Date(end_unix * 1000);
 
-                    this_.info.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
-                    this_.info.end_time = $filter('date')(this_.end,'yyyy-MM-dd HH:mm:ss');
+                    this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
+                    this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
                     this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
                     this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                     this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
@@ -125,7 +125,7 @@
             this.start.setHours(this.start_hour);
             this.start.setMinutes(this.start_minute);
             this.start.setSeconds(this.start_second);
-            this.info.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+            this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
@@ -133,7 +133,7 @@
             this.end.setHours(this.end_hour);
             this.end.setMinutes(this.end_minute);
             this.end.setSeconds(this.end_second);
-            this.info.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
+            this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
 
@@ -152,7 +152,7 @@
             this.end_minute = $filter('pad')(this.end.getMinutes(),2);
             this.end_second = $filter('pad')(this.end.getSeconds(),2);
             //this.end_time = $filter('date')(end, 'HH:mm:ss');
-            this.info.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
+            this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
 
@@ -284,7 +284,7 @@
                         }
                         break;
                     }
-                    var now = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                    var now = new Date();
 
                     call.getShowPlaysheets(this_.show_value).then(function(response){
                         //DISPLAY OLD PLAYSHEETS
@@ -299,8 +299,8 @@
                         this_.end = new Date(end_unix * 1000);
 
                         this_.info.unix_time = this_.start.getTime() / 1000;
-                        this_.info.start_time = $filter('date')(this_.start,'yyyy-MM-dd HH:mm:ss');
-                        this_.info.end_time = $filter('date')(this_.end,'yyyy-MM-dd HH:mm:ss');
+                        this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
+                        this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
                         this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
                         this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                         this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
@@ -339,13 +339,13 @@
             this_.update();
         },true);
         $scope.$watch('playsheet.info.start_time', function () {
-            this_.info.start_time = $filter('date')(this_.info.start_time,'yyyy-MM-dd HH:mm:ss');
+            this_.info.start_time = $filter('date')(this_.info.start_time,'yyyy/MM/dd HH:mm:ss');
             this_.start = new Date(this_.info.start_time);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
             console.log("Start Time "+this_.info.start_time);
         });
         $scope.$watch('playsheet.info.end_time', function () {
-            this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy-MM-dd HH:mm:ss');
+            this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy/MM/dd HH:mm:ss');
             this_.end = new Date(this_.info.end_time);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
             console.log("End Time " + this_.info.end_time);
@@ -418,7 +418,7 @@
         this.saveDraft = function(){
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
-            var date = $filter('date')(this.start,'yyyy-MM-dd');
+            var date = $filter('date')(this.start,'yyyy/MM/dd');
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
@@ -478,10 +478,12 @@
                 alert("Cannot create a podcast in the future, please save as a draft.");
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
+            }else if(this.start.getTime()/1000 - this.end.getTime()/1000 > 8*60*60){
+                alert("This podcast is over 8 hours. 8 Hours is the maximum");
             }else{
                //Update Status to submitted playsheet
                 this.info.status = 2;
-                var date = $filter('date')(this.start,'yyyy-MM-dd');
+                var date = $filter('date')(this.start,'yyyy/MM/dd');
                 for(var playitem in this_.playitems){
                     this_.playitems[playitem].show_date = date;
                 }
@@ -565,7 +567,7 @@
         };
         this.samRange = function () {
             var this_ = this;
-            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+            call.getSamRange($filter('date')(this.start,'yyyy/MM/dd HH:mm:ss'),$filter('date')(this.end,'yyyy/MM/dd HH:mm:ss')).then(function(data){
                 for (var samplay in data.data) {
                     this_.addSamPlay(this_.formatSamPlay(data.data[samplay]));
                 }
@@ -580,7 +582,7 @@
 
     app.controller('datepicker', function($filter) {
       this.today = function() {
-        this.dt = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+        this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
       };
       this.clear = function () {
         this.dt = null;
@@ -591,7 +593,7 @@
         $event.stopPropagation();
         this.opened = true;
       };
-      this.format = 'yyyy-MM-dd HH:mm:ss';
+      this.format = 'yyyy/MM/dd HH:mm:ss';
     });
 
     //Declares playitem attribute

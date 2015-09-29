@@ -64,14 +64,14 @@
             this.start.setSeconds(this.editing.start_second);
             this.start.setMinutes(this.editing.start_minute);
             this.start.setHours(this.editing.start_hour);
-            this.editing.playsheet.start_time = $filter('date')(this.start,'yyyy-MM-dd HH:mm:ss');
+            this.editing.playsheet.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }  
         this.updateEnd = function(){
             this.end.setSeconds(this.editing.end_second);
             this.end.setMinutes(this.editing.end_minute);
             this.end.setHours(this.editing.end_hour);
-            this.editing.playsheet.end_time = $filter('date')(this.end,'yyyy-MM-dd HH:mm:ss');
+            this.editing.playsheet.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }
 
@@ -150,7 +150,7 @@
                 var elapsed = new Date(this.end);
                  elapsed.setSeconds(this.end.getSeconds() - 10 + this.seconds_elapsed);
             }         
-            $('#elapsed').text($filter('date')(elapsed,'yyyy-MM-dd HH:mm:ss'));
+            $('#elapsed').text($filter('date')(elapsed,'yyyy/MM/dd HH:mm:ss'));
         }
         this.load_and_play_sound = function(url,time){
             var this_ = this;
@@ -245,7 +245,7 @@
 
     app.controller('datepicker', function($filter) {
       this.today = function() {
-        this.dt = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+        this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
       };
       this.clear = function () {
         this.dt = null;
