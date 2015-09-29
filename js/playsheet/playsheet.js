@@ -185,7 +185,9 @@
                     for(var item in playsheet.playsheet){
                         this_.info[item] = playsheet.playsheet[item];
                     }
-
+                    var re = new RegExp('-','g');
+                    this_.info.start_time = this_.info.start_time.replace(re,'/');
+                    this_.info.end_time = this_.info.end_time.replace(re,'/');
                     //Create Extra Variables to allow proper display in UI
                     this_.start = new Date(this_.info.start_time);
                     this_.end = new Date(this_.info.end_time);
