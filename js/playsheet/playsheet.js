@@ -511,8 +511,7 @@
                         this.podcast.show_id = this.info.show_id;
 
                         call.saveNewPodcast(this_.podcast).then(function(response){
-                            var podcast_id = reponse.data;
-                            this_.podcast_id = podcast_id['id'];
+                            this_.podcast.id = response.data['id'];
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
                                     console.log(response.data);
