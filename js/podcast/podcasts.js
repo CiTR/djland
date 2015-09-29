@@ -50,6 +50,10 @@
         this.edit_episode = function (episode){
             console.log(episode);
             this.editing = angular.copy(episode);
+
+            var re = new RegExp('-','g');
+            this_.info.start_time = this_.info.start_time.replace(re,'/');
+            this_.info.end_time = this_.info.end_time.replace(re,'/');
             this.start = new Date(this.editing.playsheet.start_time);
             this.end = new Date(this.editing.playsheet.end_time);
 

@@ -90,9 +90,9 @@ if(!isset($_GET['id'])){
                 <h4 class='text-left double-padded-top'>Broadcast Date</h4>
                 
                 <div>
-                    <h5>Start Time : {{list.editing.playsheet.start_time | date:'yyyy-MM-dd HH:mm:ss'}}</h5>
+                    <h5>Start Time : {{list.editing.playsheet.start_time | date:'yyyy/MM/dd HH:mm:ss'}}</h5>
                     <div ng-controller='datepicker as date' >
-                        <input class="date_picker" type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss"
+                        <input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                            ng-model="list.editing.playsheet.start_time"  is-open="date.opened"
                            ng-required="true" close-text="Close" ng-hide="true"
                            ng-change="date.date_change();" />
@@ -109,9 +109,9 @@ if(!isset($_GET['id'])){
 
                 </div>
                 <div>
-                    <h5>End Time: {{list.editing.playsheet.end_time | date:'yyyy-MM-dd HH:mm:ss'}}</h5>
+                    <h5>End Time: {{list.editing.playsheet.end_time | date:'yyyy/MM/dd HH:mm:ss'}}</h5>
                     <div ng-controller='datepicker as date' >
-                        <input class="date_picker" type="text" datepicker-popup="yyyy-MM-dd HH:mm:ss"
+                        <input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                            ng-model="list.editing.playsheet.end_time"  is-open="date.opened"
                            ng-required="true" close-text="Close" ng-hide="true"
                            ng-change="date.date_change();" />
