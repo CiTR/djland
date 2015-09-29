@@ -299,7 +299,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						$statement->bindValue(':summary',isset($episode['ITUNES:SUMMARY']) ? $episode['ITUNES:SUMMARY'] : "");
 						$statement->bindValue(':date', $episode['PUBDATE']);
 						$statement->bindValue(':url',$episode['GUID']);
-						$statement->bindValue(':length',$episode['duration']);
+						$statement->bindValue(':length',$episode['length']);
 						$statement->bindValue(':author',isset($channel->author) ? $channel->author : "" );
 						$statement->bindValue(':duration',$episode['duration']);
 						try{

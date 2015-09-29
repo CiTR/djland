@@ -427,22 +427,19 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return $result;
 	});
 	Route::get('/shows/write_xml',function(){
+		error_reporting(E_ALL);
 		$shows = Show::orderBy('id')->get();
 		echo "<pre>";
 		$index = 0;
 		foreach($shows as $show){
 			$index++;
 			if($show->podcast_slug){
-				
 				$result = $show->make_show_xml();
 				$result['index'] = $index;
 				print_r($result);
 
 				$results[] = $result;
-			}
-			break;
-		
-			
+			}			
 		}
 		//return Response::json($results);
 	});

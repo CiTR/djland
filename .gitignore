@@ -3,6 +3,10 @@ headers/config.php
 config.php
 podcast-config.php
 
+#Ignore Test directories
+test-audio
+test-xml
+
 #Ignore Any generated static pages.
 JSONDATA
 JSONDATA/*

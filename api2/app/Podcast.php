@@ -54,7 +54,7 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Set File Name
-	    $file_name = html_entity_decode(str_replace(array('\\','/',"'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$file_date.'.mp3';
+	    $file_name = html_entity_decode(str_replace(array('\\','/',"'", '"',' '),'-',str_replace('.','',$this->playsheet->show->name)),ENT_QUOTES).'-'.$file_date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
@@ -65,8 +65,12 @@ class Podcast extends Model
 	        'genre'         => array($this->playsheet->show->primary_genre_tags),
 	        'comment'       => array('This podcast was created in part by CiTR Radio')
     	);
+    	if(!$testing_environment){
+    		$target_dir = '/home/podcast/audio/'.$year.'/';
+    	}else{
+    		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
+    	}
     	
-    	$target_dir = '/home/podcast/audio/'.$year.'/';
     	//$target_dir = 'audio/'.$year.'/'; 	
     	$target_file_name = $target_dir.$file_name;
 		

@@ -426,6 +426,7 @@
             this.podcast.date = this.info.start_time;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
+            this.podcast.summary = this.info.summary;
             if(this.info.status <= 1){
                 if(this.info.id < 1){
                     //New Playsheet
@@ -470,6 +471,7 @@
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
+            this.podcast.summary = this.info.summary;
            
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
@@ -511,8 +513,7 @@
                         this.podcast.show_id = this.info.show_id;
 
                         call.saveNewPodcast(this_.podcast).then(function(response){
-                            var podcast_id = reponse.data;
-                            this_.podcast_id = podcast_id['id'];
+                            this_.podcast.id = response.data['id'];
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
                                     console.log(response.data);
