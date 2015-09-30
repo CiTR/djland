@@ -180,8 +180,8 @@ class Show extends Model
                         $num_bytes = 0;
                         //Go line by line adding newlines
                         for($i = 0; $i < count($xml); $i ++){
-                            $num_bytes += fwrite($temporary_file_name, $xml[$i]."\n");
-                            if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) $num_bytes += fwrite($temporary_file_name, "\n");
+                            $num_bytes += fwrite($temporary_file, $xml[$i]."\n");
+                            if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) $num_bytes += fwrite($temporary_file, "\n");
                         }
 
                         if($num_bytes > 16){
