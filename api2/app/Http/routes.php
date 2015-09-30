@@ -317,13 +317,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show = Playsheet::find($id)->show;
 				$playsheet -> show = $show;
 				$playsheet -> podcast = Playsheet::find($id)->podcast;
-				
 				$ads = Playsheet::find($id)->ads;
 				foreach($ads as $key => $value){
 					//Get Ad Names From SAM
 					if($using_sam && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-						if(count($ad_info == 1)) $ads[$key]['name'] = $ad_info[0]->title;
+						if(count($ad_info) == 1) $ads[$key]['name'] = $ad_info[0]->title;
 					}else{
 						$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
 					}
