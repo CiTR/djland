@@ -322,8 +322,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				foreach($ads as $key => $value){
 					//Get Ad Names From SAM
 					if($using_sam && is_numeric($value['name'])){
-						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get()[0];
-						$ads[$key]['name'] = $ad_info->title;
+						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
+						if(count($ad_info == 1) $ads[$key]['name'] = $ad_info[0]->title;
 					}else{
 						$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
 					}
