@@ -62,12 +62,12 @@ $(document).ready ( function() {
 	var prompt = "Is this information correct? \nYour full name is "+getVal('firstname') + " " + getVal('lastname') + ". \n";
 	prompt += "Your current address is "+getVal('address')+ " "+ getVal('city') + " " + getVal('province')+ " " + getVal('postalcode') + ". \n"; 
 	prompt += "You are ";
-
-	prompt += "canadian citizen, who is a " + getVal('is_new') + " ";
+	prompt += get('canadian_citizen')  ? "a ":"not a ";
+	prompt += "canadian citizen, who is a " + (get('is_new') == 1 ? 'new':'returning');
 	if(getSelect('member_type') =='Student'){
-		prompt += "student in ";
+		prompt += " student in ";
 		
-		switch(getVal('year')){
+		switch(get('year')){
 			case '1':
 				prompt += " their first year of ";
 				break;
@@ -94,10 +94,10 @@ $(document).ready ( function() {
 
 		prompt += faculty + " with student number " + getVal("student_no") + ". \n";
 	}else{
-		prompt += 'community member. \n';
+		prompt += ' community member. \n';
 	}
 
-	prompt += "You can be reached at " + getVal('email') + ", " + getVal('phone1');
+	prompt += "You can be reached at " + getVal('email') + ", " + getVal('primary_phone');
 	if(getVal('phone2')){
 		prompt += ", " + getVal('phone2');
 	}
@@ -217,6 +217,29 @@ $(document).ready ( function() {
 		}	
 		
 	});
+	$('#email').on('keyup',function(){
+		var email = get('email');
+		var div = $('#email_check');
+		var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+		// ' here because some IDE cant handle regexes
+		if(!re.test(email)){
+			div.text('This is not a valid email');
+			div.removeClass('invisible');
+			div.removeClass('green');
+			div.addClass('red');
+		}else{
+			div.text('Valid email');
+			div.removeClass('invisible');
+			div.removeClass('red');
+			div.addClass('green');
+		}
+	});
+	$('#email').blur(function(){
+		var div = $('#email_check');
+		if(div.text() == 'Valid email'){
+			div.addClass('invisible');
+		}
+	});
 
 
 
@@ -249,6 +272,7 @@ $(document).ready ( function() {
 			$('#password_ok').remove();
 		}		
 	});
+
 	$('#student_no').blur(function(){
 		var student_no = getVal('student_no');
 		if(student_no != ""){
@@ -283,12 +307,7 @@ $(document).ready ( function() {
 });
 	function checkBlocking(){
 		var allOkay = true;
-		$('.required').each( function(){
-			if( !$.trim( $(this).val() )){
-			allOkay=false;
-			console.log("a field is not filled out");
-			}
-		});
+		
 	
 		if($('#username_ok').text() == 'Username taken'){
 			allOkay=false;
@@ -301,11 +320,29 @@ $(document).ready ( function() {
 		if(getVal('member_type')=='Student'){
 			if(!$.trim(getVal('student_no'))){
 				allOkay=false;
-			}
-			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
+				console.log("Student Number Empty");
+			}else if($('#student_no').val().length != 8){
 				allOkay=false;
+                console.log("Not 8 long");
+			}
+			if($('#student_no_ok').text().length > 0 && $('#student_no_ok').text() != "Okay"){
+				allOkay=false;
+				console.log("Student Number Taken");
 			}
 		}
+		if( !$('#email_check').hasClass('green')){
+			allOkay=false;
+			console.log("Invalid Email");
+		}
+		if(allOkay){
+			$('.required').each( function(){
+				if( !$.trim( $(this).val() )){
+				allOkay=false;
+				console.log("a field is not filled out");
+				}
+			});
+		}
+
 		if (allOkay){
 		$('#submit_user').attr('disabled',false);
 		$('#submit_user').text("Submit");

@@ -102,28 +102,55 @@ function addListeners() {
     $('#student_no').focusout( function(){
         if($('#student_no_ok').text() == 'Okay') $('#student_no_ok').hide();
     });
+    $('#email').on('keyup',function(){
+        var email = get('email');
+        var div = $('#email_check');
+        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+        // ' here because some IDE cant handle regexes
+        if(!re.test(email)){
+            div.text('This is not a valid email');
+            div.removeClass('invisible');
+            div.removeClass('green');
+            div.addClass('red');
+        }else{
+            div.text('Valid email');
+            div.removeClass('invisible');
+            div.removeClass('red');
+            div.addClass('green');
+        }
+    });
+    $('#email').blur(function(){
+        var div = $('#email_check');
+        if(div.text() == 'Valid email'){
+            div.addClass('invisible');
+        }
+    });
 }
 function checkBlocking(){
 		var allOkay = true;
-        $('.required').each(function(){
-            if($.trim($(this).val()).length <=0) allOkay=false;
-        });
-
-		if(getVal('member_type')=='Student'){
-			if(!$.trim(getVal('student_no'))){
-				allOkay=false;
-                console.log("Empty");
-			}
-			if($('#student_no').val().length != 8){
-				allOkay=false;
-                console.log("Not 8 long");
-                console.log($('#student_no').text().length);
-			}
-            if($('#student_no_ok').text() > 0 && $('#student_no_ok').text() != "Okay"){
+        
+        if(getVal('member_type')=='Student'){
+            if(!$.trim(getVal('student_no'))){
                 allOkay=false;
-                console.log("OKAY text");
+                console.log("Student Number Empty");
+            }else if($('#student_no').val().length != 8){
+                allOkay=false;
+                console.log("Not 8 long");
             }
-		}
+            if($('#student_no_ok').text().length > 0 && $('#student_no_ok').text() != "Okay"){
+                allOkay=false;
+                console.log("Student Number Taken");
+            }
+        }
+        if( !$('#email_check').hasClass('green')){
+            allOkay=false;
+            console.log("Invalid Email");
+        }
+        if(allOkay){
+            $('.required').each(function(){
+                if($.trim($(this).val()).length <=0) allOkay=false;
+            });
+        }
 
 		if (allOkay){
 		$('#submit_user').attr('disabled',false);
