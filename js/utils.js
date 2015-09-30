@@ -3,14 +3,19 @@ var app = angular.module('djland.utils',[]);
 app.factory('tools',function(){
   return{
     decodeHTML : function (str){
-            str = str.replace(new RegExp('&quot;','gi'),'"');
-            str = str.replace(new RegExp('&Atilde;','gi'),'Ã');
-            str = str.replace(new RegExp('&copy;','gi'),'©');
-            return str.replace(/&#(\d+);/g, function(match, dec) {
-                return String.fromCharCode(dec);
-            });
+        if(str != null){
+          	str = str.replace(new RegExp('&quot;','gi'),'"');
+          	str = str.replace(new RegExp('&Atilde;','gi'),'Ã');
+          	str = str.replace(new RegExp('&copy;','gi'),'©');
+          	return str.replace(/&#(\d+);/g, function(match, dec) {
+              	return String.fromCharCode(dec);
+          	});
+        }else{
+        	return "";
+        }
+            
       }
-  }
+  	}
 });
 
 app.controller('datepicker', function($scope, $filter) {

@@ -212,7 +212,7 @@
         this.save = function(){
             var this_ = this;         
             this.info.edit_name = this.username;
-            this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
+            //this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
             console.log(this);
             this.message = 'saving...';
             

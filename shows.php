@@ -122,8 +122,12 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     <tr social ng-repeat='social in show.socials track by $index'></tr>
                 </table>
                 <div ng-show='show.is_admin'>
-                    <h4 class='text-left double-padded-top'>Podcast URL</h4>
+                    <h4 class='text-left double-padded-top'>Podcast Feedburner URL</h4>
                     <input class='wideinput' ng-model='show.info.rss'>
+                    <h4 class='text-left'>Podcast Title</h4>
+                    <input class='wideinput' ng-model='show.info.podcast_title'>
+                    <h4 class='text-left'>Podcast XML</h4>
+                    <input class='wideinput' ng-model='show.info.podcast_slug'>
                     <h4 class='text-left double-padded-top'>Sponsor</h4>
                     <label for 'sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
                     <label for 'sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>
