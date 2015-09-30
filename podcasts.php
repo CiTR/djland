@@ -97,7 +97,7 @@ if(!isset($_GET['id'])){
                            ng-required="true" close-text="Close" ng-hide="true"
                            ng-change="date.date_change();" />
                     
-                        <button ng-click="date.open($event)" ng-model="list.editing.playsheet.start_time"  >Change Date</button>
+                        <button ng-click="date.open($event)"  >Change Date</button>
                         h:<select ng-model="list.editing.start_hour" ng-options="n for n in [] | range:0:24"
                                   ng-change="list.updateStart()"></select>
                         m:<select ng-model="list.editing.start_minute" ng-options="n for n in [] | range:0:60"
@@ -115,7 +115,7 @@ if(!isset($_GET['id'])){
                            ng-model="list.editing.playsheet.end_time"  is-open="date.opened"
                            ng-required="true" close-text="Close" ng-hide="true"
                            ng-change="date.date_change();" />
-                        <button ng-click="date.open($event)" ng-model="list.editing.playsheet.end_time"  >Change Date</button>
+                        <button ng-click="date.open($event)" >Change Date</button>
                         h:<select ng-model="list.editing.end_hour" ng-options="n for n in [] | range:0:24 "
                                   ng-change="list.updateEnd()"></select>
                         m:<select ng-model="list.editing.end_minute" ng-options="n for n in [] | range:0:60"

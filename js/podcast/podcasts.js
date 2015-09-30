@@ -11,7 +11,7 @@
         this.show_id = show_id;
         this.MAX_PODCAST_DURATION_HOURS = 8;
         this.member_id = member_id;
-
+        var this_ = this;
         this.init = function(){
             var this_ = this;
             //Get Episode list for show/channel
@@ -52,8 +52,8 @@
             this.editing = angular.copy(episode);
 
             var re = new RegExp('-','g');
-            this_.info.start_time = this_.info.start_time.replace(re,'/');
-            this_.info.end_time = this_.info.end_time.replace(re,'/');
+            this.editing.playsheet.start_time = this.editing.playsheet.start_time.replace(re,'/');
+            this.editing.playsheet.end_time = this.editing.playsheet.end_time.replace(re,'/');
             this.start = new Date(this.editing.playsheet.start_time);
             this.end = new Date(this.editing.playsheet.end_time);
 
@@ -84,6 +84,30 @@
             this.end = new Date(this.editing.playsheet.end_time);
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }
+        $scope.$watch('list.editing.playsheet.start_time', function () {
+            if(this_.editing.playsheet != null){
+                this_.editing.playsheet.start_time = $filter('date')(this_.editing.playsheet.start_time,'yyyy/MM/dd HH:mm:ss');
+                this_.start = new Date(this_.editing.playsheet.start_time);
+                this_.editing.start_hour =  $filter('pad')(this_.start.getHours(),2);
+                this_.editing.start_minute = $filter('pad')(this_.start.getMinutes(),2);
+                this_.editing.start_second = $filter('pad')(this_.start.getSeconds(),2);
+               
+                if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+               console.log("Start Time "+this_.editing.playsheet.start_time + " Start var =" +this_.start);
+            }
+            
+        });
+        $scope.$watch('list.editing.playsheet.end_time', function () {
+            if(this_.editing.playsheet != null){
+                this_.editing.playsheet.end_time = $filter('date')(this_.editing.playsheet.end_time,'yyyy/MM/dd HH:mm:ss');
+                this_.end = new Date(this_.editing.playsheet.end_time);
+                this_.editing.end_hour =  $filter('pad')(this_.end.getHours(),2);
+                this_.editing.end_minute = $filter('pad')(this_.end.getMinutes(),2);
+                this_.editing.end_second = $filter('pad')(this_.end.getSeconds(),2);
+                if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+                console.log("End Time " + this_.editing.playsheet.end_time+" End var ="+  this_.end);
+            }
+        });
 
         
 
