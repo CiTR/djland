@@ -123,6 +123,9 @@
 
         this.save = function(){
             var this_ = this;
+            this.editing.podcast.title = this.editing.playsheet.title;
+            this.editing.podcast.subtitle = this.editing.playsheet.summary;
+            this.editing.podcast.summary = this.editing.playsheet.summary;
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
