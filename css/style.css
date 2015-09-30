@@ -1349,9 +1349,13 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
 /*----------------------------*/
-div#username_ok.green,div#password_ok.green,div#student_no_ok.green,button#submit_user.green{
+div#username_ok.green,div#password_ok.green,div#student_no_ok.green,button#submit_user.green,div#email_check.green{
 	background-color:#00FF00;
 	color:black;
+}
+div#email_check.red{
+  background-color:#FF0000;
+  color:white;
 }
 button#submit_user.red{
 	background-color:#FF0000;

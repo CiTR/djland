@@ -148,7 +148,7 @@
 
 				<div id='row8' class='containerrow'>
 					<div class='col7'>Email Address*: </div>
-					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input></div>
+					<div class='col6'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
 					<div class='col6'>Primary Number*:</div>
 					<div class='col6'><input id='primary_phone' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
 					<div class='col6'>Secondary Number:</div>
