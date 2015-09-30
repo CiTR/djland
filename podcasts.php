@@ -69,7 +69,7 @@ if(!isset($_GET['id'])){
                 </p>
                 <div audio source='episode.podcast.url'></div>
                 <br />
-                <div ng-show='episode.playsheet'><a ng-href="playsheet_angular.php?id={{episode.playsheet.id}}" target="_self">go to playsheet</a>
+                <div ng-show='episode.playsheet'><a ng-href="playsheet_angular.php?id={{episode.playsheet.id}}{{episode.playsheet.socan? '&socan=true':''}}" target="_self">go to playsheet</a>
                 <span >
                     <button ng-click="list.edit_episode(episode);" >edit podcast </button>
                 </span>

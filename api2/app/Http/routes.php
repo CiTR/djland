@@ -222,9 +222,17 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::get('episodes',function($id){
 			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->get();
 			$episodes = array();
+			$socan = Socan::all();
 			foreach($podcasts as $podcast){
 				$playsheet = $podcast->playsheet;
+				
 				if($playsheet != null){
+					$playsheet->socan = false;
+					foreach($socan as $period){
+						if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
+							$playsheet->socan = true;
+						}
+					}
 					if($podcast -> duration == 0){
 						$podcast -> duration_from_playsheet();
 					}
