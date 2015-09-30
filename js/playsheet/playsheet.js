@@ -160,8 +160,6 @@
         this.loadRebroadcast = function(){
             call.getPlaysheetData(this.existing_playsheet).then(function(response){
                 this_.playitems = response.data.playitems; 
-                this_.info.summary = response.data.playsheet.summary;
-                this_.info.title = response.data.playsheet.title;
                 this_.info.spokenword_duration = response.data.playsheet.spokenword_duration;
                 if(this_.info.spokenword_duration != null){
                     this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
