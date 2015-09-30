@@ -321,10 +321,13 @@ $(document).ready ( function() {
 			if(!$.trim(getVal('student_no'))){
 				allOkay=false;
 				console.log("Student Number Empty");
-			}
-			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
+			}else if($('#student_no').val().length != 8){
 				allOkay=false;
-				console.log("Student Number Taken or Too Short");
+                console.log("Not 8 long");
+			}
+			if($('#student_no_ok').text().length > 0 && $('#student_no_ok').text() != "Okay"){
+				allOkay=false;
+				console.log("Student Number Taken");
 			}
 		}
 		if( !$('#email_check').hasClass('green')){
