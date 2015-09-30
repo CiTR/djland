@@ -107,6 +107,7 @@ class Show extends Model
             }
 
         $xml[] = "<?xml version='1.0' encoding='ISO-8859-1' ?>";
+        $xml[] = "<?xml-stylesheet title='XSL_formatting' type='text/xsl' href='../xsl/podcast.xsl'?>";
         $xml[] = "<rss xmlns:itunes='http://www.itunes.com/dtds/podcast-1.0.dtd' version='2.0' >";
         $xml[] = "<channel>";
         $xml[] = "<title>". htmlspecialchars(html_entity_decode($show['podcast_title'])) . "</title>";
@@ -179,27 +180,24 @@ class Show extends Model
                         
                         $num_bytes = 0;
                         //Go line by line adding newlines
-                        for($i = 0; $i < count($xml); $i ++){
-                            $num_bytes += fwrite($temporary_file, $xml[$i]."\n");
-                            if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) $num_bytes += fwrite($temporary_file, "\n");
-                        }
+                        /*for($i = 0; $i < count($xml); $i ++){*/
+                            $num_bytes += file_put_contents($temporary_file_name, implode("\n",$xml));
+                            //if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) $num_bytes += fwrite($temporary_file, "\n");
+                        //}
 
-                        if($num_bytes > 16){
-                            
-                            if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
-                                //Successfully Uploaded the file
-                                $response['reponse'] = array(
-                                    'filename' => $file_name,
-                                    'size' => $num_bytes,
-                                    'url' => $ftp->url_path.$file_name
-                                    );
+                       
+                        if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
+                            //Successfully Uploaded the file
+                            $response['reponse'] = array(
+                                'filename' => $file_name,
+                                'size' => $num_bytes,
+                                'url' => $ftp->url_path.$file_name
+                                );
 
-                            }else{
-                                $response['reponse'] = "Failed to write to FTP server";
-                            }
                         }else{
-                            $response['reponse'] = "Failed to connect to write temp file";
+                            $response['reponse'] = "Failed to write to FTP server";
                         }
+                       
                         while(is_resource($temporary_file)){
                            //Handle still open
                            fclose($temporary_file);
