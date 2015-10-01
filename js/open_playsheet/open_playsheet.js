@@ -12,8 +12,8 @@
 		this.more = function(){
 			if(!this.done){
 				this.loading = true;
-				call.getMemberPlaysheets(this_.member_id,this.offset).then(function(playsheets){
-					if(playsheets.length > 0){
+				call.getMemberPlaysheets(this_.member_id,this_.offset).then(function(playsheets){
+					if(playsheets.data.length > 0){
 						if(this_.offset == 0) this_.playsheets = playsheets.data;
 						else{
 							for(var playsheet in playsheets.data){

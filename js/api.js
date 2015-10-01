@@ -8,7 +8,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get('/headers/constants.php');
 		},
 		getMemberPlaysheets: function (member_id,offset) {
-			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + (offset ? '/'+offset:''));
+			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset);
 		},
 		getPlaysheets: function (limit) {
 			limit = limit || 50;

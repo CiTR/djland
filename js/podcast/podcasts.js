@@ -41,7 +41,7 @@
                 var this_ = this;
                 if(this.show_id){
                     this.status = 'loading sheets and podcasts...';
-                    call.getShowEpisodes(show_id,this_.offset).then(function(response){
+                    call.getShowEpisodes(show_id,this.offset).then(function(response){
                         this_.status = "Select a Podcast to edit";
                         if(response.data.length > 0){
                             if(this_.offset == 0) this_.episodes = response.data;
