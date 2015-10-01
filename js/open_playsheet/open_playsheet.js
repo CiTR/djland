@@ -7,21 +7,27 @@
 		console.log(this.member_id);
 		this_=this;
 		this.offset = 0;
+		this.done = false;
 
 		this.more = function(){
-			this.loading = true;
-			call.getMemberPlaysheets(this_.member_id,this.offset).then(function(playsheets){
-				
-				if(this_.offset == 0) this_.playsheets = playsheets.data;
-				else{
-					for(var playsheet in playsheets.data){
-						this_.playsheets.push(playsheets.data[playsheet]);
+			if(!this.done){
+				this.loading = true;
+				call.getMemberPlaysheets(this_.member_id,this.offset).then(function(playsheets){
+					if(playsheets.length > 0){
+						if(this_.offset == 0) this_.playsheets = playsheets.data;
+						else{
+							for(var playsheet in playsheets.data){
+								this_.playsheets.push(playsheets.data[playsheet]);
+							}
+						}
+						this_.offset += playsheets.data.length;
+					}else{
+						this_.done = true;
 					}
-				}
-				console.log(this_.playsheets);
-				this_.offset += playsheets.data.length;
-				this_.loading = false;
-			});
+					this_.loading = false;
+				});
+			}
+			
 		};
 		this.more();		
 	});

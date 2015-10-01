@@ -219,8 +219,8 @@ Route::group(array('prefix'=>'show'),function(){
 				Showtime::create($showtime);
 			}
 		});
-		Route::get('episodes',function($id){
-			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->get();
+		Route::get('episodes/{offset}',function($id,$offset = offset){
+			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->limit(50)->offset($offset)->get();
 			$episodes = array();
 			$socan = Socan::all();
 			foreach($podcasts as $podcast){
@@ -248,6 +248,7 @@ Route::group(array('prefix'=>'show'),function(){
 			return Response::json($episodes);
 
 		});
+		
 		Route::get('playsheets',function($id){
 			return Show::find($id)->playsheets;
 		});

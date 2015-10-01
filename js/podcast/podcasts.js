@@ -8,9 +8,11 @@
         this.Math = window.Math;
         this.plodcasts = [];
         this.editing  = false;
+        this.done = false;
         this.show_id = show_id;
         this.MAX_PODCAST_DURATION_HOURS = 8;
         this.member_id = member_id;
+        this.offset = 0;
         var this_ = this;
         this.init = function(){
             var this_ = this;
@@ -34,17 +36,30 @@
             this.load();
         }
         this.load = function() {
-            var this_ = this;
-            if(this.show_id){
-                this.status = 'loading sheets and podcasts...';
-                call.getShowEpisodes(show_id).then(function(response){
-                    this_.episodes = response.data;
-                    this_.status = "Select a Podcast to edit";
-                },function(error){
-                    console.log(error);
-                });
-            }
-
+            if(!this.done){
+                this.loading = true;
+                var this_ = this;
+                if(this.show_id){
+                    this.status = 'loading sheets and podcasts...';
+                    call.getShowEpisodes(show_id,this_.offset).then(function(response){
+                        this_.status = "Select a Podcast to edit";
+                        if(response.data.length > 0){
+                            if(this_.offset == 0) this_.episodes = response.data;
+                            else{
+                                for(var episode in response.data){
+                                    this_.episodes.push(response.data[episode]);
+                                }
+                            }
+                            this_.offset += response.data.length;
+                        }else{
+                            this_.done = true;
+                        }
+                        this_.loading = false;
+                    },function(error){
+                        console.log(error);
+                    });
+                }
+            }    
         }
 
         this.edit_episode = function (episode){
@@ -243,7 +258,25 @@
         this.init();
 
     });
-
+    app.directive('scrolly', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var raw = element[0];
+                console.log('loading directive');
+                element.bind('scroll', function () {
+                    console.log('in scroll');
+                    console.log(raw.scrollTop + raw.offsetHeight);
+                    console.log(raw.scrollHeight);
+                    if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/5 >= raw.scrollHeight ) {
+                        scope.$apply(attrs.scrolly);
+                        //raw.scrollTop = (raw.scrollTop+raw.offsetHeight);
+                        console.log("Hit Bottom");
+                    }
+                });
+            }
+        };
+    });
     app.directive('audio', function($sce) {
         return {
             restrict: 'A',
