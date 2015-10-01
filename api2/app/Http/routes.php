@@ -363,7 +363,32 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			return Response::json( $playsheet -> update((array) Input::get()['playsheet']) && $podcast -> update((array) Input::get()['podcast']) ? "true" : "false");
 		});
 	});
+	Route::get('member/{member_id}/{offset}',function($member_id = member_id,$offset = offset){
+		$permissions = Member::find($member_id)->user->permission;
+		if($permissions->staff ==1 || $permissions->administrator==1){
+			$shows = Show::all();
+		}else{
+			$shows =  Member::find($member_id)->shows;
+		}
+		foreach($shows as $show){
+			$show_ids[] = $show->id;
+		}
+		$socan = Socan::all();
+		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->offset($offset)->get() as $ps){
+			$playsheet = new stdClass();
+			$playsheet = $ps;
+			$playsheet -> show_info = Show::find($ps->show_id);
+			$playsheet->socan = false;
 
+			foreach($socan as $period){
+				if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
+					$playsheet->socan = true;
+				}
+			}
+			$playsheets[] = $playsheet;
+		}
+		return Response::json($playsheets);	
+	});
 	Route::get('member/{member_id}',function($member_id = member_id){
 		$permissions = Member::find($member_id)->user->permission;
 		if($permissions->staff ==1 || $permissions->administrator==1){
@@ -375,7 +400,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$show_ids[] = $show->id;
 		}
 		$socan = Socan::all();
-		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('500')->get() as $ps){
+		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
