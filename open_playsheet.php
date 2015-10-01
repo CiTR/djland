@@ -17,8 +17,9 @@
 		<script type='text/javascript' src='js/open_playsheet/open_playsheet.js'></script>
 		<script type='text/javascript' src='js/api.js'></script>
 	    <?php print_menu(); ?>
+		<div class='text-center loading' ><img ng-show='open_playsheet.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		<div id='wrapper'>
-			<div class='text-center' ng-show='open_playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+			
 			<div class='scroll' scrolly='!open_playsheet.loading ? open_playsheet.more():""'>
 				<table class='table-hover table-condensed'>
 					<tr><th>Show<th>Host<th>Date<th>Status</tr>

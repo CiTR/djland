@@ -139,7 +139,11 @@ input, select, textarea, option{
 }
 .scroll{
   overflow-y: scroll;
-  max-height:800px;
+  max-height:80%;
+}
+.loading{
+  min-height:20px;
+  display:block;
 }
 .clean-list{
     list-style: none;

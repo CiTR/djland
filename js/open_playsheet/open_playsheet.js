@@ -35,7 +35,7 @@
 	                console.log('in scroll');
 	                console.log(raw.scrollTop + raw.offsetHeight);
 	                console.log(raw.scrollHeight);
-	                if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/10 >= raw.scrollHeight ) {
+	                if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/5 >= raw.scrollHeight ) {
 	                    scope.$apply(attrs.scrolly);
 	                    //raw.scrollTop = (raw.scrollTop+raw.offsetHeight);
 	                    console.log("Hit Bottom");
