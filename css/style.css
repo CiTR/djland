@@ -137,7 +137,10 @@ input, select, textarea, option{
 }
 .wrapper:after{    background-color: grey;
 }
-
+.scroll{
+  overflow-y: scroll;
+  max-height:800px;
+}
 .clean-list{
     list-style: none;
 }
@@ -538,6 +541,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 }
 
 /* Playsheet Angular CSS */
+
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
