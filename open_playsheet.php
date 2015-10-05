@@ -26,7 +26,7 @@
 					<tbody when-scrolled='more()' >
 						<tr class='clickable-row' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 								<td ng-click=go('playsheet.php?id={{item.id}}')>{{item.show_info.name}}</td>
-								<td>{{item.host}}</td>
+								<td class='host'>{{item.host}}</td>
 								<td>{{item.start_time}}</td>
 								<td>{{item.status != 2 ? "(Draft)" : "" }}</td>
 						</tr>

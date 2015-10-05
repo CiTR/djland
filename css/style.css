@@ -546,7 +546,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 
 /* Playsheet Angular CSS */
 
-
+.host{
+  max-width:400px;
+}
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
 div#main {
@@ -1775,12 +1777,7 @@ width: 55px;
 }
 
 div#ui-datepicker-div{
-	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
-    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
-    box-shadow:inset 0px 0px 1px #BEBEBE;
-	display:inline-block;
-		position:relative;
-	max-width:300px;
+	max-width:200px;
 	max-height:300px;
 	margin-top:0px;
 	z-index:50 !important;

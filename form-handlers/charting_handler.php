@@ -1,5 +1,6 @@
 <?php
-	include_once("../headers/session_header.php");
+error_reporting(E_ALL);
+include_once("../headers/session_header.php");
 require("../headers/db_header.php");
 require("../headers/function_header.php");
 require("../adLib.php");
@@ -18,18 +19,23 @@ $to = date("Y/m/d",$to);
 /*
  * Returns: song,artist,album,is_can,is_pl,date,show_name
  */
-$query = 
-"SELECT DISTINCT s.song AS song, s.artist AS artist, s.title AS album, pi.is_canadian AS is_can, pi.is_playlist AS is_pl, pi.show_date AS date, sh.name AS show_name, pl.status AS status 
-FROM songs AS s INNER JOIN playitems AS pi ON s.id = pi.song_id INNER JOIN shows AS sh ON sh.id = pi.show_id INNER JOIN playsheets AS pl ON pi.playsheet_id = pl.id WHERE pi.show_date >= '".$from."' AND pi.show_date <= '".$to."' 
-GROUP BY s.artist, s.song, sh.id ORDER BY pi.show_date ASC, sh.name ASC , pl.status DESC";
 
-if($result = $db->query($query)){
-	$charting = array();
-	while($row = mysqli_fetch_array($result)){
-		$charting[] = $row;
-	}
+$query = "SELECT pi.song, pi.artist,pi.album, pi.is_canadian,pi.is_playlist, p.start_time AS date, sh.name AS show_name, p.status AS status 
+	FROM playitems as pi INNER JOIN shows as sh ON sh.id = pi.show_id
+	INNER JOIN playsheets as p ON pi.playsheet_id = p.id 
+	WHERE pi.show_date >= :from AND  pi.show_date <= :to
+	ORDER BY p.start_time ASC ";
+
+$statement = $pdo_db->prepare($query);
+$statement->bindValue(':from',$from);
+$statement->bindValue(':to',$to);
+
+try{
+	$statement->execute();
+	$result = $statement -> fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}catch(PDOException $pdoe){
+	echo $pdoe->getMessage();
 }
-echo json_encode($charting);
-$result->close();
 
 ?>

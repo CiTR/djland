@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+
 use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;

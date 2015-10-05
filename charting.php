@@ -16,15 +16,24 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script type='text/javascript' src='js/charting.js'></script>
-
+<script>
+    $(function() {
+    $( ".datepicker" ).datepicker();
+    });
+  </script>
 </head>
 <body class='wallpaper'>
 
 <?php	print_menu(); ?>
  <center>
         <input id="now" type="hidden" value="<?php echo get_time();?>">
-        <div id="loadbar">loading charts...</div>
-        <div id='charting-container' style='display:none;'>
+        <div class='text-center loading invisible' ><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+         <label for="from">Start Date: </label>
+            <input type="text" id="from" name="from"/>
+            <label for="to">End Date: </label>
+            <input type="text" id="to" name="to" />
+            <button id='load_charts'>Load Charts</button>
+        <div id='charting-container'>
             <div id='charting-title'>
                 <div class='charting-artist'>Artist</div>
                 <div class='charting-song'>Song</div>

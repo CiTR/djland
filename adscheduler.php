@@ -52,33 +52,34 @@ if($using_sam){
 	$adLib = new AdLib($mysqli_sam,$db);
 } else {
 	$adLib = new AdLib(false, $db );
-}
+}?>
+	
+	<h1>Ad Scheduler</h1>
 
-echo '<h1>Ad Scheduler';
-echo '</h1>';
+	Current Week: <?php echo (int) Date('W', strtotime('Today'))%2 + 1; ?>
+		<div id='ad-select-template'><?php $adLib->generateAdSelector() ?></div>
 
-
-echo '<div id=ad-select-template>'.$adLib->generateAdSelector().'</div>';
-
-echo '<p>"+" button template:</p>'.
-	'<div class="hidden adRow" id="invisible-template-generic">'.
-	 '<div ><div class="adbuttons ad-delete">-</div><div class="adbuttons ad-add">+</div><div class="adbuttons ad-advert">Ad</div></div>'.
-	 '<div class="adTime"><input class="adInput" type="text"></div>'.
-	 '<div class="adType" ><input class="adInput" type="text"></div>'.
-	 '<div class="adName" ><input class="adInput" type="text"></div>'.
-	 '</div>';
-	 
-echo '<p>"Ad" button template:</p>'.
-	'<div class="hidden adRow" id="invisible-template-ad">'.
-	 '<div ><div class="adbuttons ad-delete">-</div><div class="adbuttons ad-add">+</div><div class="adbuttons ad-advert">Ad</div></div>'.
-	 '<div class="adTime"><input class="adInput" type="text"></div>'.
-	 '<div class="adType" ><input class="adInput" type="text" value="'.
-	 $adLib->ad_dict['AD'].
-	 '"></div>'.
-	 '<div class="adName" >'.
-	 $adLib->generateAdSelector().
-	 '</div>'.
-	 '</div>';
+			<div class="hidden adRow" id="invisible-template-generic">
+	 		<div>
+	 			<div class="adbuttons ad-delete">-</div>
+	 			<div class="adbuttons ad-add">+</div>
+	 			<div class="adbuttons ad-advert">Ad</div>
+	 		</div>
+			<div class="adTime"><input class="adInput" type="text"></div>
+			<div class="adType" ><input class="adInput" type="text"></div>
+			<div class="adName" ><input class="adInput" type="text"></div>
+		</div>
+		<div class="hidden adRow" id="invisible-template-ad">
+			<div>
+				<div class="adbuttons ad-delete">-</div>
+				<div class="adbuttons ad-add">+</div>
+				<div class="adbuttons ad-advert">Ad</div>
+			</div>
+			<div class="adTime"><input class="adInput" type="text"></div>
+			<div class="adType" ><input class="adInput" type="text" value='<?php $adLib->ad_dict['AD'] ?>'></div>
+			<div class="adName" ><?php $adLib->generateAdSelector() ?> </div>
+		</div>
+		<?php
 
 $showBlocks = $showlib->getAllCurrentShowBlocks();
 

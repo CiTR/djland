@@ -50,7 +50,8 @@
                 this_.loadShow();
             });
             //Calculating "current week" this math is really old. Returns 1 or 2
-            this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
+            this.current_week = Math.floor(Date.now("Last Monday")/(60 * 60 * 24 * 7 * 1000 ) % 2 + 1);
+            console.log("Current Date :" + Date() + "Other Date :" + Date.now("Last Monday"));
             
             //Check if user is an administrator or staff
             this.isAdmin();

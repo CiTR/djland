@@ -33,8 +33,10 @@ class Show extends Model
             //Get Current week since Epoch
             $current_week = Date('W', strtotime('tomorrow',strtotime($time)));
             if ((int) $current_week % 2 == 0){
+                //Week 2
                 $current_week_is_even = true;
             } else {
+                //Week 1
                 $current_week_is_even = false;
             };
             
@@ -106,9 +108,9 @@ class Show extends Model
             $field = str_replace("&","&amp;",$field);
             }
 
-        $xml[] = "<?xml version='1.0' encoding='ISO-8859-1' ?>";
-        $xml[] = "<?xml-stylesheet title='XSL_formatting' type='text/xsl' href='../xsl/podcast.xsl'?>";
-        $xml[] = "<rss xmlns:itunes='http://www.itunes.com/dtds/podcast-1.0.dtd' version='2.0' >";
+        $xml[] = '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+        $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
+        $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" >';
         $xml[] = "<channel>";
         $xml[] = "<title>". htmlspecialchars(html_entity_decode($show['podcast_title'])) . "</title>";
         
@@ -118,17 +120,17 @@ class Show extends Model
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
         $xml[] = "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($show["podcast_summary"])) . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
-        $xml[] = "<itunes:name>CiTR Radio 101.9FM</itunes:name>";
+        $xml[] = "<itunes:name>CiTR Radio 101.9FM Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
-        if($show["show_img"]) $xml[] = "<itunes:image href='". $show["show_img"]."'/>";
+        if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
 
-        $xml[] = "<itunes:link rel='image' type='video/jpeg' href='".$show["show_img"]."'>". $show["name"] . "</itunes:link>";
+        $xml[] = '<itunes:link rel="image" type="video/jpeg" href="'.$show["show_img"].'">'. $show["podcast_title"] . '</itunes:link>';
 
         $xml[] = "<image>";
         $xml[] = "<link>citr.ca</link>";
         $xml[] = "<url>" . $show["show_img"]. "</url>";
-        $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["name"])) . "</title>";
+        $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
         $xml[] = "<link>" .$show["website"]. "</link> ";
         $xml[] = "<generator>CiTR Radio Podcaster</generator>";
@@ -154,9 +156,8 @@ class Show extends Model
                 $xml[] =  "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:subtitle>";
                 $xml[] =  "<itunes:summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:summary>";
                 $xml[] =  "<summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</summary>";
-                $xml[] = ($episode["duration"] > 0) ? "<itunes:duration>" . $episode["duration"] . "</itunes:duration> " : "";
-                $xml[] = "<enclosure url='". $episode['url'] . "' length='" . $episode['length'] . "' type='audio/mpeg'></enclosure>";
-                $xml[] = "<guid ispermaLink='true'>" . $episode['url'] . "</guid>";
+                $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
+                $xml[] = '<guid ispermaLink="true">' . $episode['url'] . '</guid>';
                 $xml[] = "</item>";
             }
         }
