@@ -131,7 +131,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                     <h4 class='text-left double-padded-top'>Sponsor</h4>
                     <label for 'sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
                     <label for 'sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>
-                    <h4 class='text-left double-padded-top'>Show Times (Current week:{{show.current_week}})</h4>
+                    <h4 class='text-left double-padded-top'>Show Times (Current week: {{show.current_week}})</h4>
                     <button ng-click='show.addFirstShowTime()' ng-hide='show.show_times.length > 0'>Add Show Time </button>
                     <table class='table'>
                         <tr><th> Start Day<th>Start Time<th>End Day<th>End Time<th>Alternation Week <th>+/-</tr>
