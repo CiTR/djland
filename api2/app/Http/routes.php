@@ -593,11 +593,14 @@ Route::get('/nowplaying',function(){
 				AND (s.alternating = 0 OR s.alternating = {$current_week_val});"));
 	if( count($current_show) > 0 ){
 		$current_show = $current_show[0];
+		$result['showId'] = $current_show->show_id;
+		
 		$result['showName'] = $current_show->name;
 		$result['showTime'] = "{$current_show->start_time} - {$current_show->end_time}";
 		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime($current_show->time));
 	}else{
 		$result['showName'] = "CiTR Ghost Mix";
+		$result['showId'] = null;
 		$result['showTime'] = "";
 		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
 	}
