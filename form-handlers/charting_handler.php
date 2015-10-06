@@ -20,7 +20,7 @@ $to = date("Y/m/d",$to);
  * Returns: song,artist,album,is_can,is_pl,date,show_name
  */
 
-$query = "SELECT pi.song, pi.artist,pi.album, pi.is_canadian,pi.is_playlist, p.start_time AS date, sh.name AS show_name, p.status AS status 
+$query = "SELECT pi.song, pi.artist,pi.album, pi.is_canadian,pi.is_playlist, p.start_time AS date, sh.name AS show_name, p.status AS status, p.id 
 	FROM playitems as pi INNER JOIN shows as sh ON sh.id = pi.show_id
 	INNER JOIN playsheets as p ON pi.playsheet_id = p.id 
 	WHERE pi.show_date >= :from AND  pi.show_date <= :to

@@ -120,7 +120,7 @@ class Show extends Model
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
         $xml[] = "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($show["podcast_summary"])) . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
-        $xml[] = "<itunes:name>CiTR Radio 101.9FM Vancouver</itunes:name>";
+        $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
         if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
