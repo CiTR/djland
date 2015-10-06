@@ -17,7 +17,7 @@ $limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']
   $query = 'SELECT playsheets.id,
       GREATEST(playsheets.edit_date,"0000-00-00 00:00:00") as edit_date
     FROM playsheets
-    LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
+    LEFT JOIN podcast_episodes on playsheets.id = podcast_episodes.playsheet_id
     WHERE status = 2 
     ORDER BY
       GREATEST(playsheets.edit_date,"0000-00-00 00:00:00")
