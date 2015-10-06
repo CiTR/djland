@@ -19,7 +19,7 @@ $limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']
     FROM playsheets
     WHERE status = 2 
     ORDER BY
-      playsheets.edit_date DESC
+      playsheets.edit_date
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 if ($result = mysqli_query($db, $query) ) {
