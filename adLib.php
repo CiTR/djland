@@ -523,9 +523,9 @@ class AdLib {
 				}	// whether there are ads or not, we need an option
 					// to select scheduling no ad.
 					$string .= '<option value="no ad"> -- </option>';
-					
+					$replace = array('-','.',',','_');
 					foreach($this->availableAds as $i => $ad){
-						$string .= '<option value="'.$ad['id'].'">'.$ad['artist'].' - '.$ad['title'].'</option>';
+						$string .= '<option value="'.$ad['id'].'">'.isset($ad['title']) ? str_replace($replace,'',$ad['title']) : str_replace($replace,'',$ad['artist']).'</option>';
 						}
 				$string .= '</select>';
 				
@@ -544,7 +544,7 @@ class AdLib {
 			
 		if ($this->using_sam && $result_sam = mysqli_query($this->sam_link,"SELECT sl.id,sl.artist,sl.title FROM `samdb-live`.categorylist AS cl
 INNER JOIN `samdb-live`.songlist AS sl ON cl.songID = sl.ID 
-WHERE cl.categoryID = 6; ")) 
+WHERE cl.categoryID = 6 ORDER BY sl.title; ")) 
 		{		
 		//	echo 'loadAvailableAds succeeded';
 				while($row = $result_sam->fetch_array())
