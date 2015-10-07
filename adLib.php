@@ -525,7 +525,7 @@ class AdLib {
 					$string .= '<option value="no ad"> -- </option>';
 					$replace = array('-','.',',','_');
 					foreach($this->availableAds as $i => $ad){
-						$string .= '<option value="'.$ad['id'].'">'.isset($ad['title']) ? str_replace($replace,'',$ad['title']) : str_replace($replace,'',$ad['artist']).'</option>';
+						$string .= '<option value="'.$ad['id'].'">'.(isset($ad['title']) ? str_replace($replace,'',$ad['title']) : str_replace($replace,'',$ad['artist'])).'</option>';
 						}
 				$string .= '</select>';
 				
