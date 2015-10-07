@@ -652,5 +652,21 @@ Route::get('/table/{table}',function($table_name =table){
 	}
 
 });
+Route::get('/samtable/{table}',function($table_name){
+	echo "<table>";
+	echo "<tr><th>Field<th>Type<th>Null<th>Key<th>Extra</tr>";
+	$table = DB::connection('samdb')->select('DESCRIBE '.$table_name);
+	foreach($table as $column){
+		echo "<tr>";
+		foreach($column as $item){
+			echo "<td>".$item."</td>";
+		}
+		echo "</tr>";
+	}
+	echo "</table>";
+	foreach($table as $column){
+		echo "'".$column->Field."', ";
+	}
+})
 
 
