@@ -25,6 +25,7 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
     FROM playsheets
     LEFT JOIN podcast_episodes on playsheets.podcast_episode = podcast_episodes.id
     LEFT JOIN shows on shows.id = playsheets.show_id
+    WHERE playsheets.status = 2
     ORDER BY
       playsheets.edit_date
     DESC limit ' . $limit . ' OFFSET ' . $offset;
