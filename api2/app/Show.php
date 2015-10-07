@@ -128,7 +128,7 @@ class Show extends Model
         $xml[] = '<itunes:link rel="image" type="video/jpeg" href="'.$show["show_img"].'">'. $show["podcast_title"] . '</itunes:link>';
 
         $xml[] = "<image>";
-        $xml[] = "<link>citr.ca</link>";
+        $xml[] = "<link>www.citr.ca</link>";
         $xml[] = "<url>" . $show["show_img"]. "</url>";
         $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
