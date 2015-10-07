@@ -542,7 +542,9 @@ class AdLib {
 		
 		$addys = array();
 			
-		if ($this->using_sam && $result_sam = mysqli_query($this->sam_link,"SELECT id, artist, title FROM songlist WHERE songtype = 'A' ")) 
+		if ($this->using_sam && $result_sam = mysqli_query($this->sam_link,"SELECT sl.id,sl.artist,sl.title FROM `samdb-live`.categorylist AS cl
+INNER JOIN `samdb-live`.songlist AS sl ON cl.songID = sl.ID 
+WHERE cl.categoryID = 6; ")) 
 		{		
 		//	echo 'loadAvailableAds succeeded';
 				while($row = $result_sam->fetch_array())
