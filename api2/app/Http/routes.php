@@ -667,6 +667,6 @@ Route::get('/samtable/{table}',function($table_name){
 	foreach($table as $column){
 		echo "'".$column->Field."', ";
 	}
-})
+});
 
 
