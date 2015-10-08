@@ -11,6 +11,6 @@ class Categorylist extends Model
     protected $table = 'Categorylist';
     protected $primaryKey = 'categoryID';
     public function songlist(){
-    	return $this->belongsTo('App\Songlist','ID','songID');
+    	return $this->belongsTo('App\Songlist','songID','ID');
     }
 }
