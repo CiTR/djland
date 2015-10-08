@@ -555,7 +555,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 	});
 	Route::group(array('prefix'=>'categorylist'),function(){
 		Route::get('{cat_id}',function($cat_id = cat_id){
-			return Categorylist::find($cat_id)->songlist->orderBy('songlist.title','ASC')->get();
+			return Categorylist::select('*')->where('categorylist.categoryID','=',$cat_id)->songlist->orderBy('songlist.title','ASC')->get();
 		});
 	});
 
