@@ -14,6 +14,10 @@ use App\Podcast as Podcast;
 use App\Ad as Ad;
 use App\Socan as Socan;
 
+//SAM CLASSES
+use App\Songlist as Songlist;
+use App\Categorylist as Categorylist;
+
 Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
