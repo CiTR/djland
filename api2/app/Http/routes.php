@@ -652,6 +652,10 @@ Route::get('/table/{table}',function($table_name =table){
 	}
 
 });
+Route::get('/samtable',function(){
+	return  DB::connection('samdb')->select('SHOW TABLES');
+});
+
 Route::get('/samtable/{table}',function($table_name){
 	echo "<table>";
 	echo "<tr><th>Field<th>Type<th>Null<th>Key<th>Extra</tr>";
