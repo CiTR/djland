@@ -80,6 +80,26 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		isSocan : function(unixtime){
 			return $http.get(API_URL_BASE+'/socan'+unixtime!=null? unixtime:'');
 		},
+	};
+});
 
+angular.module('sam.api',[]).factory('sam', function ($http, $location) {
+	var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
+	return{
+		getAdList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'ads');
+		},
+		getUBCPSAList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
+		},
+		getCommunityPSAList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'community');
+		},
+		getTimelyPSAList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'psa');
+		}
+		getStationIDList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'ID');
+		},
 	};
 });
