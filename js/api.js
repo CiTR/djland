@@ -87,7 +87,7 @@ angular.module('sam.api',[]).factory('sam', function ($http, $location) {
 	var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
 	return{
 		getAdList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'ads');
+			return $http.get(API_URL_BASE + '/categorylist/' + 'PRIORITY ADs');
 		},
 		getUBCPSAList: function(){
 			return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
@@ -96,10 +96,10 @@ angular.module('sam.api',[]).factory('sam', function ($http, $location) {
 			return $http.get(API_URL_BASE + '/categorylist/' + 'community');
 		},
 		getTimelyPSAList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'psa');
-		}
+			return $http.get(API_URL_BASE + '/categorylist/' + 'New Timely PSAs');
+		},
 		getStationIDList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'ID');
+			return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
 		},
 	};
 });
