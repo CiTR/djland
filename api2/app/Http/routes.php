@@ -499,46 +499,65 @@ Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 	}
 	return Response::json($ads);
 });
-Route::get('/SAM/recent/{offset}',function($offset = offset){
-	$sam_plays = DB::connection('samdb')
-	->table('songlist')
-	->join('historylist','songlist.id','=','historylist.songID')
-	->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
-	->where('songlist.songtype','=','S')
-	->limit('50')
-	->offset($offset)
-	->orderBy('historylist.date_played','desc')
-	->get();
-	foreach($sam_plays as $play){
-		foreach($play as $item){
-			if(is_string($item)){
-				$item = html_entity_decode($item ,ENT_QUOTES);
+
+
+Route::group(array('prefix'=>'SAM'),function($id = id){
+	
+	Route::get('recent/{offset}',function($offset = offset){
+		$sam_plays = DB::connection('samdb')
+		->table('songlist')
+		->join('historylist','songlist.id','=','historylist.songID')
+		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
+		->where('songlist.songtype','=','S')
+		->limit('50')
+		->offset($offset)
+		->orderBy('historylist.date_played','desc')
+		->get();
+		foreach($sam_plays as $play){
+			foreach($play as $item){
+				if(is_string($item)){
+					$item = html_entity_decode($item ,ENT_QUOTES);
+				}
 			}
 		}
-	}
-	return $sam_plays;
-});
-Route::get('/SAM/range',function(){
-	$from = Input::get()['from'];
-	$to = Input::get()['to'];
-	$sam_plays = DB::connection('samdb')
-	->table('songlist')
-	->join('historylist','songlist.id','=','historylist.songID')
-	->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
-	->where('songlist.songtype','=','S')
-	->where('historylist.date_played','>=',$from)
-	->where('historylist.date_played','<=',$to)
-	->orderBy('historylist.date_played','asc')
-	->get();
-	foreach($sam_plays as $play){
-		foreach($play as $item){
-			if(is_string($item)){
-				$item = html_entity_decode($item ,ENT_QUOTES);
+		return $sam_plays;
+	});
+	Route::get('range',function(){
+		$from = Input::get()['from'];
+		$to = Input::get()['to'];
+		$sam_plays = DB::connection('samdb')
+		->table('songlist')
+		->join('historylist','songlist.id','=','historylist.songID')
+		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
+		->where('songlist.songtype','=','S')
+		->where('historylist.date_played','>=',$from)
+		->where('historylist.date_played','<=',$to)
+		->orderBy('historylist.date_played','asc')
+		->get();
+		foreach($sam_plays as $play){
+			foreach($play as $item){
+				if(is_string($item)){
+					$item = html_entity_decode($item ,ENT_QUOTES);
+				}
 			}
 		}
-	}
-	return $sam_plays;
+		return $sam_plays;
+	});
+	Route::group(array('prefix'=>'songlist'),function(){
+		Route::get('/',function(){
+			return Songlist::select('id','title')->get();
+		});
+
+	});
+	Route::group(array('prefix'=>'categorylist'),function(){
+		Route::get('{cat_id}',function($cat_id = cat_id){
+			return Categorylist::find($cat_id)->songlist()->orderBy('songlist.title','ASC')->get();
+		});
+	});
+
 });
+
+
 Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	date_default_timezone_set('America/Los_Angeles');
