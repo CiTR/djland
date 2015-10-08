@@ -17,6 +17,7 @@ use App\Socan as Socan;
 //SAM CLASSES
 use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
+use App\Historylist as Historylist;
 
 Route::get('/', function () {
     //return view('welcome');
@@ -549,15 +550,12 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 	Route::get('range',function(){
 		$from = Input::get()['from'];
 		$to = Input::get()['to'];
-		$sam_plays = DB::connection('samdb')
-		->table('songlist')
-		->join('historylist','songlist.id','=','historylist.songID')
-		->selectRaw('songlist.artist,songlist.title,songlist.album,songlist.composer,songlist.mood,historylist.date_played,historylist.duration')
-		->where('songlist.songtype','=','S')
-		->where('historylist.date_played','>=',$from)
-		->where('historylist.date_played','<=',$to)
-		->orderBy('historylist.date_played','asc')
-		->get();
+		$sam_plays = Historylist::select('songlist.artist','songlist.title','songlist.album','songlist.composer','songlist.mood','historylist.date_played','historylist.duration')
+			->join('songlist','historylist.songID','=','songlist.ID')
+			->where('historylist.date_played','>=',$from)
+			->where('historylist.date_played','<=',$to)
+			->orderBy('historylist.date_played','asc')
+			->get();
 		foreach($sam_plays as $play){
 			foreach($play as $item){
 				if(is_string($item)){
