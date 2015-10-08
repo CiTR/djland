@@ -578,7 +578,7 @@
         };
         this.samRange = function () {
             var this_ = this;
-            call.getSamRange($filter('date')(this.start,'yyyy/MM/dd HH:mm:ss'),$filter('date')(this.end,'yyyy/MM/dd HH:mm:ss')).then(function(data){
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
                 for (var samplay in data.data) {
                     this_.addSamPlay(this_.formatSamPlay(data.data[samplay]));
                 }
