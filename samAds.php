@@ -10,8 +10,9 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
+		
+		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 		<link rel=stylesheet href='css/style.css' type='text/css'>
-
 		<title>DJLAND | Sam Ads</title>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -39,9 +40,8 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 		<button id="submitDates">View Sam Ads</button>
 		<img src='images/loading.gif' id='loadbar' style='display:none;'>
 		
-		<div id=samAds style='display:none;'>
-            <div class=samtitleh>Ad Name</div>
-            <div class=samplayedh>Time Played</div>
+		<table id='samAds' class='table-condensed invisible'>
+	          <th>Ad Name</th><th>Time Played</th>
 		</div>
 	</body>
 </html>

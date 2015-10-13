@@ -37,10 +37,10 @@ function loadSamAds(from,to){
 			data: {"from":from,"to":to,"adname":adname},
 			dataType: "json"
 		}).success(function(data) {
-			$('#samAds').show();
+			$('#samAds').removeClass('invisible');
 			for( $j = 0; $j < Object.keys(data).length; $j++ ){
-				$('#samAds').append('<div id="samrow'+$j+'" class="samrow"></div>');
-				$('#samrow'+$j).append('<div class=samtitle>'+data[$j].filename.replace('O:\\PRIORITY ADs\\',' ').replace('.mp3',' ')+' </div><div class=samplayed>'+data[$j].date_played+'</div>');
+				$('#samAds').append('<tr id="samrow'+$j+'" class="samrow"></tr>');
+				$('#samrow'+$j).append('<td class=samtitle>'+data[$j].filename.replace('O:\\PRIORITY ADs\\',' ').replace('.mp3',' ')+' </td><td class=samplayed>'+data[$j].date_played+'</td>');
 			}
 			$('#loadbar').hide();
 		}).fail(function(){

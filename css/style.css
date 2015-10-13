@@ -1327,49 +1327,12 @@ table { border-collapse: collapse; }
 }
 
 /*----------------------------*/
-/*--------CHARTING (OLD)------------*/
+/*-------Sam Ad Searcher------*/
 /*----------------------------*/
-.chartBanner
-*{
-	background-color: #004080;
+#samAds{
+  width:80%;
 }
 
-.chartSong
-{
-	float: left;
-	width: 200px;
-	position:relative;
-}
-.chartArtist
-{
-	float: left;
-	width: 200px;
-	position:relative;
-}
-.chartAlbum
-{
-	float: left;
-	width: 200px;
-	position:relative;
-}
-.chartShow
-{
-	float: left;
-	width: 300px;
-	position:relative;
-}
-.chartDate
-{
-	float: left;
-	width: 150px;
-	position:relative;
-}
-.chartCC
-{
-	float: left;
-	width:35px;
-	position:relative;
-}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
