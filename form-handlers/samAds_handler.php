@@ -8,8 +8,8 @@ $from = $today;
 $to = $today;
 $filter = false;
 if(isset($_POST['from'])){
-	$from = $_POST['from'];
-	$to = $_POST['to'];
+	$from = str_replace('/','-',$_POST['from']);
+	$to = str_replace('/','-',$_POST['to']);
 }
 if(isset($_POST['adname'])){
 	$adname = $_POST['adname'];
