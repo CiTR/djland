@@ -20,7 +20,7 @@ $to = strtotime($to)+ 24*60*60;
 $from = date("Y-m-d H:i:s",$from);
 $to = date("Y-m-d H:i:s",$to);
 if($filter == true){
-	$query = "SELECT filename, date_played FROM historylist WHERE date_played >= '$from' AND date_played <= '$to' AND songtype = 'A' AND filename LIKE '%".$adname."%' ORDER BY date_played DESC";
+	$query = "SELECT filename, date_played FROM historylist WHERE date_played >= '$from' AND date_played <= '$to' AND songtype = 'A' AND filename LIKE '%".$adname."%' OR title LIKE  LIKE '%".$adname."%' OR artist LIKE '%".$adname."%' ORDER BY date_played DESC ";
 }else{
 	$query = "SELECT filename, date_played FROM historylist WHERE date_played >= '$from' AND date_played <= '$to' AND songtype = 'A' ORDER BY date_played DESC";
 }
