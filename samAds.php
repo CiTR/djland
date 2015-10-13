@@ -22,14 +22,14 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 		<script>
 			$(function() {
-			$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+			$( ".datepicker" ).datepicker({ dateFormat: "yy/mm/dd" });
 			});
 		</script>
 	</head>
 
 	<body class='wallpaper'>
 		<?php print_menu();
-		$today = date('Y-m-d');?>
+		$today = date('Y/m/d');?>
 		<center><br/><br/><br/><br/>
 		<input id='adname' placeholder='Enter an ad name' maxlength='15'></input>
 		<label for="from">Start Date: </label>
