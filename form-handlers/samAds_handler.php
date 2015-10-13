@@ -21,9 +21,9 @@ if(isset($_POST['adname']) && $_POST['adname'] != ""){
 	$filter = true;
 }
 if($filter == true){
-	$query = "SELECT filename, date_played FROM historylist WHERE date_played > '{$from}' AND date_played <= '{$to}' AND songtype = 'A' AND (filename LIKE '%".$adname."%' OR title LIKE '%".$adname."%' OR artist LIKE '%".$adname."%') ORDER BY date_played DESC";
+	$query = "SELECT filename, date_played FROM historylist WHERE date_played > '{$from}' AND date_played <= '{$to}' AND (songtype = 'A' OR filename LIKE '%PRIORITY ADs%') AND (filename LIKE '%".$adname."%' OR title LIKE '%".$adname."%' OR artist LIKE '%".$adname."%') ORDER BY date_played DESC";
 }else{
-	$query = "SELECT filename, date_played FROM historylist WHERE date_played > '{$from}' AND date_played <= '{$to}' AND songtype = 'A' ORDER BY date_played DESC";
+	$query = "SELECT filename, date_played FROM historylist WHERE date_played > '{$from}' AND date_played <= '{$to}' AND (songtype = 'A' OR filename LIKE '%PRIORITY ADs%') ORDER BY date_played DESC";
 }
 
 
