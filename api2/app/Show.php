@@ -24,13 +24,13 @@ class Show extends Model
     public function showtimes(){
         return $this->hasMany('App\Showtime');
     }
-    public function nextShowTime($start_time){
+    public function nextShowTime(){
         date_default_timezone_set('America/Los_Angeles');
-        $time = $start_time;
+        $time = strtotime('now');
         $showtimes = $this->showtimes;
         foreach($showtimes as $key=>$value){
 
-            //Get Current week since Epoch
+            //Get Current week since start of year (always 52 weeks so this is acceptable for next 1000 years?)
             $current_week = Date('W', strtotime('tomorrow',strtotime($time)));
             if ((int) $current_week % 2 == 0){
                 //Week 2
@@ -79,12 +79,18 @@ class Show extends Model
             $candidates []= array('start' => $actual_show_time, 'end' => $end);
         }
         //Find the minimum start time
-        $min = $candidates[0];
-        foreach($candidates as $i => $v){
-            if ($v['start'] < $min['start']){
-                $min = $candidates[$i];
-            }
+        if(isset($candidates)){
+            $min = $candidates[0];
+            foreach($candidates as $i => $v){
+                if ($v['start'] < $min['start']){
+                    $min = $candidates[$i];
+                }
+            }   
+        }else{
+            $min = null;
         }
+        
+        
         return $min;
     }
     public function make_show_xml(){

@@ -226,6 +226,9 @@ input, select, textarea, option{
 .wideinput{
   width:300px;
 }
+.fullinput{
+  width:100%;
+}
 .largeinput{
 	width:750px;
 	max-width:83%;
@@ -1149,6 +1152,18 @@ input.lang{
 table, td, tr{
 text-align:left;
 }
+
+/*-------------------*/
+/*  Ad Scheduler CSS */
+/*-------------------*/ 
+ul.schedule > li > div > table {
+  background-color:rgba(30,30,30,.4);
+}
+ul.schedule > li > div.template *{
+  display:inline-block;
+  position:relative;
+}
+
 
 /*-------------------*/
 /* Old Playsheet CSS */

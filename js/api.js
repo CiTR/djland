@@ -23,6 +23,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
 		},
+		getActiveShows: function(){
+			return $http.get(API_URL_BASE + '/show/active');
+		},
 		getShow: function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
@@ -52,6 +55,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		getSamRange: function(from,to){
 			return $http.get(API_URL_BASE+"/SAM/range?from="+from+"&to="+to);
+		},
+		getAdSchedule: function(){
+			return $http.get(API_URL_BASE+'/adschedule');
 		},
 		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
@@ -100,6 +106,9 @@ angular.module('sam.api',[]).factory('sam', function ($http, $location) {
 		},
 		getStationIDList: function(){
 			return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
+		},
+		getPromosList: function(){
+			return $http.get(API_URL_BASE + '/categorylist/' + 'SHOW PROMOS');
 		},
 	};
 });
