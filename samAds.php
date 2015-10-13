@@ -29,7 +29,7 @@ if( permission_level() >= $djland_permission_levels['workstudy']){
 
 	<body class='wallpaper'>
 		<?php print_menu();
-		$today = date('m/d/Y');?>
+		$today = date('Y-m-d');?>
 		<center><br/><br/><br/><br/>
 		<input id='adname' placeholder='Enter an ad name' maxlength='15'></input>
 		<label for="from">Start Date: </label>

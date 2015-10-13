@@ -3,11 +3,13 @@ include_once("../headers/session_header.php");
 require_once("../headers/db_header.php");
 require_once("../headers/function_header.php");
 require_once("../adLib.php");
+error_reporting(E_ALL);
 $today = date('m/d/Y');
 $from = $today;
 $to = $today;
 $filter = false;
 if(isset($_POST['from'])){
+
 	$from = str_replace('/','-',$_POST['from'])." 00:00:00";
 	$to = str_replace('/','-',$_POST['to'])." 23:59:59";
 }
