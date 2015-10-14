@@ -469,7 +469,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return $result;
 	});
 	Route::get('/shows/write_xml',function(){
-		error_reporting(E_ALL);
+
 		$shows = Show::orderBy('id')->get();
 		echo "<pre>";
 		$index = 0;
@@ -531,20 +531,34 @@ Route::get('/adschedule',function(){
 				$show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
 				$show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
 				$show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
+
+				//Show duration in seconds
 				$show_duration = date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute -date_parse($show_time['start_time'])['hour'] * $one_hour - date_parse($show_time['start_time'])['minute'] * $one_minute;
 				
-				//Get Ads
-				$week_0_ads = Ad::where('time_block','=',$week_0_start + $show_time_unix_offset)->get();
-				$week_1_ads = Ad::where('time_block','=',$week_1_start + $show_time_unix_offset)->get();
-				$week_2_ads = Ad::where('time_block','=',$week_2_start + $show_time_unix_offset)->get();
+				//Unix timestamp of possible show start times
+				$week_0_show_unix = $week_0_start + $show_time_unix_offset;
+				$week_1_show_unix = $week_1_start + $show_time_unix_offset;
+				$week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
+				//Get Ads
+				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
+				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
+				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();	
+					
 				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
 				if(count($week_0_ads) == 0){
-
+					//Insert a new entry every 20 minutes
+					$week_0_ads = Ad::generateAds($week_0_show_unix,$show_duration);					
 				}
-
-
-
+				if(count($week_1_ads) == 0){
+					//Insert a new entry every 20 minutes
+					$week_1_ads = Ad::generateAds($week_1_show_unix,$show_duration);					
+				}
+				if(count($week_2_ads) == 0){
+					//Insert a new entry every 20 minutes
+					$week_2_ads = Ad::generateAds($week_2_show_unix,$show_duration);					
+				}
+				
 
 				//Generate Arrays
 				$week_0 = array(
@@ -625,8 +639,8 @@ Route::get('/adschedule',function(){
 			}
 			
 		}catch(Exception $e){
-			//No Show time available
-			return "Exception Thrown: ".$e->getMessage();
+			//No Show time available or exception thrown.
+			return "Exception Thrown: ".$e->getMessage()."<br/><pre>".$e->getTraceAsString();
 		}
 	}
 	return Response::json($schedule);
@@ -649,10 +663,11 @@ Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 
 
 Route::group(array('prefix'=>'SAM'),function($id = id){
+	//List Tables
 	Route::get('/table',function(){
 		return  DB::connection('samdb')->select('SHOW TABLES');
 	});
-
+	//Get Table Fields
 	Route::get('/table/{table}',function($table_name){
 		echo "<table>";
 		echo "<tr><th>Field<th>Type<th>Null<th>Key<th>Extra</tr>";
@@ -669,7 +684,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			echo "'".$column->Field."', ";
 		}
 	});
-
+	//Get Recent plays
 	Route::get('recent/{offset}',function($offset = offset){
 		$sam_plays = DB::connection('samdb')
 		->table('songlist')
@@ -689,6 +704,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 		}
 		return $sam_plays;
 	});
+	//Get a time range of sam plays
 	Route::get('range',function(){
 		$from = Input::get()['from'];
 		$to = Input::get()['to'];
@@ -707,12 +723,14 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 		}
 		return $sam_plays;
 	});
+	//Get tracks from the songlist
 	Route::group(array('prefix'=>'songlist'),function(){
 		Route::get('/',function(){
 			return Songlist::select('id','title')->get();
 		});
 
 	});
+	//Get tracks with a specific category (Accepts category ID # and category name)
 	Route::group(array('prefix'=>'categorylist'),function(){
 		Route::get('{cat_id}',function($cat_id = cat_id){
 

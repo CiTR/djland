@@ -105,7 +105,7 @@ function addListeners() {
     $('#email').on('keyup',function(){
         var email = get('email');
         var div = $('#email_check');
-        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|ca|uk|au|jp|de|fr|nz|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
         // ' here because some IDE cant handle regexes
         if(!re.test(email)){
             div.text('This is not a valid email');
