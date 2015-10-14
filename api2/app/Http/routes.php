@@ -532,6 +532,21 @@ Route::get('/adschedule',function(){
 				$show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
 				$show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
 				$show_duration = date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute -date_parse($show_time['start_time'])['hour'] * $one_hour - date_parse($show_time['start_time'])['minute'] * $one_minute;
+				
+				//Get Ads
+				$week_0_ads = Ad::where('time_block','=',$week_0_start + $show_time_unix_offset)->get();
+				$week_1_ads = Ad::where('time_block','=',$week_1_start + $show_time_unix_offset)->get();
+				$week_2_ads = Ad::where('time_block','=',$week_2_start + $show_time_unix_offset)->get();
+
+				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
+				if(count($week_0_ads) == 0){
+
+				}
+
+
+
+
+				//Generate Arrays
 				$week_0 = array(
 					$week_0_start + $show_time_unix_offset,
 					array(
@@ -544,7 +559,7 @@ Route::get('/adschedule',function(){
 						"duration"	=>$show_duration,
 						"start"		=>date('g:i a',$week_0_start + $show_time_unix_offset),
 						"date"		=>date('l F jS g:i a',$week_0_start + $show_time_unix_offset),
-						"ads"		=>Ad::where('time_block','=',$week_0_start + $show_time_unix_offset)->get()
+						"ads"		=>$week_0_ads
 					)
 				);
 				$week_1 = array(
@@ -559,7 +574,7 @@ Route::get('/adschedule',function(){
 						"duration"	=>$show_duration,
 						"start"=>date('g:i a',$week_1_start + $show_time_unix_offset),
 						"date"=>date('l F jS g:i a',$week_1_start + $show_time_unix_offset),
-						"ads"=>Ad::where('time_block','=',$week_1_start + $show_time_unix_offset)->get()
+						"ads"=>$week_1_ads
 					)
 				);
 				$week_2 = array(
@@ -574,7 +589,7 @@ Route::get('/adschedule',function(){
 						"duration"	=>$show_duration,
 						"start"=>date('g:i a',$week_2_start + $show_time_unix_offset),
 						"date"=>date('l F jS g:i a',$week_2_start + $show_time_unix_offset),
-						"ads"=>Ad::where('time_block','=',$week_2_start + $show_time_unix_offset)->get()
+						"ads"=>$week_2_ads
 					)
 				);
 

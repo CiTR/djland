@@ -41,7 +41,7 @@
 								<td><input ng-model='show_ad.time'></td>
 								<td>
 									<select ng-model='show_ad.type'>
-										<option value="">Announcement</option>
+										<option value="announcement">Announcement</option>
 										<option ng-selected='show_ad.type.toLowerCase().indexOf("ad") > -1' value='ad'>Ad</option>
 										<option ng-selected='show_ad.type.toLowerCase().indexOf("psa") > -1' value='psa'>PSA</option>
 										<option ng-selected='show_ad.type.toLowerCase().indexOf("promo") > -1' value='promo'>Show Promo</option>
@@ -72,6 +72,9 @@
 											<option ng-selected='schedule.promos.indexOf(show_ad.name) < 0' value='Any Show Promo'>You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver</option>
 											<option ng-selected='show_ad.name == item.ID' ng-repeat='item in schedule.promos | orderBy:["title","artist"]' value='{{item.ID}}'>{{item.title ? item.title : item.artist}}</option>
 										</select>
+									</div>
+									<div ng-if="show_ad.type.toLowerCase().indexOf('announcement') > -1">
+										<input class='fullinput' ng-model='show_ad.name' value="Announce Upcoming Program"></input>
 									</div>
 									<div ng-if="show_ad.type == ''">
 										<input class='fullinput' ng-model='show_ad.name'></input>
