@@ -54,7 +54,7 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Set File Name
-	    $file_name = html_entity_decode(str_replace(array('\\','/',"'", '"',' '),'-',str_replace(array('.',':',';',','),$this->playsheet->show->name)),ENT_QUOTES).'-'.$file_date.'.mp3';
+	    $file_name = html_entity_decode(str_replace(array('\\','/',"'", '"',' '),'-',str_replace(array('.',':',';',','),'',$this->playsheet->show->name)),ENT_QUOTES).'-'.$file_date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(

@@ -101,6 +101,8 @@ input, select, textarea, option{
 #wrapper.socan{
   width:1200px;
 }
+
+
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -1156,6 +1158,18 @@ text-align:left;
 /*-------------------*/
 /*  Ad Scheduler CSS */
 /*-------------------*/ 
+
+#ad_schedule_wrapper{
+  margin-left:auto;
+  margin-right:auto;
+  height:auto;
+    overflow:auto;
+  background-color: rgba(0,0,0,.2);
+  width:1250px;
+  max-height:80%;
+
+}
+
 ul.schedule > li > div > table {
   background-color:rgba(30,30,30,.4);
 }

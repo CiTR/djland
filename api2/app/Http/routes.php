@@ -531,10 +531,14 @@ Route::get('/adschedule',function(){
 				$show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
 				$show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
 				$show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
-
-				//Show duration in seconds
-				$show_duration = date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute -date_parse($show_time['start_time'])['hour'] * $one_hour - date_parse($show_time['start_time'])['minute'] * $one_minute;
 				
+				if($show_time['start_day'] != $show_time['end_day']){
+					$show_duration = (24 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour'])*$one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute'])*$one_minute;
+				}else{
+					$show_end_time_unix_offset = $show_time['end_day'] * $one_day + date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute;
+					$show_duration = abs($show_end_time_unix_offset - $show_time_unix_offset);
+				}
+
 				//Unix timestamp of possible show start times
 				$week_0_show_unix = $week_0_start + $show_time_unix_offset;
 				$week_1_show_unix = $week_1_start + $show_time_unix_offset;
@@ -546,15 +550,15 @@ Route::get('/adschedule',function(){
 				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();	
 					
 				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
-				if(count($week_0_ads) == 0){
+				if(count($week_0_ads) <= 2){
 					//Insert a new entry every 20 minutes
 					$week_0_ads = Ad::generateAds($week_0_show_unix,$show_duration);					
 				}
-				if(count($week_1_ads) == 0){
+				if(count($week_1_ads) <= 2){
 					//Insert a new entry every 20 minutes
 					$week_1_ads = Ad::generateAds($week_1_show_unix,$show_duration);					
 				}
-				if(count($week_2_ads) == 0){
+				if(count($week_2_ads) <= 2){
 					//Insert a new entry every 20 minutes
 					$week_2_ads = Ad::generateAds($week_2_show_unix,$show_duration);					
 				}
@@ -612,28 +616,28 @@ Route::get('/adschedule',function(){
 					//Hasn't happened yet, look at weeks 0 and 1
 					if($show_time['alternating'] == '0'){
 						//Occurs Weekly, Add to week 0,1
-						$schedule[$week_0[0]] = $week_0[1];
-						$schedule[$week_1[0]] = $week_1[1];
+						$schedule[] = $week_0[1];
+						$schedule[] = $week_1[1];
 					}else if($show_time['alternating'] == $current_week){
 						//Occurs this week, add to remainder of week 0
-						$schedule[$week_0[0]] = $week_0[1];
+						$schedule[] = $week_0[1];
 					}else{
 						//Doesn't occur this week, add to week 1
-						$schedule[$week_1[0]] = $week_1[1];
+						$schedule[] = $week_1[1];
 					}
 
 				}else{
 					//Already occured this week, look at weeks 1 and 2
 					if($show_time['alternating'] == '0'){
 						//Occurs weekly, add to week 1,2
-						$schedule[$week_1[0]] = $week_1[1];
-						$schedule[$week_2[0]] = $week_2[1];
+						$schedule[] = $week_1[1];
+						$schedule[] = $week_2[1];
 					}else if($show_time['alternating'] == $current_week){
 						//Occurs this week, add to week 2
-						$schedule[$week_2[0]] = $week_2[1];
+						$schedule[] = $week_2[1];
 					}else{
 						//Doesn't occur this week, add to week 1
-						$schedule[$week_1[0]] = $week_1[1];
+						$schedule[] = $week_1[1];
 					}
 				}
 			}
