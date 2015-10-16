@@ -94,6 +94,7 @@ class Show extends Model
         return $min;
     }
     public function make_show_xml(){
+        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
         error_reporting(E_ALL);
 
         //Get objects
