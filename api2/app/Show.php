@@ -94,19 +94,16 @@ class Show extends Model
         return $min;
     }
     public function make_show_xml(){
-        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
         error_reporting(E_ALL);
-        //Set up FTP access
-        $ftp = $ftp_xml;
-        $ftp->target_path = '/';
-        $ftp->url_path = 'http://playlist.citr.ca/podcasting/xml/';
 
         //Get objects
         $show = $this;
         $episodes = $this->podcasts;
+        
         $file_name = $this['podcast_slug'].'.xml';
-
+        $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
+
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
         foreach ($show as $field) {
@@ -173,54 +170,32 @@ class Show extends Model
         
 
         if(!$testing_environment){
-            $ftp_connection = ftp_connect($ftp->url, $ftp->port);
-            if($ftp_connection){
-                if(ftp_login($ftp_connection,$ftp->username ,$ftp->password)){
-                    //Set to passive mode? It worked...
-                    ftp_pasv($ftp_connection, true);
-                    
-                    //Create a temporary file to hold the xml
-                    $temporary_file = tmpfile();
-                    if($temporary_file){
-                        $metaDatas = stream_get_meta_data($temporary_file);
-                        $temporary_file_name = $metaDatas['uri'];
-                        
-                        $num_bytes = 0;
-                        //Go line by line adding newlines
-                        /*for($i = 0; $i < count($xml); $i ++){*/
-                            $num_bytes += file_put_contents($temporary_file_name, implode("\n",$xml));
-                            //if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) $num_bytes += fwrite($temporary_file, "\n");
-                        //}
-
-                       
-                        if(ftp_fput($ftp_connection, $ftp->target_path.$file_name, $temporary_file, FTP_BINARY)){
-                            //Successfully Uploaded the file
-                            $response['reponse'] = array(
-                                'filename' => $file_name,
-                                'size' => $num_bytes,
-                                'url' => $ftp->url_path.$file_name
-                                );
-
-                        }else{
-                            $response['reponse'] = "Failed to write to FTP server";
-                        }
-                       
-                        while(is_resource($temporary_file)){
-                           //Handle still open
-                           fclose($temporary_file);
-                        }  
-                    }else{
-                        $response['reponse'] = "Failed to open file";
-                    }
-
-                }else{
-                    $response['reponse'] = "Failed to login";
+            $target_dir = '/home/playlist/public_html/podcasting/xml/';
+            //$target_dir = 'audio/'.$year.'/';     
+            $target_file_name = $target_dir.$file_name;
+            //Open local file
+            $target_file = fopen($target_file_name,'wb');
+            $num_bytes = 0;
+            
+            //If we open local file
+            if($target_file){
+                //Writing Line By Line to reduce memory footprint.
+                for($i = 0; $i < count($xml); $i ++){
+                    $num_bytes += fwrite($target_file, $xml[$i]."\n");
+                    if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
                 }
-                //Make sure we close our connection
-                ftp_close($ftp_connection);
-                
+                 $response['reponse'] = array(
+                    'filename' => $file_name,
+                    'size' => $num_bytes,
+                    'url' => $url_path.$file_name
+                    );
             }
-            return($response);
+            
+            while(is_resource($target_file)){
+               //Handle still open
+               fclose($target_file);
+            }
+            return $response;
         }else{
             $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
             //$target_dir = 'audio/'.$year.'/';     
@@ -236,6 +211,11 @@ class Show extends Model
                     $num_bytes += fwrite($target_file, $xml[$i]."\n");
                     if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
                 }
+                 $response['reponse'] = array(
+                                'filename' => $file_name,
+                                'size' => $num_bytes,
+                                'url' => $ftp->url_path.$file_name
+                                );
             }
             
             while(is_resource($target_file)){

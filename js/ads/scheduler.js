@@ -1,7 +1,7 @@
 (function(){
     var app = angular.module('djland.adScheduler',['djland.api','sam.api','djland.utils']);
 
-    app.controller('adScheduler',function(call,sam,$q,$filter){
+    app.controller('adScheduler',function(call,sam,$q,$filter,$scope){
     	var this_ = this;
         this.loading = true;
         this.loaded = 0;
@@ -37,13 +37,32 @@
     	});
 
         this.load = function(){
+             this_ = this;
             if(!this.loading){
-                this.loading = true;
-                this.showtimes = this.showtimes.concat(this.dataset.slice(this.loaded,this.loaded+19));
-                this.loaded += 20;
-                this.loading = false;
-                console.log('loading more');
+                var items = (this_.loaded + 5 >= this_.dataset.length) ? this_.dataset.length - this.loaded - 1 : 4;
+                if(items != 0){
+                    this.loading = true;           
+                    window.setTimeout(function(){
+                    
+                        this_.showtimes = this_.showtimes.concat(this_.dataset.slice(this_.loaded,this_.loaded + items));
+                        this_.loaded += 5;
+                        console.log('loading '+(items+1)+' more shows');
+                        this_.loading = false;
+                        $scope.$apply();
+                    },1000);
+                }
             }
+        }
+        this.add = function(show_index){
+            var time = $('#ad_time_'+show_index).val();
+            var type = $('#ad_type_'+show_index).val();
+            var unix = $('#unix_'+show_index).val();
+            var ad = {'type':type,'time':time,'time_block':unix,'name':'' };
+            this.showtimes[show_index].ads.splice(this.showtimes[show_index].ads.length,0,ad);
+        }
+        this.remove = function(show_index,ad_index){
+            console.log(show_index+','+ad_index);
+            this.showtimes[show_index].ads.splice(ad_index,1);
         }
 
         

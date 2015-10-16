@@ -48,8 +48,11 @@ class Ad extends Model
 				$psa->time_block = $show_start_unix;
 				$psa->time = date('g:i a',$date);
 			
-			$week_ads[] = $ad;
-			$week_ads[] = $psa;
+			if($offset != 0){
+				$week_ads[] = $ad;
+				$week_ads[] = $psa;
+			}
+			
 
 		}
 

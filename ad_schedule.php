@@ -8,22 +8,23 @@
 		<?php print_menu(); ?>
 		<div ng-controller='adScheduler as schedule'>
 			<h1>Ad Scheduler</h1>
+			<button id='ad_schedule_save' type='button' ng-click='schedule.save()'>Save Ad Schedule</button></h4>
 			<div class='text-center loading' ><img ng-show='schedule.loading==true' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>	
-			<div id='ad_schedule_wrapper' class='scrolly' scrolly='schedule.loading==false ? schedule.load() : ""'>
+			<div id='ad_schedule_wrapper' class='scrolly' scrolly='!schedule.loading ? schedule.load() : ""'>
 				<ul class='list-unstyled schedule' >
-					<li ng-repeat='show in schedule.showtimes | orderBy:"start_unix"'>
-						<h2 class='text-left'>{{show.name}}</h2>
-						<h3 class='text-left'>{{show.date}}</h3>
+					<li ng-repeat='show in schedule.showtimes track by $index | orderBy:"start_unix"'>
+						<h3 class='text-left'>{{show.name}}</h3>
+						<h4 class='text-left'>{{show.date}}</h4>
 						<!-- Template Table -->
-						<div class='template'>
+						<div id='unix_{{$index}}' value='{{show.start_unix}}' class='template'>
 							<table class='table-condensed'>
-								<tr id='{{unix}}'>
+								<tr>
 									<td>
-										<input value='{{show.start}}'></input>
+										<input id='ad_time_{{$index}}' value='{{show.start}}'></input>
 									</td>
 									<td>
-										<select ng-model='show_ad.type'>
-											<option value="">Announcement</option>
+										<select id='ad_type_{{$index}}' ng-model='show_ad.type'>
+											<option ng-selected='true' value="announcement">Announcement</option>
 											<option value='ad'>Ad</option>
 											<option value='psa'>PSA</option>
 											<option value='timely'>Timely PSA</option>
@@ -36,13 +37,13 @@
 								</tr>
 
 							</table>
-							<button type='button' class='insert_ad'>Insert Additional Ad</button> 
+							<button type='button' ng-click="schedule.add($index)" class='insert_ad'>Insert Additional Ad</button> 
 						</div>
 						
 						<!-- Ad Table -->
 						<div class='double-padded-top'>
 							<table class='table-condensed'>
-								<tr ng-repeat='show_ad in show.ads | orderBy:"time"'>					
+								<tr ng-repeat='show_ad in show.ads track by $index | orderBy:"[$index,time]"'>					
 									<td><input ng-model='show_ad.time'></td>
 									<td>
 										<select ng-model='show_ad.type'>
@@ -57,7 +58,6 @@
 										</select>
 									</td>
 									<td>
-										
 										<div ng-if="show_ad.type == 'ad'">
 											<!-- Begin Ad Selector -->
 											<select ng-model='show_ad.name'>
@@ -134,7 +134,7 @@
 										</div>
 										
 									</td>
-									<td><button type='button' class='delete'>Remove</button><td>
+									<td><button type='button' class='delete' ng-click='schedule.remove($parent.$index,$index)'>Remove</button><td>
 
 								</tr>
 							</table>
