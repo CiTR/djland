@@ -1189,6 +1189,10 @@ ul.schedule > li > div.template *{
   display:inline-block;
   position:relative;
 }
+button.saving{
+  background-color:red;
+  color:white;
+}
 
 
 /*-------------------*/

@@ -12,7 +12,8 @@
 			<div class='text-center loading' ><img ng-show='schedule.loading==true' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>	
 			<div id='ad_schedule_wrapper' class='scrolly' scrolly='!schedule.loading ? schedule.load() : ""'>
 				<ul class='list-unstyled schedule' >
-					<li ng-repeat='show in schedule.showtimes track by $index | orderBy:"start_unix"'>
+					<li class='show' ng-repeat='show in schedule.showtimes track by $index | orderBy:"start_unix"'>
+
 						<h3 class='text-left'>{{show.name}}</h3>
 						<h4 class='text-left'>{{show.date}}</h4>
 						<!-- Template Table -->
@@ -31,7 +32,7 @@
 											<option value='ubc'>UBC PSA</option>
 											<option value='community'>Community PSA</option>
 											<option value='promo'>Show Promo</option>
-											<option value='ID'>Station ID</option>
+											<option value='id'>Station ID</option>
 										</select>
 									</td>
 								</tr>
@@ -43,7 +44,7 @@
 						<!-- Ad Table -->
 						<div class='double-padded-top'>
 							<table class='table-condensed'>
-								<tr ng-repeat='show_ad in show.ads track by $index | orderBy:"[$index,time]"'>					
+								<tr ng-repeat='show_ad in show.ads track by $index | orderBy:"[$index,time]"'>				
 									<td><input ng-model='show_ad.time'></td>
 									<td>
 										<select ng-model='show_ad.type'>

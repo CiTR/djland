@@ -651,6 +651,27 @@ Route::get('/adschedule',function(){
 	
 });
 
+Route::post('/adschedule',function(){
+	$showtimes = Input::get()['showtimes'];
+	foreach($showtimes as $showtime){
+		$ads = $showtime['ads'];
+		$a = array();
+		foreach($ads as $ad){
+			if(isset($ad['id'])){
+				$item = Ad::find($ad['id']);
+				$item->update($ad);
+			}else{
+				$item = Ad::create($ad);
+			}
+			$a[] = $item;
+		}
+		$s[$showtime['start_unix']] = $a;
+	}
+	return $s;
+
+
+});
+
 Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	$ads = Ad::where('time_block','=',$unixtime)->get(); 
