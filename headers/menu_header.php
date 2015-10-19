@@ -54,12 +54,12 @@ function print_menu(){
 				endif; 
 			if(permission_level() >= $djland_permission_levels['workstudy']) : 
 				if($enabled['adscheduler']) : ?>
-					<li class=drop><a href="adscheduler.php">Ads</a>
+					<li class=drop><a href="ad_schedule.php">Ads</a>
 						<div class="dropdown small">
 							<div class=small>
 								<ul>
 									<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
-									<li><a href="adscheduler.php">Ad Scheduler</a></li>
+									<li><a href="ad_schedule.php">Ad Scheduler</a></li>
 									<?php endif; ?>
 									<li><a href="adreport.php">Ad Reporting</a></li>
 									<li><a href="samAds.php">Sam Ad History</a></li>
