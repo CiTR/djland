@@ -31,17 +31,17 @@
                 
                 //Handling legacy items
                 for(var item in this_.dataset){
-                    for(var ad in item){
-                        switch(this_.dataset[item].type){
-                            case 'AD (PRIORITY)' : this_.dataset[item][ad].type = 'ad';
+                    for(var ad in this_.dataset[item].ads){
+                        switch(this_.dataset[item]['ads'][ad].type){
+                            case 'AD (PRIORITY)' : this_.dataset[item]['ads'][ad].type = 'ad';
                                 break;
-                            case 'Station ID' : this_.dataset[item][ad].type = 'id';
+                            case 'Station ID' : this_.dataset[item]['ads'][ad].type = 'id';
                                 break;
-                            case 'PSA' : this_.dataset[item][ad].type = 'psa';
+                            case 'PSA' : this_.dataset[item]['ads'][ad].type = 'psa';
                                 break;
-                            case 'Show Promo' : this_.dataset[item][ad].type = 'promo';
+                            case 'Show Promo' : this_.dataset[item]['ads'][ad].type = 'promo';
                                 break;
-                            case 'before end' : this_.dataset[item][ad].type = 'announcement';
+                            case 'before end' : this_.dataset[item]['ads'][ad].type = 'announcement';
                                 break;
                             default:
                                 break;
