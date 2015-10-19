@@ -678,7 +678,7 @@ Route::get('/ads/{unixtime}',function($unixtime = unixtime){
 	foreach($ads as $key => $value){
 		if($using_sam && is_numeric($value['name'])){
 			$ad_info =  DB::connection('samdb')->table('songlist')->select('title')->where('id','=',$value['name'])->get()[0];
-			$ads[$key]['name'] = $ad_info->title ! '' ? $ad_info->title : $ad_info->artist;
+			$ads[$key]['name'] = $ad_info->title != '' ? $ad_info->title : $ad_info->artist;
 		}else{
 			$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
 		}
