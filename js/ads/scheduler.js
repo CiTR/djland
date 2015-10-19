@@ -35,13 +35,14 @@
                         switch(this_.dataset[item]['ads'][ad].type){
                             case 'AD (PRIORITY)' : this_.dataset[item]['ads'][ad].type = 'ad';
                                 break;
-                            case 'Station ID' : this_.dataset[item]['ads'][ad].type = 'id';
+                            case 'Station ID' : this_.dataset[item]['ads'][ad].type = 'station id';
                                 break;
                             case 'PSA' : this_.dataset[item]['ads'][ad].type = 'psa';
                                 break;
                             case 'Show Promo' : this_.dataset[item]['ads'][ad].type = 'promo';
                                 break;
-                            case 'before end' : this_.dataset[item]['ads'][ad].type = 'announcement';
+                            case '' : 
+                                this_.dataset[item]['ads'][ad].type = 'announcement';
                                 break;
                             default:
                                 break;
