@@ -32,23 +32,23 @@
                 //Handling legacy items
                 for(var item in this_.dataset){
                     for(var ad in item){
-                        switch(item[ad.type]){
-                            case 'AD (PRIORITY)' : item[ad].type = 'ad';
+                        switch(this_.dataset[item].type){
+                            case 'AD (PRIORITY)' : this_.dataset[item][ad].type = 'ad';
                                 break;
-                            case 'Station ID' : item[ad].type = 'id';
+                            case 'Station ID' : this_.dataset[item][ad].type = 'id';
                                 break;
-                            case 'PSA' : item[ad].type = 'psa';
+                            case 'PSA' : this_.dataset[item][ad].type = 'psa';
                                 break;
-                            case 'Show Promo' : item[ad].type = 'promo';
+                            case 'Show Promo' : this_.dataset[item][ad].type = 'promo';
                                 break;
-                            case 'before end' : item[ad].type = 'announcement';
+                            case 'before end' : this_.dataset[item][ad].type = 'announcement';
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
-                
+
                 this_.showtimes = angular.copy(this_.dataset.slice(0,20));
                 this_.loaded = 20;
                 this_.loading = false;
