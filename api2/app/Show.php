@@ -28,55 +28,79 @@ class Show extends Model
         date_default_timezone_set('America/Los_Angeles');
         $time = strtotime('now');
         $showtimes = $this->showtimes;
-        foreach($showtimes as $key=>$value){
+        
+        //Get mod 2 of current week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
+        $current_week = (date('W',strtotime('now')) % 2) +1;
+        //Get Day of Week (0-6)
+        $day_of_week = date('w',strtotime('now'));
+        //Get Current Time (0-23:0-59:0-59)
+        $current_time = date('H:i:s',strtotime('now'));
+        
+        //Making sure if today is sunday, it does not get last sunday instead of today.
+        if($day_of_week == 0){
+            $week_0_start = strtotime('today');
+            $week_1_start = strtotime('+1 week',$week_0_start);
+            $week_2_start = strtotime('+1 week',$week_1_start);
+        }else{
+            $week_0_start = strtotime('last sunday 00:00:00');
+            $week_1_start = strtotime('+1 week',$week_0_start);
+            $week_2_start = strtotime('+1 week',$week_1_start);
+        }
 
-            //Get Current week since start of year (always 52 weeks so this is acceptable for next 1000 years?)
-            $current_week = Date('W', strtotime('today',strtotime($time)));
-            if ((int) $current_week % 2 == 0){
-                //Week 2
-                $current_week_is_even = true;
-            } else {
-                //Week 1
-                $current_week_is_even = false;
-            };
+        //Constants (second conversions)
+        $one_day = 24*60*60;
+        $one_hour = 60*60;
+        $one_minute = 60;
+        
+        foreach($showtimes as $show_time){                      
+            $show_time_day_offset = ($show_time['start_day']) * $one_day;
+            $show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
+            $show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;            
+            $show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
             
-            //See if show is this week
-            $this_week = ( $value['alternating'] == '0' ) || ($current_week_is_even && $value['alternating'] == '2') || (!$current_week_is_even && $value['alternating'] == '1');
-            
-            //Get Previous Sunday
-            $last_sunday = strtotime('last sunday');
-            //Offest start day by 7 if show is next week
-            $startday =  (int) $value['start_day'];
-            if (!$this_week) $startday +=7;
-            
-            //Offset for last sunday
-            $showtime_if_it_was_on_last_sunday = strtotime($value['start_time'],  $last_sunday);
-            //Corrected show time
-            $actual_show_time = strtotime('+'.$startday.' days',$showtime_if_it_was_on_last_sunday);
-            $start_time = strtotime($value['start_time'], $last_sunday );
-
-            //If unix string is greater than the actual show time we have had our show this week. Go to next show time
-            if ($actual_show_time < strtotime($time)){
-                if ( $value['alternating'] == '0') {
-                    $actual_show_time = strtotime('+ 1 week', $actual_show_time);
-                } else {
-                    $actual_show_time = strtotime('+ 2 week', $actual_show_time);
-                }
+            if($show_time['start_day'] != $show_time['end_day']){
+                $show_duration = (24 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour'])*$one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute'])*$one_minute;
+            }else{
+                $show_end_time_unix_offset = $show_time['end_day'] * $one_day + date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute;
+                $show_duration = abs($show_end_time_unix_offset - $show_time_unix_offset);
             }
 
-            //Add days since last sunday start
-            $start = $last_sunday + $startday*24*60*60;
-            
-            //Add days since last sunday to end
-            $end = strtotime($value['end_time'], strtotime($time));
-            $endday = (int) $value['end_day'];
-            $end = ($endday)*24*60*60 + $end;
+            //Unix timestamp of possible show start times
+            $week_0_show_unix = $week_0_start + $show_time_unix_offset;
+            $week_1_show_unix = $week_1_start + $show_time_unix_offset;
+            $week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
-            //Overrwite it? wtf.
-            $end = strtotime($value['end_time'], $actual_show_time);
-            
 
-            $candidates []= array('start' => $actual_show_time, 'end' => $end);
+            //Check if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
+                if( ($show_time['start_day'] == $day_of_week && $show_time['start_time'] >= $current_time) || $show_time['start_day'] > $day_of_week){
+                    //Hasn't happened yet, look at weeks 0 and 1
+                    if($show_time['alternating'] == '0'){
+                        //Occurs Weekly, add to this week
+                        $next_show = $week_0_show_unix;
+                    }else if($show_time['alternating'] == $current_week){
+                        //Occurs this week, add to remainder of this week
+                        $next_show = $week_0_show_unix;
+                    }else{
+                        //Doesn't occur this week, add to week 1
+                        $next_show = $week_1_show_unix;
+                    }
+
+                }else{
+                    //Already occured this week
+                    if($show_time['alternating'] == '0'){
+                        //Occurs weekly, add to week 1
+                        $next_show = $week_1_show_unix;
+                    }else if($show_time['alternating'] == $current_week){
+                        //Occurs this week, add to week 2
+                        $next_show = $week_2_show_unix;
+                    }else{
+                        //Doesn't occur this week, add to week 1
+                        $next_show = $week_1_show_unix;
+                    }
+                }
+
+            $end = $next_show + $show_duration;
+            $candidates []= array('start' => $next_show, 'end' => $end);
         }
         //Find the minimum start time
         if(isset($candidates)){
