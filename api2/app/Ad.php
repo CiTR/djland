@@ -23,7 +23,7 @@ class Ad extends Model
 			if(date('i',$date) == '00'){
 				$id = new stdClass();
 					$id->type = 'station id';
-					$id->name = '';
+					$id->name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
 					$id->time_block = $show_start_unix;
 					$id->time = date('g:i a',$date);
 				$week_ads[] = $id;
@@ -31,7 +31,7 @@ class Ad extends Model
 				//Show started on a half hour, so 20 minute increments land us on 10 minutes past.
 				$id = new stdClass();
 					$id->type = 'station id';
-					$id->name = '';
+					$id->name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
 					$id->time_block = $show_start_unix;
 					$id->time = date('g:i a',date($show_start_unix + $offset - 10*$one_minute));
 				$week_ads[] = $id;
@@ -40,12 +40,12 @@ class Ad extends Model
 			//Add an ad + psa
 			$ad = new stdClass();
 				$ad->type = 'ad';
-				$ad->name = '';
+				$ad->name = 'Any Ad';
 				$ad->time_block = $show_start_unix;
 				$ad->time = date('g:i a',$date);
 			$psa = new stdClass();
 				$psa->type = 'psa';
-				$psa->name = '';
+				$psa->name = 'Any PSA';
 				$psa->time_block = $show_start_unix;
 				$psa->time = date('g:i a',$date);
 			
@@ -60,7 +60,7 @@ class Ad extends Model
 		//Add announcement and promo 5 minutes before end of show.
 		$promo = new stdClass();
 			$promo->type = 'promo';
-			$promo->name = '';
+			$promo->name = 'Any Promo';
 			$promo->time_block = $show_start_unix;
 			$promo->time = date('g:i a',$show_start_unix + $show_duration - 5* $one_minute);
 		$announcement = new stdClass();

@@ -95,6 +95,16 @@
                 }
             }
         }
+        this.update = function(item,ad){
+            if(item.indexOf('Any') >= 0){
+                ad.name = item;
+                ad.sam_id = null;
+            }else{
+                item = JSON.parse(item);         
+                ad.name = item.title != '' ? item.title : item.artist;
+                ad.sam_id = item.ID;
+            }
+        }
         this.add = function(show_index){
             var time = $('#ad_time_'+show_index).val();
             var type = $('#ad_type_'+show_index).val();
@@ -118,8 +128,9 @@
                     data.push(this.showtimes[showtime].ads);
                 }
             } */ 
+            console.log(this.showtimes);
             var this_ = this;
-            call.saveAds(this.showtimes).then(function(response){
+            call.saveAds(this_.showtimes).then(function(response){
                 var data = response.data;
 
                 for(var ad_time in data){

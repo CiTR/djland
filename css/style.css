@@ -550,7 +550,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 }
 
 /* Playsheet Angular CSS */
-
+.ad_name{
+  max-width:300px;
+}
 .host{
   max-width:400px;
 }
