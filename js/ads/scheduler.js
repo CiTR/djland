@@ -30,30 +30,12 @@
                 });
 
                 
-                //Handling legacy items
+/*                //Handling legacy items
                 for(var item in this_.dataset){
                     this_.dataset[item].ads = this_.dataset[item].ads.sort(function(a, b) {
                         return a.time - b.time;
                     });
-
-                    for(var ad in this_.dataset[item].ads){
-                        switch(this_.dataset[item]['ads'][ad].type){
-                            case 'AD (PRIORITY)' : this_.dataset[item]['ads'][ad].type = 'ad';
-                                break;
-                            case 'Station ID' : this_.dataset[item]['ads'][ad].type = 'station id';
-                                break;
-                            case 'PSA' : this_.dataset[item]['ads'][ad].type = 'psa';
-                                break;
-                            case 'Show Promo' : this_.dataset[item]['ads'][ad].type = 'promo';
-                                break;
-                            case '' : 
-                                this_.dataset[item]['ads'][ad].type = 'announcement';
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
+                }*/
 
                 this_.showtimes = angular.copy(this_.dataset.slice(0,20));
                 this_.loaded = 20;
@@ -116,7 +98,7 @@
             switch(type){
                 case 'ad': var name = 'Any Ad'; break;
                 case 'psa': var name ='Any PSA'; break;
-                case 'announcement': var name ='Please announce the upcoming program';
+                case 'announcement': var name ='Please announce the upcoming program'; break;
                 case 'promo': var name = 'Any Show Promo'; break;
                 case 'timely': var name = 'Any Timely PSA'; break;
                 case 'ubc': var name = 'Any UBC PSA'; break;
@@ -125,7 +107,7 @@
                 default: break;
             }
             var unix = $('#unix_'+show_index).attr('unix');
-            var ad = {'type':type,'time':time,'time_block':unix};
+            var ad = {'type':type,'time':time,'time_block':unix,'name':name};
             var index = 0;
             var length = this_.showtimes[show_index].ads.length
             for(var i = 0; i < length; i ++){
@@ -189,7 +171,7 @@
                         console.log('in scroll');
                         console.log(raw.scrollTop + raw.offsetHeight);
                         console.log(raw.scrollHeight);
-                        if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/5 >= raw.scrollHeight ) {
+                        if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/20 >= raw.scrollHeight ) {
                             scope.$apply(attrs.scrolly);
                             //raw.scrollTop = (raw.scrollTop+raw.offsetHeight);
                             console.log("Hit Bottom");

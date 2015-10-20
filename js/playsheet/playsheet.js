@@ -231,7 +231,7 @@
                     }
 
                     //Get Member shows, and set active show
-                    call.getMemberShows(this.member_id).then(function(data){
+                    call.getActiveMemberShows(this.member_id).then(function(data){
                         var shows = data.data.shows;
                         this_.member_shows = shows;
                         //Find what show this playsheet is for, and set it as active show to load information.
@@ -276,7 +276,7 @@
                 this.podcast.active = 0;
 
                 //Get Shows Listing
-                call.getMemberShows(this.member_id).then(function(data){
+                call.getActiveMemberShows(this.member_id).then(function(data){
                     var shows = data.data.shows;
                     this_.member_shows = shows;
                     //Cheat Code to get first active show.

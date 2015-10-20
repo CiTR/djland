@@ -150,7 +150,7 @@
 					<h4> Ads, PSAs, Station IDs </h4>
 					<table class='table table-responsive border'>
 						<th>#</th><th>Time</th><th>Type</th><th>Name</th><th>Played</th>
-						<tr ad class='ads' ng-model='playsheet.ads' ng-repeat="ad in playsheet.ads | orderBy:'time'"></tr>
+						<tr ad class='ads' ng-model='playsheet.ads' ng-repeat="ad in playsheet.ads"></tr>
 					</table>
 				</div>
 				<div class='col5 side-padded right double-padded-top'>

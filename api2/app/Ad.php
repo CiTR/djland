@@ -7,6 +7,7 @@ use stdClass;
 class Ad extends Model
 {
     //
+    protected $connection = "mysql";
     protected $table = 'adlog';
     protected $fillable = array('playsheet_id', 'num', 'time', 'type', 'name', 'played', 'sam_id', 'time_block');
     const CREATED_AT = 'create_date';
@@ -71,6 +72,10 @@ class Ad extends Model
 
 		$week_ads[] = $promo;
 		$week_ads[] = $announcement;
+		$index = 1;
+		foreach($week_ads as $ad){
+			$ad->num = $index++;
+		}
 
 		return $week_ads;
     }

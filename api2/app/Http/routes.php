@@ -123,6 +123,21 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 				return  Response::json($shows);
 			});
+			Route::get('active_shows', function($member_id = id){
+				$permissions = Member::find($member_id)->user->permission;
+				if($permissions->staff ==1 || $permissions->administrator==1){
+					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
+					foreach($all_shows as $show){
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+					}
+				}else{
+					$member_shows = Member::find($member_id)->shows->where('active','=','1')->get();
+					foreach($member_shows as $show){
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+					}
+				}
+				return  Response::json($shows);
+			});
 		});
 	
 	});
@@ -656,11 +671,15 @@ Route::post('/adschedule',function(){
 	foreach($showtimes as $showtime){
 		$ads = $showtime['ads'];
 		$a = array();
+		$index = 1;
 		foreach($ads as $ad){
 			if(isset($ad['id'])){
+
 				$item = Ad::find($ad['id']);
+				$ad['num'] = $index++;
 				$item->update($ad);
 			}else{
+				$ad['num'] = $index++;
 				$item = Ad::create($ad);
 			}
 			$a[] = $item;
@@ -673,7 +692,7 @@ Route::post('/adschedule',function(){
 });
 
 Route::get('/ads/{unixtime}',function($unixtime = unixtime){
-	$ads = Ad::where('time_block','=',$unixtime)->get(); 
+	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
 	return Response::json($ads);
 });
 

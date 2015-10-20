@@ -32,7 +32,7 @@
 											<option value='ubc'>UBC PSA</option>
 											<option value='community'>Community PSA</option>
 											<option value='promo'>Show Promo</option>
-											<option value='id'>Station ID</option>
+											<option value='station id'>Station ID</option>
 										</select>
 									</td>
 								</tr>
@@ -44,7 +44,7 @@
 						<!-- Ad Table -->
 						<div class='double-padded-top'>
 							<table class='table-condensed'>
-								<tr ng-repeat='show_ad in show.ads | orderBy:"time"'>				
+								<tr ng-repeat='show_ad in show.ads track by $index | orderBy:"num"'>				
 									<td><input ng-model='show_ad.time'></td>
 									<td>
 										<select ng-model='show_ad.type'>
@@ -76,7 +76,6 @@
 											</select>
 											<!-- End Combined PSA Selector -->
 										</div>
-										
 										<div ng-if="show_ad.type == 'timely'">
 											<!-- Begin Timeply PSA Selector -->
 											<select ng-model='select[show][show_ad]' ng-change='schedule.update(select[show][show_ad],show_ad)'>
@@ -103,6 +102,7 @@
 											</select>
 											<!-- End Community PSA Selector -->
 										</div>
+										
 																				
 										<div ng-if="show_ad.type == 'promo'">
 											<!-- Begin Promo Selector -->

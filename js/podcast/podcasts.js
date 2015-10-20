@@ -144,12 +144,22 @@
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
-                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime()){
+                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime() && (this.editing.podcast.url != '' & this.editing.podcast.url)){
                         call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
                         },function(error){
-                            alert("Failed to save podcast: " + error);
+                            alert("Failed to save podcast: " + error.response);
                         });
+                    }else if(this.editing.podcast.url == '' || !this.editing.podcast.url){
+                        if(this.editing.playsheet.status == '2'){
+                            call.makePodcastAudio(this_.editing.podcast).then(function(response){
+                                alert("Successfully Saved");
+                            },function(error){
+                                alert("Failed to save podcast: " + error.response);
+                            });
+                        }else{
+                            alert('Successfully saved, please submit this playsheet!');
+                        }
                     }else{
                         alert("Saved podcast, did not re-generate audio as it is too far back");
                     }
