@@ -89,7 +89,6 @@
                     this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
                     this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                    console.log(this_.start_hour);
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();
                                      //Update Podcast information
@@ -105,8 +104,9 @@
             });
         }
         this.updateShowValues = function(element){
+
+            //When a new show is selected, updat all the information.
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
-            
             this.show = this.active_show.show;
             console.log(this.active_show);
             this.info.show_id = parseInt(this.active_show.id);
@@ -117,6 +117,12 @@
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_id = this.info.show_id;
             }
+            call.getShowPlaysheets(this_.active_show.id).then(function(response){
+                //DISPLAY OLD PLAYSHEETS
+                this_.existing_playsheets = response.data.sort(function(a, b) {
+                        return a.start_time - b.start_time;
+                });
+            });
             this.updateTime();
         }
         this.updateSpokenword = function(){
@@ -240,7 +246,9 @@
                         console.log(this_.active_show);
                         call.getShowPlaysheets(this_.active_show.id).then(function(response){
                             //DISPLAY OLD PLAYSHEETS
-                            this_.existing_playsheets = response.data;
+                            this_.existing_playsheets = response.data.sort(function(a, b) {
+                                return a.start_time - b.start_time;
+                            });
                         });
                         //Populate the template row
                         var show_date = this_.start.getDate();
@@ -292,7 +300,10 @@
 
                     call.getShowPlaysheets(this_.show_value).then(function(response){
                         //DISPLAY OLD PLAYSHEETS
-                        this_.existing_playsheets = response.data;
+                        this_.existing_playsheets = response.data.sort(function(a, b) {
+                            return a.start_time - b.start_time;
+                        });
+
                     });
 
                     call.getNextShowTime(this_.active_show.id,now).then(function(response){
