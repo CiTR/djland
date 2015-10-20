@@ -17,7 +17,7 @@
 						<h3 class='text-left'>{{show.name}}</h3>
 						<h4 class='text-left'>{{show.date}}</h4>
 						<!-- Template Table -->
-						<div id='unix_{{$index}}' value='{{show.start_unix}}' class='template'>
+						<div id='unix_{{$index}}' unix='{{show.start_unix}}' class='template'>
 							<table class='table-condensed'>
 								<tr>
 									<td>
@@ -44,7 +44,7 @@
 						<!-- Ad Table -->
 						<div class='double-padded-top'>
 							<table class='table-condensed'>
-								<tr ng-repeat='show_ad in show.ads track by $index | orderBy:"[$index,time]"'>				
+								<tr ng-repeat='show_ad in show.ads | orderBy:"time"'>				
 									<td><input ng-model='show_ad.time'></td>
 									<td>
 										<select ng-model='show_ad.type'>
@@ -135,7 +135,7 @@
 										</div>
 										
 									</td>
-									<td><button type='button' class='delete' ng-click='schedule.remove($parent.$index,$index)'>Remove</button><td>
+									<td><button type='button' class='delete' ng-click='schedule.remove(show,show_ad)'>Remove</button><td>
 
 								</tr>
 							</table>

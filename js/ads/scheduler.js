@@ -28,9 +28,14 @@
                 this_.dataset = response.data.sort(function(a, b) {
                     return a.start_unix - b.start_unix;
                 });
+
                 
                 //Handling legacy items
                 for(var item in this_.dataset){
+                    this_.dataset[item].ads = this_.dataset[item].ads.sort(function(a, b) {
+                        return a.time - b.time;
+                    });
+
                     for(var ad in this_.dataset[item].ads){
                         switch(this_.dataset[item]['ads'][ad].type){
                             case 'AD (PRIORITY)' : this_.dataset[item]['ads'][ad].type = 'ad';
@@ -108,13 +113,34 @@
         this.add = function(show_index){
             var time = $('#ad_time_'+show_index).val();
             var type = $('#ad_type_'+show_index).val();
-            var unix = $('#unix_'+show_index).val();
-            var ad = {'type':type,'time':time,'time_block':unix,'name':'' };
-            this.showtimes[show_index].ads.splice(this.showtimes[show_index].ads.length,0,ad);
+            switch(type){
+                case 'ad': var name = 'Any Ad'; break;
+                case 'psa': var name ='Any PSA'; break;
+                case 'announcement': var name ='Please announce the upcoming program';
+                case 'promo': var name = 'Any Show Promo'; break;
+                case 'timely': var name = 'Any Timely PSA'; break;
+                case 'ubc': var name = 'Any UBC PSA'; break;
+                case 'community': var name = 'Any Community PSA';
+                case 'station id': var name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
+                default: break;
+            }
+            var unix = $('#unix_'+show_index).attr('unix');
+            var ad = {'type':type,'time':time,'time_block':unix};
+            var index = 0;
+            var length = this_.showtimes[show_index].ads.length
+            for(var i = 0; i < length; i ++){
+                if(this_.showtimes[show_index].ads[i].time > time){
+                    index=i;
+                    break;
+                }
+            }
+
+            this.showtimes[show_index].ads.splice(index,0,ad);
+          
         }
-        this.remove = function(show_index,ad_index){
-            console.log(show_index+','+ad_index);
-            this.showtimes[show_index].ads.splice(ad_index,1);
+        this.remove = function(show,ad){
+            console.log(show,ad);
+            show.ads.splice(show.ads.indexOf(ad),1);
         }
         this.save = function(){
             var button = $('#ad_schedule_save');
