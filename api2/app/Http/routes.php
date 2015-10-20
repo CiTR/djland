@@ -672,11 +672,9 @@ Route::post('/adschedule',function(){
 		$ads = $showtime['ads'];
 		$a = array();
 		$index = 1;
-		$to_delete = Ad::where('time_block','=',$showtime['start_unix']);
-
+		$to_delete = Ad::where('time_block','=',$showtime['start_unix'])->get();
 		foreach($ads as $ad){
 			if(isset($ad['id'])){
-
 				$item = Ad::find($ad['id']);
 				$ad['num'] = $index++;
 				$item->update($ad);
@@ -684,6 +682,7 @@ Route::post('/adschedule',function(){
 				$ad['num'] = $index++;
 				$item = Ad::create($ad);
 			}
+
 			$a[] = $item;
 		}
 		foreach($to_delete as $delete){
@@ -691,9 +690,10 @@ Route::post('/adschedule',function(){
 			foreach($a as $item){
 				if($delete['id'] == $item['id']) $found = true; 
 			}
-			if(!$found) Ad::find($delete['id'])->delete();
-		}
+			if($found == false) Ad::find($delete['id'])->delete();
+ 		}
 		$s[$showtime['start_unix']] = $a;
+		break;
 	}
 	return $s;
 
