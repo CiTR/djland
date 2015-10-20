@@ -31,7 +31,7 @@ class Show extends Model
         foreach($showtimes as $key=>$value){
 
             //Get Current week since start of year (always 52 weeks so this is acceptable for next 1000 years?)
-            $current_week = Date('W', strtotime('tomorrow',strtotime($time)));
+            $current_week = Date('W', strtotime('today',strtotime($time)));
             if ((int) $current_week % 2 == 0){
                 //Week 2
                 $current_week_is_even = true;

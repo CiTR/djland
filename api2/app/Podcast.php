@@ -53,8 +53,12 @@ class Podcast extends Model
 		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
-	    //Set File Name
-	    $file_name = html_entity_decode(str_replace(array('\\','/',"'", '"',' '),'-',str_replace(array('.',':',';',','),'',$this->playsheet->show->name)),ENT_QUOTES).'-'.$file_date.'.mp3';
+	    //Strip Chars
+	    $file_name = str_replace(array('.',':',';',','),'',$this->playsheet->show->name);
+	    //Replace Chars
+	    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
+	    $file_name = str_replace('&','and',$file_name);
+	    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$file_date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
