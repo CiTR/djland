@@ -682,7 +682,6 @@ Route::post('/adschedule',function(){
 				$ad['num'] = $index++;
 				$item = Ad::create($ad);
 			}
-
 			$a[] = $item;
 		}
 		foreach($to_delete as $delete){
