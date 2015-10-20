@@ -692,7 +692,6 @@ Route::post('/adschedule',function(){
 			if($found == false) Ad::find($delete['id'])->delete();
  		}
 		$s[$showtime['start_unix']] = $a;
-		break;
 	}
 	return $s;
 
