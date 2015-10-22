@@ -125,15 +125,18 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			Route::get('active_shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
+				$shows = new stdClass();
 				if($permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}
 				}else{
-					$member_shows = Member::find($member_id)->shows->where('active','=','1')->get();
+					$member_shows = Member::find($member_id)->shows;;
 					foreach($member_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+						if($show->active == 1){
+							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];	
+						}
 					}
 				}
 				return  Response::json($shows);
