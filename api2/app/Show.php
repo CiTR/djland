@@ -72,7 +72,7 @@ class Show extends Model
 
 
             //Check if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
-                if( ($show_time['start_day'] == $day_of_week && $show_time['start_time'] >= $current_time) || $show_time['start_day'] > $day_of_week){
+                if( ($show_time['start_day'] == $day_of_week || $show_time['start_day'] > $day_of_week){
                     //Hasn't happened yet, look at weeks 0 and 1
                     if($show_time['alternating'] == '0'){
                         //Occurs Weekly, add to this week
