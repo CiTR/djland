@@ -59,7 +59,7 @@ if(!isset($_GET['id'])){
             <div id='wrapper'>            
                
                 <!-- Left Side Episode List Code -->
-                <div class='scroll<?php if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'firefox') > 0 ){echo " firefox'"; }?>' scrolly='!list.loading ? list.load():""'>
+                <div class='scroll <?php if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'firefox') > 0 ){echo " firefox'"; }?>' scrolly='!list.loading ? list.load():""'>
                     <div ng-repeat="episode in list.episodes track by $index" class="podcast_list_entry" ng-class="{lit: episode.podcast.id === list.editing.podcast.id}"  >
                         <span class="podcast_date">{{episode.playsheet.start_time | date: "medium"}}</span>
                         <p>
