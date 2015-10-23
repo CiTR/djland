@@ -49,8 +49,8 @@ class Show extends Model
 
         //Constants (second conversions)
         $one_day = 24*60*60;
-        $one_hour = 60*60;
-        $one_minute = 60;
+        $one_hour = 60*60
+;        $one_minute = 60;
         
         foreach($showtimes as $show_time){                      
             $show_time_day_offset = ($show_time['start_day']) * $one_day;
@@ -71,8 +71,8 @@ class Show extends Model
             $week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
 
-            //Check if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
-                if( ($show_time['start_day'] == $day_of_week && $show_time['start_time'] >= $current_time) || $show_time['start_day'] > $day_of_week){
+            // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
+                if( $show_time['start_day'] == $day_of_week || $show_time['start_day'] > $day_of_week){
                     //Hasn't happened yet, look at weeks 0 and 1
                     if($show_time['alternating'] == '0'){
                         //Occurs Weekly, add to this week
