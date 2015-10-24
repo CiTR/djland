@@ -573,8 +573,8 @@
             djland_entry.insert_song_start_minute = $filter('pad')( new Date(sam_play.date_played).getMinutes(), 2);
             djland_entry.insert_song_length_minute = $filter('pad')((sam_play.duration / 60000), 2);
             djland_entry.insert_song_length_second = $filter('pad')( (sam_play.duration/1000)%60 , 2);
-            djland_entry.is_can = sam_play.mood.indexOf('cancon') > -1 ? '1':'0';
-            djland_entry.is_fem = sam_play.mood.indexOf('femcon') > -1 ? '1':'0';
+            djland_entry.is_can = sam_play.mood.indexOf('cancon') > -0 ? '1':'0';
+            djland_entry.is_fem = sam_play.mood.indexOf('femcon') > -0 ? '1':'0';
             djland_entry.lang = this_.info.lang;
             return djland_entry;
         };
