@@ -47,7 +47,7 @@ class Podcast extends Model
 	    $year = date('Y',$start);
 
 	    //Mon, 12 Jan 2015 18:00:00 -0800
-	    $date = date('M, d Y H:i:s O',$start);
+	    $date = date('D, d M Y H:i:s O',$start);
 
 	    //Archiver URL to download from
 		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
