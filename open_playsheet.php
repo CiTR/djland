@@ -20,7 +20,7 @@
 		<div class='text-center loading' ><img ng-show='open_playsheet.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		<div id='wrapper'>
 			
-			<div class='scroll' scrolly='!open_playsheet.loading ? open_playsheet.more():""'>
+			<div class='scroll<?php if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'firefox') > 0 ){echo " firefox'"; }?>' scrolly='!open_playsheet.loading ? open_playsheet.more():""'>
 				<table class='table-hover table-condensed'>
 					<tr><th>Show<th>Host<th>Date<th>Status</tr>
 					<tbody when-scrolled='more()' >
@@ -33,6 +33,7 @@
 					<tbody>
 				</table>
 			</div>
+			<div style='clear:both;'></div>
 		</div>
 	</body>
 </html>

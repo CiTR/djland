@@ -129,6 +129,7 @@ function add_handlers(){
 						$('.member_action').attr('class','nodrop inactive-tab member_action');
 						$(".member_action[name=search]").attr('class','nodrop active-tab member_action');
 						$('.membership').hide();
+						$('#password').val('');
 						$('.membership#search').show();
 						var search_value;
 						$('.search_value').each(function(e){

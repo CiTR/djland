@@ -1,7 +1,6 @@
 body { 
 background-repeat: repeat;
 font-family: Helvetica,Arial;
-
 }
 .lightblue{
 	background-color: #3434A4;
@@ -139,9 +138,13 @@ input, select, textarea, option{
 }
 .wrapper:after{    background-color: grey;
 }
+.scroll.firefox{
+  max-height:480px;
+}
 .scroll{
   overflow-y: scroll;
-  max-height:80%;
+  max-height:75%;
+
 }
 .loading{
   min-height:20px;
