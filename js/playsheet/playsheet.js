@@ -8,6 +8,9 @@
         this.member_id = member_id;
         this.username = username;
         this.loading = true;
+        this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        this.months_of_year = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
         var this_ = this;
 
         //Helper Variables
@@ -91,8 +94,8 @@
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
                     //Populate Template Row, then add 5 rows
                     var show_date = this_.start.getDate();
-                                     //Update Podcast information
-                    this_.podcast.date = this_.info.start_time;
+                                     //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
+
                     this_.updateEnd();
                     this_.updateStart();
 
@@ -133,7 +136,7 @@
             this.start.setMinutes(this.start_minute);
             this.start.setSeconds(this.start_second);
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
-            
+            this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
         this.updateEnd = function(){
@@ -327,10 +330,10 @@
                         //Populate Template Row, then add 5 rows
                         var show_date = this_.start.getDate();
                                             //Update Podcast information
-                        this_.podcast.date = this_.info.start_time;
+                        this_.updatePodcastDate();
                         this_.updateEnd();
                         this_.updateStart();
-                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.addStartRow();
                         for(var i = 0; i<4; i++) {
                             this_.add(this_.playitems.length-1);
@@ -348,6 +351,10 @@
             }
 
             
+        }
+        this.updatePodcastDate = function(){
+            this.podcast.date = this.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
+            console.log(this.podcast.date);
         }
         //When a playsheet item is added or removed, check for completeness
         $scope.$watchCollection('playsheet.playitems', function () {
@@ -445,7 +452,7 @@
                 this_.playitems[playitem].show_date = date;
             }
             this.podcast.show_id = this.info.show_id;
-            this.podcast.date = this.info.start_time;
+            this.updatePodcastDate();
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
@@ -509,7 +516,7 @@
                 for(var playitem in this_.playitems){
                     this_.playitems[playitem].show_date = date;
                 }
-                this.podcast.date = this.info.start_time;
+                this.updatePodcastDate();
 
                 if(this.info.id < 1){
                     //New Playsheet
