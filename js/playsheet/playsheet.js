@@ -117,8 +117,12 @@
             this.info.edit_name = this.username;
             this.podcast.show_id = this.info.show_id;
             this.podcast.author = this.info.host;
+            this.info.crtc = this.active_show.crtc;
+            this.info.lang = this.active_show.lang;
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_id = this.info.show_id;
+                this.playitems[playitem].crtc_category = this.info.crtc;
+                this.playitems[playitem].lang = this.info.lang;
             }
             call.getShowPlaysheets(this_.active_show.id).then(function(response){
                 //DISPLAY OLD PLAYSHEETS
@@ -230,7 +234,6 @@
                         this_.playitems[playitem].insert_song_start_minute = $filter('pad')( this_.playitems[playitem].insert_song_start_minute , 2);
                         this_.playitems[playitem].insert_song_length_minute = $filter('pad')( this_.playitems[playitem].insert_song_length_minute , 2);
                         this_.playitems[playitem].insert_song_length_second = $filter('pad')( this_.playitems[playitem].insert_song_length_second , 2);
-                        console.log(this_.playitems[playitem]);
                     }
 
                     //Get Member shows, and set active show
@@ -272,8 +275,7 @@
 
                 this.info.status = '1';
                 this.info.type='Live';
-                this.info.crtc = 30;
-                this.info.lang = 'English';
+
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
@@ -294,6 +296,9 @@
                         this_.info.create_name = this_.info.host;
 
                         this_.podcast.author = this_.info.host;
+                        this_.info.crtc = this_.active_show.crtc;
+                        this_.info.lang = this_.active_show.lang || 'English';
+
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].show_id = this_.info.show_id;
                         }

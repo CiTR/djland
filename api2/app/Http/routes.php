@@ -129,13 +129,13 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
 					}
 				}else{
 					$member_shows = Member::find($member_id)->shows;;
 					foreach($member_shows as $show){
 						if($show->active == 1){
-							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];	
+							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];	
 						}
 					}
 				}
