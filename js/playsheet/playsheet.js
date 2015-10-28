@@ -479,7 +479,7 @@
                         alert("Draft Saved");
                         
                     },function(error){
-                        alert(error);
+                        alert("Please Contact Technical Services:" + error.responseText);
                     });
                 }else{
                     //Existing Playsheet
@@ -489,7 +489,7 @@
                         }
                         alert("Draft Saved");
                     },function(error){
-                        alert(error);
+                        alert("Please Contact Technical Services:" + error.responseText);
                     });
                 }
             }else{
@@ -539,7 +539,7 @@
                             console.log(response.data);
                         });
                     },function(error){
-                        alert(error);
+                        alert("Please Contact Technical Services:" + error.responseText);
                     });
                 }else{
                     //Existing Playsheet
@@ -555,7 +555,7 @@
                                     console.log(response.data);
                                 });
                             },function(error){
-                                alert(error);
+                                alert("Please Contact Technical Services:" + error.responseText);
                             });
                         });
                     }else{
@@ -564,7 +564,7 @@
                                 console.log(response.data);
                             });
                         },function(error){
-                            alert(error);
+                            alert("Please Contact Technical Services:" + error.responseText);
                         });
                     }
                     
