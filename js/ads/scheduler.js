@@ -15,7 +15,6 @@
                 this_.timelyPSAs = response[0].data;
                 this_.communityPSAs = response[1].data;
                 this_.UBCPSAs = response[2].data;
-
                 this_.PSAs =  new Array(this_.timelyPSAs.concat(this_.communityPSAs.concat(this_.UBCPSAs)))[0];
             },function(e1,e2,e3){
                 this_.loadPSAs();
@@ -27,9 +26,7 @@
                 this_.loading = true;
                 this_.dataset = response.data.sort(function(a, b) {
                     return a.start_unix - b.start_unix;
-                });
-
-                
+                });               
 /*                //Handling legacy items
                 for(var item in this_.dataset){
                     this_.dataset[item].ads = this_.dataset[item].ads.sort(function(a, b) {

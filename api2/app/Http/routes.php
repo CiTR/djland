@@ -313,7 +313,7 @@ Route::get('/social/{id}',function($show_id = id){
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
 	Route::get('/',function(){
-		return Playsheet::orderBy('id','desc')->select('id')->get();
+		return $playsheets = Playsheet::orderBy('id','desc')->select('id')->get();
 	});
 	Route::post('/',function(){
 		$ps = Playsheet::create(Input::get()['playsheet']);
@@ -339,6 +339,28 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$response->id = $ps->id;
 		$response->podcast_id = $podcast->id;
 		return Response::json($response);
+	});
+	Route::post('/search',function(){
+		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
+		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
+		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
+		if($from != null && $to != null){
+			if($show_id != null && $show_id != 'all'){
+				$playsheets = Playsheet::orderBy('id','desc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
+			}else{
+				$playsheets = Playsheet::orderBy('id','desc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+			}
+		}else{
+			if($show_id != null && $show_id != 'all'){
+				$playsheets = Playsheet::orderBy('id','desc')->where('show_id','=',$show_id)->get();
+			}else{
+				$playsheets = Playsheet::orderBy('id','desc')->get();
+			}
+		}
+		foreach($playsheets as $playsheet){
+			$playsheet->playitems = $playsheet->playitems;
+		}
+		return $playsheets;
 	});
 	
 	//Searching by Playsheet ID
