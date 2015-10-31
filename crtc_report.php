@@ -9,11 +9,15 @@
 		<h2>Station Report</h2>
 
 		<div ng-controller='reportController as report'>
+			<button ng-click='report.toggle_print(this)' id='print_friendly'>Printer View</button>
 			<ul id='filter-bar' class='text-center inline-list'>
 				<li>
 					Filter By Show: 
 					<select ng-model='report.show_filter'>
-						<option ng-repeat='show in report.shows' value='show.id'>{{show.name}}</option>
+						<div ng-if="{{list.is_admin}}">
+							<option selected value='all'>All Shows</option>
+						</div>
+						<option ng-repeat='show in report.shows' value='{{show.id}}'>{{show.name}}</option>
 					</select>
 				</li>
 				<li class='side-padded'>
@@ -49,7 +53,9 @@
 					<button type='button' id='generate' ng-click='report.search()'>Generate Report</button>
 				</li>
 			</ul>
-			<div ng-repeat='playsheet in report.playsheets track by $index' reportitem ></div>
+			<div>
+				<div ng-repeat='playsheet in report.playsheets track by $index' reportitem ></div>
+			</div>
 		</div>
 
 		<script type='text/javascript' src='js/angular.js'></script>

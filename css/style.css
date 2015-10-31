@@ -189,6 +189,9 @@ input, select, textarea, option{
 .double-padded-top{
   padding-top:20px;
 }
+.double-padded-bottom{
+  padding-bottom:30px;
+}
 .side-padded{
   padding-left:5px;
   padding-right:5px;
@@ -1368,6 +1371,31 @@ table { border-collapse: collapse; }
   width:80%;
 }
 
+/*----------------------------*/
+/*----------CRTC Report ------*/
+/*----------------------------*/
+
+.crtc_report{
+  min-width:1600px;
+  max-width:1600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.crtc_report * {
+    text-align:center;
+}
+.crtc_report > tbody > tr > th {
+  background-color: rgba(255,255,255,.10);;
+}
+.crtr_report.print{
+  max-width:800px;
+}
+.report_tag{
+  -ms-transform: rotateZ(-40deg); /* IE 9 */
+  -webkit-transform: rotateZ(-40deg); /* Chrome, Safari, Opera */
+  transform: rotateZ(-40deg);
+  margin-bottom:10px;
+}
 
 /*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
@@ -1732,11 +1760,10 @@ div#loadtimes{
 	overflow-x: hidden;
 	overflow-y: hidden;
 	padding-left:10px;
-/*	width:200px;*/
 }
 
 .date{
-/*	position:absolute;*/
+
 	font-size: 0.7em;
 	float:right;
 	z-index:5;
@@ -1745,10 +1772,7 @@ div#loadtimes{
 	position:fixed;
 	background-color: beige;
 	z-index:10;
-/*	border-width: 2px;
-	border-color: black;
-	border-style: solid;
-*/	
+	
 }
 
 .panel-button:hover{
@@ -1862,195 +1886,12 @@ span.right{
 }
 
 
-.adSelectGroup{
-margin:20px;
-background-color:#3434A4;
-width:750px;
-padding:10px;
-display:table;
-}
-
-.adSelect, .adRow, .adHead{
-/*background-color: #EEF;*/	
-margin:20px;
-padding:3px;
-display:table-row;
-}
-.adSelect *, .adRow *{
-padding:3px;
-border-style:solid;
-border-width: 1px;
-display: inline;
-/*border-color: #DDE; */
-}
-
-div.adTime, div.adTime input{
-max-width:120px;
-}
-
-div.adType, div.adType input{
-max-width:80px;
-}
-input.adInput{
-
-padding:0;
-border-width: 0;
-background-color: transparent;
-overflow-x: visible;
-}
-
-div.adName, div.adName input{
-
-background-color:transparent;
-width:330px;
-}
-
-.adName input{
-	
-border-width:0;
-}
-
-.adType, .adTime, .adName, .adPlay{
-text-align:left;
-display:table-cell;
-overflow-x: visible;
-}
-
-div.adreport{
-	display:inline-block;
-	width:350px;
-	background-color: #88EE88;
-	color:black;
-	margin:7px;
-	padding:7px;
-}
-
-span#previous{
-float:left;
-}
-
-span#next{
-
-float:right;
-}
-
-span#draft{
-	position:relative;
-color:red;	
-font-size: 15px;
-}
-
-.stars{
-font-size: 1.1em;
-}
-div#reportShow{
-	width:830px;
-background-color: white;	
-padding:10px;
-margin-bottom:15px;
-color:black;
-border-width:0 0 2px 2px;
-border-color:black;
-border-style:solid;
-}
-
-div#report-summary{
-width:800px;
-background-color: white;	
-padding:10px;
-margin-bottom:15px;
-color:black;
-border-width:1px 1px 1px 1px;
-border-color:black;
-border-style:solid;
-}
-div#report-summarySOCAN{
-width:830px;
-background-color: white;	
-padding:10px;
-margin-bottom:15px;
-color:black;
-border-width:1px 1px 1px 1px;
-border-color:black;
-border-style:solid;
-}
-.report-table{
-	border-size: 1px 1px 1px 1px;
-}
-.report-table *{
-	color:black;
-	padding:7px;
-	border-style:solid;
-	border-color:black;
-}
-
-.report-header{
-	font-weight: bold;
-	border-width: 2px;
-	background-color:lightgray;
-}
-
-.summarybold{
-font-weight:bold;
-}
-
-.entry-lang{
-	font-size: 0.70em;
-}
-.report-entry{
-	margin:2px;
-	padding:0;
-	width:600px;
-	z-index: 2;
-}
-.report-icons{
-	height:18px;
-	display:inline;
-	left:640px;
-	position:absolute;
-	left:670px;
-	z-index:3;
-}
-
 .dotted-underline{
 	
 	border-style: dotted;
 	border-color:gray;
 	border-width: 0 0 1px 0;
 }
-
-.report-icons img, .report-icons a{
-
-position:relative;
-top:-20px;
-text-decoration: none;
-color:black;
-font-size: 0.85em;
-}
-.report-icons a{
-	position: relative;
-	top:-28px;
-	background-color: white;
-}
-
-
-div#nothing{
-display:inline;
-width:20px;
-height:20px;
-background-color: blue;
-}
-
-span#show-percent{
-	position:absolute;
-	left:215px;
-}
-
-#report-show-compliance{
-	margin-left: 30px;
-	font-style: italic;
-}
-
 
 .lib-delete{
 color:black;

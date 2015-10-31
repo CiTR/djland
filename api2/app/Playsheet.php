@@ -27,4 +27,13 @@ class Playsheet extends Model
     public function ads(){
         return $this->hasMany('App\Ad');
     }
+    public function is_socan(){
+        $socan = Socan::all();
+        foreach($socan as $period){
+                if( strtotime($period['socanStart']) <= strtotime($this->start_time) && strtotime($period['socanEnd']) >= strtotime($this->end_time)){
+                    return true;
+                }
+        }
+        return false;
+    }
 }

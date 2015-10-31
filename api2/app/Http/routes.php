@@ -346,19 +346,22 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
 		if($from != null && $to != null){
 			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('id','desc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
 			}else{
-				$playsheets = Playsheet::orderBy('id','desc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
 			}
 		}else{
 			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('id','desc')->where('show_id','=',$show_id)->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('show_id','=',$show_id)->get();
 			}else{
-				$playsheets = Playsheet::orderBy('id','desc')->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->get();
 			}
 		}
 		foreach($playsheets as $playsheet){
 			$playsheet->playitems = $playsheet->playitems;
+			$playsheet->show = $playsheet->show;
+			$playsheet->socan = $playsheet->is_socan();
+			$playsheet->ads = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
 		}
 		return $playsheets;
 	});
@@ -423,18 +426,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
 		}
-		$socan = Socan::all();
 		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->offset($offset)->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
-			$playsheet->socan = false;
-
-			foreach($socan as $period){
-				if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
-					$playsheet->socan = true;
-				}
-			}
+			$playsheet->socan = $playsheet->is_socan();
 			$playsheets[] = $playsheet;
 		}
 		return Response::json($playsheets);	

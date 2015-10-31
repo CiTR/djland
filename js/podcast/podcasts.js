@@ -313,12 +313,8 @@
         return {
             url: function(start, end) {
                 console.warn(start);
-
                 var start_ = $filter('date')(start.getTime(),'dd-MM-yyyy HH:mm:ss');
-                var end_ = $filter('date')(end.getTime(),'dd-MM-yyyy HH:mm:ss');
-
-
-                
+                var end_ = $filter('date')(end.getTime(),'dd-MM-yyyy HH:mm:ss');  
             }
         };
     }]);
