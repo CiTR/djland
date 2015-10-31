@@ -34,8 +34,12 @@
 <td>
 	<button ng-model="playitem.is_hit" 		ng-click='playitem.is_hit=!playitem.is_hit' 					ng-class="{filled:playitem.is_hit==true}" 		class="box hit pad-top"></button>
 </td>
-
-//theme//
+<td ng-show="playsheet.socan">
+	<button ng-model="playitem.is_background" 		ng-click='playitem.is_background=!playitem.is_background' 					ng-class="{filled:playitem.is_background==true}" 		class="box background pad-top"></button>
+</td>
+<td ng-show="playsheet.socan">
+	<button ng-model="playitem.is_theme" 		ng-click='playitem.is_theme=!playitem.is_theme' 					ng-class="{filled:playitem.is_theme==true}" 		class="box theme pad-top"></button>
+</td>
 <td>
 	<select ng-model='playitem.crtc_category'>
 		<option value='20'>20</option>

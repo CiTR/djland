@@ -122,7 +122,7 @@
 				    </div>
 			    </div>
 			</div>
-		    <div class='container'>
+		    <div id='container'>
 				<h3 class='double-padded-top'>Music</h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem border'>
@@ -133,7 +133,14 @@
 						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.socan }"></input></th>
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
-						<th ng-repeat='tag in playsheet.tags'><button tooltip="{{playsheet.help[tag]}}"class="box {{tag}} filled pad-top"></th>
+						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
+						<th><button tooltip="{{playlist.help['cancon']}}" class="box cancon filled pad-top"></button>
+						<th><button tooltip="{{playsheet.help['femcon']}}" class="box femcon filled pad-top"></button></th>
+						<th><button tooltip="{{playsheet.help['instrumental']}}" class="box instrumental filled pad-top"></button></th>
+						<th><button tooltip="{{playsheet.help['partial']}}" class="box partial filled pad-top"></button></th>
+						<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
+						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
+						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
 						<th><a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"/></th>
 						<th><th><th></th>

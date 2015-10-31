@@ -722,7 +722,7 @@ display:none;
   }
 
   .lang {
-    width: 60px;
+    width: 65px;
     font-size: 0.8em;
   }
 
@@ -742,10 +742,6 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
 .socantiming{
   max-width:140px;
 }
-input.lang{
-  max-width:50px;
-}
-
 
   .music_row_heading {
     height:30px;
@@ -1423,10 +1419,9 @@ button#submit_user.red{
 	overflow:hidden;
 	text-align:left;
 }
-.container{
+#container{
 	height:auto;
-	padding-left:10px;
-	width:95%;
+	width:100%;
 	margin-left:auto;
 	margin-right:auto;
 }

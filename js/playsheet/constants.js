@@ -1,6 +1,6 @@
  angular.module('playsheet.constants',[]);
 
- var tags = ['playlist','cancon','femcon','instrumental','partial','hit',];
+ var tags = ['playlist','cancon','femcon','instrumental','partial','hit','background','theme'];
 	var help = {
 	album:			"Enter the title of the album, EP, or single that the track is released on."
     +"If playing an mp3 or streaming from youtube, soundcloud etc, please take a moment to find the title of the album,"
