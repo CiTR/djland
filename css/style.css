@@ -869,12 +869,12 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
   }
 
   button.box.background.filled {
-    background-image: url('../images/tags/BACKGROUND.png');
+    background-image: url('../images/tags/background.png');
     opacity: 1;
   }
 
   button.box.theme.filled {
-    background-image: url('../images/tags/THEME.png');
+    background-image: url('../images/tags/theme.png');
     opacity: 1;
   }
 
