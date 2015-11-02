@@ -577,7 +577,8 @@
         }
 
         this.addSamPlay = function (sam_playitem) {
-            this.playitems.splice(this.playitems.length,0,sam_playitem); 
+            this.playitems.splice(this.playitems.length,0,sam_playitem);
+            console.log(sam_playitem);
         };
         this.formatSamPlay = function (sam_play) {
             var djland_entry = angular.copy(this.row_template);

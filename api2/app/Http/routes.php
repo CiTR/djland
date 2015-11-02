@@ -842,6 +842,7 @@ Route::get('/nowplaying',function(){
 		$last_track = DB::connection('samdb')
 			->table('historylist')
 			->selectRaw('artist,title,album,date_played,songtype,duration')
+			->where('songtype','=','S')
 			->orderBy('date_played','DESC')
 			->limit('1')
 			->get();
