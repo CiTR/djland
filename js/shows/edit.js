@@ -17,6 +17,7 @@
     });
 
     app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
+        this.loading = true;
         var this_ = this;
         this.init = function(){
             this.is_admin = false;
@@ -48,6 +49,8 @@
                 //Need to make the id a string
                 this_.show_value = ""+this_.active_show.id;
                 this_.loadShow();
+            },function(error){
+                this_.loading = false;
             });
             //Calculating "current week" this math is really old. Returns 1 or 2
             //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
@@ -56,6 +59,7 @@
             this.current_week = ((new Date().getMonth() % 2) +1);
             //Check if user is an administrator or staff
             this.isAdmin();
+
         }
         this.isAdmin = function(){
             var this_ = this;
@@ -101,6 +105,9 @@
                     this_.socials = response.data.social;
                     delete this_.info.social;
                     this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
+                    this_.loading = false;
+            },function(error){
+                this_.loading = false;
             });
             //Call API to get show owners
             call.getShowOwners(this_.active_show.id).then(function(response)
@@ -125,8 +132,9 @@
                     this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].end_time.split(':')[0],2);
                     this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].end_time.split(':')[1],2);
                 }
+               
             },function(error){
-
+                this_.loading = false;
             });
 
         }

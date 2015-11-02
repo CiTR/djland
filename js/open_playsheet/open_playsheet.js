@@ -25,6 +25,9 @@
 						this_.done = true;
 					}
 					this_.loading = false;
+				},function(error){
+					console.log(error.statusText);
+					this_.loading = false;
 				});
 			}
 			

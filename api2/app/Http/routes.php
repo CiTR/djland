@@ -340,7 +340,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$response->podcast_id = $podcast->id;
 		return Response::json($response);
 	});
-	Route::post('/search',function(){
+	Route::post('/report',function(){
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
@@ -357,11 +357,31 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->get();
 			}
 		}
-		foreach($playsheets as $playsheet){
-			$playsheet->playitems = $playsheet->playitems;
-			$playsheet->show = $playsheet->show;
-			$playsheet->socan = $playsheet->is_socan();
-			$playsheet->ads = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+		foreach($playsheets as $p){
+			$playsheet = $p;
+			$playsheet->playitems = $p->playitems;
+			$playsheet->show = $p->show;
+			$playsheet->socan = $p->is_socan();
+			$playsheet->ads = Historylist::where('date_played','<=',$p->end_time)->where('date_played','>=',$p->start_time)->where('songtype','=','A')->get();
+			
+			$totals['cancon'][0] = 0;
+			$totals['femcon'][0] = 0;
+			$totals['cancon'][1] = 0;
+			$totals['femcon'][1] = 0;
+			$totals['hit'][0] = 0;
+			$totals['hit'][1] = 0;
+			foreach($playsheet->playitems as $playitem){
+				//CANCON
+				$totals['cancon'][0] += 1;
+				if($playitem['is_canadian'] == '1') $totals['cancon'][1] += 1;
+				//FEMCON
+				$totals['femcon'][0] += 1;
+				if($playitem['is_fem'] == '1') $totals['femcon'][1] += 1;
+				//HIT
+				$totals['hit'][0] += 1;
+				if($playitem['is_hit'] == '1') $totals['hit'][1] += 1;
+			}
+			$playsheet->totals = $totals;
 		}
 		return $playsheets;
 	});

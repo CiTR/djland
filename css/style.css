@@ -176,7 +176,6 @@ input, select, textarea, option{
 .center{
 	margin-left:auto;
 	margin-right:auto;
-  width: 90%;
 }
 .rounded{
   -moz-border-radius: 10px 10px 10px 10px;
@@ -1372,8 +1371,7 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 
 .crtc_report{
-  min-width:1600px;
-  max-width:1600px;
+  width:1600px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -1383,14 +1381,22 @@ table { border-collapse: collapse; }
 .crtc_report > tbody > tr > th {
   background-color: rgba(255,255,255,.10);;
 }
-.crtr_report.print{
-  max-width:800px;
-}
+
 .report_tag{
   -ms-transform: rotateZ(-40deg); /* IE 9 */
   -webkit-transform: rotateZ(-40deg); /* Chrome, Safari, Opera */
   transform: rotateZ(-40deg);
   margin-bottom:10px;
+}
+.report_playitem{
+  max-width:200px;
+}
+.report_table{
+  margin-left:auto;
+  margin-right:auto;
+}
+.report_table > tbody > tr > td{
+  padding: 0px 0px 0px 10px;
 }
 
 /*----------------------------*/
@@ -1437,6 +1443,9 @@ button#submit_user.red{
 	position:absolute;
 	right:0px;
 	top:80px;
+}
+.print_wrapper{
+  max-width:800px;
 }
 .membership{
 	width:1024px;

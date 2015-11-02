@@ -6,11 +6,11 @@
 	</head>
 	<body class='wallpaper' ng-app='djland.report'>
 		<?php print_menu(); ?>
-		<h2>Station Report</h2>
+		<h2>CiTR Radio 101.9 FM Station Report</h2>
 
 		<div ng-controller='reportController as report'>
-			<button ng-click='report.toggle_print(this)' id='print_friendly'>Printer View</button>
-			<ul id='filter-bar' class='text-center inline-list'>
+			<button ng-click='report.toggle_print()' id='print_friendly'>Print Friendly View</button>
+			<ul id='filter_bar' class='text-center inline-list'>
 				<li>
 					Filter By Show: 
 					<select ng-model='report.show_filter'>
@@ -50,11 +50,18 @@
 
 				</li>
 				<li>
-					<button type='button' id='generate' ng-click='report.search()'>Generate Report</button>
+					<select ng-model='report.type'>
+						<option value='crtc'>CRTC Report</option>
+						<option value='socan'>Socan Report</option>
+						<option value='both'>Combined Report</option>
+					</select>
+				</li>
+				<li>
+					<button type='button' id='generate' ng-click='report.report()'>Generate Report</button>
 				</li>
 			</ul>
-			<div>
-				<div ng-repeat='playsheet in report.playsheets track by $index' reportitem ></div>
+			<div >
+				<div ng-repeat='playsheet in report.playsheets track by $index' class='report_item' reportitem ></div>
 			</div>
 		</div>
 

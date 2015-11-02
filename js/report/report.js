@@ -6,7 +6,8 @@
 		var date = new Date();
 		this.to = $filter('date')(date,'yyyy/MM/dd');
 		this.from = $filter('date')(date.setDate(date.getDate() - 1),'yyyy/MM/dd');
-		this.member_id = $('#member_id').text()
+		this.member_id = $('#member_id').text();
+		this.type = 'crtc';
 		var this_ = this;
 
 		this.init = function(){
@@ -23,22 +24,29 @@
             },function(error){
                   
             });
-			this.search();
+			this.report();
 		}
-		this.search = function(){
+		this.report = function(){
 			this_ = this;
-			call.searchPlaysheets(this.show_filter,this.from,this.to).then(function(response){
+			call.getReport(this.show_filter,this.from,this.to).then(function(response){
 				this_.playsheets = angular.copy(response.data);
 			});
 		}
 		this.toggle_print = function(element){
-			if( $(element).text() == "Print Friendly View" ){
-
+			var button = $('#print_friendly');
+			if(button.text() == "Print Friendly View" ){
+				button.text("Normal View");
+				$('#nav, #filter_bar').hide();
+				$('body').removeClass('wallpaper');
+				$('.crtc_report').addClass('print_wrapper');
 			}else{
-			  
+			  	button.text("Print Friendly View");
+			  	$('#nav, #filter_bar').show();
+				$('body').addClass('wallpaper');
+				$('.crtc_report').removeClass('print_wrapper');
 			}
-			$(element).text('Normal View');
-			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').hide();
+				
+			
 		}
 		this.init();
 	});
@@ -78,6 +86,11 @@
 	    return num;
 	  };
 	});
+	app.filter('percentage', ['$filter', function ($filter) {
+		return function (input, decimals) {
+			return $filter('number')(input * 100, decimals) + '%';
+		};
+	}]);
 
 
 })();

@@ -26,13 +26,19 @@ if(!isset($_GET['id'])){
             });
         });
     </script>
-    <div id='wrapper'><table class='table-condensed table-hover'><th>Show Name</th><th>Number of Episodes</th>
+    <div id='wrapper'>
             <?php
             $shows = getPodcasts($_SESSION['sv_id']);
-            foreach($shows as $show){
-                echo "<tr class='clickable-row' data-href='podcasts.php?id=".$show['id']."'><td>".$show['name']."</td><td>(".$show['num_episodes']." episodes)</td></tr>";
+            if(count($shows) > 0){
+                echo "<table class='table-condensed table-hover'><th>Show Name</th><th>Number of Episodes</th>";
+                foreach($shows as $show){
+                    echo "<tr class='clickable-row' data-href='podcasts.php?id=".$show['id']."'><td>".$show['name']."</td><td>(".$show['num_episodes']." episodes)</td></tr>";
+                }
+                echo "</table></div>";
+            }else{
+                echo "You have no shows assigned to this account. Please ask a staff member to assign you to your show";
             }
-            echo "</table></div>";
+            
 }else{
 
 ?>

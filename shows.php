@@ -17,8 +17,8 @@ if( permission_level() >= $djland_permission_levels['dj']){
         <?php
         print_menu();
         ?>
-        <body class='wallpaper'>
-        <div ng-app="djland.editShow">
+        <body class='wallpaper' ng-app="djland.editShow" >
+        <div ng-controller="editShow as show">
             <script src='js/jquery-1.11.3.min.js'></script>
             <script src='js/constants.js'></script>
             <script src="js/angular.js"></script>
@@ -26,12 +26,15 @@ if( permission_level() >= $djland_permission_levels['dj']){
             <script src="js/shows/edit.js"></script>
             <script src="js/api.js"></script>
             <script src="js/utils.js"></script>
-            
             <script>
                 var member_id = "<?php echo $_SESSION['sv_id']; ?>";
                 var username = "<?php echo $_SESSION['sv_username']; ?>";
             </script>
-            <div id='wrapper' ng-controller="editShow as show" ng-show='show.info'>
+            <div class='text-center' ng-show='show.loading == true'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+            <div ng-hide="show.member_shows || show.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
+            <div id='wrapper' ng-show='show.info'>
+                
+
                Select show to edit: 
                 <select ng-model="show.show_value" ng-change="show.updateShow()" >
                     <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 

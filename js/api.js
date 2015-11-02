@@ -62,8 +62,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getAdSchedule: function(){
 			return $http.get(API_URL_BASE+'/adschedule');
 		},
-		searchPlaysheets: function(show_id,from,to){
-			return $http.post(API_URL_BASE+'/playsheet/search',angular.toJson({'show_id':show_id,'from':from,'to':to}));
+		getReport: function(show_id,from,to){
+			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to}));
 		},
 		saveAds: function(showtimes){
 			return $http.post(API_URL_BASE+'/adschedule',angular.toJson({'showtimes':showtimes}));

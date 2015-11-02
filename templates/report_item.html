@@ -1,55 +1,64 @@
-<h2>{{playsheet.show.name}}</h2>
+<h3>{{playsheet.show.name}}</h3>
 <h4>{{playsheet.start_time}} - {{playsheet.end_time}}</h4>
 <table class='table-condensed crtc_report'>
 	<tr class='double-padded-bottom'>
 		<th>Artist</th>
 		<th>Song</th>
 		<th>Album</th>
-		<th ng-show="playsheet.socan">Composer</th>
-		<th ng-show="playsheet.socan">Start Time</th>
-		<th ng-show="playsheet.socan">Duration</th>
-		<th>Playlist</th>
+		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Composer</th>
+		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Start Time</th>
+		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Duration</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist</th>
 		<th>Cancon</th>
-		<th>Femcon</th>
-		<th>Instrumental</th>
-		<th>Partial</th>
-		<th>Hit</th>
-		<th>Theme</th>
-		<th>Background</th>
-		<th>Language</th>
-		<th>Category</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Femcon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Instrumental</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Partial</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Hit</th>
+		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Theme</th>
+		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Background</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Language</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Category</th>
 
 	</tr>
-	<tr	ng-repeat='playitem in playsheet.playitems'>
+	<tr	class='report_playitem' ng-repeat='playitem in playsheet.playitems'>
 		<td>{{playitem.artist}}</td>
 		<td>{{playitem.song}}</td>
 		<td>{{playitem.album}}</td>
-		<td ng-show="playsheet.socan">{{playitem.composer}}</td>
-		<td ng-show="playsheet.socan">{{playitem.insert_song_start_hour | pad:2}}:{{playitem.insert_song_start_minute | pad:2}} </td>
-		<td ng-show="playsheet.socan">{{playitem.insert_song_length_minute | pad:2}}:{{playitem.insert_song_length_second | pad:2}}</td>
-		<td><div ng-if="playitem.is_playlist==true">&#9745;</div><div ng-if="playitem.is_playlist!=true">&#9744;</div></td>
+		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.composer}}</td>
+		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.insert_song_start_hour | pad:2}}:{{playitem.insert_song_start_minute | pad:2}} </td>
+		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.insert_song_length_minute | pad:2}}:{{playitem.insert_song_length_second | pad:2}}</td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_playlist==true">&#9745;</div><div ng-if="playitem.is_playlist!=true">&#9744;</div></td>
 		<td><div ng-if="playitem.is_canadian==true">&#9745;</div><div ng-if="playitem.is_canadian!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_fem==true">&#9745;</div><div ng-if="playitem.is_fem!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_inst==true">&#9745;</div><div ng-if="playitem.is_inst!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_part==true">&#9745;</div><div ng-if="playitem.is_part!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_hit==true">&#9745;</div><div ng-if="playitem.is_hit!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_theme==true">&#9745;</div><div ng-if="playitem.is_theme!=true">&#9744;</div></td>
-		<td><div ng-if="playitem.is_background==true">&#9745;</div><div ng-if="playitem.is_background!=true">&#9744;</div></td>
-		<td>{{playitem.lang}}</td>
-		<td>{{playitem.crtc_category}}</td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_fem==true">&#9745;</div><div ng-if="playitem.is_fem!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_inst==true">&#9745;</div><div ng-if="playitem.is_inst!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_part==true">&#9745;</div><div ng-if="playitem.is_part!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_hit==true">&#9745;</div><div ng-if="playitem.is_hit!=true">&#9744;</div></td>
+		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')"><div ng-if="playitem.is_theme==true">&#9745;</div><div ng-if="playitem.is_theme!=true">&#9744;</div></td>
+		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')"><div ng-if="playitem.is_background==true">&#9745;</div><div ng-if="playitem.is_background!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'">{{playitem.lang}}</td>
+		<td ng-show="report.type=='crtc' || report.type=='both'">{{playitem.crtc_category}}</td>
 	<tr>
 </table>
-<div ng-show='playsheet.ads.length > 0'>
+<div ng-show="playsheet.ads.length > 0 && (report.type=='crtc' || report.type=='both')">
 	<h3>Ads</h3>
-	<ul class='text-center' >
-		<li ng-repeat='ad in playsheet.ads'>{{ad.title ? ad.title : ad.artist}}</li>
-	<ul>
+	<table class='table-condensed report_table'>
+		<tr ng-repeat='ad in playsheet.ads'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
+	</table>
 </div>
-<div>
+<div ng-show="report.type=='crtc' || report.type=='both'">
 	<h3>Spoken Word Duration</h3>
 	<div class='text-center'>
 		{{playsheet.spokenword_duration}} minutes
 	</div>
+</div>
+<div ng-show="report.type=='crtc' || report.type=='both'">
+	<h3>Percentage Totals</h3>
+	<table class='table-condensed report_table'>
+		<tr><th><th>Play Count<th>Percentage<th>Requirement</th>
+		<tr><th>Cancon</th><td>{{playsheet.totals.cancon[1]}} / {{playsheet.totals.cancon[0]}} </td><td>({{playsheet.totals.cancon[1]  / playsheet.totals.cancon[0] | percentage:2}})</td><td>{{playsheet.show.cc_req}} %</td></tr>
+		<tr><th>Femcon</th><td>{{playsheet.totals.femcon[1]}} / {{playsheet.totals.femcon[0]}} </td><td>({{playsheet.totals.femcon[1]  / playsheet.totals.femcon[0] | percentage:2}})</td><td>{{playsheet.show.fem_req}} %</td></tr>
+		<tr><th>Hit</th><td>{{playsheet.totals.hit[1]}} / {{playsheet.totals.hit[0]}} </td><td>({{playsheet.totals.hit[1]  / playsheet.totals.hit[0] | percentage:2}})</td><td>10%</td></tr>
+	</table>
 </div>
 <hr>
 
