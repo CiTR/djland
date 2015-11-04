@@ -38,11 +38,11 @@ class Show extends Model
         
         //Making sure if today is sunday, it does not get last sunday instead of today.
         if($day_of_week == 0){
-            $week_0_start = strtotime('today')  + (date('I')=='1'? 0 : 3600);
+            $week_0_start = strtotime('today');
             $week_1_start = strtotime('+1 week',$week_0_start);
             $week_2_start = strtotime('+1 week',$week_1_start);
         }else{
-            $week_0_start = strtotime('last sunday 00:00:00')  + (date('I')=='1'? 0 : 3600);
+            $week_0_start = strtotime('last sunday 00:00:00');
             $week_1_start = strtotime('+1 week',$week_0_start);
             $week_2_start = strtotime('+1 week',$week_1_start);
         }
@@ -70,6 +70,16 @@ class Show extends Model
             $week_1_show_unix = $week_1_start + $show_time_unix_offset;
             $week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
+            //DST Offset
+            if( (date('I',$week_0_show_unix)=='0') ){
+                $week_0_show_unix += 3600;
+            }
+            if( (date('I',$week_1_show_unix)=='0') ){
+                $week_1_show_unix += 3600;
+            }
+            if( (date('I',$week_2_show_unix)=='0') ){
+                $week_1_show_unix += 3600;
+            }
 
             // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
                 if( $show_time['start_day'] == $day_of_week || $show_time['start_day'] > $day_of_week){

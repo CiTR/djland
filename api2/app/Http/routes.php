@@ -562,11 +562,11 @@ Route::get('/adschedule',function(){
 	
 	//Making sure if today is sunday, it does not get last sunday instead of today.
 	if($day_of_week == 0){
-		$week_0_start = strtotime('today') + (date('I')=='1'? 0 : 3600);
+		$week_0_start = strtotime('today');
 		$week_1_start = strtotime('+1 week',$week_0_start);
 		$week_2_start = strtotime('+1 week',$week_1_start);
 	}else{
-		$week_0_start = strtotime('last sunday 00:00:00')  + (date('I')=='1'? 0 : 3600);
+		$week_0_start = strtotime('last sunday 00:00:00')  ;
 		$week_1_start = strtotime('+1 week',$week_0_start);
 		$week_2_start = strtotime('+1 week',$week_1_start);
 	}
@@ -600,6 +600,17 @@ Route::get('/adschedule',function(){
 				$week_1_show_unix = $week_1_start + $show_time_unix_offset;
 				$week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
+				//DST Offset
+	            if( date('I',strtotime($week_0_show_unix))=='0' ){
+	                $week_0_show_unix += 3600;
+	            }
+	            if( date('I',strtotime($week_1_show_unix))=='0' ){
+	                $week_1_show_unix += 3600;
+	            }
+	            if( (date('I',strtotime($week_2_show_unix))=='0') ){
+	                $week_2_show_unix += 3600;
+	            }
+
 				//Get Ads
 				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
 				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
@@ -622,48 +633,48 @@ Route::get('/adschedule',function(){
 
 				//Generate Arrays
 				$week_0 = array(
-					$week_0_start + $show_time_unix_offset,
+					$week_0_show_unix,
 					array(
 						"id"		=>$show->id,
 						"name"		=>$show->name,
 						"start_time"=>$show_time['start_time'],
 						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_0_start + $show_time_unix_offset,
-						"end_unix"	=>$week_0_start + $show_time_unix_offset + $show_duration,
+						"start_unix"=>$week_0_show_unix,
+						"end_unix"	=>$week_0_show_unix + $show_duration,
 						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_0_start + $show_time_unix_offset),
-						"date"		=>date('l F jS g:i a',$week_0_start + $show_time_unix_offset),
+						"start"		=>date('g:i a',$week_0_show_unix),
+						"date"		=>date('l F jS g:i a',$week_0_show_unix),
 						"ads"		=>$week_0_ads
 					)
 				);
 				$week_1 = array(
-					$week_1_start + $show_time_unix_offset,
+					$week_1_show_unix,
 					array(
-						"id"=>$show->id,
-						"name"=>$show->name,
+						"id"		=>$show->id,
+						"name"		=>$show->name,
 						"start_time"=>$show_time['start_time'],
-						"end_time"=>$show_time['end_time'],
-						"start_unix"=>$week_1_start + $show_time_unix_offset,
-						"end_unix"	=>$week_1_start + $show_time_unix_offset + $show_duration,
+						"end_time"	=>$show_time['end_time'],
+						"start_unix"=>$week_1_show_unix,
+						"end_unix"	=>$week_1_show_unix + $show_duration,
 						"duration"	=>$show_duration,
-						"start"=>date('g:i a',$week_1_start + $show_time_unix_offset),
-						"date"=>date('l F jS g:i a',$week_1_start + $show_time_unix_offset),
-						"ads"=>$week_1_ads
+						"start"		=>date('g:i a',$week_1_show_unix),
+						"date"		=>date('l F jS g:i a',$week_1_show_unix),
+						"ads"		=>$week_0_ads
 					)
 				);
 				$week_2 = array(
-					$week_2_start + $show_time_unix_offset,
+					$week_2_show_unix,
 					array(
-						"id"=>$show->id,
-						"name"=>$show->name,
+						"id"		=>$show->id,
+						"name"		=>$show->name,
 						"start_time"=>$show_time['start_time'],
-						"end_time"=>$show_time['end_time'],
-						"start_unix"=>$week_2_start + $show_time_unix_offset,
-						"end_unix"	=>$week_2_start + $show_time_unix_offset + $show_duration,
+						"end_time"	=>$show_time['end_time'],
+						"start_unix"=>$week_2_show_unix,
+						"end_unix"	=>$week_2_show_unix + $show_duration,
 						"duration"	=>$show_duration,
-						"start"=>date('g:i a',$week_2_start + $show_time_unix_offset),
-						"date"=>date('l F jS g:i a',$week_2_start + $show_time_unix_offset),
-						"ads"=>$week_2_ads
+						"start"		=>date('g:i a',$week_0_show_unix),
+						"date"		=>date('l F jS g:i a',$week_2_show_unix),
+						"ads"		=>$week_2_ads
 					)
 				);
 
