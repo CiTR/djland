@@ -39,12 +39,12 @@ if( permission_level() >= $djland_permission_levels['volunteer']){ ?>
 		
 		<ul id ='tab-nav'>
 			<?php if(permission_level() >= $djland_permission_levels['staff']) : ?>
-				<li class = 'nodrop active-tab member_action' name='search'>Search Members</li>
-				<li class = 'nodrop inactive-tab member_action' name='view' data='1'>View Member</li>
-				<li class = 'nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
-				<li class = 'nodrop inactive-tab member_action' name='report'>Report</li>
+				<li class = 'tab nodrop active-tab member_action' name='search'>Search Members</li>
+				<li class = 'tab nodrop inactive-tab member_action' name='view' data='1'>View Member</li>
+				<li class = 'tab nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
+				<li class = 'tab nodrop inactive-tab member_action' name='report'>Report</li>
 			<?php endif; ?>
-			<li class = 'nodrop inactive-tab member_action' name='email'>Send Emails</li>
+			<li class = 'tab nodrop inactive-tab member_action' name='email'>Send Emails</li>
 		</ul> 
 		<?php if(permission_level() >= $djland_permission_levels['staff']): ?>
 

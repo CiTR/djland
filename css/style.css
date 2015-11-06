@@ -26,7 +26,7 @@ ul, li {
 ul{
     list-style-type: disc;
     padding:0px;
-    margin:2px;
+    margin: 0px;
 }
 li{
     margin:0px;
@@ -349,7 +349,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	list-style:none;
     width:1020px;
     margin:30px auto 0px auto;
-    height:43px;
+    height:30px;
     padding:0px 20px 0px 20px;
     background: #A4A4A4;
     background: -moz-linear-gradient(top, #3434A4, #1030BE);
@@ -391,13 +391,31 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     position:relative;
 	list-style:none;
     width:1024px;
-    margin:0px auto 0px auto;
-    min-height:35px;
+    margin-left:auto;
+    margin-right:auto;
+    min-height:28px;
     height:auto;
 }
+.nav-left, .nav-right{
+    position:relative;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:4px;
+    padding-bottom: 4px;
+    text-align:center;
+    display:inline-block;
+    width:45px;   
+}
+.nav-left{
+    margin-right:10px;
+    float:left;
 
+}
+.nav-right{
+    float:right;
+}
 
-#nav li, #tab-nav li{
+#nav li, #tab-nav > li.tab{
 	float:left;
 	position:relative;
     padding-left:5px;
@@ -405,11 +423,12 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     padding-top:4px;
     padding-bottom: 4px;
 	text-align:center;
-    margin-left:10px;
-	margin-right:10px;
+    margin-right:10px;
 
-	margin-top:7px;
 	border:none;
+}
+#tab-nav > li.tab{
+    min-width:82px;
 }
 #nav li{
 	z-index:20;
@@ -431,7 +450,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     background: -moz-linear-gradient(top, #3434A4, #1030BE);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
 }
-	
+
 #nav li:hover{
 	border: 1px solid #555555;
     padding: 4px 4px 4px 4px;
@@ -441,7 +460,6 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     border-radius: 5px 5px 0px 0px;
 }
 #nav .nodrop,.drop, #tab-nav .nodrop,.drop {
-	right:8px;
 	cursor: pointer;
 }
 #nav .nodrop:hover {
@@ -1196,6 +1214,18 @@ button.saving{
   background-color:red;
   color:white;
 }
+/*--------------------------------*/
+/*  Ad Scheduler (no-angular) CSS */
+/*--------------------------------*/ 
+
+.schedule{
+    width:1024px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+    margin-bottom: 15px;
+}
+
 
 
 /*-------------------*/

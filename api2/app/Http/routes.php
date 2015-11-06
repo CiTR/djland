@@ -548,7 +548,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			print_r(array($show->name,$show->id,$show->podcast_slug));
 		}
 	});
+Route::get('/adschedule/{date}',function($date = date){
+	return $date;
 
+});
 Route::get('/adschedule',function(){
 	date_default_timezone_set('America/Los_Angeles');
 	$active_shows = Show::select('*')->where('active','=','1')->get();
