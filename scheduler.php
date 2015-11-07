@@ -12,15 +12,18 @@
 		<ul id ='tab-nav'>
 			<li class='nodrop inactive-tab nav-left invisble'> < </li>
 			<li class='nodrop inactive-tab nav-right'> > </li>
-			<li class = 'tab nodrop active-tab' name="<?php echo date('Y/m/d'); ?>" value="<?php strtotime('today'); ?>"> Today</li>
-			<li class = 'tab nodrop inactive-tab' name="<?php echo date('Y/m/d',strtotime('tomorrow')); ?>" value="<?php strtotime('tomorrow'); ?>">Tomorrow</li>
-			<?php for($i = 0; $i < 12; $i++) : ?>
-				<li class = "tab nodrop inactive-tab <?php echo ($i >= 8 ? 'invisible' : '');?>" name="<?php echo date('Y/m/d',strtotime('today') + $one_day*$i); ?>" value="<?php strtotime('today') + $one_day*$i; ?>"> <?php echo date('Y/m/d',strtotime('today') + $one_day*$i); ?></li>
+			<li class = 'tab nodrop active-tab' name="<?php echo date('Y/m/d'); ?>" value="0"> Today</li>
+			<li class = 'tab nodrop inactive-tab' name="<?php echo date('Y/m/d',strtotime('tomorrow')); ?>" value="1">Tomorrow</li>
+			<?php for($i = 2; $i < 14; $i++) : ?>
+				<li class = "tab nodrop inactive-tab <?php echo ($i >= 10 ? 'invisible' : '');?>" name="<?php echo date('Y/m/d',strtotime('today') + $one_day*$i); ?>" value="<?php $i; ?>"> <?php echo date('Y/m/d',strtotime('today') + $one_day*$i); ?></li>
 			<?php endfor; ?>
 
 		</ul> 
 		<div class='schedule grey'>
 			schedule
 		</div>
+		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+		<script type='text/javascript' src='js/ads/schedule.js'></script>
+		<script type='text/javascript' src='js/ads/ad_schedule.js'></script>
 	</body>
 </html>

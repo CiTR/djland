@@ -346,15 +346,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
 		if($from != null && $to != null){
 			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
 			}else{
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
 			}
 		}else{
 			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->where('show_id','=',$show_id)->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->where('show_id','=',$show_id)->get();
 			}else{
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('status','=','2')->get();
+				$playsheets = Playsheet::orderBy('start_time','asc')->get();
 			}
 		}
 		foreach($playsheets as $p){
@@ -549,7 +549,28 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		}
 	});
 Route::get('/adschedule/{date}',function($date = date){
-	return $date;
+	date_default_timezone_set('America/Los_Angeles');
+	$date = date('Y-M-d H:i:s',strtotime($date));
+	$parsed_date = date_parse($date);
+	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
+		//Get mod 2 of week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
+	    $week = (date('W',strtotime($date)) % 2) +1;
+		//Get Day of Week (0-6)
+		$day_of_week = date('w',strtotime($date));
+		$time = date('H:i:s',strtotime($date));
+		$shows = 
+		Show::select('*')
+		->join('show_times','show_times.show_id','=','shows.id')
+		->where('show_times.start_day','=',$day_of_week)
+		->where('show_times.start_time','>=',$time)
+		->whereRaw('(show_times.alternating = '.$week.' OR show_times.alternating = 0)')
+		->get();
+		return $shows;
+	}else{
+		http_response_code('400');
+		return "Not a Valid Date: {$date}";
+	}
+	
 
 });
 Route::get('/adschedule',function(){
