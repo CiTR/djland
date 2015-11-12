@@ -1,10 +1,24 @@
 window.myNameSpace = window.myNameSpace || { };
 var schedule = new Schedule();
 $(document).ready ( function(){
-	
-	
-	console.log('hi');
+	var ad_types = ['ads','psa','promo','ids','ubc','community','timely'];
 
+	$.when(schedule.ready).then(function(){
+		var promises = [];
+		for(var i = 0; i < schedule.showtimes.length; i++){
+			promises.push(schedule.getHTML(schedule.showtimes[i],i));
+		}
+		var schedule_element = $('.schedule');
+		$.when.apply($,promises).then(function(){
+			for(var i = 0; i < schedule.showtimes.length; i++){
+				schedule_element.append(arguments[i][0]);
+				for(var j = 0; j < schedule.showtimes[i].ads.length; j++){
+					schedule.updateDropdown(schedule[schedule.showtimes[i].ads[j].type],schedule.showtimes[i].ads[j].type,i,j);
+				}
+			}
+
+		});
+	});
 
 	$('#tab-nav').off('click','.tab').on('click','.tab', function(e){
 		$('.tab').removeClass('active-tab');
@@ -13,12 +27,7 @@ $(document).ready ( function(){
 		$(this).attr('class','nodrop active-tab tab');
 		var date = new Date();
 		console.log('offset = '+ $(this).val());
-		date.setDate(date.getDate() + $(this).val());
-		$.when(schedule.getSchedule(schedule.formatDate(date))).then(function(response){
-			console.log(response.sort(function(x,y){
-				return y.start_time - x.start_time;
-			}));
-		});
+		
 	});
 });
 

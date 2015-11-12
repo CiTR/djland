@@ -60,6 +60,7 @@ function print_menu(){
 								<ul>
 									<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
 									<li><a href="ad_schedule.php">Ad Scheduler</a></li>
+									<li><a href="scheduler.php">Ad Scheduler 2.0 Demo</a></li>
 									<?php endif; ?>
 									<li><a href="adreport.php">Ad Reporting</a></li>
 									<li><a href="samAds.php">Sam Ad History</a></li>
@@ -82,7 +83,7 @@ function print_menu(){
 								<li><a href="report.php">Show Report</a></li>
 		<?php
 							if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
-								<li><a href="crtcreport.php">CRTC Report</a></li> 
+								<li><a href="crtc_report.php">CRTC Report</a></li> 
 		<?php 
 							endif; ?>
 							</ul>

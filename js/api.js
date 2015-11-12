@@ -17,8 +17,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getPlaysheetData: function (playsheet_id) {
 			return $http.get(API_URL_BASE+ '/playsheet/' + playsheet_id);
 		},
-		getAds: function (time){
-			return $http.get(API_URL_BASE+ '/ads/' + time);
+		getAds: function (time,duration){
+			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration);
 		},
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');

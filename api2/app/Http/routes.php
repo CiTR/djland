@@ -550,21 +550,55 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
-	$date = date('Y-M-d H:i:s',strtotime($date));
+	$date = date('Y-M-d',strtotime($date));
+	$unix = strtotime($date);
 	$parsed_date = date_parse($date);
 	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
+		//Constants (second conversions)
+		$one_day = 24*60*60;
+		$one_hour = 60*60;
+		$one_minute = 60;
+
 		//Get mod 2 of week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
 	    $week = (date('W',strtotime($date)) % 2) +1;
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
-		$time = date('H:i:s',strtotime($date));
+		//Get Current Time
+		$time = date('H:i:s',strtotime('now'));
 		$shows = 
-		Show::select('*')
+		Show::selectRaw('shows.id,shows.name,show_times.start_day,show_times.start_time,show_times.end_day,show_times.end_time')
 		->join('show_times','show_times.show_id','=','shows.id')
 		->where('show_times.start_day','=',$day_of_week)
 		->where('show_times.start_time','>=',$time)
 		->whereRaw('(show_times.alternating = '.$week.' OR show_times.alternating = 0)')
+		->orderBy('show_times.start_time','ASC')
 		->get();
+		foreach($shows as $show_time){
+			$start_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
+			$start_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
+			$start_unix_offset = $start_hour_offset + $start_minute_offset;
+			$end_hour_offset = date_parse($show_time['end_time'])['hour'] * $one_hour;
+			$end_minute_offset = date_parse($show_time['end_time'])['minute'] * $one_minute;			
+			$end_unix_offset = $end_hour_offset + $end_minute_offset;
+						
+
+			$show_time->start_unix = $unix + $start_unix_offset;
+			$show_time->end_unix = $unix + $end_unix_offset;
+			$show_time->duration = $show_time->end_unix - $show_time->start_unix;
+
+			if( date('I',strtotime($show_time->start_unix))=='0' ){
+                $show_time->start_unix += 3600;
+                $show_time->end_unix += 3600;
+            }
+
+			$ads = Ad::where('time_block','=',$show_time->start_unix);
+			if( !$ads->first()){
+				$ads = Ad::generateAds($show_time->start_unix,$show_time->duration);
+			}
+			$show_time->ads = $ads;
+			$show_time->date = date('l F jS g:i a',$show_time->start_unix);
+			$show_time->start = date('g:i a',$show_time->start_unix);
+		}
 		return $shows;
 	}else{
 		http_response_code('400');
@@ -636,9 +670,12 @@ Route::get('/adschedule',function(){
 	            }
 
 				//Get Ads
-				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
-				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
-				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();	
+				$week_0_ads = array();
+				//Ad::where('time_block','=',$week_0_show_unix)->get();
+				$week_1_ads = array();
+				//Ad::where('time_block','=',$week_1_show_unix)->get();
+				$week_2_ads = array();
+				//Ad::where('time_block','=',$week_2_show_unix)->get();	
 					
 				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
 				if(count($week_0_ads) <= 2){
@@ -774,9 +811,10 @@ Route::post('/adschedule',function(){
 
 });
 
-Route::get('/ads/{unixtime}',function($unixtime = unixtime){
+Route::get('/ads/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
-	return Response::json($ads);
+	if(sizeof($ads) > 0) return Response::json($ads);
+	else return Ad::generateAds($unixtime,$duration);
 });
 
 
@@ -859,7 +897,11 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			}
 			
 			foreach($categorylist as $item){
-				$songs[] = Songlist::find($item->songID);
+				$song = Songlist::find($item->songID);
+				if($song['title'] == "" || $song['title'] == null){
+					$song['title'] = $song['artist'];
+				} 
+				$songs[] = $song;
 			}
 			return Response::json($songs);
 

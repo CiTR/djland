@@ -9,6 +9,14 @@
 		print_menu(); 
 		$one_day = 60*60*24;
 		?>
+		<select id="ad-template"></select>
+		<select id="psa-template"></select>
+		<select id="ubc-template"></select>
+		<select id="community-template"></select>
+		<select id="timely-template"></select>
+		<select id="id-template"></select>
+		<select id="promo-template"></select>
+
 		<ul id ='tab-nav'>
 			<li class='nodrop inactive-tab nav-left invisble'> < </li>
 			<li class='nodrop inactive-tab nav-right'> > </li>
@@ -19,9 +27,8 @@
 			<?php endfor; ?>
 
 		</ul> 
-		<div class='schedule grey'>
-			schedule
-		</div>
+		<ul class='schedule grey'>
+		</ul>
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 		<script type='text/javascript' src='js/ads/schedule.js'></script>
 		<script type='text/javascript' src='js/ads/ad_schedule.js'></script>

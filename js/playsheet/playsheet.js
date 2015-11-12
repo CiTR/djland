@@ -100,7 +100,7 @@
                     this_.updateStart();
 
                     if(this_.info.id < 1){
-                        call.getAds(start_unix).then(function(response){
+                        call.getAds(start_unix,end_unix-start_unix).then(function(response){
                             this_.ads = response.data;
                         });
                     }
@@ -344,7 +344,7 @@
                             for(var i = 0; i<4; i++) {
                                 this_.add(this_.playitems.length-1);
                             }
-                            call.getAds(start_unix).then(function(response){
+                            call.getAds(start_unix, end_unix-start_unix).then(function(response){
                                 this_.ads = response.data;
                             });
                             this_.update();

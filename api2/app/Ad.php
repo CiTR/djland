@@ -7,7 +7,6 @@ use stdClass;
 class Ad extends Model
 {
     //
-    protected $connection = "mysql";
     protected $table = 'adlog';
     protected $fillable = array('playsheet_id', 'num', 'time', 'type', 'name', 'played', 'sam_id', 'time_block');
     const CREATED_AT = 'create_date';
@@ -16,6 +15,7 @@ class Ad extends Model
     	return $this->belongsTo('App\Playsheet');
     }
     public static function generateAds($show_start_unix,$show_duration){
+   		date_default_timezone_set('America/Los_Angeles');
     	$one_minute = 60;
     	for($offset = 0; $offset < $show_duration; $offset += (20*$one_minute)){
 			$date = date($show_start_unix + $offset);
@@ -23,7 +23,7 @@ class Ad extends Model
 			//If the top of the hour, add a station ID
 			if(date('i',$date) == '00'){
 				$id = new stdClass();
-					$id->type = 'station id';
+					$id->type = 'id';
 					$id->name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
 					$id->time_block = $show_start_unix;
 					$id->time = date('g:i a',$date);
@@ -31,7 +31,7 @@ class Ad extends Model
 			}elseif(date('i',$date) == '10'){
 				//Show started on a half hour, so 20 minute increments land us on 10 minutes past.
 				$id = new stdClass();
-					$id->type = 'station id';
+					$id->type = 'id';
 					$id->name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
 					$id->time_block = $show_start_unix;
 					$id->time = date('g:i a',date($show_start_unix + $offset - 10*$one_minute));

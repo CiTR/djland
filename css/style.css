@@ -1201,7 +1201,9 @@ text-align:left;
 .table-condensed>tbody>tr>td>button{
   font-size:0.9em;
 }
-
+ul.schedule{
+  list-style: none;
+}
 
 ul.schedule > li > div > table {
   background-color:rgba(30,30,30,.4);
