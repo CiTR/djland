@@ -7,7 +7,7 @@
 		<th>Song</th>
 		<th>Album</th>
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Composer</th>
-		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Start Time</th>
+		
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Duration</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist</th>
 		<th>Cancon</th>
@@ -26,7 +26,6 @@
 		<td>{{playitem.song}}</td>
 		<td>{{playitem.album}}</td>
 		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.composer}}</td>
-		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.insert_song_start_hour | pad:2}}:{{playitem.insert_song_start_minute | pad:2}} </td>
 		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.insert_song_length_minute | pad:2}}:{{playitem.insert_song_length_second | pad:2}}</td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_playlist==true">&#9745;</div><div ng-if="playitem.is_playlist!=true">&#9744;</div></td>
 		<td><div ng-if="playitem.is_canadian==true">&#9745;</div><div ng-if="playitem.is_canadian!=true">&#9744;</div></td>
