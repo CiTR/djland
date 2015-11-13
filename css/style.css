@@ -428,7 +428,7 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 	border:none;
 }
 #tab-nav > li.tab{
-    min-width:82px;
+    min-width:80px;
 }
 #nav li{
 	z-index:20;

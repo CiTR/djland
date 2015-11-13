@@ -51,7 +51,7 @@
 				</td>
 				<td>
 					<?php if($ad['type'] == 'announcement'): ?>
-						<input class='name' value="<?php echo $ad['name']; ?>" />
+						<input class='fullinput name' value="<?php echo $ad['name']; ?>" />
 					<?php else: ?>
 					<select class='name' value="<?php echo $ad['name']; ?>">
 

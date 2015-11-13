@@ -594,8 +594,10 @@ Route::get('/adschedule/{date}',function($date = date){
                 $show_time->end_unix += 3600;
             }
 
-			$ads = Ad::where('time_block','=',$show_time->start_unix);
-			if( !$ads->first()){
+			$ads = Ad::where('time_block','=',$show_time->start_unix)->get();
+			$show_time->generated = false;
+			if(!$ads->first()){
+				$show_time->generated = true;
 				$ads = Ad::generateAds($show_time->start_unix,$show_time->duration);
 			}
 			$show_time->ads = $ads;
@@ -674,11 +676,11 @@ Route::get('/adschedule',function(){
 
 				//Get Ads
 				$week_0_ads = array();
-				//Ad::where('time_block','=',$week_0_show_unix)->get();
+				Ad::where('time_block','=',$week_0_show_unix)->get();
 				$week_1_ads = array();
-				//Ad::where('time_block','=',$week_1_show_unix)->get();
+				Ad::where('time_block','=',$week_1_show_unix)->get();
 				$week_2_ads = array();
-				//Ad::where('time_block','=',$week_2_show_unix)->get();	
+				Ad::where('time_block','=',$week_2_show_unix)->get();	
 					
 				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
 				if(count($week_0_ads) <= 2){

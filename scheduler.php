@@ -9,13 +9,13 @@
 		print_menu(); 
 		$one_day = 60*60*24;
 		?>
-		<select id="ad-template"></select>
-		<select id="psa-template"></select>
-		<select id="ubc-template"></select>
-		<select id="community-template"></select>
-		<select id="timely-template"></select>
-		<select id="id-template"></select>
-		<select id="promo-template"></select>
+		<select class='invisible' id="ad-template"></select>
+		<select class='invisible' id="psa-template"></select>
+		<select class='invisible' id="ubc-template"></select>
+		<select class='invisible' id="community-template"></select>
+		<select class='invisible' id="timely-template"></select>
+		<select class='invisible' id="id-template"></select>
+		<select class='invisible' id="promo-template"></select>
 
 		<ul id ='tab-nav'>
 			<li class='nodrop inactive-tab nav-left invisble'> < </li>
