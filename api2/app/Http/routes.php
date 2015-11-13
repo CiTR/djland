@@ -665,22 +665,22 @@ Route::get('/adschedule',function(){
 
 				//DST Offset
 	            if( date('I',strtotime($week_0_show_unix))=='0' ){
-	                $week_0_show_unix += 3600;
+	                //$week_0_show_unix += 3600;
 	            }
 	            if( date('I',strtotime($week_1_show_unix))=='0' ){
-	                $week_1_show_unix += 3600;
+	                //$week_1_show_unix += 3600;
 	            }
 	            if( (date('I',strtotime($week_2_show_unix))=='0') ){
-	                $week_2_show_unix += 3600;
+	               // $week_2_show_unix += 3600;
 	            }
 
 				//Get Ads
 				$week_0_ads = array();
-				Ad::where('time_block','=',$week_0_show_unix)->get();
+				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
 				$week_1_ads = array();
-				Ad::where('time_block','=',$week_1_show_unix)->get();
+				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
 				$week_2_ads = array();
-				Ad::where('time_block','=',$week_2_show_unix)->get();	
+				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();	
 					
 				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
 				if(count($week_0_ads) <= 2){
