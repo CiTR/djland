@@ -46,12 +46,12 @@
 		<tr ng-repeat='ad in playsheet.ads'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
 	</table>
 </div>
-<div ng-show="report.type=='crtc' || report.type=='both'">
+
 	<h3>Spoken Word Duration</h3>
 	<div class='text-center'>
 		{{playsheet.spokenword_duration}} minutes
 	</div>
-</div>
+
 <div ng-show="report.type=='crtc' || report.type=='both'">
 	<h3>Percentage Totals</h3>
 	<table class='table-condensed report_table'>
