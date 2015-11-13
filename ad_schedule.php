@@ -32,7 +32,7 @@
 											<option value='ubc'>UBC PSA</option>
 											<option value='community'>Community PSA</option>
 											<option value='promo'>Show Promo</option>
-											<option value='station id'>Station ID</option>
+											<option value='id'>Station ID</option>
 										</select>
 									</td>
 								</tr>
@@ -55,7 +55,7 @@
 											<option value='ubc'>UBC PSA</option>
 											<option value='community'>Community PSA</option>
 											<option value='promo'>Show Promo</option>
-											<option value='station id'>Station ID</option>
+											<option value='id'>Station ID</option>
 										</select>
 									</td>
 									<td>
@@ -113,7 +113,7 @@
 											<!-- End Promo Selector -->
 										</div>			
 										
-										<div ng-if="show_ad.type == 'station id'">
+										<div ng-if="show_ad.type == 'id'">
 											<!-- Begin Station ID Selector -->
 											<select ng-model='select[show][show_ad]' ng-change='schedule.update(select[show][show_ad],show_ad)'>
 												<option ng-selected='schedule.promos.indexOf(show_ad.sam_id) < 0' value='Any Station ID'>You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver</option>
