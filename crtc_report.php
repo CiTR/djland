@@ -22,7 +22,7 @@
 				</li>
 				<li class='side-padded'>
 					<div class="dropdown">
-						<div ng-controller="datepicker as date">
+						<div ng-controller="datepicker as date"> 
 			        		<button ng-click="date.open($event)" >Change Start Day</button>
 			        		<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd"
 				                 ng-model="report.from"  is-open="date.opened"

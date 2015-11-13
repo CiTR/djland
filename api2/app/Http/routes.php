@@ -327,13 +327,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
-
 		foreach(Input::get()['ads'] as $ad){
 			$ad['playsheet_id'] = $ps->id;
-
-			$a = Ad::find($ad['id']);
-			unset($ad['id']);
-			$a->update((array) $ad);
+			if(isset($ad['id'])){
+				$a = Ad::find($ad['id']);
+				unset($ad['id']);
+				$a->update((array) $ad);
+			}else{
+				$a = Ad::create((array) $ad);
+			}			
 		}
 		$response = new stdClass();
 		$response->id = $ps->id;
@@ -362,8 +364,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->playitems = $p->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
-			$playsheet->ads = Historylist::where('date_played','<=',$p->end_time)->where('date_played','>=',$p->start_time)->where('songtype','=','A')->get();
-			
+			if( $p->start_time && $p->end_time){
+				$playsheet->ads = Historylist::where('date_played','<=',$p->end_time)->where('date_played','>=',$p->start_time)->where('songtype','=','A')->get();
+			}
 			$totals['cancon'][0] = 0;
 			$totals['femcon'][0] = 0;
 			$totals['cancon'][1] = 0;

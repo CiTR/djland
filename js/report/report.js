@@ -28,7 +28,8 @@
 		}
 		this.report = function(){
 			this_ = this;
-			call.getReport(this.show_filter,this.from,this.to).then(function(response){
+
+			call.getReport(this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = angular.copy(response.data);
 			});
 		}
@@ -53,20 +54,19 @@
 
 	app.controller('datepicker', function($filter) {
 		this.today = function() {
-			this.dt = $filter('date')(new Date(),'yyyy/MM/dd');
+			this.dt = $filter('date')(new Date(), 'yyyy/MM/dd');
 		};
 		this.clear = function () {
 			this.dt = null;
 		};
 		this.open = function($event){
-
 			$event.preventDefault();
 			$event.stopPropagation();
 			this.opened = true;
 		};
-		this.format = 'yyyy/MM/dd';
-		});
-		app.directive('reportitem',function(){
+		this.format = 'yyyy-MM-dd';
+	});
+	app.directive('reportitem',function(){
 		return{
 			restrict: 'A',
 			templateUrl: 'templates/report_item.html'
