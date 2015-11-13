@@ -49,8 +49,8 @@ class Show extends Model
 
         //Constants (second conversions)
         $one_day = 24*60*60;
-        $one_hour = 60*60
-;        $one_minute = 60;
+        $one_hour = 60*60; 
+        $one_minute = 60;
         
         foreach($showtimes as $show_time){                      
             $show_time_day_offset = ($show_time['start_day']) * $one_day;
@@ -78,7 +78,7 @@ class Show extends Model
                 $week_1_show_unix += 3600;
             }
             if( (date('I',$week_2_show_unix)=='0') ){
-                $week_1_show_unix += 3600;
+                $week_2_show_unix += 3600;
             }
 
             // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
