@@ -72,13 +72,13 @@ class Show extends Model
 
             //DST Offset
             if( (date('I',$week_0_show_unix)=='0') ){
-                $week_0_show_unix += 3600;
+                //$week_0_show_unix += 3600;
             }
             if( (date('I',$week_1_show_unix)=='0') ){
-                $week_1_show_unix += 3600;
+                //$week_1_show_unix += 3600;
             }
             if( (date('I',$week_2_show_unix)=='0') ){
-                $week_2_show_unix += 3600;
+                //$week_2_show_unix += 3600;
             }
 
             // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
