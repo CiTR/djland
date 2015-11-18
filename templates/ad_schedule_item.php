@@ -7,18 +7,18 @@
 		return "Showtime object required.";
 	}
 ?>
-<li id="show_<? echo $index ?>" data="<?php echo $show['unixtime']; ?>" >
+<li id="show_<?php echo $index; ?>" data="<?php echo $show['start_unix']; ?>" >
 	<h3 class='text-left'><?php echo $show['name']; ?></h3>
 	<h4 class='text-left'><?php echo $show['date']; ?></h4>
 
 	<div id="template_<?php echo $index; ?>">
 		<table class='table-condensed'>
 			<tr >
-				<td id='template_<? echo $index ?>' >
+				<td id='template_<?php echo $index ?>' >
 					<input name="" value='<?php echo $show['start']; ?>'></input>
 				</td>
 				<td>
-					<select id="template_ad_type_<? echo $index ?>">
+					<select id="template_ad_type_<?php echo $index ?>">
 						<option value="announcement">Announcement</option>
 						<option value='ad'>Ad</option>
 						<option value='psa'>PSA</option>

@@ -574,6 +574,7 @@ Route::get('/adschedule/{date}',function($date = date){
 		->where('show_times.start_day','=',$day_of_week)
 		->where('show_times.start_time','>=',$time)
 		->whereRaw('(show_times.alternating = '.$week.' OR show_times.alternating = 0)')
+		->where('shows.active','=','1')
 		->orderBy('show_times.start_time','ASC')
 		->get();
 		foreach($shows as $show_time){

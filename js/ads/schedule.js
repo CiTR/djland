@@ -10,6 +10,8 @@ function Schedule(date){
 	this['promo'] = Array();
 	this['id'] = Array();
 
+	
+
 	this.showtimes = Array();
 
 	if(!date) var date = this.formatDate(new Date());	
@@ -22,6 +24,7 @@ function Schedule(date){
  		for(var item in response){
 			this_.showtimes.push(response[item]);
 		}
+		this_.displaySchedule( $('.schedule') );
 	},function(error){
 		console.log('err' + error.responseText);
 	});
@@ -30,14 +33,37 @@ function Schedule(date){
 
 Schedule.prototype = {
 	getSchedule:function(date){
+		var date = this.formatDate(date);
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/adschedule/"+date,
+			url: "api2/public/adschedule/"+ date,
 			dataType: "json",
 			async: true
 		});
 	},
+	displaySchedule:function(schedule_element){
+		var promises = Array();
+		var this_ = this;
+
+		for(var i = 0; i < this.showtimes.length; i++){
+			promises.push(this.getHTML(this.showtimes[i],i));
+		}
+		//Display the initial showtimes
+		$.when.apply($,promises).then(function(){
+			console.log(this_.showtimes.length);
+			for(var i = 0; i < this_.showtimes.length; i++){
+				//Append the HTML from the requests
+				schedule_element.append(arguments[i][0]);
+
+				for(var j = 0; j < this_.showtimes[i].ads.length; j++){
+					//Update the dropdown to reflect the ad type.
+					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,i,j);
+				}
+			}
+		});
+	},
 	formatDate:function(date){
+		date = new Date(date);
 		return [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('-') + 
 				" " + 
 				[("0" + date.getHours() ).slice(-2),("0" + date.getMinutes()).slice(-2),("0" + date.getSeconds()).slice(-2)].join(':');
