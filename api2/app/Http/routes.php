@@ -566,8 +566,14 @@ Route::get('/adschedule/{date}',function($date = date){
 	    $week = (date('W',strtotime($date)) % 2) +1;
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
-		//Get Current Time
-		$time = date('H:i:s',strtotime('now'));
+		if($date == date('Y-M-d',strtotime('now'))){
+			//Set cutoff time to right now if we are loading today
+			$time = date('H:i:s',strtotime('now'));
+		}else{
+			//Set cutoff time to 00:00:00
+			$time = '00:00:00';
+		}
+		
 		$shows = 
 		Show::selectRaw('shows.id,shows.name,show_times.start_day,show_times.start_time,show_times.end_day,show_times.end_time')
 		->join('show_times','show_times.show_id','=','shows.id')
@@ -584,16 +590,18 @@ Route::get('/adschedule/{date}',function($date = date){
 			$end_hour_offset = date_parse($show_time['end_time'])['hour'] * $one_hour;
 			$end_minute_offset = date_parse($show_time['end_time'])['minute'] * $one_minute;			
 			$end_unix_offset = $end_hour_offset + $end_minute_offset;
-						
+			if( $show_time['end_day'] != $show_time['start_day'] ){
+				$end_unix_offset += $one_day;
+			}			
 
 			$show_time->start_unix = $unix + $start_unix_offset;
 			$show_time->end_unix = $unix + $end_unix_offset;
 			$show_time->duration = $show_time->end_unix - $show_time->start_unix;
 
-			if( date('I',strtotime($show_time->start_unix))=='0' ){
+			/*if( date('I',strtotime($show_time->start_unix))=='0' ){
                 $show_time->start_unix += 3600;
                 $show_time->end_unix += 3600;
-            }
+            }*/
 
 			$ads = Ad::where('time_block','=',$show_time->start_unix)->get();
 			$show_time->generated = false;

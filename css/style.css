@@ -1201,17 +1201,16 @@ text-align:left;
 .table-condensed>tbody>tr>td>button{
   font-size:0.9em;
 }
+
 ul.schedule{
   list-style: none;
 }
 
-ul.schedule > li > div > table {
-  background-color:rgba(30,30,30,.4);
-}
 ul.schedule > li > div.template *{
   display:inline-block;
   position:relative;
 }
+
 button.saving{
   background-color:red;
   color:white;
@@ -1221,11 +1220,18 @@ button.saving{
 /*--------------------------------*/ 
 
 .schedule{
-    width:1024px;
+    max-width:1024px;
     margin-left: auto;
     margin-right: auto;
     z-index: 3;
     margin-bottom: 15px;
+    overflow-x:hidden;
+}
+.schedule > li > div > table > tbody > tr > td > input.ad_time {
+    max-width: 80px;  
+}
+.schedule > li > div > table.ads{
+    max-width:1024px;
 }
 
 

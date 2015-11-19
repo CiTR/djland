@@ -19,12 +19,11 @@ $(document).ready ( function(){
 		console.log('offset = '+ element.attr('name'));
 		schedule_element.empty();
 
-		$.when.apply( schedule.getSchedule( element.attr('name') ) ).then( function(response){
+		$.when(schedule.getSchedule( element.attr('name'))).then( function(response){
 			schedule.showtimes = Array();
 			for(var item in response){
 				schedule.showtimes.push(response[item]);
 			}
-			console.log(response);
 			schedule.displaySchedule(schedule_element);
 		},function(error){
 			console.log(error);

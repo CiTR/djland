@@ -15,7 +15,7 @@
 		<table class='table-condensed'>
 			<tr >
 				<td id='template_<?php echo $index ?>' >
-					<input name="" value='<?php echo $show['start']; ?>'></input>
+					<input name="" value='<?php echo $show['start']; ?>' class='ad_time'></input>
 				</td>
 				<td>
 					<select id="template_ad_type_<?php echo $index ?>">
@@ -33,10 +33,10 @@
 		</table>
 		<button id="insert_<?php echo $index; ?>" type='button'>Insert Ad</button>
 
-		<table class='table-condensed'>
+		<table class='table-condensed ads'>
 			<?php foreach($show['ads'] as $ad) : ?>
 			<tr id='<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>' >
-				<td><input name='time' value="<?php echo $ad['time']; ?>"></td>
+				<td><input name='time' value="<?php echo $ad['time']; ?>" class='ad_time'></td>
 				<td class='type'>
 					<select name='type' value="<?php echo $ad['type']; ?>">
 						<option <?php if($ad['type'] == "announcement") echo 'selected'; ?> value="announcement">Announcement</option>
