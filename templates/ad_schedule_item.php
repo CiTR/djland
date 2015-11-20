@@ -38,7 +38,7 @@
 			<tr id='<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>' >
 				<td><input name='time' value="<?php echo $ad['time']; ?>" class='ad_time'></td>
 				<td class='type'>
-					<select name='type' value="<?php echo $ad['type']; ?>">
+					<select class='type_select' name='type' value="<?php echo $ad['type']; ?>">
 						<option <?php if($ad['type'] == "announcement") echo 'selected'; ?> value="announcement">Announcement</option>
 						<option <?php if($ad['type'] == "ad") echo 'selected'; ?> value='ad'>Ad</option>
 						<option <?php if($ad['type'] == "psa") echo 'selected'; ?> value='psa'>PSA</option>

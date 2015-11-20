@@ -25,6 +25,7 @@ function Schedule(date){
 			this_.showtimes.push(response[item]);
 		}
 		this_.displaySchedule( $('.schedule') );
+		$('.loadingbar_container').hide();
 	},function(error){
 		console.log('err' + error.responseText);
 	});
@@ -173,8 +174,18 @@ Schedule.prototype = {
 		}else{
 			$('#show_'+index+"_"+num).children().find('select.name').append("<input value='Announce'></input>");
 		}
-		
-	}
+	},
+	logError:function(error){
+		//Get relevant text from the eloquent error message
+		var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
+        $.ajax({
+				type:"POST",
+				url:"api2/public/error",
+				async: true,
+				data: {"error":error},
+		});
+	},
+
 
 }
 

@@ -540,15 +540,13 @@
                         this_.info.id = response.data.id;
                         this_.podcast.id = response.data.podcast_id;
                         this_.podcast.playsheet_id = response.data.id;
-                        
+                        this_.tracklist_overlay = true;
                         call.makePodcastAudio(this_.podcast).then(function(reponse){
                             this_.podcast_status = "Podcast Audio Created Successfully.";
-                            this_.tracklist_overlay = true;
                         },function(error){
                             this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
                             this_.error = true;
                             this_.log_error(error);
-                            this_.tracklist_overlay = true;
                         });
 
                     },function(error){
@@ -568,14 +566,13 @@
                         call.saveNewPodcast(this_.podcast).then(function(response){
                             this_.podcast.id = response.data['id'];
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                                this_.tracklist_overlay = true;
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                    this_.podcast_status = "Podcast Audio Created Successfully.";
-                                    this_.tracklist_overlay = true;
+                                    this_.podcast_status = "Podcast Audio Created Successfully.";  
                                 },function(error){
                                     this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
                                     this_.error = true;
                                     this_.log_error(error);
-                                    this_.tracklist_overlay = true;
                                 });
                                     
                             },function(error){
@@ -587,15 +584,13 @@
                         });
                     }else{
                         call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                            this_.tracklist_overlay = true;
                             call.makePodcastAudio(this_.podcast).then(function(reponse){
                                 this_.podcast_status = "Podcast Audio Created Successfully.";
-                                this_.tracklist_overlay = true;
-
                             },function(error){
                                 this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
                                 this_.error = true;
                                 this_.log_error(error);
-                                this_.tracklist_overlay = true;
                             });
                         },function(error){
                             this_.podcast_status = "Podcast Not created";
