@@ -249,7 +249,7 @@ class Show extends Model
                  $response['reponse'] = array(
                                 'filename' => $file_name,
                                 'size' => $num_bytes,
-                                'url' => $ftp->url_path.$file_name
+                                'url' => $url_path.$file_name
                                 );
             }
             

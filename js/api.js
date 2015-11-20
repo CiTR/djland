@@ -95,6 +95,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		isSocan : function(unixtime){
 			return $http.get(API_URL_BASE+'/socan'+unixtime!=null? unixtime:'');
 		},
+		error: function(error){
+			return $http.post(API_URL_BASE+'/error',angular.toJson({'error':error}));
+		},
 	};
 });
 

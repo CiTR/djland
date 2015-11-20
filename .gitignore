@@ -3,6 +3,9 @@ headers/config.php
 config.php
 podcast-config.php
 
+#Ignore Logs
+log.html
+
 #Ignore Test directories
 test-audio
 test-xml

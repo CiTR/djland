@@ -28,8 +28,6 @@ $(document).ready ( function(){
 		},function(error){
 			console.log(error);
 		});
-
-		
 	});
 });
 

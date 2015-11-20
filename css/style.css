@@ -1116,13 +1116,20 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
   .tracklist_overlay span{
     margin-left:40px;
   }
-  .tracklist_overlay a{
+  .tracklist_overlay a.logout{
     background-color:steelblue;
     padding:2px;
   }
-  .tracklist_overlay a:hover{
+  .tracklist_overlay a.logout:hover{
     color:greenyellow;
   }
+  #sf-resetcontent {
+    height:300px;
+    max-height:75%;
+    overflow:auto;
+  }
+
+
 
   .dark{
     position:fixed;

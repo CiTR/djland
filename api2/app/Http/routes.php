@@ -566,6 +566,7 @@ Route::get('/adschedule/{date}',function($date = date){
 	    $week = (date('W',strtotime($date)) % 2) +1;
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
+		
 		if($date == date('Y-M-d',strtotime('now'))){
 			//Set cutoff time to right now if we are loading today
 			$time = date('H:i:s',strtotime('now'));
@@ -574,6 +575,7 @@ Route::get('/adschedule/{date}',function($date = date){
 			$time = '00:00:00';
 		}
 		
+		//Select active shows that run during the date specified.
 		$shows = 
 		Show::selectRaw('shows.id,shows.name,show_times.start_day,show_times.start_time,show_times.end_day,show_times.end_time')
 		->join('show_times','show_times.show_id','=','shows.id')
@@ -583,6 +585,8 @@ Route::get('/adschedule/{date}',function($date = date){
 		->where('shows.active','=','1')
 		->orderBy('show_times.start_time','ASC')
 		->get();
+
+		//for each show time get the ads, or create them.
 		foreach($shows as $show_time){
 			$start_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
 			$start_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
@@ -1038,6 +1042,18 @@ Route::get('/table/{table}',function($table_name =table){
 		echo "'".$column->Field."', ";
 	}
 
+});
+Route::post('/error',function(){
+	date_default_timezone_set('America/Los_Angeles');
+	$from = $_SERVER['HTTP_REFERER'];
+	$error = Input::get()['error'];
+	$date = date('l F jS g:i a',strtotime('now'));
+	$out = '<hr>';
+	$out .= '<h3>'.$date.'</h3>';
+	$out .= '<h4>'.$from.'</h4>';
+	$out .= '<p>'.$error.'</p>';
+	$result = file_put_contents($_SERVER['DOCUMENT_ROOT'].'/log.html',$out.PHP_EOL,FILE_APPEND);
+	return $result;
 });
 
 

@@ -186,7 +186,7 @@
 				<div id="message" ng-show="message.text != '' && message.age < 6 " >{{message.text}}</div>
 			</div>
 			<div class="floating">
-				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.status == 2" >Save Draft</button><br/><br/>
+				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2" >Save Draft</button><br/><br/>
 				<div ng-show='playsheet.using_sam'>
 					<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
 				</div>
@@ -206,16 +206,16 @@
 			<!-- Popup Overlay during submission -->
 			<div class="tracklist_overlay" ng-show="playsheet.tracklist_overlay">
 				<button ng-click='playsheet.tracklist_overlay = !playsheet.tracklist_overlay'> X </button>
-				<h3>Thanks for submitting your playsheet</h3>
-				<h3>If you're done, please <a href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
-				
-				<div class='text-center'> {{podcast_status}}</div>
-				To modify the episode timing, title, subtitle, or summary,
-				
-				<h4>Tracklist:</h4>
+				<h3>{{playsheet.tracklist_overlay_header}}</h3>
+				<h3 ng-show='!playsheet.error'>If you're done, please <a class='logout' href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
+				<div ng-show='playsheet.info.status == 2' class='text-center'> {{playsheet.podcast_status}}</div>
+				<div class='text-center' id = 'playsheet_error'> </div>				
+				<hr/>
+				<h4 ng-show='!playsheet.error'>Tracklist:</h4>
 				<ul>
 					<li ng-repeat="playitem in playsheet.playitems track by $index">{{playitem.artist}} "{{playitem.song}}" - {{playitem.album}}</li>
 				</ul>
+
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>

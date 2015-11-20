@@ -11,6 +11,8 @@
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         this.months_of_year = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
+        this.tracklist_overlay_header = "Thanks for submitting your playsheet";
+        this.podcast_status = "Your podcast is being created";
         var this_ = this;
 
         //Helper Variables
@@ -476,14 +478,13 @@
                         }
                         var show_date = this_.start.getDate();
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-
-                        
                         this_.podcast.id = response.data.podcast_id;
                         this_.podcast.playsheet_id = response.data.id;
                         alert("Draft Saved");
-                        
+            
                     },function(error){
-                        alert("Please Contact Technical Services:" + error.responseText);
+                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+                        this_.log_error(error);
                     });
                 }else{
                     //Existing Playsheet
@@ -493,7 +494,8 @@
                         }
                         alert("Draft Saved");
                     },function(error){
-                        alert("Please Contact Technical Services:" + error.responseText);
+                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+                        this_.log_error(error);
                     });
                 }
             }else{
@@ -530,7 +532,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this_.info.create_name = this_.username;
-                    this.tracklist_overlay = true;
+                    
                     call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
@@ -540,14 +542,25 @@
                         this_.podcast.playsheet_id = response.data.id;
                         
                         call.makePodcastAudio(this_.podcast).then(function(reponse){
-                            console.log(response.data);
+                            this_.podcast_status = "Podcast Audio Created Successfully.";
+                            this_.tracklist_overlay = true;
+                        },function(error){
+                            this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+                            this_.error = true;
+                            this_.log_error(error);
+                            this_.tracklist_overlay = true;
                         });
+
                     },function(error){
-                        alert("Please Contact Technical Services:" + error.responseText);
+                        this_.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+                        this_.podcast_status = "Podcast Not created";
+                        this_.error = true;
+                        this_.log_error(error);
+                        this_.tracklist_overlay = true;
                     });
                 }else{
                     //Existing Playsheet
-                    this.tracklist_overlay = true;
+                    
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
@@ -556,24 +569,56 @@
                             this_.podcast.id = response.data['id'];
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                    console.log(response.data);
+                                    this_.podcast_status = "Podcast Audio Created Successfully.";
+                                    this_.tracklist_overlay = true;
+                                },function(error){
+                                    this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+                                    this_.error = true;
+                                    this_.log_error(error);
+                                    this_.tracklist_overlay = true;
                                 });
+                                    
                             },function(error){
-                                alert("Please Contact Technical Services:" + error.responseText);
+                                this_.podcast_status = "Podcast Not created";
+                                this_.error = true;
+                                this_.log_error(error);
+                                this_.tracklist_overlay = true;
                             });
                         });
                     }else{
                         call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
                             call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                console.log(response.data);
+                                this_.podcast_status = "Podcast Audio Created Successfully.";
+                                this_.tracklist_overlay = true;
+
+                            },function(error){
+                                this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+                                this_.error = true;
+                                this_.log_error(error);
+                                this_.tracklist_overlay = true;
                             });
                         },function(error){
-                            alert("Please Contact Technical Services:" + error.responseText);
+                            this_.podcast_status = "Podcast Not created";
+                            this_.error = true;
+                            this_.log_error(error);
+                            this_.tracklist_overlay = true;
                         });
                     }
                     
-                } 
+                }
+                
             } 
+        }
+        this.log_error = function(error){
+            var this_ = this;
+            this_.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+            var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
+
+            call.error( this_.error).then(function(response){
+                $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error has been logged');
+            },function(error){
+                $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error could not be logged :(');
+            });
         }
 
         this.addSamPlay = function (sam_playitem) {
