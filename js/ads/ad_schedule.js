@@ -44,7 +44,7 @@ $(document).ready ( function(){
 function addHandlers(){
 	setTimeout(function(){
 		$('.type_select').change(function(e){
-			console.log('changed' + $(this).val());
+			
 		});
  	}, 800);
 }

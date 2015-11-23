@@ -402,6 +402,15 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
     min-height:28px;
     height:auto;
 }
+#tab-nav > li{
+  display:inline-block;
+  position:relative;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:4px;
+    padding-bottom: 4px;
+    text-align:center;
+}
 .nav-left, .nav-right{
     position:relative;
     padding-left:5px;
