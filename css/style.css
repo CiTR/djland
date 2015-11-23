@@ -1059,7 +1059,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
   div.floating {
     position: fixed;
     right: 0;
-    top: 30px;
+    top: 150px;
     width: auto;
     z-index:20;
   }
