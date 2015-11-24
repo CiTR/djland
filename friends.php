@@ -10,12 +10,15 @@
 			<div class='text-center' ng-show='friends.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		</div>
 		<div class='grey wrapper'>
+			<h2>Friends of CiTR</h2>
+			<button class='center' id='save_friends' type='button' ng-click='friends.save()'>Save</button>
 			<ul id='friends' class='clean-list'>
 				<li ng-repeat='(id,friend) in friends.list track by $index'>
+					<hr/>
 					<h3 class='text-left'>{{friend.name}}</h3>
 
 					<div class='col1'><input ng-model='friend.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
-					<div class='col2'>
+					<div class='friend_info'>
 						<div class='col1 double-padded-top'>
 							<div class='col2'>Name<input class='padded-left' ng-model='friend.address' placeholder='address'></div>
 							<div class='col2'>Website<input class='padded-left' ng-model='friend.website' placeholder='website'></div>
@@ -25,33 +28,13 @@
 							<div class='col2'>Discount<input class='padded-left' ng-model='friend.discount' placeholder='discount'></div>
 						</div>
 					</div>
-					<div class='left'>
-						<div ng-controller="FileUploadCtrl" class='text-center'>		      		                   
-		                    <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
-
-		                    <div  id="dropbox" class="friend_dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
-		                    <button type="button" ng-click="uploadFile()">Upload</button>
-		                    <div ng-show="files.length">
-		                        <div ng-repeat="file in files.slice(0)">
-		                            <span>{{file.webkitRelativePath || file.name}}</span>
-		                            (<span ng-switch="file.size > 1024*1024">
-		                            <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-		                            <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-		                            </span>)
-		                        </div>
-	                        </div>
-		                    <div ng-show="progressVisible">
-		                        <div class="percent">{{progress}}%</div>
-	                            <div class="progress-bar">
-	                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
-	                            </div>
-	                        </div>
-	                    </div>
+					<div class='left double-padded-top'>                   
+		                <input class='file{{friend.id}}' type="file" ng-model-instant/>
+		                <button type="button" ng-click="friends.imageUpload(friend.id,friend.name)">Upload</button>
 	                </div>
 	                <div class='friend_image left'>
                     	<img src="{{friend.image_url}}" alt='Image'/>
                 	</div>
-
 				</li>
 			</ul>
 			<div class='col1 text-center double-padded-top grey'>

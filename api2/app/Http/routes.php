@@ -1046,13 +1046,17 @@ Route::get('/friends',function(){
 Route::post('/friends',function(){
 	$friends = Input::get()['friends'];
 	foreach($friends as $friend){
-		if(isset($friend['id'])){
-			//update
-		}else{
-			//create
-		}
+		$f = Friends::find($friend['id']);
+		unset($friend['id']);
+		$f->update((array) $friend);
 	}
+	return Response::json($friends);
 });
 Route::delete('/friends/{id}',function($id = id){
-	return Friends::find($id)->delete();
+	return Response::json(Friends::find($id)->delete());
+});
+Route::put('/friends',function(){
+	$friend = new Friends;
+	$friend->save();
+	return $friend;
 });

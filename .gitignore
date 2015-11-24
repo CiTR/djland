@@ -19,6 +19,7 @@ php_errors.log
 
 #Ignore Show Media Uploads
 images/shows
+images/friends
 
 #Ignore Windows Crap
 Thumbs.db

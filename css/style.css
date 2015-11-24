@@ -327,6 +327,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 .center{
     margin-left:auto;
     margin-right:auto;
+    display:block;
 }
 
 
@@ -1277,11 +1278,18 @@ button.saving{
 #friends > li {
     height:200px;
 }
+.friend_info{
+  width:380px;
+  float:left;
+  position:relative;
+}
 .friend_image{
-    border-width:1px;
-    border-style:solid;
-    height:100px;
-    width:100px;
+    margin-top:20px;
+}
+.friend_image > img {
+  max-height:100px;
+  width:auto;
+  max-width:220px;
 }
 .friend_dropbox{
     max-width: 8em;
