@@ -28,8 +28,8 @@ function print_menu(){
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>	
 		<?php 
-			endif; 
-			if(permission_level() > $djland_permission_levels['member']): ?>
+			endif;
+			if( permission_level() > $djland_permission_levels['member'] ): ?>
 		<li class=drop><a href="library.php">Library</a>
 			<div class="dropdown small">
 				<div class=small>
@@ -44,52 +44,61 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
+
+		<?php 
+		endif;
+		if( permission_level() >= $djland_permission_levels['volunteer'] ): 
+		?>
+		<li class='drop'><a href='#'>Admin</a>
+			<div class="dropdown small">
+				<div class=small>
+					<ul>
+						<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
+						<li><a href="friends.php">Friends of CiTR</a></li>
+						<li><a href="ad_schedule.php">Ad Scheduler</a></li>
+						<li><a href="scheduler.php">Ad Scheduler 2.0</a></li>
+						<?php endif; ?>
+						<li><a href="adreport.php">Ad Reporting</a></li>
+						<li><a href="samAds.php">Sam Ad History</a></li>
+						<?php if(permission_level() >=  $djland_permission_levels['administrator']) : ?>
+							<li><a href="setSocan.php"> Socan Periods </a></li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+		</li>
 		
 		<?php 
-			endif;
-			
-				if($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']) :?>
-					<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
+		endif;
+		if($enabled['charts'] && $djland_permission_levels['workstudy']) : ?>
+			<li class=nodrop><a href="charting.php">Charts</a></li>
 		<?php 
-				endif; 
-			if(permission_level() >= $djland_permission_levels['workstudy']) : 
-				if($enabled['adscheduler']) : ?>
-					<li class=drop><a href="ad_schedule.php">Ads</a>
-						<div class="dropdown small">
-							<div class=small>
-								<ul>
-									<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
-									<li><a href="ad_schedule.php">Ad Scheduler</a></li>
-									<li><a href="scheduler.php">Ad Scheduler 2.0 Demo</a></li>
-									<?php endif; ?>
-									<li><a href="adreport.php">Ad Reporting</a></li>
-									<li><a href="samAds.php">Sam Ad History</a></li>
-								</ul>
-							</div>
-						</div>
-					</li>
+		endif;
+		if($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']) :
+		?>
+		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
 		<?php 
-				endif; 
-				if($enabled['charts']) :?>
-					<li class=nodrop><a href="charting.php">Charts</a></li>
+		endif; 
+		
+		?>
+				
 		<?php 
-				endif;
-			endif; 
-			if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']): ?>
-				<li class=drop ><a href="report.php">Reports</a>
-					<div class="dropdown small">
-						<div class=small>
-							<ul>
-								<li><a href="report.php">Show Report</a></li>
+		if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']): 
+		?>
+			<li class=drop ><a href="report.php">Reports</a>
+				<div class="dropdown small">
+					<div class=small>
+						<ul>
+							<li><a href="report.php">Show Report</a></li>
 		<?php
-							if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
-								<li><a href="crtc_report.php">CRTC Report</a></li> 
+						if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
+							<li><a href="crtc_report.php">CRTC Report</a></li> 
 		<?php 
-							endif; ?>
-							</ul>
-						</div>
+						endif; ?>
+						</ul>
 					</div>
-				</li>
+				</div>
+			</li>
 		<?php 
 			endif;
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
@@ -101,9 +110,6 @@ function print_menu(){
 								<li><a href="playsheet_angular.php?socan=true">New Socan Playsheet</a></li>
 								<li><a href="open_playsheet.php">Open a Playsheet</a></li>
 								<li><a href="podcasts.php"> Podcasts </a></li>
-								<?php if(permission_level() >=  $djland_permission_levels['administrator']) : ?>
-									<li><a href="setSocan.php"> Socan Periods </a></li>
-								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
