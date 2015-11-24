@@ -28,7 +28,7 @@
 
 		</ul> 
 		<div class='grey loadingbar_container'>
-			<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+			<div class='text-center'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		</div>
 		<ul class='schedule grey'>
 

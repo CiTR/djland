@@ -1,4 +1,6 @@
 <?php
+	//This file is used with a POST request. It is not an angular style template
+
 if(isset($_POST['ad_list']) ){
 	$list = json_decode($_POST['ad_list']);
 	$index = $_POST['index'];

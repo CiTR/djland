@@ -164,25 +164,6 @@ input, select, textarea, option{
 
 }
 
-.text-left{
-	text-align:left;
-}
-.text-right{
-	text-align: right;
-}
-.text-center{
-	text-align: center;
-}
-.left{
-  float:left;
-}
-.right{
-  float:right;
-}
-.center{
-	margin-left:auto;
-	margin-right:auto;
-}
 .rounded{
   -moz-border-radius: 10px 10px 10px 10px;
   -webkit-border-radius: 10px 10px 10px 10px;
@@ -190,6 +171,9 @@ input, select, textarea, option{
 }
 .padded{
   padding-top:10px;
+}
+.padded-left{
+    margin-left:10px;
 }
 .double-padded-top{
   padding-top:20px;
@@ -271,7 +255,7 @@ input, select, textarea, option{
   height:auto;  
   overflow:visible;
 }
-div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
+div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
   max-width:140px;
 }
 .col1{
@@ -304,6 +288,9 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 .col20{
   width:5%;
 }
+.span2col3{
+    width:66%;
+}
 .span5col6{
   width:83.33%;
   float:right;
@@ -322,6 +309,25 @@ div.col2 input,div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.c
 }
 
 
+.text-left{
+    text-align:left;
+}
+.text-right{
+    text-align: right;
+}
+.text-center{
+    text-align: center;
+}
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
+.center{
+    margin-left:auto;
+    margin-right:auto;
+}
 
 
 /* CSS to make the YCBM Links not look bad and take up all the page width */  
@@ -1258,7 +1264,36 @@ button.saving{
 }
 
 
-
+/*----------------------*/
+/* Friends of CiTR Page */
+/*----------------------*/ 
+#friends{
+    padding-left:10px;
+    margin:0px;
+    max-width:1024px;
+    width:1024px;
+    overflow: hidden;
+}
+#friends > li {
+    height:200px;
+}
+.friend_image{
+    border-width:1px;
+    border-style:solid;
+    height:100px;
+    width:100px;
+}
+.friend_dropbox{
+    max-width: 8em;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    background-color: #FEFFEC;
+    margin-left:30px;
+    text-align: center;
+    color: #BBB;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+}
 /*-------------------*/
 /* Old Playsheet CSS */
 /*-------------------*/ 

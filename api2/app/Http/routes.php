@@ -19,6 +19,8 @@ use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
 use App\Historylist as Historylist;
 
+use App\Friends as Friends;
+
 Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
@@ -907,13 +909,11 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 	//Get tracks with a specific category (Accepts category ID # and category name)
 	Route::group(array('prefix'=>'categorylist'),function(){
 		Route::get('{cat_id}',function($cat_id = cat_id){
-
 			if(is_numeric($cat_id)){
 				$categorylist = Categorylist::where('categoryID','=',$cat_id)->get();
 			}else{
 				$categorylist = Categorylist::join('category','category.id','=','categorylist.categoryID')->where('category.name','LIKE',$cat_id)->get();
 			}
-			
 			foreach($categorylist as $item){
 				$song = Songlist::find($item->songID);
 				if($song['title'] == "" || $song['title'] == null){
@@ -922,25 +922,16 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 				$songs[] = $song;
 			}
 			return Response::json($songs);
-
 		});
 	});
-
 });
-
-
 Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	date_default_timezone_set('America/Los_Angeles');
 	$result = array();
 	if($using_sam){
-		$last_track = DB::connection('samdb')
-			->table('historylist')
-			->selectRaw('artist,title,album,date_played,songtype,duration')
-			->where('songtype','=','S')
-			->orderBy('date_played','DESC')
-			->limit('1')
-			->get();
+		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
+			->where('songtype','=','S')->orderBy('date_played','DESC')->limit('1')->get();
 		$now = strtotime('now');
 		if(count($last_track) > 0){
 			$last_track = $last_track[0];
@@ -952,12 +943,10 @@ Route::get('/nowplaying',function(){
 		}else{
 			$result['music'] = null;
 		}
-		
 	}else{
 		$result['music'] = null;
 	}
 
-	
 	//Get Current week since Epoch
     $current_week = Date('W', strtotime('tomorrow',strtotime('now')));
     if ((int) $current_week % 2 == 0){
@@ -966,12 +955,10 @@ Route::get('/nowplaying',function(){
         $current_week_val = 2;
     };
 
-
 	//We use 0 = Sunday instead of 7
 	$day_of_week = date('w');
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
-
 	$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
 			WHERE 
@@ -995,10 +982,8 @@ Route::get('/nowplaying',function(){
 		$result['showTime'] = "";
 		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
 	}
-		
 	return Response::json($result);
 });
-
 
 Route::get('/socan',function(){
 	$now = strtotime('now');
@@ -1041,7 +1026,6 @@ Route::get('/table/{table}',function($table_name =table){
 	foreach($table as $column){
 		echo "'".$column->Field."', ";
 	}
-
 });
 Route::post('/error',function(){
 	date_default_timezone_set('America/Los_Angeles');
@@ -1056,4 +1040,19 @@ Route::post('/error',function(){
 	return $result;
 });
 
-
+Route::get('/friends',function(){
+	return Friends::all();
+});
+Route::post('/friends',function(){
+	$friends = Input::get()['friends'];
+	foreach($friends as $friend){
+		if(isset($friend['id'])){
+			//update
+		}else{
+			//create
+		}
+	}
+});
+Route::delete('/friends/{id}',function($id = id){
+	return Friends::find($id)->delete();
+});

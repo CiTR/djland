@@ -1,4 +1,6 @@
 <?php
+	//This file is used with a POST request. It is not an angular style template
+	
 	if(isset($_POST['show']) && isset($_POST['index'])){
 		$show = $_POST['show'];
 		$index = $_POST['index'];
