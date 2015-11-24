@@ -67,10 +67,9 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
-		
 		<?php 
 		endif;
-		if($enabled['charts'] && $djland_permission_levels['workstudy']) : ?>
+		if($enabled['charts'] && permission_level() >=$djland_permission_levels['workstudy']) : ?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
 		<?php 
 		endif;
@@ -79,10 +78,6 @@ function print_menu(){
 		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
 		<?php 
 		endif; 
-		
-		?>
-				
-		<?php 
 		if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']): 
 		?>
 			<li class=drop ><a href="report.php">Reports</a>
