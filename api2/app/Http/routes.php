@@ -1060,3 +1060,6 @@ Route::put('/friends',function(){
 	$friend->save();
 	return $friend;
 });
+Route::get('/friends/static',function(){
+	return Friends::write_static();
+});
