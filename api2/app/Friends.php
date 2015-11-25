@@ -51,6 +51,9 @@ class Friends extends Model
 		$listing .= "</ul>";
 		$html .= $alphabet_nav;
 		$html .= $listing;
+
+		fwrite($static_page,$html);
+		fclose($static_page);
 		return $html;
 
 
