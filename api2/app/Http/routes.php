@@ -1050,6 +1050,7 @@ Route::post('/friends',function(){
 		unset($friend['id']);
 		$f->update((array) $friend);
 	}
+	Friends::write_static();
 	return Response::json($friends);
 });
 Route::delete('/friends/{id}',function($id = id){

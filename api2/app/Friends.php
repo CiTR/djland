@@ -13,7 +13,13 @@ class Friends extends Model
     protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
 
     public static function write_static(){
-		$static_page = fopen("/home/citr/citr-wp/app/static/friends.html",'w');
+        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+
+		if(!$testing_environment){
+			$static_page = fopen("/home/citr/citr-wp/app/static/friends.html",'w');
+		}else{
+			$static_page = fopen($_SERVER['DOCUMENT_ROOT']."/static/friends.html",'w');
+		}
 		$friends = Friends::orderBy('name','asc')->get();
 		$alphabetical = array();
 		foreach($friends as $friend){
@@ -52,12 +58,12 @@ class Friends extends Model
 		$html .= $alphabet_nav;
 		$html .= $listing;
 
-		fwrite($static_page,$html);
-		fclose($static_page);
-		return $html;
-
-
-
-
+		if( fwrite($static_page,$html) > 0){
+			fclose($static_page);
+			return $html;
+		}else{
+			fclose($static_page);
+			return false;
+		} ;
 	}
 }
