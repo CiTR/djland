@@ -13,8 +13,7 @@ class Friends extends Model
     protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
 
     public static function write_static(){
-
-		$static_page = fopen($_SERVER['DOCUMENT_ROOT']."/static/friends.html",'w');
+		$static_page = fopen("/home/citr/citr-wp/app/static/friends.html",'w');
 		$friends = Friends::orderBy('name','asc')->get();
 		$alphabetical = array();
 		foreach($friends as $friend){
@@ -34,8 +33,8 @@ class Friends extends Model
 			$listing .= "<li style='padding-top:15px;'>";
 			$listing .= "<a name='".$letter."'></a>";
 			foreach($alphabetical[$letter] as $entry){
-				$listing .="<div style='width:50%; min-width:450px; max-height:150px; float:left;'>";
-				$listing .="<div style='width:60%; height:150px; display:inline-block; float:left;'>";
+				$listing .="<div style='width:100%; min-width:450px; float:left;'>";
+				$listing .="<div style='width:60%; display:inline-block; float:left;'>";
 				$listing .="<h3>".$entry->name."</h3>";
 				$listing .="<div>".$entry->discount."</div>";
 				$listing .="<div style:'margin:0;'><a href='https://www.google.ca/maps/search/".join('+',explode(' ',$entry->address)).",+Vancouver,+BC' target='blank_'>".$entry->address."</a></div>";
