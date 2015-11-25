@@ -31,15 +31,20 @@ class Friends extends Model
 		$alphabet_nav .= "</ul>";
 		$listing = "<ul style='list-style:none;'>";
 		foreach($letters as $letter){
-			$listing .= "<li>";
+			$listing .= "<li style='padding-top:15px;'>";
 			$listing .= "<a name='".$letter."'></a>";
 			foreach($alphabetical[$letter] as $entry){
-				$listing .="<div style='width:100%; max-height:150px; display:inline-block'>";
+				$listing .="<div style='width:50%; min-width:450px; max-height:150px; float:left;'>";
+				$listing .="<div style='width:60%; height:150px; display:inline-block; float:left;'>";
 				$listing .="<h3>".$entry->name."</h3>";
-				$listing .="<h4 style='display:inline; float:left'>".$entry->discount."</h4>";
-				$listing .="<p>".$entry->address."</p>";
-				$listing .="<p>".$entry->website."</p>";
-				$listing .="<img style='max-height:100px;' href='".$entry->image_url."'></image>";
+				$listing .="<div>".$entry->discount."</div>";
+				$listing .="<div style:'margin:0;'><a href='https://www.google.ca/maps/search/".join('+',explode(' ',$entry->address)).",+Vancouver,+BC' target='blank_'>".$entry->address."</a></div>";
+				$listing .="<div><a href='".$entry->website."'>".$entry->website."</a></div>";
+				$listing .="<div>".$entry->phone."</div>";
+				$listing .="</div>";
+				$listing .="<div style='width:35%; height:150px; display:inline-block; text-align:center; float:left; white-space:nowrap'>";
+				$listing .="<span style='vertical-align:middle; display:inline-block; height:100%;'></span><img style='max-height:100%; max-width:100%; vertical-align:middle;' src='".$entry->image_url."'></image>";
+				$listing .="</div>";
 				$listing .="</div>";
 			}
 			$listing .= "</li>";
