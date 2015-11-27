@@ -71,7 +71,7 @@
 				                <button type="button" class='left' ng-click="broadcasts.imageUpload(broadcast.id,broadcast.name)">Upload</button>
 			                </div>
 			                <div class='broadcast_image'>
-	                    		<img src="{{broadcast.image}}" alt='Image'/>
+	                    		<img src="{{broadcast.image}}" alt='No Image Uploaded'/>
 	                		</div>
 	                	</div>
             		</div>
