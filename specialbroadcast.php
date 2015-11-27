@@ -24,8 +24,8 @@
 							<div ng-controller='datepicker as date' class='col2'>
 								<div class='col1'> Start: {{broadcast.time.start_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
-                               ng-model="broadcasts.times[$index].start_time"  is-open="date.opened" ng-hide='true'
-                               ng-required="true" close-text="Close" ng-onload='date.dt = broadcast.start'
+                               ng-model="broadcast.time.start_time"  is-open="date.opened" ng-hide='true'
+                               ng-required="true" close-text="Close"
                                ng-change="date.update(broadcast.start);" />
                             	<button ng-click="date.open($event)" >Change Date</button>
                             	h:<select ng-model="broadcast.time.start_hour" ng-options="n for n in [] | range:0:24"
@@ -38,7 +38,7 @@
 							<div ng-controller='datepicker as date' class='col2'>
 								<div class='col1'> End: {{broadcast.time.end_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
-                               ng-model="broadcasts.times[$index].end_time"  is-open="date.opened" ng-hide='true'
+                               ng-model="broadcast.time.end_time"  is-open="date.opened" ng-hide='true'
                                ng-required="true" close-text="Close" 
                                ng-change="date.date_change();" />
                             	<button ng-click="date.open($event)" >Change Date</button>
