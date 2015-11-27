@@ -1074,9 +1074,9 @@ Route::group(array('prefix'=>'specialbroadcasts'),function(){
 		return SpecialBroadcasts::all();
 	});
 	Route::put('/',function(){
-		$specialbroadcasts = new SpecialBroadcasts;
-		$specialbroadcasts->save();
-		return $friend;
+		$specialbroadcast = new SpecialBroadcasts;
+		$specialbroadcast->save();
+		return $specialbroadcast;
 	});
 	Route::post('/',function(){
 		$specialbroadcasts = Input::get()['specialbroadcasts'];
@@ -1085,7 +1085,7 @@ Route::group(array('prefix'=>'specialbroadcasts'),function(){
 			unset($specialbroadcast['id']);
 			$s->update((array) $specialbroadcast);
 		}
-		return Response::$specialbroadcasts;
+		return Response::json($specialbroadcasts);
 	});
 	Route::delete('/{id}',function($id =id){
 		return Response::json(SpecialBroadcasts::find($id)->delete());

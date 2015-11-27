@@ -1,23 +1,34 @@
 (function (){
 	var app = angular.module('djland.specialbroadcasts',['djland.api','ui.bootstrap','djland.utils']);
 
-	app.controller('specialbroadcastController',function(call,$scope){
+	app.controller('specialbroadcastController',function(call,$scope,$filter){
 		this.list = Array();
+        this.times = Array();
+        this.shows = Array();
 		this.loading = true;
         var this_ = this;	
 		this.init = function(){ 
-			console.log('hello');
 			this.loadBroadcasts();
-
 		}
 		this.loadBroadcasts = function(){
 			this.loading = true;
 			var this_ = this;
+            call.getActiveShows().then(function(response){
+                var l = response.data.length;
+                for(var i = 0; i < l; i ++){
+                    this_.shows[i] = response.data[i];
+                }
+                this_.shows = response.data;
+            });
 			call.getBroadcasts().then(function(response){
 				this_.list = response.data;
-				console.log(response.data);
+                var l = this_.list.length;
+				for(var i = 0; i < l; i ++){
+                    this_.initTime(i);
+                }
 				this_.loading = false;
 			});
+
 
 		}
 		this.delete = function(index){
@@ -30,8 +41,8 @@
 		this.add = function(){
             var this_ = this;
             call.addBroadcast().then(function(response){
-                this_.list.push({'id':response.data.id});
-                console.log(this_.list);
+                
+                this_.initTime(this_.list.push({'id':response.data.id,'start':new Date() / 1000,'end':new Date() / 1000}) - 1);
             });            
 		}
         this.save = function(){
@@ -40,11 +51,29 @@
                 alert("Saved Successfully");
             });
         }
-        this.updateStart = function(){
-
+        this.initTime = function(index){
+            var time = {};
+            time.start_time = new Date(this_.list[index].start * 1000);
+            time.end_time = new Date(this_.list[index].end * 1000);
+            time.start_hour =  $filter('pad')(time.start_time.getHours(),2);
+            time.start_minute = $filter('pad')(time.start_time.getMinutes(),2);
+            time.start_second = $filter('pad')(time.start_time.getSeconds(),2);
+            time.end_hour =  $filter('pad')(time.end_time.getHours(),2);
+            time.end_minute = $filter('pad')(time.end_time.getMinutes(),2);
+            time.end_second = $filter('pad')(time.end_time.getSeconds(),2);
+            this_.times[index] = time;
         }
-        this.updateEnd = function(){
-            
+        this.updateStart = function(index){
+            this.times[index].start_time.setHours(this.times[index].start_hour);
+            this.times[index].start_time.setMinutes(this.times[index].start_minute);
+            this.times[index].start_time.setSeconds(this.times[index].start_second);
+            this.list[index].start = this.times[index].start_time / 1000;
+        }
+        this.updateEnd = function(index){
+            this.times[index].end_time.setHours(this.times[index].end_hour);
+            this.times[index].end_time.setMinutes(this.times[index].end_minute);
+            this.times[index].end_time.setSeconds(this.times[index].end_second);
+            this.list[index].end = this.times[index].end_time / 1000;
         }
         this.imageUpload = function(id,name){
             var this_ = this;            
@@ -55,8 +84,8 @@
             }else{
                 console.log(input.prop('files')[0]);
                 var form = new FormData();
-                form.append('broadcastFile',input.prop('files')[0]);
-                form.append('broadcast_name',name);
+                form.append('specialbroadcastFile',input.prop('files')[0]);
+                form.append('specialbroadcast_name',name);
                 var ajax = $.ajax({
                     type:"POST",
                     processData: false,
@@ -68,13 +97,10 @@
 
                 });
                 $.when(ajax).then(function(response){
-                    var broadcast = this_.list.filter(function(object){if(object.id == id) return object;})[0];
-                    console.log(broadcast);
-                    
+                    var broadcast = this_.list.filter(function(object){if(object.id == id) return object;})[0];                  
                     $scope.$apply(function(){
-                        broadcast.image_url = response.web_path+ "?" + new Date().getTime();
+                        broadcast.image = response.web_path+ "?" + new Date().getTime();
                     });
-                    console.log(broadcast);
                 });
             }
            

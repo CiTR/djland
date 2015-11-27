@@ -329,6 +329,9 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     margin-right:auto;
     display:block;
 }
+.clearfix{
+  clear:both;
+}
 
 
 /* CSS to make the YCBM Links not look bad and take up all the page width */  
@@ -1266,42 +1269,32 @@ button.saving{
 
 
 /*----------------------*/
-/* broadcasts of CiTR Page */
+/* Friends of CiTR Page */
 /*----------------------*/ 
-#broadcasts{
+#friends{
     padding-left:10px;
     margin:0px;
     max-width:1024px;
     width:1024px;
     overflow: hidden;
 }
-#broadcasts > li {
+#friends > li {
     height:200px;
 }
-.broadcast_info{
-  width:380px;
+.friend_info{
+  width:550px;
   float:left;
   position:relative;
 }
-.broadcast_image{
+.friend_image{
     margin-top:20px;
 }
-.broadcast_image > img {
+.friend_image > img {
   max-height:100px;
   width:auto;
   max-width:220px;
 }
-.broadcast_dropbox{
-    max-width: 8em;
-    border: 2px solid #DDD;
-    border-radius: 8px;
-    background-color: #FEFFEC;
-    margin-left:30px;
-    text-align: center;
-    color: #BBB;
-    font-size: 2em;
-    font-family: Arial, sans-serif;
-}
+
 /*------------------------*/
 /* Special Broadcast Page */
 /*------------------------*/ 
@@ -1313,32 +1306,35 @@ button.saving{
     overflow: hidden;
 }
 #broadcasts > li {
-    height:200px;
+  min-height:450px;
 }
-.broadcast_info{
-  width:500px;
+#broadcasts > li > .broadcast_info{
+  width:60%;
   float:left;
   position:relative;
+  display:inline-block;
 }
+#broadcasts > li > .broadcast_info > div > div > textarea, #broadcasts > li > .broadcast_info > div > div > select.show_select{
+  width:100%;
+}
+#broadcasts > li > .image_upload{
+  width:40%;
+  float:left;
+  position:relative;
+  display:inline-block;
+  }
 .broadcast_image{
-    margin-top:20px;
+  margin-top:20px;
+  max-width:100%;
 }
 .broadcast_image > img {
-  max-height:100px;
+  max-height:300px;
   width:auto;
-  max-width:220px;
+  max-width:300px;
+
 }
-.broadcast_dropbox{
-    max-width: 8em;
-    border: 2px solid #DDD;
-    border-radius: 8px;
-    background-color: #FEFFEC;
-    margin-left:30px;
-    text-align: center;
-    color: #BBB;
-    font-size: 2em;
-    font-family: Arial, sans-serif;
-}
+
+
 
 /*-------------------*/
 /* Old Playsheet CSS */

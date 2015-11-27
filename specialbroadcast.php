@@ -17,54 +17,69 @@
 					<hr/>
 					<h3 class='text-left'>{{broadcast.name}}</h3>
 					
-					<div class='col1'><input ng-model='broadcast.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
-					
-					
-
-					<div class='friend_info'>
+					<div class='col1'><input ng-model='broadcast.name' placeholder='name'><button type='button' ng-click='broadcasts.delete($index)'>Delete This Broadcast</button></div>
+					<div class='broadcast_info'>
+						<!-- Date Code -->
 						<div class='col1 double-padded-top'>
 							<div ng-controller='datepicker as date' class='col2'>
+								<div class='col1'> Start: {{broadcasts.times[$index].start_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
-                               ng-model="broadcast.start"  is-open="date.opened"
+                               ng-model="broadcasts.times[$index].start_time"  is-open="date.opened" ng-hide='true'
                                ng-required="true" close-text="Close" ng-onload='date.dt = broadcast.start'
                                ng-change="date.update(broadcast.start);" />
                             	<button ng-click="date.open($event)" >Change Date</button>
-                            	h:<select ng-model="date.start_hour" ng-options="n for n in [] | range:0:24"
-                                      ng-change="date.setHour({'date':broadcast.start})"></select>
-                            	m:<select ng-model="broadcast.start_minute" ng-options="n for n in [] | range:0:60"
-                                      ng-change="list.updateStart()"></select>
-                            	s:<select ng-model="broadcast.start_second" ng-options="n for n in [] | range:0:60"
-                                      ng-change="list.updateStart()"></select>
+                            	h:<select ng-model="broadcasts.times[$index].start_hour" ng-options="n for n in [] | range:0:24"
+                                      ng-change="broadcasts.updateStart($index)"></select>
+                            	m:<select ng-model="broadcasts.times[$index].start_minute" ng-options="n for n in [] | range:0:60"
+                                      ng-change="broadcasts.updateStart($index)"></select>
+                            	s:<select ng-model="broadcasts.times[$index].start_second" ng-options="n for n in [] | range:0:60"
+                                      ng-change="broadcasts.updateStart($index)"></select>
 							</div>
 							<div ng-controller='datepicker as date' class='col2'>
+								<div class='col1'> End: {{broadcasts.times[$index].end_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
-                               ng-model="broadcast.end"  is-open="date.opened"
+                               ng-model="broadcasts.times[$index].end_time"  is-open="date.opened" ng-hide='true'
                                ng-required="true" close-text="Close" 
                                ng-change="date.date_change();" />
                             	<button ng-click="date.open($event)" >Change Date</button>
+                            	h:<select ng-model="broadcasts.times[$index].end_hour" ng-options="n for n in [] | range:0:24"
+                                      ng-change="broadcasts.updateEnd($index)"></select>
+                            	m:<select ng-model="broadcasts.times[$index].end_minute" ng-options="n for n in [] | range:0:60"
+                                      ng-change="broadcasts.updateEnd($index)"></select>
+                            	s:<select ng-model="broadcasts.times[$index].end_second" ng-options="n for n in [] | range:0:60"
+                                      ng-change="broadcasts.updateEnd($index)"></select>
 							</div>
-							
 						</div>
 						<div class='col1 double-padded-top'>
-							<div class='col2'>Name<input class='padded-left' ng-model='broadcast.address' placeholder='address'></div>
-							<div class='col2'>Website<input class='padded-left' ng-model='broadcast.website' placeholder='website'></div>
-						</div>
-						<div class='col1 double-padded-top'>
-							<div class='col2'>Phone<input class='padded-left' ng-model='broadcast.phone' placeholder='phone'></div>
-							<div class='col2'>Discount<input class='padded-left' ng-model='broadcast.discount' placeholder='discount'></div>
+							<!--Show and Description -->
+							<div>
+								<label>Show:</label>
+								<select ng-model="broadcast.show_id" class='show_select'>
+								    <option ng-selected='broadcast.show_id == show.id' ng-repeat="show in broadcasts.shows | orderBy:'name'" value="{{show.id}}">{{show.name}}</option> 
+								</select>
+							</div>
+							<div>
+								<label>Description:</label><textarea ng-model="broadcast.description" rows="10"></textarea>
+							</div>
 						</div>
 					</div>
-					<div class='left double-padded-top'>                   
-		                <input class='file{{broadcast.id}}' type="file" ng-model-instant/>
-		                <button type="button" ng-click="friends.imageUpload(broadcast.id,broadcast.name)">Upload</button>
-	                </div>
-	                <div class='friend_image left'>
-                    	<img src="{{broadcast.image_url}}" alt='Image'/>
-                	</div>
+					<div class='image_upload'>
+						<!-- Image uploading -->
+						<div class='right'>
+							<div class='left col1'>                   
+				                <input class='file{{broadcast.id}} left' type="file" ng-model-instant/>
+				                <button type="button" class='left' ng-click="broadcasts.imageUpload(broadcast.id,broadcast.name)">Upload</button>
+			                </div>
+			                <div class='broadcast_image'>
+	                    		<img src="{{broadcast.image}}" alt='Image'/>
+	                		</div>
+	                	</div>
+            		</div>
+	            	
 				</li>
 			</ul>
 			<div class='col1 text-center double-padded-top grey'>
-				<button type='button' ng-click='broadcasts.add()'>Add a friend</button>
+				<button type='button' ng-click='broadcasts.add()'>Add a Broadcast</button>
 			</div>
 		</div>
 		<script type='text/javascript' src='js/angular.js'></script>
