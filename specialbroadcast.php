@@ -11,9 +11,9 @@
 		</div>
 		<div class='grey wrapper'>
 			<h2>Special Broadcast Schedule Overrides</h2>
-			<button class='center' id='save_broadcasts' type='button' ng-click='broadcasts.save()'>Save</button>
+			
 			<ul id='broadcasts' class='clean-list'>
-				<li ng-repeat='(id,broadcast) in broadcasts.list track by $index'>
+				<li ng-repeat='(id,broadcast) in broadcasts.list | orderBy:"-start"  track by $index'>
 					<hr/>
 					<h3 class='text-left'>{{broadcast.name}}</h3>
 					
@@ -22,31 +22,31 @@
 						<!-- Date Code -->
 						<div class='col1 double-padded-top'>
 							<div ng-controller='datepicker as date' class='col2'>
-								<div class='col1'> Start: {{broadcasts.times[$index].start_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
+								<div class='col1'> Start: {{broadcast.time.start_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                                ng-model="broadcasts.times[$index].start_time"  is-open="date.opened" ng-hide='true'
                                ng-required="true" close-text="Close" ng-onload='date.dt = broadcast.start'
                                ng-change="date.update(broadcast.start);" />
                             	<button ng-click="date.open($event)" >Change Date</button>
-                            	h:<select ng-model="broadcasts.times[$index].start_hour" ng-options="n for n in [] | range:0:24"
+                            	h:<select ng-model="broadcast.time.start_hour" ng-options="n for n in [] | range:0:24"
                                       ng-change="broadcasts.updateStart($index)"></select>
-                            	m:<select ng-model="broadcasts.times[$index].start_minute" ng-options="n for n in [] | range:0:60"
+                            	m:<select ng-model="broadcast.time.start_minute" ng-options="n for n in [] | range:0:60"
                                       ng-change="broadcasts.updateStart($index)"></select>
-                            	s:<select ng-model="broadcasts.times[$index].start_second" ng-options="n for n in [] | range:0:60"
+                            	s:<select ng-model="broadcast.time.start_second" ng-options="n for n in [] | range:0:60"
                                       ng-change="broadcasts.updateStart($index)"></select>
 							</div>
 							<div ng-controller='datepicker as date' class='col2'>
-								<div class='col1'> End: {{broadcasts.times[$index].end_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
+								<div class='col1'> End: {{broadcast.time.end_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                                ng-model="broadcasts.times[$index].end_time"  is-open="date.opened" ng-hide='true'
                                ng-required="true" close-text="Close" 
                                ng-change="date.date_change();" />
                             	<button ng-click="date.open($event)" >Change Date</button>
-                            	h:<select ng-model="broadcasts.times[$index].end_hour" ng-options="n for n in [] | range:0:24"
+                            	h:<select ng-model="broadcast.time.end_hour" ng-options="n for n in [] | range:0:24"
                                       ng-change="broadcasts.updateEnd($index)"></select>
-                            	m:<select ng-model="broadcasts.times[$index].end_minute" ng-options="n for n in [] | range:0:60"
+                            	m:<select ng-model="broadcast.time.end_minute" ng-options="n for n in [] | range:0:60"
                                       ng-change="broadcasts.updateEnd($index)"></select>
-                            	s:<select ng-model="broadcasts.times[$index].end_second" ng-options="n for n in [] | range:0:60"
+                            	s:<select ng-model="broadcast.time.end_second" ng-options="n for n in [] | range:0:60"
                                       ng-change="broadcasts.updateEnd($index)"></select>
 							</div>
 						</div>
@@ -78,9 +78,11 @@
 	            	
 				</li>
 			</ul>
-			<div class='col1 text-center double-padded-top grey'>
+			
+		</div>
+		<div class='broadcast_buttons'>
 				<button type='button' ng-click='broadcasts.add()'>Add a Broadcast</button>
-			</div>
+				<button id='save_broadcasts' type='button' ng-click='broadcasts.save()'>Save</button>
 		</div>
 		<script type='text/javascript' src='js/angular.js'></script>
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>

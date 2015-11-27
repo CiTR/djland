@@ -1331,7 +1331,12 @@ button.saving{
   max-height:300px;
   width:auto;
   max-width:300px;
-
+}
+.broadcast_buttons{
+  position:absolute;
+  top:100px;
+  right:20px;
+  text-align:right;
 }
 
 

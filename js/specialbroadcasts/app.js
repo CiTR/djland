@@ -21,15 +21,13 @@
                 this_.shows = response.data;
             });
 			call.getBroadcasts().then(function(response){
-				this_.list = response.data;
+                this_.list = response.data;
                 var l = this_.list.length;
 				for(var i = 0; i < l; i ++){
                     this_.initTime(i);
                 }
 				this_.loading = false;
 			});
-
-
 		}
 		this.delete = function(index){
             var this_ = this;
@@ -41,7 +39,6 @@
 		this.add = function(){
             var this_ = this;
             call.addBroadcast().then(function(response){
-                
                 this_.initTime(this_.list.push({'id':response.data.id,'start':new Date() / 1000,'end':new Date() / 1000}) - 1);
             });            
 		}
@@ -61,19 +58,19 @@
             time.end_hour =  $filter('pad')(time.end_time.getHours(),2);
             time.end_minute = $filter('pad')(time.end_time.getMinutes(),2);
             time.end_second = $filter('pad')(time.end_time.getSeconds(),2);
-            this_.times[index] = time;
+            this_.list[index].time = time;
         }
         this.updateStart = function(index){
-            this.times[index].start_time.setHours(this.times[index].start_hour);
-            this.times[index].start_time.setMinutes(this.times[index].start_minute);
-            this.times[index].start_time.setSeconds(this.times[index].start_second);
-            this.list[index].start = this.times[index].start_time / 1000;
+            this_.list[index].time.start_time.setHours(this_.list[index].time.start_hour);
+            this_.list[index].time.start_time.setMinutes(this_.list[index].time.start_minute);
+            this_.list[index].time.start_time.setSeconds(this_.list[index].time.start_second);
+            this.list[index].start = this_.list[index].time.start_time / 1000;
         }
         this.updateEnd = function(index){
-            this.times[index].end_time.setHours(this.times[index].end_hour);
-            this.times[index].end_time.setMinutes(this.times[index].end_minute);
-            this.times[index].end_time.setSeconds(this.times[index].end_second);
-            this.list[index].end = this.times[index].end_time / 1000;
+            this_.list[index].time.end_time.setHours(this_.list[index].time.end_hour);
+            this_.list[index].time.end_time.setMinutes(this_.list[index].time.end_minute);
+            this_.list[index].time.end_time.setSeconds(this_.list[index].time.end_second);
+            this.list[index].end = this_.list[index].time.end_time / 1000;
         }
         this.imageUpload = function(id,name){
             var this_ = this;            
