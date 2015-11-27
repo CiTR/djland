@@ -1071,7 +1071,7 @@ Route::group(array('prefix'=>'friends'),function(){
 
 Route::group(array('prefix'=>'specialbroadcasts'),function(){
 	Route::get('/',function(){
-		return SpecialBroadcasts::all();
+		return SpecialBroadcasts::orderBy('id','desc')->get();
 	});
 	Route::put('/',function(){
 		$specialbroadcast = new SpecialBroadcasts;

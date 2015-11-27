@@ -54,6 +54,7 @@ function print_menu(){
 				<div class=small>
 					<ul>
 						<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
+						<li><a href="specialbroacast.php">Special Broadcasts</a></li>
 						<li><a href="friends.php">Friends of CiTR</a></li>
 						<li><a href="ad_schedule.php">Ad Scheduler</a></li>
 						<li><a href="scheduler.php">Ad Scheduler 2.0</a></li>
