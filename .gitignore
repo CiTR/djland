@@ -17,9 +17,10 @@ static
 logs/log.html
 php_errors.log
 
-#Ignore Show Media Uploads
+#Ignore Media Uploads
 images/shows
 images/friends
+images/specialbroadcasts
 
 #Ignore Windows Crap
 Thumbs.db
