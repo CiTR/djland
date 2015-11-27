@@ -10,7 +10,7 @@
 			<div class='text-center' ng-show='broadcasts.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		</div>
 		<div class='grey wrapper'>
-			<h2>Special Broadcasts</h2>
+			<h2>Special Broadcast Schedule Overrides</h2>
 			<button class='center' id='save_broadcasts' type='button' ng-click='broadcasts.save()'>Save</button>
 			<ul id='broadcasts' class='clean-list'>
 				<li ng-repeat='(id,broadcast) in broadcasts.list track by $index'>
