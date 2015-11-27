@@ -1306,7 +1306,7 @@ button.saving{
     overflow: hidden;
 }
 #broadcasts > li {
-  min-height:450px;
+  min-height:480px;
 }
 #broadcasts > li > .broadcast_info{
   width:60%;

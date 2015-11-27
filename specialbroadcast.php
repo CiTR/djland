@@ -53,6 +53,9 @@
 						<div class='col1 double-padded-top'>
 							<!--Show and Description -->
 							<div>
+								<label>Wordpress Post URL:</label><input class='col1' ng-model="broadcast.url" />
+							</div>
+							<div>
 								<label>Show:</label>
 								<select ng-model="broadcast.show_id" class='show_select'>
 								    <option ng-selected='broadcast.show_id == show.id' ng-repeat="show in broadcasts.shows | orderBy:'name'" value="{{show.id}}">{{show.name}}</option> 
