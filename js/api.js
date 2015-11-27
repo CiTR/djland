@@ -77,6 +77,18 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
 		},
+		getBroadcasts: function(){
+			return $http.get(API_URL_BASE+'/specialbroadcasts');
+		},
+		addBroadcast: function(){
+			return $http.put(API_URL_BASE+'/specialbroadcasts');
+		},
+		deleteBroadcast: function(id){
+			return $http.delete(API_URL_BASE+'/specialbroadcasts/'+id);
+		},
+		saveBroadcasts: function(specialbroadcasts){
+			return $http.post(API_URL_BASE + '/specialbroadcasts', angular.toJson({'specialbroadcasts':specialbroadcasts}));
+		},
 		saveAds: function(showtimes){
 			return $http.post(API_URL_BASE+'/adschedule',angular.toJson({'showtimes':showtimes}));
 		},

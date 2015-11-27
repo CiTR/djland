@@ -18,24 +18,37 @@ app.factory('tools',function(){
   	}
 });
 
-app.controller('datepicker', function($scope, $filter) {
+app.controller('datepicker', function($filter) {
+      this.update = function(date){
+        this.dt = date;
+        console.log(this.dt);
+      }
+      this.today = function() {
+        this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
+      };
+      this.clear = function () {
+        this.dt = null;
+      };
+      this.open = function($event) {
 
-	var today = function() {
-		var dt = new Date('yyyy-MM-dd HH:mm:ss');
-	};
-	var clear = function () {
-	 var dt = null;
-	};
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.opened = true;
+      };
+      this.setHour = function(date){
+        date.date = '0';
+      }
+      this.format = 'yyyy-MM-dd HH:mm:ss';
+    });
 
-	var open = function($event) {
-	$event.preventDefault();
-	$event.stopPropagation();
-
-	$scope.opened = true;
-	};
-
-	$scope.format = 'yyyy-MM-dd HH:mm:ss';
-
+app.filter('range', function($filter) {
+  return function(input, min, max) {
+    min = parseInt(min); //Make string input int
+    max = parseInt(max);
+    for (var i=min; i<max; i++)
+      input.push($filter('pad')(i,2));
+    return input;
+  };
 });
 
 app.controller('timepicker', function($scope, $filter, timezone_offset) {

@@ -13,6 +13,7 @@ use App\Playitem as Playitem;
 use App\Podcast as Podcast;
 use App\Ad as Ad;
 use App\Socan as Socan;
+use App\SpecialBroadcasts as SpecialBroadcasts;
 
 //SAM CLASSES
 use App\Songlist as Songlist;
@@ -1039,28 +1040,54 @@ Route::post('/error',function(){
 	$result = file_put_contents($_SERVER['DOCUMENT_ROOT'].'/log.html',$out.PHP_EOL,FILE_APPEND);
 	return $result;
 });
+Route::group(array('prefix'=>'friends'),function(){
+	Route::get('/',function(){
+		return Friends::all();
+	});
+	Route::put('/',function(){
+		$friend = new Friends;
+		$friend->save();
+		return $friend;
+	});
+	Route::post('/',function(){
+		$friends = Input::get()['friends'];
+		foreach($friends as $friend){
+			$f = Friends::find($friend['id']);
+			unset($friend['id']);
+			$f->update((array) $friend);
+		}
+		Friends::write_static();
+		return Response::json($friends);
+	});
+	Route::delete('/{id}',function($id = id){
+		return Response::json(Friends::find($id)->delete());
+	});
+	
+	Route::get('/static',function(){
+		return Friends::write_static();
+	});
 
-Route::get('/friends',function(){
-	return Friends::all();
 });
-Route::post('/friends',function(){
-	$friends = Input::get()['friends'];
-	foreach($friends as $friend){
-		$f = Friends::find($friend['id']);
-		unset($friend['id']);
-		$f->update((array) $friend);
-	}
-	Friends::write_static();
-	return Response::json($friends);
-});
-Route::delete('/friends/{id}',function($id = id){
-	return Response::json(Friends::find($id)->delete());
-});
-Route::put('/friends',function(){
-	$friend = new Friends;
-	$friend->save();
-	return $friend;
-});
-Route::get('/friends/static',function(){
-	return Friends::write_static();
+
+Route::group(array('prefix'=>'specialbroadcasts'),function(){
+	Route::get('/',function(){
+		return SpecialBroadcasts::all();
+	});
+	Route::put('/',function(){
+		$specialbroadcasts = new SpecialBroadcasts;
+		$specialbroadcasts->save();
+		return $friend;
+	});
+	Route::post('/',function(){
+		$specialbroadcasts = Input::get()['specialbroadcasts'];
+		foreach($specialbroadcasts as $specialbroadcast){
+			$s = SpecialBroadcasts::find($specialbroadcast['id']);
+			unset($specialbroadcast['id']);
+			$s->update((array) $specialbroadcast);
+		}
+		return Response::$specialbroadcasts;
+	});
+	Route::delete('/{id}',function($id =id){
+		return Response::json(SpecialBroadcasts::find($id)->delete());
+	});
 });
