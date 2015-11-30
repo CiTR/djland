@@ -20,18 +20,18 @@
 		<div class='text-center loading' ><img ng-show='open_playsheet.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		<div ng-hide="open_playsheet.playsheets || open_playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
 		<div ng-show="open_playsheet.playsheets" id='wrapper'>
-			<button ng-if='open_playsheet.is_admin' type='button' ng-click='open_playsheet.delete()'>Delete Selected</button>
 			<div class='scroll<?php if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'firefox') > 0 ){echo " firefox'"; }?>' scrolly='!open_playsheet.loading ? open_playsheet.more():""'>
 				
 				<table class='table-hover table-condensed'>
-					<tr><th>Show<th>Host<th>Date<th>Status<th ng-if='open_playsheet.is_admin'></tr>
+					<tr><th>Show<th>Host<th>Date<th>Status<th>Edit Date<th ng-if='open_playsheet.is_admin'></tr>
 					<tbody when-scrolled='more()' > 
 						<tr ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.show_info.name}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.start_time}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.status != 2 ? "(Draft)" : "" }}</td>
-								<td ng-if='open_playsheet.is_admin'><input type='checkbox' data='{{$index}}' class='delete'></td>
+								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}'>{{item.edit_date}}</td>
+								<td ng-if='open_playsheet.is_admin'><button ng-click='open_playsheet.delete(item.id)' type='button' class='delete'>Delete</button></td>
 						</tr>
 					<tbody>
 				</table>

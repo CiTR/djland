@@ -52,20 +52,12 @@
 				});
 			}	
 		};
-		this.delete = function(){
+		this.delete = function(id){
 			var this_ = this;
-			$('.delete').each(function(index){
-				if($(this).prop('checked')){
-					var index = $(this).attr('data');
-					console.log(this_.playsheets[index].id);
-					call.deletePlaysheet(this_.playsheets[index].id).then(function(response){
-						this_.playsheets.splice(index,1);
-					});
-					$(this).attr('checked',false);
-				}
-			});
-			
-			
+			var i = this_.playsheets.indexOf(this_.playsheets.filter(function(object){if(object.id == id) return this_.playsheets.indexOf(object);})[0]);
+			call.deletePlaysheet(this_.playsheets[i].id).then(function(response){
+				this_.playsheets.splice(i,1);
+			});	
 		}
 		this.more();		
 	});
