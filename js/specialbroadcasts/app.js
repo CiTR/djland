@@ -71,6 +71,7 @@
             this_.list[index].time.end_time.setMinutes(this_.list[index].time.end_minute);
             this_.list[index].time.end_time.setSeconds(this_.list[index].time.end_second);
             this.list[index].end = this_.list[index].time.end_time / 1000;
+
         }
         this.imageUpload = function(id,name){
             var this_ = this;            
