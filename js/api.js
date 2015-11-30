@@ -71,9 +71,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},
-		deleteFriend: function(id){
-			return $http.delete(API_URL_BASE+'/friends/'+id);
-		},
+
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
 		},
@@ -109,6 +107,12 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		saveNewPodcast: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
+		},
+		deleteFriend: function(id){
+			return $http.delete(API_URL_BASE+'/friends/'+id);
+		},
+		deletePlaysheet:function(id){
+			return $http.delete(API_URL_BASE+'/playsheet/' + id);
 		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');

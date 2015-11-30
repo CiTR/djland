@@ -435,7 +435,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$a = Ad::find($ad['id'])->update((array) $ad);
 			}	
 		});
-
+		Route::delete('/',function($id){
+			return Response::json(Playsheet::find($id)->delete());
+		});
 		Route::post('episode',function($id){
 			$playsheet = Playsheet::find($id);
 			$podcast = $playsheet->podcast;
