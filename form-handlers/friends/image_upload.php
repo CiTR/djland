@@ -50,7 +50,7 @@ if( !( isset($_POST['friend_name']) ) ){
 	$uploadOk = 0;
 	//If Friend Directory doesn't exist make it and set permissions
 	
-	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&');
+	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
 	$target_dir = str_replace(' ','_',$_SERVER['DOCUMENT_ROOT']."/images/friends/".str_replace($strip,'',$_POST['friend_name'])."/");
 	if(!file_exists($target_dir)){
 		mkdir($target_dir,0755);

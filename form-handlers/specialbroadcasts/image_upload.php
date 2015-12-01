@@ -50,7 +50,7 @@ if( !( isset($_POST['specialbroadcast_name']) ) ){
 	$uploadOk = 0;
 	//If Special broadcast Directory doesn't exist make it and set permissions
 	
-		$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&');
+	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
 	$target_dir = str_replace(' ','_',$base_dir.str_replace($strip,'',$_POST['specialbroadcast_name'])."/");
 	if(!file_exists($target_dir)){
 		mkdir($target_dir,0755);
