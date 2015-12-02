@@ -962,7 +962,19 @@ Route::get('/nowplaying',function(){
 	$day_of_week = date('w');
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
-	$current_show = DB::select(DB::raw(
+
+	$specialbroadcast = SpecialBroadcasts::whereRaw('start <= '.$now.' and end >= '.$now)->get();
+	if($specialbroadcast->first()){
+		//special broadcast exists
+		$specialbroadcast = $specialbroadcast->first();
+		$result['showId'] = $specialbroadcast->show_id;
+		$result['showName'] = $specialbroadcast->name;
+		$start_time = date('H:i:s',$specialbroadcast->start);
+		$end_time = date('H:i:s',$specialbroadcast->end);
+		$result['showTime'] = "{$start_time} - {$end_time}";
+		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
+	}else{
+		$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
 			WHERE 
 				CASE 
@@ -972,19 +984,19 @@ Route::get('/nowplaying',function(){
 				END
 				AND sh.active = 1
 				AND (s.alternating = 0 OR s.alternating = {$current_week_val});"));
-	if( count($current_show) > 0 ){
-		$current_show = $current_show[0];
-		$result['showId'] = $current_show->show_id;
-		
-		$result['showName'] = $current_show->name;
-		$result['showTime'] = "{$current_show->start_time} - {$current_show->end_time}";
-		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime($current_show->time));
-	}else{
-		$result['showName'] = "CiTR Ghost Mix";
-		$result['showId'] = null;
-		$result['showTime'] = "";
-		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
-	}
+		if( count($current_show) > 0 ){
+			$current_show = $current_show[0];
+			$result['showId'] = $current_show->show_id;
+			$result['showName'] = $current_show->name;
+			$result['showTime'] = "{$current_show->start_time} - {$current_show->end_time}";
+			$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime($current_show->time));
+		}else{
+			$result['showName'] = "CiTR Ghost Mix";
+			$result['showId'] = null;
+			$result['showTime'] = "";
+			$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
+		}
+	}	
 	return Response::json($result);
 });
 
