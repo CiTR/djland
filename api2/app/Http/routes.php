@@ -938,7 +938,7 @@ Route::get('/nowplaying',function(){
 		$now = strtotime('now');
 		if(count($last_track) > 0){
 			$last_track = $last_track[0];
-			if( strtotime($last_track->date_played) + ($last_track-> duration)/1000 <= $now ){
+			if( (strtotime($last_track->date_played) + floor(($last_track->duration)/1000) ) >= $now ){
 				$result['music'] = $last_track;
 			}else{
 				$result['music'] = null;
