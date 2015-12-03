@@ -145,6 +145,7 @@
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
         }
+
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
             this.end.setMinutes(this.end_minute);
@@ -357,11 +358,17 @@
                         });      
                     }else{
                         this_.loading = false;
-                    }
-                        
+                    }    
                 });
             }
-            
+        }
+        this.loadPlaysheet = function(id){
+            call.getPlaysheetData(this.info.id).then(function(data){
+
+            });
+        }
+        this.createPlaysheet = function(){
+            call.
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
