@@ -13,7 +13,7 @@ function Member(id){
 			this_._initInfo(info[0]);
 			this_._initInterests(interests[0]);
 			this_._initPermissions(permissions[0]);
-			this_._initUser(user[0]);
+			this_._initUser(user[0][0]);
 			this_.displayInfo();
 			this_.displayInterests();
 			this_.displayPermissions();
@@ -89,7 +89,7 @@ Member.prototype = {
 		}
 		
 	},_initUser:function(user){
-		this.user_info = user;
+		this.user = user;
 	},
 	_queryInfo:function(){
 		var this_ = this;
@@ -104,7 +104,7 @@ Member.prototype = {
 		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id + "/years",
+			url: "api2/public/member/"+this_.member_id + "/year",
 			dataType: "json",
 			async: true
 		});
@@ -210,7 +210,7 @@ Member.prototype = {
 		}
 
 	},displayUser:function(){
-		set(this.user_info.username,'username');
+		set(this.user.username,'username');
 	},renew:function(){
 
         $.when(this.createMembershipYear(),this.updateInfo()).then(

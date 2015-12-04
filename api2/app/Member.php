@@ -14,20 +14,17 @@ class Member extends Model
     public function shows(){
         return $this->belongsToMany('App\Show','member_show');
     }
-    public function playsheets(){
-        return $this->hasManyThrough('App\Playsheet','App\Show');
-    }
-
-    public function membershipYears(){
+    public function years(){
     	return $this->hasMany('App\MembershipYear');
     }
-
     public function permissions(){
     	return $this->user->permissions();
     }
-    
-
     public function user(){
     	return $this->hasOne('App\User');
+    }
+    public function is_admin(){
+        $permissions = $this->user->permission()->first();
+        return $permissions['administrator'] || $permissions['staff'];
     }
 }

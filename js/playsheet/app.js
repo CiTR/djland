@@ -367,9 +367,6 @@
 
             });
         }
-        this.createPlaysheet = function(){
-            call.
-        }
         this.updatePodcastDate = function(){
             this.podcast.date = this.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
             console.log(this.podcast.date);

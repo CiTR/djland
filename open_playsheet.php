@@ -26,7 +26,7 @@
 					<tr><th>Show<th>Host<th>Date<th>Status<th>Edit Date<th ng-if='open_playsheet.is_admin'></tr>
 					<tbody when-scrolled='more()' > 
 						<tr ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
-								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.show_info.name}}</td>
+								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.name}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.start_time}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.status != 2 ? "(Draft)" : "" }}</td>

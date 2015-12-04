@@ -1,5 +1,5 @@
 <?php
-
+//DJLAND Classes
 use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;
@@ -14,20 +14,28 @@ use App\Podcast as Podcast;
 use App\Ad as Ad;
 use App\Socan as Socan;
 use App\SpecialBroadcasts as SpecialBroadcasts;
+use App\Friends as Friends;
 
 //SAM CLASSES
 use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
 use App\Historylist as Historylist;
 
-use App\Friends as Friends;
+
 
 Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
+//Use to ensure an id is numberic
+Route::filter('numeric',function($route,$request){
+	if(!is_numeric($route->parameter('id'))){
+		http_response_code(400);
+		return "Non Numeric ID";
+	}
+});
+//Area requires an active session "Private" api
 Route::group(['middleware' => 'auth'], function(){
-	
 	//Member Routes 
 	Route::group(array('prefix'=>'member'), function(){
 		//Create a new Member
@@ -39,7 +47,7 @@ Route::group(['middleware' => 'auth'], function(){
 			return Response::json(Member::select('id','firstname','lastname')->limit($limit)->offset($offset)->get());
 		});
 		//Searching by member ID
-		Route::group(array('prefix'=>'{id}'), function($id = id){
+		Route::group(array('prefix'=>'{id}','before'=>'numeric'), function($id = id){
 			//Get a member
 			Route::get('/',function($id){
 				return Member::find($id);
@@ -52,6 +60,66 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::delete('/',function($id){
 				return Response::json(Member::find($id)->delete());
 			});
+			Route::group(array('prefix'=>'user'),function($id){
+				//Get associated user
+				Route::get('/',function($id){
+					return Response::json(Member::find($id)->user()->select('id','login_fails','username')->get());
+				});
+				//Create associated User
+				Route::put('/',function($id){
+					return Response::json(User::create(array('member_id'=>$id)));
+				});
+				//Update associated user
+				Route::post('/',function($id){
+					return Response::json(Member::find($id)->user->update(Input::get()['user']));
+				});
+				//Delete not required, as database deletes via foreign key
+
+				//Update user password
+				Route::post('password',function($id){
+					$m = Member::find($id);
+					$user = $m->user;
+					$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
+					return $user->save() ? "true":"false";
+				});
+			});
+			Route::group(array('prefix'=>'permission'),function($id){
+				//Get associated permissions
+				Route::get('/',function($id){
+					return Member::find($id)->user->permission;
+				});
+				//Create associated permissions
+				Route::put('/',function($id){
+					return Response::json(permission::create(array('user_id'=>Member::find($id)->user()->get('id'))));
+				});
+				//Update associated permissions
+				Route::post('/',function($id){
+					return Response::json(Member::find($id)->user->permission->update(Input::get()['user']));
+				});
+				//Delete not required, as database deletes via foreign key
+			});
+			Route::group(array('prefix'=>'year'),function($id){
+				//Get membership years
+				Route::get('/',function($id){
+					return Response::json(Member::find($id)->years);
+				});
+				//Add a new membership year
+				Route::put('/',function($id){
+					return Response::json(Member::find($id)->years->create(array('member_id'=>$id)));
+				});
+				//Update membership year
+				Route::post('{year_id}',function($id,$year_id=year_id){
+					return Response::json(MembershipYear::find($year_id)->update((array) Input::get()['year']));
+				});
+				//Delete not required, as database deletes via foreign key
+			});
+			Route::get('playsheet/{offset}',function($id,$offset = offset){
+				if(Member::find($id)->is_admin()){
+					return Response::json(Playsheet::join('shows','shows.id','=','playsheets.show_id')->select('shows.name','playsheets.id','shows.host','playsheets.start_time','playsheets.edit_date','playsheets.status')->limit(100)->offset($offset)->orderBy('playsheets.id','desc')->get());
+				}else{
+					return Response::json(Member::join('member_show','membership.id','=','member_show.member_id')->join('shows','member_show.show_id','=','shows.id')->join('playsheets','member_show.show_id','=','playsheets.show_id')->select('shows.name','playsheets.id','shows.host','playsheets.start_time','playsheets.edit_date','playsheets.status')->where('membership.id','=',$id)->limit(100)->offset($offset)->get());
+				}
+			});
 			//Update the comments for a member
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
@@ -60,48 +128,10 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			//Check to see if a member has been trained
 			Route::get('trained',function($id){
-				$member =  Member::find($id);
+				$member = Member::find($id);
 				return $member->station_tour =='1' && $member->technical_training =='1' &&  $member->programming_training =='1' &&  $member->production_training == '1';
 			});
-			Route::get('user',function($id){
-				return Member::find($id)->user;
-			});
-			Route::post('user',function($id){
-				return Response::json(Member::find($id)->user->update(Input::get()['user']));
-			});
-			Route::post('permission',function($id){
-				$permission = Member::find($id)->user->permission;
-				return Response::json(Member::find($id)->user->permission->update((array) json_decode(Input::get()['permission'] )));
-			});
-			Route::get('years',function($id){
-				$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
-				foreach($m_years as $year){
-					$years[$year->membership_year] = $year;
-				}
-				return Response::json($years);
-			});
-			Route::post('years',function($id){
-				$m = Member::find($id);
-				$m_years = (array) json_decode(Input::get()['years']);
-				$years = $m->membershipYears;
-				foreach($years as $year){
-					$year -> update( (array) $m_years[$year->membership_year]);
-				}
-				return "true";
-			});
-			Route::post('password',function($id){
-				$m = Member::find($id);
-				$user = $m->user;
-				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
-				return $user->save() ? "true":"false";
-			});
-			Route::get('permission',function($member_id = id){
-				$permission_levels = Member::find($member_id)->user->permission;
-				unset($permission_levels->user_id);
-				$permission = new stdClass();
-				$permission->permissions = $permission_levels;
-				return $permission_levels;
-			});
+			//Get member shows
 			Route::get('shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
 				if($permissions->staff ==1 || $permissions->administrator==1){
@@ -117,6 +147,7 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 				return  Response::json($shows);
 			});
+			//Get member shows that are active
 			Route::get('active_shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
 				$shows = new stdClass();
@@ -126,7 +157,7 @@ Route::group(['middleware' => 'auth'], function(){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
 					}
 				}else{
-					$member_shows = Member::find($member_id)->shows;;
+					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
 						if($show->active == 1){
 							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];	
@@ -136,168 +167,266 @@ Route::group(['middleware' => 'auth'], function(){
 				return  Response::json($shows);
 			});
 		});
-	
 	});
 });
 
-// Member Creation Routes
-	Route::post('/user',function(){
-		$user = json_decode(Input::get()['user']);
-		$user->password = password_hash($user->password,PASSWORD_DEFAULT);
-		$user->status = 'enabled';
-		$user->login_fails = '0';
-		$user = User::create((array) $user);
-		$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
-		Permission::create($permissions);
-		return $user->id;
-	});
-	Route::post('/member/{id}/year',function($id = id){
-		$member = Member::find($id);
-		$membership_year = json_decode(Input::get()['year']);
-		$membership_year->member_id = $id;
-		return MembershipYear::create((array) $membership_year) ? "true" : "false";
-	});
-
-
 /* Show Routes */
 Route::group(array('prefix'=>'show'),function(){
-	//Creating new Show
-	Route::post('/',function(){
-		$show = Show::create((array) Input::get()['show']);
-		$owners = Input::get()['owners'];
-		$social = Input::get()['social'];
-		$showtimes = Input::get()['showitmes'];
-		
-		//Create owners
-		foreach($owners as $owner){
-			Show::find($show->id)->members()->attach($owner['id']);
-		}
-		//Create social entries, this table is really dumb.
-		foreach($social as $social){
-			$social->show_id = $show->id;
-			Social::create($social);
-		}
-		//Create Showtimes
-		foreach($showtimes as $showtime){
-			$showtime->show_id = $show->id;
-			Showtime::create($showtime);
-		}
+	//Create show
+	Route::put('/',function(){
+		return Response::json(Show::create());
 	});
-
-
+	//Return all shows
 	Route::get('/',function(){
 		return Show::all('id','name');
 	});
-
+	//Return active shows
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->get();
 	});
-	
-	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
-		
+		//Get show + social entries
 		Route::get('/',function($id){
 			$show = Show::find($id);
 			$show->social = Show::find($id)->social;
 			return Response::json($show);
 		});
-		Route::post('/',function($id){
-			$show = Input::get()['show'];
-			$social = Input::get()['social'];
-			$owners = Input::get()['owners'];
-			$showtimes = Input::get()['showtimes'];
-			$s = Show::find($id);
-			$s->update($show);
-
-		
-
-			//Detach current owners
-			foreach(Show::find($id)->members as $current_owner){
-				$s->members()->detach($current_owner->id);
-			}
-			//Attach new owners
-			foreach($owners as $owner){
-				Show::find($id)->members()->attach($owner['id']);
-			}
-
-			//Delete all social entries
-			$delete = Social::find($id);
-			if($delete !=null) $delete->delete();
-			//Create new social entries, this table is really dumb.
-			foreach($social as $item){
-				Social::create($item);
-			}
-
-			//Delete all showtime entries
-			$delete = Showtime::find($id);
-			if($delete != null) $delete->delete();
-			//Recreate show times
-			foreach($showtimes as $showtime){
-				Showtime::create($showtime);
-			}
+		//Delete show
+		Route::delete('/',function($id){
+			return Response::json(Show::find($id)->delete());
 		});
+		//Update Show
+		Route::post('/',function($id){
+			return Response::json(Show::find($id)->update((array) Input::get()['show']));
+		});
+		Route::group(array('prefix'=>'playsheet'),function($id){
+			//Create Playsheet
+			Route::put('/',function($id){
+				return Response::json(Show::find($id)->playsheets()->create(['show_id'=>$id]));
+			});
+		});
+		Route::group(array('prefix'=>'social'),function($id){
+			//Return all social
+			Route::get('/',function($id){
+				return Response::json(Show::find($id)->social);
+			});
+			//Create new social entry for a show
+			Route::put('/',function($id){
+				return Response::json(Show::find($id)->social()->create(array('show_id'=>$id)));
+			});
+			//Update a social entry
+			Route::post('{social_id}',function($id,$social_id = social_id){
+				return Response::json(Social::find($social_id)->update(Input::get()['social']));
+			});
+			//Delete social entry for a show
+			Route::delete('{social_id}',function($id,$social_id = social_id){
+				return Response::json(Social::find($social_id)->delete());
+			});
+		});
+		Route::group(array('prefix'=>'social'),function($id){
+			//Get owners for a show
+			Route::get('/',function($id){
+				return Response::json(Show::find($id)->members()->select('membership.id','firstname','lastname')->get());
+			});
+			//Add a show owner
+			Route::put('{member_id}',function($id,$member_id = member_id){
+				return Response::json(Show::find($id)->members()->attach($member_id));
+			});
+			//Remove a show owner
+			Route::delete('{member_id}',function($id,$member_id = member_id){
+				return Response::json(Show::find($id)->members()->detach($member_id));
+			});
+		});
+		Route::group(array('prefix'=>'showtime'),function($id){
+			//Get showtimes
+			Route::get('/',function($id){
+				return Response::json(Show::find($id)->showtimes()->get());
+			});
+			//Add a showtime
+			Route::put('/',function($id){
+				return Response::json(Show::find($id)->showtimes()->create(array('show_id'=>$id)));
+			});
+			//Remove a show owner
+			Route::delete('{member_id}',function($id,$member_id = member_id){
+				return Response::json(Show::find($id)->members()->detach($member_id));
+			});
+		});
+
+		//Get all playsheets
+		Route::get('playsheets',function($id){
+			return Show::find($id)->playsheets;
+		});
+		//Get next show time from inputted unix time
+		Route::get('nextshow/{current_time}',function($id,$time = current_time){
+			return Response::json(Show::find($id)->nextShowTime($time));
+		});
+		//Re-write the xml file
+		Route::get('update_xml',function($id){
+			return Show::find($id)->make_show_xml();
+		});
+		//Get 50 playsheet/podcast pairs. Offset by offset
 		Route::get('episodes/{offset}',function($id,$offset = offset){
 			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->limit(50)->offset($offset)->get();
 			$episodes = array();
-			$socan = Socan::all();
 			foreach($podcasts as $podcast){
 				$playsheet = $podcast->playsheet;
-				
 				if($playsheet != null){
-					$playsheet->socan = false;
-					foreach($socan as $period){
-						if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
-							$playsheet->socan = true;
-						}
-					}
+					$playsheet->socan = $playsheet->is_socan();
 					if($podcast -> duration == 0){
 						$podcast -> duration_from_playsheet();
 					}
 					unset($podcast->playsheet);
-					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
-					$episodes[] = $episode;
+					$episodes[] = ['playsheet'=>$playsheet,'podcast'=>$podcast];
 				}else{
 					$episode = ['podcast'=>$podcast];
 					$episodes[] = $episode;
 				}
-				
 			}
 			return Response::json($episodes);
-
-		});
-		
-		Route::get('playsheets',function($id){
-			return Show::find($id)->playsheets;
-		});
-		Route::get('owners',function($id){
-			$members = Show::find($id)->members;
-			$owners = new stdClass();
-			$owners->owners = [];
-			foreach ($members as $member) {
-				$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
-			}
-			return Response::json($owners);
-		});
-		Route::get('social',function($id){
-			return Show::find($id)->social;
-		});
-
-		Route::get('times',function($id){
-			//return Showtimes::where('show_id','=',$show_id)->get();
-			return Show::find($id)->showtimes;
-		});
-		Route::get('nextshow/{current_time}',function($id,$time = current_time){
-			return Response::json(Show::find($id)->nextShowTime($time));
-		});
-		Route::get('xml',function($id){
-			return Show::find($id)->make_show_xml();
 		});
 	});
 });
 
-Route::get('/social/{id}',function($show_id = id){
-	return Social::where('show_id','=',$show_id)->get();
+Route::group(array('prefix'=>'playsheet'),function(){
+	//Get all playsheets
+	Route::get('/',function(){
+		return $playsheets = Playsheet::orderBy('id','desc')->select('id','edit_date')->get();
+	});
+	//Get playsheets with limit & offset
+	Route::get('limit/{limit}/{offset}',function($limit = limit,$offset = offset){
+		return $playsheets = Playsheet::orderBy('id','desc')->select('id','edit_date')->limit($limit)->offset($offset)->get();
+	});
+	//Get playsheets with limit & offset. Select ordering
+	Route::get('limit/{limit}/{offset}/{orderBy}',function($limit = limit,$offset = offset,$orderBy = orderBy){
+		return $playsheets = Playsheet::orderBy($orderBy,'desc')->select('id','edit_date')->limit($limit)->offset($offset)->get();
+	});
+	//Create method is via show
+
+	Route::group(array('prefix'=>'where'),function(){
+		//Get playsheet with a specific unix time
+		Route::get('unixtime/{unixtime}',function($unixtime = unixtime){
+			return Response::json(Playsheet::where('unix_time','=',$unixtime)->orderBy('id','desc')->get());
+		});
+		//Get playsheets in a range
+		Route::get('range/{startunix}/{endunix}',function($startunix = startunix,$endunix = endunix){
+			return Response::json(Playsheet::where(DB::raw('UNIX_TIMESTAMP(start_time)'),'>=',$startunix)->where(DB::raw('UNIX_TIMESTAMP(end_time)'),'<=',$endunix)->get());
+		});
+	});
+	Route::group(array('prefix'=>'{id}'),function($id = id){
+		//Get Existing Playsheet
+		Route::get('/',function($id){
+			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems,'podcast'=>Playsheet::find($id)->podcast]);
+		});
+		//Save Existing Playsheet
+		Route::post('/',function($id){
+			return Response::json(Playsheet::find($id)->update((array) Input::get()['playsheet']));
+		});
+		//Delete Existing Playsheet
+		Route::delete('/',function($id){
+			return Response::json(Playsheet::find($id)->delete());
+		});
+		Route::group(array('prefix'=>'podcast'),function($id){
+			//Create a podcast
+			Route::put('/',function($id){
+				return Response::json(Podcast::create(['playsheet_id'=>$id,'show_id'=>Playsheet::find($id)->show()->first()['id'] ]));
+			});
+			Route::post('/',function($id){
+				return Response::json(Playsheet::find($id)->podcast->update(Input::get()['podcast']));
+			});
+			//Make initial audio for a podcast
+			Route::post('audio',function($id){
+				return Response::json(Playsheet::find($id)->podcast->make_podcast());
+			});
+			//Overwrite the podcast audio
+			Route::post('overwrite',function($id){
+				return Response::json(Playsheet::find($id)->podcast->overwrite_podcast());
+			});
+		});
+		Route::group(array('prefix'=>'ad'),function($id){
+			//Get Ads
+			Route::get('/',function($id){
+				return Response::json(Playsheet::find($id)->ads);
+			});
+			//Set ad to played
+			Route::post('/{$ad_id}/played',function($id,$ad_id = ad_id){
+				return Response::json(Ad::find($ad_id)->update(['playsheet_id'=>$id,'played'=>'1']));
+			});
+			//Set ad to unplayed
+			Route::post('/{$ad_id}/unplayed',function($id,$ad_id = ad_id){
+				return Response::json(Ad::find($ad_id)->update(['playsheet_id'=>$id,'played'=>'0']));
+			});
+		});
+		Route::group(array('prefix'=>'playitem'),function($id){
+			//Get playitems
+			Route::get('/',function($id){
+				return Response::json(Playsheet::find($id)->playitems);
+			});
+			//Add a playitem
+			Route::put('/',function($id){
+				return Response::json(Playsheet::find($id)->playitems->create(['playsheet_id'=>$id,'show_id'=>Playsheet::find($id)->show->id]));
+			});
+			//Save Existing Playsheet
+			Route::post('/',function($id){
+				return Response::json(Playsheet::find($id)->update((array) Input::get()['playsheet']));
+			});
+		});
+	});
+	Route::group(array('prefix'=>'list'),function(){
+		//Nice to view list, limited to 100
+		Route::get('/',function(){
+			return Response::json(Playsheet::join('shows','shows.id','=','playsheets.show_id')->select('playsheets.id','shows.host','playsheets.start_time')->limit('100')->orderBy('playsheets.id','desc')->get());
+		});
+		//Nice to view list with limit, and offset
+		Route::get('{limit}/{offset}',function($limit = limit,$offset = offset){
+			return Response::json(Playsheet::join('shows','shows.id','=','playsheets.show_id')->select('playsheets.id','shows.host','playsheets.start_time')->limit($limit)->offset($offset)->orderBy('playsheets.id','desc')->get());
+		});
+	});
 });
+
+
+Route::group(array('prefix'=>'friend'),function(){
+	//Get friends
+	Route::get('/',function(){
+		return Friends::all();
+	});
+	//Create a new friend
+	Route::put('/',function(){
+		return Response::json(Friend::create());
+	});
+	//Update friend
+	Route::post('{id}',function($id = id){
+		return Response::json(Friends::find($id)->update((array) Input::get()['friend']));
+	});
+	//Delete friend
+	Route::delete('{id}',function($id = id){
+		return Response::json(Friends::find($id)->delete());
+	});
+	//Write Static friends page
+	Route::get('/static',function(){
+		return Friends::write_static();
+	});
+});
+
+Route::group(array('prefix'=>'specialbroadcasts'),function(){
+	//Get special broadcasts
+	Route::get('/',function(){
+		return SpecialBroadcasts::orderBy('id','desc')->get();
+	});
+	//Create new special broadcast
+	Route::put('/',function(){
+		return Response::json(SpecialBroadcasts::create());
+	});
+	//Update special broadcast
+	Route::post('{id}',function($id = id){
+		return Response::json(SpecialBroadcasts::find($id)->update((array) Input::get()['specialbroadcast']));
+	});
+	//Delete Special broadcast
+	Route::delete('{id}',function($id =id){
+		return Response::json(SpecialBroadcasts::find($id)->delete());
+	});
+});
+
+
 Route::post('/report',function(){
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
@@ -345,106 +474,7 @@ Route::post('/report',function(){
 		return $playsheets;
 	});
 
-/* Playsheet Routes */
-Route::group(array('prefix'=>'playsheet'),function(){
-	//Get all playsheets
-	Route::get('/',function(){
-		return $playsheets = Playsheet::orderBy('id','desc')->select('id','edit_date')->get();
-	});
-	//Get playsheets with limit & offset
-	Route::get('limit/{limit}/{offset}',function($limit = limit,$offset = offset){
-		return $playsheets = Playsheet::orderBy('id','desc')->select('id','edit_date')->limit($limit)->offset($offset)->get();
-	});
-	//Get playsheets with limit & offset. Select ordering
-	Route::get('limit/{limit}/{offset}/{orderBy}',function($limit = limit,$offset = offset,$orderBy = orderBy){
-		return $playsheets = Playsheet::orderBy($orderBy,'desc')->select('id','edit_date')->limit($limit)->offset($offset)->get();
-	});
-	//Create new playsheet
-	Route::put('/',function(){
-		return Response::json(Playsheet::create());
-	});
-	Route::group(array('prefix'=>'where'),function(){
-		//Get playsheet with a specific unix time
-		Route::get('unixtime/{unixtime}',function($unixtime = unixtime){
-			return Response::json(Playsheet::where('unix_time','=',$unixtime)->orderBy('id','desc')->get());
-		});
-		//Get playsheets in a range
-		Route::get('range/{startunix}/{endunix}',function($startunix = startunix,$endunix = endunix){
-			return Response::json(Playsheet::where(DB::raw('UNIX_TIMESTAMP(start_time)'),'>=',$startunix)->where(DB::raw('UNIX_TIMESTAMP(end_time)'),'<=',$endunix)->get());
-		});
-	});
-	Route::group(array('prefix'=>'{id}'),function($id = id){
-		//Get Existing Playsheet
-		Route::get('/',function($id){
-			return Response::json(Playsheet::find($id));
-		});
-		//Save Existing Playsheet
-		Route::post('/',function($id){
-			return Response::json(Playsheet::find($id)->update((array) Input::get()['playsheet']));
-		});
-		//Delete Existing Play
-		Route::delete('/',function($id){
-			return Response::json(Playsheet::find($id)->delete());
-		});
-	});
-	Route::group(array('prefix'=>'list'),function(){
-		//Nice to view list, limited to 100
-		Route::get('/',function(){
-			return Response::json(Playsheet::join('shows','shows.id','=','playsheets.show_id')->select('playsheets.id','shows.host','playsheets.start_time')->limit('100')->orderBy('playsheets.id','desc')->get());
-		});
-		//Nice to view list with limit, and offset
-		Route::get('{limit}/{offset}',function($limit = limit,$offset = offset){
-			return Response::json(Playsheet::join('shows','shows.id','=','playsheets.show_id')->select('playsheets.id','shows.host','playsheets.start_time')->limit($limit)->offset($offset)->orderBy('playsheets.id','desc')->get());
-		});
-	});
-});
 
-Route::group(array('prefix'=>'podcast'),function(){
-	//Create a podcast
-	Route::put('/',function(){
-		return Response::json(Podcast::create());
-	});
-	Route::group(array('prefix'=>'{id}'),function($id = id){
-		//Update a podcast
-		Route::post('/',function($id = id){
-			return Response::json(Podcast::find($id)->update(Input::get()['podcast']));
-		});
-		//Make initial audio for a podcast
-		Route::post('audio',function($id = id){
-			return Response::json(Podcast::find($id)->make_podcast());
-		});
-		//Overwrite the podcast audio
-		Route::post('overwrite',function($id = id){
-			return Response::json(Podcast::find($id)->overwrite_podcast());
-		});
-	});
-});
-
-	
-	Route::get('/shows/write_xml',function(){
-
-		$shows = Show::orderBy('id')->get();
-		echo "<pre>";
-		$index = 0;
-		foreach($shows as $show){
-			$index++;
-			if($show->podcast_slug){
-				$result = $show->make_show_xml();
-				$result['index'] = $index;
-				print_r($result);
-
-				$results[] = $result;
-			}			
-		}
-		//return Response::json($results);
-	});
-	Route::get('/shows',function(){
-		$shows = Show::all();
-		echo "<pre>";
-		foreach($shows as $show){
-			print_r(array($show->name,$show->id,$show->podcast_slug));
-		}
-	});
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
 	$date = date('Y-M-d',strtotime($date));
@@ -496,11 +526,6 @@ Route::get('/adschedule/{date}',function($date = date){
 			$show_time->end_unix = $unix + $end_unix_offset;
 			$show_time->duration = $show_time->end_unix - $show_time->start_unix;
 
-			/*if( date('I',strtotime($show_time->start_unix))=='0' ){
-                $show_time->start_unix += 3600;
-                $show_time->end_unix += 3600;
-            }*/
-
 			$ads = Ad::where('time_block','=',$show_time->start_unix)->get();
 			$show_time->generated = false;
 			if(!$ads->first()){
@@ -516,8 +541,6 @@ Route::get('/adschedule/{date}',function($date = date){
 		http_response_code('400');
 		return "Not a Valid Date: {$date}";
 	}
-	
-
 });
 Route::get('/adschedule',function(){
 	date_default_timezone_set('America/Los_Angeles');
@@ -603,7 +626,6 @@ Route::get('/adschedule',function(){
 					$week_2_ads = Ad::generateAds($week_2_show_unix,$show_duration);					
 				}
 				
-
 				//Generate Arrays
 				$week_0 = array(
 					$week_0_show_unix,
@@ -945,55 +967,4 @@ Route::post('/error',function(){
 	$out .= '<p>'.$error.'</p>';
 	$result = file_put_contents($_SERVER['DOCUMENT_ROOT'].'/log.html',$out.PHP_EOL,FILE_APPEND);
 	return $result;
-});
-Route::group(array('prefix'=>'friends'),function(){
-	Route::get('/',function(){
-		return Friends::all();
-	});
-	Route::put('/',function(){
-		$friend = new Friends;
-		$friend->save();
-		return $friend;
-	});
-	Route::post('/',function(){
-		$friends = Input::get()['friends'];
-		foreach($friends as $friend){
-			$f = Friends::find($friend['id']);
-			unset($friend['id']);
-			$f->update((array) $friend);
-		}
-		Friends::write_static();
-		return Response::json($friends);
-	});
-	Route::delete('/{id}',function($id = id){
-		return Response::json(Friends::find($id)->delete());
-	});
-	
-	Route::get('/static',function(){
-		return Friends::write_static();
-	});
-
-});
-
-Route::group(array('prefix'=>'specialbroadcasts'),function(){
-	Route::get('/',function(){
-		return SpecialBroadcasts::orderBy('id','desc')->get();
-	});
-	Route::put('/',function(){
-		$specialbroadcast = new SpecialBroadcasts;
-		$specialbroadcast->save();
-		return $specialbroadcast;
-	});
-	Route::post('/',function(){
-		$specialbroadcasts = Input::get()['specialbroadcasts'];
-		foreach($specialbroadcasts as $specialbroadcast){
-			$s = SpecialBroadcasts::find($specialbroadcast['id']);
-			unset($specialbroadcast['id']);
-			$s->update((array) $specialbroadcast);
-		}
-		return Response::json($specialbroadcasts);
-	});
-	Route::delete('/{id}',function($id =id){
-		return Response::json(SpecialBroadcasts::find($id)->delete());
-	});
 });

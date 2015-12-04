@@ -279,7 +279,6 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			if($('#permission_level').text() >= permission_levels['administrator']){
 				row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
 			}	
-			console.log(permission_levels);
 			row.append("<div class='check hidden'>&#x274F;</div>");
 		}
 		if(data.length <1){
@@ -331,7 +330,6 @@ function yearlyReport(year_callback){
                 dataType: "json",
                 async: true
 			}).success(function(data){
-				console.log(data);
 				for(var item in data){
 					set(data[item],item);
 				}

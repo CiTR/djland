@@ -4,7 +4,6 @@ window.myNameSpace = window.myNameSpace || { };
 //PAGE CREATION
 $(document).ready ( function() {
 	var permission_level = $('#permission_level').text();
-	console.log(permission_level);
 	if(permission_level >= 5){
 
 		var year_callback = loadYearSelect();

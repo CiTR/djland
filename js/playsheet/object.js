@@ -8,59 +8,67 @@ function Playsheet(id){
 	if(id != null){
 		$.ajax({
 			type:"GET",
-			url: api_base + "/playsheet/"+id,
+			url: api_base + "playsheet/"+id,
 			dataType: "json",
 			async: true
 		}).then(function(response){
-			this_.info = response;
+			this_.info = response.playsheet;
+			this_.playitems = response.playitems;
+			this_.podcast = response.podcast;
 			//Convert date format to use '/' instead of '-' separation as mozilla/safari don't like '-'
 			var re = new RegExp('-','g');
-            this_.start_time = new Date(this_.info.start_time.replace(re,'/'));
-        	this_.end_time = new(this_.info.end_time.replace(re,'/'));
-
+            this_.start = new Date(this_.info.start_time.replace(re,'/'));
+        	this_.end = new(this_.info.end_time.replace(re,'/'));
 		},function(error){
-
+			return false;
+			//TODO: Log Error Message
 		});
+
 	}else{
-		this.id = -1;
-		this.show_id = "";
-		this.host = "";
-		this.host_id = "";
-		this.start_time = "";
-		this.end_time = "";
-		this.end = "";
-		this.title = "";
-		this.edit_name = "";
-		this.summary = "";
-		this.spokenword_duration = "";
-		this.status = "";
-		this.unix_time = "";
-		this.star = "";
-		this.crtc = "";
-		this.lang = "";
-		this.type = "";
-		this.show_name = "";
-		this.socan = "";
+		this.info = {};
+		this.podcast = {};
+		this.playitems = {};
+		this.ads = {};
+		//TODO
+		//Get next show time
+		//Get ads
+		this.info.id = -1;
+		this.podcast.id = -1;
 	}
 	this.create = function(){
 		var this_ = this;
+		//Create Playsheet
 		$.ajax({
 			type:"PUT",
-			url: api_base+ "/playsheet",
+			url: api_base+ "show/playsheet",
 			dataType: "json",
 			async: true
 		}).then(function(response){
-			this_.id = response;
-			return true;
+			this_.info.id = response;
+			//Create Podcast
+			$.ajax({
+				type:"PUT",
+				url: api_base+ "playsheet/"+this_.info.id+"/podcast",
+				dataType: "json",
+				async: true
+			}).then(function(response){
+				this_.podcast.id = response;
+				return true;
+			},function(error){
+				return false;
+				//TODO: Log Error
+			});
 		},function(error){
 			return false;
+			//TODO: Log Error
 		});
 	};
-	this.update = function(){
+	this.save = function(){
 		var this_ = this;
+		//Save Playsheet
 		$.ajax({
 			type:"POST",
-			url: api_base+ "/playsheet/"+this_.id,
+			url: api_base+ "playsheet/"+this_.id,
 			dataType: "json",
 			async: true
 		}).then(function(response){
@@ -68,11 +76,43 @@ function Playsheet(id){
 		},function(error){
 			return false;
 		});
+		//Save Podcast
+
+		//Save Playitems
+		for(var playitem in this.playitems){
+			$.ajax({
+				type:"POST",
+				url: api_base+"playsheet/"+this_.id+'/ads/'+this.playitems[playitem]['id'],
+				data: {"playitem": this_.playitems[playitem]} ,
+				dataType: "json",
+				async: true,
+			}).then(function(response){
+
+			},function(error){
+				this_.error = true;
+				this_.logError(error);
+			});
+		}
+		//Save Ads
+		for(var ad in this.ads){
+			$.ajax({
+				type:"POST",
+				url: api_base+ "playsheet/"+this_.id+'/ads/'+this.ads[ad]['id'],
+				dataType: "json",
+				async: true,
+				data: {'ad':this.ads[ad]}
+			}).then(function(response){
+
+			},function(error){
+				this_.error = true;
+				this_.logError(error);
+			});
+		}
 	};
 	this.delete = function(){
 		return $.ajax({
 			type:"DELETE",
-			url:"api2/public/playsheet/"+this.id,
+			url: api_base+ "playsheet/"+this.id,
 			dataType: "json",
 			async: true
 		}).then(function(response){
@@ -84,7 +124,7 @@ function Playsheet(id){
 	this.checkUnique = function(){
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/playsheet/filter/unixtime/"+this.unix_time,
+			url: api_base+ "playsheet/filter/unixtime/"+this.unix_time,
 			dataType: "json",
 			async: true
 		});
@@ -115,7 +155,7 @@ function Playsheet(id){
 	this.setStartSecond = function(second){
 		var date = new Date(this.start_time);
 		date.setSeconds(second);
-		this.start_time = date;	
+		this.start_time = date;
 	};
 	this.setEndDate = function(date){
 		var date = new Date(date);
@@ -139,6 +179,12 @@ function Playsheet(id){
 		date.setSeconds(second);
 		this.end_time = date;	
 	};
+	this.setShowId = function(id){
+		this.show_id = id;
+	}
+	this.setStatus = function(status){
+		this.status = status;
+	}
 }
 
 	

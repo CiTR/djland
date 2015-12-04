@@ -1,109 +1,7 @@
 
 var api = angular.module('djland.api',[]);
 
-api.factory('show',function($http){
-	var BASE = 'api2/public/shows';
-	return {
-		create = function(){
-			//Create show and return ID
-			return $http.put(BASE);
-		},
-		delete = function(id){
-			//Delete show
-			return $http.delete(BASE+'/id');
-		},
-		update = function(id,show){
-			//Update show data
-			return $http.post(BASE+'/',angular.toJson({'show':show}));
-		},
-		get = function(){
-			//Return all shows
-			return $http.get(BASE);
-		},
-		find = function(id){
-			//Return show data
-			return $http.get(BASE+'/'+id);
-		},
-		getPlaysheets = function(id){
-			//Return list of ids
-			return $http.get(BASE+'/'+id+'/playitems');
-		},
-		getPromotions = function(id){
-			
-		}
-});
-api.factory('playsheet',function($http,$location){
-	var BASE = 'api2/public/playsheet';
-	return {
-		create = function(){
-			//Create playsheet and return ID
-			return $http.put(BASE);
-		},
-		delete = function(id){
-			//Delete playsheet
-			return $http.delete(BASE+'/id');
-		},
-		update = function(id,playsheet){
-			//Update playsheet data
-			return $http.post(BASE+'/',angular.toJson({'playsheet':playsheet}));
-		},
-		get = function(id){
-			//Return playsheet data
-			return $http.get(BASE+'/'+id);
-		},
-		getPlayitems = function(id){
-			//Return list of ids
-			return $http.get(BASE+'/'+id+'/playitems');
-		}
-	}
-});
-api.factory('playitem',function($http,$location){
-	var BASE = 'api2/public/playitem';
-	return {
-		create = function(){
-			//Create playitem and return ID
-			return $http.put(BASE);
-		},
-		delete = function(id){
-			//Delete playitem
-			return $http.delete(BASE+'/id');
-		},
-		update = function(id,playitem){
-			//Update playitem data
-			return $http.post(BASE+'/',angular.toJson({'playitem':playitem}));
-		},
-		get = function(id){
-			//Return playitem data
-			return $http.get(BASE+'/'+id);
-		},
-	}
-});
 
-api.factory('promotion',function($http,$location){
-	var BASE = 'api2/public/promotion';
-	return {
-		create = function(){
-			//Create promotion and return ID
-			return $http.put(BASE);
-		},
-		delete = function(id){
-			//Delete promotion
-			return $http.delete(BASE+'/id');
-		},
-		update = function(id,promotion){
-			//Update promotion data
-			return $http.post(BASE+'/',angular.toJson({'promotion':promotion}));
-		},
-		get = function(id){
-			//Return playitem data
-			return $http.get(BASE+'/'+id);
-		},
-	}
-});
-
-api.factory('member',function($http){
-
-});
 api.factory('call', function ($http, $location) {
 
 	var API_URL_BASE = 'api2/public'; // api.citr.ca when live
@@ -112,7 +10,7 @@ api.factory('call', function ($http, $location) {
 			return $http.get('/headers/constants.php');
 		},
 		getMemberPlaysheets: function (member_id,offset) {
-			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset);
+			return $http.get(API_URL_BASE + '/member/' + member_id + '/playsheet/'+offset);
 		},
 		getPlaysheets: function (limit) {
 			limit = limit || 50;
@@ -170,14 +68,14 @@ api.factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to}));
 		},
 		getFriends: function(){
-			return $http.get(API_URL_BASE+'/friends');
+			return $http.get(API_URL_BASE+'/friend');
 		},
 		addFriend: function(){
-			return $http.put(API_URL_BASE+'/friends');
+			return $http.put(API_URL_BASE+'/friend');
 		},
 
-		saveFriends: function(friends){
-			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
+		saveFriends: function(friend){
+			return $http.post(API_URL_BASE + '/friend', angular.toJson({'friend':friends}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');
