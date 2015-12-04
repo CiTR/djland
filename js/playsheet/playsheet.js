@@ -2,6 +2,7 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.info = {};
+        this.ads = {};
         this.playitems = {};
         this.podcast = {};
         this.info.id = playsheet_id;
@@ -104,6 +105,7 @@
                     if(this_.info.id < 1){
                         call.getAds(start_unix,end_unix-start_unix).then(function(response){
                             this_.ads = response.data;
+                            console.log(this_.ads);
                         });
                     }
             });
