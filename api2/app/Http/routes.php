@@ -411,10 +411,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 						if(count($ad_info) == 1) $ads[$key]['name'] = $ad_info[0]->title;
 					}else{
-						$promotions[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+						$promotions[$key]['name'] = html_entity_decode($promotions[$key]['name'],ENT_QUOTES);
 					}
 				}
-				$playsheet -> ads = $ads;
+				$playsheet -> promotions = $promotions;
 			}
 			return Response::json($playsheet);
 		});
