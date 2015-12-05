@@ -232,7 +232,7 @@
                     console.log(this_.show);
                     this_.playitems = playsheet.playitems;
                     this_.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this_.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-                    this_.ads = playsheet.ads;
+                    this_.promotions = playsheet.promotions;
                     //If no playitems, change "Add Five Rows" button to say "Add Row" instead
                     if(this_.playitems < 1){
                         $('#addRows').text("Add Row");
