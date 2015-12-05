@@ -330,7 +330,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
-		foreach(Input::get()['ads'] as $ad){
+		foreach(Input::get()['promotions'] as $ad){
 			$ad['playsheet_id'] = $ps->id;
 			if(isset($ad['id'])){
 				$a = Ad::find($ad['id']);
@@ -404,14 +404,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show = Playsheet::find($id)->show;
 				$playsheet -> show = $show;
 				$playsheet -> podcast = Playsheet::find($id)->podcast;
-				$ads = Playsheet::find($id)->ads;
-				foreach($ads as $key => $value){
+				$promotions = Playsheet::find($id)->ads;
+				foreach($promotions as $key => $value){
 					//Get Ad Names From SAM
 					if($using_sam && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 						if(count($ad_info) == 1) $ads[$key]['name'] = $ad_info[0]->title;
 					}else{
-						$ads[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
+						$promotions[$key]['name'] = html_entity_decode($ads[$key]['name'],ENT_QUOTES);
 					}
 				}
 				$playsheet -> ads = $ads;
@@ -421,19 +421,30 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		//Save Existing Playsheet
 		Route::post('/',function($id){
 			$ps = Playsheet::find($id);
+			$response['playsheet'] = $ps;
 			$ps->update(Input::get()['playsheet']);
 			$ps->podcast->update((array) Input::get()['podcast']);
+			$response['podcast'] = $ps->podcast;
+
 			$playitems = Input::get()['playitems'];
 			foreach($ps->playitems as $delete){
 				$delete->delete();
 			}
 			foreach($playitems as $playitem){
-				Playitem::create($playitem);
+				$response['playitems'][] = Playitem::create($playitem);
 			}
-			foreach(Input::get()['ads'] as $ad){
-				$ad['playsheet_id'] = $ps->id;
-				$a = Ad::find($ad['id'])->update((array) $ad);
-			}	
+			foreach(Input::get()['promotions'] as $ad){
+				if(isset($ad['id'])){
+					$ad['playsheet_id'] = $ps->id;
+					$a = Ad::find($ad['id']);
+					unset($ad['id']);
+					$response['promotions'][] = $a->update((array) $ad);
+				}else{
+					$response['promotions'][] = Ad::create((array) $ad);
+				}
+				
+			}
+			return Response::json($response);
 		});
 		Route::delete('/',function($id){
 			return Response::json(Playsheet::find($id)->delete());
@@ -834,6 +845,11 @@ Route::post('/adschedule',function(){
 
 });
 
+Route::get('/promotions/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
+	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
+	if(sizeof($ads) > 0) return Response::json($ads);
+	else return Ad::generateAds($unixtime,$duration);
+});
 Route::get('/ads/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
 	if(sizeof($ads) > 0) return Response::json($ads);
