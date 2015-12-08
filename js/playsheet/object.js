@@ -17,8 +17,8 @@ function Playsheet(id){
 			this_.podcast = response.podcast;
 			//Convert date format to use '/' instead of '-' separation as mozilla/safari don't like '-'
 			var re = new RegExp('-','g');
-            this_.start = new Date(this_.info.start_time.replace(re,'/'));
-        	this_.end = new(this_.info.end_time.replace(re,'/'));
+          /*  this_.start = new Date(this_.info.start_time.replace(re,'/'));
+        	this_.end = new(this_.info.end_time.replace(re,'/'));*/
 		},function(error){
 			return false;
 			//TODO: Log Error Message
@@ -129,6 +129,8 @@ function Playsheet(id){
 			async: true
 		});
 	};
+
+	//Mutators
 	this.setStartUnix = function(unix){
 		this.unix_time = unix;
 	};
@@ -185,6 +187,20 @@ function Playsheet(id){
 	this.setStatus = function(status){
 		this.status = status;
 	}
+	//Getters
+	this.addPlayitem = function(){
+		var this_ = this;
+		$.ajax({
+			type:"PUT",
+			url: api_base+ "playsheet/"+this_.info.id+"/playitem",
+			dataType: "json",
+			async: true
+		}).then(function(response){
+			this_.playitems.push(response);
+			console.log(this_.playitems);
+		});
+	}
+
 }
 
 	

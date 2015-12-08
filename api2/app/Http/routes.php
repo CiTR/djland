@@ -363,7 +363,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			});
 			//Add a playitem
 			Route::put('/',function($id){
-				return Response::json(Playsheet::find($id)->playitems->create(['playsheet_id'=>$id,'show_id'=>Playsheet::find($id)->show->id]));
+				return Response::json(Playsheet::find($id)->playitems()->create(['playsheet_id'=>$id,'show_id'=>Playsheet::find($id)->show->id]));
 			});
 			//Save Existing Playsheet
 			Route::post('/',function($id){
