@@ -98,12 +98,12 @@ function print_menu(){
 		<?php 
 			endif;
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
-				<li class=drop><a href="playsheet_angular.php">Episodes</a>
+				<li class=drop><a href="playsheet.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
 							<ul>
-								<li><a href="playsheet_angular.php">New Playsheet</a></li>
-								<li><a href="playsheet_angular.php?socan=true">New Socan Playsheet</a></li>
+								<li><a href="playsheet.php">New Playsheet</a></li>
+								<li><a href="playsheet.php?socan=true">New Socan Playsheet</a></li>
 								<li><a href="open_playsheet.php">Open a Playsheet</a></li>
 								<li><a href="podcasts.php"> Podcasts </a></li>
 							</ul>

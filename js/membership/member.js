@@ -127,6 +127,15 @@ Member.prototype = {
 			async: true
 		});
 	},
+	_queryActiveShows:function(){
+		var this_ = this;
+		return $.ajax({
+			type:"GET",
+			url: "api2/public/member/"+this_.member_id + "/active_shows",
+			dataType: "json",
+			async: true
+		});
+	},
 	getInfo:function(){
 		if($('#member_type').val() != 'Student'){
 			delete this['member_info'].student_no;

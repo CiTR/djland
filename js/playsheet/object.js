@@ -5,7 +5,7 @@ console.log(api_base);
 
 function Playsheet(id){
 	var this_ = this;
-	if(id != null){
+	if(id != null && id > 0){
 		$.ajax({
 			type:"GET",
 			url: api_base + "playsheet/"+id,
@@ -16,9 +16,9 @@ function Playsheet(id){
 			this_.playitems = response.playitems;
 			this_.podcast = response.podcast;
 			//Convert date format to use '/' instead of '-' separation as mozilla/safari don't like '-'
-			var re = new RegExp('-','g');
-          /*  this_.start = new Date(this_.info.start_time.replace(re,'/'));
-        	this_.end = new(this_.info.end_time.replace(re,'/'));*/
+          	this_.start = new Date(this_.info.start_time);
+        	this_.end = new Date(this_.info.end_time);
+        	console.log(this_);
 		},function(error){
 			return false;
 			//TODO: Log Error Message
@@ -27,13 +27,14 @@ function Playsheet(id){
 	}else{
 		this.info = {};
 		this.podcast = {};
-		this.playitems = {};
-		this.ads = {};
+		this.playitems = Array();
+		this.ads = Array();
 		//TODO
 		//Get next show time
 		//Get ads
 		this.info.id = -1;
 		this.podcast.id = -1;
+		console.log(this);
 	}
 	this.create = function(){
 		var this_ = this;
@@ -188,16 +189,33 @@ function Playsheet(id){
 		this.status = status;
 	}
 	//Getters
-	this.addPlayitem = function(){
+	this.addPlayitem = function(index){
 		var this_ = this;
+		
 		$.ajax({
 			type:"PUT",
 			url: api_base+ "playsheet/"+this_.info.id+"/playitem",
 			dataType: "json",
 			async: true
 		}).then(function(response){
-			this_.playitems.push(response);
-			console.log(this_.playitems);
+
+			this_.playitems.splice(index+1,0,response);
+		});
+	}
+	this.removePlayitem = function(index){
+		var this_ = this;
+		$.ajax({
+			type:"DELETE",
+			url: api_base+ "playsheet/"+this_.info.id+"/playitem/"+this_.playitems[index].id,
+			dataType: "json",
+			async: true
+		}).then(function(response){
+			this_.playitems.splice(index,1);
+			if(this_.playitems.length < 1){
+                $('#addRows').text("Add Row");
+            }
+		},function(error_response){
+			//LOG ERROR
 		});
 	}
 

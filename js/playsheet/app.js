@@ -1,11 +1,8 @@
 (function (){
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
-        this.info = {};
-        this.playitems = {};
-        this.podcast = {};
-        this.info.id = playsheet_id;
         this.member_id = member_id;
+        this.playsheet = new Playsheet(playsheet_id);
         this.username = username;
         this.loading = true;
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -24,16 +21,12 @@
         this.complete = false;
 
 
-        this.add = function(id){
-            var row = angular.copy(this_.row_template);
-            this.playitems.splice(id+1,0,row);
+        this.add = function(index){
+            this.playsheet.addPlayitem(index);
             this.update();
         }
-        this.remove = function(id){
-            this.playitems.splice(id,1);
-            if(this.playitems.length < 1){
-                $('#addRows').text("Add Row");
-            }
+        this.remove = function(index){
+            this.playsheet.removePlayitem(index);
             this.update();
         }
         this.addFiveRows = function(){
@@ -47,8 +40,7 @@
             }           
         }
         this.addStartRow = function(){
-            this.playitems = Array();
-            this.playitems[0] = angular.copy(this.row_template);
+            this.playsheet.playitems.addPlayitem(0);
             this.update();
             
         }
@@ -189,179 +181,6 @@
             });
         }
 
-        //Initialization of Playsheet
-        this.init = function(){
-            var this_ = this;
-            //If playsheet exists, load it.
-            if(this.info.id > 0){
-                call.getPlaysheetData(this.info.id).then(function(data){
-                    var playsheet = data.data;
-                    this_.info = {};
-                    for(var item in playsheet.playsheet){
-                        this_.info[item] = playsheet.playsheet[item];
-                    }
-                    var re = new RegExp('-','g');
-                    this_.info.start_time = this_.info.start_time.replace(re,'/');
-                    this_.info.end_time = this_.info.end_time.replace(re,'/');
-                    //Create Extra Variables to allow proper display in UI
-                    this_.start = new Date(this_.info.start_time);
-                    this_.end = new Date(this_.info.end_time);
-                    this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                    this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                    this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                    this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                    this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                    this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                    
-                    if(this_.info.spokenword_duration != null){
-                        this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
-                        this_.spokenword_minutes = this_.info.spokenword_duration % 60;
-                    }else{
-                        this_.spokenword_hours = null;
-                        this_.spokenword_minutes = null;
-                    }
-                    
-                    //Set Show Data
-                    this_.show = playsheet.show;
-                    console.log(this_.show);
-                    this_.playitems = playsheet.playitems;
-                    this_.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this_.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-                    this_.ads = playsheet.ads;
-                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
-                    if(this_.playitems < 1){
-                        $('#addRows').text("Add Row");
-                    }
-                    for(var playitem in this_.playitems){
-                        console.log(this_.playitems[playitem]);
-                        this_.playitems[playitem].insert_song_start_hour = $filter('pad')( this_.playitems[playitem].insert_song_start_hour , 2);
-                        this_.playitems[playitem].insert_song_start_minute = $filter('pad')( this_.playitems[playitem].insert_song_start_minute , 2);
-                        this_.playitems[playitem].insert_song_length_minute = $filter('pad')( this_.playitems[playitem].insert_song_length_minute , 2);
-                        this_.playitems[playitem].insert_song_length_second = $filter('pad')( this_.playitems[playitem].insert_song_length_second , 2);
-                    }
-
-                    //Get Member shows, and set active show
-                    call.getActiveMemberShows(this.member_id).then(function(data){
-                        var shows = data.data.shows;
-                        this_.member_shows = shows;
-                        //Find what show this playsheet is for, and set it as active show to load information.
-                        for(var show in this_.member_shows){
-                            
-                            if(this_.show.name.toString() == shows[show].show.name.toString()){
-                                this_.active_show = this_.member_shows[show];
-                                this_.show_value = shows[show]['id'];
-                                this_.show = shows[show]['show'];
-                            }
-                        }
-                        console.log(this_.active_show);
-                        call.getShowPlaysheets(this_.active_show.id).then(function(response){
-                            //DISPLAY OLD PLAYSHEETS
-                            this_.existing_playsheets = response.data.sort(function(a, b) {
-                                return a.start_time - b.start_time;
-                            });
-                        });
-                        //Populate the template row
-                        var show_date = this_.start.getDate();
-                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                        this_.checkIfComplete();
-                        if(this_.using_sam){
-                            this_.loadSamPlays();
-                        }
-                        this_.loading = false;
-                    });
-
-                });
-            }else{
-
-                this.podcast = {};
-
-                //TODO load ads.
-
-                this.info.status = '1';
-                this.info.type='Live';
-
-                this.spokenword_hours = null;
-                this.spokenword_minutes = null;
-                this.podcast.active = 0;
-
-                //Get Shows Listing
-                call.getActiveMemberShows(this.member_id).then(function(data){
-                    var shows = data.data.shows;
-                    this_.member_shows = shows;
-                    if(shows){
-                        //Cheat Code to get first active show.
-                        for(var show in this_.member_shows){
-                            console.log(shows[show].show.name.toString());
-                            this_.active_show = this_.member_shows[show];
-                            this_.show = this_.active_show.show;
-
-                            this_.show_value = this_.active_show['id'];
-                            this_.info.show_id = parseInt(this_.active_show.id);
-                            this_.info.host = this_.active_show.show.host;
-                            this_.info.create_name = this_.info.host;
-
-                            this_.podcast.author = this_.info.host;
-                            this_.info.crtc = this_.active_show.crtc;
-                            this_.info.lang = this_.active_show.lang || 'English';
-
-                            for(var playitem in this_.playitems){
-                                this_.playitems[playitem].show_id = this_.info.show_id;
-                            }
-                            break;
-                        }
-                        var now = new Date();
-
-                        call.getShowPlaysheets(this_.show_value).then(function(response){
-                            //DISPLAY OLD PLAYSHEETS
-                            this_.existing_playsheets = response.data.sort(function(a, b) {
-                                return a.start_time - b.start_time;
-                            });
-
-                        });
-                    
-                       call.getNextShowTime(this_.active_show.id,now).then(function(response){
-                            console.log(response.data);
-                            var start_unix = response.data.start;
-                            var end_unix = response.data.end;
-                            this_.start = new Date(start_unix * 1000);
-                            this_.end = new Date(end_unix * 1000);
-
-                            this_.info.unix_time = this_.start.getTime() / 1000;
-                            this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
-                            this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
-                            this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                            this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                            this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                            this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                            this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                            this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-
-                            console.log(this_.start_hour);
-                            //Populate Template Row, then add 5 rows
-                            var show_date = this_.start.getDate();
-                                                //Update Podcast information
-                            this_.updatePodcastDate();
-                            this_.updateEnd();
-                            this_.updateStart();
-                            this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                            this_.addStartRow();
-                            for(var i = 0; i<4; i++) {
-                                this_.add(this_.playitems.length-1);
-                            }
-                            call.getAds(start_unix, end_unix-start_unix).then(function(response){
-                                this_.ads = response.data;
-                            });
-                            this_.update();
-                            if(this_.using_sam){
-                                this_.loadSamPlays();
-                            }
-                            this_.loading = false;
-                        });      
-                    }else{
-                        this_.loading = false;
-                    }    
-                });
-            }
-        }
         this.loadPlaysheet = function(id){
             call.getPlaysheetData(this.info.id).then(function(data){
 
@@ -375,26 +194,7 @@
         $scope.$watchCollection('playsheet.playitems', function () {
             this_.update();
         },true);
-        $scope.$watch('playsheet.info.start_time', function () {
-            this_.info.start_time = $filter('date')(this_.info.start_time,'yyyy/MM/dd HH:mm:ss');
-            this_.start = new Date(this_.info.start_time);
-            this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-            this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-            this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-           
-            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
-        });
-        $scope.$watch('playsheet.info.end_time', function () {
-            this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy/MM/dd HH:mm:ss');
-            this_.end = new Date(this_.info.end_time);
-            this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-            this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-            this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
-        });
-
+        
 
 
         this.update = function(){
@@ -404,7 +204,7 @@
             var this_ = this;
             var playsheet_okay = 'true';
             this.missing = "You have empty values";
-            if(this.info.start > this.info.end){
+            if(this.playsheet.info.start > this.playsheet.info.end){
                 playsheet_okay = false;
             }
             var m= {'artist':0,'song':0,'album':0,'composer':0,'spokenword':0,'episode_title':0,'episode_summary':0};
@@ -658,9 +458,6 @@
             this.sam_visible= false;
         };
         
-
-        // Call Initialization function at end of controller
-        this.init();
     });
 
     app.controller('datepicker', function($filter) {
