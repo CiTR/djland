@@ -2,7 +2,8 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.member_id = member_id;
-        this.playsheet = new Playsheet(playsheet_id);
+        this.playsheet = new Playsheet();
+        this.playsheet.initialize(playsheet_id);
         this.username = username;
         this.loading = true;
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
