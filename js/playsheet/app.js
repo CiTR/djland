@@ -95,8 +95,14 @@
                     this_.updateStart();
 
                     if(this_.info.id < 1){
-                        call.getAds(start_unix,end_unix-start_unix).then(function(response){
-                            this_.ads = response.data;
+                        call.getPromotions(start_unix,end_unix-start_unix).then(function(response){
+                            this_.promotions = response.data;
+                            console.log(this_.promotions);
+                        },function(error){
+                            this_.log_error(error);
+                            call.getPromotions(start_unix,end_unix-start_unix).then(function(response){
+                                this_.promotions = response.data;
+                            });
                         });
                     }
             });
@@ -182,11 +188,7 @@
             });
         }
 
-        this.loadPlaysheet = function(id){
-            call.getPlaysheetData(this.info.id).then(function(data){
 
-            });
-        }
         this.updatePodcastDate = function(){
             this.podcast.date = this.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
             console.log(this.podcast.date);
@@ -276,7 +278,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this_.info.create_name = this_.username;
-                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                         this_.info.id = response.data.id;
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
@@ -293,7 +295,7 @@
                     });
                 }else{
                     //Existing Playsheet
-                    call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                    call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
                         }
@@ -338,7 +340,7 @@
                     //New Playsheet
                     this_.info.create_name = this_.username;
                     
-                    call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                    call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
                         }
@@ -370,7 +372,7 @@
 
                         call.saveNewPodcast(this_.podcast).then(function(response){
                             this_.podcast.id = response.data['id'];
-                            call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                            call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                                 this_.tracklist_overlay = true;
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
                                     this_.podcast_status = "Podcast Audio Created Successfully.";  
@@ -388,7 +390,7 @@
                             });
                         });
                     }else{
-                        call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.ads).then(function(response){
+                        call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                             this_.tracklist_overlay = true;
                             call.makePodcastAudio(this_.podcast).then(function(reponse){
                                 this_.podcast_status = "Podcast Audio Created Successfully.";
@@ -414,7 +416,7 @@
             this_.tracklist_overlay_header = "An error has occurred while saving the playsheet";
             var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
 
-            call.error( this_.error).then(function(response){
+            call.error( error).then(function(response){
                 $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error has been logged');
             },function(error){
                 $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error could not be logged :(');
@@ -485,10 +487,10 @@
     	};
     });
     //Declares ad attribute
-    app.directive('ad',function(){
+    app.directive('promotion',function(){
     	return{
     		restrict: 'A',
-    		templateUrl: 'templates/ad.html'
+    		templateUrl: 'templates/promotion.html'
     	}
     });
     app.directive('datepickerPopup', function (){

@@ -407,6 +407,7 @@ Route::group(array('prefix'=>'friend'),function(){
 	});
 });
 
+
 Route::group(array('prefix'=>'specialbroadcasts'),function(){
 	//Get special broadcasts
 	Route::get('/',function(){
@@ -473,7 +474,6 @@ Route::post('/report',function(){
 		}
 		return $playsheets;
 	});
-
 
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
@@ -745,6 +745,11 @@ Route::post('/adschedule',function(){
 
 });
 
+Route::get('/promotions/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
+	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
+	if(sizeof($ads) > 0) return Response::json($ads);
+	else return Ad::generateAds($unixtime,$duration);
+});
 Route::get('/ads/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
 	if(sizeof($ads) > 0) return Response::json($ads);
