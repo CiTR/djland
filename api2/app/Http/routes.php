@@ -150,17 +150,17 @@ Route::group(['middleware' => 'auth'], function(){
 			//Get member shows that are active
 			Route::get('active_shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
-				$shows = new stdClass();
+				$shows = array();
 				if($permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
+						$shows[] = $show;
 					}
 				}else{
 					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
 						if($show->active == 1){
-							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];	
+							$shows[] = $show;	
 						}
 					}
 				}
@@ -257,8 +257,9 @@ Route::group(array('prefix'=>'show'),function(){
 			return Show::find($id)->playsheets;
 		});
 		//Get next show time from inputted unix time
-		Route::get('nextshow/{current_time}',function($id,$time = current_time){
-			return Response::json(Show::find($id)->nextShowTime($time));
+		Route::get('nextshow',function($id){
+
+			return Response::json(Show::find($id)->nextShowTime(date(strtotime('now'))));
 		});
 		//Re-write the xml file
 		Route::get('update_xml',function($id){
@@ -363,7 +364,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			});
 			//Add a playitem
 			Route::put('/',function($id){
-				return Response::json(Playsheet::find($id)->playitems()->create(['playsheet_id'=>$id,'show_id'=>Playsheet::find($id)->show->id]));
+				$show = Playsheet::find($id)->show;
+				return Response::json(Playsheet::find($id)->playitems()->create(['playsheet_id'=>$id,'show_id'=>$show->id,'lang'=>$show['lang'],'crtc_category'=>$show['crtc']]));
 			});
 			//Save Existing Playsheet
 			Route::post('/',function($id){

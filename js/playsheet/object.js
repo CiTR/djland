@@ -1,33 +1,34 @@
 window.myNameSpace = window.myNameSpace || { };
 var re = new RegExp(/^.*\//);
 var api_base = "" + re.exec(window.location.origin)['input'] + '/api2/public/';
+var site_base = "" + re.exec(window.location.origin)['input'];
 console.log(api_base);
 
 function Playsheet(){
 	var this_ = this;
-	var member_id = $('#member_id').text();
+	var member_id = $('#member_id').text() || 1;
 	var requests = Array();
 		
 
 
 	this.initialize = function(id){
-		this.getMemberShows(member_id)
-
+		this.getMemberShows(member_id);
+		this.start = {};
+		this.end = {};
 		$.when(requests['show_load']).then(function(){
 			if(id != null && id > 0){
-				this.load(id);
+				this_.load(id);
 			}else{
-				this.info = {};
-				this.podcast = {};
-				this.playitems = Array();
-				this.ads = Array();
+				this_.info = {};
+				this_.podcast = {};
+				this_.playitems = Array();
+				this_.ads = Array();
 				//TODO
-				
+				this_.getNextShowtime();
 				//Get next show time
 				//Get ads
-				this.info.id = -1;
-				this.podcast.id = -1;
-				console.log(this);
+				this_.info.id = -1;
+				this_.podcast.id = -1;
 			}
 		});
 
@@ -45,34 +46,15 @@ function Playsheet(){
 				this_.info = response.playsheet;
 				this_.playitems = response.playitems;
 				this_.podcast = response.podcast;
-				//Convert date format to use '/' instead of '-' separation as mozilla/safari don't like '-'
-	          	this_.start = new Date(this_.info.start_time);
-	        	this_.end = new Date(this_.info.end_time);
-	        	console.log(this_);
+	          	this_.setStart(this_.info.start_time.replace(/-/g,'/'));
+	        	this_.setEnd(this_.info.end_time.replace(/-/g,'/'));
 			},function(error){
 				return false;
 				//TODO: Log Error Message
 			})
 		
 	}
-	this.getMemberShows = function(member_id){
-		requests['show_load'] = 
-			$.ajax({ 
-				type:"GET",
-				url: api_base + "member/"+member_id + '/active_shows',
-				dataType: "json",
-				async: true
-			}).then(
-				function(shows){
-					this_.shows = shows;
-					this_.show=this_.shows[0];
-				},
-				function(error){
-					//TODO: Log Error
-				}
-			)
-		
-	}
+	
 	this.create = function(){
 		var this_ = this;
 		//Create Playsheet
@@ -170,16 +152,65 @@ function Playsheet(){
 			return false;
 		});
 	};
+
 	this.checkUnique = function(){
-		return $.ajax({
-			type:"GET",
-			url: api_base+ "playsheet/filter/unixtime/"+this.unix_time,
-			dataType: "json",
-			async: true
-		});
+		requests['unique_check'] = 
+			$.ajax({
+				type:"GET",
+				url: api_base+ "playsheet/where/unixtime/"+this_.info.unix_time,
+				dataType: "json",
+				async: true
+			}).then(
+				function(response){
+					if(response.length > 0) this_.load(response[0].id);
+				}
+			);
 	};
 
+	this.getMemberShows = function(member_id){
+		requests['show_load'] = 
+			$.ajax({ 
+				type:"GET",
+				url: api_base + "member/"+member_id + '/active_shows',
+				dataType: "json",
+				async: true
+			}).then(
+				function(shows){
+					this_.shows = shows;
+					this_.show=this_.shows[0];
+				},
+				function(error){
+					//TODO: Log Error
+				}
+			)
+		
+	}
+	this.getNextShowtime = function(){
+
+		requests['show_time'] = 
+			$.ajax({ 
+				type:"GET",
+				url: api_base + "show/"+this_.show['id'] + '/nextshow',
+				dataType: "json",
+				async: true
+			}).then(
+				function(response){
+					this_.info.unix_time = response.start;
+					this_.setStart(response.start * 1000);
+        			this_.setEnd(response.end * 1000);
+					this_.checkUnique();
+					console.log(this_);
+
+				}
+			);
+	}
+
+
+
 	//Mutators
+	this.setActiveShow = function(id){
+		this.show = this.shows.filter(function(object){if(object.id == id) return object;})[0];
+	}
 	this.setStartUnix = function(unix){
 		this.info.unix_time = unix;
 		//TODO: Get promotions
@@ -187,12 +218,23 @@ function Playsheet(){
 	this.setStartUnixMilli = function(millsecond_unix){
 		this.info.unix_time = millsecond_unix / 1000;
 	};
-	this.setStartDate = function(date){
+	this.setStart = function(date){
+		console.log("In Date"+ date);
 		var date = new Date(date);
+		console.log("Out Date"+date);
+		this.start.date = date;
+		this.start.hour = date.getHours();
+		this.start.minute = date.getMinutes();
+		this.start.second = date.getSeconds();
+		console.log(this.start);
+	}
+	this.setStartDate = function(date){
+		var date = new Date(date  * 1000);
 		date.setHours(this.info.start_time.getHours());
 		date.setMinutes(this.info.start_time.getMinutes());
 		date.setSeconds(this.info.start_time.getSeconds());
 		this.info.start_time = date;
+
 	};
 	this.setStartHour = function(hour){
 		var date = new Date(this.start_time);
@@ -209,6 +251,13 @@ function Playsheet(){
 		date.setSeconds(second);
 		this.start_time = date;
 	};
+	this.setEnd = function(date){
+		var date = new Date(date);
+		this.end.date = date;
+		this.end.hour = date.getHours();
+		this.end.minute = date.getMinutes();
+		this.end.second = date.getSeconds();
+	}
 	this.setEndDate = function(date){
 		var date = new Date(date);
 		date.setHours(this.end_time.getHours());
@@ -246,8 +295,19 @@ function Playsheet(){
 			dataType: "json",
 			async: true
 		}).then(function(response){
-
 			this_.playitems.splice(index+1,0,response);
+			$.ajax({
+				type:"POST",
+				url: site_base+"/templates/playitem.php",
+				dataType: "json",
+				data: {"playitem":response,"index":index},
+				async: true
+			}).then(
+				function(html){
+					$('#playitems').append(html);
+				}
+			);
+			
 		});
 	}
 	this.removePlayitem = function(index){

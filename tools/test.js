@@ -1,9 +1,12 @@
 window.myNameSpace = window.myNameSpace || { };
-var playsheet = new Playsheet(143798);
+var playsheet = new Playsheet();
+playsheet.initialize(143798);
+console.log(playsheet);
 
 $(document).ready(function(){
 	$('.add_playitem').click(function(){
-		playsheet.addPlayitem();
+		console.log(playsheet);
+		playsheet.addPlayitem(0);
 	});
 
 });
