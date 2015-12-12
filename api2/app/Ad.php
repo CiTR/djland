@@ -60,7 +60,7 @@ class Ad extends Model
 		
 		$announcement = new stdClass();
 			$announcement->type = 'announcement';
-			$announcement->name = 'Please announce the upcoming program';
+			$announcement->name = 'Please announce the upcoming program'.$show_start_unix.":".$show_duration;
 			$announcement->time_block = $show_start_unix;	
 			$announcement->time = date('g:i a',$show_start_unix + $show_duration - 5* $one_minute);
 
