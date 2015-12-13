@@ -658,7 +658,7 @@ Route::get('/adschedule',function(){
 		$week_1_start = strtotime('+1 week',$week_0_start);
 		$week_2_start = strtotime('+1 week',$week_1_start);
 	}else{
-		$week_0_start = strtotime('last sunday 00:00:00')  ;
+		$week_0_start = strtotime('last sunday 00:00:00');
 		$week_1_start = strtotime('+1 week',$week_0_start);
 		$week_2_start = strtotime('+1 week',$week_1_start);
 	}
