@@ -54,7 +54,9 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
-	    $file_name = str_replace(array('.',':',';',','),'',$this->playsheet->show->name);
+    	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
+
+	    $file_name = str_replace($strip,'',$this->playsheet->show->name);
 	    //Replace Chars
 	    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
 	    $file_name = str_replace('&','and',$file_name);
@@ -141,9 +143,14 @@ class Podcast extends Model
 	    if($this->url != null){
 	    	 $file_name = explode('/',$this->url,6)[5];
     	}else{
-    		//Set File Name
 	    	$file_date = date('F-d-H-i-s',$start);
-	    	$file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$file_date.'.mp3';
+		    //Strip Chars
+		    $file_name = str_replace($strip,'',$this->playsheet->show->name);
+		    //Replace Chars
+		    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
+		    //Replace ampersand
+		    $file_name = str_replace('&','and',$file_name);
+		    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$file_date.'.mp3';
     	}
 	  
 	   
