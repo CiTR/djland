@@ -316,7 +316,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
 		Route::get('/',function($id){
-			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems,'podcast'=>Playsheet::find($id)->podcast]);
+			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems,'podcast'=>Playsheet::find($id)->podcast,'promotions'=>Playsheet::find($id)->ads]);
 		});
 		//Save Existing Playsheet
 		Route::post('/',function($id){
