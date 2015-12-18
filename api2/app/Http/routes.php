@@ -431,19 +431,21 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$delete->delete();
 			}
 			foreach($playitems as $playitem){
-				$response['playitems'][] = Playitem::create($playitem);
+				$response['playitems'][] = Playitem::create((array)$playitem);
 			}
-			foreach(Input::get()['promotions'] as $ad){
-				if(isset($ad['id'])){
-					$ad['playsheet_id'] = $ps->id;
-					$a = Ad::find($ad['id']);
-					unset($ad['id']);
-					$response['promotions'][] = $a->update((array) $ad);
-				}else{
-					$response['promotions'][] = Ad::create((array) $ad);
+			if(isset(Input::get()['promotions'])){
+				foreach(Input::get()['promotions'] as $ad){
+					if(isset($ad['id'])){
+						$ad['playsheet_id'] = $ps->id;
+						$a = Ad::find($ad['id']);
+						unset($ad['id']);
+						$response['promotions'][] = $a->update((array) $ad);
+					}else{
+						$response['promotions'][] = Ad::create((array) $ad);
+					}
 				}
-				
 			}
+			
 			return Response::json($response);
 		});
 		Route::delete('/',function($id){

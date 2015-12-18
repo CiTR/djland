@@ -162,9 +162,13 @@ input, select, textarea, option{
 .inline-list > li {
 	display:inline-block;
 }
-#wrapper > textarea{
-  width:400px;
-  height:80px;
+#wrapper > textarea.alert{
+  width:600px;
+  height:2em;
+}
+#wrapper > textarea.description{
+  width:600px;
+  height:10em;
 }
 
 .rounded{

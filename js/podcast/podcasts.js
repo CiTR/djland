@@ -130,18 +130,6 @@
             }
         });
 
-        
-
-
-/*        $scope.$watch('editing.podcast.date', function(){
-            recalculate_duration();
-        }, true);
-
-        $scope.$watch('editing.end_time', function(){
-            recalculate_duration();
-        }, true);*/
-        
-
         this.save = function(){
             var this_ = this;
             this.editing.podcast.title = this.editing.playsheet.title;
@@ -150,18 +138,20 @@
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
-                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime()){
+                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime() && this_.editing.podcast.url != '' && this_.editing.podcast.url){
                         call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
                         },function(error){
-                            alert("Failed to save podcast: " + error.response);
+                            console.log(error);
+                            alert("Failed to save podcast: Could not overwrite audio.");
                         });
                     }else if(this_.editing.podcast.url == '' || !this_.editing.podcast.url){
                         if(this_.editing.playsheet.status == '2'){
                             call.makePodcastAudio(this_.editing.podcast).then(function(response){
                                 alert("Successfully Saved");
                             },function(error){
-                                alert("Failed to save podcast: " + error.response);
+                                console.log(error);
+                                alert("Failed to save podcast: Could not write audio to directory" );
                             });
                         }else{
                             alert('Successfully saved, please submit this playsheet!');
@@ -174,21 +164,11 @@
         };
 
         this.deactivate = function(podcast){
-            podcast.active = 0;
+            //Implement.
 
-            apiService.saveEpisodeData(podcast)
-                .then(function(response){
-                    this_.message = 'podcast deactivated. now updating feed...';
-
-                    apiService.updatePodcast(podcast, false)
-                        .then(function(){
-                            this_.message = ' feed updated ';
-
-                            this_.load();
-
-                        })
-                })
-
+        }
+        this.formatError = function(error){
+            return error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
         }
 
         var basic_sound_options = {

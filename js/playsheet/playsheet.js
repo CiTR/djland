@@ -184,7 +184,7 @@
                 this_.playitems = response.data.playitems; 
                 this_.info.spokenword_duration = response.data.playsheet.spokenword_duration;
                 if(this_.info.spokenword_duration != null){
-                    this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
+                    this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
                     this_.spokenword_minutes = this_.info.spokenword_duration % 60;
                 }else{
                     this_.spokenword_hours = null;
@@ -220,13 +220,12 @@
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
                     
                     if(this_.info.spokenword_duration != null){
-                        this_.spokenword_hours = Math.round(this_.info.spokenword_duration / 60);
+                        this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
                         this_.spokenword_minutes = this_.info.spokenword_duration % 60;
                     }else{
                         this_.spokenword_hours = null;
                         this_.spokenword_minutes = null;
                     }
-                    
                     //Set Show Data
                     this_.show = playsheet.show;
                     console.log(this_.show);
