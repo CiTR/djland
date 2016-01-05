@@ -4,7 +4,7 @@
 	if( isset($_POST['playitem']) && isset($_POST['index']) ){
 		$playitem = $_POST['playitem'];
 		$index = $_POST['index'];
-		$socan = isset($_POST['socan']) ? $_POST['socan'] : '0';
+		$socan = isset($_POST['socan']) ? $_POST['socan'] : false;
 		$crtc = isset($_POST['crtc']) ? $_POST['crtc'] : '30';
 		$lang = isset($_POST['lang']) ? $_POST['lang'] : '20';  
 	}else{
@@ -18,7 +18,7 @@
 	<input name='artist' class='required' onchange='update()' value='<?php echo isset($playitem["artist"]) ? $playitem["artist"]:""; ?>'></input>
 	<input name='song' class='required' onchange='update()' value='<?php echo isset($playitem["song"]) ? $playitem["song"]:""; ?>'></input>
 	<input name='album' class='required'onchange='update()' value='<?php echo isset($playitem["album"]) ? $playitem["album"]:""; ?>'></input>
-<?php if($socan): ?>
+<?php if($socan==true): ?>
 	<input name='composer' class='required' onchange='update()' value='<?php echo isset($playitem["composer"]) ? $playitem["composer"]:""; ?>'></input>
 	<select name='song_start_hour'>
 	<?php for($i = 0; $i < 24; $i++): ?>
@@ -47,7 +47,7 @@
 	<button name='is_inst' class="box instrumental pad-top <?php echo $playitem['is_inst']==1? 'filled' : ''; ?>"></button>
 	<button name='is_part' class="box partial pad-top <?php echo $playitem['is_part']==1? 'filled' : ''; ?>"></button>
 	<button name='is_hit' class="box hit pad-top <?php echo $playitem['is_hit']==1? 'filled' : ''; ?>"></button>
-<?php if($socan): ?>
+<?php if($socan==true): ?>
 	<button name='is_background' class="box background pad-top <?php echo $playitem['is_background']==1? 'filled' : ''; ?>"></button>
 	<button name='is_theme' class="box theme pad-top <?php echo $playitem['is_theme']==1? 'filled' : ''; ?>"></button>
 <?php endif; ?>
