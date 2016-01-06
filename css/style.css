@@ -218,7 +218,7 @@ input, select, textarea, option{
 }
 .smalltext{
 	top:3px;
-	font-size:70%;
+	font-size:80%;
 }
 .wideinput{
   width:300px;
@@ -359,8 +359,9 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 .poweredByFooter{
   !important display:none;
 }
-
-/* MENU STYLING CSS */
+/* ------------------*/
+/*  Menu Stylings    */
+/* ------------------*/
 #nav{ 
 	list-style:none;
     width:1020px;
@@ -597,353 +598,139 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     margin:0;
 }
 
-/* Playsheet Angular CSS */
-
-.host{
-  max-width:400px;
+/* ------------------*/
+/*    Playsheet CSS  */
+/* ------------------*/
+table.playitems > tbody > tr > th > div{
+  text-align:center;
 }
-[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
-
-div#main {
-	width:50%;
-	position:relative;
-	margin-left:auto;
-	margin-right:auto;
+table.playitems > tbody > tr > th > div.smalltext, table.playitems > tbody > tr > th > div.meta{
+  padding:0px 0px 0px 5px;
 }
-#mainleft {
-	font-size:1em;
-	line-height:1.3em;
-	position:relative;
-}
-#mainleft input, #mainleft textarea{
-	width:75%;
-	margin: 5px;
-	padding:5px;
-}
-#mainleft label{
-	font-size:0.95em;
-	text-align:right;
-	display:inline-block;
-	width:100px;
+table.playitems.socan > tbody > tr > th > div.meta{
+  max-width:130px;
 }
 
-#mainleft input{
-	font-size: 1em;
+table.playitems.socan > tbody > tr > td > input{
+  max-width:125px;
+}
+table.playitems.socan > tbody > tr > th > div.socantiming {
+  min-width:135px;
+}
+table.playitems.socan > tbody > tr > td > button{
+  font-size:65%;
+  font-weight:bolder;
+}
+table.playitems > tbody > tr > td > input.lang {
+  max-width:80px;
+}
+table.playitems > tbody > tr > th > div{
+  cursor:help;
+}
+table.playitems > tbody > tr > th > div.hand{
+    cursor: hand;
+}
+.hand{
+  cursor: hand;
+}
+.hand:active{
+  cursor:move;
 }
 
-#mainleft textarea{
+.box {
+  display: inline-block;
+  height: 27px;
+  width: 27px;
+  border-width: 1px;
+  border-style: dotted;
+  cursor: default;
+  background-color: transparent;
+  background-size: 100%;
+  margin-bottom: 2px;
+}  
 
-	font-size:0.77em;
-	vertical-align: top;
-}
-.buttonContainer{
-	list-style:none;
-	margin:30px auto 0px auto;
-    padding:0px 20px 0px 20px;
-	width:140px;
-    height:33px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: #A4A4A4;
-    background: -moz-linear-gradient(top, #3434A4, #1030BE);
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
-    border: 1px solid #002232;
-    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
-    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
-    box-shadow:inset 0px 0px 1px #BEBEBE;
-
-}
-.playitem > td >input{
-  width:95%;
-}
-.promotions > td {
-  font-size:.8em;
-}
-.promotion_name{
-  max-width:300px;
-}
-.hand:hover{
-  cursor: pointer; cursor: hand;
+.box.playlist:hover {
+  background-image: url('../images/tags/playlist.png');
+  opacity: 0.5;
 }
 
-
-.buttonContainer ul{
-	margin:0;
-	padding:0;
-}
-.buttonContainer li {
-	margin-top:7px;
-	width:140px;
-    text-align:center;
-	list-style:none;
-}
-.buttonContainer a {
-	text-decoration:none;
-}
-.selectps{
-	width:50%;
-	margin-left:auto;
-	margin-right:auto;
-}
-#ps_status{
-	position:fixed;
-	top:0;
-	left:35%;
-	width:15%;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: lightyellow;
-	color:black;
-	padding:3px 15px 3px 15px;
-
+.box.canadian:hover {
+  background-image: url('../images/tags/can.png');
+  opacity: 0.5;
 }
 
-#ps_header td, #ps_header input, #ps_header select{
-	font-size: 15px;
-}
-#ps_header table, #ps_header table tr{
-margin:10px;
+.box.femcon:hover {
+  background-image: url('../images/tags/fe.png');
+  opacity: 0.5;
 }
 
-#ps-loading-image{
-display:none;
-}
-#result {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* max-height: 500px; */
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    padding-bottom: 15px;
+.box.instrumental:hover {
+  background-image: url('../images/tags/inst.png');
+  opacity: 0.5;
 }
 
-  #totals {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background-color: beige;
-    border-color: black;
-    border-width: 2px;
-    border-style: groove;
-    text-align: center;
-    padding: 3px;
-  }
-
-  #totals div {
-    display: inline;
-    padding-right: 20px;
-  }
-
-  #totals .req {
-    font-weight: bold;
-
-    color: darkgreen;
-  }
-
-  #totals .bad {
-    background-color: black;
-    color: red;
-  }
-
-  .crtc, .tools {
-    cursor: pointer;
-    background-color: lightblue;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    round-clip: 2;
-    border-style: outset;
-    border-width: 2px;
-    border-color: lightblue;
-  }
-
-  .crtc:hover {
-    border-color: black;
-  }
-
-  .lang {
-    width: 65px;
-    font-size: 0.8em;
-  }
-
-
-  .music_row, .music_row * {
-    
-    /* font-size: 1.1em; */
-  }
-
-.playitem{
-  width:100%;
-}
-tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td > button.socan{
-  max-width:95px;
-  font-size:0.75em;
-}
-.socantiming{
-  max-width:140px;
+.box.hit:hover {
+  background-image: url('../images/tags/hit.png');
+  opacity: 0.5;
 }
 
-  .music_row_heading {
-    height:30px;
-    background-color: none;
-  }
-
-  .music_row_heading input{
-    margin-left:5px;
-    background: none;
-    border-width: 0;
-  }
-  .playsheet_block, .spokenword_block, .podcast_block,.save_block {
-    max-width: 1000px;
-    width:100%;
-    min-height:200px;
-    position:relative;
-    margin-left: auto;
-    margin-right:auto;
-    display:block;
-    float:left;
-
-  }
-
-  .podcast_block_inner{
-    margin-left:auto;
-    margin-right:auto;
-    width:50%;
-    display:block;
-    position:relative;
-  }
-
-  .spokenword_block{
-    min-height:400px;
-  }
-
-.tooltip-inner{
-  max-width:350px;
+.box.partial:hover {
+  background-image: url('../images/tags/part.png');
+  opacity: 0.5;
 }
-  .dragzone {
-    cursor: default;
-
-  }
-
-  button.box {
-    display: inline-block;
-    height: 27px;
-    width: 27px;
-    border-width: 1px;
-    border-style: dotted;
-    cursor: default;
-    background-color: white;
-    background-size: 100%;
-    margin-bottom: 2px;
-  }
-
-  button.box.playlist:hover {
-    background-image: url('../images/tags/playlist.png');
-    opacity: 0.5;
-  }
-
-  button.box.cancon:hover {
-    background-image: url('../images/tags/can.png');
-    opacity: 0.5;
-  }
-
-  button.box.femcon:hover {
-    background-image: url('../images/tags/fe.png');
-    opacity: 0.5;
-  }
-
-  button.box.instrumental:hover {
-    background-image: url('../images/tags/inst.png');
-    opacity: 0.5;
-  }
-
-  button.box.hit:hover {
-    background-image: url('../images/tags/hit.png');
-    opacity: 0.5;
-  }
-
-  button.box.partial:hover {
-    background-image: url('../images/tags/part.png');
-    opacity: 0.5;
-  }
 
 
-  button.box.background:hover {
-    background-image: url('../images/tags/background.png');
-    opacity: 0.5;
-  }
+.box.background:hover {
+  background-image: url('../images/tags/background.png');
+  opacity: 0.5;
+}
 
-  button.box.theme:hover {
-    background-image: url('../images/tags/theme.png');
-    opacity: 0.5;
-  }
+.box.theme:hover {
+  background-image: url('../images/tags/theme.png');
+  opacity: 0.5;
+}
 
-  button.box.playlist.filled {
-    background-image: url('../images/tags/playlist.png');
-    opacity: 1;
-  }
+.box.playlist.filled {
+  background-image: url('../images/tags/playlist.png');
+  opacity: 1;
+}
 
-  button.box.cancon.filled {
-    background-image: url('../images/tags/can.png');
-    opacity: 1;
-  }
+.box.canadian.filled {
+  background-image: url('../images/tags/can.png');
+  opacity: 1;
+}
 
-  button.box.femcon.filled {
-    background-image: url('../images/tags/fe.png');
-    opacity: 1;
-  }
+.box.femcon.filled {
+  background-image: url('../images/tags/fe.png');
+  opacity: 1;
+}
 
-  button.box.instrumental.filled {
-    background-image: url('../images/tags/inst.png');
-    opacity: 1;
-  }
+.box.instrumental.filled {
+  background-image: url('../images/tags/inst.png');
+  opacity: 1;
+}
 
-  button.box.hit.filled {
-    background-image: url('../images/tags/hit.png');
-    opacity: 1;
-  }
+.box.hit.filled {
+  background-image: url('../images/tags/hit.png');
+  opacity: 1;
+}
 
-  button.box.partial.filled {
-    background-image: url('../images/tags/part.png');
-    opacity: 1;
-  }
+.box.partial.filled {
+  background-image: url('../images/tags/part.png');
+  opacity: 1;
+}
 
-  button.box.background.filled {
-    background-image: url('../images/tags/background.png');
-    opacity: 1;
-  }
+.box.background.filled {
+  background-image: url('../images/tags/background.png');
+  opacity: 1;
+}
 
-  button.box.theme.filled {
-    background-image: url('../images/tags/theme.png');
-    opacity: 1;
-  }
+.box.theme.filled {
+  background-image: url('../images/tags/theme.png');
+  opacity: 1;
+}
 
-  button.box {
-    background-color: transparent;
-    background-image: none;;
-  }
- button.socan, , .music_row_socan input, .music_row_socan button{
-    font-size:0.75em;
-    max-width:90px;
-  }
-   .socan select{
-      font-size:0.75em;
-   }
-
-  .socan_cue select{
-    width:46px;
-
-  }
-  .playsheet_block_socan, .music_row_socan, .music_row_socan .music_row{
-    max-width:1200px;
-    margin-left:10px;
-    padding-left:10px;
-  }
-
-
+  
 /*
   Podcasts Page CSS
 
@@ -1205,10 +992,6 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
 	width:300px;
 }
 
-table, td, tr{
-text-align:left;
-}
-
 /*-------------------*/
 /*  Ad Scheduler CSS */
 /*-------------------*/ 
@@ -1339,53 +1122,6 @@ button.saving{
   right:20px;
   text-align:right;
 }
-
-
-
-/*-------------------*/
-/* Old Playsheet CSS */
-/*-------------------*/ 
-
-table.menu { border-collapse: separate; border-color: #6666CC; background-color: #000000; }
-td.menu { background-color: #FF9999; font-weight: bold; }
-td.reqmeet {  }
-td.reqfail { background-color: #CC9999; }
-div.playsheet { background-color:rgba(30,30,30,.1);
-				width:920px; 
-				border-color:#c3c3c3; 
-				border-style:ridge;
-				margin-left: auto;
-				margin-right: auto;
-			/*	text-align:center;*/
-				}
-div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
-				width:1024px; 
-				border-color:#c3c3c3; 
-				border-style:ridge;
-				margin-left: auto;
-				margin-right: auto;
-			/*	text-align:center;*/
-				}
-table#playsheet-table { 
-	width:880px; 
-	margin-left: auto;
-	margin-right: auto;
-	}
-	
-table#playsheet-table tr, table#playsheet_table td{
-	border-width: 0;
-}
-table#playsheet-table button{
-	width:23px;
-}
-.bigbutton{
-	height:50px;
-	width:150px;
-	font-size: 1em;
-}
-table.box { padding: 15px; border-color: #c3c3c3;; border-style:ridge;  }
-table.report { border-collapse: collapse; border: none; border-color: #000000; padding: 100px;}
-table { border-collapse: collapse; }
 
 /*----------------------------*/
 /*--------CHARTING------------*/
@@ -1701,8 +1437,10 @@ button#submit_user.red{
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
 
-/* HELP PAGE CC */
- 
+/* ------------------ */
+/*     HELP PAGE CC   */
+/* ------------------ */
+
 #qalist
 {
  position:relative;
@@ -1772,194 +1510,7 @@ height:auto;
 }
  
 
-/* PLAYSHEET SAM CSS */
 
-
-.table {
-  display:table;
-	margin-bottom: 5px;
-}
-.table p, .table div {
-	display: table-row;
-}
-.table select, .table span, .table textarea {
-	display: table-cell;
-	padding: 3px;
-	vertical-align: top;
-}
-
-#sam-box{
-	display:none;
-}
-
-.current{
-	border-width: 3px;
-	border-style: solid;
-}
-
-
-#SamListouter, div#loadtimes{
-	color:black;
-/*	display:block;*/
-	display:none;
-	background-color:beige;
-	border-width: medium;
-	border-style:solid;
-	border-color:#BBB;
-	height:80%;
-	width:400px;
-	position:fixed;
-	right:8%;
-	top:0;
-	overflow: auto;
-	z-index:20;
-}
-div#loadtimes *{
-	cursor: default;
-	text-align: left;
-}
-
-div.closeButton{
-position:absolute;
-top:0;
-right:25px;
-z-index:40;
-}
-
-button.closeButton{
-position:fixed;
-background-color: white;
-color:red;
-}
-
-
-
-#SamListouter *{
-color:black;
-	cursor:default;
-
-}
-
-div#loadtimes{
-	top:auto;
-	height:200px;
-	bottom:30px;
-}
-
-
-
-/* #SamList, #loaderButtons{
-	display:inline;
-	position:absolute;
-	overflow-x: hidden;
-	width:220px;
-} */
-#SamList{
-	position: relative;
-	float:left;
-	width:345px;
-
-	padding-left:0px;
-	z-index:3;
-	overflow-y: hidden;
-}
-
-
-
-#loaderButtons{
-/*	top:40px;*/
-	position: relative;
-	float:left;
-	width:35px;
-	z-index:2;
-	overflow-y: hidden;
-
-}
-
-.loaderButton, .samsong{
-
-	position: relative;
-	float:left;
-	margin:1px 0 0 0;
-	padding:1px;
-	font-size:1em;
-	display:block;
-	height:19px;
-	text-align:left;
-	width:320px;
-}
-
-.loaderButton{
-	
-	
-	z-index:15;
-	width:30px;
-	background-color: #8F8;
-}
-
-.loaderButtonHover{
-	background-color:#7C7;
-}
-
-.samsong{
-	background-color: #CFC;
-	margin-left:0px;
-	z-index:2;
-	overflow-x: hidden;
-	overflow-y: hidden;
-	padding-left:10px;
-}
-
-.date{
-
-	font-size: 0.7em;
-	float:right;
-	z-index:5;
-}
-.panel-button{
-	position:fixed;
-	background-color: beige;
-	z-index:10;
-	
-}
-
-.panel-button:hover{
-	background-color: lime;
-}
-
-#SamTab{
-	position: fixed;
-	top:100px;
-	right:15px;
-}
-#buttonLoadTimes{
-	top:125px;
-	right:15px;
-}
-
-#autosaver{
-/*display:none;*/
-top:150px;
-right:15px;
-width:75px;
-height:50px;
-}
-
-#thisDate{
-font-family: Arial;	
-float:right;
-}
-
-
-
-#inputbox
-{
-width: 55px;	
-}
-#checkbox
-{
-	width: 22px;
-}
 
 div#ui-datepicker-div{
 	max-width:200px;
@@ -1987,40 +1538,6 @@ div.ui-datepicker{
 	width:100px;
 }	
 
-table#ads{
-	width:450px;
-	display:inline;
-	margin-right:50px;
-	table-layout: auto;
-	position:relative;
-	top:0px;
-	cellspacing:0;
-	padding: 0;
-}
-
-
-#submitMsg{
-	position:relative;
-	top:50px;
-	background-color: rgba(10,10,10,0.85);
-	text-align: left;
-	margin-right: auto;
-	margin-left: auto;
-	width:400px;
-}
-
-#submit{
-height:60px;
-width:300px;
-}
-#autosave{
-	position:absolute;
-	top:0px; 
-	left:0px; 
-	z-index:10;
-/*	display:none;*/
-}
-
 span.left{
 /*width:750px;*/
 display:inline;
@@ -2033,7 +1550,9 @@ span.right{
 	float:right;
 }
 
-
+/* --------------------- */
+/* --Duplicate Remover --*/
+/* --------------------- */
 .dotted-underline{
 	
 	border-style: dotted;
@@ -2111,54 +1630,4 @@ border-width:0;
 
 .selectanad option{
 background-color:black;
-}
-
-#adcount{
-	position:absolute;
-	top:120px;
-	left:40%;
-	background-color:green;
-}
-
-
-.report_img{
-	
-width:20px;
-height:20px;
-}
-
-.custom_button{
-	background-color: salmon;
-	color:black;
-	cursor:default;
-	border-style: solid;
-	border-width: 2px;
-	border-color: salmon;
-
-}
-
-.custom_button:hover{
-	background-color: white;
-	color:black;
-	border-style: solid;
-	border-width: 2px;
-	border-color: black;
-}
-
-#show_edit_podcast{
-	background-color: rgba(100,100,100,0.7);
-	width:100%;
-	position:relative;
-	padding:12px;
-}
-
-
-.large-button{
-	font-size:3em;
-}
-.form_wrap{
-	position:relative;
-	margin-left:auto;
-	margin-right:auto;
-	width:60%;
 }
