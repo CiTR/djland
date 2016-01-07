@@ -68,7 +68,7 @@ api.factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE+'/adschedule');
 		},
 		getReport: function(show_id,from,to){
-			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to}));
+			return $http.post(API_URL_BASE+'/report',angular.toJson({'show_id':show_id,'from':from,'to':to}));
 		},
 		getFriends: function(){
 			return $http.get(API_URL_BASE+'/friend');

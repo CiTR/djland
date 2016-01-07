@@ -1,5 +1,23 @@
 <?php
-//include_once('security_header.php');
+function getRequest($url){
+	$curl = curl_init();
+	$url = $_SERVER['SERVER_NAME']."/api2/public/".$url;
+	$cookie = tempnam("/tmp","CURLCOOKIE");
+	curl_setopt_array($curl, array(
+			
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_COOKIEJAR => $cookie,
+			CURLOPT_COOKIE => $cookie,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_URL => $url,
+			CURLOPT_USERAGENT => 'Internal DJLand Request'
+		)
+	);
+	
+	$response = curl_exec($curl);
+	curl_close($curl);
+	return $response;
+}
 
 function getPodcasts($member_id){
 	global $pdo_db,$djland_permission_levels;

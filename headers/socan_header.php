@@ -27,10 +27,10 @@ function socanCheck($db) {
 			
 			if( ($socanStart <= $currentTime) && ($currentTime<=$socanEnd) )
 			{
-				return 'true';
+				return true;
 			}
 		}
-		return 'false';
+		return false;
 	}
 	else{
 	echo "database query failed";	
