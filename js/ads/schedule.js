@@ -25,7 +25,7 @@ function Schedule(date){
 			this_.showtimes.push(response[item]);
 		}
 		this_.displaySchedule( $('.schedule') );
-		$('.loadingbar_container').hide();
+		$('.loading_bar').hide();
 	},function(error){
 		console.log('err' + error.responseText);
 	});

@@ -153,6 +153,7 @@ input, select, textarea, option{
 .loadingbar_container{
   padding-top:15px;
   width:1024px;
+  min-height:30px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -636,11 +637,6 @@ table.playitems > tbody > tr > th > div.hand{
 .hand:active{
   cursor:move;
 }
-Yakinikuya on robson was surprisingly good. Cheap late night (they're open till 1am or 2am) and 10.95$ pitchers of sapporo. It's Japanese/Korean BBQ. Very good gyozas!
-
-
-
-
 .box {
   display: inline-block;
   height: 27px;
@@ -1046,7 +1042,6 @@ button.saving{
     margin-right: auto;
     z-index: 3;
     margin-bottom: 15px;
-    overflow-x:hidden;
 }
 .schedule > li > div > table > tbody > tr > td > input.ad_time {
     max-width: 80px;  
