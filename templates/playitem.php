@@ -9,7 +9,8 @@
 		$lang = isset($_POST['lang']) ? $_POST['lang'] : '20';  
 	}else{
 		http_response_code(400);
-		return "Playitem object required.";
+		echo "Playitem object required.";
+		return false;
 	}
 ?>
 

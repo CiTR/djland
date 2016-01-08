@@ -309,8 +309,8 @@
 								</select>
 							</td>
 							<td><input name='lang' class="lang" value=''></input></td>
-							<td><button class='add'><img src='images/collapsed.png'></button></td>
-							<td><button class='remove'><img src='images/expanded.png'></button></td>
+							<td><button type='button' class='add' onclick="playsheet.addPlayitem(1);"><img src='images/collapsed.png'></button></td>
+							<td><button type='button' class='remove'><img src='images/expanded.png'></button></td>
 							<td><div class='hand side-padded'>&#x21D5;</div></td>
 						</tr>
 					</table>
@@ -333,6 +333,7 @@
 		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
 		<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
 		<script type='text/javascript' src='js/playsheet/object.js'></script>
+		<script type='text/javascript' src='js/playsheet/app.js'></script>
 		<script>
 			$(document).ready(function(){
     			$('[data-toggle="tooltip"]').tooltip(); 

@@ -2,22 +2,33 @@ window.myNameSpace = window.myNameSpace || { };
 var re = new RegExp(/^.*\//);
 var api_base = "" + re.exec(window.location.origin)['input'] + '/api2/public/';
 var site_base = "" + re.exec(window.location.origin)['input'];
-console.log(api_base);
 
 function Playsheet(){
 	var this_ = this;
+
 	var member_id = $('#member_id').text() || 1;
+	var playsheet_id = $('#playsheet_id').text() || 1;
+	console.log(playsheet_id);
+
 	var requests = Array();
-		
+	
 
 
-	this.initialize = function(id){
-		this.getMemberShows(member_id);
+
+	this.initialize = function(){
+		var this_ = this;
+		this.info = {};
 		this.start = {};
 		this.end = {};
-		$.when(requests['show_load']).then(function(){
-			if(id != null && id > 0){
-				this_.load(id);
+		this.info.id = playsheet_id;
+
+		this.getMemberShows(member_id);
+
+		$.when(requests['show_load']).then(function(shows){
+			
+			console.log("ID="+this_.info.id);
+			if(this_.info.id != null && this_.info.id > 0){
+				this_.load(this_.info.id);
 			}else{
 				this_.info = {};
 				this_.podcast = {};
@@ -31,27 +42,33 @@ function Playsheet(){
 				this_.podcast.id = -1;
 			}
 		});
-
 	}
-	
 
 	this.load = function(id){
-		requests['load'] = 
-			$.ajax({
+		requests['load'] = $.ajax({
 				type:"GET",
 				url: api_base + "playsheet/"+id,
 				dataType: "json",
 				async: true
 			}).then(function(response){
+				console.log(response);
 				this_.info = response.playsheet;
 				this_.playitems = response.playitems;
 				this_.podcast = response.podcast;
 	          	this_.setStart(this_.info.start_time.replace(/-/g,'/'));
 	        	this_.setEnd(this_.info.end_time.replace(/-/g,'/'));
+	        	
+	        	for(var playitem_index in this_.playitems){
+	        		console.log(this_.playitems[playitem_index]);
+	        		
+	        	}
+
+	        	//TODO: Select correct show/host + populate the previous playsheets
+
 			},function(error){
 				return false;
 				//TODO: Log Error Message
-			})
+			});
 		
 	}
 	
@@ -177,7 +194,18 @@ function Playsheet(){
 			}).then(
 				function(shows){
 					this_.shows = shows;
-					this_.show=this_.shows[0];
+					this_.show = this_.shows[0];
+
+					//Display the show list
+					var select = $('#show_select');
+					for(var show_index in this_.shows){
+						var o = new Option(this_.shows[show_index].name,this_.shows[show_index].id);
+						o.innerHTML = this_.shows[show_index].name;
+						select.append(o);
+					}
+					//Display the host
+					$('#host').val(this_.show['host']);
+					
 				},
 				function(error){
 					//TODO: Log Error
@@ -289,26 +317,18 @@ function Playsheet(){
 	//Getters
 	this.addPlayitem = function(index){
 		var this_ = this;
+		this_.playitems.splice(index+1,0);
 		$.ajax({
-			type:"PUT",
-			url: api_base+ "playsheet/"+this_.info.id+"/playitem",
+			type:"POST",
+			url: site_base+"/templates/playitem.php",
 			dataType: "json",
+			data: {"playitem":{},"index":index},
 			async: true
-		}).then(function(response){
-			this_.playitems.splice(index+1,0,response);
-			$.ajax({
-				type:"POST",
-				url: site_base+"/templates/playitem.php",
-				dataType: "json",
-				data: {"playitem":response,"index":index},
-				async: true
-			}).then(
-				function(html){
-					$('#playitems').append(html);
-				}
-			);
-			
-		});
+		}).then(
+			function(html){
+				$('#playitems').append(html);
+			}
+		);
 	}
 	this.removePlayitem = function(index){
 		var this_ = this;
