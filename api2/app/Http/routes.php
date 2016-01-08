@@ -316,7 +316,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
 		Route::get('/',function($id){
-			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems->orderBy('position','asc')->get(),'podcast'=>Playsheet::find($id)->podcast]);
+			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems()->orderBy('position','asc')->get(),'podcast'=>Playsheet::find($id)->podcast]);
 		});
 		//Save Existing Playsheet
 		Route::post('/',function($id){
@@ -360,7 +360,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		Route::group(array('prefix'=>'playitem'),function($id){
 			//Get playitems
 			Route::get('/',function($id){
-				return Response::json(Playsheet::find($id)->playitems->orderBy('position','asc')->get());
+				return Response::json(Playsheet::find($id)->playitems()->orderBy('position','asc')->get());
 			});
 			//Add a playitem
 			Route::put('/',function($id){
