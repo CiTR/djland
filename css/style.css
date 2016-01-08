@@ -330,10 +330,19 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     margin-right:auto;
     display:block;
 }
+.bottom{
+  position:absolute;
+  bottom:0px;
+}
 .clearfix{
   clear:both;
 }
-
+.red{
+  background-color:red;
+}
+.green{
+  background-color:green;
+}
 
 /* CSS to make the YCBM Links not look bad and take up all the page width */  
 .youCanBookMe_Container iframe{

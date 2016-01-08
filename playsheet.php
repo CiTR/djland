@@ -11,6 +11,7 @@
 	$socan = isset($_GET['socan']) ? ($_GET['socan']=='true'? true: false) : socanCheck($db);
 ?>
 <html>
+
 	<head>
 		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">	
@@ -326,8 +327,16 @@
 			</FORM>
 		</div>
 	</div>
-	<div id='playsheet totals'>
-		Cancon % = 
+	<div id='percentages' class='border bottom col1'>
+		<table class='table'>
+			<td>Cancon Category 2:</td>
+			<td><span id='cancon_2_percent' class='red'>20%</span><span>/ 35%</span></td>
+			<td>Cancon Category 3:</td>
+			<td><span id='cancon_3_percent'>20%</span><span>/ 35%</span></td>
+			<td>Femcon:</td>
+			<td><span id='femcon_percent'>20%</span><span>/ 35%</span></td>
+		</table>
+		
 	</div>
 
 		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
@@ -339,6 +348,5 @@
     			$('[data-toggle="tooltip"]').tooltip(); 
 			});
 		</script>
-
 	</body>
 </html>
