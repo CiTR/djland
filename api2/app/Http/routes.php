@@ -316,11 +316,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
 		Route::get('/',function($id){
-<<<<<<< HEAD
-			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems()->orderBy('position','asc')->get(),'podcast'=>Playsheet::find($id)->podcast]);
-=======
-			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems,'podcast'=>Playsheet::find($id)->podcast,'promotions'=>Playsheet::find($id)->ads]);
->>>>>>> c8ead5c40c44ecd8a3392176d223e87b3b2d2068
+			return Response::json(['playsheet'=>Playsheet::find($id),'playitems'=>Playsheet::find($id)->playitems()->orderBy('position','asc')->get(),'podcast'=>Playsheet::find($id)->podcast,'promotions'=>Playsheet::find($id)->ads]);
 		});
 		//Save Existing Playsheet
 		Route::post('/',function($id){
