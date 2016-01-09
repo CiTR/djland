@@ -571,9 +571,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
-	$date = date('Y-M-d',strtotime($date));
-	$unix = strtotime($date);
-	$parsed_date = date_parse($date);
+	$formatted_date = date('Y-M-d',strtotime($date));
+	$unix = strtotime($formatted_date);
+	$parsed_date = date_parse($formatted_date);
 	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
 		//Constants (second conversions)
 		$one_day = 24*60*60;
@@ -581,16 +581,13 @@ Route::get('/adschedule/{date}',function($date = date){
 		$one_minute = 60;
 
 
-		//Get Today
-        $time = strtotime('now');
-        //Get Day of Week (0-6)
-        $day_of_week = date('w',$time);
-        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
+        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        $week = floor( (strtotime($date) - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+
 		
-		if($date == date('Y-M-d',strtotime('now'))){
+		if($formatted_date == date('Y-M-d',strtotime('now'))){
 			//Set cutoff time to right now if we are loading today
 			$time = date('H:i:s',strtotime('now'));
 		}else{
@@ -643,7 +640,7 @@ Route::get('/adschedule/{date}',function($date = date){
 		return $shows;
 	}else{
 		http_response_code('400');
-		return "Not a Valid Date: {$date}";
+		return "Not a Valid Date: {$formatted_date}";
 	}
 	
 
