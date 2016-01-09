@@ -580,8 +580,13 @@ Route::get('/adschedule/{date}',function($date = date){
 		$one_hour = 60*60;
 		$one_minute = 60;
 
-		//Get mod 2 of week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
-	    $week = (date('W',strtotime($date)) % 2) +1;
+
+		//Get Today
+        $time = strtotime('now');
+        //Get Day of Week (0-6)
+        $day_of_week = date('w',$time);
+        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        $week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
 		
@@ -647,10 +652,14 @@ Route::get('/adschedule',function(){
 	date_default_timezone_set('America/Los_Angeles');
 	$active_shows = Show::select('*')->where('active','=','1')->get();
 	$schedule = array();
-	//Get mod 2 of current week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
-    $current_week = (date('W',strtotime('now')) % 2) +1;
-	//Get Day of Week (0-6)
-	$day_of_week = date('w',strtotime('now'));
+	
+	//Get Today
+    $time = strtotime('now');
+    //Get Day of Week (0-6)
+    $day_of_week = date('w',$time);
+    //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+    $current_week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+
 	//Get Current Time (0-23:0-59:0-59)
 	$current_time = date('H:i:s',strtotime('now'));
 	
