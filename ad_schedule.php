@@ -63,7 +63,7 @@
 											<!-- Begin Ad Selector -->
 											<select ng-model='select[show][show_ad]' ng-change='schedule.update(select[show][show_ad],show_ad)'>
 												<option ng-selected='schedule.ads.indexOf(show_sam_id) < 0' value='Any Ad'>Any Ad</option>
-												<option ng-selected='show_ad.sam_id == item.ID' ng-repeat='item in schedule.ads | orderBy:["date_added"]' value='{{item}}'>{{item.title ? item.title : item.artist}}</option>
+												<option ng-selected='show_ad.sam_id == item.ID' ng-repeat='item in schedule.ads | orderBy:["-date_added"]' value='{{item}}'>{{item.title ? item.title : item.artist}}</option>
 											</select>
 											<!-- End Ad Selector -->
 										</div>
