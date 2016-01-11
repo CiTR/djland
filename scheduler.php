@@ -28,7 +28,7 @@
 
 		</ul> 
 		<div class='grey loadingbar_container'>
-			<div class='text-center'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+			<div><img class='rounded loading_bar' width ='300' height='20' src='images/loading.gif'/></div>
 		</div>
 		<ul class='schedule grey'>
 
