@@ -1256,6 +1256,7 @@ button.saving{
   background-color:red;
   color:white;
 }
+
 /*--------------------------------*/
 /*  Ad Scheduler (no-angular) CSS */
 /*--------------------------------*/ 
@@ -1266,14 +1267,23 @@ button.saving{
     margin-right: auto;
     z-index: 3;
     margin-bottom: 15px;
-    overflow-x:hidden;
 }
-.schedule > li > div > table > tbody > tr > td > input.ad_time {
+table.ads > tbody > tr > td > input.ad_time {
     max-width: 80px;  
+}
+table.ads > tbody > tr > td > input.name {
+    max-width: 775px;  
 }
 .schedule > li > div > table.ads{
     max-width:1024px;
 }
+.save_button{
+  position:fixed;
+  font-size:2.0em;
+  top:100px;
+  right:50px;
+}
+
 
 
 /*----------------------*/

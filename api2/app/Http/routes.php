@@ -569,6 +569,23 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			print_r(array($show->name,$show->id,$show->podcast_slug));
 		}
 	});
+Route::post('/adschedule2',function(){
+	$post = array();
+	parse_str(Input::get('ads'),$post);
+	
+	foreach($post['show'] as $ad){
+		if($ad['id']){
+			$a = Ad::find($ad['id']);
+			unset($ad['id']);
+			$a->update($ad);
+		}else{
+			$a = Ad::create($ad);
+		}
+		$ads[]=$a;
+	}
+	return Response::json($ads);
+});
+
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
 	$formatted_date = date('Y-M-d',strtotime($date));

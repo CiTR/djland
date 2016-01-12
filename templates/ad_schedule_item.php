@@ -34,13 +34,19 @@
 			</tr>
 		</table>
 		<button id="insert_<?php echo $index; ?>" type='button'>Insert Ad</button>
-
+		<FORM name='<?php echo $show['start_unix']; ?>' class='showtime'>
 		<table class='table-condensed ads'>
 			<?php foreach($show['ads'] as $ad) : ?>
-			<tr id='<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>' >
-				<td><input name='time' value="<?php echo $ad['time']; ?>" class='ad_time'></td>
+			<tr  id='<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>' >
+				<td>
+					<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][time]' value="<?php echo $ad['time']; ?>" class='ad_time'>
+					<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][time_block]' value='<?php echo $show['start_unix']; ?>' class='invisible'>
+					<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][num]' value='<?php echo $ad['num']; ?>' class='invisible'>
+					<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][id]' value='<?php echo isset($ad['id']) ?$ad['id']:''; ?>' class='invisible'>
+
+				</td>
 				<td class='type'>
-					<select class='type_select' name='type' value="<?php echo $ad['type']; ?>">
+					<select class='type_select' name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][type]' value="<?php echo $ad['type']; ?>">
 						<option <?php if($ad['type'] == "announcement") echo 'selected'; ?> value="announcement">Announcement</option>
 						<option <?php if($ad['type'] == "ad") echo 'selected'; ?> value='ad'>Ad</option>
 						<option <?php if($ad['type'] == "psa") echo 'selected'; ?> value='psa'>PSA</option>
@@ -53,9 +59,9 @@
 				</td>
 				<td>
 					<?php if($ad['type'] == 'announcement'): ?>
-						<input class='fullinput name' value="<?php echo $ad['name']; ?>" />
+						<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][name]' class='fullinput name' value="<?php echo $ad['name']; ?>" />
 					<?php else: ?>
-					<select class='name' value="<?php echo $ad['name']; ?>">
+					<select class='name' name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][name]' value="<?php echo $ad['name']; ?>">
 
 					</select>
 					<?php endif; ?>
@@ -64,5 +70,6 @@
 			</tr>
 		<?php endforeach; ?>
 		</table>
+	</FORM>
 	</div>
 </li>

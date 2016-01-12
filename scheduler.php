@@ -33,6 +33,7 @@
 		<ul class='schedule grey'>
 
 		</ul>
+		<button type='button' class='save_button'>Save</button>
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 		<script type='text/javascript' src='js/ads/schedule.js'></script>
 		<script type='text/javascript' src='js/ads/ad_schedule.js'></script>

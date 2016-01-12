@@ -51,16 +51,25 @@ Schedule.prototype = {
 		}
 		//Display the initial showtimes
 		$.when.apply($,promises).then(function(){
-			console.log(this_.showtimes.length);
 			for(var i = 0; i < this_.showtimes.length; i++){
 				//Append the HTML from the requests
 				schedule_element.append(arguments[i][0]);
 
 				for(var j = 0; j < this_.showtimes[i].ads.length; j++){
 					//Update the dropdown to reflect the ad type.
-					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,i,j);
+					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,this_.showtimes[i].ads[j],i,j);
 				}
 			}
+		});
+	},
+	saveSchedule:function(){
+
+		console.log($('form').serialize());
+		return $.ajax({
+			type:"POST",
+			url:"api2/public/adschedule2",
+			async: true,
+			data: {"ads":$('form').serialize()}
 		});
 	},
 	formatDate:function(date){
@@ -160,13 +169,13 @@ Schedule.prototype = {
 			$('#' + item + '-template').append(response);	
 		});
 	},
-	updateDropdown:function(list,type,index,num){
+	updateDropdown:function(list,type,value,index,num){
 		if(type != 'announcement'){
 			var p = $.ajax({
 				type:"POST",
 				url:"templates/ad_list.php",
 				async: true,
-				data: {"ad_list":JSON.stringify(list),'type':type,'index':index,'num':(num-1)},
+				data: {"ad_list":JSON.stringify(list),'type':type,'value':value,'index':index,'num':(num-1)},
 			});
 			$.when(p).then(function(response){
 				$('#show_'+index+"_"+num).children().find('select.name').append(response);

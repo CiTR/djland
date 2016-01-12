@@ -3,16 +3,21 @@
 
 if(isset($_POST['ad_list']) ){
 	$list = json_decode($_POST['ad_list']);
+	$type = $_POST['type'];
+	$value = $_POST['value'];
 	$index = $_POST['index'];
 	$num = $_POST['num'];
-	$type = $_POST['type'];
+	
 }else{
 	http_response_code(400);
 	return "Ad list object required.";
 }
-	echo "<option value='any'>Any ".$type."</option>";
+	if($type=='id') echo "<option value='You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver'>You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver</option>";
+	else echo "<option value='any'>Any ".$type."</option>";
 foreach($list as $item){
-	echo "<option value='{$item->ID}'>{$item->title}</option>";
+	if($value['name'] == $item->title) echo "<option value='{$item->title}' selected>{$item->title}</option>";
+	else echo "<option value='{$item->title}'>{$item->title}</option>";
+	
 }
 ?>
 
