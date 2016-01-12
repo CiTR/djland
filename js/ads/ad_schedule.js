@@ -11,7 +11,10 @@ $(document).ready ( function(){
 		 addHandlers();
 	});
 	$('#tab-nav').off('click','.tab').on('click','.tab', function(e){
+		//Save current schedule before changing view
+		schedule.saveSchedule();
 		loading_bar.show();
+		
 		$('.tab').removeClass('active-tab');
 		$('.tab').addClass('inactive-tab');
 		var element = $(this);
@@ -19,8 +22,6 @@ $(document).ready ( function(){
 		var date = new Date();
 		console.log('offset = '+ element.attr('name'));
 		
-
-		//TODO: Save tab we are leaving.
 
 		schedule_element.empty();
 		$.when(schedule.getSchedule( element.attr('name'))).then( function(response){
@@ -60,7 +61,6 @@ $(document).ready ( function(){
 		}
 	});
 	$('.save_button').click(function(e){
-		//TODO:: SAVE
 		schedule.saveSchedule();
 	});
 
