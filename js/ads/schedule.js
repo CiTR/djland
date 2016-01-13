@@ -25,19 +25,22 @@ Schedule.prototype = {
 		var this_ = this;
 		if(!date) var date = this.formatDate(new Date());	
 		//Get Categories
-		this['cat-promises'] = this.getCategories();
+		this.categories = this.getCategories();
 		//Get initial Schedule
 		this.ready = this.getSchedule(date);
 		$.when(this.ready).then(function(response){
 	 		for(var item in response){
 				this_.showtimes.push(response[item]);
 			}
-			$.when.apply($,this['cat-promises']).then(function(){
-				
+			$.when.apply($,this_.categories).then(function(){
+				$.when.apply($,this_['cat-promises']).then(function(){
 				this_.displaySchedule( $('.schedule') );
+				$('.loading_bar').hide();
+				});
 			});
 			
-			$('.loading_bar').hide();
+			
+			
 		},function(error){
 			this_.init();
 		});
@@ -119,7 +122,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_['cat-promises']['ad-cat'] = this_.createCategoryTemplate('ad');
+			this_['cat-promises'].push(this_.createCategoryTemplate('ad'));
 		}
 		);
 		$.when(promises['ubc']).then(function(response){
@@ -129,7 +132,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_['cat-promises']['ubc-cat'] = this_.createCategoryTemplate('ubc');
+			this_['cat-promises'].push(this_.createCategoryTemplate('ubc'));
 		});
 		$.when(promises['community']).then(function(response){
 			this_['community'] = response.sort(function(a,b){
@@ -138,7 +141,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_['cat-promises']['community-cat'] = this_.createCategoryTemplate('community');
+			this_['cat-promises'].push(this_.createCategoryTemplate('community'));
 		});
 		$.when(promises['timely']).then(function(response){
 			this_['timely'] = response.sort(function(a,b){
@@ -156,7 +159,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_['cat-promises']['promo_cat'] = this_.createCategoryTemplate('promo');
+			this_['cat-promises'].push(this_.createCategoryTemplate('promo'));
 		});
 		$.when(promises['id']).then(function(response){
 			this_['id'] = response.sort(function(a,b){
@@ -165,7 +168,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_['cat-promises']['id_cat'] = this_.createCategoryTemplate('id');
+			this_['cat-promises'].push(this_.createCategoryTemplate('id'));
 		});
 
 		$.when(promises['ubc'],promises['community'],promises['timely']).then(function(ubc,community,timely){
@@ -174,9 +177,10 @@ Schedule.prototype = {
 			for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
 			this_.psa = this_.psa
 
-			this_['cat-promises']['psa-cat'] = this_.createCategoryTemplate('psa');
+			this_['cat-promises'].push(this_.createCategoryTemplate('psa'));
 		});
 		return promises;
+	
 	},
 	createCategoryTemplate:function(item){
 		var this_ = this;
