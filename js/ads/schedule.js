@@ -9,8 +9,8 @@ function Schedule(date){
 	this['psa'] = Array();
 	this['promo'] = Array();
 	this['id'] = Array();
-
-	
+	this['list'] = Array();	
+	this['templates'] = {};
 
 	this.showtimes = Array();
 
@@ -58,15 +58,19 @@ Schedule.prototype = {
 		for(var i = 0; i < this.showtimes.length; i++){
 			promises.push(this.getHTML(this.showtimes[i],i));
 		}
+
+
 		//Display the initial showtimes
 		$.when.apply($,promises).then(function(){
 			for(var i = 0; i < this_.showtimes.length; i++){
 				//Append the HTML from the requests
 				schedule_element.append(arguments[i][0]);
+				var num_ads = this_.showtimes[i].ads.length;
 
-				for(var j = 0; j < this_.showtimes[i].ads.length; j++){
-					//Update the dropdown to reflect the ad type.
-					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,this_.showtimes[i].ads[j]['name'],i,j);
+				for(var j = 0; j < num_ads; j++){
+					var element = $('#show_'+i+"_"+j).find('select.name');
+					if(this_.showtimes[i].ads[j].type != 'announcement') element.html(this_['templates'][this_.showtimes[i].ads[j].type].html());
+					element.val(this_.showtimes[i].ads[j].name);
 				}
 			}
 		});
@@ -87,6 +91,7 @@ Schedule.prototype = {
 				[("0" + date.getHours() ).slice(-2),("0" + date.getMinutes()).slice(-2),("0" + date.getSeconds()).slice(-2)].join(':');
 	},
 	getHTML:function(showtime,index){
+		var this_ = this;
 		return $.ajax({
 			type:"POST",
 			url:"templates/ad_schedule_item.php",
@@ -112,6 +117,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('ad');
 		});
 		$.when(promises['ubc']).then(function(response){
@@ -120,6 +126,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('ubc');
 		});
 		$.when(promises['community']).then(function(response){
@@ -128,6 +135,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('community');
 		});
 		$.when(promises['timely']).then(function(response){
@@ -136,6 +144,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('timely');
 		});
 		$.when(promises['promo']).then(function(response){
@@ -144,6 +153,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('promo');
 		});
 		$.when(promises['id']).then(function(response){
@@ -152,6 +162,7 @@ Schedule.prototype = {
 				if(a.title.toString() < b.title.toString()) return -1;
 				return 0;
 			});
+
 			this_.createCategoryTemplate('id');
 		});
 
@@ -160,6 +171,7 @@ Schedule.prototype = {
 			for(var item in community[0]){ this_.psa.push(community[0][item]); }
 			for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
 			this_.psa = this_.psa
+
 			this_.createCategoryTemplate('psa');
 		});
 		return promises;
@@ -171,27 +183,19 @@ Schedule.prototype = {
 				type:"POST",
 				url:"templates/ad_list.php",
 				async: true,
-				data: {"ad_list":JSON.stringify(ad_list),'type':item,'index':'template','num':'template'},
+				data: {"ad_list":JSON.stringify(ad_list),'value':null,'type':item,'index':'template','num':'template'},
 			});
 		$.when(p).then(function(response){
-			$('#' + item + '-template').append(response);	
+			$('#' + item + '-template').append(response);
+			this_.templates[item] = $('#'+item+'-template');
 		});
 	},
 	updateDropdown:function(list,type,value,index,num){
 		var parent = $('#show_'+index+"_"+num).find('td.name');
 		if(type != 'announcement'){
 			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
-			var target = $('#show_'+index+"_"+num).children().find('select.name');
-			var p = $.ajax({
-				type:"POST",
-				url:"templates/ad_list.php",
-				async: true,
-				data: {"ad_list":JSON.stringify(list),'type':type,'value':value,'index':index,'num':(num-1)},
-			});
-			$.when(p).then(function(response){
-				target.empty();
-				target.append(response);
-			});
+			var element = $('#show_'+index+"_"+num).find('select.name');
+			if(type != 'announcement') element.html(this['templates'][type].html());
 		}else{
 			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
 		}

@@ -43,7 +43,6 @@
 					<?php else: ?>
 					<select class='name' name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][name]' value="<?php echo $ad['name']; ?>">
 
-					</select>
 					<?php endif; ?>
 					
 				</td>
