@@ -32,7 +32,8 @@ Schedule.prototype = {
 	 		for(var item in response){
 				this_.showtimes.push(response[item]);
 			}
-			$.when(this['cat-promises']).then(function(){
+			$.when.apply($,this['cat-promises']).then(function(){
+				
 				this_.displaySchedule( $('.schedule') );
 			});
 			
