@@ -63,6 +63,7 @@ $(document).ready ( function(){
 	$('.save_button').click(function(e){
 		schedule.saveSchedule();
 	});
+	
 
 
 });
@@ -70,8 +71,11 @@ $(document).ready ( function(){
 function addHandlers(){
 	setTimeout(function(){
 		$('.type_select').change(function(e){
-			
+			var name_arr = $(this).attr('name').replace(/[^0-9_]/g,'').split('_');
+			//updateDropdown:function(list,type,value,index,num);
+			schedule.updateDropdown(schedule[$(this).val()],$(this).val(),null,name_arr[1],name_arr[2]);
 		});
+		
  	}, 800);
 }
 

@@ -57,7 +57,7 @@ Schedule.prototype = {
 
 				for(var j = 0; j < this_.showtimes[i].ads.length; j++){
 					//Update the dropdown to reflect the ad type.
-					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,this_.showtimes[i].ads[j],i,j);
+					this_.updateDropdown(this_[this_.showtimes[i].ads[j].type],this_.showtimes[i].ads[j].type,this_.showtimes[i].ads[j]['name'],i,j);
 				}
 			}
 		});
@@ -170,7 +170,10 @@ Schedule.prototype = {
 		});
 	},
 	updateDropdown:function(list,type,value,index,num){
+		var parent = $('#show_'+index+"_"+num).find('td.name');
 		if(type != 'announcement'){
+			$(parent).html("<select name='show_"+index+"_"+num+"' class='name'></select>");
+			var target = $('#show_'+index+"_"+num).children().find('select.name');
 			var p = $.ajax({
 				type:"POST",
 				url:"templates/ad_list.php",
@@ -178,11 +181,15 @@ Schedule.prototype = {
 				data: {"ad_list":JSON.stringify(list),'type':type,'value':value,'index':index,'num':(num-1)},
 			});
 			$.when(p).then(function(response){
-				$('#show_'+index+"_"+num).children().find('select.name').append(response);
+				target.empty();
+				target.append(response);
 			});
 		}else{
-			$('#show_'+index+"_"+num).children().find('select.name').append("<input value='Announce'></input>");
+			$(parent).html("<input class='name wideinput' name='show_"+index+"_"+num+"' value='Announce the upcoming show'>");
 		}
+	},
+	addElement:function(list,type,value,index,num){
+		
 	},
 	logError:function(error){
 		//Get relevant text from the eloquent error message

@@ -57,7 +57,7 @@
 						<option <?php if($ad['type'] == "id") echo 'selected'; ?> value='id'>Station ID</option>
 					</select>
 				</td>
-				<td>
+				<td class='name'>
 					<?php if($ad['type'] == 'announcement'): ?>
 						<input name='show[<?php echo 'show_'.$index.'_'.($ad['num']-1); ?>][name]' class='fullinput name' value="<?php echo $ad['name']; ?>" />
 					<?php else: ?>
