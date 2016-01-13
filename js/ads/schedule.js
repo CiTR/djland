@@ -11,13 +11,13 @@ function Schedule(date){
 	this['id'] = Array();
 	this['list'] = Array();	
 	this['templates'] = {};
-
+	this['cat-promises'] = Array();
 	this.showtimes = Array();
 
 	if(!date) var date = this.formatDate(new Date());	
 
 	//Get Categories
-	this.cat_ready = this.getCategories();
+	this['cat-promistes'] = this.getCategories();
 	//Get initial Schedule
 	this.ready = this.getSchedule(date);
 	$.when(this.ready).then(function(response){
@@ -52,7 +52,7 @@ Schedule.prototype = {
 		});
 	},
 	displaySchedule:function(schedule_element){
-		var promises = Array();
+		var promises = this['cat-promises'];
 		var this_ = this;
 
 		for(var i = 0; i < this.showtimes.length; i++){
@@ -118,8 +118,9 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['ad-cat'] = this_.createCategoryTemplate('ad');
-		});
+			this_['cat-promises']['ad-cat'] = this_.createCategoryTemplate('ad');
+		}
+		);
 		$.when(promises['ubc']).then(function(response){
 			this_['ubc'] = response.sort(function(a,b){
 				if(a.title.toString() > b.title.toString()) return 1;
@@ -127,7 +128,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['ubc-cat'] = this_.createCategoryTemplate('ubc');
+			this_['cat-promises']['ubc-cat'] = this_.createCategoryTemplate('ubc');
 		});
 		$.when(promises['community']).then(function(response){
 			this_['community'] = response.sort(function(a,b){
@@ -136,7 +137,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['community-cat'] = this_.createCategoryTemplate('community');
+			this_['cat-promises']['community-cat'] = this_.createCategoryTemplate('community');
 		});
 		$.when(promises['timely']).then(function(response){
 			this_['timely'] = response.sort(function(a,b){
@@ -145,7 +146,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['timely-cat'] = this_.createCategoryTemplate('timely');
+			this_['cat-promises']['timely-cat'] = this_.createCategoryTemplate('timely');
 		});
 		$.when(promises['promo']).then(function(response){
 			this_['promo'] = response.sort(function(a,b){
@@ -154,7 +155,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['promo_cat'] = this_.createCategoryTemplate('promo');
+			this_['cat-promises']['promo_cat'] = this_.createCategoryTemplate('promo');
 		});
 		$.when(promises['id']).then(function(response){
 			this_['id'] = response.sort(function(a,b){
@@ -163,7 +164,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			promises['id_cat'] = this_.createCategoryTemplate('id');
+			this_['cat-promises']['id_cat'] = this_.createCategoryTemplate('id');
 		});
 
 		$.when(promises['ubc'],promises['community'],promises['timely']).then(function(ubc,community,timely){
@@ -172,7 +173,7 @@ Schedule.prototype = {
 			for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
 			this_.psa = this_.psa
 
-			promises['psa-cat'] = this_.createCategoryTemplate('psa');
+			this_['cat-promises']['psa-cat'] = this_.createCategoryTemplate('psa');
 		});
 		return promises;
 	},
