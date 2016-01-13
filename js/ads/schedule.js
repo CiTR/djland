@@ -27,7 +27,16 @@ function Schedule(date){
 		this_.displaySchedule( $('.schedule') );
 		$('.loading_bar').hide();
 	},function(error){
-		console.log('err' + error.responseText);
+		this.ready = this.getSchedule(date);
+		$.when(this.ready).then(function(response){
+ 		for(var item in response){
+			this_.showtimes.push(response[item]);
+		}
+		this_.displaySchedule( $('.schedule') );
+		$('.loading_bar').hide();
+		},function(error){
+			console.log('err' + error.responseText);
+		});
 	});
 }
 

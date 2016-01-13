@@ -3,7 +3,7 @@ var schedule = new Schedule();
 $(document).ready ( function(){
 	var ad_types = ['ads','psa','promo','ids','ubc','community','timely'];
 	var schedule_element = $('.schedule');
-	var loading_bar = $('.loadingbar');
+	var loading_bar = $('.loading_bar');
 	var left_most_index = 0;
 	var right_most_index = 9;
 
@@ -30,10 +30,10 @@ $(document).ready ( function(){
 				schedule.showtimes.push(response[item]);
 			}
 			schedule.displaySchedule(schedule_element);
-			//loading_bar.hide();
+			loading_bar.hide();
 			addHandlers();
 		},function(error){
-			//loading_bar.hide();
+			loading_bar.hide();
 			schedule_element.empty();
 			schedule_element.append('Error getting this date')
 		});
