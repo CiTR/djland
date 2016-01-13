@@ -29,11 +29,11 @@ function Schedule(date){
 	},function(error){
 		this.ready = this.getSchedule(date);
 		$.when(this.ready).then(function(response){
- 		for(var item in response){
-			this_.showtimes.push(response[item]);
-		}
-		this_.displaySchedule( $('.schedule') );
-		$('.loading_bar').hide();
+	 		for(var item in response){
+				this_.showtimes.push(response[item]);
+			}
+			this_.displaySchedule( $('.schedule') );
+			$('.loading_bar').hide();
 		},function(error){
 			console.log('err' + error.responseText);
 		});
@@ -118,7 +118,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('ad');
+			promises['ad-cat'] = this_.createCategoryTemplate('ad');
 		});
 		$.when(promises['ubc']).then(function(response){
 			this_['ubc'] = response.sort(function(a,b){
@@ -127,7 +127,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('ubc');
+			promises['ubc-cat'] = this_.createCategoryTemplate('ubc');
 		});
 		$.when(promises['community']).then(function(response){
 			this_['community'] = response.sort(function(a,b){
@@ -136,7 +136,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('community');
+			promises['community-cat'] = this_.createCategoryTemplate('community');
 		});
 		$.when(promises['timely']).then(function(response){
 			this_['timely'] = response.sort(function(a,b){
@@ -145,7 +145,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('timely');
+			promises['timely-cat'] = this_.createCategoryTemplate('timely');
 		});
 		$.when(promises['promo']).then(function(response){
 			this_['promo'] = response.sort(function(a,b){
@@ -154,7 +154,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('promo');
+			promises['promo_cat'] = this_.createCategoryTemplate('promo');
 		});
 		$.when(promises['id']).then(function(response){
 			this_['id'] = response.sort(function(a,b){
@@ -163,7 +163,7 @@ Schedule.prototype = {
 				return 0;
 			});
 
-			this_.createCategoryTemplate('id');
+			promises['id_cat'] = this_.createCategoryTemplate('id');
 		});
 
 		$.when(promises['ubc'],promises['community'],promises['timely']).then(function(ubc,community,timely){
@@ -172,7 +172,7 @@ Schedule.prototype = {
 			for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
 			this_.psa = this_.psa
 
-			this_.createCategoryTemplate('psa');
+			promises['psa-cat'] = this_.createCategoryTemplate('psa');
 		});
 		return promises;
 	},
@@ -187,8 +187,9 @@ Schedule.prototype = {
 			});
 		$.when(p).then(function(response){
 			$('#' + item + '-template').append(response);
-			this_.templates[item] = $('#'+item+'-template');
+			this_.templates[""+item] = $('#'+item+'-template');
 		});
+		return p;
 	},
 	updateDropdown:function(list,type,value,index,num){
 		var parent = $('#show_'+index+"_"+num).find('td.name');
