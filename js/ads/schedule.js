@@ -14,19 +14,19 @@ function Schedule(date){
 	this['cat-promises'] = Array();
 	this.showtimes = Array();
 
-	if(!date) var date = this.formatDate(new Date());	
+	
+	this.init();
+	
+}
 
-	//Get Categories
-	this['cat-promistes'] = this.getCategories();
-	//Get initial Schedule
-	this.ready = this.getSchedule(date);
-	$.when(this.ready).then(function(response){
- 		for(var item in response){
-			this_.showtimes.push(response[item]);
-		}
-		this_.displaySchedule( $('.schedule') );
-		$('.loading_bar').hide();
-	},function(error){
+
+Schedule.prototype = {
+	init:function(){
+		var this_ = this;
+		if(!date) var date = this.formatDate(new Date());	
+		//Get Categories
+		this['cat-promises'] = this.getCategories();
+		//Get initial Schedule
 		this.ready = this.getSchedule(date);
 		$.when(this.ready).then(function(response){
 	 		for(var item in response){
@@ -35,14 +35,11 @@ function Schedule(date){
 			this_.displaySchedule( $('.schedule') );
 			$('.loading_bar').hide();
 		},function(error){
-			console.log('err' + error.responseText);
+			this_.init();
 		});
-	});
-}
-
-
-Schedule.prototype = {
+	},
 	getSchedule:function(date){
+
 		var date = this.formatDate(date);
 		return $.ajax({
 			type:"GET",
