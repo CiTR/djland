@@ -196,6 +196,7 @@ Schedule.prototype = {
 			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
 			var element = $('#show_'+index+"_"+num).find('select.name');
 			if(type != 'announcement') element.html(this['templates'][type].html());
+			if(value != null) element.val(value);
 		}else{
 			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
 		}
