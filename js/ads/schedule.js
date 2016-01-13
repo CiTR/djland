@@ -63,7 +63,6 @@ Schedule.prototype = {
 		});
 	},
 	saveSchedule:function(){
-
 		console.log($('form').serialize());
 		return $.ajax({
 			type:"POST",
@@ -172,7 +171,7 @@ Schedule.prototype = {
 	updateDropdown:function(list,type,value,index,num){
 		var parent = $('#show_'+index+"_"+num).find('td.name');
 		if(type != 'announcement'){
-			$(parent).html("<select name='show_"+index+"_"+num+"' class='name'></select>");
+			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
 			var target = $('#show_'+index+"_"+num).children().find('select.name');
 			var p = $.ajax({
 				type:"POST",
@@ -185,11 +184,11 @@ Schedule.prototype = {
 				target.append(response);
 			});
 		}else{
-			$(parent).html("<input class='name wideinput' name='show_"+index+"_"+num+"' value='Announce the upcoming show'>");
+			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
 		}
 	},
 	addElement:function(list,type,value,index,num){
-		
+
 	},
 	logError:function(error){
 		//Get relevant text from the eloquent error message
