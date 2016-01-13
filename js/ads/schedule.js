@@ -32,7 +32,10 @@ Schedule.prototype = {
 	 		for(var item in response){
 				this_.showtimes.push(response[item]);
 			}
-			this_.displaySchedule( $('.schedule') );
+			$.when(this['cat-promises']).then(function(){
+				this_.displaySchedule( $('.schedule') );
+			});
+			
 			$('.loading_bar').hide();
 		},function(error){
 			this_.init();
@@ -49,7 +52,7 @@ Schedule.prototype = {
 		});
 	},
 	displaySchedule:function(schedule_element){
-		var promises = this['cat-promises'];
+		var promises = Array();
 		var this_ = this;
 
 		for(var i = 0; i < this.showtimes.length; i++){
