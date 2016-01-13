@@ -187,8 +187,14 @@ Schedule.prototype = {
 			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
 		}
 	},
-	addElement:function(list,type,value,index,num){
+	addElement:function(list,type,time,index,num){
+		var count = 0;
+		var unix = $('#show_'+index).attr('data');
+		$('#show_'+index).find('.ads').find('tr').each(function(i,obj){
+			count++;
+		});
 
+		console.log(count);
 	},
 	logError:function(error){
 		//Get relevant text from the eloquent error message

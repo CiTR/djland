@@ -63,6 +63,8 @@ $(document).ready ( function(){
 	$('.save_button').click(function(e){
 		schedule.saveSchedule();
 	});
+
+
 	
 
 
@@ -74,6 +76,21 @@ function addHandlers(){
 			var name_arr = $(this).attr('name').replace(/[^0-9_]/g,'').split('_');
 			//updateDropdown:function(list,type,value,index,num);
 			schedule.updateDropdown(schedule[$(this).val()],$(this).val(),null,name_arr[1],name_arr[2]);
+		});
+		$('.insert').click(function(e){
+			var time = $('#template_ad_time_'+$(this).attr('data-index')).val();
+			var type = $('#template_ad_type_'+$(this).attr('data-index')).val();
+			var highest_num;
+			var index;
+			//Get the item we want to place it after.
+			$('#show_'+$(this).attr('data-index')).find('.ad_time').each(function(i,obj){
+				if(time == $(this).val() || time > $(this).val()){
+					//parse the ID of the parent TR
+					index = $(this).closest('tr').attr('id').split('_')[1];
+					highest_num = $(this).closest('tr').attr('id').split('_')[2];
+				} 
+			});
+			schedule.addElement(schedule[type],type,time,index,highest_num);
 		});
 		
  	}, 800);

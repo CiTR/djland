@@ -14,26 +14,6 @@
 	<h4 class='text-left'><?php echo $show['date']; ?></h4>
 
 	<div id="template_<?php echo $index; ?>">
-		<table class='table-condensed'>
-			<tr >
-				<td id='template_<?php echo $index ?>' >
-					<input name="" value='<?php echo $show['start']; ?>' class='ad_time'></input>
-				</td>
-				<td>
-					<select id="template_ad_type_<?php echo $index ?>">
-						<option value="announcement">Announcement</option>
-						<option value='ad'>Ad</option>
-						<option value='psa'>PSA</option>
-						<option value='timely'>Timely PSA</option>
-						<option value='ubc'>UBC PSA</option>
-						<option value='community'>Community PSA</option>
-						<option value='promo'>Show Promo</option>
-						<option value='id'>Station ID</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		<button id="insert_<?php echo $index; ?>" type='button'>Insert Ad</button>
 		<FORM name='<?php echo $show['start_unix']; ?>' class='showtime'>
 		<table class='table-condensed ads'>
 			<?php foreach($show['ads'] as $ad) : ?>
