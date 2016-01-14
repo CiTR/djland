@@ -158,7 +158,7 @@ Schedule.prototype = {
 	},
 	combinePSAs:function(promises){
 		var this_ = this;
-		$.when(promises['ubc'],promises['community'],promises['timely']).then(
+		return $.when(promises['ubc'],promises['community'],promises['timely']).then(
 			function(ubc,community,timely){
 				for(var item in ubc[0]){ this_.psa.push(ubc[0][item]); } 
 				for(var item in community[0]){ this_.psa.push(community[0][item]); }
