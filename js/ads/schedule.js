@@ -135,12 +135,11 @@ Schedule.prototype = {
 				async: true,
 			});
 			this.getCategory(item,promises);
-		}
+		}	
+		promises['psa'] = this_.combinePSAs(promises);
 
-		$.when.apply($,promises).then(function(){
-			this_.combinePSAs(promises);
-		});
 		return promises;
+		
 	},
 	getCategory:function(category,promises){
 		var this_ = this;
