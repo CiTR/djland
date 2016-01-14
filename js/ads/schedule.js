@@ -17,8 +17,9 @@ function Schedule(date){
 	this.categories = this.getCategories();
 	//Get initial Schedule
 	this.ready = this.getSchedule(date);
-	
-	this.init();
+	setTimeout(function(){
+		this_.init();
+	}, 600);
 	
 }
 
