@@ -114,7 +114,6 @@ Schedule.prototype = {
 				data: {"ads":$('form').serialize()}
 			});
 		}
-		
 	},
 	formatDate:function(date){
 		date = new Date(date);
