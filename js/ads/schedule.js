@@ -81,6 +81,7 @@ Schedule.prototype = {
 				for(var j = 0; j < num_ads; j++){
 					var element = $('#show_'+i+"_"+j).find('select.name');
 					if(this_.showtimes[i].ads[j].type != 'announcement'){
+						console.log($('#'+[this_.showtimes[i].ads[j].type]+"-template").html());
 						element.html($('#'+[this_.showtimes[i].ads[j].type]+"-template").html());
 						if(this_.showtimes[i].ads[j].name){
 							element.attr('value',this_.showtimes[i].ads[j].name);
