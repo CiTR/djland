@@ -33,6 +33,12 @@ Schedule.prototype = {
 			}
 			$.when.apply($,this_.categories).then(
 				function(){
+					console.log("retrieved categories");
+
+					var categories = {'ad':"6",'ubc':"12",'community':"11",'timely':"13",'promo':"21","id":"18"};
+					for(var category in categories){
+						this_['cat-promises'].push(this_.createCategoryTemplate(category));
+					}
 					$.when.apply($,this_['cat-promises']).then(
 						function(){
 							console.log(this_);
@@ -81,7 +87,6 @@ Schedule.prototype = {
 				for(var j = 0; j < num_ads; j++){
 					var element = $('#show_'+i+"_"+j).find('select.name');
 					if(this_.showtimes[i].ads[j].type != 'announcement'){
-						console.log($('#'+[this_.showtimes[i].ads[j].type]+"-template").html());
 						element.html($('#'+[this_.showtimes[i].ads[j].type]+"-template").html());
 						if(this_.showtimes[i].ads[j].name){
 							element.attr('value',this_.showtimes[i].ads[j].name);
@@ -131,9 +136,11 @@ Schedule.prototype = {
 			});
 			this.getCategory(item,promises);
 		}
-		this.combinePSAs(promises);
+
+		$.when.apply($,promises).then(function(){
+			this_.combinePSAs(promises);
+		});
 		return promises;
-	
 	},
 	getCategory:function(category,promises){
 		var this_ = this;
@@ -144,8 +151,6 @@ Schedule.prototype = {
 					if(a.title.toString() < b.title.toString()) return -1;
 					return 0;
 				});
-
-				this_['cat-promises'].push(this_.createCategoryTemplate(category));
 			},
 			function(error){
 				this_.getCategory(category);
