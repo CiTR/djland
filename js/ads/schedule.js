@@ -154,7 +154,7 @@ Schedule.prototype = {
 		var ajax = $.ajax({
 				type:"GET",
 				url:"api2/public/SAM/categorylist/"+this_.categories[category],
-				async: true,
+				async: false,
 			});
 		$.when(ajax).then(
 			function(response){
