@@ -1238,12 +1238,20 @@ text-align:left;
 .table-condensed>tbody>tr>td>button{
   font-size:0.9em;
 }
+table.ads{
+  max-width:100%;
+}
 table.ads > tbody > tr > td > input.ad_time {
     max-width: 80px;  
 }
 table.ads > tbody > tr > td > input.name {
     max-width: 775px;  
 }
+table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.name { 
+  width:100%;
+  min-width:300px;
+  }
+
 .schedule > li > div > table.ads{
     max-width:1024px;
 }
