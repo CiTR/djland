@@ -64,7 +64,9 @@ $(document).ready ( function(){
 	});
 	$('.save_button').click(function(e){
 		schedule.saveSchedule();
-		$.when(schedule.getSchedule( $('active-tab').attr('name')).then( function(response){
+		loading_bar.show();
+		schedule_element.empty();
+		$.when(schedule.getSchedule( $('active-tab').attr('name'))).then( function(response){
 			schedule.showtimes = Array();
 			for(var item in response){
 				schedule.showtimes.push(response[item]);
@@ -75,7 +77,7 @@ $(document).ready ( function(){
 		},function(error){
 			loading_bar.hide();
 			schedule_element.empty();
-			schedule_element.append('Error getting this date')
+			schedule_element.append('Error getting this date');
 		});
 	});
 
