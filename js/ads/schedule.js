@@ -12,7 +12,11 @@ function Schedule(date){
 	this['templates'] = {};
 	this['cat-promises'] = Array();
 	this.showtimes = Array();
-
+	if(!date) var date = this.formatDate(new Date());	
+	//Get Categories
+	this.categories = this.getCategories();
+	//Get initial Schedule
+	this.ready = this.getSchedule(date);
 	
 	this.init();
 	
@@ -22,21 +26,28 @@ function Schedule(date){
 Schedule.prototype = {
 	init:function(){
 		var this_ = this;
-		if(!date) var date = this.formatDate(new Date());	
-		//Get Categories
-		this.categories = this.getCategories();
-		//Get initial Schedule
-		this.ready = this.getSchedule(date);
+		
 		$.when(this.ready).then(function(response){
 	 		for(var item in response){
 				this_.showtimes.push(response[item]);
 			}
-			$.when.apply($,this_.categories).then(function(){
-				$.when.apply($,this_['cat-promises']).then(function(){
-				this_.displaySchedule( $('.schedule') );
-				$('.loading_bar').hide();
-				});
-			});
+			$.when.apply($,this_.categories).then(
+				function(){
+					$.when.apply($,this_['cat-promises']).then(
+						function(){
+							this_.displaySchedule( $('.schedule') );
+							$('.loading_bar').hide();
+						},function(){
+							console.log("Category display had a failure");
+							this_init();
+						}
+					);
+				},
+				function(){
+					console.log("Category load had a failure");
+					this_init();
+				}
+			);
 		},function(error){
 			this_.init();
 		});
