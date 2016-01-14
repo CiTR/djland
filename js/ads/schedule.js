@@ -38,15 +38,11 @@ Schedule.prototype = {
 				$('.loading_bar').hide();
 				});
 			});
-			
-			
-			
 		},function(error){
 			this_.init();
 		});
 	},
 	getSchedule:function(date){
-
 		var date = this.formatDate(date);
 		return $.ajax({
 			type:"GET",
@@ -73,8 +69,17 @@ Schedule.prototype = {
 
 				for(var j = 0; j < num_ads; j++){
 					var element = $('#show_'+i+"_"+j).find('select.name');
-					if(this_.showtimes[i].ads[j].type != 'announcement') element.html(this_['templates'][this_.showtimes[i].ads[j].type].html());
-					element.val(this_.showtimes[i].ads[j].name);
+					if(this_.showtimes[i].ads[j].type != 'announcement'){
+						element.html(this_['templates'][this_.showtimes[i].ads[j].type].html());
+						if(this_.showtimes[i].ads[j].name){
+							element.val(this_.showtimes[i].ads[j].name);
+							console.log('using name = '+ this_.showtimes[i].ads[j].name +", element = "+ element.val() );
+						} 
+						else{
+							element.val("Any "+this_.showtimes[i].ads[j].type);
+							console.log('using name = Any '+this_.showtimes[i].ads[j].type);
+						}
+					} 
 				}
 			}
 		});
