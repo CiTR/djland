@@ -72,12 +72,10 @@ Schedule.prototype = {
 					if(this_.showtimes[i].ads[j].type != 'announcement'){
 						element.html(this_['templates'][this_.showtimes[i].ads[j].type].html());
 						if(this_.showtimes[i].ads[j].name){
-							element.val(this_.showtimes[i].ads[j].name);
-							console.log('using name = '+ this_.showtimes[i].ads[j].name +", element = "+ element.val() );
+							element.attr('value',this_.showtimes[i].ads[j].name);
 						} 
 						else{
 							element.val("Any "+this_.showtimes[i].ads[j].type);
-							console.log('using name = Any '+this_.showtimes[i].ads[j].type);
 						}
 					} 
 				}
@@ -119,73 +117,42 @@ Schedule.prototype = {
 				url:"api2/public/SAM/categorylist/"+categories[item],
 				async: true,
 			});
+			this.getCategory(item,promises);
 		}
-		$.when(promises['ad']).then(function(response){
-			this_['ad'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('ad'));
-		}
-		);
-		$.when(promises['ubc']).then(function(response){
-			this_['ubc'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('ubc'));
-		});
-		$.when(promises['community']).then(function(response){
-			this_['community'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('community'));
-		});
-		$.when(promises['timely']).then(function(response){
-			this_['timely'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises']['timely-cat'] = this_.createCategoryTemplate('timely');
-		});
-		$.when(promises['promo']).then(function(response){
-			this_['promo'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('promo'));
-		});
-		$.when(promises['id']).then(function(response){
-			this_['id'] = response.sort(function(a,b){
-				if(a.title.toString() > b.title.toString()) return 1;
-				if(a.title.toString() < b.title.toString()) return -1;
-				return 0;
-			});
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('id'));
-		});
-
-		$.when(promises['ubc'],promises['community'],promises['timely']).then(function(ubc,community,timely){
-			for(var item in ubc[0]){ this_.psa.push(ubc[0][item]); } 
-			for(var item in community[0]){ this_.psa.push(community[0][item]); }
-			for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
-			this_.psa = this_.psa
-
-			this_['cat-promises'].push(this_.createCategoryTemplate('psa'));
-		});
+		this.combinePSAs(promises);
 		return promises;
 	
+	},
+	getCategory:function(category,promises){
+		var this_ = this;
+		$.when(promises[category]).then(
+			function(response){
+				this_[category] = response.sort(function(a,b){
+					if(a.title.toString() > b.title.toString()) return 1;
+					if(a.title.toString() < b.title.toString()) return -1;
+					return 0;
+				});
+
+				this_['cat-promises'].push(this_.createCategoryTemplate(category));
+			},
+			function(error){
+				this_.getCategory(category);
+			}
+		);
+	},
+	combinePSAs:function(promises){
+		var this_ = this;
+		$.when(promises['ubc'],promises['community'],promises['timely']).then(
+			function(ubc,community,timely){
+				for(var item in ubc[0]){ this_.psa.push(ubc[0][item]); } 
+				for(var item in community[0]){ this_.psa.push(community[0][item]); }
+				for(var item in timely[0]){ this_.psa.push(timely[0][item]); }
+				this_.psa = this_.psa
+				this_['cat-promises'].push(this_.createCategoryTemplate('psa'));
+			},function(error){
+				this_.combinePSAs(promises);
+			}
+		);
 	},
 	createCategoryTemplate:function(item){
 		var this_ = this;
