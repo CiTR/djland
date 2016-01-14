@@ -20,13 +20,6 @@ function Schedule(date){
 	this.ready = this.getSchedule(date);
 	
 	$.when(this.getCategory('ad'),this.getCategory('ubc'),this.getCategory('community'),this.getCategory('timely'),this.getCategory('promo'),this.getCategory('id')).then(function(ad,ubc,community,timely,promo,id){
-	/*	this_['cat-promises'].push(this_.createCategoryTemplate('ad'));
-		this_['cat-promises'].push(this_.createCategoryTemplate('ubc'));
-		this_['cat-promises'].push(this_.createCategoryTemplate('community'));
-		this_['cat-promises'].push(this_.createCategoryTemplate('timely'));
-		this_['cat-promises'].push(this_.createCategoryTemplate('promo'));
-		this_['cat-promises'].push(this_.createCategoryTemplate('id'));*/
-
 		for(var category in this_.categories){
 			this_['cat-promises'].push(this_.createCategoryTemplate(category));
 		}
@@ -104,7 +97,7 @@ Schedule.prototype = {
 			if(this_.showtimes[index].ads[j].type != 'announcement'){
 				element.html($('#'+[this_.showtimes[index].ads[j].type]+"-template").html());
 				if(this_.showtimes[index].ads[j].name){
-					element.attr('value',this_.showtimes[index].ads[j].name);
+					element.val(this_.showtimes[index].ads[j].name);
 				} 
 				else{
 					element.val("Any "+this_.showtimes[index].ads[j].type);
@@ -196,9 +189,9 @@ Schedule.prototype = {
 		if(type != 'announcement'){
 			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
 			var element = $('#show_'+index+"_"+num).find('select.name');
-
 			if(type != 'announcement') element.html($('#'+type+"-template").html());
-			if(value != null) element.val(value);
+			
+			if(value != null) element.attr('value',value);
 		}else{
 			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
 		}
