@@ -9,7 +9,6 @@ function Schedule(date){
 	this['psa'] = Array();
 	this['promo'] = Array();
 	this['id'] = Array();
-	this['list'] = Array();	
 	this['templates'] = {};
 	this['cat-promises'] = Array();
 	this.showtimes = Array();
@@ -70,7 +69,7 @@ Schedule.prototype = {
 				for(var j = 0; j < num_ads; j++){
 					var element = $('#show_'+i+"_"+j).find('select.name');
 					if(this_.showtimes[i].ads[j].type != 'announcement'){
-						element.html(this_['templates'][this_.showtimes[i].ads[j].type].html());
+						element.html($('#'+[this_.showtimes[i].ads[j].type]+"-template").html());
 						if(this_.showtimes[i].ads[j].name){
 							element.attr('value',this_.showtimes[i].ads[j].name);
 						} 
@@ -165,7 +164,6 @@ Schedule.prototype = {
 			});
 		$.when(p).then(function(response){
 			$('#' + item + '-template').append(response);
-			this_.templates[""+item] = $('#'+item+'-template');
 		});
 		return p;
 	},
