@@ -7,8 +7,10 @@ $(document).ready ( function(){
 	var left_most_index = 0;
 	var right_most_index = 9;
 
-	$.when(schedule.ready).then(function(){
-		 addHandlers();
+	$.when(schedule.ready,schedule.categories).then(function(){
+		 setTimeout(function(){
+		 	addHandlers();
+		 },1000);
 	});
 	$('#tab-nav').off('click','.tab').on('click','.tab', function(e){
 		//Save current schedule before changing view
@@ -93,6 +95,6 @@ function addHandlers(){
 			schedule.addElement(schedule[type],type,time,index,highest_num);
 		});
 		
- 	}, 800);
+ 	}, 1000);
 }
 
