@@ -66,19 +66,21 @@ $(document).ready ( function(){
 		schedule.saveSchedule();
 		loading_bar.show();
 		schedule_element.empty();
-		$.when(schedule.getSchedule( $('.active-tab').attr('name'))).then( function(response){
-			schedule.showtimes = Array();
-			for(var item in response){
-				schedule.showtimes.push(response[item]);
-			}
-			schedule.displaySchedule(schedule_element);
-			loading_bar.hide();
-			addHandlers();
-		},function(error){
-			loading_bar.hide();
-			schedule_element.empty();
-			schedule_element.append('Error getting this date');
-		});
+		setTimeout(function(){
+			$.when(schedule.getSchedule( $('.active-tab').attr('name'))).then( function(response){
+				schedule.showtimes = Array();
+				for(var item in response){
+					schedule.showtimes.push(response[item]);
+				}
+				schedule.displaySchedule(schedule_element);
+				loading_bar.hide();
+				addHandlers();
+			},function(error){
+				loading_bar.hide();
+				schedule_element.empty();
+				schedule_element.append('Error getting this date');
+			});
+		}, 1000);
 	});
 
 
