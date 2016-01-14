@@ -35,6 +35,7 @@ Schedule.prototype = {
 				function(){
 					$.when.apply($,this_['cat-promises']).then(
 						function(){
+							console.log(this);
 							this_.displaySchedule( $('.schedule') );
 							$('.loading_bar').hide();
 						},function(){
