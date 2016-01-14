@@ -99,9 +99,6 @@ Schedule.prototype = {
 				if(this_.showtimes[index].ads[j].name){
 					element.val(this_.showtimes[index].ads[j].name);
 				} 
-				else{
-					element.val("Any "+this_.showtimes[index].ads[j].type.charAt(0).toUpperCase() +this_.showtimes[index].ads[j].type.slice(1) );
-				}
 			}
 		}		
 	},
