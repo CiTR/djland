@@ -66,7 +66,7 @@ $(document).ready ( function(){
 		schedule.saveSchedule();
 		loading_bar.show();
 		schedule_element.empty();
-		$.when(schedule.getSchedule( $('active-tab').attr('name'))).then( function(response){
+		$.when(schedule.getSchedule( $('.active-tab').attr('name'))).then( function(response){
 			schedule.showtimes = Array();
 			for(var item in response){
 				schedule.showtimes.push(response[item]);
