@@ -180,6 +180,7 @@ class Show extends Model
         $key = array_keys($episodes->toArray());
         $num = count($key);
         if($testing_environment) $num = 6;
+        else $num = 100;
         $i = 0;
         $count = 0;
         while( $count < $num ) {
