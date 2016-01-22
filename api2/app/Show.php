@@ -170,7 +170,7 @@ class Show extends Model
         $xml[] = "<itunes:category text='Radio'>";
         $primary_genres = preg_split('/(\/|,)/',str_replace(' ','',$show['primary_genre_tags']));
         foreach($primary_genres as $genre){
-            $xml[] = "<itunes:category text='{$genre}' /></itunes:category>";
+            $xml[] = "<itunes:category text='{$genre}'></itunes:category>";
         }
 
         $xml[] = "</itunes:category>";
