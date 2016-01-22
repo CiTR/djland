@@ -7,13 +7,13 @@
 		this.to = $filter('date')(date,'yyyy/MM/dd');
 		this.from = $filter('date')(date.setDate(date.getDate() - 1),'yyyy/MM/dd');
 		this.member_id = $('#member_id').text();
+		this.show_names = Array();
 		this.type = 'crtc';
 		var this_ = this;
 
 		this.init = function(){
 			call.getActiveMemberShows( this.member_id ).then(function(response){
 				this_.shows = response.data.shows;
-				console.log(this_.shows);
 			});
 			call.getMemberPermissions(this.member_id).then(function(response){
                 if(response.data.administrator == '1' || response.data.staff == '1' ){
@@ -31,6 +31,15 @@
 
 			call.getReport(this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = angular.copy(response.data);
+				var length = this_.playsheets.length;
+				for(var i = 0; i < length; i++){
+					if(this_.show_names.indexOf(this_.playsheets[i].show.name) < 0){
+						this_.show_names.push(this_.playsheets[i].show.name);
+					}
+				}
+
+				
+
 			});
 		}
 		this.toggle_print = function(element){
