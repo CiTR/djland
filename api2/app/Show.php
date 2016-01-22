@@ -165,7 +165,7 @@ class Show extends Model
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
-        $xml[] = "<itunes:explicit>".$show['explicit']."</itunes:explicit>";
+        $xml[] = "<itunes:explicit>".$show['explicit'] == '0' ? 'no' : 'yes'."</itunes:explicit>";
         
         $xml[] = "<itunes:category text='Radio'>";
         $primary_genres = preg_split('/(\/|,)/',str_replace(' ','',$show['primary_genre_tags']));
