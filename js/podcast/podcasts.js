@@ -87,8 +87,8 @@
             this.start.setMinutes(this.editing.start_minute);
             this.start.setHours(this.editing.start_hour);
             this.editing.playsheet.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
-            this.editing.podcast.date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
-            console.log(this.editing.podcast.date);
+            this.editing.podcast.date =  this_.editing.playsheet.start_time;
+            this.editing.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
         }  
         this.updateEnd = function(){
@@ -111,7 +111,8 @@
                 this_.editing.start_hour =  $filter('pad')(this_.start.getHours(),2);
                 this_.editing.start_minute = $filter('pad')(this_.start.getMinutes(),2);
                 this_.editing.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                this_.editing.podcast.date = this_.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this_.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
+                this_.editing.podcast.date =  this_.editing.playsheet.start_time;
+                this_.editing.podcast.iso_date = this_.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this_.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
 
                 if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
                console.log("Start Time "+this_.editing.playsheet.start_time + " Start var =" +this_.start);
