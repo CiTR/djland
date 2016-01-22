@@ -149,9 +149,10 @@ class Show extends Model
             $field = Show::clean($field);
             }
 
-        $xml[] = '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+        $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
+        $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xml:lang="en-US" >';
         $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
-        $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" >';
+        
         $xml[] = "<channel>";
         $xml[] = "<title>". htmlspecialchars(html_entity_decode($show['podcast_title'])) . "</title>";
         
@@ -164,9 +165,17 @@ class Show extends Model
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
-        if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
+        $xml[] = "<itunes:explicit>".$show['explicit']."</itunes:explicit>";
+        
+        $xml[] = "<itunes:category text='Radio'>";
+        $primary_genres = preg_split('/(\/|,)/',str_replace(' ','',$show['primary_genre_tags']));
+        foreach($primary_genres as $genre){
+            $xml[] = "<itunes:category text='{$genre}' /></itunes:category>";
+        }
 
-        $xml[] = '<itunes:link rel="image" type="video/jpeg" href="'.$show["show_img"].'">'. $show["podcast_title"] . '</itunes:link>';
+        $xml[] = "</itunes:category>";
+
+        if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
 
         $xml[] = "<image>";
         $xml[] = "<link>http://www.citr.ca</link>";
@@ -201,12 +210,10 @@ class Show extends Model
                 $xml[] = "<item>";
                 $xml[] =  "<title>" . $episode["title"] . "</title>";
                 $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
-                $xml[] =  "<description>" . $episode["summary"] . "</description>";
                 $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
                 $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
-                $xml[] =  "<summary>" . $episode["summary"] . "</summary>";
                 $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
-                $xml[] = '<guid ispermaLink="true">' . $episode['url'] . '</guid>';
+                $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
                 $xml[] = "</item>";
 
             }
