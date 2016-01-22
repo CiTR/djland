@@ -154,13 +154,13 @@ class Show extends Model
         $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
         
         $xml[] = "<channel>";
-        $xml[] = "<title>". htmlspecialchars(html_entity_decode($show['podcast_title'])) . "</title>";
+        $xml[] = "<title>". $show['podcast_title'] . "</title>";
         
-        $xml[] = "<description>" . htmlspecialchars(html_entity_decode($show['show_desc'])) . "</description>";
-        $xml[] = "<itunes:summary>" . htmlspecialchars(html_entity_decode($show["show_desc"])). "</itunes:summary>";
-        if($show["host"]) $xml[] = "<itunes:author>" . htmlspecialchars(html_entity_decode($show["host"])). "</itunes:author>";
+        $xml[] = "<description>" . $show['show_desc'] . "</description>";
+        $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
+        if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
-        $xml[] = "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($show["podcast_summary"])) . "</itunes:subtitle>";
+        $xml[] = "<itunes:subtitle>" . $show["podcast_summary"] . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
@@ -200,7 +200,7 @@ class Show extends Model
             //Get Objects
             $playsheet = $episode->playsheet;
             $episode = $episode->getAttributes();
-            if($episode["active"]== '1' || $episode["active"]!= 0) {
+            if($episode["active"]== '1') {
                 if($testing_environment) echo $episode['date']."\n".$count."\n";
                 $count ++;
                 $episode['subtitle'] = sizeOf($episode['subtitle']) > 5 ? substr($episode['subtitle'],0,200) : substr($episode['summary'],0,200) ;
