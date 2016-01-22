@@ -169,7 +169,7 @@ class Show extends Model
         $xml[] = '<itunes:link rel="image" type="video/jpeg" href="'.$show["show_img"].'">'. $show["podcast_title"] . '</itunes:link>';
 
         $xml[] = "<image>";
-        $xml[] = "<link>www.citr.ca</link>";
+        $xml[] = "<link>http://www.citr.ca</link>";
         $xml[] = "<url>" . $show["show_img"]. "</url>";
         $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
@@ -193,6 +193,7 @@ class Show extends Model
             if($episode["active"]== '1' || $episode["active"]!= 0) {
                 if($testing_environment) echo $episode['date']."\n".$count."\n";
                 $count ++;
+                $episode['subtitle'] = sizeOf($episode['subtitle']) > 5 ? substr(0,200,$episode['subtitle']) : substr(0,200,$episode['summary']) ;
                 foreach($episode as $index=>$var){
                    $episode[$index] = Show::clean($episode[$index]); 
                 }
@@ -201,7 +202,7 @@ class Show extends Model
                 $xml[] =  "<title>" . $episode["title"] . "</title>";
                 $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
                 $xml[] =  "<description>" . $episode["summary"] . "</description>";
-                $xml[] =  "<itunes:subtitle>" . substr($episode["summary"],0,255) . "</itunes:subtitle>";
+                $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
                 $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
                 $xml[] =  "<summary>" . $episode["summary"] . "</summary>";
                 $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
