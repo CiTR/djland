@@ -145,8 +145,8 @@ class Show extends Model
     
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
-        foreach ($show as $field) {
-            $field = Show::clean($field);
+        foreach ($show as $k=>$field) {
+            $show[$k] = Show::clean($show[$k]);
             }
 
         $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
