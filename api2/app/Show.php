@@ -249,10 +249,9 @@ class Show extends Model
         return $response;  
     }
     public static function clean($string){
-        $find = array('/&/',"/'/",'/"/');
-        $replace = array('&amp;',"&apos;","&quot;");
         $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-        $string = preg_replace($find,$replace,$string);
+        $find = array('/&/',"/'/",'/"/');
+        $string = htmlentities($string,ENT_QUOTES);
         return $string;
     }
 
