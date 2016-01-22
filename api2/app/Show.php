@@ -136,17 +136,17 @@ class Show extends Model
 
         //Get objects
         $show = $this;
-        $episodes = $this->podcasts;
+        $episodes = $this->podcasts()->orderBy('date','desc')->get();
         
         $file_name = $this['podcast_slug'].'.xml';
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
 
+    
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
         foreach ($show as $field) {
-            $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES),ENT_QUOTES);
-            $field = str_replace("&","&amp;",$field);
+            $field = Show::clean($field);
             }
 
         $xml[] = '<?xml version="1.0" encoding="ISO-8859-1" ?>';
@@ -176,31 +176,39 @@ class Show extends Model
         $xml[] = "<link>" .$show["website"]. "</link> ";
         $xml[] = "<generator>CiTR Radio Podcaster</generator>";
 
-        //Build Each Podcas
-        $key = array_reverse(array_keys($episodes->toArray()));
+        //Build Each Podcast
+        $key = array_keys($episodes->toArray());
         $num = count($key);
-        for($i = 0; $i < $num; $i++) {
+        if($testing_environment) $num = 6;
+        $i = 0;
+        $count = 0;
+        while( $count < $num ) {
             $episode = $episodes[$key[$i]];
+
+
             //Get Objects
             $playsheet = $episode->playsheet;
             $episode = $episode->getAttributes();
-            if($episode["active"]== 1) {
-                
-                //Remove Legacy Encoding issues
-                foreach ($episode as $field) {
-                    $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES), ENT_QUOTES);
+            if($episode["active"]== '1' || $episode["active"]!= 0) {
+                if($testing_environment) echo $episode['date']."\n".$count."\n";
+                $count ++;
+                foreach($episode as $index=>$var){
+                   $episode[$index] = Show::clean($episode[$index]); 
                 }
+
                 $xml[] = "<item>";
-                $xml[] =  "<title>" . htmlspecialchars(html_entity_decode($episode["title"],ENT_QUOTES),ENT_QUOTES) . "</title>";
-                $xml[] =  "<pubDate>" . $episode["date"] . "</pubDate>";
-                $xml[] =  "<description>" . htmlspecialchars(html_entity_decode($episode["summary"],ENT_QUOTES),ENT_QUOTES) . "</description>";
-                $xml[] =  "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:subtitle>";
-                $xml[] =  "<itunes:summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:summary>";
-                $xml[] =  "<summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</summary>";
+                $xml[] =  "<title>" . $episode["title"] . "</title>";
+                $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
+                $xml[] =  "<description>" . $episode["summary"] . "</description>";
+                $xml[] =  "<itunes:subtitle>" . substr($episode["summary"],0,255) . "</itunes:subtitle>";
+                $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
+                $xml[] =  "<summary>" . $episode["summary"] . "</summary>";
                 $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
                 $xml[] = '<guid ispermaLink="true">' . $episode['url'] . '</guid>';
                 $xml[] = "</item>";
+
             }
+            $i++;
         }
         $xml[] = "</channel>";
         $xml[] = "</rss>";
@@ -209,60 +217,42 @@ class Show extends Model
 
         if(!$testing_environment){
             $target_dir = '/home/playlist/public_html/podcasting/xml/';
-            //$target_dir = 'audio/'.$year.'/';     
-            $target_file_name = $target_dir.$file_name;
-            //Open local file
-            $target_file = fopen($target_file_name,'wb');
-            $num_bytes = 0;
-            
-            //If we open local file
-            if($target_file){
-                //Writing Line By Line to reduce memory footprint.
-                for($i = 0; $i < count($xml); $i ++){
-                    $num_bytes += fwrite($target_file, $xml[$i]."\n");
-                    if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
-                }
-                 $response['reponse'] = array(
-                    'filename' => $file_name,
-                    'size' => $num_bytes,
-                    'url' => $url_path.$file_name
-                    );
-            }
-            
-            while(is_resource($target_file)){
-               //Handle still open
-               fclose($target_file);
-            }
-            return $response;
-        }else{
+         }else{
             $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
-            //$target_dir = 'audio/'.$year.'/';     
-            $target_file_name = $target_dir.$file_name;
-            //Open local file
-            $target_file = fopen($target_file_name,'wb');
-            $num_bytes = 0;
-            
-            //If we open local file
-            if($target_file){
-                //User a buffer so we don't hit the max memory alloc limit
-                for($i = 0; $i < count($xml); $i ++){
-                    $num_bytes += fwrite($target_file, $xml[$i]."\n");
-                    if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
-                }
-                 $response['reponse'] = array(
-                                'filename' => $file_name,
-                                'size' => $num_bytes,
-                                'url' => $url_path.$file_name
-                                );
+        }
+
+        //$target_dir = 'audio/'.$year.'/';     
+        $target_file_name = $target_dir.$file_name;
+        //Open local file
+        $target_file = fopen($target_file_name,'wb');
+        $num_bytes = 0;
+        
+        //If we open local file
+        if($target_file){
+            //Writing Line By Line to reduce memory footprint.
+            for($i = 0; $i < count($xml); $i ++){
+                $num_bytes += fwrite($target_file, $xml[$i]."\n");
+                if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
             }
-            
-            while(is_resource($target_file)){
-               //Handle still open
-               fclose($target_file);
-            }
-            return $response;
+             $response['reponse'] = array(
+                'filename' => $file_name,
+                'size' => $num_bytes,
+                'url' => $url_path.$file_name
+                );
         }
         
+        while(is_resource($target_file)){
+           //Handle still open
+           fclose($target_file);
+        }
+        return $response;  
+    }
+    public static function clean($string){
+        $find = array('/&/',"/'/",'/"/');
+        $replace = array('&amp;',"&apos;","&quot;");
+        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $string = preg_replace($find,$replace,$string);
+        return $string;
     }
 
 }

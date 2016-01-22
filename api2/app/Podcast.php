@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Podcast extends Model
 {
     protected $table = 'podcast_episodes';
-    const CREATED_AT = null;
-    const UPDATED_AT = null;
-    protected $fillable = array('playsheet_id', 'show_id','title', 'subtitle', 'summary', 'date','show_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
+    protected $fillable = array('playsheet_id', 'show_id','title', 'subtitle', 'summary', 'date','iso_date','show_id', 'url', 'length', 'author', 'active', 'duration');
 
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
