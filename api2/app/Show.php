@@ -142,9 +142,11 @@ class Show extends Model
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
 
-    
+        
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
+
+        $show["podcast_summary"] = sizeOf($show["podcast_summary"]) > 5 ? substr($show["podcast_summary"],0,200) : substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
             $show[$k] = Show::clean($show[$k]);
             }
