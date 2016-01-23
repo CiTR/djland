@@ -41,17 +41,17 @@
             if($('#addRows').text() == "Add Five More Rows"){
                 for(var i=0;i<5;i++){
                     this.add(this.playitems.length-1);
-                } 
+                }
             }else{
                 this.add(0);
                 $('#addRows').text("Add Five More Rows");
-            }           
+            }
         }
         this.addStartRow = function(){
             this.playitems = Array();
             this.playitems[0] = angular.copy(this.row_template);
             this.update();
-            
+
         }
         this.cueTrack = function (playitem) {
             playitem.start = new Date();
@@ -136,8 +136,9 @@
             call.getShowPlaysheets(this_.active_show.id).then(function(response){
                 //DISPLAY OLD PLAYSHEETS
                 this_.existing_playsheets = response.data.sort(function(a, b) {
-                        return a.start_time - b.start_time;
-                });
+				var re = new RegExp('-','g');
+				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+				});
             });
             this.updateTime();
         }
@@ -181,7 +182,7 @@
 
         this.loadRebroadcast = function(){
             call.getPlaysheetData(this.existing_playsheet).then(function(response){
-                this_.playitems = response.data.playitems; 
+                this_.playitems = response.data.playitems;
                 this_.info.spokenword_duration = response.data.playsheet.spokenword_duration;
                 if(this_.info.spokenword_duration != null){
                     this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
@@ -218,7 +219,7 @@
                     this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
                     this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                     this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                    
+
                     if(this_.info.spokenword_duration != null){
                         this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
                         this_.spokenword_minutes = this_.info.spokenword_duration % 60;
@@ -250,7 +251,7 @@
                         this_.member_shows = shows;
                         //Find what show this playsheet is for, and set it as active show to load information.
                         for(var show in this_.member_shows){
-                            
+
                             if(this_.show.name.toString() == shows[show].show.name.toString()){
                                 this_.active_show = this_.member_shows[show];
                                 this_.show_value = shows[show]['id'];
@@ -260,9 +261,10 @@
                         console.log(this_.active_show);
                         call.getShowPlaysheets(this_.active_show.id).then(function(response){
                             //DISPLAY OLD PLAYSHEETS
-                            this_.existing_playsheets = response.data.sort(function(a, b) {
-                                return a.start_time - b.start_time;
-                            });
+							this_.existing_playsheets = response.data.sort(function(a, b) {
+							var re = new RegExp('-','g');
+							return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+							});
                         });
                         //Populate the template row
                         var show_date = this_.start.getDate();
@@ -317,12 +319,13 @@
 
                         call.getShowPlaysheets(this_.show_value).then(function(response){
                             //DISPLAY OLD PLAYSHEETS
-                            this_.existing_playsheets = response.data.sort(function(a, b) {
-                                return a.start_time - b.start_time;
-                            });
+							this_.existing_playsheets = response.data.sort(function(a, b) {
+							var re = new RegExp('-','g');
+							return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+							});
 
                         });
-                    
+
                        call.getNextShowTime(this_.active_show.id,now).then(function(response){
                             console.log(response.data);
                             var start_unix = response.data.start;
@@ -365,14 +368,14 @@
                                 this_.loadSamPlays();
                             }
                             this_.loading = false;
-                        });      
+                        });
                     }else{
                         this_.loading = false;
                     }
-                        
+
                 });
             }
-            
+
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.info.start_time;
@@ -388,7 +391,7 @@
             this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
             this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-           
+
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
             console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
         });
@@ -454,8 +457,8 @@
             if(playsheet_okay == 'true'){
                 this.complete = true;
             }else{
-                this.missing = "You have empty values for these fields:" 
-                + (m.artist == 1 ? "an artist,":"") 
+                this.missing = "You have empty values for these fields:"
+                + (m.artist == 1 ? "an artist,":"")
                 + (m.song == 1 ? 'a song title,':"" )
                 + (m.album == 1 ? 'an album,':"")
                 + (m.composer == 1 ? 'a composer,':'')
@@ -492,7 +495,7 @@
                         this_.podcast.id = response.data.podcast_id;
                         this_.podcast.playsheet_id = response.data.id;
                         alert("Draft Saved");
-            
+
                     },function(error){
                         alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
                         this_.log_error(error);
@@ -512,7 +515,7 @@
             }else{
                 alert("You've already submitted this playsheet, please submit it instead");
             }
-            
+
         }
         //Submit a Playsheet
         this.submit = function () {
@@ -523,7 +526,7 @@
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
-           
+
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
@@ -543,7 +546,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this_.info.create_name = this_.username;
-                    
+
                     call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                         for(var playitem in this_.playitems){
                             this_.playitems[playitem].playsheet_id = this_.info.id;
@@ -569,7 +572,7 @@
                     });
                 }else{
                     //Existing Playsheet
-                    
+
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
@@ -579,13 +582,13 @@
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                                 this_.tracklist_overlay = true;
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                    this_.podcast_status = "Podcast Audio Created Successfully.";  
+                                    this_.podcast_status = "Podcast Audio Created Successfully.";
                                 },function(error){
                                     this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
                                     this_.error = true;
                                     this_.log_error(error);
                                 });
-                                    
+
                             },function(error){
                                 this_.podcast_status = "Podcast Not created";
                                 this_.error = true;
@@ -610,10 +613,10 @@
                             this_.tracklist_overlay = true;
                         });
                     }
-                    
+
                 }
-                
-            } 
+
+            }
         }
         this.log_error = function(error){
             var this_ = this;
@@ -664,7 +667,7 @@
             });
             this.sam_visible= false;
         };
-        
+
 
         // Call Initialization function at end of controller
         this.init();
@@ -714,7 +717,3 @@
     //TODO: Use Socan Call to get socan status
     var socan = false;
 })();
-
-
-
-    

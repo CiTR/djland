@@ -9,10 +9,10 @@
 	<head>
 		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
-		
+
 	</head>
-	
-	
+
+
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
     <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>
@@ -33,12 +33,12 @@
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; else echo socanCheck($db); ?></div>
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
-		
+
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
 		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.socan }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
-		      		
+
 					<div class='col1'>
 						Show: <select id='show_select' ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'">
 						</select>
@@ -47,7 +47,7 @@
 						Show Host(s): <input ng-model="playsheet.info.host"></input>
 					</div>
 					<div class='col1 double-padded-top'>
-						Type: 
+						Type:
 				        <select ng-model="playsheet.info.type" ng-change="loadIfRebroadcast()">
 				          	<option value="Syndicated">Syndicated</option>
 				          	<option value="Live">Live</option>
@@ -55,20 +55,20 @@
 				          	<option value="Simulcast">Simulcast</option>
 				    	</select>
 			        	<span ng-show="playsheet.info.type == 'Rebroadcast'">
-			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time for (id,ps) in playsheet.existing_playsheets | orderBy:'-id' "></select>
+			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time for ps in playsheet.existing_playsheets "></select>
 						<button ng-click="playsheet.loadRebroadcast()">Load Rebroadcast</button>
 						</span>
-						
+
 					</div>
 					<div class='col1'>
 						Language: <input ng-model="playsheet.info.lang"></input>
 					</div>
 					<div class='col1'>
-						CRTC Category: 
+						CRTC Category:
 						<button class="crtc" ng-model="playsheet.info.crtc" ng-click="playsheet.info.crtc == 30? playsheet.info.crtc = 20 : playsheet.info.crtc = 30;">{{playsheet.info.crtc}}</button>
 					</div>
 					<!-- <<h4 class='text-left'>Show Data</h4> -->
-			        
+
 					</div>
 		      	<div class='col2 padded'>
 			        <div class='col1' >
@@ -106,7 +106,7 @@
 						        [<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateEnd()"></select> :
 						        <select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60" ng-change="playsheet.updateEnd()"></select> :
 						        <select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60"  ng-change="playsheet.updateEnd()"></select>]
-					          	
+
 			                </div>
 			          	</div>
 		        		<div class='col1 double-padded-top'>
@@ -128,7 +128,7 @@
 				<h3 class='double-padded-top'>Music</h3>
 				<table class='playitem'>
 					<tr class='music_row_heading playitem border'>
-						<th class='side-padded'>#</th> 
+						<th class='side-padded'>#</th>
 						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.socan }"></input></th>
 						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.socan }"></input></th>
 						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.socan }"></input></th>
@@ -190,9 +190,9 @@
 				<div ng-show='playsheet.using_sam'>
 					<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
 				</div>
-				
+
 			</div>
-		
+
 				<div id="sam_picker" ng-show="samVisible">
 					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
 						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'y-MM-dd HH:mm:ss'}} to {{playsheet.end | date:'HH:mm:ss'}}	</button>
@@ -209,7 +209,7 @@
 				<h3>{{playsheet.tracklist_overlay_header}}</h3>
 				<h3 ng-show='!playsheet.error'>If you're done, please <a class='logout' href="index.php?action=logout" target="_self">click here to log out now</a> </h3>
 				<div ng-show='playsheet.info.status == 2' class='text-center'> {{playsheet.podcast_status}}</div>
-				<div class='text-center' id = 'playsheet_error'> </div>				
+				<div class='text-center' id = 'playsheet_error'> </div>
 				<hr/>
 				<h4 ng-show='!playsheet.error'>Tracklist:</h4>
 				<ul>
