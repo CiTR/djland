@@ -1,0 +1,31 @@
+<h3>Summary</h3>
+<h4>{{report.from}} - {{report.to}}</h4>
+
+
+<table class='table-condensed crtc_report'>
+	<tr>
+		<div ng-if='report.show_filter=="all"'>
+		<th>Show Name</th>
+		</div>
+		<div ng-else>
+		<th>Playsheet Date</th>
+		</div>
+		<th>Canadian(30)</th>
+		<th>Canadian(20)</th>
+		<th>Femcon</th>
+		<th>Hits</th>
+	</tr>
+
+		<div ng-if='report.show_filter=="all"'>
+			<tr ng-repeat="for item as item in report.percentages | orderBy='item.name'">
+				<td>{{item.name}}</td>
+				<td>{{}}</td>
+			</tr>
+		</div>
+		<div ng-else>
+			<tr ng-repeat="">
+
+			</tr>
+		</div>
+
+</table>
