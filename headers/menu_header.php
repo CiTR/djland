@@ -78,7 +78,7 @@ function print_menu(){
 		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
 		<?php
 		endif;
-		if(permission_level() > $djland_permission_levels['dj']):
+		if(permission_level() >= $djland_permission_levels['dj']):
 		?>
 			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
 		<?php

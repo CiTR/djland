@@ -64,7 +64,7 @@
 				No Results
 			</div>
 
-			<div  ng-show='report.playsheets.length > 0'>
+			<div id='summary' class='invisible'>
 				<h3>Summary</h3>
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
 

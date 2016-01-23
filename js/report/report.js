@@ -21,6 +21,7 @@
 				}else{
 					this_.is_admin = false;
 				}
+
 			},function(error){
 
 			});
@@ -28,6 +29,7 @@
 			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = angular.copy(response.data);
 				this_.loadGrid(response);
+				if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
 			});
 		}
 		this.report = function(){
@@ -36,6 +38,7 @@
 				this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
 				setTimeout(function(){
 					this_.loadGrid();
+					if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
 				},100);
 			});
 
@@ -46,7 +49,7 @@
 				button.text("Normal View");
 				$('#nav, #filter_bar').hide();
 				$('body').removeClass('wallpaper');
-				$('.red').addClass('grey');
+				$('.red').addClass('lightgrey');
 				$('.red').toggleClass('red');
 				$('.crtc_report').addClass('print_wrapper');
 			}else{
@@ -54,8 +57,8 @@
 				$('#nav, #filter_bar').show();
 				$('body').addClass('wallpaper');
 				$('.crtc_report').removeClass('print_wrapper');
-				$('.grey').addClass('red');
-				$('.grey').toggleClass('grey');
+				$('.lightgrey').addClass('red');
+				$('.lightgrey').toggleClass('lightgrey');
 			}
 
 
