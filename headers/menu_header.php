@@ -20,14 +20,14 @@ function print_menu(){
 	global $enabled,$djland_permission_levels,$using_sam;
 ?>
 	<ul id=nav>
-		<?php 
+		<?php
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
 			echo "<div id='using_sam' class='hidden'>".($using_sam ?'1':'0')."</div>";
-			if( (permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership'] ): 
+			if( (permission_level() >= $djland_permission_levels['volunteer']) && $enabled['membership'] ):
 		?>
-		<li class=nodrop><a href="membership.php">Membership</a></li>	
-		<?php 
+		<li class=nodrop><a href="membership.php">Membership</a></li>
+		<?php
 			endif;
 			if( permission_level() > $djland_permission_levels['member'] ): ?>
 		<li class=drop><a href="library.php">Library</a>
@@ -45,9 +45,9 @@ function print_menu(){
 			</div>
 		</li>
 
-		<?php 
+		<?php
 		endif;
-		if( permission_level() >= $djland_permission_levels['volunteer'] ): 
+		if( permission_level() >= $djland_permission_levels['volunteer'] ):
 		?>
 		<li class='drop'><a href='#'>Admin</a>
 			<div class="dropdown small">
@@ -56,8 +56,7 @@ function print_menu(){
 						<?php if(permission_level() >=  $djland_permission_levels['staff']) : ?>
 						<li><a href="specialbroadcast.php">Schedule Override</a></li>
 						<li><a href="friends.php">Friends of CiTR</a></li>
-						<li><a href="ad_schedule.php">Ad Scheduler</a></li>
-						<li><a href="scheduler.php">Ad Scheduler 2.0</a></li>
+						<li><a href="scheduler.php">Ad Scheduler</a></li>
 						<?php endif; ?>
 						<li><a href="adreport.php">Ad Reporting</a></li>
 						<li><a href="samAds.php">Sam Ad History</a></li>
@@ -68,34 +67,21 @@ function print_menu(){
 				</div>
 			</div>
 		</li>
-		<?php 
+		<?php
 		endif;
 		if($enabled['charts'] && permission_level() >=$djland_permission_levels['workstudy']) : ?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
-		<?php 
+		<?php
 		endif;
 		if($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']) :
 		?>
-		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>	
-		<?php 
-		endif; 
-		if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']): 
-		?>
-			<li class=drop ><a href="report.php">Reports</a>
-				<div class="dropdown small">
-					<div class=small>
-						<ul>
-							<li><a href="report.php">Show Report</a></li>
+		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
 		<?php
-						if(permission_level() >= $djland_permission_levels['workstudy']) : ?>
-							<li><a href="crtc_report.php">CRTC Report</a></li> 
-		<?php 
-						endif; ?>
-						</ul>
-					</div>
-				</div>
-			</li>
-		<?php 
+		endif;
+		if((permission_level() > $djland_permission_levels['dj']) && $enabled['report']):
+		?>
+			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
+		<?php
 			endif;
 			if((permission_level() >= $djland_permission_levels['dj']) && $enabled['playsheets']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
@@ -110,7 +96,7 @@ function print_menu(){
 						</div>
 					</div>
 				</li>
-		<?php 
+		<?php
 			endif;
 		?>
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
@@ -121,14 +107,14 @@ function print_menu(){
 				<div class=small>
 					<ul>
 
-						<li><a href="member_resources.php">Resources</a></li>				
-						<?php 
-						//if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()): 
+						<li><a href="member_resources.php">Resources</a></li>
+						<?php
+						//if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()):
 						if(permission_level() >= $djland_permission_levels['member']):
 						?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
 						<?php endif; ?>
-						
+
 						<?php if(permission_level() >= $djland_permission_levels['dj']) : ?>
 						<li><a href="help.php" target="_blank"> Help </a></li>
 						<?php endif; ?>
@@ -140,9 +126,8 @@ function print_menu(){
 		<?php endif; ?>
 	</ul>
 	<br/>
-<?php } 
+<?php }
 // useful when testing time-related things while faking time
 //echo date('l jS \of F Y h:i:s A', get_time());
 //echo " (".get_time().")";
 ?>
-
