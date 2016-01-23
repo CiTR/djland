@@ -4,7 +4,7 @@
 
 <table class='table-condensed crtc_report'>
 	<tr>
-		<div ng-if='report.show_filter=="all'>
+		<div ng-if='report.show_filter=="all"'>
 		<th>Show Name</th>
 		</div>
 		<div ng-else>
@@ -15,8 +15,17 @@
 		<th>Femcon</th>
 		<th>Hits</th>
 	</tr>
-	<tr ng-repeat="">
 
-	</tr>
+		<div ng-if='report.show_filter=="all"'>
+			<tr ng-repeat="for item as item in report.percentages | orderBy='item.name'">
+				<td>{{item.name}}</td>
+				<td>{{}}</td>
+			</tr>
+		</div>
+		<div ng-else>
+			<tr ng-repeat="">
+
+			</tr>
+		</div>
+
 </table>
-
