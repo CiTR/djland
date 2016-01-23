@@ -24,14 +24,15 @@
 			},function(error){
 
 			});
-			call.getReport(this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
+			console.log(this.show_filter);
+			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = angular.copy(response.data);
 				this_.loadGrid(response);
 			});
 		}
 		this.report = function(){
 			this_ = this;
-			call.getReport(this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
+			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
 				setTimeout(function(){
 					this_.loadGrid();

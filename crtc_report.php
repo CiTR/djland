@@ -120,7 +120,7 @@
 
 
 			</div>
-			<div>
+			<div ng-if='report.is_admin'>
 				<div ng-repeat='playsheet in report.playsheets track by $index' class='report_item' reportitem ></div>
 			</div>
 		</div>
