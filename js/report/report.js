@@ -28,8 +28,10 @@
 			console.log(this.show_filter);
 			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = angular.copy(response.data);
-				this_.loadGrid(response);
-				if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
+				setTimeout(function(){
+					this_.loadGrid();
+					if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
+				},1000);
 			});
 		}
 		this.report = function(){
