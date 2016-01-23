@@ -79,6 +79,7 @@
 			for(var i = 0; i < length; i++){
 				if(this.show_names.indexOf(this.playsheets[i].show.name) < 0) this.show_names.push(this.playsheets[i].show.name);
 			}
+			console.log(this.show_names);
 			//Set defaults for the overall totals
 			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0};
 
