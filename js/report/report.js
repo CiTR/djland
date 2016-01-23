@@ -39,7 +39,7 @@
 				setTimeout(function(){
 					this_.loadGrid();
 					if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
-				},100);
+				},1000);
 			});
 
 		}
