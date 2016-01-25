@@ -57,8 +57,10 @@
 		}
 		this.toggle_print = function(element){
 			var button = $('#print_friendly');
+			var button_holder = $('.print_button');
 			if(button.text() == "Print Friendly View" ){
 				button.text("Normal View");
+				button_holder.addClass('text-center');
 				$('#nav, #filter_bar').hide();
 				$('body').removeClass('wallpaper');
 				$('.red').addClass('lightgrey');
@@ -67,6 +69,7 @@
 			}else{
 				button.text("Print Friendly View");
 				$('#nav, #filter_bar').show();
+				button_holder.removeClass('text-center');
 				$('body').addClass('wallpaper');
 				$('.crtc_report').removeClass('print_wrapper');
 				$('.lightgrey').addClass('red');

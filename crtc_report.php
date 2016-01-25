@@ -11,7 +11,7 @@
 		<div ng-controller='reportController as report'>
 			<div class='text-center loading' ><img ng-show='report.loading==true' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 
-			<button ng-click='report.toggle_print()' id='print_friendly'>Print Friendly View</button>
+			<div class='print_button'><button ng-click='report.toggle_print()' id='print_friendly'>Print Friendly View</button></div>
 			<ul id='filter_bar' class='text-center inline-list'>
 				<li>
 					Filter By Show:
@@ -89,19 +89,19 @@
 								<div ng-if='report.show_names.length == 1'>{{item.date}}</div>
 
 							</td>
-							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 >= item.required_cancon || item.playitems_3 == 0 ? "":"red"'>
+							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 > item.required_cancon || item.playitems_3 == 0 ? "":"red"'>
 								{{item.cancon_3_total}} / {{item.playitems_3}}
 								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/{{item.required_cancon}}%)
 							</td>
-							<td ng-class='(item.cancon_2_total/item.playitems_2)*100 >= item.required_cancon || item.playitems_2 == 0 ? "":"red"'>
+							<td ng-class='(item.cancon_2_total/item.playitems_2)*100 > item.required_cancon || item.playitems_2 == 0 ? "":"red"'>
 								{{item.cancon_2_total}} / {{item.playitems_2}}
 								({{item.cancon_2_total/item.playitems_2 > 0 ? item.cancon_2_total/item.playitems_2 : 0 | percentage:0}}/{{item.required_cancon}}%)
 							</td>
-							<td ng-class='(item.femcon_total/item.total)*100 >= item.required_femcon || item.total == 0 ? "":"red"'>
+							<td ng-class='(item.femcon_total/item.total)*100 > item.required_femcon || item.total == 0 ? "":"red"'>
 								{{item.femcon_total}} / {{item.total}}
 								({{item.femcon_total/item.total > 0 ? item.femcon_total/item.total : 0 | percentage:0}}/{{item.required_femcon}}%)
 							</td>
-							<td ng-class='(item.hit_total/item.total)*100 <= 10 || item.total == 0 ? "":"red"'>
+							<td ng-class='(item.hit_total/item.total)*100 < 10 || item.total == 0 ? "":"red"'>
 								{{item.hit_total}} / {{item.total}}
 								({{item.hit_total/item.total > 0 ? item.hit_total/item.total : 0 | percentage:0}}/10% MAX)
 							</td>
@@ -109,19 +109,19 @@
 
 						<tr>
 							<td>Total</td>
-							<td ng-class='(report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3*100) >= 35 || report.percentage_totals.playitems_3 == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3*100) > 35 || report.percentage_totals.playitems_3 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
 								({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
 							</td>
-							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) >= 35  || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) > 35  || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
 								({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
 							</td>
-							<td ng-class='(report.percentage_totals.femcon_total/report.percentage_totals.playitems*100) >= 35 || report.percentage_totals.playitems == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.femcon_total/report.percentage_totals.playitems*100) > 35 || report.percentage_totals.playitems == 0 ?"":"red"'>
 								{{report.percentage_totals.femcon_total}} / {{report.percentage_totals.playitems}}
 								({{report.percentage_totals.femcon_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.femcon_total/report.percentage_totals.playitems : 0 | percentage:0}}/35%)
 							</td>
-							<td ng-class='(report.percentage_totals.hit_total/report.percentage_totals.playitems*100) <= 10 || report.percentage_totals.playitems == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.hit_total/report.percentage_totals.playitems*100) < 10 || report.percentage_totals.playitems == 0 ?"":"red"'>
 								{{report.percentage_totals.hit_total}} / {{report.percentage_totals.playitems}}
 								({{report.percentage_totals.hit_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.hit_total/report.percentage_totals.playitems : 0 | percentage:0}}/10% MAX)
 							</td>
