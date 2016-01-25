@@ -397,6 +397,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}
 			$playsheet->totals = $totals;
 		}
+		usort($playsheets,function($a,$b){
+			$s1 = strtotime($a['start_time']);
+			$s2 = strtotime($b['start_time']);
+			return $s1-$s2;
+		});
 		return $playsheets;
 	});
 

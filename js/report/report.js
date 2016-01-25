@@ -35,18 +35,24 @@
 			$('#report_summary').addClass('invisible');
 			$('#report_list').addClass('invisible');
 			this.loading = true;
-			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
-				this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
-				//delay displaying so to reduce lag from object creation.
-				setTimeout(function(){
-					this_.loadGrid();
-					if(this_.playsheets.length > 0){
-						this_.loading = false;
-						$('#report_summary').removeClass('invisible');
-						$('#report_list').removeClass('invisible');
-					}
-				},1000);
-			});
+			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(
+				function(response){
+					this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
+					this_.loading = false;
+					//delay displaying so to reduce lag from object creation.
+					setTimeout(function(){
+						this_.loadGrid();
+
+						if(this_.playsheets.length > 0){
+
+							$('#report_summary').removeClass('invisible');
+							$('#report_list').removeClass('invisible');
+						}
+					},1000);
+				},function(error){
+					alert("Please try disabling adblock");
+				}
+			);
 
 		}
 		this.toggle_print = function(element){
