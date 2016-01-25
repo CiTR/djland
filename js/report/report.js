@@ -10,8 +10,11 @@
 		this.show_names = Array();
 		this.type = 'crtc';
 		var this_ = this;
+		this.loading = true;
 
 		this.init = function(){
+			//Initial loading requests
+
 			call.getActiveMemberShows( this.member_id ).then(function(response){
 				this_.shows = response.data.shows;
 			});
@@ -25,22 +28,23 @@
 			},function(error){
 
 			});
-			console.log(this.show_filter);
-			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
-				this_.playsheets = angular.copy(response.data);
-				setTimeout(function(){
-					this_.loadGrid();
-					if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
-				},1000);
-			});
+			this.report();
 		}
 		this.report = function(){
 			this_ = this;
+			$('#report_summary').addClass('invisible');
+			$('#report_list').addClass('invisible');
+			this.loading = true;
 			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(function(response){
 				this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
+				//delay displaying so to reduce lag from object creation.
 				setTimeout(function(){
 					this_.loadGrid();
-					if(this_.playsheets.length > 0) $('#summary').removeClass('invisible');
+					if(this_.playsheets.length > 0){
+						this_.loading = false;
+						$('#report_summary').removeClass('invisible');
+						$('#report_list').removeClass('invisible');
+					}
 				},1000);
 			});
 
@@ -93,7 +97,6 @@
 					var show_playsheets = this.playsheets.filter(function(obj){ return obj.show.name == this_.show_names[index]; });
 					//Get the show info for the show name
 					var show = this.shows.filter(function(obj){return obj.name==this_.show_names[index]; })[0].show;
-					console.log(show);
 					//Set defaults for the show percentages
 					this.percentages[this.show_names[index]] = {'name':this.show_names[index],'playitems_2':0,'playitems_3':0,'total':0,'cancon_2_total':0,'cancon_3_total':0,'femcon_total':0};
 					this.percentages[this.show_names[index]]['required_cancon'] = show.cc_req;

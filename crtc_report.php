@@ -9,6 +9,8 @@
 		<h2>CiTR Radio 101.9 FM Station Report</h2>
 
 		<div ng-controller='reportController as report'>
+			<div class='text-center loading' ><img ng-show='open_playsheet.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
+
 			<button ng-click='report.toggle_print()' id='print_friendly'>Print Friendly View</button>
 			<ul id='filter_bar' class='text-center inline-list'>
 				<li>
@@ -64,7 +66,7 @@
 				No Results
 			</div>
 
-			<div id='summary' class='invisible'>
+			<div id='report_summary' class='invisible'>
 				<h3>Summary</h3>
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
 
@@ -120,8 +122,8 @@
 
 
 			</div>
-			<div ng-if='report.is_admin'>
-				<div ng-repeat='playsheet in report.playsheets track by $index' class='report_item' reportitem ></div>
+			<div id='report_list' ng-if='report.is_admin'>
+				<div ng-repeat='playsheet in report.playsheets track by $index | orderBy:"playsheet.start_time"' class='report_item' reportitem ></div>
 			</div>
 		</div>
 
