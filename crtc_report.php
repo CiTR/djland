@@ -52,7 +52,7 @@
 
 				</li>
 				<li>
-					<select ng-model='report.type'>
+					<select ng-show='report.is_admin' ng-model='report.type'>
 						<option value='crtc'>CRTC Report</option>
 						<option value='socan'>Socan Report</option>
 						<option value='both'>Combined Report</option>
