@@ -26,13 +26,16 @@ class Show extends Model
     }
     public function nextShowTime(){
         date_default_timezone_set('America/Los_Angeles');
-        $time = strtotime('now');
-        $showtimes = $this->showtimes;
         
-        //Get mod 2 of current week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
-        $current_week = (date('W',strtotime('now')) % 2) +1;
+        $showtimes = $this->showtimes;
+
+        //Get Today
+        $time = strtotime('now');
         //Get Day of Week (0-6)
-        $day_of_week = date('w',strtotime('now'));
+        $day_of_week = date('w',$time);
+        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        $current_week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+
         //Get Current Time (0-23:0-59:0-59)
         $current_time = date('H:i:s',strtotime('now'));
         
@@ -133,71 +136,90 @@ class Show extends Model
 
         //Get objects
         $show = $this;
-        $episodes = $this->podcasts;
+        $episodes = $this->podcasts()->orderBy('date','desc')->get();
         
         $file_name = $this['podcast_slug'].'.xml';
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
 
+        
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
-        foreach ($show as $field) {
-            $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES),ENT_QUOTES);
-            $field = str_replace("&","&amp;",$field);
+
+        $show["podcast_summary"] = sizeOf($show["podcast_summary"]) > 5 ? substr($show["podcast_summary"],0,200) : substr($show["show_desc"],0,200);
+        foreach ($show as $k=>$field) {
+            $show[$k] = Show::clean($show[$k]);
             }
 
-        $xml[] = '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+        $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
+        $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xml:lang="en-US" >';
         $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
-        $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" >';
-        $xml[] = "<channel>";
-        $xml[] = "<title>". htmlspecialchars(html_entity_decode($show['podcast_title'])) . "</title>";
         
-        $xml[] = "<description>" . htmlspecialchars(html_entity_decode($show['show_desc'])) . "</description>";
-        $xml[] = "<itunes:summary>" . htmlspecialchars(html_entity_decode($show["show_desc"])). "</itunes:summary>";
-        if($show["host"]) $xml[] = "<itunes:author>" . htmlspecialchars(html_entity_decode($show["host"])). "</itunes:author>";
+        $xml[] = "<channel>";
+        $xml[] = "<title>". $show['podcast_title'] . "</title>";
+        
+        $xml[] = "<description>" . $show['show_desc'] . "</description>";
+        $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
+        if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
-        $xml[] = "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($show["podcast_summary"])) . "</itunes:subtitle>";
+        $xml[] = "<itunes:subtitle>" . $show["podcast_summary"] . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
+        $xml[] = "<itunes:explicit>".($show['explicit'] == '0' ? 'no' : 'yes')."</itunes:explicit>";
+        
+        $xml[] = "<itunes:category text='Music'>";
+        $primary_genres = preg_split('/(\/|,)/',str_replace(' ','',$show['primary_genre_tags']));
+        $xml[] = "<itunes:category text='Radio'></itunes:category>";
+        foreach($primary_genres as $genre){
+            $xml[] = "<itunes:category text='{$genre}'></itunes:category>";
+        }
+
+        $xml[] = "</itunes:category>";
+
         if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
 
-        $xml[] = '<itunes:link rel="image" type="video/jpeg" href="'.$show["show_img"].'">'. $show["podcast_title"] . '</itunes:link>';
-
         $xml[] = "<image>";
-        $xml[] = "<link>www.citr.ca</link>";
+        $xml[] = "<link>http://www.citr.ca</link>";
         $xml[] = "<url>" . $show["show_img"]. "</url>";
         $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
         $xml[] = "<link>" .$show["website"]. "</link> ";
         $xml[] = "<generator>CiTR Radio Podcaster</generator>";
 
-        //Build Each Podcas
-        $key = array_reverse(array_keys($episodes->toArray()));
+        //Build Each Podcast
+        $key = array_keys($episodes->toArray());
         $num = count($key);
-        for($i = 0; $i < $num; $i++) {
+        if($testing_environment) $num = 6;
+        $i = 0;
+        $count = 0;
+        while( $count < $num && $count < 300 ) {
             $episode = $episodes[$key[$i]];
+
+
             //Get Objects
             $playsheet = $episode->playsheet;
             $episode = $episode->getAttributes();
-            if($episode["active"]== 1) {
-                
-                //Remove Legacy Encoding issues
-                foreach ($episode as $field) {
-                    $field = htmlspecialchars(html_entity_decode($field,ENT_QUOTES), ENT_QUOTES);
+            if($episode["active"]== '1') {
+                if($testing_environment) echo $episode['date']."\n".$count."\n";
+                $count ++;
+                $episode['subtitle'] = sizeOf($episode['subtitle']) > 5 ? substr($episode['subtitle'],0,200) : substr($episode['summary'],0,200) ;
+                foreach($episode as $index=>$var){
+                   $episode[$index] = Show::clean($episode[$index]); 
                 }
+
                 $xml[] = "<item>";
-                $xml[] =  "<title>" . htmlspecialchars(html_entity_decode($episode["title"],ENT_QUOTES),ENT_QUOTES) . "</title>";
-                $xml[] =  "<pubDate>" . $episode["date"] . "</pubDate>";
-                $xml[] =  "<description>" . htmlspecialchars(html_entity_decode($episode["summary"],ENT_QUOTES),ENT_QUOTES) . "</description>";
-                $xml[] =  "<itunes:subtitle>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:subtitle>";
-                $xml[] =  "<itunes:summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</itunes:summary>";
-                $xml[] =  "<summary>" . htmlspecialchars(html_entity_decode($episode["summary"])) . "</summary>";
+                $xml[] =  "<title>" . $episode["title"] . "</title>";
+                $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
+                $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
+                $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
                 $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
-                $xml[] = '<guid ispermaLink="true">' . $episode['url'] . '</guid>';
+                $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
                 $xml[] = "</item>";
+
             }
+            $i++;
         }
         $xml[] = "</channel>";
         $xml[] = "</rss>";
@@ -206,60 +228,41 @@ class Show extends Model
 
         if(!$testing_environment){
             $target_dir = '/home/playlist/public_html/podcasting/xml/';
-            //$target_dir = 'audio/'.$year.'/';     
-            $target_file_name = $target_dir.$file_name;
-            //Open local file
-            $target_file = fopen($target_file_name,'wb');
-            $num_bytes = 0;
-            
-            //If we open local file
-            if($target_file){
-                //Writing Line By Line to reduce memory footprint.
-                for($i = 0; $i < count($xml); $i ++){
-                    $num_bytes += fwrite($target_file, $xml[$i]."\n");
-                    if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
-                }
-                 $response['reponse'] = array(
-                    'filename' => $file_name,
-                    'size' => $num_bytes,
-                    'url' => $url_path.$file_name
-                    );
-            }
-            
-            while(is_resource($target_file)){
-               //Handle still open
-               fclose($target_file);
-            }
-            return $response;
-        }else{
+         }else{
             $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
-            //$target_dir = 'audio/'.$year.'/';     
-            $target_file_name = $target_dir.$file_name;
-            //Open local file
-            $target_file = fopen($target_file_name,'wb');
-            $num_bytes = 0;
-            
-            //If we open local file
-            if($target_file){
-                //User a buffer so we don't hit the max memory alloc limit
-                for($i = 0; $i < count($xml); $i ++){
-                    $num_bytes += fwrite($target_file, $xml[$i]."\n");
-                    if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
-                }
-                 $response['reponse'] = array(
-                                'filename' => $file_name,
-                                'size' => $num_bytes,
-                                'url' => $url_path.$file_name
-                                );
+        }
+
+        //$target_dir = 'audio/'.$year.'/';     
+        $target_file_name = $target_dir.$file_name;
+        //Open local file
+        $target_file = fopen($target_file_name,'wb');
+        $num_bytes = 0;
+        
+        //If we open local file
+        if($target_file){
+            //Writing Line By Line to reduce memory footprint.
+            for($i = 0; $i < count($xml); $i ++){
+                $num_bytes += fwrite($target_file, $xml[$i]."\n");
+                if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
             }
-            
-            while(is_resource($target_file)){
-               //Handle still open
-               fclose($target_file);
-            }
-            return $response;
+             $response['reponse'] = array(
+                'filename' => $file_name,
+                'size' => $num_bytes,
+                'url' => $url_path.$file_name
+                );
         }
         
+        while(is_resource($target_file)){
+           //Handle still open
+           fclose($target_file);
+        }
+        return $response;  
+    }
+    public static function clean($string){
+        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $find = array('/&/',"/'/",'/"/');
+        $string = htmlentities($string,ENT_QUOTES);
+        return $string;
     }
 
 }

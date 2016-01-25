@@ -167,8 +167,12 @@ function checkBlocking(){
 		}
 	}
 function renew_membership_form(){
-    
-    var date = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
+    if(new Date().getMonth() >= 4){
+        var date = new Date().getFullYear()+"/"+ (new Date().getFullYear()+1);
+    }else{
+        var date = (new Date().getFullYear()-1) + "/"+ new Date().getFullYear();
+    }
+   
     var exists = false;
     $('#membership_year option').each(function(){
         console.log(this.value + " ?=" +date);

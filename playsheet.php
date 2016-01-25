@@ -1,4 +1,4 @@
-<?php 
+<?php
 	require_once("headers/session_header.php");
 	include_once("headers/security_header.php");
 	include_once("headers/socan_header.php");
@@ -14,11 +14,11 @@
 
 	<head>
 		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'>
-		<link rel="stylesheet" href="css/style.css" type="text/css">	
+		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
-	
+
 	<body class='wallpaper'>
-		
+
 		<?php print_menu(); ?>
 		<div class='hidden'>
 			<div id='playsheet_id'><?php echo $playsheet_id ?></div>
@@ -32,7 +32,7 @@
 					<div class='col2'>
 						<!-- Left Side Playsheet Meta -->
 						<div class='col1'>
-							Show: 
+							Show:
 							<select id='show_select' name='show'>
 							</select>
 						</div>
@@ -68,7 +68,7 @@
 							<div class='col1'>
 								<button type='button' id='start_show'>Start Episode</button>
 								<div class='right'>
-									Start: 
+									Start:
 									<input id='start_date'>
 									[<select id='start_hour'>
 										<?php for($i=0;$i<23;$i++){ echo "<option value='".str_pad($i,2,"0",STR_PAD_LEFT)."'>".str_pad($i,2,"0",STR_PAD_LEFT)."</option>"; } ?>
@@ -81,12 +81,12 @@
 									<select id='start_second'>
 										<?php for($i=0;$i<59;$i++){ echo "<option value='".str_pad($i,2,"0",STR_PAD_LEFT)."'>".str_pad($i,2,"0",STR_PAD_LEFT)."</option>"; } ?>
 									</select>]
-									
+
 								</div>
 							</div>
 							<div class='col1'>
 								<div class='right'>
-									End: 
+									End:
 									<input id='end_date'>
 									[<select id='end_hour'>
 										<?php for($i=0;$i<23;$i++){ echo "<option value='".str_pad($i,2,"0",STR_PAD_LEFT)."'>".str_pad($i,2,"0",STR_PAD_LEFT)."</option>"; } ?>
@@ -104,7 +104,7 @@
 							</div>
 							<div class='col1 double-padded-top'>
 								<div class='text-center'>
-									Spokenword Duration: 
+									Spokenword Duration:
 								<select class='required'>
 									<?php for($i=0;$i<23;$i++){ echo "<option value='".str_pad($i,2,"0",STR_PAD_LEFT)."'>".str_pad($i,2,"0",STR_PAD_LEFT)."</option>"; } ?>
 								</select>Hours
@@ -227,7 +227,7 @@
 						            <option value='58'  >58</option>
 						            <option value='59'  >59</option>
 						        </select>:
-						    
+
 						        <select name='song_length_second' class='smalltext required'>
 						            <option value='0'  >00</option>
 						            <option value='1'  >01</option>
@@ -322,7 +322,7 @@
 			<FORM name='promotions'>
 				<table class='table table-responsive border'>
 					<th title='number'>#</th><th>Time</th><th>Type</th><th>Name</th><th>Played</th>
-					
+
 				</table>
 			</FORM>
 		</div>
@@ -336,7 +336,7 @@
 			<td>Femcon:</td>
 			<td><span id='femcon_percent'>20%</span><span>/ 35%</span></td>
 		</table>
-		
+
 	</div>
 
 		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
@@ -345,7 +345,7 @@
 		<script type='text/javascript' src='js/playsheet/app.js'></script>
 		<script>
 			$(document).ready(function(){
-    			$('[data-toggle="tooltip"]').tooltip(); 
+    			$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
 	</body>

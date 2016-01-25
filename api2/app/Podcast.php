@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Podcast extends Model
 {
     protected $table = 'podcast_episodes';
-    const CREATED_AT = 'create_date';
-    const UPDATED_AT = 'edit_date';
-    protected $fillable = array('playsheet_id', 'show_id','title', 'subtitle', 'summary', 'date','show_id', 'url', 'length', 'author', 'active', 'duration', 'edit_date');
+    protected $fillable = array('playsheet_id', 'show_id','title', 'subtitle', 'summary', 'date','iso_date','show_id', 'url', 'length', 'author', 'active', 'duration');
 
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
@@ -54,7 +52,9 @@ class Podcast extends Model
 	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
-	    $file_name = str_replace(array('.',':',';',','),'',$this->playsheet->show->name);
+    	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
+
+	    $file_name = str_replace($strip,'',$this->playsheet->show->name);
 	    //Replace Chars
 	    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
 	    $file_name = str_replace('&','and',$file_name);
@@ -74,21 +74,21 @@ class Podcast extends Model
     	}else{
     		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
     	}
-    	
-    	//$target_dir = 'audio/'.$year.'/'; 	
+
+    	//$target_dir = 'audio/'.$year.'/';
     	$target_file_name = $target_dir.$file_name;
-		
+
     	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;
 
     	//Get Audio from Archiver
     	$file_from_archive = fopen($archive_url,'r');
-    	
+
 		//If we obtain a file from archiver
 		if($file_from_archive){
 			//Open local file
 			$target_file = fopen($target_file_name,'wb');
 			$num_bytes = 0;
-			
+
 			//If we open local file
 			if($target_file){
 				//Attempt to add ID3 Tags
@@ -111,7 +111,7 @@ class Podcast extends Model
 				$response['audio'] = array('url' => $target_url	);
 				//Update XML to reflect new podcast creation
 				$response['xml'] = $this->show->make_show_xml();
-			}	
+			}
 		}
 		while(is_resource($file_from_archive)){
 		   //Handle still open
@@ -123,7 +123,7 @@ class Podcast extends Model
 		}
 	    return $response;
 	}
-	
+
 	private function overwrite_audio(){
 		date_default_timezone_set('America/Vancouver');
 		//Date Initialization
@@ -141,23 +141,28 @@ class Podcast extends Model
 	    if($this->url != null){
 	    	 $file_name = explode('/',$this->url,6)[5];
     	}else{
-    		//Set File Name
 	    	$file_date = date('F-d-H-i-s',$start);
-	    	$file_name = html_entity_decode(str_replace(array("'", '"',' '),'-',$this->playsheet->show->name),ENT_QUOTES).'-'.$file_date.'.mp3';
+		    //Strip Chars
+		    $file_name = str_replace($strip,'',$this->playsheet->show->name);
+		    //Replace Chars
+		    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
+		    //Replace ampersand
+		    $file_name = str_replace('&','and',$file_name);
+		    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$file_date.'.mp3';
     	}
-	  
-	   
+
+
 	    $target_file_name = $target_dir.$file_name;
-	    
+
 	    //Get Audio from Archiver
 	    $file_from_archive = fopen($archive_url,'r');
-    	
+
     	//If we obtain a file from archiver
 		if($file_from_archive){
 			//Open local file
 			$target_file = fopen($target_file_name,'wb');
 			$num_bytes = 0;
-			
+
 			//If we open local file
 			if($target_file){
 				//Attempt to add ID3 Tags
@@ -187,8 +192,8 @@ class Podcast extends Model
 			   fclose($file_from_archive);
 			}
 		}
-		
-		
+
+
 	    return $response;
 	    }
 

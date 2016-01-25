@@ -88,9 +88,9 @@ if( permission_level() >= $djland_permission_levels['dj']){
                 <input placeholder="Secondary Genre Name" ng-model='show.secondary_genre_input'/>
                 <button ng-click='show.addSecondaryGenre()' type='button'>Add Secondary Genre</button>
                 <h4 class='text-left double-padded-top'>Show Alert</h4>
-                <input ng-model='show.info.alerts'/>
+                <textarea class='alert' ng-model='show.info.alerts'></textarea>
                 <h4 class='text-left double-padded-top'>Show Description</h4>
-                <textarea class='col1' rows='10' style="margin-bottom:16px" ng-model='show.info.show_desc'></textarea>
+                <textarea class='description' ng-model='show.info.show_desc'></textarea>
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>

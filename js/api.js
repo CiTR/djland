@@ -67,18 +67,17 @@ api.factory('call', function ($http, $location) {
 		getAdSchedule: function(){
 			return $http.get(API_URL_BASE+'/adschedule');
 		},
-		getReport: function(show_id,from,to){
-			return $http.post(API_URL_BASE+'/report',angular.toJson({'show_id':show_id,'from':from,'to':to}));
+		getReport: function(member_id,show_id,from,to){
+			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'member_id':member_id,'show_id':show_id,'from':from,'to':to}));
 		},
 		getFriends: function(){
-			return $http.get(API_URL_BASE+'/friend');
+			return $http.get(API_URL_BASE+'/friends');
 		},
 		addFriend: function(){
-			return $http.put(API_URL_BASE+'/friend');
+			return $http.put(API_URL_BASE+'/friends');
 		},
-
 		saveFriends: function(friend){
-			return $http.post(API_URL_BASE + '/friend', angular.toJson({'friend':friends}));
+			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friend':friends}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');

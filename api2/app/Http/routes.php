@@ -36,7 +36,7 @@ Route::filter('numeric',function($route,$request){
 });
 //Area requires an active session "Private" api
 Route::group(['middleware' => 'auth'], function(){
-	//Member Routes 
+	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 		//Create a new Member
 		Route::put('/',function(){
@@ -160,7 +160,8 @@ Route::group(['middleware' => 'auth'], function(){
 					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
 						if($show->active == 1){
-							$shows[] = $show;	
+							$shows[] = $show;
+
 						}
 					}
 				}
@@ -184,6 +185,7 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->get();
 	});
+
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 		//Get show + social entries
 		Route::get('/',function($id){
@@ -251,7 +253,6 @@ Route::group(array('prefix'=>'show'),function(){
 				return Response::json(Show::find($id)->members()->detach($member_id));
 			});
 		});
-
 		//Get all playsheets
 		Route::get('playsheets',function($id){
 			return Show::find($id)->playsheets;
@@ -311,6 +312,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		//Get playsheets in a range
 		Route::get('range/{startunix}/{endunix}',function($startunix = startunix,$endunix = endunix){
 			return Response::json(Playsheet::where(DB::raw('UNIX_TIMESTAMP(start_time)'),'>=',$startunix)->where(DB::raw('UNIX_TIMESTAMP(end_time)'),'<=',$endunix)->get());
+
 		});
 	});
 	Route::group(array('prefix'=>'{id}'),function($id = id){
@@ -386,7 +388,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 });
 
 
-Route::group(array('prefix'=>'friend'),function(){
+Route::group(array('prefix'=>'friends'),function(){
 	//Get friends
 	Route::get('/',function(){
 		return Friends::all();
@@ -431,25 +433,33 @@ Route::group(array('prefix'=>'specialbroadcasts'),function(){
 
 
 Route::post('/report',function(){
+		$member_id = Input::get()['member_id'];
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
-		if($from != null && $to != null){
-			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->where('show_id','=',$show_id)->get();
-			}else{
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
-			}
+		$playsheets = Array();
+		$permissions = Member::find($member_id)->user->permission;
+		if($permissions->staff ==1 || $permissions->administrator==1){
+			$shows = Show::all();
 		}else{
-			if($show_id != null && $show_id != 'all'){
-				$playsheets = Playsheet::orderBy('start_time','asc')->where('show_id','=',$show_id)->get();
-			}else{
-				$playsheets = Playsheet::orderBy('start_time','asc')->get();
+			$shows =  Member::find($member_id)->shows;
+		}
+		foreach($shows as $show){
+			if($show_id == 'all' || $show_id == $show['id']){
+				if($from != null && $to != null){
+					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+				}else{
+					$ps[] = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->get();
+				}
+				foreach($ps as $sheet){
+					$playsheets[] = $sheet;
+				}
 			}
+
 		}
 		foreach($playsheets as $p){
 			$playsheet = $p;
-			$playsheet->playitems = $p->playitems;
+			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
 			if( $p->start_time && $p->end_time){
@@ -474,35 +484,42 @@ Route::post('/report',function(){
 			}
 			$playsheet->totals = $totals;
 		}
+		usort($playsheets,function($a,$b){
+			$s1 = strtotime($a['start_time']);
+			$s2 = strtotime($b['start_time']);
+			return $s1-$s2;
+		});
 		return $playsheets;
 	});
 
 Route::get('/adschedule/{date}',function($date = date){
 	date_default_timezone_set('America/Los_Angeles');
-	$date = date('Y-M-d',strtotime($date));
-	$unix = strtotime($date);
-	$parsed_date = date_parse($date);
+	$formatted_date = date('Y-M-d',strtotime($date));
+	$unix = strtotime($formatted_date);
+	$parsed_date = date_parse($formatted_date);
 	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
 		//Constants (second conversions)
 		$one_day = 24*60*60;
 		$one_hour = 60*60;
 		$one_minute = 60;
 
-		//Get mod 2 of week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
-	    $week = (date('W',strtotime($date)) % 2) +1;
+
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
-		
-		if($date == date('Y-M-d',strtotime('now'))){
+        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        $week = floor( (strtotime($date) - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+
+
+		if($formatted_date == date('Y-M-d',strtotime('now'))){
 			//Set cutoff time to right now if we are loading today
 			$time = date('H:i:s',strtotime('now'));
 		}else{
 			//Set cutoff time to 00:00:00
 			$time = '00:00:00';
 		}
-		
+
 		//Select active shows that run during the date specified.
-		$shows = 
+		$shows =
 		Show::selectRaw('shows.id,shows.name,show_times.start_day,show_times.start_time,show_times.end_day,show_times.end_time')
 		->join('show_times','show_times.show_id','=','shows.id')
 		->where('show_times.start_day','=',$day_of_week)
@@ -515,14 +532,14 @@ Route::get('/adschedule/{date}',function($date = date){
 		//for each show time get the ads, or create them.
 		foreach($shows as $show_time){
 			$start_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
-			$start_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
+			$start_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;
 			$start_unix_offset = $start_hour_offset + $start_minute_offset;
 			$end_hour_offset = date_parse($show_time['end_time'])['hour'] * $one_hour;
-			$end_minute_offset = date_parse($show_time['end_time'])['minute'] * $one_minute;			
+			$end_minute_offset = date_parse($show_time['end_time'])['minute'] * $one_minute;
 			$end_unix_offset = $end_hour_offset + $end_minute_offset;
 			if( $show_time['end_day'] != $show_time['start_day'] ){
 				$end_unix_offset += $one_day;
-			}			
+			}
 
 			$show_time->start_unix = $unix + $start_unix_offset;
 			$show_time->end_unix = $unix + $end_unix_offset;
@@ -541,178 +558,8 @@ Route::get('/adschedule/{date}',function($date = date){
 		return $shows;
 	}else{
 		http_response_code('400');
-		return "Not a Valid Date: {$date}";
+		return "Not a Valid Date: {$formatted_date}";
 	}
-});
-Route::get('/adschedule',function(){
-	date_default_timezone_set('America/Los_Angeles');
-	$active_shows = Show::select('*')->where('active','=','1')->get();
-	$schedule = array();
-	//Get mod 2 of current week since start of year(always 52 weeks so this is acceptable for next 1000 years?) Add 1 to get week 1 or 2
-    $current_week = (date('W',strtotime('now')) % 2) +1;
-	//Get Day of Week (0-6)
-	$day_of_week = date('w',strtotime('now'));
-	//Get Current Time (0-23:0-59:0-59)
-	$current_time = date('H:i:s',strtotime('now'));
-	
-	//Making sure if today is sunday, it does not get last sunday instead of today.
-	if($day_of_week == 0){
-		$week_0_start = strtotime('today');
-		$week_1_start = strtotime('+1 week',$week_0_start);
-		$week_2_start = strtotime('+1 week',$week_1_start);
-	}else{
-		$week_0_start = strtotime('last sunday 00:00:00')  ;
-		$week_1_start = strtotime('+1 week',$week_0_start);
-		$week_2_start = strtotime('+1 week',$week_1_start);
-	}
-	
-	//Constants (second conversions)
-	$one_day = 24*60*60;
-	$one_hour = 60*60;
-	$one_minute = 60;
-	$schedule = array();
-	//Getting this week.
-	foreach($active_shows as $show){
-		//Get next showtime catching error for show having no showtime
-		try{
-			$times = $show->showtimes;
-			foreach($times as $show_time){
-				//Calculating how many seconds from start of week the showtime occurs.
-				$show_time_day_offset = ($show_time['start_day']) * $one_day;
-				$show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
-				$show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;			
-				$show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
-				
-				if($show_time['start_day'] != $show_time['end_day']){
-					$show_duration = (24 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour'])*$one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute'])*$one_minute;
-				}else{
-					$show_end_time_unix_offset = $show_time['end_day'] * $one_day + date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute;
-					$show_duration = abs($show_end_time_unix_offset - $show_time_unix_offset);
-				}
-
-				//Unix timestamp of possible show start times
-				$week_0_show_unix = $week_0_start + $show_time_unix_offset;
-				$week_1_show_unix = $week_1_start + $show_time_unix_offset;
-				$week_2_show_unix = $week_2_start + $show_time_unix_offset;
-
-				//DST Offset
-	            if( date('I',strtotime($week_0_show_unix))=='0' ){
-	                //$week_0_show_unix += 3600;
-	            }
-	            if( date('I',strtotime($week_1_show_unix))=='0' ){
-	                //$week_1_show_unix += 3600;
-	            }
-	            if( (date('I',strtotime($week_2_show_unix))=='0') ){
-	               // $week_2_show_unix += 3600;
-	            }
-
-				//Get Ads
-				$week_0_ads = array();
-				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
-				$week_1_ads = array();
-				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
-				$week_2_ads = array();
-				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();	
-					
-				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
-				if(count($week_0_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_0_ads = Ad::generateAds($week_0_show_unix,$show_duration);					
-				}
-				if(count($week_1_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_1_ads = Ad::generateAds($week_1_show_unix,$show_duration);					
-				}
-				if(count($week_2_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_2_ads = Ad::generateAds($week_2_show_unix,$show_duration);					
-				}
-				
-				//Generate Arrays
-				$week_0 = array(
-					$week_0_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_0_show_unix,
-						"end_unix"	=>$week_0_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_0_show_unix),
-						"date"		=>date('l F jS g:i a',$week_0_show_unix),
-						"ads"		=>$week_0_ads
-					)
-				);
-				$week_1 = array(
-					$week_1_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_1_show_unix,
-						"end_unix"	=>$week_1_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_1_show_unix),
-						"date"		=>date('l F jS g:i a',$week_1_show_unix),
-						"ads"		=>$week_0_ads
-					)
-				);
-				$week_2 = array(
-					$week_2_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_2_show_unix,
-						"end_unix"	=>$week_2_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_0_show_unix),
-						"date"		=>date('l F jS g:i a',$week_2_show_unix),
-						"ads"		=>$week_2_ads
-					)
-				);
-
-				//Check if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
-				if( ($show_time['start_day'] == $day_of_week && $show_time['start_time'] >= $current_time) || $show_time['start_day'] > $day_of_week){
-					//Hasn't happened yet, look at weeks 0 and 1
-					if($show_time['alternating'] == '0'){
-						//Occurs Weekly, Add to week 0,1
-						$schedule[] = $week_0[1];
-						$schedule[] = $week_1[1];
-					}else if($show_time['alternating'] == $current_week){
-						//Occurs this week, add to remainder of week 0
-						$schedule[] = $week_0[1];
-					}else{
-						//Doesn't occur this week, add to week 1
-						$schedule[] = $week_1[1];
-					}
-
-				}else{
-					//Already occured this week, look at weeks 1 and 2
-					if($show_time['alternating'] == '0'){
-						//Occurs weekly, add to week 1,2
-						$schedule[] = $week_1[1];
-						$schedule[] = $week_2[1];
-					}else if($show_time['alternating'] == $current_week){
-						//Occurs this week, add to week 2
-						$schedule[] = $week_2[1];
-					}else{
-						//Doesn't occur this week, add to week 1
-						$schedule[] = $week_1[1];
-					}
-				}
-			}
-			
-		}catch(Exception $e){
-			//No Show time available or exception thrown.
-			return "Exception Thrown: ".$e->getMessage()."<br/><pre>".$e->getTraceAsString();
-		}
-	}
-	return Response::json($schedule);
-	
 });
 
 Route::post('/adschedule',function(){
@@ -736,7 +583,7 @@ Route::post('/adschedule',function(){
 		foreach($to_delete as $delete){
 			$found = false;
 			foreach($a as $item){
-				if($delete['id'] == $item['id']) $found = true; 
+				if($delete['id'] == $item['id']) $found = true;
 			}
 			if($found == false) Ad::find($delete['id'])->delete();
  		}
@@ -748,12 +595,12 @@ Route::post('/adschedule',function(){
 });
 
 Route::get('/promotions/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
-	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
+	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
 	if(sizeof($ads) > 0) return Response::json($ads);
 	else return Ad::generateAds($unixtime,$duration);
 });
 Route::get('/ads/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
-	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get(); 
+	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
 	if(sizeof($ads) > 0) return Response::json($ads);
 	else return Ad::generateAds($unixtime,$duration);
 });
@@ -839,7 +686,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 				$song = Songlist::find($item->songID);
 				if($song['title'] == "" || $song['title'] == null){
 					$song['title'] = $song['artist'];
-				} 
+				}
 				$songs[] = $song;
 			}
 			return Response::json($songs);
@@ -897,8 +744,8 @@ Route::get('/nowplaying',function(){
 	}else{
 		$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
-			WHERE 
-				CASE 
+			WHERE
+				CASE
 					WHEN s.start_day = s.end_day THEN s.start_day={$day_of_week} AND s.end_day={$day_of_week} AND s.start_time <= CURTIME() AND s.end_time > CURTIME()
 					WHEN s.start_day != s.end_day AND CURTIME() <= '23:59:59' AND CURTIME() > '12:00:00 'THEN s.start_day={$day_of_week} AND s.end_day = {$tomorrow} AND s.start_time <= CURTIME() AND s.end_time >= '00:00:00'
 					WHEN s.start_day != s.end_day AND CURTIME() < '12:00:00' AND CURTIME() >= '00:00:00' THEN s.start_day= {$yesterday} AND s.end_day = {$day_of_week} AND s.end_time > CURTIME()
@@ -917,7 +764,7 @@ Route::get('/nowplaying',function(){
 			$result['showTime'] = "";
 			$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
 		}
-	}	
+	}
 	return Response::json($result);
 });
 
@@ -942,7 +789,7 @@ Route::get('/socan/{time}',function($unixtime = time){
 	return Response::json(false);
 });
 
-// Table Helper Routes 
+// Table Helper Routes
 Route::get('/table',function(){
 	return  DB::select('SHOW TABLES');
 });

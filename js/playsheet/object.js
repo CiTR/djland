@@ -6,14 +6,9 @@ var site_base = "" + re.exec(window.location.origin)['input'];
 function Playsheet(){
 	var this_ = this;
 
-	var member_id = $('#member_id').text() || 1;
-	var playsheet_id = $('#playsheet_id').text() || 1;
-	console.log(playsheet_id);
-
+	var member_id = $('#member_id').text() || -1;
+	var playsheet_id = $('#playsheet_id').text() || -1;
 	var requests = Array();
-	
-
-
 
 	this.initialize = function(){
 		var this_ = this;
@@ -25,7 +20,7 @@ function Playsheet(){
 		this.getMemberShows(member_id);
 
 		$.when(requests['show_load']).then(function(shows){
-			
+
 			console.log("ID="+this_.info.id);
 			if(this_.info.id != null && this_.info.id > 0){
 				this_.load(this_.info.id);
@@ -34,10 +29,12 @@ function Playsheet(){
 				this_.podcast = {};
 				this_.playitems = Array();
 				this_.ads = Array();
-				//TODO
 				this_.getNextShowtime();
+				$.when(requests['show_time']).then(function(){
+					this_.getAds();
+				});
 				//Get next show time
-				//Get ads
+
 				this_.info.id = -1;
 				this_.podcast.id = -1;
 			}
@@ -57,10 +54,10 @@ function Playsheet(){
 				this_.podcast = response.podcast;
 	          	this_.setStart(this_.info.start_time.replace(/-/g,'/'));
 	        	this_.setEnd(this_.info.end_time.replace(/-/g,'/'));
-	        	
+
 	        	for(var playitem_index in this_.playitems){
 	        		console.log(this_.playitems[playitem_index]);
-	        		
+
 	        	}
 
 	        	//TODO: Select correct show/host + populate the previous playsheets
@@ -69,9 +66,9 @@ function Playsheet(){
 				return false;
 				//TODO: Log Error Message
 			});
-		
+
 	}
-	
+
 	this.create = function(){
 		var this_ = this;
 		//Create Playsheet
@@ -171,7 +168,7 @@ function Playsheet(){
 	};
 
 	this.checkUnique = function(){
-		requests['unique_check'] = 
+		requests['unique_check'] =
 			$.ajax({
 				type:"GET",
 				url: api_base+ "playsheet/where/unixtime/"+this_.info.unix_time,
@@ -184,9 +181,13 @@ function Playsheet(){
 			);
 	};
 
+
+	/*
+	 * Getter Methods
+	*/
 	this.getMemberShows = function(member_id){
-		requests['show_load'] = 
-			$.ajax({ 
+		requests['show_load'] =
+			$.ajax({
 				type:"GET",
 				url: api_base + "member/"+member_id + '/active_shows',
 				dataType: "json",
@@ -205,18 +206,16 @@ function Playsheet(){
 					}
 					//Display the host
 					$('#host').val(this_.show['host']);
-					
+
 				},
 				function(error){
 					//TODO: Log Error
 				}
 			)
-		
 	}
 	this.getNextShowtime = function(){
-
-		requests['show_time'] = 
-			$.ajax({ 
+		requests['show_time'] =
+			$.ajax({
 				type:"GET",
 				url: api_base + "show/"+this_.show['id'] + '/nextshow',
 				dataType: "json",
@@ -227,15 +226,32 @@ function Playsheet(){
 					this_.setStart(response.start * 1000);
         			this_.setEnd(response.end * 1000);
 					this_.checkUnique();
-					console.log(this_);
-
 				}
 			);
+	}
+	this.getAds = function(){
+		console.log(this.getDuration());
+		requests['ads'] =
+			$.ajax({
+				type:"GET",
+				url: api_base + "promotions/"+this.info.unix_time+"-"+this.getDuration(),
+				dataType: "json",
+				async: true
+			}).then(
+				function(response){
+					this_.ads = response;
+				}
+			);
+	}
+	this.getDuration = function(){
+		return (this.end.date - this.start.date) / 1000;
 	}
 
 
 
-	//Mutators
+	/*
+	 * Mutator Methods
+	*/
 	this.setActiveShow = function(id){
 		this.show = this.shows.filter(function(object){if(object.id == id) return object;})[0];
 	}
@@ -247,9 +263,7 @@ function Playsheet(){
 		this.info.unix_time = millsecond_unix / 1000;
 	};
 	this.setStart = function(date){
-		console.log("In Date"+ date);
 		var date = new Date(date);
-		console.log("Out Date"+date);
 		this.start.date = date;
 		this.start.hour = date.getHours();
 		this.start.minute = date.getMinutes();
@@ -306,7 +320,7 @@ function Playsheet(){
 	this.setEndSecond = function(second){
 		var date = new Date(this.end_time);
 		date.setSeconds(second);
-		this.info.end_time = date;	
+		this.info.end_time = date;
 	};
 	this.setShowId = function(id){
 		this.info.show_id = id;
@@ -348,8 +362,3 @@ function Playsheet(){
 	}
 
 }
-
-	
-	
-
-	

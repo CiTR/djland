@@ -1,4 +1,4 @@
-body { 
+body {
 background-repeat: repeat;
 font-family: Helvetica,Arial;
 }
@@ -19,7 +19,6 @@ font-family: Helvetica,Arial;
 	display:none;
 }
 
-
 ul, li {
     padding-left: 0
 }
@@ -36,11 +35,11 @@ ol{
     padding: 0px;
     margin: 0px;
 }
-
 h1,h2,h3,h4{
 	text-align: center;
   padding:0px;
-  margin:0px;
+  margin-top:0px;
+  margin-bottom:0px;
 }
 h1{
   font-size:2.2em;
@@ -59,24 +58,30 @@ a:active { color: #660000; }
 .header-left{
 	text-align:left;
 }
-input, select, textarea, option{ 
+input, select, textarea, option{
 	background-color: #000977;
 	background-color: rgba(1,1,2,.4);
 	color:white;
 	border-style: solid;
 	border-width: 0;
 }
-
 .ie select, .ie input, .ie textarea {
 	background-color: #000977;
 }
-
 .spaced > td{
   min-width:100px;
   margin: 10 10 10 10;
 }
 /* CSS for general page layout */
-
+.red{
+	background-color:red;
+}
+.green{
+	background-color:green;
+}
+.lightgrey{
+	background-color:#AEAEAE;
+}
 #wrapper {
     background-color: rgba(0,0,0,.2);
     width: 1024px;
@@ -152,6 +157,7 @@ input, select, textarea, option{
 }
 .loadingbar_container{
   padding-top:15px;
+  min-height:30px;
   width:1024px;
   min-height:30px;
   margin-left:auto;
@@ -162,7 +168,14 @@ input, select, textarea, option{
 }
 .inline-list > li {
 	display:inline-block;
-
+}
+#wrapper > textarea.alert{
+  width:600px;
+  height:2em;
+}
+#wrapper > textarea.description{
+  width:600px;
+  height:10em;
 }
 
 .rounded{
@@ -186,10 +199,10 @@ input, select, textarea, option{
   padding-left:5px;
   padding-right:5px;
 }
-.clearfix:after { 
+.clearfix:after {
    content: " ";
-   display: block; 
-   height: 0; 
+   display: block;
+   height: 0;
    clear: both;
 }
 .border{
@@ -253,7 +266,7 @@ input, select, textarea, option{
   display:inline-block;
   position:relative;
   float:left;
-  height:auto;  
+  height:auto;
   overflow:visible;
 }
 div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
@@ -344,7 +357,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
   background-color:green;
 }
 
-/* CSS to make the YCBM Links not look bad and take up all the page width */  
+/* CSS to make the YCBM Links not look bad and take up all the page width */
 .youCanBookMe_Container iframe{
   position: absolute;
   top:0;
@@ -372,7 +385,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 /* ------------------*/
 /*  Menu Stylings    */
 /* ------------------*/
-#nav{ 
+#nav{
 	list-style:none;
     width:1020px;
     margin:30px auto 0px auto;
@@ -440,7 +453,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     padding-bottom: 4px;
     text-align:center;
     display:inline-block;
-    width:45px;   
+    width:45px;
 }
 .nav-left{
     margin-right:10px;
@@ -511,7 +524,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 	top:auto;
 	left:auto;
 }
-#nav li a, #tab-nav li a{ 
+#nav li a, #tab-nav li a{
     display:block;
     outline:0;
     text-decoration:none;
@@ -656,90 +669,73 @@ table.playitems > tbody > tr > th > div.hand{
   background-color: transparent;
   background-size: 100%;
   margin-bottom: 2px;
-}  
+}
 
 .box.playlist:hover {
   background-image: url('../images/tags/playlist.png');
   opacity: 0.5;
 }
-
 .box.canadian:hover {
   background-image: url('../images/tags/can.png');
   opacity: 0.5;
 }
-
 .box.femcon:hover {
   background-image: url('../images/tags/fe.png');
   opacity: 0.5;
 }
-
 .box.instrumental:hover {
   background-image: url('../images/tags/inst.png');
   opacity: 0.5;
 }
-
 .box.hit:hover {
   background-image: url('../images/tags/hit.png');
   opacity: 0.5;
 }
-
 .box.partial:hover {
   background-image: url('../images/tags/part.png');
   opacity: 0.5;
 }
-
-
 .box.background:hover {
   background-image: url('../images/tags/background.png');
   opacity: 0.5;
 }
-
 .box.theme:hover {
   background-image: url('../images/tags/theme.png');
   opacity: 0.5;
 }
-
 .box.playlist.filled {
   background-image: url('../images/tags/playlist.png');
   opacity: 1;
 }
-
 .box.canadian.filled {
   background-image: url('../images/tags/can.png');
   opacity: 1;
 }
-
 .box.femcon.filled {
   background-image: url('../images/tags/fe.png');
   opacity: 1;
 }
-
 .box.instrumental.filled {
   background-image: url('../images/tags/inst.png');
   opacity: 1;
 }
-
 .box.hit.filled {
   background-image: url('../images/tags/hit.png');
   opacity: 1;
 }
-
 .box.partial.filled {
   background-image: url('../images/tags/part.png');
   opacity: 1;
 }
-
 .box.background.filled {
   background-image: url('../images/tags/background.png');
   opacity: 1;
 }
-
 .box.theme.filled {
   background-image: url('../images/tags/theme.png');
   opacity: 1;
 }
 
-  
 /*
   Podcasts Page CSS
 
@@ -992,8 +988,8 @@ table.playitems > tbody > tr > th > div.hand{
     background-color: darkslategray;
     width:100%;
   }
-    
-    
+
+
 #login{
 	margin-left: auto;
 	margin-right: auto;
@@ -1001,49 +997,43 @@ table.playitems > tbody > tr > th > div.hand{
 	width:300px;
 }
 
-/*-------------------*/
-/*  Ad Scheduler CSS */
-/*-------------------*/ 
 
-#ad_schedule_wrapper{
-  margin-left:auto;
-  margin-right:auto;
-  height:auto;
-    overflow:auto;
-  background-color: rgba(0,0,0,.2);
-  width:1250px;
-  max-height:80%;
+table, td, tr{
+text-align:left;
+}
 
+/*--------------------------------*/
+/*  Ad Scheduler (no-angular) CSS */
+/*--------------------------------*/
+
+.schedule{
+  list-style:none;
+    max-width:1024px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+    margin-bottom: 15px;
 }
-#ad_schedule_save{
-  position:absolute;
-  top:15%;
-  right:30px;
-}
+
 .table-condensed>tbody>tr>td{
   padding:1px 2px 0px 0px;
 }
 .table-condensed>tbody>tr>td>button{
   font-size:0.9em;
 }
-
-ul.schedule{
-  list-style: none;
-  min-height:15px;
+table.ads{
+  max-width:100%;
 }
-
-ul.schedule > li > div.template *{
-  display:inline-block;
-  position:relative;
+table.ads > tbody > tr > td > input.ad_time {
+    max-width: 80px;
 }
-
-button.saving{
-  background-color:red;
-  color:white;
+table.ads > tbody > tr > td > input.name {
+    max-width: 775px;
 }
-/*--------------------------------*/
-/*  Ad Scheduler (no-angular) CSS */
-/*--------------------------------*/ 
+table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.name {
+  width:100%;
+  min-width:300px;
+  }
 
 .schedule{
     max-width:1024px;
@@ -1053,16 +1043,23 @@ button.saving{
     margin-bottom: 15px;
 }
 .schedule > li > div > table > tbody > tr > td > input.ad_time {
-    max-width: 80px;  
+    max-width: 80px;
 }
 .schedule > li > div > table.ads{
     max-width:1024px;
 }
+.save_button{
+  position:fixed;
+  font-size:2.0em;
+  top:100px;
+  right:10px;
+}
+
 
 
 /*----------------------*/
 /* Friends of CiTR Page */
-/*----------------------*/ 
+/*----------------------*/
 #friends{
     padding-left:10px;
     margin:0px;
@@ -1089,7 +1086,7 @@ button.saving{
 
 /*------------------------*/
 /* Special Broadcast Page */
-/*------------------------*/ 
+/*------------------------*/
 #broadcasts{
     padding-left:10px;
     margin:0px;
@@ -1130,7 +1127,6 @@ button.saving{
   right:20px;
   text-align:right;
 }
-
 /*----------------------------*/
 /*--------CHARTING------------*/
 /*----------------------------*/
@@ -1444,7 +1440,6 @@ button#submit_user.red{
     -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
     box-shadow:inset 0px 0px 1px #BEBEBE;
 }
-
 /* ------------------ */
 /*     HELP PAGE CC   */
 /* ------------------ */
@@ -1516,53 +1511,14 @@ height:auto;
 .QAanswer img {
 	padding:10px;
 }
- 
 
 
-
-div#ui-datepicker-div{
-	max-width:200px;
-	max-height:300px;
-	margin-top:0px;
-	z-index:50 !important;
-}
-
-div.ui-datepicker{
-	width:100%;
-	background:grey;
-}
-
-.ui-datepicker-header{
-	width:100%;
-}
-.ui-datepicker-next{
-	text-align:right;
-	display:inline-block;
-	width:100px;
-}
-.ui-datepicker-prev{
-	text-align:left;
-	display:inline-block;
-	width:100px;
-}	
-
-span.left{
-/*width:750px;*/
-display:inline;
-float:left;
-}
-
-span.right{
-	width:200px;
-	display:inline;
-	float:right;
-}
 
 /* --------------------- */
 /* --Duplicate Remover --*/
 /* --------------------- */
 .dotted-underline{
-	
+
 	border-style: dotted;
 	border-color:gray;
 	border-width: 0 0 1px 0;
@@ -1610,32 +1566,9 @@ div.dupeSection{
 	margin-bottom:15px;
 	width:500px;
 	padding:4px;
-	
+
 }
 div.dupeSection span{
 position:absolute;
 left:110px;
-}
-
-#ad-select-template{
-	display:none;
-}
-.adbuttons, .ad-select-button{
-cursor:default;	
-font-size:0.8em;
-border-width:0;
-}
-.adbuttons:hover, .ad-select-button:hover{
-	
-	color:red;
-}
-
-
-.selectanad{
-	background-color: transparent;
-	border-width:1px;
-}
-
-.selectanad option{
-background-color:black;
 }

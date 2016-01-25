@@ -56,7 +56,11 @@
             //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
             
             //New Method for getting current week
-            this.current_week = ((new Date().getMonth() % 2) +1);
+            var d = new Date();
+            d.setHours(0,0,0);
+            d.setDate(d.getDate()+4-(d.getDay()||7));
+            var week_no = Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+            this.current_week = ((week_no % 2) +1);
             //Check if user is an administrator or staff
             this.isAdmin();
 
