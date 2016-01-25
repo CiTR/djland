@@ -92,7 +92,7 @@
 			console.log(this.show_names);
 			console.log(this.show_names.length);
 			//Set defaults for the overall totals
-			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0};
+			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0,'hit_total':0};
 
 			//Check to see if there is only one show, or multiple
 			if(this.show_names.length > 1){
@@ -104,7 +104,7 @@
 					//Get the show info for the show name
 					var show = this.shows.filter(function(obj){return obj.name==this_.show_names[index]; })[0].show;
 					//Set defaults for the show percentages
-					this.percentages[this.show_names[index]] = {'name':this.show_names[index],'playitems_2':0,'playitems_3':0,'total':0,'cancon_2_total':0,'cancon_3_total':0,'femcon_total':0};
+					this.percentages[this.show_names[index]] = {'name':this.show_names[index],'playitems_2':0,'playitems_3':0,'total':0,'cancon_2_total':0,'cancon_3_total':0,'femcon_total':0,'hit_total':0};
 					this.percentages[this.show_names[index]]['required_cancon'] = show.cc_req;
 					this.percentages[this.show_names[index]]['required_femcon'] = show.fem_req;
 
@@ -118,6 +118,7 @@
 						this.percentages[this.show_names[index]]['cancon_2_total'] += playitems.filter(function(obj){return obj.is_canadian==1 && obj.crtc_category == 20}).length;
 						this.percentages[this.show_names[index]]['cancon_3_total'] += playitems.filter(function(obj){return obj.is_canadian==1 && obj.crtc_category == 30}).length;
 						this.percentages[this.show_names[index]]['femcon_total'] += playitems.filter(function(obj){return obj.is_fem==1}).length;
+						this.percentages[this.show_names[index]]['hit_total'] += playitems.filter(function(obj){return obj.is_hit==1}).length;
 					}
 					//Add show total to overall totals
 					this.percentage_totals.playitems += this.percentages[this.show_names[index]]['total'];
@@ -126,6 +127,7 @@
 					this.percentage_totals.cancon_2_total += this.percentages[this.show_names[index]]['cancon_2_total'];
 					this.percentage_totals.cancon_3_total += this.percentages[this.show_names[index]]['cancon_3_total'];
 					this.percentage_totals.femcon_total += this.percentages[this.show_names[index]]['femcon_total'];
+					this.percentage_totals.hit_total += this.percentages[this.show_names[index]]['hit_total'];
 				}
 			}else{
 				//Playsheets are all from one show.
@@ -145,6 +147,7 @@
 					this.percentages[playsheet.id]['cancon_2_total'] = playitems.filter(function(obj){return obj.is_canadian==1 && obj.crtc_category == 20}).length;
 					this.percentages[playsheet.id]['cancon_3_total'] = playitems.filter(function(obj){return obj.is_canadian==1 && obj.crtc_category == 30}).length;
 					this.percentages[playsheet.id]['femcon_total'] = playitems.filter(function(obj){return obj.is_fem==1}).length;
+					this.percentages[playsheet.id]['hit_total'] = playitems.filter(function(obj){return obj.is_hit==1}).length;
 					//increment overall counts
 					this.percentage_totals.playitems += this.percentages[playsheet.id]['total'];
 					this.percentage_totals.playitems_2 += this.percentages[playsheet.id]['playitems_2'];
@@ -152,6 +155,7 @@
 					this.percentage_totals.cancon_2_total += this.percentages[playsheet.id]['cancon_2_total'];
 					this.percentage_totals.cancon_3_total += this.percentages[playsheet.id]['cancon_3_total'];
 					this.percentage_totals.femcon_total += this.percentages[playsheet.id]['femcon_total'];
+					this.percentage_totals.hit_total += this.percentages[playsheet.id]['hit_total'];
 					console.log(this.percentage_totals);
 
 
