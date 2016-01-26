@@ -52,21 +52,21 @@ function permission_level(){
 	if(!isset($_SESSION['sv_id'])){
 		return -1;
 	}
-	$query = "SELECT gm.operator,gm.administrator,gm.staff,gm.workstudy,gm.volunteer,gm.dj,gm.member FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
+	$query = "SELECT gm.* FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
 	$result = $db->query($query);
 	$level = -1; //failure return value
 	if($result){
 		$permissions = $result->fetch_object();
 		foreach($permissions as $perm_level => $value){
-			if( $value == '1' && $djland_permission_levels[$perm_level] > $level ){
-				$level = $djland_permission_levels[$perm_level];
-			}	
+			if( $perm_level != 'user_id' && $value == '1' && $djland_permission_levels[$perm_level]['level'] > $level ){
+				$level = $djland_permission_levels[$perm_level]['level'];
+			}
 		}
 	}else{
 		echo "Database Error:".mysqli_error($db);
 	}
 
-	if(!is_paid() && ($level < $djland_permission_levels['staff'])){
+	if(!is_paid() && ($level < $djland_permission_levels['staff']['level'])){
 		$level = 0;
 	}
     return $level;
@@ -125,7 +125,7 @@ function has_show_access($show_id){
 		if($count > 0){
 			return true;
 		}else {
-			return false; 
+			return false;
 		}
 	} else {
 		echo 'function has_show_access() could not check for show access - db problem:'.$query;

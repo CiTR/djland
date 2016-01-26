@@ -7,7 +7,7 @@
 require_once("../../headers/security_header.php");
 
 $request = $_SERVER['REQUEST_METHOD'];
-if( permission_level() >= $djland_permission_levels['volunteer'] ) {
+if( permission_level() >= $djland_permission_levels['volunteer_leader']['level'] ) {
     switch($request){
         case "GET":
             if($_GET['from'] == "" || $_GET['to'] == ""){
@@ -16,15 +16,15 @@ if( permission_level() >= $djland_permission_levels['volunteer'] ) {
             }
             //Get Permissions for a user
             if(isset($_GET['type']) && isset($_GET['value'])){
-                $query = (isset($_GET['from'])  && isset($_GET['to']))==true ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE m.create_date >=:from AND m.create_date <= :to AND my.paid = '1'" : "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.membership_year=:year AND my.paid='1'"; 
-              
+                $query = (isset($_GET['from'])  && isset($_GET['to']))==true ? "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE m.create_date >=:from AND m.create_date <= :to AND my.paid = '1'" : "SELECT m.email FROM membership AS m INNER JOIN membership_years AS my ON m.id = my.member_id WHERE my.membership_year=:year AND my.paid='1'";
+
                 switch($_GET['type']){
                     case 'interest':
                         if(in_array($_GET['value'],$djland_interests) ) $query .=" AND my.{$_GET['value']}='1'";
                         break;
                     case 'member_type':
-                        if(in_array($_GET['value'],$djland_member_types)) $query .= " AND member_type=:value"; 
-                        
+                        if(in_array($_GET['value'],$djland_member_types)) $query .= " AND member_type=:value";
+
                         break;
                     default:
                         http_response_code(400);
@@ -78,7 +78,7 @@ if( permission_level() >= $djland_permission_levels['volunteer'] ) {
             exit();
         case "PUT":
             http_response_code(501);
-            exit();           
+            exit();
         case "DELETE":
             http_response_code(501);
             exit();

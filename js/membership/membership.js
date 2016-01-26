@@ -1,28 +1,31 @@
 //Created by Evan Friday, 2014
 window.myNameSpace = window.myNameSpace || { };
-	
+
 //PAGE CREATION
 $(document).ready ( function() {
-	var permission_level = $('#permission_level').text();
-	console.log(permission_level);
-	if(permission_level >= 5){
+	$.when(constants_request).then(function(){
+		var permission_level = $('#permission_level').text();
+		if(permission_level >= permission_levels['staff']['level']){
 
-		var year_callback = loadYearSelect();
+			var year_callback = loadYearSelect();
 
-		$.when(year_callback).then(
-			function(){
-				displayMemberList("name","","both",get(undefined,'year_select','search'),'created');
-			},function(){	
+			$.when(year_callback).then(
+				function(){
+					displayMemberList("name","","both",get(undefined,'year_select','search'),'created');
+				},function(){
 
-			});
-		loadMember(1);
-		add_handlers();	
-		yearlyReport(year_callback);
-	}else if(permission_level >= 3){
-		var year_callback = loadYearSelect();
-		add_handlers();
-		$('.membership#email').show();
-	}
+				});
+			loadMember(1);
+			add_handlers();
+			yearlyReport(year_callback);
+
+		}else if(permission_level >= permission_levels['volunteer_leader']['level']){
+			var year_callback = loadYearSelect();
+			add_handlers();
+			$('.membership#email').show();
+		}
+	});
+
 });
 
 window.setInterval(checkBlocking,1000);
@@ -35,7 +38,7 @@ function add_handlers(){
 		if(!$(this).hasClass('print_friendly')){
 			$(this).text('Normal View');
 			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').hide();
-			
+
 			$('body').removeClass('wallpaper');
 			$('.membership').removeClass('grey');
 			//make printer friendly
@@ -46,7 +49,7 @@ function add_handlers(){
 			$('.check').each(function(element){
 				$(this).removeClass('hidden');
 			});
-			
+
 
 			//$('#search').addClass('inline_block');
 			$('#membership_result').removeClass('overflow_auto').removeClass('height_cap').addClass('overflow_visible');
@@ -54,8 +57,8 @@ function add_handlers(){
 			//return to normal
 			$(this).text('Print View');
 			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').show();
-		
-			
+
+
 			$('body').addClass('wallpaper');
 			$('.membership').addClass('grey');
 
@@ -106,9 +109,9 @@ function add_handlers(){
     //Listener for saving comments
     $('#search').off('click','#save_comments').on('click','#save_comments',function(element){
     	saveComments();
-    });	
+    });
 
-	
+
 	//CLICKING A PAGE SUBMISSION BUTTON
 	$('.member_submit').unbind().click( function(){
 		var action = $(this).attr('name');
@@ -176,7 +179,7 @@ function add_handlers(){
 	});
     //NOTE: the off/on listener style was the ONLY way this worked. Standard JQuery ".click( function ..." did not work
 
-    
+
     //Listener for getting ID's when deleting
     $('.membership').off('click','#delete_button').on('click','#delete_button',function(e){
         var members_to_delete = [];
@@ -241,7 +244,7 @@ function add_handlers(){
 		}
 	});
 	$('.alumni_select').unbind().click( function(){
-		if( this.id =='alumni1'){ 
+		if( this.id =='alumni1'){
 			$('#alumni2').removeAttr("checked");
 		}
 		else{
@@ -249,16 +252,16 @@ function add_handlers(){
 		}
 	});
 	$('#faculty').change(function (){
-		
+
 		if($('#faculty').val() == "Other"){
 			$('#faculty2').show();
 		}else{
 			$('#faculty2').hide();
-		}	
+		}
 	});
 
 	//MEMBER TYPE: HIDE/SHOW STUDENT
-	$('#member_type').unbind().change( function(){		
+	$('#member_type').unbind().change( function(){
 		if($('#member_type').val() == 'Student'){
 			$('.student').show();
 			$('.student').children().show();
@@ -276,7 +279,7 @@ function add_handlers(){
         $( "#to" ).datepicker( "option", "minDate",selectedDate);
       }
     });
-		
+
 	$( "#to" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,
@@ -303,7 +306,7 @@ function add_handlers(){
 					$('#student_no_ok').text("This student number is already registered!");
 				}
 				else if(student_no.length< 8){
-					
+
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
 					$('#student_no_ok').text("Student number must be 8 characters long.");
@@ -313,10 +316,10 @@ function add_handlers(){
 				}
 			}).fail( function(){
 				$('#student_no_ok').text('connection error');
-			
+
 			});
 		}
-		
+
 	});
 }
 
@@ -328,7 +331,7 @@ function checkBlocking(){
 			allOkay=false;
 			}
 		});
-	
+
 		if($('#username_ok').text() == 'Username taken'){
 			allOkay=false;
 		}
@@ -353,5 +356,3 @@ function checkBlocking(){
 			$('.member_submit[name="edit"]').addClass("red");
 		}
 	}
-
-

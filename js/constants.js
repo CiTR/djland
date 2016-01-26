@@ -1,9 +1,9 @@
 window.myNameSpace = window.myNameSpace || { };
-var faculties,training,interests,provinces,member_types,permission_levels,program_years,primary_genres;
+var faculties,training,interests,provinces,member_types,permission_levels,program_years,primary_genres,constants_request;
 $(document).ready ( function() {
 	getConstants();
 	function getConstants(){
-		$.ajax({
+		constants_request = $.ajax({
 			type:"GET",
 			url: "headers/constants.php",
 			data: {},
@@ -23,5 +23,3 @@ $(document).ready ( function() {
 		});
 	}
 });
-
-

@@ -9,17 +9,17 @@ require_once("../../headers/security_header.php");
 
 //GET: Accepts search_by,value,paid,order
 $request = $_SERVER['REQUEST_METHOD'];
-if( permission_level() >= $djland_permission_levels['staff']) {
+if( permission_level() >= $djland_permission_levels['staff']['level']) {
      switch($request){
         case "GET":
-            $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments,my.membership_year FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";  
+            $query = "SELECT m.id AS member_id, CONCAT(m.firstname,' ',m.lastname) AS name, m.email, m.primary_phone, m.member_type,m.comments,my.membership_year FROM membership as m INNER JOIN membership_years as my ON my.member_id = m.id";
             if(isset($_GET['search_by'])){
                 switch($_GET['search_by']){
                     case 'name':
                         if($_GET['value'] != "" && isset($_GET['value'])){
                             $keywords = explode(" ",$_GET['value']);
                             $size = sizeof($keywords);
-                            
+
                             //If only two words, assume it is first and last name.
                             if($size == 2){
                                 $query.=" WHERE (m.firstname LIKE :value0 AND m.lastname LIKE :value1";
@@ -27,9 +27,9 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                             //Search for any combination of the words
                                 for($i = 0; $i < $size; $i++){
                                     $query.= $i > 0 ? " OR" : " WHERE (";
-                                       
+
                                     $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
-                                }   
+                                }
                             }
                             $query.=")";
                         }
@@ -52,7 +52,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 }else{
                     $query .=" AND my.membership_year=(SELECT membership_year FROM membership_years as ms2 INNER JOIN membership as m2 ON m2.id = ms2.member_id WHERE m.id=m2.id ORDER BY membership_year DESC LIMIT 1)";
                 }
-               
+
             }else{
                 if($_GET['year'] != 'all'){
                     $query.=" WHERE my.membership_year=:year";
@@ -61,13 +61,13 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 }
             }
 
-            
+
             //Do we want all members, paid, or unpaid?
             if(isset($_GET['paid']) && ($_GET['paid'] != 'both')){
                 $query.=" AND my.paid=:paid";
             }
 
-            //How to order results   
+            //How to order results
             switch($_GET['order_by']){
                 case 'created':
                     $query .= " ORDER BY my.create_date DESC";
@@ -96,7 +96,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                             if($_GET['value'] != "" && isset($_GET['value'])){
                                 $size = sizeof($keywords);
                                 for($i = 0; $i<$size; $i++){
-                                    $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");     
+                                    $statement->bindValue(':value'.$i, "%".$keywords[$i]."%");
                                 }
                             }
                             break;
@@ -117,7 +117,7 @@ if( permission_level() >= $djland_permission_levels['staff']) {
                 //print_r($_GET);
                 //echo "<br/>";
                 //$statement->debugDumpParams();
-                
+
                 try {
                     http_response_code(200);
                     $statement->execute();

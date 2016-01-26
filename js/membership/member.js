@@ -3,7 +3,7 @@ window.myNameSpace = window.myNameSpace || { };
 function Member(id){
 	var this_ = this;
 	this.member_id = id;
-	
+
 	if(id != null){
 		this.info_callback = this._queryInfo();
 		this.interest_callback = this._queryInterests();
@@ -25,7 +25,7 @@ function Member(id){
 	}else{
 		this.membership_years = new Array();
 		this.member_info = {
-			about:null, 
+			about:null,
 			address: null,
 			alumni: null,
 			canadian_citizen: null,
@@ -80,14 +80,14 @@ Member.prototype = {
 		for(var year in membership_years){
 			$('#membership_year').append("<option value="+year+">"+year+"</option>");
 		}
-		
+
 	},
 	_initPermissions:function(permissions){
 		this.permissions ={};
 		for(level in permissions){
 			if(level !='user_id') this.permissions[level] = permissions[level];
 		}
-		
+
 	},_initUser:function(user){
 		this.user_info = user;
 	},
@@ -140,7 +140,7 @@ Member.prototype = {
 				this['member_info'][field] = get(field);
 			}
 		}
-		
+
 	},
 	getInterests:function(){
 		var membership_year = get('membership_year');
@@ -158,7 +158,7 @@ Member.prototype = {
 	getPermissions:function(){
 
 		var permissions = {};
-		for(var level in permission_levels){ 
+		for(var level in permission_levels){
 			if(level != 'operator') permissions[level] = getCheckbox('level_'+level);
 		}
 		this.permissions = permissions;
@@ -173,7 +173,7 @@ Member.prototype = {
 					set(this['member_info'][field],'faculty2');
 				}else{
 					set(this['member_info'][field],field);
-				}	
+				}
 			}
 
 		}else{
@@ -193,17 +193,17 @@ Member.prototype = {
 		}
 
 		m=this.membership_years[year];
-		
+
 		for(var interest in interests){
-			if(interest != 'Other' && interest != 'membership_year'){ 
-				setCheckbox(m[interests[interest]],interests[interest]); 
+			if(interest != 'Other' && interest != 'membership_year'){
+				setCheckbox(m[interests[interest]],interests[interest]);
 			}
 			else {
-				setVal(m['other'],interests[interest]);			
+				setVal(m['other'],interests[interest]);
 			}
 		}
 		setCheckbox(m['paid'],'paid');
-		
+
 	},displayPermissions:function(){
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);
@@ -219,14 +219,14 @@ Member.prototype = {
         	window.location.href = 'main.php';
         },function(err1,err2){
         	alert("Something went wrong");
-        }); 
+        });
     },update:function(){
     	$.when(this.updateInfo(),this.updateInterests()).then(function(){
     		alert("Successfully Updated");
     		window.location.href = 'main.php';
     	},function(err1,err2){
     		alert("Something went wrong");
-    	});    	
+    	});
     },updateInfo:function(){
     	this.getInfo();
 		var this_ = this;
@@ -251,6 +251,7 @@ Member.prototype = {
 		});
 	},updatePermissions:function(){
 		this.getPermissions();
+		console.log(this);
 		var this_ = this;
 		return $.ajax({
 			type:"POST",
@@ -271,9 +272,9 @@ Member.prototype = {
 			 	},
 				dataType: "json"
 			});
-		}	
+		}
 	},create:function(){
-		var this_ = this;		
+		var this_ = this;
 		$.when(this.createMember()).then(function(response){
 			this_.member_id = response;
 			this_.user_info['member_id'] = response;
@@ -282,7 +283,7 @@ Member.prototype = {
 					alert("Successfully Submitted");
 					window.location.href = 'index.php';
 				})
-			});		
+			});
 		});
 
 	},createMember:function(){
