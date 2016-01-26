@@ -8,7 +8,7 @@ class Show extends Model
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
     protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'show_img', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
-    
+
     public function members(){
         return $this->belongsToMany('App\Member','member_show');
     }
@@ -26,7 +26,7 @@ class Show extends Model
     }
     public function nextShowTime(){
         date_default_timezone_set('America/Los_Angeles');
-        
+
         $showtimes = $this->showtimes;
 
         //Get Today
@@ -38,7 +38,7 @@ class Show extends Model
 
         //Get Current Time (0-23:0-59:0-59)
         $current_time = date('H:i:s',strtotime('now'));
-        
+
         //Making sure if today is sunday, it does not get last sunday instead of today.
         if($day_of_week == 0){
             $week_0_start = strtotime('today');
@@ -52,15 +52,15 @@ class Show extends Model
 
         //Constants (second conversions)
         $one_day = 24*60*60;
-        $one_hour = 60*60; 
+        $one_hour = 60*60;
         $one_minute = 60;
-        
-        foreach($showtimes as $show_time){                      
+
+        foreach($showtimes as $show_time){
             $show_time_day_offset = ($show_time['start_day']) * $one_day;
             $show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
-            $show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;            
+            $show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;
             $show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
-            
+
             if($show_time['start_day'] != $show_time['end_day']){
                 $show_duration = (24 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour'])*$one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute'])*$one_minute;
             }else{
@@ -122,12 +122,12 @@ class Show extends Model
                 if ($v['start'] < $min['start']){
                     $min = $candidates[$i];
                 }
-            }   
+            }
         }else{
             $min = null;
         }
-        
-        
+
+
         return $min;
     }
     public function make_show_xml(){
@@ -137,12 +137,12 @@ class Show extends Model
         //Get objects
         $show = $this;
         $episodes = $this->podcasts()->orderBy('date','desc')->get();
-        
+
         $file_name = $this['podcast_slug'].'.xml';
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
 
-        
+
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
 
@@ -154,10 +154,10 @@ class Show extends Model
         $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
         $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xml:lang="en-US" >';
         $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
-        
+
         $xml[] = "<channel>";
         $xml[] = "<title>". $show['podcast_title'] . "</title>";
-        
+
         $xml[] = "<description>" . $show['show_desc'] . "</description>";
         $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
         if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
@@ -168,7 +168,7 @@ class Show extends Model
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
         $xml[] = "</itunes:owner>";
         $xml[] = "<itunes:explicit>".($show['explicit'] == '0' ? 'no' : 'yes')."</itunes:explicit>";
-        
+
         $xml[] = "<itunes:category text='Music'>";
         $primary_genres = preg_split('/(\/|,)/',str_replace(' ','',$show['primary_genre_tags']));
         $xml[] = "<itunes:category text='Radio'></itunes:category>";
@@ -194,7 +194,7 @@ class Show extends Model
         if($testing_environment) $num = 6;
         $i = 0;
         $count = 0;
-        while( $count < $num && $count < 300 ) {
+        while( $count < $num-1 && $count < 300 ) {
             $episode = $episodes[$key[$i]];
 
 
@@ -206,7 +206,7 @@ class Show extends Model
                 $count ++;
                 $episode['subtitle'] = sizeOf($episode['subtitle']) > 5 ? substr($episode['subtitle'],0,200) : substr($episode['summary'],0,200) ;
                 foreach($episode as $index=>$var){
-                   $episode[$index] = Show::clean($episode[$index]); 
+                   $episode[$index] = Show::clean($episode[$index]);
                 }
 
                 $xml[] = "<item>";
@@ -224,7 +224,7 @@ class Show extends Model
         $xml[] = "</channel>";
         $xml[] = "</rss>";
 
-        
+
 
         if(!$testing_environment){
             $target_dir = '/home/playlist/public_html/podcasting/xml/';
@@ -232,12 +232,12 @@ class Show extends Model
             $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
         }
 
-        //$target_dir = 'audio/'.$year.'/';     
+        //$target_dir = 'audio/'.$year.'/';
         $target_file_name = $target_dir.$file_name;
         //Open local file
         $target_file = fopen($target_file_name,'wb');
         $num_bytes = 0;
-        
+
         //If we open local file
         if($target_file){
             //Writing Line By Line to reduce memory footprint.
@@ -251,12 +251,12 @@ class Show extends Model
                 'url' => $url_path.$file_name
                 );
         }
-        
+
         while(is_resource($target_file)){
            //Handle still open
            fclose($target_file);
         }
-        return $response;  
+        return $response;
     }
     public static function clean($string){
         $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
