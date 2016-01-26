@@ -205,7 +205,8 @@ class Show extends Model
             if($episode["active"]== '1') {
                 if($testing_environment) echo $episode['date']."\n".$count."\n";
                 $count ++;
-                $episode['subtitle'] = sizeOf($episode['subtitle']) > 5 ? substr($episode['subtitle'],0,200) : substr($episode['summary'],0,200) ;
+				if(sizeOf($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
+
                 foreach($episode as $index=>$var){
                    $episode[$index] = Show::clean($episode[$index]);
                 }
