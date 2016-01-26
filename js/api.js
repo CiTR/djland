@@ -35,8 +35,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShow: function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
-		getShowPlaysheets: function(show_id){
-			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets');
+		getShowPlaysheets: function(show_id,offset){
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
 		},
 		getShowEpisodes: function(show_id,offset){
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+offset);

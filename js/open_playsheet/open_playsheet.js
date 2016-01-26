@@ -62,7 +62,7 @@
 						this_.loading = false;
 					});
 				}else{
-					call.getShowPlaysheets(this.show_select).then(function(playsheets){
+					call.getShowPlaysheets(this.show_select,this_.offset).then(function(playsheets){
 						if(playsheets.data.length > 0){
 							if(this_.offset == 0) this_.playsheets = playsheets.data;
 							else{

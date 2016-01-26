@@ -278,10 +278,14 @@ Route::group(array('prefix'=>'show'),function(){
 			return Response::json($episodes);
 
 		});
-
+		Route::get('playsheets/{offset}',function($id,$offset = offset){
+			if($offset) return Show::find($id)->playsheets()->orderBy('start_time','desc')->offset($offset)->limit('200')->get();
+			else return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
+		});
 		Route::get('playsheets',function($id){
  			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
+
 		Route::get('owners',function($id){
 			$members = Show::find($id)->members;
 			$owners = new stdClass();
