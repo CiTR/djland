@@ -280,7 +280,7 @@ Route::group(array('prefix'=>'show'),function(){
 		});
 
 		Route::get('playsheets',function($id){
-			return Show::find($id)->playsheets;
+ 			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
 		Route::get('owners',function($id){
 			$members = Show::find($id)->members;
@@ -483,7 +483,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->offset($offset)->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
-			$playsheet -> show_info = Show::find($ps->show_id);
+			//$playsheet -> show_info = Show::find($ps->show_id);
 			$playsheet->socan = $playsheet->is_socan();
 			$playsheets[] = $playsheet;
 		}

@@ -613,6 +613,18 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     padding:0;
     margin:0;
 }
+/*
+ *	Open Playsheet CSS
+ */
+table.open_playsheet > tbody > tr > td{
+	padding-left:15px;
+}
+table.open_playsheet > tbody > tr > td.edit_date{
+	font-size:.8em;
+}
+table.open_playsheet > tbody > tr > td.host{
+	max-width:200px;
+}
 
 /* Playsheet Angular CSS */
 

@@ -485,6 +485,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this_.info.create_name = this_.username;
+					this_.info.show_name = this_.active_show.info.name;
                     callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                         this_.info.id = response.data.id;
                         for(var playitem in this_.playitems){
@@ -526,7 +527,7 @@
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
-
+			this_.info.show_name = this_.active_show.info.name;
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
@@ -541,6 +542,7 @@
                 for(var playitem in this_.playitems){
                     this_.playitems[playitem].show_date = date;
                 }
+
                 this.updatePodcastDate();
 
                 if(this.info.id < 1){
