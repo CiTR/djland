@@ -616,7 +616,7 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
 /*
  *	Open Playsheet CSS
  */
-table.open_playsheet > tbody > tr > td{
+table.open_playsheet > tbody > tr > td,table.open_playsheet > tbody > tr > th{
 	padding-left:15px;
 }
 table.open_playsheet > tbody > tr > td.edit_date{
