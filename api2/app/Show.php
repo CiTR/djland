@@ -216,6 +216,7 @@ class Show extends Model
                 $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
                 $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
                 $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
+				$xml[] =  "<description>" . $episode["summary"] . "</description>";
                 $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
                 $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
                 $xml[] = "</item>";
