@@ -581,6 +581,7 @@
 
                         call.saveNewPodcast(this_.podcast).then(function(response){
                             this_.podcast.id = response.data['id'];
+							console.log(response);
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                                 this_.tracklist_overlay = true;
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){
