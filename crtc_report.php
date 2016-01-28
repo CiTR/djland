@@ -108,9 +108,9 @@
 								<div ng-if='report.show_names.length == 1'>{{item.date}}</div>
 
 							</td>
-							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 >= item.required_cancon || item.playitems_3 == 0 ? "":"red"'>
+							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 >= 12 || item.playitems_3 == 0 ? "":"red"'>
 								{{item.cancon_3_total}} / {{item.playitems_3}}
-								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/{{item.required_cancon}}%)
+								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/12%)
 							</td>
 							<td ng-class='(item.cancon_2_total/item.playitems_2)*100 >= item.required_cancon || item.playitems_2 == 0 ? "":"red"'>
 								{{item.cancon_2_total}} / {{item.playitems_2}}
