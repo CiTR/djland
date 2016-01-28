@@ -65,6 +65,7 @@
 			<div class='text-center' ng-hide='report.playsheets.length > 0 || report.loading'>
 				No Results
 			</div>
+			<div class='col1 text-center'>
 			<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
 			<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
 			<div class='col1'>
@@ -84,6 +85,7 @@
 				Total Femcon:
 				{{report.percentage_totals.femcon_total}} / {{report.percentage_totals.playitems}}
 				({{report.percentage_totals.femcon_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.femcon_total/report.percentage_totals.playitems : 0 | percentage:0}}/35%)
+			</div>
 			</div>
 			<div id='report_summary' class='invisible'>
 				<h3>Summary</h3>
@@ -108,7 +110,7 @@
 								<div ng-if='report.show_names.length == 1'>{{item.date}}</div>
 
 							</td>
-							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 >= 12 || item.playitems_3 == 0 ? "":"red"'>
+							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 > 12 || item.playitems_3 == 0 ? "":"red"'>
 								{{item.cancon_3_total}} / {{item.playitems_3}}
 								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/12%)
 							</td>
