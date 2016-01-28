@@ -65,8 +65,8 @@
 			<div class='text-center' ng-hide='report.playsheets.length > 0 || report.loading'>
 				No Results
 			</div>
-			<div class='col1'> Total Spokenword (minutes): {{report.totals.spokenword}}</div>
-			<div class='col1'>Total Ads (seconds): {{report.totals.ads/60 | number:0 }}:{{report.totals.ads % 60}}  </div>
+			<div class='col1'> Total Spokenword (minutes): {{ (report.totals.spokenword /60) % 60 | number:0}}h:{{report.totals.spokenword % 60}}m</div>
+			<div class='col1'>Total Ads: {{ (report.totals.ads/60)/60 | number:0 }}h:{{ (report.totals.ads/60) % 60 | number:0 }}m:{{report.totals.ads % 60}}s  </div>
 			<div id='report_summary' class='invisible'>
 				<h3>Summary</h3>
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
