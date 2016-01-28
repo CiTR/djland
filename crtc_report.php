@@ -67,6 +67,24 @@
 			</div>
 			<div class='col1'> Total Spokenword (minutes): {{ (report.totals.spokenword /60) % 60 | number:0}}h:{{report.totals.spokenword % 60}}m</div>
 			<div class='col1'>Total Ads: {{ (report.totals.ads/60)/60 | number:0 }}h:{{ (report.totals.ads/60) % 60 | number:0 }}m:{{report.totals.ads % 60}}s  </div>
+			<div class='col1'>
+				Total Category 2: {{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
+				({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
+			</div>
+			<div class='col1'>
+				Total Category 3: {{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
+				({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
+			</div>
+			<div class='col1'>
+				Total Hits:
+				{{report.percentage_totals.hit_total}} / {{report.percentage_totals.playitems}}
+				({{report.percentage_totals.hit_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.hit_total/report.percentage_totals.playitems : 0 | percentage:0}}/10% MAX)
+			</div>
+			<div class='col1'>
+				Total Femcon:
+				{{report.percentage_totals.femcon_total}} / {{report.percentage_totals.playitems}}
+				({{report.percentage_totals.femcon_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.femcon_total/report.percentage_totals.playitems : 0 | percentage:0}}/35%)
+			</div>
 			<div id='report_summary' class='invisible'>
 				<h3>Summary</h3>
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
