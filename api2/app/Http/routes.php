@@ -356,6 +356,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
 		$playsheets = Array();
 		$permissions = Member::find($member_id)->user->permission;
+
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$shows = Show::all();
 		}else{
@@ -364,7 +365,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($shows as $show){
 			if($show_id == 'all' || $show_id == $show['id']){
 				if($from != null && $to != null){
-					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 06:00:00")->where('start_time','<=',$to." 23:59:59")->get();
 				}else{
 					$ps[] = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->get();
 				}
@@ -374,6 +375,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}
 
 		}
+
+		$total_ads = 0;
+		$total_spokenword = 0;
 		foreach($playsheets as $p){
 			$playsheet = $p;
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
@@ -388,6 +392,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$totals['femcon'][1] = 0;
 			$totals['hit'][0] = 0;
 			$totals['hit'][1] = 0;
+			$totals['ads'] = 0;
+			foreach($playsheet->ads as $ad){
+				$totals['ads'] += floor($ad['duration']/1000);
+			}
 			foreach($playsheet->playitems as $playitem){
 				//CANCON
 				$totals['cancon'][0] += 1;
@@ -398,15 +406,19 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				//HIT
 				$totals['hit'][0] += 1;
 				if($playitem['is_hit'] == '1') $totals['hit'][1] += 1;
+
 			}
+
 			$playsheet->totals = $totals;
+			$total_ads += $playsheet->totals['ads'];
+			$total_spokenword += $playsheet['spokenword_duration'];
 		}
 		usort($playsheets,function($a,$b){
 			$s1 = strtotime($a['start_time']);
 			$s2 = strtotime($b['start_time']);
 			return $s1-$s2;
 		});
-		return $playsheets;
+		return Response::json(array('playsheets'=>$playsheets,'totals'=>array('ads'=>$total_ads,'spokenword'=>$total_spokenword)));
 	});
 
 	//Searching by Playsheet ID

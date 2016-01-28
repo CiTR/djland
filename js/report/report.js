@@ -37,7 +37,11 @@
 			this.loading = true;
 			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(
 				function(response){
-					this_.playsheets = response.data.length > 0 ? angular.copy(response.data) : Array();
+					console.log(response);
+					this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
+					this_.totals = response.data.totals;
+					console.log(this_.totals);
+					console.log(this_.playsheets);
 					this_.loading = false;
 					//delay displaying so to reduce lag from object creation.
 					setTimeout(function(){
@@ -95,7 +99,7 @@
 			console.log(this.show_names);
 			console.log(this.show_names.length);
 			//Set defaults for the overall totals
-			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0,'hit_total':0};
+			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0,'hit_total':0,'ads':0,'spokenword':0};
 
 			//Check to see if there is only one show, or multiple
 			if(this.show_names.length > 1){
@@ -107,7 +111,7 @@
 					//Get the show info for the show name
 					var show = this.shows.filter(function(obj){return obj.name==this_.show_names[index]; })[0].show;
 					//Set defaults for the show percentages
-					this.percentages[this.show_names[index]] = {'name':this.show_names[index],'playitems_2':0,'playitems_3':0,'total':0,'cancon_2_total':0,'cancon_3_total':0,'femcon_total':0,'hit_total':0};
+					this.percentages[this.show_names[index]] = {'name':this.show_names[index],'playitems_2':0,'playitems_3':0,'total':0,'cancon_2_total':0,'cancon_3_total':0,'femcon_total':0,'hit_total':0,'ad_total':0,'spokenword_total':0};
 					this.percentages[this.show_names[index]]['required_cancon'] = show.cc_req;
 					this.percentages[this.show_names[index]]['required_femcon'] = show.fem_req;
 
