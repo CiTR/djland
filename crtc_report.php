@@ -65,8 +65,8 @@
 			<div class='text-center' ng-hide='report.playsheets.length > 0 || report.loading'>
 				No Results
 			</div>
-			<div class='col1'> Total Spokenword (minutes): {{ (report.totals.spokenword /60) % 60 | number:0}}h:{{report.totals.spokenword % 60}}m ({{report.totals.spokenword}} minutes)</div>
-			<div class='col1'>Total Ads: {{ (report.totals.ads/60)/60 | number:0 }}h:{{ (report.totals.ads/60) % 60 | number:0 }}m:{{report.totals.ads % 60}}s  ({{report.totals.ads / 60 | number:0}} minutes)</div>
+			<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
+			<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
 			<div class='col1'>
 				Total Category 2: {{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
 				({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
