@@ -73,7 +73,7 @@
 			</div>
 			<div class='col1'>
 				Total Category 3: {{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
-				({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
+				({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/12%)
 			</div>
 			<div class='col1'>
 				Total Hits:
@@ -132,9 +132,9 @@
 								{{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
 								({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
 							</td>
-							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) >= 35  || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) >= 12 || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
-								({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
+								({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/12%)
 							</td>
 							<td ng-class='(report.percentage_totals.femcon_total/report.percentage_totals.playitems*100) >= 35 || report.percentage_totals.playitems == 0 ?"":"red"'>
 								{{report.percentage_totals.femcon_total}} / {{report.percentage_totals.playitems}}
