@@ -109,7 +109,7 @@
 
 						<tr>
 							<td>Total</td>
-							<td ng-class='(report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3*100) >= 35 || report.percentage_totals.playitems_3 == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3*100) >= 12 || report.percentage_totals.playitems_3 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
 								({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
 							</td>
