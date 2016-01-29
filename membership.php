@@ -4,7 +4,7 @@
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']){ ?>
+if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
