@@ -265,7 +265,7 @@ class Show extends Model
 
 		$string = utf8_encode($string);
         $find = array('/&/',"/'/",'/"/');
-        $string = htmlentities($string,ENT_QUOTES);
+        $string = htmlentities($string);
         return $string;
     }
 
