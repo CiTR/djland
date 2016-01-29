@@ -262,12 +262,12 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-		$find = array('/&/',"/'/",'/"/');
-		$replace = array('&amp;',"&apos;","&quot;");
-		$string = utf8_encode($string);
+
+		$string = utf8_encode($string);;
 		//$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-		$string = preg_replace($find,$replace,$string);
-		$string = htmlentities($string,'ENT_QUOTES','UTF-8');
+
+		$string = htmlentities($string,ENT_QUOTES,'UTF-8');
+
 		return $string;
     }
 
