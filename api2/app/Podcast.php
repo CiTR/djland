@@ -45,7 +45,7 @@ class Podcast extends Model
 	    $year = date('Y',$start);
 
 	    //Mon, 12 Jan 2015 18:00:00 -0800
-	    $date = date('D, d M Y H:i:s O',$start);
+	    $iso_date = date('D, d M Y H:i:s O',$start);
 
 	    //Archiver URL to download from
 		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
@@ -74,21 +74,21 @@ class Podcast extends Model
     	}else{
     		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
     	}
-    	
-    	//$target_dir = 'audio/'.$year.'/'; 	
+
+    	//$target_dir = 'audio/'.$year.'/';
     	$target_file_name = $target_dir.$file_name;
-		
+
     	$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$file_name;
 
     	//Get Audio from Archiver
     	$file_from_archive = fopen($archive_url,'r');
-    	
+
 		//If we obtain a file from archiver
 		if($file_from_archive){
 			//Open local file
 			$target_file = fopen($target_file_name,'wb');
 			$num_bytes = 0;
-			
+
 			//If we open local file
 			if($target_file){
 				//Attempt to add ID3 Tags
@@ -106,12 +106,12 @@ class Podcast extends Model
 				//Update the podcast object to reflect changes
 				$this->url = $target_url;
 				$this->length = $num_bytes;
-				$this->date = $date;
+				$this->iso_date = $iso_date;
 				$this->save();
 				$response['audio'] = array('url' => $target_url	);
 				//Update XML to reflect new podcast creation
 				$response['xml'] = $this->show->make_show_xml();
-			}	
+			}
 		}
 		while(is_resource($file_from_archive)){
 		   //Handle still open
@@ -123,7 +123,7 @@ class Podcast extends Model
 		}
 	    return $response;
 	}
-	
+
 	private function overwrite_audio(){
 		date_default_timezone_set('America/Vancouver');
 		//Date Initialization
@@ -150,19 +150,19 @@ class Podcast extends Model
 		    $file_name = str_replace('&','and',$file_name);
 		    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$file_date.'.mp3';
     	}
-	  
-	   
+
+
 	    $target_file_name = $target_dir.$file_name;
-	    
+
 	    //Get Audio from Archiver
 	    $file_from_archive = fopen($archive_url,'r');
-    	
+
     	//If we obtain a file from archiver
 		if($file_from_archive){
 			//Open local file
 			$target_file = fopen($target_file_name,'wb');
 			$num_bytes = 0;
-			
+
 			//If we open local file
 			if($target_file){
 				//Attempt to add ID3 Tags
@@ -192,8 +192,8 @@ class Podcast extends Model
 			   fclose($file_from_archive);
 			}
 		}
-		
-		
+
+
 	    return $response;
 	    }
 
