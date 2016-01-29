@@ -476,6 +476,7 @@
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
+			this.podcast.date = this.info.start_time;
             this.podcast.show_id = this.info.show_id;
             this.updatePodcastDate();
             this.podcast.title = this.info.title;
@@ -523,6 +524,7 @@
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
             this.podcast.show_id = this.info.show_id;
+			this.podcast.date = this.info.start_time;
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
@@ -581,6 +583,7 @@
 
                         call.saveNewPodcast(this_.podcast).then(function(response){
                             this_.podcast.id = response.data['id'];
+							console.log(response);
                             call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
                                 this_.tracklist_overlay = true;
                                 call.makePodcastAudio(this_.podcast).then(function(reponse){

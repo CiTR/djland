@@ -109,7 +109,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'promotions':promotions}) );
 		},
 		saveNewPodcast: function(podcast){
-			return $http.post(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
+			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
 		},
 		deleteFriend: function(id){
 			return $http.delete(API_URL_BASE+'/friends/'+id);
