@@ -265,8 +265,8 @@ class Show extends Model
 
 		$string = utf8_encode($string);
 		//$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-		        
-		$string = htmlentities($string,ENT_QUOTES);
+
+		$string = htmlentities(html_entity_decode($string),ENT_QUOTES,'UTF-8');
 		return $string;
 
     }
