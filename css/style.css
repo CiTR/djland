@@ -653,6 +653,7 @@ table.open_playsheet > tbody > tr > td.host{
 
 /* Playsheet Angular CSS */
 
+
 .host{
   max-width:400px;
 }
@@ -822,6 +823,58 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
   Podcasts Page CSS
 
 */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+div#main {
+	width:50%;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+}
+#mainleft {
+	font-size:1em;
+	line-height:1.3em;
+	position:relative;
+}
+#mainleft input, #mainleft textarea{
+	width:75%;
+	margin: 5px;
+	padding:5px;
+}
+#mainleft label{
+	font-size:0.95em;
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+
+#mainleft input{
+	font-size: 1em;
+}
+
+#mainleft textarea{
+
+	font-size:0.77em;
+	vertical-align: top;
+}
+.playsheet_block, .spokenword_block, .podcast_block,.save_block {
+   max-width: 1000px;
+   width:100%;
+   min-height:200px;
+   position:relative;
+   margin-left: auto;
+   margin-right:auto;
+   display:block;
+   float:left;
+
+ }
+
+ .podcast_block_inner{
+   margin-left:auto;
+   margin-right:auto;
+   width:50%;
+   display:block;
+   position:relative;
+ }
 #popup{
       position:fixed;
       bottom:0;

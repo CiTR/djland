@@ -38,11 +38,11 @@ if(!isset($_GET['id'])){
             }else{
                 echo "You have no shows assigned to this account. Please ask a staff member to assign you to your show";
             }
-            
+
 }else{
 
 ?>
-   
+
     <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
     <script type='text/javascript' src="js/angular.js"></script>
     <script type='text/javascript' src="js/soundmanager2.js"></script>
@@ -62,8 +62,8 @@ if(!isset($_GET['id'])){
         <div ng-controller="episodeList as list">
             <!-- <div class='text-center'>{{list.status}}</div> -->
             <div class='text-center loading' ><img ng-show='list.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
-            <div id='wrapper'>            
-               
+            <div id='wrapper'>
+
                 <!-- Left Side Episode List Code -->
                 <div class='scroll <?php if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'firefox') > 0 ){echo " firefox'"; }?>' scrolly='!list.loading ? list.load():""'>
                     <div ng-repeat="episode in list.episodes track by $index" class="podcast_list_entry" ng-class="{lit: episode.podcast.id === list.editing.podcast.id}"  >
@@ -85,7 +85,7 @@ if(!isset($_GET['id'])){
                         <hr/>
                     </div>
                 </div>
-                
+
                 <!-- Right Side Editor Popup Code -->
 
                 <div id="popup"  ng-show="list.editing">
@@ -97,7 +97,7 @@ if(!isset($_GET['id'])){
                     </textarea>
 
                     <h4 class='text-left double-padded-top'>Broadcast Date</h4>
-                    
+
                     <div>
                         <h5>Start Time : {{list.editing.playsheet.start_time | date:'yyyy/MM/dd HH:mm:ss'}}</h5>
                         <div ng-controller='datepicker as date' >
@@ -105,7 +105,7 @@ if(!isset($_GET['id'])){
                                ng-model="list.editing.playsheet.start_time"  is-open="date.opened"
                                ng-required="true" close-text="Close" ng-hide="true"
                                ng-change="date.date_change();" />
-                        
+
                             <button ng-click="date.open($event)"  >Change Date</button>
                             h:<select ng-model="list.editing.start_hour" ng-options="n for n in [] | range:0:24"
                                       ng-change="list.updateStart()"></select>
@@ -114,7 +114,7 @@ if(!isset($_GET['id'])){
                             s:<select ng-model="list.editing.start_second" ng-options="n for n in [] | range:0:60"
                                       ng-change="list.updateStart()"></select>
                         </div>
-                       
+
 
                     </div>
                     <div>
@@ -131,7 +131,7 @@ if(!isset($_GET['id'])){
                                       ng-change="list.updateEnd()"></select>
                             s:<select ng-model="list.editing.end_second" ng-options="n for n in [] | range:0:60"
                                       ng-change="list.updateEnd()"></select>
-                        </div>                  
+                        </div>
                     </div>
 
 
@@ -144,7 +144,7 @@ if(!isset($_GET['id'])){
                     <button ng-click="list.stop_sound()">stop playback</button>
                     <div id='elapsed' ng-show='list.playing'></div>
                     </div>
-                    
+
                     <h4 class='text-left double-padded-top'>Audio File Link</h4>
                     <input ng-model="list.editing.podcast.url" readonly>
                     </input><br/>
@@ -152,7 +152,7 @@ if(!isset($_GET['id'])){
                     <span id="message">{{message}}</span><br/><br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
                     <button ng-show="{{list.is_admin}}" ng-click="list.deactivate(list.editing.podcast);">Make this podcast inactive</button>
-                
+
                     <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
                 </div>
             </div>
@@ -162,5 +162,3 @@ if(!isset($_GET['id'])){
 
 <?php
 }
-
-
