@@ -262,13 +262,10 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-
-		$string = utf8_encode($string);;
-		//$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-
-		$string = htmlentities($string,ENT_QUOTES,'UTF-8');
-
-		return $string;
+		$string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
+		$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+	    $string = htmlentities($string);
+	    return $string;
     }
 
 }
