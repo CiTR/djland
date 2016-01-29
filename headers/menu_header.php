@@ -47,20 +47,18 @@ function print_menu(){
 
 		<?php
 		endif;
-		if( permission_level() >= $djland_permission_levels['volunteer']['level'] ):
+		if( permission_level() >= $djland_permission_levels['workstudy']['level'] ):
 		?>
 		<li class='drop'><a href='#'>Admin</a>
 			<div class="dropdown small">
 				<div class=small>
 					<ul>
-						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
+
 						<li><a href="specialbroadcast.php">Schedule Override</a></li>
 						<li><a href="friends.php">Friends of CiTR</a></li>
 						<li><a href="scheduler.php">Ad Scheduler</a></li>
-						<?php endif; ?>
-						<li><a href="adreport.php">Ad Reporting</a></li>
 						<li><a href="samAds.php">Sam Ad History</a></li>
-						<?php if(permission_level() >=  $djland_permission_levels['administrator']['level']) : ?>
+						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
 						<?php endif; ?>
 					</ul>
@@ -69,7 +67,7 @@ function print_menu(){
 		</li>
 		<?php
 		endif;
-		if($enabled['charts'] && permission_level() >=$djland_permission_levels['workstudy']['level']) : ?>
+		if($enabled['charts'] && permission_level() >=$djland_permission_levels['volunteer_leader']['level']) : ?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
 		<?php
 		endif;
