@@ -264,10 +264,11 @@ class Show extends Model
     public static function clean($string){
 
 		$string = utf8_encode($string);
-        $find = array('/&/',"/'/",'/"/');
-		$replace = array('&amp;','&apos;','&quot');
-		str_replace($find,$replace,$string);
-        return $string;
+		//$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+		        
+		$string = htmlentities($string,ENT_QUOTES);
+		return $string;
+
     }
 
 }
