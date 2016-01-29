@@ -19,13 +19,12 @@ $(document).ready ( function() {
 			add_handlers();
 			yearlyReport(year_callback);
 
-		}else if(permission_level >= permission_levels['volunteer_leader']['level']){
+		}else if(permission_level >= permission_levels['volunteer']['level']){
 			var year_callback = loadYearSelect();
 			add_handlers();
 			$('.membership#email').show();
 		}
 	});
-
 });
 
 window.setInterval(checkBlocking,1000);

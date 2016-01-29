@@ -24,7 +24,7 @@ function print_menu(){
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
 			echo "<div id='using_sam' class='hidden'>".($using_sam ?'1':'0')."</div>";
-			if( (permission_level() >= $djland_permission_levels['voluntee']['level']) && $enabled['membership'] ):
+			if( (permission_level() >= $djland_permission_levels['volunteer']['level']) && $enabled['membership'] ):
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>
 		<?php
@@ -54,10 +54,10 @@ function print_menu(){
 				<div class=small>
 					<ul>
 
-						<li><a href="specialbroadcast.php">Schedule Override</a></li>
+						<li><a href="schedule_override.php">Schedule Override</a></li>
 						<li><a href="friends.php">Friends of CiTR</a></li>
 						<li><a href="scheduler.php">Ad Scheduler</a></li>
-						<li><a href="samAds.php">Sam Ad History</a></li>
+						<li><a href="sam_ad_history.php">Sam Ad History</a></li>
 						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
 						<?php endif; ?>

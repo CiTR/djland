@@ -1,5 +1,14 @@
+
+
 <html ng-app='djland.specialbroadcasts'>
-	<?php require_once("headers/menu_header.php"); ?>
+	<?php
+		require_once("headers/menu_header.php");
+		include_once("headers/session_header.php");
+		require_once("headers/security_header.php");
+		if(permission_level() < $djland_permission_levels['volunteer_leader']['level']){
+			header("Location: main.php");
+		}
+	?>
 	<head>
 		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
@@ -11,12 +20,12 @@
 		</div>
 		<div class='grey wrapper'>
 			<h2>Special Broadcast Schedule Overrides</h2>
-			
+
 			<ul id='broadcasts' class='clean-list'>
 				<li ng-repeat='(id,broadcast) in broadcasts.list | orderBy:"-start"  track by $index'>
 					<hr/>
 					<h3 class='text-left'>{{broadcast.name}}</h3>
-					
+
 					<div class='col1'><input ng-model='broadcast.name' placeholder='name'><button type='button' ng-click='broadcasts.delete($index)'>Delete This Broadcast</button></div>
 					<div class='broadcast_info'>
 						<!-- Date Code -->
@@ -39,7 +48,7 @@
 								<div class='col1'> End: {{broadcast.time.end_time | date:'yyyy/MM/dd HH:mm:ss'}} </div>
 								<input class="date_picker" ng-type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                                ng-model="broadcast.time.end_time"  is-open="date.opened" ng-hide='true'
-                               ng-required="true" close-text="Close" 
+                               ng-required="true" close-text="Close"
                                ng-change="broadcasts.updateEnd($index)" />
                             	<button ng-click="date.open($event)" >Change Date</button>
                             	h:<select ng-model="broadcast.time.end_hour" ng-options="n for n in [] | range:0:24"
@@ -58,7 +67,7 @@
 							<div>
 								<label>Show:</label>
 								<select ng-model="broadcast.show_id" class='show_select'>
-								    <option ng-selected='broadcast.show_id == show.id' ng-repeat="show in broadcasts.shows | orderBy:'name'" value="{{show.id}}">{{show.name}}</option> 
+								    <option ng-selected='broadcast.show_id == show.id' ng-repeat="show in broadcasts.shows | orderBy:'name'" value="{{show.id}}">{{show.name}}</option>
 								</select>
 							</div>
 							<div>
@@ -69,7 +78,7 @@
 					<div class='image_upload'>
 						<!-- Image uploading -->
 						<div class='right'>
-							<div class='left col1'>                   
+							<div class='left col1'>
 				                <input class='file{{broadcast.id}} left' type="file" ng-model-instant/>
 				                <button type="button" class='left' ng-click="broadcasts.imageUpload(broadcast.id,broadcast.name)">Upload</button>
 			                </div>
@@ -78,10 +87,10 @@
 	                		</div>
 	                	</div>
             		</div>
-	            	
+
 				</li>
 			</ul>
-			
+
 		</div>
 		<div class='broadcast_buttons'>
 				<button type='button' ng-click='broadcasts.add()'>Add a Broadcast</button>

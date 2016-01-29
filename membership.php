@@ -41,10 +41,14 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
 			<?php if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
 				<li class = 'tab nodrop active-tab member_action' name='search'>Search Members</li>
 				<li class = 'tab nodrop inactive-tab member_action' name='view' data='1'>View Member</li>
-				<li class = 'tab nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
-				<li class = 'tab nodrop inactive-tab member_action' name='report'>Report</li>
-			<?php endif; ?>
+				<li class = 'tab nodrop inactive-tab member_action' name='report'>Yearly Report</li>
+			<?php endif;
+			if(permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
+			<li class = 'tab nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
+			<?php endif;
+			if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
 			<li class = 'tab nodrop inactive-tab member_action' name='email'>Send Emails</li>
+			<?php endif;?>
 		</ul>
 		<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
 
@@ -289,7 +293,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
 					<div class='col1 text-left'>Permission Levels:</div>
 					<?php
 						foreach($djland_permission_levels as $key=>$value){
-							if($key != 'operator') echo "<div class='col6'>{$value['name']} <input type=checkbox id='level_{$key}'/></div>";
+							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col6 tooltip'><span title=''  >{$value['name']} <input type=checkbox id='level_{$key}'/></span></div>";
 						}
 					?>
 				</div>
@@ -328,27 +332,27 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
    				<div class='col2'>
 	   				<h4>Members Registered this year</h4>
 	   				<ul class='clean-list'>
-	   					<li class='report_row'>
+	   					<li class='report_row total'>
 	   						<div class='col2'>Total:</div>
 	   						<div id='report_total' class='col2'></div>
 	   					</li>
-	   					<li class='report_row'>
+	   					<li class='report_row paid'>
 	   						<div class='col2'>Paid:</div>
 	   						<div id='report_paid' class='col2'></div>
 	   					</li>
-	   					<li class='report_row'>
+	   					<li class='report_row unpaid'>
 	   						<div class='col2'>Unpaid:</div>
 	   						<div id='report_unpaid' class='col2'></div>
    						</li>
-	   					<li class='report_row'>
+	   					<li class='report_row student'>
 	   						<div class='col2'>Student:</div>
 	   						<div id='report_student' class='col2'></div>
 	   					</li>
-	   					<li class='report_row'>
+	   					<li class='report_row community'>
 	   						<div class='col2'>Community:</div>
 	   						<div id='report_community' class='col2'></div>
    						</li>
-	   					<li class='report_row'>
+	   					<li class='report_row staff'>
 	   						<div class='col2'>Staff:</div>
 	   						<div id='report_staff' class='col2'></div>
    						</li>
@@ -367,7 +371,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
    				</div>
    			</div>
    		</div>
-   		<?php if(permission_level() >= $djland_permission_levels['administrator']['level']): ?>
+   		<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
    		<!-- Begin Tab 4 "member admin" -->
    		<div id='admin' class='hidden membership grey clearfix'>
    			<div class='col1'>
@@ -383,7 +387,9 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
    		</div>
    		<?php endif; ?>
         <!-- Begin Tab 5 "email view" -->
-   		<?php endif; ?>
+   		<?php endif;
+			if(permission_level() >= $djland_permission_levels['volunteer']['level']):
+			?>
    		<div id='email' class='hidden membership grey clearfix'>
    			<div class='col1'>
    				<h4>Email List</h4>
@@ -435,6 +441,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
    				<textarea id='email_list' class='largeinput center' placeholder='Email List Will Be Generated Here'></textarea>
 			</div>
    		</div>
+		<?php endif; ?>
 	</body>
 </html>
 <?php }else{

@@ -116,14 +116,14 @@ $xml_path_local   = '/var/www/xml/or/something/';
 $djland_membership_year_date = date('04/31/'.idate('Y'));
 
 $djland_permission_levels = array(
-    'operator'=>array('level'=>'99','name'=>'Operator'),
-    'administrator'=> array('level'=>'98','name'=>'Administrator'),
-    'staff'=>array('level'=>'6','name'=>'Staff'),
-    'workstudy'=>array('level'=>'5','name'=>'Workstudy'),
-	'volunteer_leader'=>array('level'=>'4','name'=>'Volunteer Leader'),
-    'volunteer'=>array('level'=>'3','name'=>'Volunteer'),
-    'dj'=>array('level'=>'2','name'=>'DJ'),
-    'member'=>array('level'=>'1','name'=>'Member')
+    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Godmode.'),
+    'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
+    'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
+    'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
+	'volunteer_leader'=>array('level'=>'4','name'=>'Volunteer Leader','tooltip'=>'Volunteer Leader: Access to library, email lists, and schedule overrides.'),
+    'volunteer'=>array('level'=>'3','name'=>'Volunteer','tooltip'=>'Volunteer: Access to charts, edit library, ad history.'),
+    'dj'=>array('level'=>'2','name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
+    'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
 	);
 $djland_training = array(
 	'Station Tour' => 'station_tour',
