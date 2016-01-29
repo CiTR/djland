@@ -262,7 +262,8 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-		$string = iconv(mb_detect_encoding($string, mb_detect_order(), true), 'UTF-8//IGNORE', $string);
+
+		$string = utf8_encode($string);
         $find = array('/&/',"/'/",'/"/');
         $string = htmlentities($string,ENT_QUOTES);
         return $string;
