@@ -267,6 +267,7 @@ class Show extends Model
 		$string = utf8_encode($string);
 		//$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
 		$string = preg_replace($find,$replace,$string);
+		$string = htmlentities($string);
 		return $string;
     }
 
