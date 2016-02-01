@@ -630,7 +630,7 @@ Route::get('/adschedule/{date}',function($date = date){
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
         //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $week = floor( (strtotime($date) - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+        $week = (floor( (strtotime($date) - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2) + 1;
 
 
 		if($formatted_date == date('Y-M-d',strtotime('now'))){
