@@ -2,7 +2,7 @@
 include_once("../headers/session_header.php");
 require_once("../headers/db_header.php");
 require_once("../headers/function_header.php");
-require_once("../adLib.php");
+
 error_reporting(E_ALL);
 $today = date('Y-m-d');
 $from = $today;
@@ -25,8 +25,6 @@ if($filter == true){
 }else{
 	$query = "SELECT filename, date_played FROM historylist WHERE date_played > '{$from}' AND date_played <= '{$to}' AND (songtype = 'A' OR filename LIKE '%PRIORITY ADs%') ORDER BY date_played DESC";
 }
-
-
 if($result = $mysqli_sam->query($query)){
 	$adPlays=array();
 	while($row = mysqli_fetch_array($result)){

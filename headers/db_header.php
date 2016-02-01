@@ -26,18 +26,17 @@ try{
 		echo "<br/> pdo extension is not loaded";
 	}
 }
-		
+
 // DJLAND's playsheet can be customized to link to a music library mySQL backend
 // this provides the ability to easily add plays to a playsheet without typing
 // actually, any digital media library / player that uses MySQL should work
 // as long as the table names and column names are consistent with the code
-// watch this space for a list of those table names in case you want to use a 
+// watch this space for a list of those table names in case you want to use a
 // different digital media player
 
 if($using_sam){
 
     global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
-
     $mysqli_sam = new mysqli($samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname);
 
     if (mysqli_connect_error()) {
@@ -53,19 +52,19 @@ function mysqli_result_dep($res, $row, $field=0) {
 //	print_r($res);
 //	echo 'row:'.$row.'<br/>';
 //	echo 'field:'.$field.'<br/>';
-	if(is_object($res))    
-		$res->data_seek($row); 
+	if(is_object($res))
+		$res->data_seek($row);
 	else 	return false;
-	
+
 	$datarow = $res->fetch_array();
-	
+
 	if(is_array($datarow))
 	    return $datarow[$field];
 	else 	return false;
-	        
+
 }
 function getContent(){
-   
+
     if (0 === strlen(trim($content = file_get_contents('php://input'))))
     {
       $content = false;

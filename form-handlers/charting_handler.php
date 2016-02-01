@@ -1,9 +1,9 @@
 <?php
-error_reporting(E_ALL);
+
 include_once("../headers/session_header.php");
 require("../headers/db_header.php");
 require("../headers/function_header.php");
-require("../adLib.php");
+
 $today = date('Y-m-d');
 $from = strtotime('-1 week last friday');
 $to = strtotime('last thursday');
@@ -32,11 +32,12 @@ $statement->bindValue(':to',$to);
 
 try{
 	$statement->execute();
+	$result = new stdClass();
 	$result = $statement -> fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }catch(PDOException $pdoe){
 	echo "ERROR:". $pdoe->getMessage();
-	http_response_code(500);
+ 	http_response_code(500);
 }
 
 ?>

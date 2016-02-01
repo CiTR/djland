@@ -1,7 +1,7 @@
 $(document).ready ( function() {
 	init();
-	
-   
+
+
    $( "#from" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,
@@ -11,7 +11,7 @@ $(document).ready ( function() {
         $( "#to" ).datepicker( "option", "minDate", selectedDate );
       }
     });
-	
+
 	$( "#to" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,
@@ -21,7 +21,7 @@ $(document).ready ( function() {
         $( "#from" ).datepicker( "option", "maxDate", selectedDate );
       }
     });
-	
+
     $('#load_charts').click(function(){
     	loadCharts($('#from').val(), $('#to').val());
     });
@@ -37,10 +37,10 @@ function init(){
 		var from;
 		var to_;
 		var from_;
-		
+
 		//One day in milliseconds
 		var one_day = 24 * 60 * 60 * 1000;
-		
+
 		week_start = new Date();
 		week_start.setHours('0');
 		week_start.setMinutes('0');
@@ -69,8 +69,8 @@ function init(){
 		from = new Date(from_);
 		from = from.getFullYear()+"/"+('0' + (from.getMonth()+1)).slice(-2) + "/" + ('0' + from.getDate()).slice(-2);
 		$('#from').val(from);
-	
-		loadCharts(from,to);	
+
+		loadCharts(from,to);
 }
 function loadCharts(from,to){
 	$('.loading').show();
@@ -79,7 +79,8 @@ function loadCharts(from,to){
 			url: "form-handlers/charting_handler.php",
 			data: {"from":from,"to":to},
 			dataType: "json"
-		}).success(function(data){
+		}).then(
+			function(data){
 			$('#charting-body').html('');
 			//$('#charting-container').prepend('<div id=charting-daterange>Displaying charting information from: '+from+' to: '+to+'</div>');
 			for( $j = 0; $j < Object.keys(data).length; $j++ ){
@@ -103,9 +104,9 @@ function loadCharts(from,to){
 				}
 			}
 			$('.loading').hide();
-		}).fail(function(){
-			
+		},function(error){
 			$('#charting-body').html('connection error');
+			console.log(error);
 			$('.loading').hide();
 		});
 }
