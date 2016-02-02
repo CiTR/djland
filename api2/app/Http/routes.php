@@ -203,7 +203,7 @@ Route::group(array('prefix'=>'show'),function(){
 	});
 
 	Route::get('/active',function(){
-		return Show::select('id','name')->where('active','=','1')->get();
+		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
 
 	//Searching by Show ID

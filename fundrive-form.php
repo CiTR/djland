@@ -30,14 +30,18 @@ $donor_recognition_options = array(
 ?>
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-<link rel=stylesheet href=css/style.css type=text/css>"
+<link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | Fundrive Form</title>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="js/library-js.js"></script>
 </head><body class='wallpaper'>
 
-<?php print_menu(); ?>
+<?php print_menu(); 
+$shows = array();
+$api_base = 'http://'.$_SERVER['HTTP_HOST'];
+$shows = CallAPI('GET',$api_base.'/api2/public/show/active');
+?>
 
 <div id='membership' class='wrapper side-padded'>
 	<h1 class='double-padded-top'> Fundrive Form </h1>
@@ -75,7 +79,13 @@ $donor_recognition_options = array(
 	<div class='col1'><br></div>
 
     <div class='col2'>Would you like to support a specific show? If yes:</div>
-    <div class='col2'><input id='fundrive_showname' placeholder='Show Name' maxlength='50'></input></div>
+    <div class='col2'>
+        <select id='fundrive_showname'>
+        <?php foreach($shows as $show): ?>
+            <option value="<?php echo $show->id; ?>"><?php echo $show->name; ?></option>
+        <?php endforeach; ?>
+        </select>
+    </div>
 
 	<div class='col1'><br></div>
 
