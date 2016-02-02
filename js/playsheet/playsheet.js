@@ -722,3 +722,13 @@
     //TODO: Use Socan Call to get socan status
     var socan = false;
 })();
+
+$(document).ready(function(){
+    console.log('hi');
+    setTimeout(function(){
+        crtc_totals();
+    },1000);
+    function crtc_totals(){
+        $()
+    }
+});

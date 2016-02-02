@@ -219,7 +219,17 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
-			{{playsheet.spokenword_hour}}
+			
 		</div>
+		<div class="crtc_totals">
+				<table class='col1'>
+					<tr>
+						<td> Category 2: </td><td><span id='can_2_total'> 20% </span>/ <span id='can_2_required'> 35% </span></td>
+						<td> Category 3: </td><td><span id='can_3_total'> 18% </span>/ <span id='can_3_required'> 12% </span></td>
+						<td> Femcon: </td><td><span id='fem_total'> 20% </span>/<span id='fem_required'> 35% </span></td>
+						<td> Playlist: </td><td><span id='playlist_total'> 30% </span>/<span id='playlist_required'> 35% </span></td>
+					</tr>
+				</table>
+			</div>
 	</body>
 </html>
