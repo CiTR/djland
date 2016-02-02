@@ -24,9 +24,9 @@ $mailing_options = array(
     'Yes'=>'mail_yes',
     'No'=>'mail_no');
 $donor_recognition_options = array(
-    'Yes'=>'recognize_yes',
-    'No'=>'recognize_no',
-    'Anonymous'=>'recognize_anon');
+    'Yes - use my name'=>'recognize_yes',
+    'Yes - use my other name'=>'recognize_no',
+    'No - please leave me as anonymous'=>'recognize_anon');
 ?>
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -37,7 +37,7 @@ $donor_recognition_options = array(
 <script src="js/library-js.js"></script>
 </head><body class='wallpaper'>
 
-<?php print_menu(); 
+<?php print_menu();
 $shows = array();
 $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
@@ -78,7 +78,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1'><br></div>
 
-    <div class='col2'>Would you like to support a specific show? If yes:</div>
+    <div class='col2'>Was your gift inspiried by a specific show? If yes:</div>
     <div class='col2'>
         <select id='fundrive_showname'>
         <?php foreach($shows as $show): ?>
@@ -100,24 +100,19 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1'><hr><h2>Contact Information</h2><hr></div>
 
-	<div class = 'container'>
-    	<div id='row1' class='containerrow'>
-    	<div class='col5'> Description: </div>
-    	<div class='col5'><input id='firstname' class='required' placeholder='Description' maxlength='30'></input></div>
-    </div>
-    <div id='row2' class='containerrow'>
+    <div id='row1' class='containerrow'>
     	<div class='col5'>First Name*: </div>
     	<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
     	<div class='col5'>Last Name*: </div>
     	<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
     </div>
-    <div id='row3 'class='containerrow'>
+    <div id='row2 'class='containerrow'>
     	<div class='col5'>Address*: </div>
     	<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
     	<div class='col5'>City*:</div>
 		<div class='col5'><input id='city' class='required' placeholder='City' maxlength='45'></input></div>
     </div>
-    <div id='row4 'class='containerrow'>
+    <div id='row3 'class='containerrow'>
     	<div class='col5'>Province*: </div>
     	<div class='col5'><select id='province'>
         <?php
@@ -129,13 +124,13 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<div class='col5'>Postal Code*:</div>
     	<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'></input></div>
     </div>
-    <div id='row5' class='containerrow'>
+    <div id='row4' class='containerrow'>
     	<div class='col5'>Primary Number*:</div>
     	<div class='col5'><input id='primary_phone' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
     	<div class='col5'>Email Address*: </div>
     	<div class='col5'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
     </div>
-	</div>
+
 	<hr>
 	<div class='col5'> How would you like to pay? </div>
 	<div class='span4col5'>
@@ -165,6 +160,9 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<div class='col1 text-left'>
     		<input type='checkbox' id='<?php echo $option; ?>'>
     		<label for='<?php echo $option ?>'><?php echo $key; ?></label>
+			<?php if ($option == recognize_no): ?>
+				<div class='col2 right'><input id='dj_name' class='required' placeholder='Name' maxlength='50'></input></div>
+			<?php endif; ?>
     	</div>
     	<?php endforeach; ?>
 	</div>
@@ -174,11 +172,12 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	Thank you for donating to CiTR's Fundrive! We really appreciate it.
     	<br>
     	<br>
-    	This year our Fundrive Finale is on Friday, march 4 at the hindenburg. The event is also a release party for the LP we're putting out with mint records. We hope to see you there! (more info at citr.ca)
+    	This year our Fundrive Finale is on Friday, March 4 at the hindenburg. The event is also a release party for the LP we're putting out with mint records. We hope to see you there! (more info at citr.ca)
     	<br>
     	<br>
     	If chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
     	<br>
+		Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
     	<br>
 	</div>
 	<br>
@@ -191,7 +190,11 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<br>
 
-	PAID?
+	Paid? <input type='checkbox' id='paid_status'>
+
+	<br>
+	
+	Picked up prize? <input type='checkbox' id='prize_status'>
 
 	<div class='containerrow'>
     	<center>
