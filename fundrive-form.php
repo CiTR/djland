@@ -28,7 +28,7 @@ $donor_recognition_options = array(
     'No'=>'recognize_no',
     'Anonymous'=>'recognize_anon');
 ?>
-
+    
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | Fundrive Form</title>
@@ -41,6 +41,9 @@ $donor_recognition_options = array(
 $shows = array();
 $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
+
+
+
 ?>
 
 <div id='membership' class='wrapper side-padded'>
