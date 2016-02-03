@@ -146,7 +146,7 @@ class Show extends Model
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
 
-        $show["podcast_summary"] = sizeOf($show["podcast_summary"]) > 5 ? substr($show["podcast_summary"],0,200) : substr($show["show_desc"],0,200);
+        $show["podcast_summary"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
             $show[$k] = Show::clean($show[$k]);
             }
@@ -163,7 +163,7 @@ class Show extends Model
         $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
         if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
-        $xml[] = "<itunes:subtitle>" . $show["podcast_summary"] . "</itunes:subtitle>";
+        $xml[] = "<itunes:subtitle>" . $show["summary"] . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
