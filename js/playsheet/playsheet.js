@@ -728,12 +728,13 @@ $(document).ready(function(){
     var can_3_required = $('#can_3_required').text();
     var fem_required = $('#fem_required').text();
     var playlist_required = $('#playlist_required').text();
+    var hit_max = $('#hit_max').text();
 
     var can_2_element = $('#can_2_total');
-    can_2_element.val('0%');
     var can_3_element = $('#can_3_total');
     var fem_element = $('#fem_total');
     var playlist_element = $('#playlist_total');
+    var hit_element = $('#hit_total');
     
     setInterval(function(){
         crtc_totals();
@@ -747,11 +748,13 @@ $(document).ready(function(){
         var can_3_total = 0;
         var fem_total = 0;
         var playlist_total = 0;
+        var hit_total = 0;
 
         $('.playitem').each(function(element){
             playitems_count ++;
             if($(this).find('button.femcon').hasClass('filled')) fem_total ++;
             if($(this).find('button.playlist').hasClass('filled')) playlist_total ++;
+            if($(this).find('button.hit').hasClass('filled')) hit_total ++;
             
             if($(this).find('select.crtc_category').val() == '20'){
                 can_2_count ++;
@@ -764,15 +767,22 @@ $(document).ready(function(){
         can_2_element.text((can_2_total / (can_2_count!=0?can_2_count:1) * 100).toFixed(0) + "%");
         if(can_2_total/(can_2_count!=0?can_2_count:1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
         else can_2_element.removeClass('red');
+        
         can_3_element.text((can_3_total / (can_3_count!=0?can_3_count:1) * 100).toFixed(0) + "%");
          if(can_3_total/(can_3_count!=0?can_3_count:1) * 100 < can_3_required && can_3_count > 0) can_3_element.addClass('red');
         else can_3_element.removeClass('red');
+        
         fem_element.text((fem_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
          if(fem_total/(playitems_count!=0?playitems_count:1) * 100 < fem_required && playitems_count > 0) fem_element.addClass('red');
         else fem_element.removeClass('red');
+        
         playlist_element.text((playlist_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
         if(playlist_total/(playitems_count!=0?playitems_count:1) * 100 < playlist_required && playitems_count > 0) playlist_element.addClass('red');
         else playlist_element.removeClass('red');
+
+        hit_element.text((hit_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
+        if(hit_total/(playitems_count!=0?playitems_count:1) * 100 > hit_max && playitems_count > 0) hit_element.addClass('red');
+        else hit_element.removeClass('red');
 
     }
 });

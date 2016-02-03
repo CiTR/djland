@@ -228,6 +228,7 @@
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>
 						<td> Femcon: </td><td><span id='fem_total'></span>/<span id='fem_required'>35</span>%</td>
 						<td> New: </td><td><span id='playlist_total'></span>/<span id='playlist_required'>60</span>%</td>
+						<td> Hit: </td><td><span id='hit_total'></span>/<span id='hit_max'>10</span>% Max</td>
 					</tr>
 				</table>
 			</div>
