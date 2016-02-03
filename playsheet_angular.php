@@ -7,7 +7,7 @@
 	require_once("headers/menu_header.php");
 	?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 
 	</head>
@@ -126,8 +126,8 @@
 			</div>
 		    <div id='container'>
 				<h3 class='double-padded-top'>Music</h3>
-				<table class='playitem'>
-					<tr class='music_row_heading playitem border'>
+				<table>
+					<tr class='music_row_heading border'>
 						<th class='side-padded'>#</th>
 						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.socan }"></input></th>
 						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.socan }"></input></th>
@@ -136,7 +136,7 @@
 						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
 						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
 						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
-						<th><button tooltip="{{playlist.help['cancon']}}" class="box cancon filled pad-top"></button>
+						<th><button tooltip="{{playsheet.help['cancon']}}" class="box cancon filled pad-top"></button>
 						<th><button tooltip="{{playsheet.help['femcon']}}" class="box femcon filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['instrumental']}}" class="box instrumental filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['partial']}}" class="box partial filled pad-top"></button></th>
@@ -224,10 +224,10 @@
 		<div class="crtc_totals">
 				<table class='col1'>
 					<tr>
-						<td> Category 2: </td><td><span id='can_2_total'> 20% </span>/ <span id='can_2_required'> 35% </span></td>
-						<td> Category 3: </td><td><span id='can_3_total'> 18% </span>/ <span id='can_3_required'> 12% </span></td>
-						<td> Femcon: </td><td><span id='fem_total'> 20% </span>/<span id='fem_required'> 35% </span></td>
-						<td> Playlist: </td><td><span id='playlist_total'> 30% </span>/<span id='playlist_required'> 35% </span></td>
+						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
+						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>
+						<td> Femcon: </td><td><span id='fem_total'></span>/<span id='fem_required'>35</span>%</td>
+						<td> New: </td><td><span id='playlist_total'></span>/<span id='playlist_required'>60</span>%</td>
 					</tr>
 				</table>
 			</div>
