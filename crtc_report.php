@@ -65,7 +65,28 @@
 			<div class='text-center' ng-hide='report.playsheets.length > 0 || report.loading'>
 				No Results
 			</div>
-
+			<div class='col1 text-center'>
+			<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
+			<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
+			<div class='col1'>
+				Total Category 2: {{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
+				({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
+			</div>
+			<div class='col1'>
+				Total Category 3: {{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
+				({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/12%)
+			</div>
+			<div class='col1'>
+				Total Hits:
+				{{report.percentage_totals.hit_total}} / {{report.percentage_totals.playitems}}
+				({{report.percentage_totals.hit_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.hit_total/report.percentage_totals.playitems : 0 | percentage:0}}/10% MAX)
+			</div>
+			<div class='col1'>
+				Total Femcon:
+				{{report.percentage_totals.femcon_total}} / {{report.percentage_totals.playitems}}
+				({{report.percentage_totals.femcon_total/report.percentage_totals.playitems > 0 ? report.percentage_totals.femcon_total/report.percentage_totals.playitems : 0 | percentage:0}}/35%)
+			</div>
+			</div>
 			<div id='report_summary' class='invisible'>
 				<h3>Summary</h3>
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
@@ -89,9 +110,9 @@
 								<div ng-if='report.show_names.length == 1'>{{item.date}}</div>
 
 							</td>
-							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 >= item.required_cancon || item.playitems_3 == 0 ? "":"red"'>
+							<td ng-class='(item.cancon_3_total/item.playitems_3)*100 > 12 || item.playitems_3 == 0 ? "":"red"'>
 								{{item.cancon_3_total}} / {{item.playitems_3}}
-								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/{{item.required_cancon}}%)
+								({{item.cancon_3_total/item.playitems_3 > 0 ? item.cancon_3_total/item.playitems_3 : 0 | percentage:0}}/12%)
 							</td>
 							<td ng-class='(item.cancon_2_total/item.playitems_2)*100 >= item.required_cancon || item.playitems_2 == 0 ? "":"red"'>
 								{{item.cancon_2_total}} / {{item.playitems_2}}
@@ -111,9 +132,9 @@
 							<td>Total</td>
 							<td ng-class='(report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3*100) >= 12 || report.percentage_totals.playitems_3 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_3_total}} / {{report.percentage_totals.playitems_3}}
-								({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/35%)
+								({{report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 > 0 ? report.percentage_totals.cancon_3_total/report.percentage_totals.playitems_3 : 0 | percentage:0}}/12%)
 							</td>
-							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) >= 35  || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
+							<td ng-class='(report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2*100) >= 35 || report.percentage_totals.playitems_2 == 0 ?"":"red"'>
 								{{report.percentage_totals.cancon_2_total}} / {{report.percentage_totals.playitems_2}}
 								({{report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 > 0 ? report.percentage_totals.cancon_2_total/report.percentage_totals.playitems_2 : 0 | percentage:0}}/35%)
 							</td>

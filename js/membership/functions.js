@@ -28,7 +28,7 @@ function getSelect($id){
 		return selectedValue;
 	}else{
 		return null;
-	}	
+	}
 }
 function getCheckbox(id){
 	var checkbox = id;
@@ -95,7 +95,7 @@ function set(value,target_id,target_class,target_name){
 					var yes = $('#'+target_id+'1');
 					var no = $('#'+target_id+'2');
 					switch(value){
-						case '1': 
+						case '1':
 							$radio1.attr('checked','checked');
 							$radio2.removeAttr('checked');
 							break;
@@ -104,7 +104,7 @@ function set(value,target_id,target_class,target_name){
 							$radio1.removeAttr('checked');
 							break;
 						default:
-							break; 
+							break;
 					}
 					break;
 				default:
@@ -126,8 +126,8 @@ function setCheckbox(value,id){
 		$('#'+id).prop('checked',false);
 	}
 
-	
-}	
+
+}
 function setText(value,id){
 	$target = $('#'+id);
 	assertTrue($target != null);
@@ -146,7 +146,7 @@ function setRadio(value,id){
 	$radio2 = $('#'+id+'2');
 	assertTrue($radio1 != null && $radio2 != null);
 	switch(value){
-		case '1': 
+		case '1':
 			$radio1.attr('checked','checked');
 			$radio2.removeAttr('checked');
 			break;
@@ -155,7 +155,7 @@ function setRadio(value,id){
 			$radio1.removeAttr('checked');
 			break;
 		default:
-			break; 
+			break;
 	}
 }
 function getRadio(id){
@@ -180,7 +180,7 @@ function numbersonly(myfield, e, dec)
 		keychar = String.fromCharCode(key);
 
 		// control keys
-		if ((key==null) || (key==0) || (key==8) || 
+		if ((key==null) || (key==0) || (key==8) ||
 		    (key==9) || (key==13) || (key==27) )
 		   return true;
 
@@ -225,7 +225,7 @@ function queryMembershipYears(member_id){
 		data: {"member_id":member_id},
 		dataType: "json",
 		async: true
-		});	
+		});
 }
 
 function loadYearSelect(){
@@ -240,7 +240,7 @@ function loadYearSelect(){
 		});
 	},function(err){
 		console.log("failed to load years");
-	});	
+	});
 	return years;
 }
 
@@ -271,22 +271,21 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		for(var member in data){
 			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
 			var row = $('#row'+data[member].member_id);
-			
+
 			for(var item in data[member]){
 				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
 			}
 			if($('#permission_level').text() >= permission_levels['administrator']){
 				row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
-			}	
-			console.log(permission_levels);
+			}
 			row.append("<div class='check hidden'>&#x274F;</div>");
 		}
 		if(data.length <1){
 			member_result_header.hide();
 			$('#membership_result[name="search"]').append("<div class='member_row'>No Results</div>");
-		}	
-	});	
+		}
+	});
 }
 
 function saveComments(){
@@ -347,7 +346,7 @@ function emailList(){
 		if($(this).is(':visible')){
 			email_value = $(this).val();
 		}
-	}); 
+	});
 	console.log(get('email_select'));
 	var request = $.ajax({
 		type:"GET",
@@ -374,11 +373,6 @@ function emailList(){
 		function(error){
 			console.log(error[0]);
 		});
-	
+
 	console.log(email_value);
 }
-
-
-
-
-

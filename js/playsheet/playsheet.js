@@ -476,6 +476,7 @@
             for(var playitem in this_.playitems){
                 this_.playitems[playitem].show_date = date;
             }
+			this.podcast.date = this.info.start_time;
             this.podcast.show_id = this.info.show_id;
             this.updatePodcastDate();
             this.podcast.title = this.info.title;
@@ -523,6 +524,7 @@
             var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
             this.podcast.show_id = this.info.show_id;
+			this.podcast.date = this.info.start_time;
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;

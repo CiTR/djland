@@ -5,8 +5,9 @@ require_once("headers/security_header.php");
 require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['dj']){
-
+if( permission_level() < $djland_permission_levels['dj']['level']){
+	    header("Location: main.php");
+	}
 ?>
     <html>
     <head>
@@ -33,11 +34,11 @@ if( permission_level() >= $djland_permission_levels['dj']){
             <div class='text-center' ng-show='show.loading == true'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
             <div ng-hide="show.member_shows || show.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
             <div id='wrapper' ng-show='show.info'>
-                
 
-               Select show to edit: 
+
+               Select show to edit:
                 <select ng-model="show.show_value" ng-change="show.updateShow()" >
-                    <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option> 
+                    <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option>
                 </select>
                 <button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
                 <h4 class='text-left double-padded-top'> Show name </h4>
@@ -49,7 +50,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         <input readonly id='show_name' ng-model='show.info.name'/>
                     </div>
                 </div>
-                    
+
                 <div ng-show="show.is_admin">
                     <h4 class='text-left double-padded-top'>Is show active?</h4>
                     <input type='checkbox' ng-model="show.info.active" ng-true-value="1" ng-false-value="0"/>
@@ -147,7 +148,7 @@ if( permission_level() >= $djland_permission_levels['dj']){
                         <option value='20'>20</option><option value='30'>30</option>
                     </select>
                     <h4 class='text-left double-padded-top'>Show Requirements</h4>
-                    
+
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon<td><input class='smallinput' name='cancon' ng-model='show.info.cc_req'>%</tr>
@@ -162,8 +163,3 @@ if( permission_level() >= $djland_permission_levels['dj']){
             </div>
         </div>
     </body></html>
-<?php
-
-}else{
-    header("Location: main.php");
-}?>
