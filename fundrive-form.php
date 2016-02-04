@@ -15,7 +15,7 @@ $fundrive_amount = array(
 "Other"=>"other");
 $swag_options = array(
 	'Swag'=>'swag',
-	'Tax Reciept (for donations $10 and more)'=>'tax_reciept');
+	'Tax Reciept'=>'tax_reciept');
 $payment_options = array(
 	'Credit Card'=>'credit_card',
 	'Dropping off or mailing in a Cheque - payable to UBC, mail to LL500 6133 University Blvd, Van BC V6T 1Z1'=>'cheque',
@@ -28,7 +28,7 @@ $donor_recognition_options = array(
     'Yes - use my other name'=>'recognize_no',
     'No - please leave me as anonymous'=>'recognize_anon');
 ?>
-    
+
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | Fundrive Form</title>
@@ -156,7 +156,21 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	</div>
     	<?php endforeach; ?>
 	</div>
+
 	<div class='col1'><br></div>
+	<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
+	<div class='col1'><br></div>
+	<div class='col2'>CiTR?
+		<input type='checkbox' id='citr_update_yes'>
+	</div>
+	<div class='col1'><br></div>
+	<div class='col2'>UBC Development and Alumni Engagement?
+		<input type='checkbox' id='alumni_update_yes'>
+	</div>
+	<div class='col1'><br></div>
+	<div class='col1'>You can withdraw your consent at any time.</div>
+	<div class='col1'><br></div>
+
 	<div class='col2'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
 	<div class='col2'>
     	<?php foreach($donor_recognition_options as $key=>$option): ?>
@@ -170,7 +184,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<?php endforeach; ?>
 	</div>
 	<div class='col1'><br></div>
-	<hr>
+	<div class='col1'><hr></div>
 	<div class='col1'>
     	Thank you for donating to CiTR's Fundrive! We really appreciate it.
     	<br>
@@ -182,10 +196,11 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<br>
 		Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
     	<br>
+		<br>
 	</div>
 	<br>
 	<br>
-	<hr>
+	<div class='col1'><hr></div>
 	<div class='col1'>
     	<div class='col6'>Notes/Extra Stuff:</div>
     	<textarea id='about' class='largeinput' placeholder='Text here'rows='3'></textarea>
@@ -193,11 +208,11 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<br>
 
-	Paid? <input type='checkbox' id='paid_status'>
+	<div class='col1'> 	Paid? <input type='checkbox' id='paid_status'> </div>
 
 	<br>
-	
-	Picked up prize? <input type='checkbox' id='prize_status'>
+
+	<div class='col1'>Picked up prize? <input type='checkbox' id='prize_status'></div>
 
 	<div class='containerrow'>
     	<center>
