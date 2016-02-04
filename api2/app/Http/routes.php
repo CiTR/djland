@@ -1021,7 +1021,7 @@ Route::get('/nowplaying',function(){
 	}
 	$day_of_week = date('w');
 	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-	$current_week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
     if ((int) $current_week % 2 == 0){
         $current_week_val = 1;
     } else {
