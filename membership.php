@@ -293,7 +293,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 					<div class='col1 text-left'>Permission Levels:</div>
 					<?php
 						foreach($djland_permission_levels as $key=>$value){
-							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col6 tooltip'><span title=''  >{$value['name']} <input type=checkbox id='level_{$key}'/></span></div>";
+							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col6 custom_tooltip'><span title=''  >{$value['name']} <input type=checkbox id='level_{$key}'/></span></div>";
 						}
 					?>
 				</div>

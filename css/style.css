@@ -180,11 +180,11 @@ input, select, textarea, option{
   width:600px;
   height:10em;
 }
-.tooltip{
+.custom_tooltip{
 	display:inline;
 	position:relative;
 }
-.tooltip:hover:after{
+.custom_tooltip:hover:after{
     background: #000;
     border-radius: 5px;
     bottom: 26px;
@@ -196,7 +196,7 @@ input, select, textarea, option{
     z-index: 98;
     width: 220px;
 }
-.tooltip:hover:before{
+.custom_tooltip:hover:before{
     border: solid;
     border-color: #333 transparent;
     border-width: 6px 6px 0 6px;
@@ -816,7 +816,14 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
     width:46px;
 
   }
-
+.crtc_totals{
+  background-color:black;
+  color: white;
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  width:100%;
+}
 
 
 /*
