@@ -180,7 +180,32 @@ input, select, textarea, option{
   width:600px;
   height:10em;
 }
-
+.custom_tooltip{
+	display:inline;
+	position:relative;
+}
+.custom_tooltip:hover:after{
+    background: #000;
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(title);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+.custom_tooltip:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+}
 .rounded{
   -moz-border-radius: 10px 10px 10px 10px;
   -webkit-border-radius: 10px 10px 10px 10px;
@@ -628,61 +653,11 @@ table.open_playsheet > tbody > tr > td.host{
 
 /* Playsheet Angular CSS */
 
+
 .host{
   max-width:400px;
 }
-[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
 
-div#main {
-	width:50%;
-	position:relative;
-	margin-left:auto;
-	margin-right:auto;
-}
-#mainleft {
-	font-size:1em;
-	line-height:1.3em;
-	position:relative;
-}
-#mainleft input, #mainleft textarea{
-	width:75%;
-	margin: 5px;
-	padding:5px;
-}
-#mainleft label{
-	font-size:0.95em;
-	text-align:right;
-	display:inline-block;
-	width:100px;
-}
-
-#mainleft input{
-	font-size: 1em;
-}
-
-#mainleft textarea{
-
-	font-size:0.77em;
-	vertical-align: top;
-}
-.buttonContainer{
-	list-style:none;
-	margin:30px auto 0px auto;
-    padding:0px 20px 0px 20px;
-	width:140px;
-    height:33px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: #A4A4A4;
-    background: -moz-linear-gradient(top, #3434A4, #1030BE);
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3434A4), to(#1030BE));
-    border: 1px solid #002232;
-    -moz-box-shadow:inset 0px 0px 1px #BEBEBE;
-    -webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
-    box-shadow:inset 0px 0px 1px #BEBEBE;
-
-}
 .playitem > td >input{
   width:95%;
 }
@@ -696,112 +671,9 @@ div#main {
   cursor: pointer; cursor: hand;
 }
 
-
-.buttonContainer ul{
-	margin:0;
-	padding:0;
-}
-.buttonContainer li {
-	margin-top:7px;
-	width:140px;
-    text-align:center;
-	list-style:none;
-}
-.buttonContainer a {
-	text-decoration:none;
-}
-.selectps{
-	width:50%;
-	margin-left:auto;
-	margin-right:auto;
-}
-#ps_status{
-	position:fixed;
-	top:0;
-	left:35%;
-	width:15%;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: lightyellow;
-	color:black;
-	padding:3px 15px 3px 15px;
-
-}
-
-#ps_header td, #ps_header input, #ps_header select{
-	font-size: 15px;
-}
-#ps_header table, #ps_header table tr{
-margin:10px;
-}
-
-#ps-loading-image{
-display:none;
-}
-#result {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* max-height: 500px; */
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    padding-bottom: 15px;
-}
-
-  #totals {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background-color: beige;
-    border-color: black;
-    border-width: 2px;
-    border-style: groove;
-    text-align: center;
-    padding: 3px;
-  }
-
-  #totals div {
-    display: inline;
-    padding-right: 20px;
-  }
-
-  #totals .req {
-    font-weight: bold;
-
-    color: darkgreen;
-  }
-
-  #totals .bad {
-    background-color: black;
-    color: red;
-  }
-
-  .crtc, .tools {
-    cursor: pointer;
-    background-color: lightblue;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    round-clip: 2;
-    border-style: outset;
-    border-width: 2px;
-    border-color: lightblue;
-  }
-
-  .crtc:hover {
-    border-color: black;
-  }
-
   .lang {
     width: 65px;
     font-size: 0.8em;
-  }
-
-
-  .music_row, .music_row * {
-
-    /* font-size: 1.1em; */
   }
 
 .playitem{
@@ -825,29 +697,7 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
     background: none;
     border-width: 0;
   }
-  .playsheet_block, .spokenword_block, .podcast_block,.save_block {
-    max-width: 1000px;
-    width:100%;
-    min-height:200px;
-    position:relative;
-    margin-left: auto;
-    margin-right:auto;
-    display:block;
-    float:left;
 
-  }
-
-  .podcast_block_inner{
-    margin-left:auto;
-    margin-right:auto;
-    width:50%;
-    display:block;
-    position:relative;
-  }
-
-  .spokenword_block{
-    min-height:400px;
-  }
 
 .tooltip-inner{
   max-width:350px;
@@ -966,17 +816,72 @@ tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td >
     width:46px;
 
   }
-  .playsheet_block_socan, .music_row_socan, .music_row_socan .music_row{
-    max-width:1200px;
-    margin-left:10px;
-    padding-left:10px;
-  }
+.crtc_totals{
+  background-color:black;
+  color: white;
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  width:100%;
+}
 
 
 /*
   Podcasts Page CSS
 
 */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+div#main {
+	width:50%;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+}
+#mainleft {
+	font-size:1em;
+	line-height:1.3em;
+	position:relative;
+}
+#mainleft input, #mainleft textarea{
+	width:75%;
+	margin: 5px;
+	padding:5px;
+}
+#mainleft label{
+	font-size:0.95em;
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+
+#mainleft input{
+	font-size: 1em;
+}
+
+#mainleft textarea{
+
+	font-size:0.77em;
+	vertical-align: top;
+}
+.playsheet_block, .spokenword_block, .podcast_block,.save_block {
+   max-width: 1000px;
+   width:100%;
+   min-height:200px;
+   position:relative;
+   margin-left: auto;
+   margin-right:auto;
+   display:block;
+   float:left;
+
+ }
+
+ .podcast_block_inner{
+   margin-left:auto;
+   margin-right:auto;
+   width:50%;
+   display:block;
+   position:relative;
+ }
 #popup{
       position:fixed;
       bottom:0;
@@ -1355,52 +1260,6 @@ table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.n
   text-align:right;
 }
 
-
-
-/*-------------------*/
-/* Old Playsheet CSS */
-/*-------------------*/
-
-table.menu { border-collapse: separate; border-color: #6666CC; background-color: #000000; }
-td.menu { background-color: #FF9999; font-weight: bold; }
-td.reqmeet {  }
-td.reqfail { background-color: #CC9999; }
-div.playsheet { background-color:rgba(30,30,30,.1);
-				width:920px;
-				border-color:#c3c3c3;
-				border-style:ridge;
-				margin-left: auto;
-				margin-right: auto;
-			/*	text-align:center;*/
-				}
-div.playsheetSOCAN { background-color:rgba(30,30,30,.1);
-				width:1024px;
-				border-color:#c3c3c3;
-				border-style:ridge;
-				margin-left: auto;
-				margin-right: auto;
-			/*	text-align:center;*/
-				}
-table#playsheet-table {
-	width:880px;
-	margin-left: auto;
-	margin-right: auto;
-	}
-
-table#playsheet-table tr, table#playsheet_table td{
-	border-width: 0;
-}
-table#playsheet-table button{
-	width:23px;
-}
-.bigbutton{
-	height:50px;
-	width:150px;
-	font-size: 1em;
-}
-table.box { padding: 15px; border-color: #c3c3c3;; border-style:ridge;  }
-table.report { border-collapse: collapse; border: none; border-color: #000000; padding: 100px;}
-table { border-collapse: collapse; }
 
 /*----------------------------*/
 /*--------CHARTING------------*/

@@ -11,19 +11,19 @@ printf("<title>DJLAND | music library</title>");
 echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>';
 echo '<script src="js/library-js.js"></script>';
 
-//<script src="js/jquery.form.js"></script> 
+//<script src="js/jquery.form.js"></script>
 //<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 //  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
-  
-  
+
+
 echo "</head><body class='wallpaper'>";
 
 print_menu();
 
 // *** SEARCH MODE ***
 // *** If action=search, get search terms from URL and query database ***
-if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['action']) && $_GET['action'] == "search") {
+if(permission_level() >= $djland_permission_levels['member']['level'] && isset($_GET['action']) && $_GET['action'] == "search") {
 
 	printf("<br><table class=center><tr><td>");
 	printf("<center><h1>Search Results</h1></center>");
@@ -74,7 +74,7 @@ if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['act
 	$scount = 0;
 
 	printf("<table border=0>");
-	if(permission_level() >= $djland_permission_levels['workstudy'] && isset($_GET['bulkedit'])) {
+	if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['bulkedit'])) {
 
 		?>
 		<!--JAVASCRIPT HELPER CALLS-->
@@ -128,22 +128,22 @@ if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['act
 	}
 
 	$scount = 0;
-	
+
 foreach($dbarray as $i => $row){
-		
-		if(permission_level() >= $djland_permission_levels['volunteer']) {
+
+		if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 //			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], $row["id"], $row["catalog"] ? $row["catalog"] : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".$row["id"]."\" name=id".$scount."><input type=hidden value=\"".$row["catalog"]."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
 
 		echo "<tr><td align=right>[<a href=".$_SERVER['SCRIPT_NAME'].
 			"?action=edit&id=".$row["id"].
 			" title='Click to Edit'>";
-			
+
 		if ($row["catalog"])
 			echo $row["catalog"];
 		else echo "N/A";
-		
+
 		echo "</a>] ";
-		
+
 		if (isset($_GET['bulkedit']))
 			echo "<input type=hidden value='".$row["id"].
 					"' name=id".$scount."><input type=hidden value='".
@@ -151,11 +151,11 @@ foreach($dbarray as $i => $row){
 					"><input type=text size=5 name=newcat".$scount.
 					" tabindex=".($scount+1)." onkeydown='EnterPressed(event)'>";
 		else echo "";
-		
+
 		echo "</td><td>";
-		
-		
-		
+
+
+
 			}
 		else {
 			printf("<tr><td align=right>[%s]</td><td>", $row["catalog"]);
@@ -192,21 +192,21 @@ foreach($dbarray as $i => $row){
 
 
 
-		
+
 		$scount++;
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	}
 
-	
-	
-	if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['bulkedit'])) {
+
+
+	if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['bulkedit'])) {
 		?><tr><td align=right><input type=submit VALUE="Update" tabindex=32767></td><td></td></tr><?php
-		
+
 	}
 	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
 	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
@@ -217,7 +217,7 @@ foreach($dbarray as $i => $row){
 	}
 
 }
-else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && $_GET['action'] == "bulkedit") {
+else if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['action']) && $_GET['action'] == "bulkedit") {
 	printf("<br><table align=center class=center><tr><td>");
 	printf("<center><br><h1>Bulk Catalog Edit</h1></center>");
 	$scount = 0;
@@ -230,7 +230,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 	}
 	?></td></tr></table><?php
 }
-else if(permission_level() >= $djland_permission_levels['member'] && isset($_GET['action']) && $_GET['action'] == "view") {
+else if(permission_level() >= $djland_permission_levels['member']['level'] && isset($_GET['action']) && $_GET['action'] == "view") {
 
 	if(isset($_GET['id']) && $_GET['id']) {
 		$id = fas($_GET['id']);
@@ -268,10 +268,10 @@ else if(permission_level() >= $djland_permission_levels['member'] && isset($_GET
 	?></td></tr></table><?php
 
 }
-else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
+else if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {
 
 	printf("<br><table class=center><tr><td>");
-	
+
 	if(isset($_GET['action']) && $_GET['action'] == 'submit') {
 		$current_date = date('Y-m-d');
 		if(isset($_POST['id']) && $_POST['id']) {
@@ -292,7 +292,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 
 		$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='".$ed."' AND types_format.id = library.format_id");
 		if(mysqli_num_rows($sresult)) {
-			
+
 
 			$thisCDid = $ed;
 
@@ -317,7 +317,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 			if(is_member("editlibrary")) {
 //				printf("[<a href=%s?action=edit&id=%s>edit</a>] ", $_SERVER['SCRIPT_NAME'], mysqli_result_dep($sresult,0,"id"));
 				printf("[<a href=%s?action=edit&id=%s>edit</a>] ", $_SERVER['SCRIPT_NAME'], $thisCDid);
-				
+
 			}
 		}
 		else {
@@ -337,8 +337,8 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 	}
 
 	if(!isset($submit_edit)) {
-?>		
-		
+?>
+
 		<center><h1><?= $ed ? "Update" : "Add New"; ?> Record</h1>
 <?php
 	// *** ADD NEW MODE ***
@@ -364,7 +364,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 		<table border=0>
 		<tr align=right><td>Catalog #: </td><td align=left><INPUT SIZE=10 TYPE=text NAME=catalog value="<?=$catalog?>"></td></tr>
 		<tr align=right><td>Format : </td><td align=left><select name=format>
-<?php 
+<?php
 		if($ed) {
 			printf("<option value=%s>%s", $format_id, $format);
 		}
@@ -408,10 +408,10 @@ else if(permission_level() >= $djland_permission_levels['volunteer'] && isset($_
 			document.the_form.catalog.focus();
 		</script>
 <?php
-	}	
+	}
 }
 	// *** VIEW MODE ***
-else if(permission_level() >= $djland_permission_levels['member']){
+else if(permission_level() >= $djland_permission_levels['member']['level']){
 	printf("<br><table align=center class=center><tr><td><center><br><h1>Search Library</h1></center>");
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
@@ -432,7 +432,7 @@ else if(permission_level() >= $djland_permission_levels['member']){
 	<table border=0><tr><td align=right nowrap>
 	Catalog #: <INPUT TYPE=text NAME=ascatalog size=10>
 	</td><td align=right nowrap>Format: <select name=asformat><option value=0>All
-<?php 
+<?php
 	foreach($fformat_name as $var_key => $var_name) {
 		printf("<option value=%s>%s", $var_key, $var_name);
 	}
@@ -467,14 +467,14 @@ else if(permission_level() >= $djland_permission_levels['member']){
 	</td></tr></table>
 	<center>
 <?php
-	if(permission_level() >= $djland_permission_levels['volunteer']) {
+	if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 		echo "Edit<input type=checkbox name=bulkedit>";
-		
+
 	}
 ?>
 	<input type=submit VALUE="Advanced Search">
 	<?php
-	if(permission_level() >= $djland_permission_levels['volunteer']) {
+	if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 		echo "<br/><br/><br/><br/><a href='dupenuker.php'>duplicate finder </a>";
 	}
 	?>

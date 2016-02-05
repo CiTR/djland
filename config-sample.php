@@ -24,8 +24,8 @@ $station_info['country'] = 'Canada';
 $station_info['website'] = 'CiTR.ca';
 $station_info['tech_email'] = 'tech_person@station.ca';
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
-$station_info['timezone'] = 'America/Vancouver'; 
-// for a list of valid timezones, visit 
+$station_info['timezone'] = 'America/Vancouver';
+// for a list of valid timezones, visit
 // http://ca1.php.net/manual/en/timezones.php
 
 //*******************************************
@@ -50,7 +50,7 @@ $djland_db_dbname = 'djland-databasename';
 //
 
 // enabled sections: (write true or false (no quotes) to enable or disable)
-// if you go with something enabled and then disable it later on, 
+// if you go with something enabled and then disable it later on,
 // you won't lose any data
 
 $enabled['membership'] = true; // membership database
@@ -88,7 +88,7 @@ $station_wide_login_name = 'djs';
 $using_sam = false; // <- change to true if you want to integrate SAM with djland
 // if SAM Broadcaster is being used, it must be installed using the MySQL option
 // SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
-// Highly recommended to use local network. 
+// Highly recommended to use local network.
 $samDB_ip = 'ip address of computer running SAM mysql database';
 $samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
 $samDB_pass = 'password for that user';
@@ -100,10 +100,6 @@ $archive_access_url = $archive_tool_url.
 
 // use this to put podcast audio, rss xml files on a network drive that provides FTP access
 
-$ftp_url = 'ip address of drive';
-$ftp_user = 'username';
-$ftp_pass = 'password';
-$ftp_port = 21;
 
 
 $audio_path_online = 'http://mypodcast.com/audio/';
@@ -116,23 +112,25 @@ $xml_path_local   = '/var/www/xml/or/something/';
 
 //default permission levels
 
-$djland_membership_year_date =  $cutoff_date = date('04/31/'.idate('Y'));
 
-$djland_training = array(
-	'Technical'=>'technical_training',
-	'Production'=>'production_training',
-	'Programming'=>'programming_trianing',
-	'Spoken Word'=>'spoken_word_training'
-	);
+$djland_membership_year_date = date('04/31/'.idate('Y'));
+
 $djland_permission_levels = array(
-    'operator'=> '6',
-    'administrator'=> '5',
-    'staff'=>'4',
-    'workstudy'=>'3',
-    'volunteer'=>'2',
-    'dj'=>'1',
-    'member'=>'0');
-
+    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Godmode.'),
+    'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
+    'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
+    'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
+	'volunteer_leader'=>array('level'=>'4','name'=>'Volunteer Leader','tooltip'=>'Volunteer Leader: Access to library, email lists, and schedule overrides.'),
+    'volunteer'=>array('level'=>'3','name'=>'Volunteer','tooltip'=>'Volunteer: Access to charts, edit library, ad history.'),
+    'dj'=>array('level'=>'2','name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
+    'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
+	);
+$djland_training = array(
+	'Station Tour' => 'station_tour',
+	'Technical' => 'technical_training',
+	'Production'=> 'production_training',
+	'Programming'=> 'programming_training',
+	'Spoken Word'=> 'spoken_word_training');
 $djland_interests = array(
 	'Arts'=>'arts',
 	'Ads and PSAs'=>'ads_psa',
@@ -150,12 +148,14 @@ $djland_interests = array(
 	'Sports'=>'sports',
 	'Tabling'=>'tabling',
 	'Web and Tech'=>'tech',
+	"Women's Collective"=>'womens_collective',
+	"Indigenous Collective"=>"indigenous_collective",
+	"Accessibility Collective"=>"accessibility_collective",
 	"Other"=>"other");
 $djland_member_types = array(
 	'UBC Student'=>'Student',
 	'Community Member'=>'Community',
-	'Staff'=>'Staff',
-	'Lifetime'=>'Lifetime');
+	'Staff'=>'Staff');
 $djland_program_years = array(
 	'1'=>'1',
 	'2'=>'2',
@@ -201,18 +201,18 @@ $djland_provinces = array(
 	'QUE',
 	'SASK',
 	'YUK');
-
 $djland_primary_genres = array(
-	"Rock / Pop / Indie",
 	"Electronic",
 	"Experimental",
 	"Hip Hop / R&B / Soul",
 	"International",
 	"Jazz / Classical" ,
 	"Punk / Hardcore / Metal" ,
+	"Rock / Pop / Indie",
 	"Roots / Blues / Folk",
 	"Talk"
 	);
+
 
 // debug time operations? leave false unless you
 // are developing and need to fake the current time
@@ -238,6 +238,3 @@ $djland_primary_genres = array(
 // Sandy Fang
 // Henry Chee
 //
-
-
-

@@ -1,12 +1,10 @@
 TODO:
+- Membership rollover lifetime exception
+- Edit member_resources
+- Merge APIv1/form-handlers into V2
+- Finish playsheet_object
+- Rework Library
 
-Emails:
-	-rework, make sure retrieving proper lists.
-
-
-
- Check what itunes pulls:
- - Is it title/subtitle?
 
 
 
