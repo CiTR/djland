@@ -46,7 +46,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 			if(permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
 			<li class = 'tab nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
 			<?php endif;
-			if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
+			if(permission_level() >= $djland_permission_levels['volunteer_lead']['level']) : ?>
 			<li class = 'tab nodrop inactive-tab member_action' name='email'>Send Emails</li>
 			<?php endif;?>
 		</ul>
