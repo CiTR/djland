@@ -658,9 +658,8 @@ table.open_playsheet > tbody > tr > td.host{
   max-width:400px;
 }
 
-.playitem > td >input{
-  width:95%;
-}
+
+
 .promotions > td {
   font-size:.8em;
 }
@@ -679,10 +678,17 @@ table.open_playsheet > tbody > tr > td.host{
 .playitem{
   width:100%;
 }
-tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td > button.socan{
-  max-width:95px;
-  font-size:0.75em;
+tr.playitem.socan > td > input,tr.playitem.socan > td > button,tr.music_row_heading.socan > th > input{
+	max-width:105px;
+	font-size:0.75em;
 }
+tr.playitems.socan > td > input.lang{
+	width:60px;
+}
+
+
+
+
 .socantiming{
   max-width:140px;
 }
