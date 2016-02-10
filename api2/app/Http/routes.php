@@ -365,7 +365,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($shows as $show){
 			if($show_id == 'all' || $show_id == $show['id']){
 				if($from != null && $to != null){
-					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 06:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
 				}else{
 					$ps[] = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->get();
 				}
