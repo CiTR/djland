@@ -43,8 +43,8 @@ $custom_province_order = array(
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | Fundrive Form</title>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src='js/jquery-1.11.3.min.js'></script>
+<script src='js/fundrive/donor.js'></script>
 <script src="js/library-js.js"></script>
 </head><body class='wallpaper'>
 

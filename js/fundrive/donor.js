@@ -17,15 +17,18 @@ $(document).ready ( function() {
 					data: {'donor':donor},
 					async: true
 				});
+
 				$.when(update_request).then(
-					function(update_response)){
+					function(update_response){
 						alert('Success');
 					},function(error){
 						alert('Fail')
-					});
+					}
+				);
 			},function(error){
 
-			});
+			}
+		);
 	}
 
 	function get(target_id,target_class,target_name){
@@ -58,4 +61,15 @@ $(document).ready ( function() {
 		}
 		return result;
 	}
-}
+});
+window.setInterval(checkBlocking,1000);
+
+function checkBlocking(){
+		var allOkay = true;
+		$('.required').each( function(){
+			if( !$.trim( $(this).val() )){
+			allOkay=false;
+			}
+		});
+		console.log(allOkay);
+	}
