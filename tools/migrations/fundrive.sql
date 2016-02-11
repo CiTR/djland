@@ -20,6 +20,8 @@ CREATE TABLE `djland`.`fundrive_donors` (
   `notes` TEXT NULL,
   `paid` VARCHAR(1) NULL,
   `prize_pickup` VARCHAR(1) NULL,
+  `UPDATED_AT` TIMESTAMP NULL,
+  `CREATED_AT` TIMESTAMP NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
