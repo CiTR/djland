@@ -8,15 +8,24 @@ $(document).ready ( function() {
 			dataType: "json",
 			async: true
 		});
-		$.when(create_request).then(function(response){
-			var update_request = $.ajax({
-				type:"POST",
-				url: "api2/public/fundrive/donor/"+response.id,
-				dataType: "json",
-				data: {'donor':donor},
-				async: true
+		$.when(create_request).then(
+			function(create_response){
+				var update_request = $.ajax({
+					type:"POST",
+					url: "api2/public/fundrive/donor/"+create_response.id,
+					dataType: "json",
+					data: {'donor':donor},
+					async: true
+				});
+				$.when(update_request).then(
+					function(update_response)){
+						alert('Success');
+					},function(error){
+						alert('Fail')
+					});
+			},function(error){
+
 			});
-		});
 	}
 
 	function get(target_id,target_class,target_name){
