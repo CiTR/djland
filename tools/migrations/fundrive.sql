@@ -1,0 +1,25 @@
+CREATE TABLE `djland`.`fundrive_donors` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(45) NULL,
+  `lastname` VARCHAR(45) NULL,
+  `address` VARCHAR(90) NULL,
+  `city` VARCHAR(45) NULL,
+  `province` VARCHAR(4) NULL,
+  `postalcode` VARCHAR(6) NULL,
+  `phonenumber` INT(10) NULL,
+  `email` VARCHAR(45) NULL,
+  `donation_amount` INT NULL,
+  `swag` VARCHAR(1) NULL,
+  `show_inspired` TINYTEXT NULL,
+  `prize` VARCHAR(45) NULL,
+  `mail_yes` VARCHAR(1) NULL,
+  `postage_paid` INT NULL,
+  `recv_updates_citr` VARCHAR(1) NULL,
+  `recv_updates_alumni` VARCHAR(1) NULL,
+  `donor_recognition_option` VARCHAR(2) NULL,
+  `notes` TEXT NULL,
+  `paid` VARCHAR(1) NULL,
+  `prize_pickup` VARCHAR(1) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;

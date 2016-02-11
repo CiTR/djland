@@ -27,6 +27,20 @@ $donor_recognition_options = array(
     'Yes - use my name'=>'recognize_yes',
     'Yes - use my other name'=>'recognize_no',
     'No - please leave me as anonymous'=>'recognize_anon');
+$custom_province_order = array(
+	'BC',
+	'AB',
+	'MAN',
+	'NB',
+	'NFL',
+	'NS',
+	'NVT',
+	'NWT',
+	'ONT',
+	'QUE',
+	'SASK',
+	'YUK');
+
 ?>
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -113,13 +127,13 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<div class='col5'>Address*: </div>
     	<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
     	<div class='col5'>City*:</div>
-		<div class='col5'><input id='city' class='required' placeholder='City' maxlength='45'></input></div>
+		<div class='col5'><input id='city' class='required' value='Vancouver' maxlength='45'></input></div>
     </div>
     <div id='row3 'class='containerrow'>
     	<div class='col5'>Province*: </div>
     	<div class='col5'><select id='province'>
         <?php
-        	foreach($djland_provinces as $key=>$province){
+        	foreach($custom_province_order as $key=>$province){
             echo "<option value='{$province}'>{$province}</option>";
         	}
         ?>
