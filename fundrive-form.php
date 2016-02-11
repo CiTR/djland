@@ -130,7 +130,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<div class='col5'>Province*: </div>
     	<div class='col5'><select id='province'>
         <?php
-        	foreach($custom_province_order as $key=>$province){
+        	foreach($djland_provinces as $key=>$province){
             echo "<option value='{$province}'>{$province}</option>";
         	}
         ?>
