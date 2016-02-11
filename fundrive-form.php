@@ -55,9 +55,6 @@ $custom_province_order = array(
 $shows = array();
 $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
-
-
-
 ?>
 
 <div id='membership' class='wrapper side-padded'>
@@ -72,9 +69,9 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<?php foreach($fundrive_amount as $key=>$amount): ?>
     	<div class='col1 text-left'>
 	        <?php if($amount == 'other'): ?>
-	        <input id='<?php echo $amount ?>' placeholder='Enter amount' maxlength='40'/>
+	        <input id='<?php echo $amount ?>' placeholder='Enter amount' name='donation_amount_other' maxlength='40'/>
 	        <?php else: ?>
-	        <input type='checkbox' id='<?php echo $amount; ?>'>
+	        <input type='checkbox' name='donation_amount' id='<?php echo $amount; ?>'>
 	        <?php endif; ?>
 	        <label for='<?php echo $amount ?>'><?php echo $key; ?></label>
     	</div>
@@ -87,7 +84,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     <div class='span3col4'>
     	<?php foreach($swag_options as $key=>$option): ?>
     	<div class='col1 text-left'>
-			<input type='checkbox' id='<?php echo $option; ?>'>
+			<input type='checkbox' name='swag' id='<?php echo $option; ?>'>
 			<label for='<?php echo $option ?>'><?php echo $key; ?></label>
     	</div>
     	<?php endforeach; ?>
@@ -97,7 +94,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
     <div class='col2'>Was your gift inspiried by a specific show? If yes:</div>
     <div class='col2'>
-        <select id='fundrive_showname'>
+        <select id='fundrive_showname' name='show_inspired'>
         <?php foreach($shows as $show): ?>
             <option value="<?php echo $show->id; ?>"><?php echo $show->name; ?></option>
         <?php endforeach; ?>
@@ -108,7 +105,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1'> (If they choose swag) </div>
 	<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is):
-    	<div class='col5'><input id='fundrive_promised_gift' class='required' placeholder='Prize' maxlength='30'></input></div>
+    	<div class='col5'><input id='prize' class='required' name='prize' placeholder='Prize' maxlength='30'></input></div>
     </div>
 
 	<div class='col1 text-center'><br><br>Now I'll need to take down your contact information:</div>
