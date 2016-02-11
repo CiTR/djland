@@ -17,7 +17,7 @@
                 this_.is_admin = false;
             }
         },function(error){
-            this.log_error(error);
+            this_.log_error(error);
         });
 		//Get member shows
 		call.getActiveMemberShows(this.member_id).then(function(response){

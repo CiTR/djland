@@ -5,17 +5,14 @@ require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 $fundrive_amount = array(
-'$30 - Friends of CiTR Card'=>'donate30',
-'$60 - Friends of CiTR card + CiTR growler'=>'donate60',
-'$101.9 - Friends of CiTR card + CiTR growler + CiTR notebook'=>'donate101.9',
-'$175 - Friends of CiTR card + growler + notebook + LP + tote bag'=>'donate175',
-'$250 - Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover'=>'donate250',
-'$500 - all the things + host a show on citr!'=>'donate500',
-'$1,000 - all the things + recognition on our donor wall in the new SUB'=>'donate1000',
+	'30'=>'Friends of CiTR Card',
+'60'=>'Friends of CiTR card + CiTR growler',
+'101.9'=>'Friends of CiTR card + CiTR growler + CiTR notebook',
+'175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
+'250'=>'Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover',
+'500'=>'all the things + host a show on citr!',
+'1,000'=>'all the things + recognition on our donor wall in the new SUB',
 "Other"=>"other");
-$swag_options = array(
-	'Swag'=>'swag',
-	'Tax Reciept'=>'tax_reciept');
 $payment_options = array(
 	'Credit Card'=>'credit_card',
 	'Dropping off or mailing in a Cheque - payable to UBC, mail to LL500 6133 University Blvd, Van BC V6T 1Z1'=>'cheque',
@@ -60,73 +57,61 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 <div id='membership' class='wrapper side-padded'>
 	<h1 class='double-padded-top'> Fundrive Form </h1>
 	<hr>
-	<div class ='col1'>
-    	<div class=text-left><b>Thank you for calling the CiTR Fundrive pledge line! My name is __________. <br><br> </b></div>
-	</div>
-    <br>
-    <div class='col5'>How much would you like to donate?:</div>
-    <div class='span4col5'>
-    	<?php foreach($fundrive_amount as $key=>$amount): ?>
-    	<div class='col1 text-left'>
-	        <?php if($amount == 'other'): ?>
-	        <input id='<?php echo $amount ?>' placeholder='Enter amount' name='donation_amount_other' maxlength='40'/>
-	        <?php else: ?>
-	        <input type='checkbox' name='donation_amount' id='<?php echo $amount; ?>'>
-	        <?php endif; ?>
-	        <label for='<?php echo $amount ?>'><?php echo $key; ?></label>
-    	</div>
+	<h4>Thank you for calling the CiTR Fundrive pledge line! My name is __________. </h4>
+
+	<div class='col1 double-padded-top'>
+	    <div class='col1'>How much would you like to donate?:</div>
+
+		<select id="amount" name='donation_amount'>
+		<?php foreach($fundrive_amount as $amount=>$text): ?>
+    		<option value='<?php echo $amount; ?>'><?php echo $text; ?></option>
 		<?php endforeach; ?>
-    </div>
+		</select>
 
-	<div class='col1'><br></div>
+	</div>
 
-    <div class='col4'>Would you like swag or a tax reciept?</div>
-    <div class='span3col4'>
-    	<?php foreach($swag_options as $key=>$option): ?>
-    	<div class='col1 text-left'>
-			<input type='checkbox' name='swag' id='<?php echo $option; ?>'>
-			<label for='<?php echo $option ?>'><?php echo $key; ?></label>
-    	</div>
-    	<?php endforeach; ?>
-    </div>
+	<div class='col1 double-padded-top'>
+	    <div class='col1'>Would you like swag or a tax reciept?</div>
+			<select name='swag'>
+				<option value='1'>Swag</option>
+				<option value='0'>Tax Receipt</option>
+			</select>
+	</div>
 
-	<div class='col1'><br></div>
+	<div class='col1 double-padded-top'>
+	    <div class='col1'>Was your gift inspiried by a specific show? If yes:</div>
+	    <select id='fundrive_showname' name='show_inspired'>
+	    <?php foreach($shows as $show): ?>
+	        <option value="<?php echo $show->id; ?>"><?php echo $show->name; ?></option>
+	    <?php endforeach; ?>
+	    </select>
+	</div>
 
-    <div class='col2'>Was your gift inspiried by a specific show? If yes:</div>
-    <div class='col2'>
-        <select id='fundrive_showname' name='show_inspired'>
-        <?php foreach($shows as $show): ?>
-            <option value="<?php echo $show->id; ?>"><?php echo $show->name; ?></option>
-        <?php endforeach; ?>
-        </select>
-    </div>
 
-	<div class='col1'><br></div>
+	<div class='col1 double-padded-top double-padded-bottom'>
+		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
+		<textarea id='prize' class='required largeinput' name='prize' placeholder='Prize'></textarea>
+	</div>
 
-	<div class='col1'> (If they choose swag) </div>
-	<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is):
-    	<div class='col5'><input id='prize' class='required' name='prize' placeholder='Prize' maxlength='30'></input></div>
-    </div>
+	<div class='text-center double-padded-top'>Now I'll need to take down your contact information:</div>
 
-	<div class='col1 text-center'><br><br>Now I'll need to take down your contact information:</div>
+	<hr/>
+	<h2>Contact Information</h2>
+	<hr/>
 
-	<div class='col1'><br></div>
-
-	<div class='col1'><hr><h2>Contact Information</h2><hr></div>
-
-    <div id='row1' class='containerrow'>
+    <div class='containerrow'>
     	<div class='col5'>First Name*: </div>
     	<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
     	<div class='col5'>Last Name*: </div>
     	<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
     </div>
-    <div id='row2 'class='containerrow'>
+    <div class='containerrow'>
     	<div class='col5'>Address*: </div>
     	<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
     	<div class='col5'>City*:</div>
 		<div class='col5'><input id='city' class='required' value='Vancouver' maxlength='45'></input></div>
     </div>
-    <div id='row3 'class='containerrow'>
+    <div class='containerrow'>
     	<div class='col5'>Province*: </div>
     	<div class='col5'><select id='province'>
         <?php
@@ -146,26 +131,25 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     </div>
 
 	<hr>
-	<div class='col5'> How would you like to pay? </div>
-	<div class='span4col5'>
-    	<?php foreach($payment_options as $key=>$option): ?>
-    	<div class='col1 text-left'>
-    	<input type='checkbox' id='<?php echo $option; ?>'>
-    	<label for='<?php echo $option ?>'><?php echo $key; ?></label>
-    </div>
-    <?php endforeach; ?>
+	<div class='col1 double-padded-top'>
+		<div class='col1'> How would you like to pay? </div>
+		<select name='payment_method'>
+			<option value='credit_card'>Credit Card</option>
+			<option value='cheque'>Drop of or mail in a check</option>
+			<option value='cash'>Drop off cash</option>
+		</select>
+		<div id='cheque' class='invisible'>The check is payable to UBC.</div>
+		<div id='mailing' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
 	</div>
 
-	<div class='col1'><hr></div>
-	<br>
-	<div class='col2'> Would you like your prize mailed to you? Please be aware that postage costs _____. </div>
-	<div class='col2'>
-    	<?php foreach($mailing_options as $key=>$option): ?>
-    	<div class='col1 text-left'>
-    		<input type='checkbox' id='<?php echo $option; ?>'>
-    		<label for='<?php echo $option ?>'><?php echo $key; ?></label>
-    	</div>
-    	<?php endforeach; ?>
+	<hr>
+	<div class='col1 double-padded-top'>
+		<div class='col'> Would you like your prize mailed to you? Please be aware that postage costs <a href='https://www.canadapost.ca/cpotools/apps/far/business/findARate'>Shipping Calculator</a>. </div>
+
+		<select id='mailing' name='mail_yes'>
+			<option value='1'>Yes</option>
+			<option value='0'>No</option>
+		</select>
 	</div>
 
 	<div class='col1'><br></div>

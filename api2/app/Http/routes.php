@@ -734,7 +734,7 @@ Route::group(array('prefix'=>'fundrive'),function(){
 		});
 		Route::get('/',function(){
 			return Donor::all();
-		})
+		});
 		//Donor By ID
 		Route::group(array('prefix'=>'{id}'),function($id = id){
 			//Get a donor
