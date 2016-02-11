@@ -875,9 +875,9 @@ Route::get('/nowplaying',function(){
 	}else{
 		$result['music'] = null;
 	}
-
-	//Get Current week since Epoch
-    $current_week = Date('W', strtotime('tomorrow',strtotime('now')));
+	$day_of_week = date('w');
+	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
     if ((int) $current_week % 2 == 0){
         $current_week_val = 1;
     } else {
@@ -885,7 +885,6 @@ Route::get('/nowplaying',function(){
     };
 
 	//We use 0 = Sunday instead of 7
-	$day_of_week = date('w');
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
 

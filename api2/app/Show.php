@@ -146,7 +146,7 @@ class Show extends Model
         //Remove Legacy Encoding issues
         $show = $this->getAttributes();
 
-        $show["podcast_summary"] = sizeOf($show["podcast_summary"]) > 5 ? substr($show["podcast_summary"],0,200) : substr($show["show_desc"],0,200);
+        $show["subtitle"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
             $show[$k] = Show::clean($show[$k]);
             }
@@ -163,7 +163,7 @@ class Show extends Model
         $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
         if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
-        $xml[] = "<itunes:subtitle>" . $show["podcast_summary"] . "</itunes:subtitle>";
+        $xml[] = "<itunes:subtitle>" . $show["subtitle"] . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
@@ -192,11 +192,11 @@ class Show extends Model
         //Build Each Podcast
         $key = array_keys($episodes->toArray());
         $num = count($key);
-        if($testing_environment) $num = 6;
+        if($testing_environment) $num = 200;
         $i = 0;
         $count = 0;
-        while( $count < $num-1 && $count < 300 && $i < $num-1 ) {
-            $episode = $episodes[$key[$i]];
+        while( $count < $num-1  && $i < $num - 1 && $count < 300 ) {
+           $episode = $episodes[$key[$i]];
 
 
             //Get Objects
@@ -233,6 +233,7 @@ class Show extends Model
             $target_dir = '/home/playlist/public_html/podcasting/xml/';
          }else{
             $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
+            if(!file_exists($target_dir)) mkdir($target_dir,0774);
         }
 
         //$target_dir = 'audio/'.$year.'/';
@@ -262,10 +263,11 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-		$string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
-		$string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-	    $string = htmlentities($string);
-	    return $string;
+        $string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
+        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $string = htmlentities($string);
+        //$string = htmlentities($string, ENT_COMPAT,'UTF-8');
+        return $string;
     }
 
 }

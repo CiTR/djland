@@ -7,7 +7,7 @@
 require_once("../../headers/security_header.php");
 
 $request = $_SERVER['REQUEST_METHOD'];
-if( permission_level() >= $djland_permission_levels['volunteer']['level'] ) {
+if( permission_level() >= $djland_permission_levels['volunteer_head']['level'] ) {
     switch($request){
         case "GET":
             if($_GET['from'] == "" || $_GET['to'] == ""){
