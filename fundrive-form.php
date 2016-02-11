@@ -54,7 +54,7 @@ $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 ?>
 
-<div id='membership' class='wrapper side-padded'>
+<div class='wrapper side-padded'>
 	<h1 class='double-padded-top'> Fundrive Form </h1>
 	<hr>
 	<h4>Thank you for calling the CiTR Fundrive pledge line! My name is __________. </h4>
@@ -142,72 +142,53 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 		<div id='mailing' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
 	</div>
 
-	<hr>
 	<div class='col1 double-padded-top'>
-		<div class='col'> Would you like your prize mailed to you? Please be aware that postage costs <a href='https://www.canadapost.ca/cpotools/apps/far/business/findARate'>Shipping Calculator</a>. </div>
-
+		<div class='col1'> Would you like your prize mailed to you? Please be aware that postage costs <a href='https://www.canadapost.ca/cpotools/apps/far/business/findARate' target='_blank'>Shipping Calculator</a>. </div>
 		<select id='mailing' name='mail_yes'>
 			<option value='1'>Yes</option>
 			<option value='0'>No</option>
 		</select>
 	</div>
+	<div class='col1 double-padded-top'>
+		<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
+		<div class='col1'><input type='checkbox' id='citr_update_yes'><label for='citr_update_yes'>CiTR</label></div>
+		<div class='col1'><input type='checkbox' id='alumni_update_yes'><label for='alumni_update_yes'>UBC Development and Alumni Engagement?</label></div>
+		You can withdraw your consent at any time.
+	</div>
+	<div class='col1 double-padded-top double-padded-bottom'>
+		<div class='col1'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
+		<select id='recognize' name='recognize'>
+			<option 'name'>Use my name</option>
+			<option 'pseudonym'>Use my pseudonym</option>
+			<option 'anon'>Anonymous</option>
+		</select>
+		<input id='pseudonym' class='invisible'>
+	</div>
 
-	<div class='col1'><br></div>
-	<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
-	<div class='col1'><br></div>
-	<div class='col2'>CiTR?
-		<input type='checkbox' id='citr_update_yes'>
+	<hr>
+	<div class='col1 double-padded-bottom double-padded-top'>
+			<div class='double-padded-top'>
+				Thank you for donating to CiTR's Fundrive! We really appreciate it.
+			</div>
+			<div class='double-padded-top'>
+				This year our Fundrive Finale is on Friday, March 4 at the hindenburg. The event is also a release party for the LP we're putting out with mint records. We hope to see you there! (more info at citr.ca)
+			</div>
+			<div class='swag invisible double-padded-top'>
+				If chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
+			</div>
+			<div class='double-padded-top'>
+				Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
+			</div>
 	</div>
-	<div class='col1'><br></div>
-	<div class='col2'>UBC Development and Alumni Engagement?
-		<input type='checkbox' id='alumni_update_yes'>
-	</div>
-	<div class='col1'><br></div>
-	<div class='col1'>You can withdraw your consent at any time.</div>
-	<div class='col1'><br></div>
-
-	<div class='col2'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
-	<div class='col2'>
-    	<?php foreach($donor_recognition_options as $key=>$option): ?>
-    	<div class='col1 text-left'>
-    		<input type='checkbox' id='<?php echo $option; ?>'>
-    		<label for='<?php echo $option ?>'><?php echo $key; ?></label>
-			<?php if ($option == recognize_no): ?>
-				<div class='col2 right'><input id='dj_name' class='required' placeholder='Name' maxlength='50'></input></div>
-			<?php endif; ?>
-    	</div>
-    	<?php endforeach; ?>
-	</div>
-	<div class='col1'><br></div>
-	<div class='col1'><hr></div>
-	<div class='col1'>
-    	Thank you for donating to CiTR's Fundrive! We really appreciate it.
-    	<br>
-    	<br>
-    	This year our Fundrive Finale is on Friday, March 4 at the hindenburg. The event is also a release party for the LP we're putting out with mint records. We hope to see you there! (more info at citr.ca)
-    	<br>
-    	<br>
-    	If chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
-    	<br>
-		Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
-    	<br>
-		<br>
-	</div>
-	<br>
-	<br>
-	<div class='col1'><hr></div>
-	<div class='col1'>
+	<hr>
+	<div class='col1 double-padded-top'>
     	<div class='col6'>Notes/Extra Stuff:</div>
     	<textarea id='about' class='largeinput' placeholder='Text here'rows='3'></textarea>
 	</div>
 
-	<br>
 
-	<div class='col1'> 	Paid? <input type='checkbox' id='paid_status'> </div>
-
-	<br>
-
-	<div class='col1'>Picked up prize? <input type='checkbox' id='prize_status'></div>
+	<div class='col1 text-center'> Has this person paid? <input type='checkbox' id='paid_status'> </div>
+	<div class='col1 text-center'>Has this person picked up the prize yet?<input type='checkbox' id='prize_status'></div>
 
 	<div class='containerrow'>
     	<center>
