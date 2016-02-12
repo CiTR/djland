@@ -37,14 +37,19 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::put('/',function(){
 				return Donor::create();
 			});
+
 			Route::get('/',function(){
-				return Donor::all();
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::all();
+				else return "Nope";
 			});
 			//Donor By ID
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
 				Route::get('/',function($id){
-					return Donor::find($id);
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::find($id);
+					else return "Nope";
 				});
 				//Update a donor
 				Route::post('/',function($id){
@@ -52,7 +57,9 @@ Route::group(['middleware' => 'auth'], function(){
 				});
 				//Delete a donor
 				Route::delete('/',function($id){
-					return Donor::delete();
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::delete();
+					else return "Nope";
 				});
 			});
 		});
@@ -70,21 +77,29 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach ($full_list as $m) {
 				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
 			}
-			return $members;
+			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $members;
+			else return "Nope";
+
 		});
 
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 
 			Route::get('/',function($id){
-				return Member::find($id);
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id);
+				else return "Nope";
+
 			});
 			Route::post('/',function($id){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
 			Route::delete('/',function($id){
-				return Member::find($id)->delete() ? "true":"false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
+				else return "Nope";
 			});
 
 			Route::post('/comments',function($id){
@@ -101,16 +116,23 @@ Route::group(['middleware' => 'auth'], function(){
 					return 1;
 				}
 			});
+
 			Route::get('user',function($id){
-				return Member::find($id)->user;
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->user;
+				else return "Nope";
 			});
 			Route::post('user',function($id){
 				$m = Member::find($id);
-				return $m->user->update(Input::get()['user']) ? "true": "false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $m->user->update(Input::get()['user']) ? "true": "false";
+				else return "Nope";
 			});
 			Route::post('permission',function($id){
 				$permission = Member::find($id)->user->permission;
-				return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				else return "Nope";
 			});
 			Route::get('years',function($id){
 				$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
@@ -132,7 +154,10 @@ Route::group(['middleware' => 'auth'], function(){
 				$m = Member::find($id);
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
-				return $user->save() ? "true":"false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $user->save() ? "true":"false";
+				else return "Nope";
+
 			});
 			Route::get('permission',function($member_id = id){
 				$permission_levels = Member::find($member_id)->user->permission;
@@ -176,6 +201,18 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 
+	});
+	//Show Private method
+	Route::get('/show/{id}/owners',function($id=id){
+		$members = Show::find($id)->members;
+		$owners = new stdClass();
+		$owners->owners = [];
+		foreach ($members as $member) {
+			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
+		}
+		$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+		if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($owners);
+		return "Nope";
 	});
 });
 
@@ -316,15 +353,7 @@ Route::group(array('prefix'=>'show'),function(){
  			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
 
-		Route::get('owners',function($id){
-			$members = Show::find($id)->members;
-			$owners = new stdClass();
-			$owners->owners = [];
-			foreach ($members as $member) {
-				$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
-			}
-			return Response::json($owners);
-		});
+
 		Route::get('social',function($id){
 			return Show::find($id)->social;
 		});
