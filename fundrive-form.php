@@ -88,7 +88,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	    <div class='col1'>Was your gift inspiried by a specific show? If yes:</div>
 	    <select id='fundrive_showname' name='show_inspired'>
 	    <?php foreach($shows as $show): ?>
-	        <option value="<?php echo $show->id; ?>"><?php echo $show->name; ?></option>
+	        <option value="<?php echo $show->name; ?>"><?php echo $show->name; ?></option>
 	    <?php endforeach; ?>
 	    </select>
 	</div>
