@@ -118,6 +118,93 @@ $(document).ready ( function() {
 			$('#pseudonym').addClass('invisible');
 		}
 	});
+
+	$('#email').on('keyup',function(){
+		checkEmail();
+	});
+	$('#email').blur(function(){
+		var div = $('#email_check');
+		if(div.text() == 'Valid email'){
+			div.addClass('invisible');
+		}
+	});
+
+
+});
+window.setInterval(checkBlocking,1000);
+window.setInterval(checkEmail,1000);
+
+function checkEmail(){
+
+	var email = get('email');
+	if(email.length == 0 || !$('#email').is(':focus')) return;
+	else{
+		var div = $('#email_check');
+		var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|ca|uk|au|jp|de|fr|nz|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+		// ' here because some IDE cant handle regexes
+		if(!re.test(email)){
+			div.text('This is not a valid email');
+			div.removeClass('invisible');
+			div.removeClass('green');
+			div.addClass('red');
+		}else{
+			div.text('Valid email');
+			div.removeClass('invisible');
+			div.removeClass('red');
+			div.addClass('green');
+		}
+	}
+}
+function numbersonly(myfield, e, dec){
+		var key;
+		var keychar;
+
+		if (window.event)
+		   key = window.event.keyCode;
+		else if (e)
+		   key = e.which;
+		else
+		   return true;
+		keychar = String.fromCharCode(key);
+
+		// control keys
+		if ((key==null) || (key==0) || (key==8) ||
+			(key==9) || (key==13) || (key==27) )
+		   return true;
+
+		// numbers
+		else if ((("0123456789").indexOf(keychar) > -1))
+		   return true;
+
+		// decimal point jump
+		else if (dec && (keychar == ".")) {
+		   myfield.form.elements[dec].focus();
+		   return false;
+		   }
+		else  return false;
+	}
+
+function checkBlocking(){
+		var allOkay = true;
+		$('.required').each( function(){
+			if( !$.trim( $(this).val() )){
+			allOkay=false;
+			}
+		});
+		if( !$('#email_check').hasClass('green')){
+			allOkay=false;
+		}
+		if (allOkay){
+		$('#donor_submit').attr('disabled',false);
+		$('#donor_submit').text("Submit");
+		$('#donor_submit').removeClass("red");
+		}else{
+			$('#donor_submit').attr('disabled',true);
+			$('#donor_submit').text("Form Not Complete");
+			$('#donor_submit').addClass("red");
+		}
+		console.log(allOkay);
+	}
 	function get(target_id,target_class,target_name){
 		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
 		var tag = target.prop('tagName');
@@ -147,25 +234,4 @@ $(document).ready ( function() {
 				break;
 		}
 		return result;
-	}
-});
-window.setInterval(checkBlocking,1000);
-
-function checkBlocking(){
-		var allOkay = true;
-		$('.required').each( function(){
-			if( !$.trim( $(this).val() )){
-			allOkay=false;
-			}
-		});
-		if (allOkay){
-		$('#donor_submit').attr('disabled',false);
-		$('#donor_submit').text("Submit");
-		$('#donor_submit').removeClass("red");
-		}else{
-			$('#donor_submit').attr('disabled',true);
-			$('#donor_submit').text("Form Not Complete");
-			$('#donor_submit').addClass("red");
-		}
-		console.log(allOkay);
 	}
