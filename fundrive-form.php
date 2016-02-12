@@ -142,7 +142,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     </div>
     <div id='row4' class='containerrow'>
     	<div class='col2'>
-			<div class='col5'>Primary Number:</div>
+			<div class='col5'>Phone:</div>
     		<input id='phonenumber' class='required wideinput big_text' placeholder='Phone Number' maxlength='12' onKeyPress="return numbersonly(this, event)"></input>
 		</div>
     	<div class='col2'>
