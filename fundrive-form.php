@@ -11,7 +11,8 @@ $fundrive_amount = array(
 '175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
 '250'=>'Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover',
 '500'=>'all the things + host a show on citr!',
-'1,000'=>'all the things + recognition on our donor wall in the new SUB');
+'1,000'=>'all the things + recognition on our donor wall in the new SUB'
+);
 $payment_options = array(
 	'Credit Card'=>'credit_card',
 	'Dropping off or mailing in a Cheque - payable to UBC, mail to LL500 6133 University Blvd, Van BC V6T 1Z1'=>'cheque',
@@ -53,30 +54,34 @@ $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 ?>
 
-<div class='wrapper side-padded'>
+<div class='wrapper donor_form side-padded'>
 	<h1 class='double-padded-top'> Fundrive Form </h1>
 	<hr>
-	<h4>Thank you for calling the CiTR Fundrive pledge line! My name is __________. </h4>
+	<h2>Welcome Pitch</h2>
+	<hr>
+	Thank you for calling the CiTR Fundrive pledge line! My name is __________.
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>How much would you like to donate?:</div>
-
-		<select id="amount" name='donation_amount'>
+		<ul class='clean-list'>
 		<?php foreach($fundrive_amount as $amount=>$text): ?>
-    		<option value='<?php echo $amount; ?>'><?php echo $amount."$ - ".$text; ?></option>
+    		<li>
+				<input id='amount_<?php echo $amount; ?>' value='<?php echo $amount; ?>' name='amount' type='radio' class='amount' <?php if($amount == 30) echo 'checked'; ?>>
+				<label for='amount_<?php echo $amount; ?>'>
+					<?php echo "$".$amount." - ".$text; ?>
+				</label>
+			</li>
 		<?php endforeach; ?>
-			<option value='other'>Other</option>
-		</select>
-		<input id='amount_other' class='invisible' placeholder='enter $ amount'>
+			<li><input id='amount_alt' value='other' type='radio' name='amount' class='amount'><label for='amount_alt'> Other</label></li>
+			<li><input id='amount_other' class='invisible' placeholder='enter $ amount'></li>
+		</ul>
 
 	</div>
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>Would you like swag or a tax reciept?</div>
-			<select id='swag'>
-				<option value='1'>Swag</option>
-				<option value='0'>Tax Receipt</option>
-			</select>
+		<input id='swag' value='1' type='radio' name='swag' class='swag' checked ><label for='swag'>Swag</label>
+		<input id='tax_receipt' value='1' type='radio' name='swag' class='swag'><label for='tax_receipt'>Tax Receipt</label>
 	</div>
 
 	<div class='col1 double-padded-top'>
@@ -94,62 +99,61 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 		<textarea id='prize' class='largeinput' name='prize' placeholder='Prize'></textarea>
 	</div>
 
-	<div class='text-center double-padded-top'>Now I'll need to take down your contact information:</div>
 
 	<hr/>
 	<h2>Contact Information</h2>
 	<hr/>
 
+		<div class='text-center double-padded-top double-padded-bottom'>Now I'll need to take down your contact information:</div>
     <div class='containerrow'>
-    	<div class='col5'>First Name*: </div>
-    	<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
-    	<div class='col5'>Last Name*: </div>
-    	<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
+    	<div class='col5'>First Name: </div>
+    	<div class='col5'><input id='firstname' class='required wideinput' placeholder='First name' maxlength='30'></input></div>
+    	<div class='col5'>Last Name: </div>
+    	<div class='col5'><input id='lastname' class='required wideinput' placeholder='Last name' maxlength='30'></input></div>
     </div>
     <div class='containerrow'>
-    	<div class='col5'>Address*: </div>
-    	<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
-    	<div class='col5'>City*:</div>
-		<div class='col5'><input id='city' class='required' value='Vancouver' maxlength='45'></input></div>
+    	<div class='col5'>Address: </div>
+    	<div class='col5'><input id='address' class='required wideinput' placeholder='Address' maxlength='50'></input></div>
+    	<div class='col5'>City:</div>
+		<div class='col5'><input id='city' class='required wideinput' value='Vancouver' maxlength='45'></input></div>
     </div>
     <div class='containerrow'>
-    	<div class='col5'>Province*: </div>
-    	<div class='col5'><select id='province'>
+    	<div class='col5'>Province: </div>
+    	<div class='col5'><select id='province' class='left'>
         <?php
         	foreach($custom_province_order as $key=>$province){
             echo "<option value='{$province}'>{$province}</option>";
         	}
         ?>
         </select></div>
-    	<div class='col5'>Postal Code*:</div>
-    	<div class='col5'><input id='postalcode' class='required' placeholder='Postal Code' maxlength='6'></input></div>
+    	<div class='col5'>Postal Code:</div>
+    	<div class='col5'><input id='postalcode' class='required wideinput' placeholder='Postal Code' maxlength='6'></input></div>
     </div>
     <div id='row4' class='containerrow'>
-    	<div class='col5'>Primary Number*:</div>
-    	<div class='col5'><input id='phonenumber' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
-    	<div class='col5'>Email Address*: </div>
-    	<div class='col5'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
+    	<div class='col5'>Primary Number:</div>
+    	<div class='col5'><input id='phonenumber' class='required wideinput' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+    	<div class='col5'>Email : </div>
+    	<div class='col5'><input id='email' class='required wideinput'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
     </div>
 
 	<hr>
 	<div class='col1 double-padded-top'>
 		<div class='col1'> How would you like to pay? </div>
-		<select id='payment_method'>
-			<option value='credit_card'>Credit Card</option>
-			<option value='cheque'>Drop of or mail in a check</option>
-			<option value='cash'>Drop off cash</option>
-		</select>
+		<input id='payment_0' name='payment_method' class='payment_method' type='radio' value='credit_card'><label for='payment_0'>Credit Card</label>
+		<input id='payment_1' name='payment_method' class='payment_method' type='radio' value='cheque'><label for='payment_1'>Drop of or mail in a check</label>
+		<input id='payment_2' name='payment_method' class='payment_method' type='radio' value='cash'><label for='payment_2'>Drop off cash</label>
+
 		<div id='cheque_option' class='invisible'>The check is payable to UBC.</div>
 		<div id='mailing_option' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
 	</div>
 
 	<div class='col1 double-padded-top'>
-		<div class='col1'> Would you like your prize mailed to you? Please be aware that postage costs <a href='https://www.canadapost.ca/cpotools/apps/far/business/findARate' target='_blank'>Shipping Calculator</a>. </div>
-		<select id='mailing'>
-			<option value='1'>Yes</option>
-			<option value='0'>No</option>
-		</select>
-		<div id='postage' class='col1'><input id='postage_paid'  type='checkbox'><label for='postage_paid'>Postage Paid?</label></div>
+		<div class='col1'> Would you like your prize mailed to you? Please be aware that postage costs are as follows... (Look at postage cost chart)</div>
+		<div class='col1'>
+			<input id='postage_1' name='mailing' class='mailing' type='radio' value='1' checked><label for='postage_1'>Yes</label>
+			<input id='postage_2' name='mailing' class='mailing' type='radio' value='0'><label for='postage_2'>No</label>
+		</div>
+		<div class='postage'><input id='postage_paid'  type='checkbox'><label for='postage_paid'>Have they paid postage?</label></div>
 	</div>
 	<div class='col1 double-padded-top'>
 		<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
@@ -159,14 +163,14 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	</div>
 	<div class='col1 double-padded-top double-padded-bottom'>
 		<div class='col1'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
-		<select id='recognize'>
-			<option value='name'>Use my name</option>
-			<option value='pseudonym'>Use my pseudonym</option>
-			<option value='anon'>Anonymous</option>
-		</select>
-		<input id='pseudonym' class='invisible' placeholder='Enter Pseudonym'>
-	</div>
 
+		<input id='recognize_0' type='radio' name='recognize' class='recognize' value='name' checked><label for='recognize_0'>Use my full name</label>
+		<input id='recognize_1' type='radio' name='recognize' class='recognize' value='pseudonym'><label for='recognize_1'>Use my pseudonym</label>
+		<input id='recognize_2' type='radio' name='recognize' class='recognize' value='anon'><label for='recognize_2'>Anonymous</label>
+		<input id='pseudonym' class='invisible wideinput' placeholder='Enter Pseudonym'>
+	</div>
+	<hr>
+		<h2>Thankyou</h2>
 	<hr>
 	<div class='col1 double-padded-bottom double-padded-top'>
 			<div class='double-padded-top'>
@@ -183,19 +187,18 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 			</div>
 	</div>
 	<hr>
-	<div class='col1 double-padded-top'>
+	<div class='col1 double-padded-top double-padded-bottom'>
     	<div class='col6'>Notes/Extra Stuff:</div>
     	<textarea id='notes' class='largeinput' placeholder='Text here'rows='3'></textarea>
 	</div>
 
-
-	<div class='col1 text-center'> Has this person paid? <input type='checkbox' id='paid_status'> </div>
+	<hr/>
+	<div class='col1 text-center double-padded-top'> Has this person paid? <input type='checkbox' id='paid_status'> </div>
 	<div class='col1 text-center'>Has this person picked up the prize yet?<input type='checkbox' id='prize_picked_up'></div>
 
 	<div class='containerrow'>
     	<center>
     	<button id='donor_submit' class='red' disabled='true'>Form Not Complete</button>
-    	<br>* indicates a required field
     	</center>
 	</div>
 	<div class='containerrow'> <br/> </div>

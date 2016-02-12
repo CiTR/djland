@@ -2,6 +2,12 @@ $(document).ready ( function() {
 
 	function save(){
 		var donor = {};
+		donor.donation_amount = get(null,null,"amount");
+		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
+		donor.swag = ($('#tax_receipt').checked) ? 1 : 0;
+		donor.tax_receipt = ($('#tax_receipt').checked) ? 1 : 0;
+		donor.show_inspired = get("fundrive_showname");
+		donor.prize = get("prize");
 
 		donor.firstname = get("firstname");
 		donor.lastname = get("lastname");
@@ -11,20 +17,17 @@ $(document).ready ( function() {
 		donor.postalcode = get("postalcode");
 		donor.phonenumber = get("phonenumber");
 		donor.email = get("email");
-		donor.donation_amount = get("amount");
-		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
-		donor.swag = get("swag");
-		donor.show_inspired = get("fundrive_showname");
-		donor.prize = get("prize");
-		donor.mail_yes = get("mailing");
+
+		donor.payment_method = $('input[name="payment_method"]:checked').val();
+		donor.mail_yes = get(null,null,"mailing");
 		donor.postage_paid = get("postage_paid");
 		donor.recv_updates_citr = get("alumni_update_yes");
 		donor.recv_updates_alumni = get("citr_update_yes");
-		donor.donor_recognition_name = get("recognize");
-		console.log(get('prize_picked_up'));
+		donor.donor_recognition_name = get(null,null,"recognize");
 		if(donor.donor_recognition_name =='name') donor.donor_recognition_name = donor.firstname + " " + donor.lastname;
 		else if(donor.donor_recognition_name == 'pseudonym') donor.donor_recognition_name = get('pseudonym');
 		else{ donor.donor_recognition_name == 'anonymous';}
+
 		donor.notes = get("notes");
 		donor.paid = get("paid_status");
 		donor.prize_picked_up = get("prize_picked_up");
@@ -49,9 +52,9 @@ $(document).ready ( function() {
 					function(update_response){
 						var conf = confirm('Success! Would you like to submit another?');
 						if(conf == true){
-							window.location.reload();
+							//window.location.reload();
 						}else{
-							window.location.href ='main.php';
+							//window.location.href ='main.php';
 						}
 					},function(error){
 						alert('Fail')
@@ -65,22 +68,22 @@ $(document).ready ( function() {
 	$('#donor_submit').click(function(){
 		save();
 	})
-	$('#amount').change(function(){
+	$('.amount').change(function(){
 		if($(this).val() == 'other'){
 			$('#amount_other').removeClass('invisible');
 		}else{
 			$('#amount_other').addClass('invisible');
 		}
 	});
-	$('#mailing').change(function(){
+	$('.mailing').change(function(){
 		console.log($(this).val())
 		if($(this).val() == '1'){
-			$('#postage').removeClass('invisible');
+			$('.postage').removeClass('invisible');
 		}else{
-			$('#postage').addClass('invisible');
+			$('.postage').addClass('invisible');
 		}
 	});
-	$('#payment_method').change(function(){
+	$('.payment_method').change(function(){
 		if( $(this).val() == 'cheque'){
 			$('#cheque_option').removeClass('invisible');
 			$('#mailing_option').removeClass('invisible');
@@ -92,7 +95,7 @@ $(document).ready ( function() {
 			$('#mailing_option').addClass('invisible');
 		}
 	});
-	$('#recognize').change(function(){
+	$('.recognize').change(function(){
 		if($(this).val() == 'pseudonym'){
 			$('#pseudonym').removeClass('invisible');
 		}else{
