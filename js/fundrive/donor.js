@@ -24,7 +24,7 @@ $(document).ready ( function() {
 		donor.email = get("email");
 
 		donor.payment_method = $('input[name="payment_method"]:checked').val();
-		donor.mail_yes = get(null,null,"mailing");
+		donor.mail_yes = $('input[name="payment_method"]:checked').val();
 		donor.postage_paid = get("postage_paid");
 		donor.recv_updates_citr = get("alumni_update_yes");
 		donor.recv_updates_alumni = get("citr_update_yes");
