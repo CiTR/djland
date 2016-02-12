@@ -29,6 +29,35 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => 'auth'], function(){
 
+	//Fundrive Routes
+	Route::group(array('prefix'=>'fundrive'),function(){
+		//Donor Subsection
+		Route::group(array('prefix'=>'donor'),function(){
+			//Create a new Donor
+			Route::put('/',function(){
+				return Donor::create();
+			});
+			Route::get('/',function(){
+				return Donor::all();
+			});
+			//Donor By ID
+			Route::group(array('prefix'=>'{id}'),function($id = id){
+				//Get a donor
+				Route::get('/',function($id){
+					return Donor::find($id);
+				});
+				//Update a donor
+				Route::post('/',function($id){
+					return Response::json(Donor::find($id)->update( (array) Input::get()['donor']));
+				});
+				//Delete a donor
+				Route::delete('/',function($id){
+					return Donor::delete();
+				});
+			});
+		});
+	});
+
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 
@@ -724,34 +753,7 @@ Route::post('/adschedule',function(){
 
 
 });
-//Fundrive Routes
-Route::group(array('prefix'=>'fundrive'),function(){
-	//Donor Subsection
-	Route::group(array('prefix'=>'donors'),function(){
-		//Create a new Donor
-		Route::put('/',function(){
-			return Donor::create();
-		});
-		Route::get('/',function(){
-			return Donor::all();
-		});
-		//Donor By ID
-		Route::group(array('prefix'=>'{id}'),function($id = id){
-			//Get a donor
-			Route::get('/',function($id){
-				return Donor::find($id);
-			});
-			//Update a donor
-			Route::post('/',function($id){
-				return Donor::update( (array) Input::get()['donor']);
-			});
-			//Delete a donor
-			Route::delete('/',function($id){
-				return Donor::delete();
-			});
-		});
-	});
-});
+
 
 
 

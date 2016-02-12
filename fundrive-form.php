@@ -116,7 +116,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     	<div class='col5'>Province*: </div>
     	<div class='col5'><select id='province'>
         <?php
-        	foreach($djland_provinces as $key=>$province){
+        	foreach($custom_province_order as $key=>$province){
             echo "<option value='{$province}'>{$province}</option>";
         	}
         ?>
@@ -126,7 +126,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     </div>
     <div id='row4' class='containerrow'>
     	<div class='col5'>Primary Number*:</div>
-    	<div class='col5'><input id='primary_phone' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+    	<div class='col5'><input id='phonenumber' class='required' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
     	<div class='col5'>Email Address*: </div>
     	<div class='col5'><input id='email' class='required'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
     </div>
@@ -139,16 +139,17 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 			<option value='cheque'>Drop of or mail in a check</option>
 			<option value='cash'>Drop off cash</option>
 		</select>
-		<div id='cheque' class='invisible'>The check is payable to UBC.</div>
-		<div id='mailing' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
+		<div id='cheque_option' class='invisible'>The check is payable to UBC.</div>
+		<div id='mailing_option' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
 	</div>
 
 	<div class='col1 double-padded-top'>
 		<div class='col1'> Would you like your prize mailed to you? Please be aware that postage costs <a href='https://www.canadapost.ca/cpotools/apps/far/business/findARate' target='_blank'>Shipping Calculator</a>. </div>
-		<select id='mailing' name='mail_yes'>
+		<select id='mailing'>
 			<option value='1'>Yes</option>
 			<option value='0'>No</option>
 		</select>
+		<div id='postage' class='col1'><input id='postage_paid'  type='checkbox'><label for='postage_paid'>Postage Paid?</label></div>
 	</div>
 	<div class='col1 double-padded-top'>
 		<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
@@ -158,7 +159,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	</div>
 	<div class='col1 double-padded-top double-padded-bottom'>
 		<div class='col1'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
-		<select id='recognize' name='recognize'>
+		<select id='recognize'>
 			<option value='name'>Use my name</option>
 			<option value='pseudonym'>Use my pseudonym</option>
 			<option value='anon'>Anonymous</option>
@@ -184,7 +185,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	<hr>
 	<div class='col1 double-padded-top'>
     	<div class='col6'>Notes/Extra Stuff:</div>
-    	<textarea id='about' class='largeinput' placeholder='Text here'rows='3'></textarea>
+    	<textarea id='notes' class='largeinput' placeholder='Text here'rows='3'></textarea>
 	</div>
 
 

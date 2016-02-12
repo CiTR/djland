@@ -2,6 +2,30 @@ $(document).ready ( function() {
 
 	function save(){
 		var donor = {};
+
+		donor.firstname = get("firstname");
+		donor.lastname = get("lastname");
+		donor.address = get("address");
+		donor.city = get("city");
+		donor.province = get("province");
+		donor.postalcode = get("postalcode");
+		donor.phonenumber = get("phonenumber");
+		donor.email = get("email");
+		donor.donation_amount = get("amount");
+		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
+		donor.swag = get("swag");
+		donor.show_inspired = get("fundrive_showname");
+		donor.prize = get("prize");
+		donor.mail_yes = get("mailing");
+		donor.postage_paid = get("postage_paid");
+		donor.recv_updates_citr = get("alumni_update_yes");
+		donor.recv_updates_alumni = get("citr_update_yes");
+		donor.donor_recognize_name = get("recognize");
+		if(donor.donor_recognize_name == 'pseudonym') donor.donor_recognize_name = get('pseudonym');
+		donor.notes = get("notes");
+		donor.paid = get("paid_status");
+		donor.prize_picked_up = get("prize_status");
+
 		var create_request = $.ajax({
 			type:"PUT",
 			url: "api2/public/fundrive/donor",
@@ -20,7 +44,12 @@ $(document).ready ( function() {
 
 				$.when(update_request).then(
 					function(update_response){
-						alert('Success');
+						var conf = confirm('Success! Would you like to submit another?');
+						if(conf == true){
+							window.location.reload();
+						}else{
+							window.location.href ='main.php';
+						}
 					},function(error){
 						alert('Fail')
 					}
@@ -30,6 +59,9 @@ $(document).ready ( function() {
 			}
 		);
 	}
+	$('#donor_submit').click(function(){
+		save();
+	})
 	$('#amount').change(function(){
 		if($(this).val() == 'other'){
 			$('#amount_other').removeClass('invisible');
@@ -37,16 +69,24 @@ $(document).ready ( function() {
 			$('#amount_other').addClass('invisible');
 		}
 	});
+	$('#mailing').change(function(){
+		console.log($(this).val())
+		if($(this).val() == '1'){
+			$('#postage').removeClass('invisible');
+		}else{
+			$('#postage').addClass('invisible');
+		}
+	});
 	$('#payment_method').change(function(){
 		if( $(this).val() == 'cheque'){
-			$('#cheque').removeClass('invisible');
-			$('#mailing').removeClass('invisible');
+			$('#cheque_option').removeClass('invisible');
+			$('#mailing_option').removeClass('invisible');
 		}else if( $(this).val() == 'cash'){
-			$('#cheque').addClass('invisible');
-			$('#mailing').removeClass('invisible');
+			$('#cheque_option').addClass('invisible');
+			$('#mailing_option').removeClass('invisible');
 		}else{
-			$('#cheque').addClass('invisible');
-			$('#mailing').addClass('invisible');
+			$('#cheque_option').addClass('invisible');
+			$('#mailing_option').addClass('invisible');
 		}
 	});
 	$('#recognize').change(function(){
