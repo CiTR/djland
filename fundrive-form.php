@@ -190,7 +190,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 
 	<div class='col1 text-center'> Has this person paid? <input type='checkbox' id='paid_status'> </div>
-	<div class='col1 text-center'>Has this person picked up the prize yet?<input type='checkbox' id='prize_status'></div>
+	<div class='col1 text-center'>Has this person picked up the prize yet?<input type='checkbox' id='prize_picked_up'></div>
 
 	<div class='containerrow'>
     	<center>

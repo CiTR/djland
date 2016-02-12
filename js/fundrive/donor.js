@@ -20,11 +20,14 @@ $(document).ready ( function() {
 		donor.postage_paid = get("postage_paid");
 		donor.recv_updates_citr = get("alumni_update_yes");
 		donor.recv_updates_alumni = get("citr_update_yes");
-		donor.donor_recognize_name = get("recognize");
-		if(donor.donor_recognize_name == 'pseudonym') donor.donor_recognize_name = get('pseudonym');
+		donor.donor_recognition_name = get("recognize");
+		console.log(get('prize_picked_up'));
+		if(donor.donor_recognition_name =='name') donor.donor_recognition_name = donor.firstname + " " + donor.lastname;
+		else if(donor.donor_recognition_name == 'pseudonym') donor.donor_recognition_name = get('pseudonym');
+		else{ donor.donor_recognition_name == 'anonymous';}
 		donor.notes = get("notes");
 		donor.paid = get("paid_status");
-		donor.prize_picked_up = get("prize_status");
+		donor.prize_picked_up = get("prize_picked_up");
 
 		var create_request = $.ajax({
 			type:"PUT",
@@ -46,9 +49,9 @@ $(document).ready ( function() {
 					function(update_response){
 						var conf = confirm('Success! Would you like to submit another?');
 						if(conf == true){
-							window.location.reload();
+							//window.location.reload();
 						}else{
-							window.location.href ='main.php';
+							//window.location.href ='main.php';
 						}
 					},function(error){
 						alert('Fail')
