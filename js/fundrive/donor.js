@@ -2,7 +2,7 @@ $(document).ready ( function() {
 
 	function save(){
 		var donor = {};
-		donor.donation_amount = get(null,null,"amount");
+		donor.donation_amount = $('input[name="amount"]:checked').val();
 		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
 		if($('input[name="swag"]:checked').val() == 'swag'){
 			donor.swag = 1;
