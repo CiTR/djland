@@ -80,8 +80,8 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>Would you like swag or a tax reciept?</div>
-		<input id='swag' value='1' type='radio' name='swag' class='swag' checked ><label for='swag'>Swag</label>
-		<input id='tax_receipt' value='1' type='radio' name='swag' class='swag'><label for='tax_receipt'>Tax Receipt</label>
+		<input id='swag' value='swag' type='radio' name='swag' class='swag' checked ><label for='swag'>Swag</label>
+		<input id='tax_receipt' value='tax_receipt' type='radio' name='swag' class='swag'><label for='tax_receipt'>Tax Receipt</label>
 	</div>
 
 	<div class='col1 double-padded-top'>
@@ -139,7 +139,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	<hr>
 	<div class='col1 double-padded-top'>
 		<div class='col1'> How would you like to pay? </div>
-		<input id='payment_0' name='payment_method' class='payment_method' type='radio' value='credit_card'><label for='payment_0'>Credit Card</label>
+		<input id='payment_0' name='payment_method' class='payment_method' type='radio' value='credit_card' checked><label for='payment_0'>Credit Card</label>
 		<input id='payment_1' name='payment_method' class='payment_method' type='radio' value='cheque'><label for='payment_1'>Drop of or mail in a check</label>
 		<input id='payment_2' name='payment_method' class='payment_method' type='radio' value='cash'><label for='payment_2'>Drop off cash</label>
 

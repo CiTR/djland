@@ -4,8 +4,13 @@ $(document).ready ( function() {
 		var donor = {};
 		donor.donation_amount = get(null,null,"amount");
 		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
-		donor.swag = ($('#tax_receipt').checked) ? 1 : 0;
-		donor.tax_receipt = ($('#tax_receipt').checked) ? 1 : 0;
+		if($('input[name="swag"]:checked').val() == 'swag'){
+			donor.swag = 1;
+			donor.tax_receipt = 0;
+		}else{
+			donor.swag = 0;
+			donor.tax_receipt = 1;
+		};
 		donor.show_inspired = get("fundrive_showname");
 		donor.prize = get("prize");
 
