@@ -29,9 +29,20 @@ $(document).ready ( function() {
 		donor.recv_updates_citr = get("alumni_update_yes");
 		donor.recv_updates_alumni = get("citr_update_yes");
 		donor.donor_recognition_name = get(null,null,"recognize");
-		if(donor.donor_recognition_name =='name') donor.donor_recognition_name = donor.firstname + " " + donor.lastname;
-		else if(donor.donor_recognition_name == 'pseudonym') donor.donor_recognition_name = get('pseudonym');
-		else{ donor.donor_recognition_name == 'anonymous';}
+		switch($('input[name="recognize"]:checked').val()){
+			case 'name':
+				donor.donor_recognition_name = donor.firstname + " " + donor.lastname;
+				break;
+			case 'pseudonym':
+				donor.donor_recognition_name = get('pseudonym');
+				break;
+			case 'anon':
+				donor.donor_recognition_name = 'Anonymous';
+				break;
+			default:
+				donor.donor_recognition_name = 'Anonymous';
+				break;
+		}
 
 		donor.notes = get("notes");
 		donor.paid = get("paid_status");

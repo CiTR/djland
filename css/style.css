@@ -263,7 +263,7 @@ input, select, textarea, option{
 	font-size:70%;
 }
 .wideinput{
-  width:300px;
+  width:100%;
 }
 .fullinput{
   width:100%;
@@ -297,9 +297,7 @@ input, select, textarea, option{
   height:auto;
   overflow:visible;
 }
-div.col3 input,div.col4 input,div.col6 input,div.col7 input{
-  max-width:140px;
-}
+
 .col1{
   width:100%;
 }
