@@ -131,7 +131,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
     </div>
     <div id='row4' class='containerrow'>
     	<div class='col5'>Primary Number:</div>
-    	<div class='col5'><input id='phonenumber' class='required wideinput' placeholder='Phone Number' maxlength='10' onKeyPress="return numbersonly(this, event)"></input></div>
+    	<div class='col5'><input id='phonenumber' class='required wideinput' placeholder='Phone Number' maxlength='12' onKeyPress="return numbersonly(this, event)"></input></div>
     	<div class='col5'>Email : </div>
     	<div class='col5'><input id='email' class='required wideinput'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'></div></div>
     </div>
