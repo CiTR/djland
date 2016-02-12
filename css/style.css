@@ -262,6 +262,9 @@ input, select, textarea, option{
 	top:3px;
 	font-size:70%;
 }
+.big_text{
+	font-size:110%;
+}
 .wideinput{
   width:300px;
 }
@@ -297,9 +300,7 @@ input, select, textarea, option{
   height:auto;
   overflow:visible;
 }
-div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
-  max-width:140px;
-}
+
 .col1{
   width:100%;
 }
@@ -638,6 +639,35 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     padding:0;
     margin:0;
 }
+
+
+/*
+ *	Donor Form CSS
+ */
+ .donor_form{
+	 background-color:#707070;
+ }
+
+.donor_form *{
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color:white;
+}
+.heavy_text{
+	font-size:1.0em;
+	line-height:1.2
+}
+
+.donor_form_wrapper > div > select,.donor_form_wrapper > div > div > textarea  {
+	background-color: #BBB;
+	color:black;
+}
+#donor_submit{
+	backgroun-color: grey;
+	font-size:2.0em;
+	color: black;
+}
+
+
 /*
  *	Open Playsheet CSS
  */
