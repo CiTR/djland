@@ -81,7 +81,7 @@ function print_menu(){
 			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
 		<?php
 			endif;
-			if($enabled['playsheets']): ?>
+			if($enabled['playsheets'] && permission_level() > = $djland_permission_levels['dj']['level']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
