@@ -96,7 +96,7 @@ function print_menu(){
 				</li>
 		<?php
 			endif;
-      if(permission_level() >= $djland_permission_levels['volunteer']):
+      if(permission_level() >= $djland_permission_levels['volunteer']['level']):
 		?>
     <li class=nodrop><a href="fundrive-form.php">Fundrive</a></li>
     <?php endif; ?>
