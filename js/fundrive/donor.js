@@ -194,6 +194,11 @@ function checkBlocking(){
 		if( !$('#email_check').hasClass('green')){
 			allOkay=false;
 		}
+		if($('input[name="mailing"]:checked').val() == '1'){
+			if($('#postage_paid').val().length == 0){
+				allOkay=false;
+			}
+		}
 		if (allOkay){
 		$('#donor_submit').attr('disabled',false);
 		$('#donor_submit').text("Submit");
