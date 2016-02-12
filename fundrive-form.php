@@ -159,11 +159,11 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	<div class='col1 double-padded-top double-padded-bottom'>
 		<div class='col1'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
 		<select id='recognize' name='recognize'>
-			<option 'name'>Use my name</option>
-			<option 'pseudonym'>Use my pseudonym</option>
-			<option 'anon'>Anonymous</option>
+			<option value='name'>Use my name</option>
+			<option value='pseudonym'>Use my pseudonym</option>
+			<option value='anon'>Anonymous</option>
 		</select>
-		<input id='pseudonym' class='invisible'>
+		<input id='pseudonym' class='invisible' placeholder='Enter Pseudonym'>
 	</div>
 
 	<hr>
