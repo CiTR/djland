@@ -169,7 +169,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 			<input id='postage_1' name='mailing' class='mailing' type='radio' value='1' checked><label for='postage_1'>Yes</label>
 			<input id='postage_2' name='mailing' class='mailing' type='radio' value='0'><label for='postage_2'>No</label>
 		</div>
-		<div class='postage'><label for='postage_paid'>Postage Amount </label><input id='postage_paid' placeholder='5' class='big_text'>$</div>
+		<div class='postage'><label for='postage_paid'>Postage Amount </label><input id='postage_paid' placeholder='Enter Postage Amount' class='big_text'>$</div>
 	</div>
 	<div class='col1 double-padded-top'>
 		<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
