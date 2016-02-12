@@ -160,7 +160,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 		<input id='payment_2' name='payment_method' class='payment_method' type='radio' value='cash'><label for='payment_2'>Drop off cash</label>
 
 		<div id='cheque_option' class='invisible'>The check is payable to UBC.</div>
-		<div id='mailing_option' class='invisible'>Our address is LL500 6133 University Blvd, Van BC V6T 1Z1</div>
+		<div id='mailing_option' class='invisible'>Our address is LL500 6133 University Blvd Vancouver BC Canada V6T 1Z1</div>
 	</div>
 
 	<div class='col1 double-padded-top'>
