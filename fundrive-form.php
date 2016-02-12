@@ -11,8 +11,7 @@ $fundrive_amount = array(
 '175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
 '250'=>'Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover',
 '500'=>'all the things + host a show on citr!',
-'1,000'=>'all the things + recognition on our donor wall in the new SUB',
-"Other"=>"other");
+'1,000'=>'all the things + recognition on our donor wall in the new SUB');
 $payment_options = array(
 	'Credit Card'=>'credit_card',
 	'Dropping off or mailing in a Cheque - payable to UBC, mail to LL500 6133 University Blvd, Van BC V6T 1Z1'=>'cheque',
@@ -64,9 +63,11 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 		<select id="amount" name='donation_amount'>
 		<?php foreach($fundrive_amount as $amount=>$text): ?>
-    		<option value='<?php echo $amount; ?>'><?php echo $text; ?></option>
+    		<option value='<?php echo $amount; ?>'><?php echo $amount."$ - ".$text; ?></option>
 		<?php endforeach; ?>
+			<option value='other'>Other</option>
 		</select>
+		<input id='amount_other' class='invisible' placeholder='enter $ amount'>
 
 	</div>
 
@@ -90,7 +91,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1 double-padded-top double-padded-bottom'>
 		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
-		<textarea id='prize' class='required largeinput' name='prize' placeholder='Prize'></textarea>
+		<textarea id='prize' class='largeinput' name='prize' placeholder='Prize'></textarea>
 	</div>
 
 	<div class='text-center double-padded-top'>Now I'll need to take down your contact information:</div>
@@ -133,7 +134,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	<hr>
 	<div class='col1 double-padded-top'>
 		<div class='col1'> How would you like to pay? </div>
-		<select name='payment_method'>
+		<select id='payment_method'>
 			<option value='credit_card'>Credit Card</option>
 			<option value='cheque'>Drop of or mail in a check</option>
 			<option value='cash'>Drop off cash</option>
@@ -192,7 +193,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='containerrow'>
     	<center>
-    	<button id='submit_user' class='red' disabled='true'>Form Not Complete</button>
+    	<button id='donor_submit' class='red' disabled='true'>Form Not Complete</button>
     	<br>* indicates a required field
     	</center>
 	</div>

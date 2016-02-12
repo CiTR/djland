@@ -30,7 +30,32 @@ $(document).ready ( function() {
 			}
 		);
 	}
-
+	$('#amount').change(function(){
+		if($(this).val() == 'other'){
+			$('#amount_other').removeClass('invisible');
+		}else{
+			$('#amount_other').addClass('invisible');
+		}
+	});
+	$('#payment_method').change(function(){
+		if( $(this).val() == 'cheque'){
+			$('#cheque').removeClass('invisible');
+			$('#mailing').removeClass('invisible');
+		}else if( $(this).val() == 'cash'){
+			$('#cheque').addClass('invisible');
+			$('#mailing').removeClass('invisible');
+		}else{
+			$('#cheque').addClass('invisible');
+			$('#mailing').addClass('invisible');
+		}
+	});
+	$('#recognize').change(function(){
+		if($(this).val() == 'pseudonym'){
+			$('#pseudonym').removeClass('invisible');
+		}else{
+			$('#pseudonym').addClass('invisible');
+		}
+	});
 	function get(target_id,target_class,target_name){
 		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
 		var tag = target.prop('tagName');
@@ -71,5 +96,14 @@ function checkBlocking(){
 			allOkay=false;
 			}
 		});
+		if (allOkay){
+		$('#donor_submit').attr('disabled',false);
+		$('#donor_submit').text("Submit");
+		$('#donor_submit').removeClass("red");
+		}else{
+			$('#donor_submit').attr('disabled',true);
+			$('#donor_submit').text("Form Not Complete");
+			$('#donor_submit').addClass("red");
+		}
 		console.log(allOkay);
 	}
