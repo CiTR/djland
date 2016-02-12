@@ -656,10 +656,14 @@ div.col3 input,div.col4 input,div.col6 input,div.col7 input{
 	line-height:1.2
 }
 
-
 .donor_form_wrapper > div > select,.donor_form_wrapper > div > div > textarea  {
 	background-color: #BBB;
 	color:black;
+}
+#donor_submit{
+	backgroun-color: grey;
+	font-size:2.0em;
+	color: black;
 }
 
 

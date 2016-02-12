@@ -57,9 +57,9 @@ $(document).ready ( function() {
 					function(update_response){
 						var conf = confirm('Success! Would you like to submit another?');
 						if(conf == true){
-							//window.location.reload();
+							window.location.reload();
 						}else{
-							//window.location.href ='main.php';
+							window.location.href ='main.php';
 						}
 					},function(error){
 						alert('Fail')
