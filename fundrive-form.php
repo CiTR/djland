@@ -73,7 +73,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>Would you like swag or a tax reciept?</div>
-			<select name='swag'>
+			<select id='swag'>
 				<option value='1'>Swag</option>
 				<option value='0'>Tax Receipt</option>
 			</select>
@@ -175,7 +175,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 			<div class='double-padded-top'>
 				This year our Fundrive Finale is on Friday, March 4 at the hindenburg. The event is also a release party for the LP we're putting out with mint records. We hope to see you there! (more info at citr.ca)
 			</div>
-			<div class='swag invisible double-padded-top'>
+			<div class='double-padded-top'>
 				If chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
 			</div>
 			<div class='double-padded-top'>
