@@ -245,7 +245,7 @@ Route::group(array('prefix'=>'show'),function(){
 		$show = Show::create((array) Input::get()['show']);
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];
-		$showtimes = Input::get()['showitmes'];
+		$showtimes = Input::get()['showtimes'];
 
 		//Create owners
 		foreach($owners as $owner){
@@ -253,12 +253,12 @@ Route::group(array('prefix'=>'show'),function(){
 		}
 		//Create social entries, this table is really dumb.
 		foreach($social as $social){
-			$social->show_id = $show->id;
+			$social['show_id'] = $show->id;
 			Social::create($social);
 		}
 		//Create Showtimes
 		foreach($showtimes as $showtime){
-			$showtime->show_id = $show->id;
+			$showtime['show_id'] = $show->id;
 			Showtime::create($showtime);
 		}
 	});
