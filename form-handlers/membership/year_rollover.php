@@ -5,12 +5,10 @@
  * Date: 5/6/2015
  * Time: 4:30 PM
  */
-    include_once("../../headers/session_header.php");
+include_once("../../headers/session_header.php");
 require_once("../../headers/security_header.php");
 
-if( permission_level() >= $djland_permission_levels['staff']['level'] && isset($_POST) && isset($_POST['year'])) {
-	http_response_code(401);
-	echo json_encode("You do not have permission");
+if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
 //POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access
 //GET Gets the current mandatory membership year
     $update_query = "UPDATE year_rollover SET membership_year=:year WHERE id='1'";
@@ -33,8 +31,6 @@ if( permission_level() >= $djland_permission_levels['staff']['level'] && isset($
         $result->year = $statement->fetchColumn(0);
         http_response_code(200);
         echo json_encode($result,JSON_UNESCAPED_SLASHES);
-
-
     }catch(PDOException $pdoe){
         http_response_code(404);
         echo json_encode($pdoe->getMessage());

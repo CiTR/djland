@@ -73,7 +73,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
 						<select class='search_value hidden' name='member_type'>
 							<?php
 								foreach($djland_member_types as $key=>$value){
-									echo "<option value='{$value}'>{$key}</input>";
+									echo "<option value='{$value}'>{$key}</option>";
 								}
 							?>
 						</select>

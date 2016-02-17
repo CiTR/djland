@@ -67,6 +67,8 @@ Member.prototype = {
 		this.username=member.username;
 		this.fullname = member.firstname + " " + member.lastname;
 		for(var item in member){
+			if(item == 'member_type' && member['member_type'] == 'Staff' && $("#member_type option[value='Staff']").length == 0) $('#member_type').append("<option value='Staff'>Staff</option>");
+			if(item == 'member_type' && member['member_type'] == 'Lifetime' && $("#member_type option[value='Lifetime']").length == 0) $('#member_type').append("<option value='Lifetime'>Lifetime</option>");
 			if(item != 'username' && item != 'member_id'){
 				if(item == 'firstname' && member[item] != null || item == 'lastname' && item != null) member[item] = decodeHTML(member[item]);
 				member_info[item] = member[item];
@@ -313,6 +315,7 @@ Member.prototype = {
 	},createMembershipYear:function(){
 		var this_ = this;
 		this.getInterests();
+		if(this.member_info.member_type == 'Lifetime') this_.membership_years[get('membership_year')].paid = 1;
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/member/"+this_.member_id + '/year',

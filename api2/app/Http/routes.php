@@ -88,7 +88,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 			Route::get('/',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id);
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
 
 			});
@@ -116,16 +116,15 @@ Route::group(['middleware' => 'auth'], function(){
 					return 1;
 				}
 			});
-
 			Route::get('user',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->user;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
 				else return "Nope";
 			});
 			Route::post('user',function($id){
 				$m = Member::find($id);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $m->user->update(Input::get()['user']) ? "true": "false";
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
 			Route::post('permission',function($id){
@@ -155,7 +154,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $user->save() ? "true":"false";
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
 
 			});
