@@ -67,7 +67,7 @@ function print_menu(){
 		</li>
 		<?php
 		endif;
-		if($enabled['charts'] && permission_level() >=$djland_permission_levels['volunteer_leader']['level']) : ?>
+		if($enabled['charts'] && permission_level() >=$djland_permission_levels['workstudy']['level']) : ?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
 		<?php
 		endif;
