@@ -315,7 +315,7 @@ Member.prototype = {
 	},createMembershipYear:function(){
 		var this_ = this;
 		this.getInterests();
-		if(this.member_info.member_type == 'Lifetime') this_.membership_years[get('membership_year')].paid = 1;
+		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this_.membership_years[get('membership_year')].paid = 1;
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/member/"+this_.member_id + '/year',

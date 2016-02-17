@@ -656,7 +656,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			print_r(array($show->name,$show->id,$show->podcast_slug));
 		}
 	});
-Route::post('/adschedule2',function(){
+Route::post('/adschedule',function(){
 	$post = array();
 	parse_str(Input::get('ads'),$post);
 
@@ -749,39 +749,6 @@ Route::get('/adschedule/{date}',function($date = date){
 
 
 });
-
-Route::post('/adschedule',function(){
-	$showtimes = Input::get()['showtimes'];
-	foreach($showtimes as $showtime){
-		$ads = $showtime['ads'];
-		$a = array();
-		$index = 1;
-		$to_delete = Ad::where('time_block','=',$showtime['start_unix'])->get();
-		foreach($ads as $ad){
-			if(isset($ad['id'])){
-				$item = Ad::find($ad['id']);
-				$ad['num'] = $index++;
-				$item->update($ad);
-			}else{
-				$ad['num'] = $index++;
-				$item = Ad::create($ad);
-			}
-			$a[] = $item;
-		}
-		foreach($to_delete as $delete){
-			$found = false;
-			foreach($a as $item){
-				if($delete['id'] == $item['id']) $found = true;
-			}
-			if($found == false) Ad::find($delete['id'])->delete();
- 		}
-		$s[$showtime['start_unix']] = $a;
-	}
-	return $s;
-
-
-});
-
 
 
 

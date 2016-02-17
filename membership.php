@@ -119,7 +119,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
 						<th>Type</th>
 						<th>Staff Comments</th>
 						<th>Year</th>
-						<?php if(permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
+						<?php if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
 							<th><button id='delete_button'>Delete</button></th>
 						<?php endif; ?>
 						</tr>
@@ -291,7 +291,7 @@ if( permission_level() >= $djland_permission_levels['volunteer_leader']['level']
 				<hr>
 				<div class='containerrow'>
 					<div class='col1 text-left'>Permission Levels:</div>
-					
+
 					<?php
 						foreach($djland_permission_levels as $key=>$value){
 							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col7 custom_tooltip'><span title=''  ><label for='level_{$key}'>{$value['name']}</label><input type=radio id='level_{$key}' name='permission'/></span></div>";
