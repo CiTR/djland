@@ -158,7 +158,6 @@
 
         }
         this.addSocial = function(id){
-
             this.socials.splice(id+1,0,angular.copy(this.social_template));
         }
         this.addOwner = function(){
@@ -166,8 +165,13 @@
             var id = $('#member_access_select').val();
              /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
             Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */
-            this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
-			console.log(this.owners);
+			var exists = false;
+            for(var owner_index in this.show_owners){
+                if(this.show_owners[owner_index].id == id) exists = true;
+            }
+			if(!exists){
+				this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
+			}
         }
         this.addShowTime = function($index){
             this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
@@ -236,12 +240,20 @@
                 call.saveNewShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
 					function(response){
 					//                    console.log(response.data.message);
+						var show = response.data['show'];
 						alert("Successfully Create New Show: "+this_.info.name);
-						console.log(response.data);
+						this_.info.id = show['id'];
+						for(var sh in this_.show_times){
+							this_.show_times[sh].show_id = show['id'];
+						}
+						for(var s in this_.social){
+							this_.socials[s].show_id = show['id'];
+						}
+						console.log(response);
 					},
 					function(error){
 						alert("Failed to save");
-						console.error(response.data);
+						console.error(response);
 
 					}
                 );
@@ -250,11 +262,11 @@
                 function(response){
 //                    console.log(response.data.message);
                     alert("Successfully Saved");
-                    console.log(response.data);
+                    console.log(response);
                 },
                 function(error){
                     alert("Failed to save");
-                    console.error(response.data);
+                    console.error(response);
 
                 });
             }
@@ -408,7 +420,6 @@
             }
         service.setShowName = function(name){
             this.show_name = name;
-            console.log(name);
             $rootScope.$broadcast('show_name');
         }
         service.getShowName = function(){

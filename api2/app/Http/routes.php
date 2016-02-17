@@ -247,20 +247,23 @@ Route::group(array('prefix'=>'show'),function(){
 		$social = Input::get()['social'];
 		$showtimes = Input::get()['showtimes'];
 
+		$socials = array();
+		$show_times = array();
 		//Create owners
 		foreach($owners as $owner){
 			Show::find($show->id)->members()->attach($owner['id']);
 		}
 		//Create social entries, this table is really dumb.
-		foreach($social as $social){
-			$social['show_id'] = $show->id;
-			Social::create($social);
+		foreach($social as $s){
+			$s['show_id'] = $show['id'];
+			$socials[] = Social::create($s);
 		}
 		//Create Showtimes
-		foreach($showtimes as $showtime){
-			$showtime['show_id'] = $show->id;
-			Showtime::create($showtime);
+		foreach($showtimes as $key=>$showtime){
+			$showtime['show_id'] = $show['id'];
+			$show_times[] = Showtime::create( (array) $showtime);
 		}
+		return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
 	});
 
 
@@ -288,32 +291,68 @@ Route::group(array('prefix'=>'show'),function(){
 			$s = Show::find($id);
 			$s->update($show);
 
-
+			$socials = array();
+			$show_times = array();
 
 			//Detach current owners
 			foreach(Show::find($id)->members as $current_owner){
-				$s->members()->detach($current_owner->id);
+				$still_exists = false;
+				foreach($owners as $key=>$item){
+					if(isset($item['id']) && $current_owner['id'] == $item['id']){
+						unset($owners[$key]);
+						$still_exists = true;
+					}
+				}
+				if(!$still_exists) $s->members()->detach($current_owner->id);
 			}
 			//Attach new owners
 			foreach($owners as $owner){
 				Show::find($id)->members()->attach($owner['id']);
 			}
 
-			//Delete all social entries
-			$delete = Social::find($id);
-			if($delete !=null) $delete->delete();
-			//Create new social entries, this table is really dumb.
+			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+			$existing_to_delete =  Show::find($id)->social;
+			foreach($existing_to_delete as $key=>$e){
+				$still_exists = false;
+				foreach($social as $item){
+					if(isset($item['id']) && $e['id'] == $item['id']){
+						$still_exists = true;
+					}
+				}
+				if(!$still_exists) Social::find($e['id'])->delete();
+			}
+			//Create or update social entries
 			foreach($social as $item){
-				Social::create($item);
+				if(isset($item['id'])){
+					$s = Social::find($item['id']);
+					unset($item['id']);
+					$socials[] = $s->update($item);
+				}else{
+					$socials[] = Social::create($item);
+				}
 			}
-
-			//Delete all showtime entries
-			$delete = Showtime::find($id);
-			if($delete != null) $delete->delete();
-			//Recreate show times
-			foreach($showtimes as $showtime){
-				Showtime::create($showtime);
+			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+			$existing_to_delete =  Show::find($id)->showtimes;
+			foreach($existing_to_delete as $key=>$e){
+				$still_exists = false;
+				foreach($showtimes as $item){
+					if(isset($item['id']) && $e['id'] == $item['id']){
+						$still_exists = true;
+					}
+				}
+				if(!$still_exists) Showtime::find($e['id'])->delete();
 			}
+			//Create or update social entries
+			foreach($showtimes as $item){
+				if(isset($item['id'])){
+					$s = Showtime::find($item['id']);
+					unset($item['id']);
+					$show_times[] = $s->update($item);
+				}else{
+					$show_times[] = Showtime::create($item);
+				}
+			}
+			return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
 		});
 		Route::get('episodes/{offset}',function($id,$offset = offset){
 			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->limit(50)->offset($offset)->get();
