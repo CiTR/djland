@@ -1,7 +1,114 @@
 $(document).ready ( function() {
+	var donor = {};
+	//Get from PHP setting via script tag
+	var id = id_in;
+	console.log(id);
+	if(id != null){
+		load(id);
+	}
+
+	function load(id){
+		var load_request = $.ajax({
+					type:"GET",
+					url: "api2/public/fundrive/donor/"+id,
+					dataType: "json",
+					async: true
+				});
+		$.when( load_request).then(
+			function(response){
+				console.log(response);
+
+ 
+				for(var entry_index in response){
+					if( entry_index == 'donation_amount'){
+						$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
+					}else if( entry_index == 'payment_method'){
+						$('.payment_method[value="'+response[entry_index]+'"]').prop('checked',true);
+					}else if( entry_index == 'mail_yes'){
+						$('.mailing[value="'+response[entry_index]+'"]').prop('checked',true);
+						if(response[entry_index] == 0) $('.postage').addClass('invisible');
+					}else if( entry_index == 'donor_recognition_name'){
+						var donor_recognition_name = response[entry_index];
+						if(donor_recognition_name  == response.firstname+' '+response.lastname){
+							$("#recognize_0").prop('checked',true);
+						}	
+						else if( donor_recognition_name == "Anonymous"){
+							$("#recognize_2").prop('checked',true);
+						} 
+						else{
+							$("#recognize_1").prop('checked',true);
+							$('#pseudonym').removeClass('invisible');
+							set(donor_recognition_name,"pseudonym");
+						}
+					}else if( entry_index == "paid"){
+						$("#paid_status").prop("checked",true);
+					}else if( entry_index == prize_picked_up){
+						$("#prize_picked_up").prop("checked",true);
+					}else if( entry_index == "swag"){
+						$("#swag").prop("checked",true);
+					}else if( entry_index == "tax_receipt"){
+						$("#tax_receipt").prop("checked",true);
+					}else if(entry_index == "recv_updates_citr"){
+						$("#citr_update_yes").prop("checked",true);
+					}else if(entry_index == "recv_updates_alumni"){
+						$("#alumni_update_yes").prop("checked",true);
+					}else{
+						set(response[entry_index],entry_index);
+					}
+					$('#email_check').addClass('green');
+
+				}
+			},function(error){
+				console.log(error);
+			}
+		);
+
+	}
 
 	function save(){
-		var donor = {};
+		get_form();
+
+		if(id==null){
+			var create_request = $.ajax({
+			type:"PUT",
+			url: "api2/public/fundrive/donor",
+			dataType: "json",
+			async: true
+			});	
+			$.when(create_request).then(
+				function(create_response){
+					id = create_response.id;
+					update(true);
+				}
+			);
+		}else{
+			update(false);
+		}
+	}
+	function update(is_new){
+		var update_request = $.ajax({
+			type:"POST",
+			url: "api2/public/fundrive/donor/"+id,
+			dataType: "json",
+			data: {'donor':donor},
+			async: true
+		});
+
+		$.when(update_request).then(
+			function(update_response){
+				var conf = confirm('Success! Would you like to '+(is_new ?'submit':'edit')+' another?');
+				if(conf == true){
+					if(is_new) window.location.reload();
+					else window.location.href = 'fundrive-open-form.php';
+				}else{
+					window.location.href ='main.php';
+				}
+			},function(error){
+				alert('Fail')
+			}
+		);
+	}
+	function get_form(){
 		donor.donation_amount = $('input[name="amount"]:checked').val();
 		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
 		if($('input[name="swag"]:checked').val() == 'swag'){
@@ -11,7 +118,7 @@ $(document).ready ( function() {
 			donor.swag = 0;
 			donor.tax_receipt = 1;
 		};
-		donor.show_inspired = get("fundrive_showname");
+		donor.show_inspired = get("show_inspired");
 		donor.prize = get("prize");
 
 		donor.firstname = get("firstname");
@@ -47,39 +154,6 @@ $(document).ready ( function() {
 		donor.notes = get("notes");
 		donor.paid = get("paid_status");
 		donor.prize_picked_up = get("prize_picked_up");
-
-		var create_request = $.ajax({
-			type:"PUT",
-			url: "api2/public/fundrive/donor",
-			dataType: "json",
-			async: true
-		});
-		$.when(create_request).then(
-			function(create_response){
-				var update_request = $.ajax({
-					type:"POST",
-					url: "api2/public/fundrive/donor/"+create_response.id,
-					dataType: "json",
-					data: {'donor':donor},
-					async: true
-				});
-
-				$.when(update_request).then(
-					function(update_response){
-						var conf = confirm('Success! Would you like to submit another?');
-						if(conf == true){
-							window.location.reload();
-						}else{
-							window.location.href ='main.php';
-						}
-					},function(error){
-						alert('Fail')
-					}
-				);
-			},function(error){
-
-			}
-		);
 	}
 	$('#donor_submit').click(function(){
 		save();
@@ -239,4 +313,36 @@ function checkBlocking(){
 				break;
 		}
 		return result;
+	}
+	function set(value,target_id,target_class,target_name){
+		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
+		var tag = target.prop('tagName');
+		//console.log("Value:"+value+" Target:"+target.attr('id') + "," +target.attr('class') + "," +target.attr('name')+" Tag:"+tag);
+		switch(tag){
+			case 'DIV':
+				target.text(value);
+				break;
+			case 'SELECT':
+				target.val(value).change();
+				break;
+			case 'INPUT':
+				var type = target.attr('type');
+				switch(type){
+					case 'checkbox':
+						if(value == '1'){
+							target.prop('checked',true);
+						}else{
+							target.prop('checked',false);
+						}
+						break;
+					default:
+						target.val(value).change();
+						break;
+				}
+				break;
+			case 'TEXTAREA':
+			default:
+				target.val(value).change();
+				break;
+		}
 	}

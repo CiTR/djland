@@ -5,7 +5,7 @@ require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 $fundrive_amount = array(
-	'30'=>'Friends of CiTR Card',
+'30'=>'Friends of CiTR Card',
 '60'=>'Friends of CiTR card + CiTR growler',
 '101.9'=>'Friends of CiTR card + CiTR growler + CiTR notebook',
 '175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
@@ -48,11 +48,18 @@ $custom_province_order = array(
 <script src="js/library-js.js"></script>
 </head><body class='wallpaper'>
 
+
+
 <?php print_menu();
 $shows = array();
 $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 ?>
+<script>
+var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
+</script>
+
+
 
 <div class='wrapper donor_form side-padded big_text'>
 	<h1 class='double-padded-top'> Fundrive Donation Form </h1>
@@ -85,7 +92,8 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>Was your gift inspiried by a specific show? If yes:</div>
-	    <select id='fundrive_showname' name='show_inspired' class='big_text'>
+	    <select id='show_inspired' name='show_inspired' class='big_text'>
+	    	<option value=""/>
 	    <?php foreach($shows as $show): ?>
 	        <option value="<?php echo $show->name; ?>"><?php echo $show->name; ?></option>
 	    <?php endforeach; ?>
