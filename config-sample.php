@@ -236,5 +236,6 @@ $djland_primary_genres = array(
 // Brad Winter
 // Evan Friday
 // Sandy Fang
+// Scott Pidzarko
 // Henry Chee
 //
