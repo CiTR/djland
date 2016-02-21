@@ -45,7 +45,21 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::all();
 				else return "Nope";
 			});
-			//Donor By ID
+      //Donation amount total
+      Route::group(array('prefix'=>'{donation_amount_total}'),function(){
+        //Get the amount
+        Route::get('/',function(){
+          $donation_list = Donor::select('donation_amount')->get();
+          $total = 0;
+    			foreach ($donation_list as $donation) {
+    				$total = $total + intval($donation->donation_amount);
+    			}
+          $permissions = Member::find($_SESSION['sv_id'])->user->permission;
+          if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $total;
+          else return "Nope";
+        });
+      });
+    	//Donor By ID
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
 				Route::get('/',function($id){
