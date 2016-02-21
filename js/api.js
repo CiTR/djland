@@ -74,6 +74,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getForms: function(){
 			return $http.get(API_URL_BASE + '/fundrive/donor');
 		},
+		getFundriveTotals: function(){
+			return $http.get(API_URL_BASE + '/fundrive/donor/donation_amount_total');
+		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},

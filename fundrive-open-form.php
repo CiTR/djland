@@ -17,16 +17,30 @@
 </head>
 <body ng-controller='openFundrive as fundrive' class='wallpaper'>
 	<?php print_menu() ?>
+	<div class='wrapper'>
+		<div class='col2'>
+			<button onclick="location.href='fundrive-dump-stats.php';">Fundrive Data Download (.csv)</button>
+		</div>
+		<div class='col2'>
+			<h2>Fundrive Pledge Total: ${{fundrive.donationTotal}}</h2>
+		</div>
+	</div>
+	<br><br>
 	<div class='wrapper clean-list'>
-		<table class='table-condensed open_fundrive' ng-repeat='form in fundrive.forms track by $index'>
-			<tr><th>Firstname<th>Lastname<th>Donation Amount<th></tr>
-			<tr> 
-				<td>{{form.firstname}}</td> 
-				<td>{{form.lastname}}</td> 
-				<td>{{form.donation_amount}}</td> 
-				<td><button onclick='go(this)' data-href='fundrive-form.php?id={{form.id}}'>Open Form</button></td>
-			</tr>
-		</table>
+		<div class='side-padded padded double-padded-bottom'>
+			<table class='table-condensed open_fundrive' >
+				<tr><th>Firstname<th>Lastname<th>Donation Amount<th></tr>
+				<tr>
+					<td colspan="4"> <hr /> </td>
+	 			</tr>
+				<tr ng-repeat='form in fundrive.forms track by $index'>
+					<td>{{form.firstname}}</td>
+					<td>{{form.lastname}}</td>
+					<td>{{form.donation_amount}}</td>
+					<td><button onclick='go(this)' data-href='fundrive-form.php?id={{form.id}}'>Open Form</button></td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
 	<script type='text/javascript' src="js/angular.js"></script>

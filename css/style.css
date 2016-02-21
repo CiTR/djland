@@ -236,8 +236,7 @@ input, select, textarea, option{
 .border{
   border-style:solid;
   border-width:1px;
-  border-colo
-  r: white;
+  border-color: white;
 }
 .pad-top{
   padding-top:2px;
@@ -662,7 +661,7 @@ input, select, textarea, option{
 	color:black;
 }
 #donor_submit{
-	backgroun-color: grey;
+	background-color: grey;
 	font-size:2.0em;
 	color: black;
 }
@@ -1257,7 +1256,6 @@ table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.n
 /*----------------------*/
 .open_fundrive{
     width:100%;
-    
 }
 
 
@@ -1496,7 +1494,7 @@ button#submit_user.red{
 }
 
 .containerrow{
-    text-align:right;
+  text-align:right;
 	display:inline-block;
 	width:100%;
 	overflow:visible;
@@ -1796,7 +1794,6 @@ div#loadtimes{
 }
 
 .loaderButton, .samsong{
-
 	position: relative;
 	float:left;
 	margin:1px 0 0 0;
@@ -1809,8 +1806,6 @@ div#loadtimes{
 }
 
 .loaderButton{
-
-
 	z-index:15;
 	width:30px;
 	background-color: #8F8;
