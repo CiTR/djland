@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function(){
           $donation_list = Donor::select('donation_amount')->get();
           $total = 0;
     			foreach ($donation_list as $donation) {
-    				$total = $total + intval($donation->donation_amount);
+            //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
+    				$total = $total + floatval(str_replace(",","",$donation->donation_amount));
     			}
           $permissions = Member::find($_SESSION['sv_id'])->user->permission;
           if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $total;
