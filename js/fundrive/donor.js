@@ -40,6 +40,13 @@ $(document).ready ( function() {
 						$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
 					}else if( entry_index == 'payment_method'){
 						$('.payment_method[value="'+response[entry_index]+'"]').prop('checked',true);
+						if(response[entry_index]=='cheque'){
+							$('cheque_option').removeClass('invisible');
+							$('mailing_option').removeClass('invisible');
+						}else if(response[entry_index] == 'cash'){
+							$('mailing_option').removeClass('invisible');
+						}
+
 					}else if( entry_index == 'mail_yes'){
 						$('.mailing[value="'+response[entry_index]+'"]').prop('checked',true);
 						if(response[entry_index] == 0) $('.postage').addClass('invisible');

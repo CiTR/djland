@@ -709,9 +709,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	  //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
 			  $total = $total + floatval(str_replace(",","",$donation->donation_amount));
 		  }
-	$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-	if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $total;
-	else return "Nope";
+	return $total;
   });
 
 Route::post('/adschedule',function(){
