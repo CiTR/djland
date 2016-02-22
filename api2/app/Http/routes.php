@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
       //Donation amount total
-      Route::group(array('prefix'=>'{donation_amount_total}'),function(){
+      Route::group(array('prefix'=>'donation_amount_total'),function(){
         //Get the amount
         Route::get('/',function(){
           $donation_list = Donor::select('donation_amount')->get();

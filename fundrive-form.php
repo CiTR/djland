@@ -202,7 +202,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 				This year our Fundrive Finale is on Friday, March 4 at the Hindenburg. The event is also a release party for the LP we're putting out with Mint Records. We hope to see you there! (more info at citr.ca)
 			</div>
 			<div class='double-padded-top'>
-				If chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
+				If you chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
 			</div>
 			<div class='double-padded-top'>
 				Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
