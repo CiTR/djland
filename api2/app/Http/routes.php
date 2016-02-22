@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 			Route::get('/',function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::all();
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::all();
 				else return "Nope";
 			});
 
