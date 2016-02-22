@@ -15,6 +15,7 @@ print_menu();
     <title>DJLAND | Fundrive Data Download</title>
     <script src='js/jquery-1.11.3.min.js'></script>
   </head>
+  <?php if(permission_level() >= $djland_permission_levels['administrator']['level'] ): ?>
   <body ng-controller='fundriveDump as fundrive' class='wallpaper'>
     <div class="text-center">
       <br>
@@ -24,6 +25,17 @@ print_menu();
       <br>
       <button onclick="location.href='fundrive-open-form.php';">Back</button>
     </div>
+  <?php  else: ?>
+  <body class='wallpaper'>
+    <div class="text-center">
+      <br>
+      <br>
+      <h3>PERMISSION DENIED</h3>
+      <br>
+      <br>
+      <button onclick="location.href='fundrive-open-form.php';">Back</button>
+    </div>
+  <?php endif; ?>
 
     <script type='text/javascript' src="js/jquery-ui/external/jquery/jquery.js"></script>
     <script type='text/javascript' src="js/angular.js"></script>

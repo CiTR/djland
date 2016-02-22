@@ -2,7 +2,7 @@ $(document).ready ( function() {
 	var donor = {};
 	//Get from PHP setting via script tag
 	var id = id_in;
-	console.log(id);
+	//console.log(id);
 	if(id != null){
 		load(id);
 	}
@@ -17,7 +17,7 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
-				console.log(response);
+				//console.log(response);
 				document.getElementById("total").innerHTML = "Total raised so far: $"+response;
 			},function(error){
 				console.log(error);
@@ -33,7 +33,7 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
-				console.log(response);
+				//console.log(response);
 
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
@@ -187,7 +187,7 @@ $(document).ready ( function() {
 		}
 	});
 	$('.mailing').change(function(){
-		console.log($(this).val())
+		//console.log($(this).val())
 		if($(this).val() == '1'){
 			$('.postage').removeClass('invisible');
 		}else{
@@ -303,7 +303,7 @@ function checkBlocking(){
 			$('#donor_submit').text("Form Not Complete");
 			$('#donor_submit').addClass("red");
 		}
-		console.log(allOkay);
+		//console.log(allOkay);
 	}
 	function get(target_id,target_class,target_name){
 		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
