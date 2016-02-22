@@ -701,7 +701,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 
  // Fundrive amount raised total, Externally accessible
-  Route::get('/fundrive/donation_amount_total',function(){
+  Route::get('/fundrive/total',function(){
 	 include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
 	$donation_list = Donor::select('donation_amount')->get();
 	$total = 0;

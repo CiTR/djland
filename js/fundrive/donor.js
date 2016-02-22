@@ -11,7 +11,7 @@ $(document).ready ( function() {
 	function getTotals(){
 		var load_request = $.ajax({
 					type:"GET",
-					url: "api2/public/fundrive/donation_amount_total",
+					url: "api2/public/fundrive/total",
 					dataType: "json",
 					async: true
 				});
