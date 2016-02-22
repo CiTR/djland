@@ -5,9 +5,7 @@ require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 print_menu();
-$shows = array();
-$api_base = 'http://'.$_SERVER['HTTP_HOST'];
-$shows = CallAPI('GET',$api_base.'/api2/public/show/active');
+
 ?>
 
 <html ng-app='djland.open_fundrive'>

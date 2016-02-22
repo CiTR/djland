@@ -63,6 +63,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 
 <div class='wrapper donor_form side-padded big_text'>
 	<h1 class='double-padded-top'> Fundrive Donation Form </h1>
+	<h3 id="total"></h3>
 	<hr>
 
 	<div class='col1'>Thank you for calling the CiTR Fundrive pledge line! My name is __________.</div>

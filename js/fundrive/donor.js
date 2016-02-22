@@ -6,6 +6,23 @@ $(document).ready ( function() {
 	if(id != null){
 		load(id);
 	}
+	getTotals();
+
+	function getTotals(){
+		var load_request = $.ajax({
+					type:"GET",
+					url: "api2/public/fundrive/donor/donation_amount_total",
+					dataType: "json",
+					async: true
+				});
+		$.when( load_request).then(
+			function(response){
+				console.log(response);
+				document.getElementById("total").innerHTML = "Total raised so far: $"+response;
+			},function(error){
+				console.log(error);
+		});
+	}
 
 	function load(id){
 		var load_request = $.ajax({
@@ -18,7 +35,6 @@ $(document).ready ( function() {
 			function(response){
 				console.log(response);
 
- 
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
 						$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
@@ -31,10 +47,10 @@ $(document).ready ( function() {
 						var donor_recognition_name = response[entry_index];
 						if(donor_recognition_name  == response.firstname+' '+response.lastname){
 							$("#recognize_0").prop('checked',true);
-						}	
+						}
 						else if( donor_recognition_name == "Anonymous"){
 							$("#recognize_2").prop('checked',true);
-						} 
+						}
 						else{
 							$("#recognize_1").prop('checked',true);
 							$('#pseudonym').removeClass('invisible');
@@ -56,14 +72,12 @@ $(document).ready ( function() {
 						set(response[entry_index],entry_index);
 					}
 					$('#email_check').addClass('green');
-
 				}
 			},function(error){
 				console.log(error);
 			}
 		);
-
-	}
+	}//load
 
 	function save(){
 		get_form();
@@ -74,7 +88,7 @@ $(document).ready ( function() {
 			url: "api2/public/fundrive/donor",
 			dataType: "json",
 			async: true
-			});	
+			});
 			$.when(create_request).then(
 				function(create_response){
 					id = create_response.id;
