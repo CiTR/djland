@@ -41,8 +41,8 @@ $(document).ready ( function() {
 					}else if( entry_index == 'payment_method'){
 						$('.payment_method[value="'+response[entry_index]+'"]').prop('checked',true);
 						if(response[entry_index]=='cheque'){
-							$('cheque_option').removeClass('invisible');
-							$('mailing_option').removeClass('invisible');
+							$('#cheque_option').removeClass('invisible');
+							$('#mailing_option').removeClass('invisible');
 						}else if(response[entry_index] == 'cash'){
 							$('mailing_option').removeClass('invisible');
 						}
