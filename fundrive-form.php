@@ -80,7 +80,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 			</li>
 		<?php endforeach; ?>
 			<li><input id='amount_alt' value='other' type='radio' name='amount' class='amount'><label for='amount_alt'> Other</label></li>
-			<li><input id='amount_other' class='invisible big_text' placeholder='enter $ amount'></li>
+			<li><input id='amount_other' class='invisible big_text' placeholder='enter $ amount' onKeyPress="return numbersonly(this, event)"></li>
 		</ul>
 
 	</div>
