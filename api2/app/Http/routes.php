@@ -45,21 +45,7 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Donor::all();
 				else return "Nope";
 			});
-      //Donation amount total
-      Route::group(array('prefix'=>'donation_amount_total'),function(){
-        //Get the amount
-        Route::get('/',function(){
-          $donation_list = Donor::select('donation_amount')->get();
-          $total = 0;
-    			foreach ($donation_list as $donation) {
-            //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
-    				$total = $total + floatval(str_replace(",","",$donation->donation_amount));
-    			}
-          $permissions = Member::find($_SESSION['sv_id'])->user->permission;
-          if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $total;
-          else return "Nope";
-        });
-      });
+
     	//Donor By ID
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
@@ -712,6 +698,21 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			print_r(array($show->name,$show->id,$show->podcast_slug));
 		}
 	});
+
+
+ // Fundrive amount raised total, Externally accessible
+  Route::get('/fundrive/donation_amount_total',function(){
+	$donation_list = Donor::select('donation_amount')->get();
+	$total = 0;
+		  foreach ($donation_list as $donation) {
+	  //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
+			  $total = $total + floatval(str_replace(",","",$donation->donation_amount));
+		  }
+	$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+	if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $total;
+	else return "Nope";
+  });
+
 Route::post('/adschedule',function(){
 	$post = array();
 	parse_str(Input::get('ads'),$post);
