@@ -96,17 +96,17 @@ function print_menu(){
 				</li>
 	   <?php endif; ?>
 
-     <?php /*if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+     <?php *if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
        <li class=drop><a href="fundrive-form.php">Fundrive</a>
          <div class="dropdown small">
              <ul>
                <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-form.php">New Fundrive Form</a></li>
                <?php endif ?>
-               <?php if(permission_level() >= $djland_permission_levels['administrator']['level']): ?>
+               <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-open-form.php">Open a Fundrive Form</a></li>
                <?php endif ?>
-               <?php if(permission_level() >= $djland_permission_levels['administrator']['level']): ?>
+               <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-dump-stats.php">Download Fundrive Data (.csv)</a></li>
                <?php endif ?>
              </ul>
