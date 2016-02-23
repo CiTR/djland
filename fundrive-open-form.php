@@ -4,7 +4,9 @@
 	require_once("headers/security_header.php");
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
-
+	if(permission_level() < $djland_permission_levels['staff']['level']){
+		header("Location: main.php");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -33,19 +35,12 @@
 				<tr>
 					<td colspan="4"> <hr /> </td>
 	 			</tr>
-				<?php if(permission_level() >= $djland_permission_levels['administrator']['level'] ): ?>
 				<tr ng-repeat='form in fundrive.forms track by $index'>
 					<td>{{form.firstname}}</td>
 					<td>{{form.lastname}}</td>
 					<td>{{form.donation_amount}}</td>
 					<td><button onclick='go(this)' data-href='fundrive-form.php?id={{form.id}}'>Open Form</button></td>
 				</tr>
-			<?php else: ?>
-				<tr> <td> <h3>PERMISSION DENIED</h3> </td></tr>
-				<td> </td>
-				<td> </td>
-				<td> </td>
-			<?php endif; ?>
 			</table>
 		</div>
 	</div>
