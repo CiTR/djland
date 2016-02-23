@@ -112,7 +112,7 @@ function print_menu(){
              </ul>
          </div>
        </li>
-     <?php endif; */ ?>
+     <?php endif;  ?>
 
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
