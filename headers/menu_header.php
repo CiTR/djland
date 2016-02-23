@@ -102,18 +102,22 @@ function print_menu(){
              <ul>
                <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-form.php">New Fundrive Form</a></li>
-               <?php endif ?>
+			 <?php endif; ?>
                <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-open-form.php">Open a Fundrive Form</a></li>
-               <?php endif ?>
+			 <?php endif; ?>
                <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
                  <li><a href="fundrive-dump-stats.php">Download Fundrive Data (.csv)</a></li>
-               <?php endif ?>
+			 <?php endif; ?>
              </ul>
          </div>
        </li>
      <?php endif;  ?>
-
+	 <?php if($_SESSION['sv_username'] == 'fundrive'): ?>
+		 <li class="nodrop"><a href="fundrive-form.php">New Fundrive Form</a></li>
+	 <?php
+ 	endif;
+	 ?>
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
 		<?php if(permission_level() >=  $djland_permission_levels['member']['level']) : ?>

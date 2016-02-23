@@ -52,7 +52,7 @@ $custom_province_order = array(
 
 <?php print_menu();
 
-if(permission_level() < $djland_permission_levels['staff']['level'] || $_SESSION['sv_username'] != 'fundrive'){
+if( !(permission_level() >= $djland_permission_levels['staff']['level'] || $_SESSION['sv_username'] == 'fundrive' )){
 	header("Location: main.php");
 }
 $shows = array();
