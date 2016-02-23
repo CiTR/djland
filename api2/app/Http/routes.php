@@ -289,7 +289,7 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::post('/',function($id){
 			$show = Input::get()['show'];
 			$social = Input::get()['social'];
-			$owners = Input::get()['owners'];
+			$owners = Input::has('owners') ? Input::get()['owners'] : null;
 			$showtimes = Input::get()['showtimes'];
 			$s = Show::find($id);
 			$s->update($show);
@@ -297,21 +297,24 @@ Route::group(array('prefix'=>'show'),function(){
 			$socials = array();
 			$show_times = array();
 
-			//Detach current owners
-			foreach(Show::find($id)->members as $current_owner){
-				$still_exists = false;
-				foreach($owners as $key=>$item){
-					if(isset($item['id']) && $current_owner['id'] == $item['id']){
-						unset($owners[$key]);
-						$still_exists = true;
+			if($owners){
+				//Detach current owners
+				foreach(Show::find($id)->members as $current_owner){
+					$still_exists = false;
+					foreach($owners as $key=>$item){
+						if(isset($item['id']) && $current_owner['id'] == $item['id']){
+							unset($owners[$key]);
+							$still_exists = true;
+						}
 					}
+					if(!$still_exists) $s->members()->detach($current_owner->id);
 				}
-				if(!$still_exists) $s->members()->detach($current_owner->id);
+				//Attach new owners
+				foreach($owners as $owner){
+					Show::find($id)->members()->attach($owner['id']);
+				}
 			}
-			//Attach new owners
-			foreach($owners as $owner){
-				Show::find($id)->members()->attach($owner['id']);
-			}
+
 
 			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
 			$existing_to_delete =  Show::find($id)->social;

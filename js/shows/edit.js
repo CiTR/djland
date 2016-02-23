@@ -120,7 +120,7 @@
                 if(response.data != null){
                     this_.show_owners = response.data.owners;
                 }else{
-                    this_.show_owners = {};
+                    this_.show_owners = Array();
                 }
             },function(error){
 
