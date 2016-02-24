@@ -261,6 +261,9 @@ input, select, textarea, option{
 	top:3px;
 	font-size:70%;
 }
+.bigish_text{
+	font-size:92%;
+}
 .big_text{
 	font-size:110%;
 }
