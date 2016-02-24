@@ -46,7 +46,6 @@ $(document).ready ( function() {
 						}else if(response[entry_index] == 'cash'){
 							$('mailing_option').removeClass('invisible');
 						}
-
 					}else if( entry_index == 'mail_yes'){
 						$('.mailing[value="'+response[entry_index]+'"]').prop('checked',true);
 						if(response[entry_index] == 0) $('.postage').addClass('invisible');
@@ -148,6 +147,7 @@ $(document).ready ( function() {
 		donor.city = get("city");
 		donor.province = get("province");
 		donor.postalcode = get("postalcode");
+		donor.country = get("country");
 		donor.phonenumber = get("phonenumber");
 		donor.email = get("email");
 

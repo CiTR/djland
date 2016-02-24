@@ -107,7 +107,20 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 		<input id='tax_receipt' value='tax_receipt' type='radio' name='swag' class='swag'><label for='tax_receipt'>Tax Receipt</label>
 	</div>
 
-	<div class='col1 double-padded-top '>
+	<div class='col1 double-padded-top'>
+		<?php foreach($fundrive_amount as $amount=>$text): ?>
+			<li>
+				<?php echo "$".$amount." - ".$text; ?>
+			</li>
+		<?php endforeach; ?>
+	</div>
+
+		<div class='col1 double-padded-top'>
+		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
+			<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
+	</div>
+
+	<div class='col1 double-padded-top double-padded-bottom'>
 	    <div class='col1'>Was your gift inspiried by a specific show? If yes:</div>
 	    <select id='show_inspired' name='show_inspired' class='big_text'>
 	    	<option value=""/>
@@ -116,20 +129,6 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	    <?php endforeach; ?>
 	    </select>
 	</div>
-
-
-	<div class='col1 double-padded-top double-padded-bottom'>
-		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
-		<div class='col1 double-padded-top double-padded-bottom'>
-			<?php foreach($fundrive_amount as $amount=>$text): ?>
-    		<li>
-					<?php echo "$".$amount." - ".$text; ?>
-				</li>
-			<?php endforeach; ?>
-		</div>
-		<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
-	</div>
-
 
 	<hr/>
 	<h2>Contact Information</h2>
