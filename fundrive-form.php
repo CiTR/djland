@@ -36,7 +36,8 @@ $custom_province_order = array(
 	'ONT',
 	'QUE',
 	'SASK',
-	'YUK');
+	'YUK',
+	'Other');
 
 $custom_country_order = array( "Canada", "United States", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
 "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros",
@@ -107,6 +108,8 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 		<input id='tax_receipt' value='tax_receipt' type='radio' name='swag' class='swag'><label for='tax_receipt'>Tax Receipt</label>
 	</div>
 
+	<div class='col1 double-padded-top'>For a donation of x dollars you'll receive the following swag:</div>
+
 	<div class='col1 double-padded-top'>
 		<?php foreach($fundrive_amount as $amount=>$text): ?>
 			<li>
@@ -115,9 +118,9 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 		<?php endforeach; ?>
 	</div>
 
-		<div class='col1 double-padded-top'>
-		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
-			<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
+	<div class='col1 double-padded-top'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is):</div>
+	<div class='col1 double-padded-top'>
+		<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
 	</div>
 
 	<div class='col1 double-padded-top double-padded-bottom'>
