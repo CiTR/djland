@@ -201,7 +201,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	<hr>
 	<div class='col1 double-padded-top'>
 		<div class='col1'> How would you like to pay? </div>
-		<input id='payment_0' name='payment_method' class='payment_method' type='radio' value='credit_card' checked><label for='payment_0'>Credit Card</label>
+		<input id='payment_0' name='payment_method' class='payment_method' type='radio' value='credit_card' checked><label for='payment_0'>Credit Card (collect credit card info)</label>
 		<input id='payment_1' name='payment_method' class='payment_method' type='radio' value='cheque'><label for='payment_1'>Drop off or mail in a check</label>
 		<input id='payment_2' name='payment_method' class='payment_method' type='radio' value='cash'><label for='payment_2'>Drop off cash</label>
 
