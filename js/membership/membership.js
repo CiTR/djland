@@ -19,7 +19,7 @@ $(document).ready ( function() {
 			add_handlers();
 			yearlyReport(year_callback);
 
-		}else if(permission_level >= permission_levels['volunteer']['level']){
+		}else if(permission_level >= permission_levels['volunteer_leader']['level']){
 			var year_callback = loadYearSelect();
 			$('.member_action').attr('class','nodrop inactive-tab member_action');
 			$('.member_action[name="email"]').attr('class','nodrop active-tab member_action');

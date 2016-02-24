@@ -24,7 +24,7 @@ function print_menu(){
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
 			echo "<div id='using_sam' class='hidden'>".($using_sam ?'1':'0')."</div>";
-			if( (permission_level() >= $djland_permission_levels['volunteer']['level']) && $enabled['membership'] ):
+			if( (permission_level() >= $djland_permission_levels['volunteer_leader']['level']) && $enabled['membership'] ):
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>
 		<?php
@@ -67,7 +67,7 @@ function print_menu(){
 		</li>
 		<?php
 		endif;
-		if($enabled['charts'] && permission_level() >=$djland_permission_levels['volunteer_leader']['level']) : ?>
+		if($enabled['charts'] && permission_level() >=$djland_permission_levels['workstudy']['level']) : ?>
 			<li class=nodrop><a href="charting.php">Charts</a></li>
 		<?php
 		endif;
@@ -81,7 +81,7 @@ function print_menu(){
 			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
 		<?php
 			endif;
-			if($enabled['playsheets']): ?>
+			if($enabled['playsheets'] && permission_level() >= $djland_permission_levels['dj']['level']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
@@ -94,15 +94,36 @@ function print_menu(){
 						</div>
 					</div>
 				</li>
-		<?php
-			endif;
-		?>
+	   <?php endif; ?>
+
+     <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+       <li class=drop><a href="fundrive-form.php">Fundrive</a>
+         <div class="dropdown small">
+             <ul>
+               <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+                 <li><a href="fundrive-form.php">New Fundrive Form</a></li>
+			 <?php endif; ?>
+               <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+                 <li><a href="fundrive-open-form.php">Open a Fundrive Form</a></li>
+			 <?php endif; ?>
+               <?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+                 <li><a href="fundrive-dump-stats.php">Download Fundrive Data (.csv)</a></li>
+			 <?php endif; ?>
+             </ul>
+         </div>
+       </li>
+     <?php endif;  ?>
+	 <?php if($_SESSION['sv_username'] == 'fundrive'): ?>
+		 <li class="nodrop"><a href="fundrive-form.php">New Fundrive Form</a></li>
+	 <?php
+ 	endif;
+	 ?>
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
 		<?php if(permission_level() >=  $djland_permission_levels['member']['level']) : ?>
 		<li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
 			<div class="dropdown small">
-				<div class=small>
+				<div class="small">
 					<ul>
 
 						<li><a href="member_resources.php">Resources</a></li>

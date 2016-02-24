@@ -4,7 +4,10 @@
 	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
+	if( permission_level() < $djland_permission_levels['volunteer_leader']['level']){
+		header("Location: main.php");
+	}
+	?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -46,7 +49,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 			if(permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
 			<li class = 'tab nodrop inactive-tab member_action' name='admin'>Membership Admin</li>
 			<?php endif;
-			if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
+			if(permission_level() >= $djland_permission_levels['volunteer_lead']['level']) : ?>
 			<li class = 'tab nodrop inactive-tab member_action' name='email'>Send Emails</li>
 			<?php endif;?>
 		</ul>
@@ -73,7 +76,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 						<select class='search_value hidden' name='member_type'>
 							<?php
 								foreach($djland_member_types as $key=>$value){
-									echo "<option value='{$value}'>{$key}</input>";
+									echo "<option value='{$value}'>{$key}</option>";
 								}
 							?>
 						</select>
@@ -119,7 +122,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 						<th>Type</th>
 						<th>Staff Comments</th>
 						<th>Year</th>
-						<?php if(permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
+						<?php if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
 							<th><button id='delete_button'>Delete</button></th>
 						<?php endif; ?>
 						</tr>
@@ -291,9 +294,10 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 				<hr>
 				<div class='containerrow'>
 					<div class='col1 text-left'>Permission Levels:</div>
+
 					<?php
 						foreach($djland_permission_levels as $key=>$value){
-							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col6 custom_tooltip'><span title=''  >{$value['name']} <input type=checkbox id='level_{$key}'/></span></div>";
+							if($key != 'operator') echo "<div href='#'  title='".$value['tooltip']."' class='col7 custom_tooltip'><span title=''  ><label for='level_{$key}'>{$value['name']}</label><input type=radio id='level_{$key}' name='permission'/></span></div>";
 						}
 					?>
 				</div>
@@ -444,6 +448,3 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level']){ ?>
 		<?php endif; ?>
 	</body>
 </html>
-<?php }else{
-	header("Location: main.php");
-}?>

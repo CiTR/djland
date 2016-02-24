@@ -22,7 +22,7 @@
 		<div id='membership' class='wrapper' >
 			<h1> CiTR Member Signup </h1>
 			<hr>
-			
+
 			<div class = 'container'>
 				<div id='row1' class='containerrow'>
 					<div class='col5'>Username*: </div>
@@ -31,14 +31,14 @@
 					<div class='col5'><input id='password' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();" tabindex=2></input></div>
 					<div id="password_check" class='col5'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
 				</div>
-				
+
 				<div id='row2' class='containerrow'>
 					<div class='col5'>First Name*: </div>
 					<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
 					<div class='col5'>Last Name*: </div>
-					<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>					
+					<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
 				</div>
-				
+
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
 					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>
@@ -48,9 +48,9 @@
 				<div id='row4 'class='containerrow'>
 					<div class='col5'>Province*: </div>
 					<div class='col5'><select id='province'>
-							<?php 
-							foreach($djland_provinces as $key=>$province){ 
-								echo "<option value='{$province}'>{$province}</option>"; 
+							<?php
+							foreach($djland_provinces as $key=>$province){
+								echo "<option value='{$province}'>{$province}</option>";
 							}
 							?>
 						</select></div>
@@ -63,8 +63,8 @@
 					<div class='col5'>Member Since: </div>
 					<div class='col5'>
 						<select id='since'>
-							<?php 
-							
+							<?php
+
 							$year = idate('Y');
 							$year_end = 1925;
 							$today = date('m/d/Y',strtotime("today"));
@@ -75,7 +75,7 @@
 								$year--;
 							}
 
-							for ($i=$year; $i > $year_end ; $i--) { 
+							for ($i=$year; $i > $year_end ; $i--) {
 								$next_year = $i+1;
 								echo "<option value='".$i."/".$next_year."''>".$i."/".$next_year."</option>";
 							} ?>
@@ -86,7 +86,7 @@
 					<div class='col5'>Canadian Citizen*:</div>
 					<div class='col5'><input id='canadian_citizen' type='checkbox'/></div>
 					<div class='col5'>Member Type*:</div>
-					
+
 					<div class='col5'>
 						<select id='is_new'>
 							<option value='1'>New</option>
@@ -95,9 +95,9 @@
 					</div>
 					<div class='col5'>
 						<select id='member_type'>
-							<?php 
+							<?php
 							foreach($djland_member_types as $key=>$value){
-								if($key != 'Lifetime') echo "<option value='{$value}'>{$key}</option>";
+								if($key != 'Lifetime' && $key != 'Staff') echo "<option value='{$value}'>{$key}</option>";
 							}
 							?>
 						</select>
@@ -108,7 +108,7 @@
 					<div class='col5'>Faculty*: </div>
 					<div class='col5'>
 						<select id='faculty' style='z-position=10;'>
-							<?php 
+							<?php
 							foreach($djland_faculties as $value){
 								echo "<option value='{$value}'>{$value}</option>";
 							}
@@ -116,26 +116,26 @@
 						</select>
 						<input id='faculty2' style='display:none' placeholder='Enter your Faculty'/>
 					</div>
-					
+
 					<div id='student_no_container'>
 						<div class='col5'>Student Number*:</div>
 						<div class='col5' id='student_no_check'>
 							<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='8' onKeyPress="return numbersonly(this, event)"></input>
 						</div>
-					</div>	
+					</div>
 
 				</div>
 
 				<div id='row7' class='containerrow student'>
-						<div class='col5'>Year*:</div>			
+						<div class='col5'>Year*:</div>
 						<div class='col5'><select id='schoolyear'>
 							<?php foreach($djland_program_years as $key=>$value){ echo "<option value='{$value}'>{$key}</option>"; } ?>
 						</select></div>
 					<div class='span3col5'>I would like to incorporate CiTR into my courses(projects,practicums,etc.):
 					<input id='integrate'  name='integrate' type='checkbox' /></div>
 
-					
-					
+
+
 				</div>
 				<div class='containerrow'>
 					<div class='col5'>Do you have a show?*:</div>
@@ -159,7 +159,7 @@
 					<div class='col6'>I am interested in:</div>
 					<input class='hidden' id='membership_year' value='<?php echo idate('m') >= 5 ? idate('Y')."/".(idate('Y')+1) : (idate('Y')-1)."/".idate('Y'); ?>'/>
 					<div class='span3col4'>
-						<?php foreach($djland_interests as $key=>$interest): ?> 
+						<?php foreach($djland_interests as $key=>$interest): ?>
 						<div class='col3 text-right'>
 							<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
 							<?php if($interest == 'other'): ?>
@@ -185,7 +185,7 @@
 					<div class='col6'>How did you hear about us?:</div>
 					<textarea id='exposure' placeholder='Was it a friend?' class='largeinput' rows='3'></textarea>
 				</div>
-				
+
 				<div class='contanerrow'>
 					<center>
 						<button id='submit_user' class='red' disabled='true'>Form Not Complete</button>
@@ -195,8 +195,8 @@
 				<div class='contanerrow'>
 					<br/>
 				</div>
-			</div>	
-			
+			</div>
+
 		</div>
 	</body>
 </html>

@@ -15,10 +15,10 @@ function Schedule(date){
 	this['cat-promises'] = Array();
 	this['html-promises'] = Array();
 	this.showtimes = Array();
-	if(!date) var date = this.formatDate(new Date());	
+	if(!date) var date = this.formatDate(new Date());
 	//Get initial Schedule
 	this.ready = this.getSchedule(date);
-	
+
 	$.when(this.getCategory('ad'),this.getCategory('ubc'),this.getCategory('community'),this.getCategory('timely'),this.getCategory('promo'),this.getCategory('id')).then(function(ad,ubc,community,timely,promo,id){
 		for(var category in this_.categories){
 			this_['cat-promises'].push(this_.createCategoryTemplate(category));
@@ -30,14 +30,14 @@ function Schedule(date){
 	});
 
 
-	
+
 }
 
 
 Schedule.prototype = {
 	init:function(){
 		var this_ = this;
-		
+
 		$.when(this.ready).then(function(response){
  			for(var item in response){
 				this_.showtimes.push(response[item]);
@@ -85,7 +85,7 @@ Schedule.prototype = {
 				this_.displayShowtime(response,0);
 			});
 		}
-		
+
 	},
 	displayShowtime:function(showtime, index){
 		var this_ = this;
@@ -98,15 +98,15 @@ Schedule.prototype = {
 				element.html($('#'+[this_.showtimes[index].ads[j].type]+"-template").html());
 				if(this_.showtimes[index].ads[j].name){
 					element.val(this_.showtimes[index].ads[j].name);
-				} 
+				}
 			}
-		}		
+		}
 	},
 	saveSchedule:function(){
 		if(this.showtimes.length > 0){
 			return $.ajax({
 				type:"POST",
-				url:"api2/public/adschedule2",
+				url:"api2/public/adschedule",
 				async: true,
 				data: {"ads":$('form').serialize()}
 			});
@@ -114,8 +114,8 @@ Schedule.prototype = {
 	},
 	formatDate:function(date){
 		date = new Date(date);
-		return [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('-') + 
-				" " + 
+		return [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('-') +
+				" " +
 				[("0" + date.getHours() ).slice(-2),("0" + date.getMinutes()).slice(-2),("0" + date.getSeconds()).slice(-2)].join(':');
 	},
 	getHTML:function(showtime,index){
@@ -132,11 +132,11 @@ Schedule.prototype = {
 		var this_ = this;
 		var categories = {'ad':"6",'ubc':"12",'community':"11",'timely':"13",'promo':"21","id":"18"};
 		for(var item in categories){
-			promises[item] = 
+			promises[item] =
 			this.getCategory(item,promises);
-		}	
+		}
 		return promises;
-		
+
 	},
 	getCategory:function(category){
 		var this_ = this;
@@ -160,7 +160,7 @@ Schedule.prototype = {
 	},
 	createPSATemplate:function(promises){
 		var this_ = this;
-			for(var item in this.ubc){ this_.psa.push(this.ubc[item]); } 
+			for(var item in this.ubc){ this_.psa.push(this.ubc[item]); }
 			for(var item in this.community){ this_.psa.push(this.community[item]); }
 			for(var item in this.timely){ this_.psa.push(this.timely[item]); }
 			return this_['cat-promises'].push(this_.createCategoryTemplate('psa'));
@@ -186,7 +186,7 @@ Schedule.prototype = {
 			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
 			var element = $('#show_'+index+"_"+num).find('select.name');
 			if(type != 'announcement') element.html($('#'+type+"-template").html());
-			
+
 			if(value != null) element.attr('value',value);
 		}else{
 			$(parent).html("<input class='name wideinput' name='show[show_"+index+"_"+num+"][name]' value='Announce the upcoming show'>");
@@ -214,4 +214,3 @@ Schedule.prototype = {
 
 
 }
-

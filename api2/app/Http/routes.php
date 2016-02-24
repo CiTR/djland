@@ -15,6 +15,7 @@ use App\Ad as Ad;
 use App\Socan as Socan;
 use App\SpecialBroadcasts as SpecialBroadcasts;
 
+use App\Donor as Donor;
 //SAM CLASSES
 use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
@@ -26,7 +27,46 @@ Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
+
+//Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
+
+	//Fundrive Routes
+	Route::group(array('prefix'=>'fundrive'),function(){
+		//Donor Subsection
+		Route::group(array('prefix'=>'donor'),function(){
+			//Create a new Donor
+			Route::put('/',function(){
+				return Donor::create();
+			});
+
+			Route::get('/',function(){
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::all();
+				else return "Nope";
+			});
+
+    	//Donor By ID
+			Route::group(array('prefix'=>'{id}'),function($id = id){
+				//Get a donor
+				Route::get('/',function($id){
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::find($id);
+					else return "Nope";
+				});
+				//Update a donor
+				Route::post('/',function($id){
+					return Response::json(Donor::find($id)->update( (array) Input::get()['donor']));
+				});
+				//Delete a donor
+				Route::delete('/',function($id){
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::delete();
+					else return "Nope";
+				});
+			});
+		});
+	});
 
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
@@ -40,21 +80,29 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach ($full_list as $m) {
 				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
 			}
-			return $members;
+			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $members;
+			else return "Nope";
+
 		});
 
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 
 			Route::get('/',function($id){
-				return Member::find($id);
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
+				else return "Nope";
+
 			});
 			Route::post('/',function($id){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
 			Route::delete('/',function($id){
-				return Member::find($id)->delete() ? "true":"false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
+				else return "Nope";
 			});
 
 			Route::post('/comments',function($id){
@@ -72,15 +120,21 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 			});
 			Route::get('user',function($id){
-				return Member::find($id)->user;
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
+				else return "Nope";
 			});
 			Route::post('user',function($id){
 				$m = Member::find($id);
-				return $m->user->update(Input::get()['user']) ? "true": "false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
+				else return "Nope";
 			});
 			Route::post('permission',function($id){
 				$permission = Member::find($id)->user->permission;
-				return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				else return "Nope";
 			});
 			Route::get('years',function($id){
 				$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
@@ -102,7 +156,10 @@ Route::group(['middleware' => 'auth'], function(){
 				$m = Member::find($id);
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
-				return $user->save() ? "true":"false";
+				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
+				else return "Nope";
+
 			});
 			Route::get('permission',function($member_id = id){
 				$permission_levels = Member::find($member_id)->user->permission;
@@ -147,6 +204,18 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 
 	});
+	//Show Private method
+	Route::get('/show/{id}/owners',function($id=id){
+		$members = Show::find($id)->members;
+		$owners = new stdClass();
+		$owners->owners = [];
+		foreach ($members as $member) {
+			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
+		}
+		$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+		if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($owners);
+		return "Nope";
+	});
 });
 
 // Member Creation Routes
@@ -179,22 +248,25 @@ Route::group(array('prefix'=>'show'),function(){
 		$show = Show::create((array) Input::get()['show']);
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];
-		$showtimes = Input::get()['showitmes'];
+		$showtimes = Input::get()['showtimes'];
 
+		$socials = array();
+		$show_times = array();
 		//Create owners
 		foreach($owners as $owner){
 			Show::find($show->id)->members()->attach($owner['id']);
 		}
 		//Create social entries, this table is really dumb.
-		foreach($social as $social){
-			$social->show_id = $show->id;
-			Social::create($social);
+		foreach($social as $s){
+			$s['show_id'] = $show['id'];
+			$socials[] = Social::create($s);
 		}
 		//Create Showtimes
-		foreach($showtimes as $showtime){
-			$showtime->show_id = $show->id;
-			Showtime::create($showtime);
+		foreach($showtimes as $key=>$showtime){
+			$showtime['show_id'] = $show['id'];
+			$show_times[] = Showtime::create( (array) $showtime);
 		}
+		return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
 	});
 
 
@@ -203,7 +275,7 @@ Route::group(array('prefix'=>'show'),function(){
 	});
 
 	Route::get('/active',function(){
-		return Show::select('id','name')->where('active','=','1')->get();
+		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
 
 	//Searching by Show ID
@@ -217,37 +289,76 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::post('/',function($id){
 			$show = Input::get()['show'];
 			$social = Input::get()['social'];
-			$owners = Input::get()['owners'];
+			$owners = Input::has('owners') ? Input::get()['owners'] : null;
 			$showtimes = Input::get()['showtimes'];
 			$s = Show::find($id);
 			$s->update($show);
 
+			$socials = array();
+			$show_times = array();
 
-
-			//Detach current owners
-			foreach(Show::find($id)->members as $current_owner){
-				$s->members()->detach($current_owner->id);
+			if($owners){
+				//Detach current owners
+				foreach(Show::find($id)->members as $current_owner){
+					$still_exists = false;
+					foreach($owners as $key=>$item){
+						if(isset($item['id']) && $current_owner['id'] == $item['id']){
+							unset($owners[$key]);
+							$still_exists = true;
+						}
+					}
+					if(!$still_exists) $s->members()->detach($current_owner->id);
+				}
+				//Attach new owners
+				foreach($owners as $owner){
+					Show::find($id)->members()->attach($owner['id']);
+				}
 			}
-			//Attach new owners
-			foreach($owners as $owner){
-				Show::find($id)->members()->attach($owner['id']);
-			}
 
-			//Delete all social entries
-			$delete = Social::find($id);
-			if($delete !=null) $delete->delete();
-			//Create new social entries, this table is really dumb.
+
+			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+			$existing_to_delete =  Show::find($id)->social;
+			foreach($existing_to_delete as $key=>$e){
+				$still_exists = false;
+				foreach($social as $item){
+					if(isset($item['id']) && $e['id'] == $item['id']){
+						$still_exists = true;
+					}
+				}
+				if(!$still_exists) Social::find($e['id'])->delete();
+			}
+			//Create or update social entries
 			foreach($social as $item){
-				Social::create($item);
+				if(isset($item['id'])){
+					$s = Social::find($item['id']);
+					unset($item['id']);
+					$socials[] = $s->update($item);
+				}else{
+					$socials[] = Social::create($item);
+				}
 			}
-
-			//Delete all showtime entries
-			$delete = Showtime::find($id);
-			if($delete != null) $delete->delete();
-			//Recreate show times
-			foreach($showtimes as $showtime){
-				Showtime::create($showtime);
+			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+			$existing_to_delete =  Show::find($id)->showtimes;
+			foreach($existing_to_delete as $key=>$e){
+				$still_exists = false;
+				foreach($showtimes as $item){
+					if(isset($item['id']) && $e['id'] == $item['id']){
+						$still_exists = true;
+					}
+				}
+				if(!$still_exists) Showtime::find($e['id'])->delete();
 			}
+			//Create or update social entries
+			foreach($showtimes as $item){
+				if(isset($item['id'])){
+					$s = Showtime::find($item['id']);
+					unset($item['id']);
+					$show_times[] = $s->update($item);
+				}else{
+					$show_times[] = Showtime::create($item);
+				}
+			}
+			return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
 		});
 		Route::get('episodes/{offset}',function($id,$offset = offset){
 			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->limit(50)->offset($offset)->get();
@@ -286,15 +397,7 @@ Route::group(array('prefix'=>'show'),function(){
  			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
 
-		Route::get('owners',function($id){
-			$members = Show::find($id)->members;
-			$owners = new stdClass();
-			$owners->owners = [];
-			foreach ($members as $member) {
-				$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
-			}
-			return Response::json($owners);
-		});
+
 		Route::get('social',function($id){
 			return Show::find($id)->social;
 		});
@@ -365,7 +468,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($shows as $show){
 			if($show_id == 'all' || $show_id == $show['id']){
 				if($from != null && $to != null){
-					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 06:00:00")->where('start_time','<=',$to." 23:59:59")->get();
+					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
 				}else{
 					$ps[] = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->get();
 				}
@@ -598,7 +701,21 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			print_r(array($show->name,$show->id,$show->podcast_slug));
 		}
 	});
-Route::post('/adschedule2',function(){
+
+
+ // Fundrive amount raised total, Externally accessible
+  Route::get('/fundrive/total',function(){
+	 include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
+	$donation_list = Donor::select('donation_amount')->get();
+	$total = 0;
+		  foreach ($donation_list as $donation) {
+	  //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
+			  $total = $total + floatval(str_replace(",","",$donation->donation_amount));
+		  }
+	return $total;
+  });
+
+Route::post('/adschedule',function(){
 	$post = array();
 	parse_str(Input::get('ads'),$post);
 
@@ -630,7 +747,7 @@ Route::get('/adschedule/{date}',function($date = date){
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
         //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $week = (floor( (strtotime($date) - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2) + 1;
+        $week = (floor( (strtotime($date) - intval($day_of_week*$one_day)) /($one_day*7) ) % 2) + 1;
 
 
 		if($formatted_date == date('Y-M-d',strtotime('now'))){
@@ -691,213 +808,8 @@ Route::get('/adschedule/{date}',function($date = date){
 
 
 });
-Route::get('/adschedule',function(){
-	date_default_timezone_set('America/Los_Angeles');
-	$active_shows = Show::select('*')->where('active','=','1')->get();
-	$schedule = array();
-
-	//Get Today
-    $time = strtotime('now');
-    //Get Day of Week (0-6)
-    $day_of_week = date('w',$time);
-    //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-    $current_week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
-
-	//Get Current Time (0-23:0-59:0-59)
-	$current_time = date('H:i:s',strtotime('now'));
-
-	//Making sure if today is sunday, it does not get last sunday instead of today.
-	if($day_of_week == 0){
-		$week_0_start = strtotime('today');
-		$week_1_start = strtotime('+1 week',$week_0_start);
-		$week_2_start = strtotime('+1 week',$week_1_start);
-	}else{
-		$week_0_start = strtotime('last sunday 00:00:00');
-		$week_1_start = strtotime('+1 week',$week_0_start);
-		$week_2_start = strtotime('+1 week',$week_1_start);
-	}
-
-	//Constants (second conversions)
-	$one_day = 24*60*60;
-	$one_hour = 60*60;
-	$one_minute = 60;
-	$schedule = array();
-	//Getting this week.
-	foreach($active_shows as $show){
-		//Get next showtime catching error for show having no showtime
-		try{
-			$times = $show->showtimes;
-			foreach($times as $show_time){
-				//Calculating how many seconds from start of week the showtime occurs.
-				$show_time_day_offset = ($show_time['start_day']) * $one_day;
-				$show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
-				$show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;
-				$show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
-
-				if($show_time['start_day'] != $show_time['end_day']){
-					$show_duration = (23 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour'])*$one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute'])*$one_minute;
-				}else{
-					$show_end_time_unix_offset = $show_time['end_day'] * $one_day + date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute;
-					$show_duration = abs($show_end_time_unix_offset - $show_time_unix_offset);
-				}
-
-				//Unix timestamp of possible show start times
-				$week_0_show_unix = $week_0_start + $show_time_unix_offset;
-				$week_1_show_unix = $week_1_start + $show_time_unix_offset;
-				$week_2_show_unix = $week_2_start + $show_time_unix_offset;
-
-				//DST Offset
-	            if( date('I',strtotime($week_0_show_unix))=='0' ){
-	                //$week_0_show_unix += 3600;
-	            }
-	            if( date('I',strtotime($week_1_show_unix))=='0' ){
-	                //$week_1_show_unix += 3600;
-	            }
-	            if( (date('I',strtotime($week_2_show_unix))=='0') ){
-	               // $week_2_show_unix += 3600;
-	            }
-
-				//Get Ads
-				$week_0_ads = array();
-				$week_0_ads = Ad::where('time_block','=',$week_0_show_unix)->get();
-				$week_1_ads = array();
-				$week_1_ads = Ad::where('time_block','=',$week_1_show_unix)->get();
-				$week_2_ads = array();
-				$week_2_ads = Ad::where('time_block','=',$week_2_show_unix)->get();
-
-				//Fill in ads if none exist. Doing it serverside, as client side was slow slow slowwww.
-				if(count($week_0_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_0_ads = Ad::generateAds($week_0_show_unix,$show_duration);
-				}
-				if(count($week_1_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_1_ads = Ad::generateAds($week_1_show_unix,$show_duration);
-				}
-				if(count($week_2_ads) <= 2){
-					//Insert a new entry every 20 minutes
-					$week_2_ads = Ad::generateAds($week_2_show_unix,$show_duration);
-				}
 
 
-				//Generate Arrays
-				$week_0 = array(
-					$week_0_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_0_show_unix,
-						"end_unix"	=>$week_0_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_0_show_unix),
-						"date"		=>date('l F jS g:i a',$week_0_show_unix),
-						"ads"		=>$week_0_ads
-					)
-				);
-				$week_1 = array(
-					$week_1_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_1_show_unix,
-						"end_unix"	=>$week_1_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_1_show_unix),
-						"date"		=>date('l F jS g:i a',$week_1_show_unix),
-						"ads"		=>$week_0_ads
-					)
-				);
-				$week_2 = array(
-					$week_2_show_unix,
-					array(
-						"id"		=>$show->id,
-						"name"		=>$show->name,
-						"start_time"=>$show_time['start_time'],
-						"end_time"	=>$show_time['end_time'],
-						"start_unix"=>$week_2_show_unix,
-						"end_unix"	=>$week_2_show_unix + $show_duration,
-						"duration"	=>$show_duration,
-						"start"		=>date('g:i a',$week_0_show_unix),
-						"date"		=>date('l F jS g:i a',$week_2_show_unix),
-						"ads"		=>$week_2_ads
-					)
-				);
-
-				//Check if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
-				if( ($show_time['start_day'] == $day_of_week && $show_time['start_time'] >= $current_time) || $show_time['start_day'] > $day_of_week){
-					//Hasn't happened yet, look at weeks 0 and 1
-					if($show_time['alternating'] == '0'){
-						//Occurs Weekly, Add to week 0,1
-						$schedule[] = $week_0[1];
-						$schedule[] = $week_1[1];
-					}else if($show_time['alternating'] == $current_week){
-						//Occurs this week, add to remainder of week 0
-						$schedule[] = $week_0[1];
-					}else{
-						//Doesn't occur this week, add to week 1
-						$schedule[] = $week_1[1];
-					}
-
-				}else{
-					//Already occured this week, look at weeks 1 and 2
-					if($show_time['alternating'] == '0'){
-						//Occurs weekly, add to week 1,2
-						$schedule[] = $week_1[1];
-						$schedule[] = $week_2[1];
-					}else if($show_time['alternating'] == $current_week){
-						//Occurs this week, add to week 2
-						$schedule[] = $week_2[1];
-					}else{
-						//Doesn't occur this week, add to week 1
-						$schedule[] = $week_1[1];
-					}
-				}
-			}
-
-		}catch(Exception $e){
-			//No Show time available or exception thrown.
-			return "Exception Thrown: ".$e->getMessage()."<br/><pre>".$e->getTraceAsString();
-		}
-	}
-	return Response::json($schedule);
-
-});
-
-Route::post('/adschedule',function(){
-	$showtimes = Input::get()['showtimes'];
-	foreach($showtimes as $showtime){
-		$ads = $showtime['ads'];
-		$a = array();
-		$index = 1;
-		$to_delete = Ad::where('time_block','=',$showtime['start_unix'])->get();
-		foreach($ads as $ad){
-			if(isset($ad['id'])){
-				$item = Ad::find($ad['id']);
-				$ad['num'] = $index++;
-				$item->update($ad);
-			}else{
-				$ad['num'] = $index++;
-				$item = Ad::create($ad);
-			}
-			$a[] = $item;
-		}
-		foreach($to_delete as $delete){
-			$found = false;
-			foreach($a as $item){
-				if($delete['id'] == $item['id']) $found = true;
-			}
-			if($found == false) Ad::find($delete['id'])->delete();
- 		}
-		$s[$showtime['start_unix']] = $a;
-	}
-	return $s;
-
-
-});
 
 Route::get('/promotions/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();

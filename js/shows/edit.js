@@ -1,7 +1,7 @@
 
 (function(){
     var app = angular.module('djland.editShow',['djland.api','djland.utils']);
-    
+
     app.directive('showtime',function(){
         return{
             restrict:'A',
@@ -42,10 +42,10 @@
                 //Get First show in member_shows
                 for(var show in this_.member_shows){
                     this_.active_show = this_.member_shows[show];
-                    
-                    break;   
+
+                    break;
                 }
-                
+
                 //Need to make the id a string
                 this_.show_value = ""+this_.active_show.id;
                 this_.loadShow();
@@ -54,7 +54,7 @@
             });
             //Calculating "current week" this math is really old. Returns 1 or 2
             //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
-            
+
             //New Method for getting current week
             var d = new Date();
             d.setHours(0,0,0);
@@ -80,7 +80,7 @@
         }
         this.newShow = function(){
             this.show_value = 0;
-            this.info = {'id':0};
+            this.info = {'id':0,'lang_default':'English','crtc_default':'20','pl_req':'60','cc_req':'35','indy_req':'25','fem_req':'35','create_name':username};
             this.socials = new Array();
             this.show_times = new Array();
             this.show_owners = new Array();
@@ -120,7 +120,7 @@
                 if(response.data != null){
                     this_.show_owners = response.data.owners;
                 }else{
-                    this_.show_owners = {};
+                    this_.show_owners = Array();
                 }
             },function(error){
 
@@ -136,7 +136,7 @@
                     this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].end_time.split(':')[0],2);
                     this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].end_time.split(':')[1],2);
                 }
-               
+
             },function(error){
                 this_.loading = false;
             });
@@ -148,7 +148,7 @@
                 this_.member_list = response.data;
             });
         }
-        
+
         this.addFirstSocial = function(){
             //Add template row for social
             this.socials.push(angular.copy(this.social_template));
@@ -158,18 +158,24 @@
 
         }
         this.addSocial = function(id){
-
             this.socials.splice(id+1,0,angular.copy(this.social_template));
         }
         this.addOwner = function(){
             //No need to check for duplicates, as there is only one id per member
             var id = $('#member_access_select').val();
              /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
-            Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */ 
-            this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
+            Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */
+			var exists = false;
+            for(var owner_index in this.show_owners){
+                if(this.show_owners[owner_index].id == id) exists = true;
+            }
+			if(!exists){
+				this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
+			}
         }
         this.addShowTime = function($index){
             this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
+			console.log(this.owners);
         }
         this.addPrimaryGenre = function(){
             var genre = this.genres[this.primary_genre_select];
@@ -222,39 +228,56 @@
         this.updateSecondaryGenres = function(){
             this.info.secondary_genre_tags = this.secondary_genres.join(',');
         }
-        
+
         this.save = function(){
-            var this_ = this;         
+            var this_ = this;
             this.info.edit_name = this.username;
             //this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
             console.log(this);
             this.message = 'saving...';
-            
-            if(this.info.id == 0){
-                call.saveNewShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then({
 
-                });
+            if(this.info.id == 0){
+                call.saveNewShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
+					function(response){
+					//                    console.log(response.data.message);
+						var show = response.data['show'];
+						alert("Successfully Create New Show: "+this_.info.name);
+						this_.info.id = show['id'];
+						for(var sh in this_.show_times){
+							this_.show_times[sh].show_id = show['id'];
+						}
+						for(var s in this_.social){
+							this_.socials[s].show_id = show['id'];
+						}
+						console.log(response);
+					},
+					function(error){
+						alert("Failed to save");
+						console.error(response);
+
+					}
+                );
             }else{
                 call.saveShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
                 function(response){
 //                    console.log(response.data.message);
                     alert("Successfully Saved");
-                    console.log(response.data);
+                    console.log(response);
                 },
                 function(error){
                     alert("Failed to save");
-                    console.error(response.data);
-                    
+                    console.error(response);
+
                 });
             }
-            
+
         }
         this.log = function(element){
             console.log(element.files);
             console.log('here');
         }
         $scope.$on('image_upload', function() {
-            $scope.$apply(function() { 
+            $scope.$apply(function() {
                  this_.info.show_img = shared.getShowImg();
             });
         });
@@ -341,7 +364,7 @@
                 xhr.addEventListener("abort", uploadCanceled, false)
                 xhr.open("POST", "/form-handlers/shows/image_upload.php");
                 $scope.progressVisible = true
-                xhr.send(fd); 
+                xhr.send(fd);
             }
         }
 
@@ -397,7 +420,6 @@
             }
         service.setShowName = function(name){
             this.show_name = name;
-            console.log(name);
             $rootScope.$broadcast('show_name');
         }
         service.getShowName = function(){

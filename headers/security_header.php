@@ -75,7 +75,7 @@ function permission_level(){
 function is_paid(){
     global $pdo_db;
     //Session contains member id.
-    $query = "SELECT paid FROM membership_years WHERE member_id=:member_id AND membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND paid='1' ORDER BY membership_year DESC";
+    $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{

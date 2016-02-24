@@ -195,7 +195,7 @@ class Show extends Model
         if($testing_environment) $num = 200;
         $i = 0;
         $count = 0;
-        while( $count < $num-1 && $count < 300 ) {
+        while( $count < $num-1  && $i < $num - 1 && $count < 300 ) {
            $episode = $episodes[$key[$i]];
 
 

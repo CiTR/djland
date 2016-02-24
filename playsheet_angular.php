@@ -127,7 +127,7 @@
 		    <div id='container'>
 				<h3 class='double-padded-top'>Music</h3>
 				<table>
-					<tr class='music_row_heading border'>
+					<tr class='music_row_heading border' ng-class="{socan: playsheet.socan }">
 						<th class='side-padded'>#</th>
 						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.socan }"></input></th>
 						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.socan }"></input></th>
@@ -219,7 +219,7 @@
 			</div>
 			<!-- Darkens Background during submission popup -->
 			<div class="dark" ng-show="playsheet.tracklist_overlay"></div>
-			
+
 		</div>
 		<div class="crtc_totals">
 				<table class='col1'>

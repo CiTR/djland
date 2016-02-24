@@ -5,12 +5,12 @@
  * Date: 5/6/2015
  * Time: 4:30 PM
  */
-    include_once("../../headers/session_header.php");
+include_once("../../headers/session_header.php");
 require_once("../../headers/security_header.php");
 
+if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
 //POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access
 //GET Gets the current mandatory membership year
-if(isset($_POST) && isset($_POST['year'])){
     $update_query = "UPDATE year_rollover SET membership_year=:year WHERE id='1'";
     $statement = $pdo_db->prepare($update_query);
     $statement->bindValue(':year',$_POST['year']);
@@ -22,8 +22,7 @@ if(isset($_POST) && isset($_POST['year'])){
         http_response_code(404);
         echo json_encode($pdoe->getMessage());
     }
-
-}else if(isset($_GET)) {
+}else if(isset($_GET) && permission_level() >= $djland_permission_levels['member']['level']) {
     $select_query = "SELECT membership_year FROM year_rollover WHERE id='1'";
     $statement = $pdo_db->prepare($select_query);
     try{
@@ -32,8 +31,6 @@ if(isset($_POST) && isset($_POST['year'])){
         $result->year = $statement->fetchColumn(0);
         http_response_code(200);
         echo json_encode($result,JSON_UNESCAPED_SLASHES);
-
-
     }catch(PDOException $pdoe){
         http_response_code(404);
         echo json_encode($pdoe->getMessage());

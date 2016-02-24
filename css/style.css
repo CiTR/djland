@@ -236,8 +236,7 @@ input, select, textarea, option{
 .border{
   border-style:solid;
   border-width:1px;
-  border-colo
-  r: white;
+  border-color: white;
 }
 .pad-top{
   padding-top:2px;
@@ -261,6 +260,12 @@ input, select, textarea, option{
 .smalltext{
 	top:3px;
 	font-size:70%;
+}
+.bigish_text{
+	font-size:92%;
+}
+.big_text{
+	font-size:110%;
 }
 .wideinput{
   width:300px;
@@ -297,9 +302,7 @@ input, select, textarea, option{
   height:auto;
   overflow:visible;
 }
-div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
-  max-width:140px;
-}
+
 .col1{
   width:100%;
 }
@@ -638,6 +641,34 @@ div.col3 input,div.col4 input,div.col5 input,div.col6 input,div.col7 input{
     padding:0;
     margin:0;
 }
+
+
+/*
+ *	Donor Form CSS
+ */
+ .donor_form{
+	 background-color:#707070;
+ }
+
+.donor_form *{
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color:white;
+}
+.heavy_text{
+	font-size:1.0em;
+	line-height:1.2
+}
+
+.donor_form_wrapper > div > select,.donor_form_wrapper > div > div > textarea  {
+	background-color: #BBB;
+	color:black;
+}
+#donor_submit{
+	font-size:2.0em;
+	color: black;
+}
+
+
 /*
  *	Open Playsheet CSS
  */
@@ -658,9 +689,8 @@ table.open_playsheet > tbody > tr > td.host{
   max-width:400px;
 }
 
-.playitem > td >input{
-  width:95%;
-}
+
+
 .promotions > td {
   font-size:.8em;
 }
@@ -679,10 +709,17 @@ table.open_playsheet > tbody > tr > td.host{
 .playitem{
   width:100%;
 }
-tr.playitem > th > input.socan,tr.playitem > td > input.socan,tr.playitem > td > button.socan{
-  max-width:95px;
-  font-size:0.75em;
+tr.playitem.socan > td > input,tr.playitem.socan > td > button,tr.music_row_heading.socan > th > input{
+	max-width:105px;
+	font-size:0.75em;
 }
+tr.playitems.socan > td > input.lang{
+	width:60px;
+}
+
+
+
+
 .socantiming{
   max-width:140px;
 }
@@ -1216,6 +1253,14 @@ table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.n
   max-width:220px;
 }
 
+/*----------------------*/
+/*    Fundrive          */
+/*----------------------*/
+.open_fundrive{
+    width:100%;
+}
+
+
 /*------------------------*/
 /* Special Broadcast Page */
 /*------------------------*/
@@ -1451,7 +1496,7 @@ button#submit_user.red{
 }
 
 .containerrow{
-    text-align:right;
+  text-align:right;
 	display:inline-block;
 	width:100%;
 	overflow:visible;
@@ -1751,7 +1796,6 @@ div#loadtimes{
 }
 
 .loaderButton, .samsong{
-
 	position: relative;
 	float:left;
 	margin:1px 0 0 0;
@@ -1764,8 +1808,6 @@ div#loadtimes{
 }
 
 .loaderButton{
-
-
 	z-index:15;
 	width:30px;
 	background-color: #8F8;

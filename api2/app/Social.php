@@ -7,8 +7,8 @@ class Social extends Model
     //
     const CREATED_AT = null;
     const UPDATED_AT = null;
-    protected $primaryKey = 'show_id';
-	protected $fillable = array('show_id','social_name','social_url');
+    protected $primaryKey = 'id';
+	protected $fillable = array('id','show_id','social_name','social_url');
     public function shows(){
         return $this->belongsTo('App\Show','id','show_id');
     }

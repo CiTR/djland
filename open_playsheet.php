@@ -40,7 +40,7 @@
 								<td ng-if='open_playsheet.is_admin' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='edit_date'>{{item.edit_date}}</td>
 								<td ng-if='open_playsheet.is_admin'><button ng-click='open_playsheet.delete(item.id)' type='button' class='delete'>Delete</button></td>
 						</tr>
-					<tbody>
+					</tbody>
 				</table>
 			</div>
 			<div style='clear:both;'></div>
