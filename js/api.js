@@ -80,7 +80,6 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},
-
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
 		},

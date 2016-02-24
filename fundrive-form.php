@@ -38,7 +38,19 @@ $custom_province_order = array(
 	'SASK',
 	'YUK');
 
+$custom_country_order = array( "Canada", "United States", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
+"Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros",
+"Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland",
+"France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong",
+"Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya",
+"Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar",
+"Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal",
+"Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South
+Sandwich Islands", "Spain", "Sri Lanka",
+"St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates",
+"United Kingdom", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Yemen", "Zambia", "Zimbabwe");
 ?>
+
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
@@ -79,7 +91,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
     		<li>
 				<input id='amount_<?php echo $amount; ?>' value='<?php echo $amount; ?>' name='amount' type='radio' class='amount' <?php if($amount == 30) echo 'checked'; ?>>
 				<label for='amount_<?php echo $amount; ?>'>
-					<?php echo "$".$amount." - ".$text; ?>
+					<?php echo "$".$amount; ?>
 				</label>
 			</li>
 		<?php endforeach; ?>
@@ -96,6 +108,19 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	</div>
 
 	<div class='col1 double-padded-top'>
+		<?php foreach($fundrive_amount as $amount=>$text): ?>
+			<li>
+				<?php echo "$".$amount." - ".$text; ?>
+			</li>
+		<?php endforeach; ?>
+	</div>
+
+		<div class='col1 double-padded-top'>
+		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
+			<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
+	</div>
+
+	<div class='col1 double-padded-top double-padded-bottom'>
 	    <div class='col1'>Was your gift inspiried by a specific show? If yes:</div>
 	    <select id='show_inspired' name='show_inspired' class='big_text'>
 	    	<option value=""/>
@@ -104,13 +129,6 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	    <?php endforeach; ?>
 	    </select>
 	</div>
-
-
-	<div class='col1 double-padded-top double-padded-bottom'>
-		<div class='col1'> By calling in on [show name], and donating x dollars, you also win _____ (please indicate in the space below what the prize is): </div>
-		<textarea id='prize' class='largeinput big_text' name='prize' placeholder='Prize'></textarea>
-	</div>
-
 
 	<hr/>
 	<h2>Contact Information</h2>
@@ -153,6 +171,18 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	    	<input id='postalcode' class='required wideinput big_text' placeholder='Postal Code' maxlength='6'></input>
 		</div>
     </div>
+		<div id='row5' class='containerrow'>
+		<div class='col2'>
+				<div class='col5'>Country: </div>
+				<select id='country' class='bigish_text'>
+					<?php
+						foreach($custom_country_order as $key=>$country){
+							echo "<option value='{$country}'>{$country}</option>";
+						}
+					?>
+				</select>
+		</div>
+		</div>
     <div id='row4' class='containerrow'>
     	<div class='col2'>
 			<div class='col5'>Phone:</div>
@@ -163,7 +193,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
     		<input id='email' class='required wideinput big_text'  name='email' placeholder='Email Address' maxlength='40'></input><div id='email_check' class='text-center invisible'>
 		</div>
     </div>
-</div>
+	</div>
 
 	<hr>
 	<div class='col1 double-padded-top'>
@@ -186,7 +216,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	</div>
 	<div class='col1 double-padded-top'>
 		<div class='col1'>Would you like to receive updates (e.g. newsletters, invitations, updates, and fundraising) from:</div>
-		<div class='col1'><input type='checkbox' id='citr_update_yes'><label for='citr_update_yes'>CiTR</label></div>
+		<div class='col1'><input type='checkbox' id='citr_update_yes'><label for='citr_update_yes'>CiTR + Discorder</label></div>
 		<div class='col1'><input type='checkbox' id='alumni_update_yes'><label for='alumni_update_yes'>UBC Development and Alumni Engagement?</label></div>
 		You can withdraw your consent at any time.
 	</div>
