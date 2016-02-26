@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 			Route::get('/',function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::all();
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
 				else return "Nope";
 			});
 
@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function(){
 				//Get a donor
 				Route::get('/',function($id){
 					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::find($id);
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
 					else return "Nope";
 				});
 				//Update a donor
@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth'], function(){
 				//Delete a donor
 				Route::delete('/',function($id){
 					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 ) return Donor::delete();
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::delete();
 					else return "Nope";
 				});
 			});
