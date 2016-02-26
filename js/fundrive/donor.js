@@ -195,8 +195,8 @@ $(document).ready ( function() {
 		donor.payment_method = $('input[name="payment_method"]:checked').val();
 		donor.mail_yes = $('input[name="mailing"]:checked').val();
 		donor.postage_paid = get("postage_paid");
-		donor.recv_updates_citr = get("alumni_update_yes");
-		donor.recv_updates_alumni = get("citr_update_yes");
+		donor.recv_updates_alumni = get("alumni_update_yes");
+		donor.recv_updates_citr = get("citr_update_yes");
 		donor.donor_recognition_name = get(null,null,"recognize");
 		switch($('input[name="recognize"]:checked').val()){
 			case 'name':
