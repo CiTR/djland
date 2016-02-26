@@ -33,16 +33,14 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
-				console.log(response);
+				//console.log(response);
 
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
 						var donation_amount = response[entry_index];
 						if( donation_amount == ("30" || "60" || "101.9" || "175" || "250" || "500" || "1,000") ){
 							$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
-							console.log("nah");
 						}else{
-								console.log("eyy");
 								$('.amount').prop('checked', false);
 								$('#amount_alt').prop('checked', true);
 								$('#amount_other').removeClass('invisible');
@@ -82,11 +80,17 @@ $(document).ready ( function() {
 					}else if( entry_index == "tax_receipt"){
 						$("#tax_receipt").prop("checked",true);
 					}else if(entry_index == "recv_updates_citr"){
-						$("#citr_update_yes").prop("checked",true);
+						var recv_updates_citr = response[entry_index];
+						if(recv_updates_citr == "1") $("#citr_update_yes").prop("checked",true);
+						else $("#citr_update_yes").prop("checked",false);
 					}else if(entry_index == "LP_yes"){
-						$("#LP_yes").prop("checked",true);
+						var LP_yes = response[entry_index];
+						if(LP_yes == "1") $("#citr_update_yes").prop("checked",true);
+						else $("#citr_update_yes").prop("checked",false);
 					}else if(entry_index == "recv_updates_alumni"){
-						$("#alumni_update_yes").prop("checked",true);
+						var recv_updates_alumni = response[entry_index];
+						if(recv_updates_alumni == "1") $("#citr_update_yes").prop("checked",true);
+						else $("#citr_update_yes").prop("checked",false);
 					}else{
 						set(response[entry_index],entry_index);
 					}
