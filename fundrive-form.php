@@ -11,7 +11,7 @@ $fundrive_amount = array(
 '175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
 '250'=>'Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover',
 '500'=>'all the things + host a show on citr!',
-'1,000'=>'all the things + recognition on our donor wall in the new SUB'
+'1,000'=>'all the things + recognition on our donor wall in the new SUB',
 );
 $payment_options = array(
 	'Credit Card'=>'credit_card',
@@ -97,7 +97,7 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 			</li>
 		<?php endforeach; ?>
 			<li><input id='amount_alt' value='other' type='radio' name='amount' class='amount'><label for='amount_alt'> Other</label></li>
-			<li><input id='amount_other' class='invisible big_text' placeholder='enter $ amount' onKeyPress="return numbersonly(this, event)"></li>
+			<li><input id='amount_other' class='invisible big_text' placeholder='enter $ amount' onKeyPress="return numbersonlyanddecimal(this, event)"></li>
 		</ul>
 
 	</div>
@@ -225,7 +225,6 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	</div>
 	<div class='col1 double-padded-top double-padded-bottom'>
 		<div class='col1'> CiTR will be recognizing donors on our website, in our annual report and in Discorder Magazine. How would you like your name to be listed? </div>
-
 		<input id='recognize_0' type='radio' name='recognize' class='recognize' value='name' checked><label for='recognize_0'>Use my full name</label>
 		<input id='recognize_1' type='radio' name='recognize' class='recognize' value='pseudonym'><label for='recognize_1'>Use my pseudonym</label>
 		<input id='recognize_2' type='radio' name='recognize' class='recognize' value='anon'><label for='recognize_2'>Anonymous</label>
@@ -238,6 +237,9 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 			</div>
 			<div class='double-padded-top'>
 				This year our Fundrive Finale is on Friday, March 4 at the Hindenburg. The event is also a release party for the LP we're putting out with Mint Records. We hope to see you there! (more info at citr.ca)
+			</div>
+			<div class='double-padded-top'>
+				Would you like to buy the LP? (check if yes) <input type='checkbox' id='LP_yes'>
 			</div>
 			<div class='double-padded-top'>
 				If you chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!

@@ -33,11 +33,22 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
-				//console.log(response);
+				console.log(response);
 
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
-						$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
+						var donation_amount = response[entry_index];
+						if( donation_amount == ("30" || "60" || "101.9" || "175" || "250" || "500" || "1,000") ){
+							$('.amount[value="'+response[entry_index]+'"]').prop('checked',true);
+							console.log("nah");
+						}else{
+								console.log("eyy");
+								$('.amount').prop('checked', false);
+								$('#amount_alt').prop('checked', true);
+								$('#amount_other').removeClass('invisible');
+								document.getElementById('amount_other').value = donation_amount;
+
+						}
 					}else if( entry_index == 'payment_method'){
 						$('.payment_method[value="'+response[entry_index]+'"]').prop('checked',true);
 						if(response[entry_index]=='cheque'){
@@ -72,6 +83,8 @@ $(document).ready ( function() {
 						$("#tax_receipt").prop("checked",true);
 					}else if(entry_index == "recv_updates_citr"){
 						$("#citr_update_yes").prop("checked",true);
+					}else if(entry_index == "LP_yes"){
+						$("#LP_yes").prop("checked",true);
 					}else if(entry_index == "recv_updates_alumni"){
 						$("#alumni_update_yes").prop("checked",true);
 					}else{
@@ -175,6 +188,7 @@ $(document).ready ( function() {
 		donor.notes = get("notes");
 		donor.paid = get("paid_status");
 		donor.prize_picked_up = get("prize_picked_up");
+		donor.LP_yes = get("LP_yes");
 	}
 	$('#donor_submit').click(function(){
 		save();
@@ -278,6 +292,36 @@ function numbersonly(myfield, e, dec){
 		   }
 		else  return false;
 	}
+
+	function numbersonlyanddecimal(myfield, e, dec){
+			var key;
+			var keychar;
+
+			if (window.event)
+			   key = window.event.keyCode;
+			else if (e)
+			   key = e.which;
+			else
+			   return true;
+			keychar = String.fromCharCode(key);
+
+			// control keys
+			if ((key==null) || (key==0) || (key==8) ||
+				(key==9) || (key==13) || (key==27) )
+			   return true;
+
+			// numbers
+			else if ((("0123456789.").indexOf(keychar) > -1))
+			   return true;
+
+			// decimal point jump
+			else if (dec && (keychar == ".")) {
+			   myfield.form.elements[dec].focus();
+			   return false;
+			   }
+			else  return false;
+		}
+
 
 function checkBlocking(){
 		var allOkay = true;
