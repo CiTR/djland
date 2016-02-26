@@ -73,7 +73,7 @@ $(document).ready ( function() {
 						}
 					}else if( entry_index == "paid"){
 						$("#paid_status").prop("checked",true);
-					}else if( entry_index == prize_picked_up){
+					}else if( entry_index == "prize_picked_up"){
 						$("#prize_picked_up").prop("checked",true);
 					}else if( entry_index == "swag"){
 						$("#swag").prop("checked",true);
