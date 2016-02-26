@@ -96,17 +96,25 @@ $(document).ready ( function() {
 							$("#tax_receipt").prop("checked", true);
 						}
 					}else if(entry_index == "recv_updates_citr"){
-						var recv_updates_citr = response[entry_index];
-						if(recv_updates_citr == "1") $("#citr_update_yes").prop("checked",false);
-						else $("#citr_update_yes").prop("checked",true);
+						if(response[entry_index] == "0") {
+							$("#citr_update_yes").prop("checked",false);
+						}else {
+							$("#citr_update_yes").prop("checked",true);
+						}
 					}else if(entry_index == "LP_yes"){
-						var LP_yes = response[entry_index];
-						if(LP_yes == "1") $("#citr_update_yes").prop("checked",false);
-						else $("#citr_update_yes").prop("checked",true);
+						if(response[entry_index] == "0"){
+							$("#citr_update_yes").prop("checked",false);
+						}
+						else {
+							$("#citr_update_yes").prop("checked",true);
+						}
 					}else if(entry_index == "recv_updates_alumni"){
-						var recv_updates_alumni = response[entry_index];
-						if(recv_updates_alumni == "1") $("#citr_update_yes").prop("checked",false);
-						else $("#citr_update_yes").prop("checked",true);
+						if(response[entry_index] == "0") {
+							$("#recv_updates_alumni").prop("checked",false);
+						}
+						else{
+							$("#recv_updates_alumni").prop("checked",true);
+						}
 					}else{
 						set(response[entry_index],entry_index);
 					}
