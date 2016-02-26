@@ -300,14 +300,7 @@ Route::group(array('prefix'=>'show'),function(){
 			if($owners){
 				//Detach current owners
 				foreach(Show::find($id)->members as $current_owner){
-					$still_exists = false;
-					foreach($owners as $key=>$item){
-						if(isset($item['id']) && $current_owner['id'] == $item['id']){
-							unset($owners[$key]);
-							$still_exists = true;
-						}
-					}
-					if(!$still_exists) $s->members()->detach($current_owner->id);
+					$s->members()->detach($current_owner->id);
 				}
 				//Attach new owners
 				foreach($owners as $owner){
