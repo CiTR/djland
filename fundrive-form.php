@@ -239,8 +239,10 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 				This year our Fundrive Finale is on Friday, March 4 at the Hindenburg. The event is also a release party for the LP we're putting out with Mint Records. We hope to see you there! (more info at citr.ca)
 			</div>
 			<div class='double-padded-top'>
-				Would you like to buy the LP? (check if yes) <input type='checkbox' id='LP_yes'>
+				Would you like to buy the Pop Alliance Compilation LP for $15? <input type='checkbox' class='LP_yes' id='LP_yes'>
+				<div id="LP_Qty_Div" class="invisible">How many? </div><input id='LP_amount' class='big_text invisible' placeholder='Enter Quantity' onKeyPress="return numbersonly(this, event)">
 			</div>
+
 			<div class='double-padded-top'>
 				If you chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
 			</div>

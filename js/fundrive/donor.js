@@ -107,6 +107,9 @@ $(document).ready ( function() {
 						}
 						else {
 							$("#LP_yes").prop("checked",true);
+							$('#LP_amount').removeClass('invisible');
+							$('#LP_Qty_Div').removeClass('invisible');
+							document.getElementById('LP_amount').value = response.LP_amount;
 						}
 					}else if(entry_index == "recv_updates_alumni"){
 						if(response[entry_index] == "0") {
@@ -217,6 +220,7 @@ $(document).ready ( function() {
 		donor.paid = get("paid_status");
 		donor.prize_picked_up = get("prize_picked_up");
 		donor.LP_yes = get("LP_yes");
+		donor.LP_amount= get("LP_amount")
 	}
 	$('#donor_submit').click(function(){
 		save();
@@ -255,7 +259,15 @@ $(document).ready ( function() {
 			$('#pseudonym').addClass('invisible');
 		}
 	});
-
+	$('.LP_yes').change(function(){
+		if($(this).is(':checked')){
+			$('#LP_Qty_Div').removeClass('invisible');
+			$('#LP_amount').removeClass('invisible');
+		}else{
+			$('#LP_Qty_Div').addClass('invisible');
+			$('#LP_amount').addClass('invisible');
+		}
+	});
 	$('#email').on('keyup',function(){
 		checkEmail();
 	});
