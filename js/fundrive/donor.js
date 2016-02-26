@@ -72,25 +72,41 @@ $(document).ready ( function() {
 							set(donor_recognition_name,"pseudonym");
 						}
 					}else if( entry_index == "paid"){
-						$("#paid_status").prop("checked",true);
+						if( response[entry_index] == "0") {
+							$("#paid_status").prop("checked",false);
+						}else {
+							$("#paid_status").prop("checked", true);
+						}
 					}else if( entry_index == "prize_picked_up"){
-						$("#prize_picked_up").prop("checked",true);
+						if( response[entry_index] == "0") {
+							$("#prize_picked_up").prop("checked",false);
+						}else {
+							$("#prize_picked_up").prop("checked", true);
+						}
 					}else if( entry_index == "swag"){
-						$("#swag").prop("checked",true);
+						if( response[entry_index] == "0") {
+							$("#swag").prop("checked",false);
+						}else {
+							$("#swag").prop("checked", true);
+						}
 					}else if( entry_index == "tax_receipt"){
-						$("#tax_receipt").prop("checked",true);
+						if( response[entry_index] == "0") {
+							$("#tax_receipt").prop("checked",false);
+						}else {
+							$("#tax_receipt").prop("checked", true);
+						}
 					}else if(entry_index == "recv_updates_citr"){
 						var recv_updates_citr = response[entry_index];
-						if(recv_updates_citr == "1") $("#citr_update_yes").prop("checked",true);
-						else $("#citr_update_yes").prop("checked",false);
+						if(recv_updates_citr == "1") $("#citr_update_yes").prop("checked",false);
+						else $("#citr_update_yes").prop("checked",true);
 					}else if(entry_index == "LP_yes"){
 						var LP_yes = response[entry_index];
-						if(LP_yes == "1") $("#citr_update_yes").prop("checked",true);
-						else $("#citr_update_yes").prop("checked",false);
+						if(LP_yes == "1") $("#citr_update_yes").prop("checked",false);
+						else $("#citr_update_yes").prop("checked",true);
 					}else if(entry_index == "recv_updates_alumni"){
 						var recv_updates_alumni = response[entry_index];
-						if(recv_updates_alumni == "1") $("#citr_update_yes").prop("checked",true);
-						else $("#citr_update_yes").prop("checked",false);
+						if(recv_updates_alumni == "1") $("#citr_update_yes").prop("checked",false);
+						else $("#citr_update_yes").prop("checked",true);
 					}else{
 						set(response[entry_index],entry_index);
 					}
