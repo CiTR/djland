@@ -103,17 +103,17 @@ $(document).ready ( function() {
 						}
 					}else if(entry_index == "LP_yes"){
 						if(response[entry_index] == "0"){
-							$("#citr_update_yes").prop("checked",false);
+							$("#LP_yes").prop("checked",false);
 						}
 						else {
-							$("#citr_update_yes").prop("checked",true);
+							$("#LP_yes").prop("checked",true);
 						}
 					}else if(entry_index == "recv_updates_alumni"){
 						if(response[entry_index] == "0") {
-							$("#recv_updates_alumni").prop("checked",false);
+							$("#alumni_update_yes").prop("checked",false);
 						}
 						else{
-							$("#recv_updates_alumni").prop("checked",true);
+							$("#alumni_update_yes").prop("checked",true);
 						}
 					}else{
 						set(response[entry_index],entry_index);
