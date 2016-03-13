@@ -787,7 +787,7 @@ Route::get('/adschedule/{date}',function($date = date){
 			$show_time->generated = false;
 			if(!$ads->first()){
 				$show_time->generated = true;
-				$ads = Ad::generateAds($show_time->start_unix,$show_time->duration);
+				$ads = Ad::generateAds($show_time->start_unix,$show_time->duration,$show_time->id);
 			}
 			$show_time->ads = $ads;
 			$show_time->date = date('l F jS g:i a',$show_time->start_unix);
@@ -804,17 +804,11 @@ Route::get('/adschedule/{date}',function($date = date){
 
 
 
-Route::get('/promotions/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
+Route::get('/promotions/{unixtime}-{duration}/{show_id}',function($unixtime = unixtime,$duration = duration,$show_id = show_id){	
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
 	if(sizeof($ads) > 0) return Response::json($ads);
-	else return Ad::generateAds($unixtime,$duration);
+	else return Ad::generateAds($unixtime,$duration,$show_id);
 });
-Route::get('/ads/{unixtime}-{duration}',function($unixtime = unixtime,$duration = duration){
-	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
-	if(sizeof($ads) > 0) return Response::json($ads);
-	else return Ad::generateAds($unixtime,$duration);
-});
-
 
 Route::group(array('prefix'=>'SAM'),function($id = id){
 	//List Tables

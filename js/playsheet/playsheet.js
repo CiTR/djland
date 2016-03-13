@@ -103,12 +103,12 @@
                     this_.updateStart();
 
                     if(this_.info.id < 1){
-                        call.getPromotions(start_unix,end_unix-start_unix).then(function(response){
+                        call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
                             this_.promotions = response.data;
                             console.log(this_.promotions);
                         },function(error){
                             this_.log_error(error);
-                            call.getPromotions(start_unix,end_unix-start_unix).then(function(response){
+                            call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
                                 this_.promotions = response.data;
                             });
                         });
@@ -355,11 +355,11 @@
                             for(var i = 0; i<4; i++) {
                                 this_.add(this_.playitems.length-1);
                             }
-                            call.getPromotions(start_unix, end_unix-start_unix).then(function(response){
+                            call.getPromotions(start_unix, end_unix-start_unix,this_.active_show.id).then(function(response){
                                 this_.promotions = response.data;
                             },function(error){
                             this_.log_error(error);
-                                call.getPromotions(start_unix,end_unix-start_unix).then(function(response){
+                                call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
                                     this_.promotions = response.data;
                                 });
                             });

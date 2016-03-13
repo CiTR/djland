@@ -14,9 +14,21 @@ class Ad extends Model
     public function playsheet(){
     	return $this->belongsTo('App\Playsheet');
     }
-    public static function generateAds($show_start_unix,$show_duration){
+    public static function generateAds($show_start_unix,$show_duration,$show_id){
    		date_default_timezone_set('America/Los_Angeles');
     	$one_minute = 60;
+
+	$show = Show::find($show_id);
+
+	if($show->sponsor_name != null && $show->sponsor_name != ''){
+		$sponsor = new stdClass();
+		$sponsor->type = 'announcement';
+		$sponsor->name = "Please mention your sponsor: ".$show->sponsor_name." - ".$show->sponsor_url;
+		$sponsor->time_block = $show_start_unix;
+		$sponsor->time = date('g:i a',date($show_start_unix));
+		$week_ads[] = $sponsor;
+	}
+	
     	for($offset = 0; $offset < $show_duration; $offset += (10*$one_minute)){
 			$date = date($show_start_unix + $offset);
 			//If the top of the hour, add a station ID
@@ -65,6 +77,14 @@ class Ad extends Model
 			$announcement->time = date('g:i a',$show_start_unix + $show_duration - 5* $one_minute);
 
 		$week_ads[] = $announcement;
+		if($show->sponsor_name != null && $show->sponsor_name != ''){
+			$sponsor = new stdClass();
+			$sponsor->type = 'announcement';
+			$sponsor->name = "Please mention your sponsor: ".$show->sponsor_name." - ".$show->sponsor_url;
+			$sponsor->time_block = $show_start_unix;
+			$sponsor->time = date('g:i a',date($show_start_unix + $show_duration));
+			$week_ads[] = $sponsor;
+		}
 		$index = 1;
 		foreach($week_ads as $ad){
 			$ad->num = $index++;
