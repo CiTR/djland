@@ -465,6 +465,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 		//Initialize array for playsheets
 		$playsheets = array();
+		$playsheet_totals=array();
 
 		//If the member is staff or admin, the report should be for all shows
 		$permissions = Member::find($member_id)->user->permission;
@@ -540,6 +541,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show_totals[$playsheet->show['name']]->new_count=0;
 				$show_totals[$playsheet->show['name']]->spokenword=0;
 				$show_totals[$playsheet->show['name']]->ads=0;
+				
+				$show_totals[$playsheet->show['name']]->show = $playsheet->show;
 	
 			}
 			foreach($playsheet->playitems as $playitem){

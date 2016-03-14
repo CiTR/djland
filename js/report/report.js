@@ -2,6 +2,7 @@
 	var app = angular.module('djland.report',['djland.api','ui.bootstrap']);
 
 	app.controller('reportController',function(call,$filter,$scope){
+		$scope.Object = Object;
 		this.show_filter = 'all';
 		var date = new Date();
 		this.to = $filter('date')(date,'yyyy/MM/dd');
@@ -41,9 +42,7 @@
 					this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
 					this_.totals = response.data.totals;
 					this_.show_totals = response.data.show_totals;
-					console.log(this_.totals);
-					console.log(this_.playsheets);
-					console.log(this_.show_totals);
+					this_.show_count = Object.keys(this_.show_totals).length;
 
 					this_.loading = false;
 					//delay displaying so to reduce lag from object creation.
