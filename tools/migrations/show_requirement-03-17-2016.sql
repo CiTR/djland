@@ -1,0 +1,2 @@
+ALTER TABLE `shows` CHANGE `cc_req` `cc_20_req` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '35';
+ALTER TABLE `shows` ADD `cc_30_req` TINYINT( 3 ) NOT NULL DEFAULT '12' AFTER `cc_20_req`;
