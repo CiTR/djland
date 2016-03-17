@@ -575,7 +575,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$totals->$key += $item;
 			}
 		}
-		usort($playsheets,function($a,$b){
+		usort($playsheet_totals,function($a,$b){
 			$s1 = strtotime($a['start_time']);
 			$s2 = strtotime($b['start_time']);
 			return $s1-$s2;

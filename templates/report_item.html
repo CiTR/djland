@@ -8,7 +8,7 @@
 		<th>Album</th>
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Composer</th>
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Duration</th>
-		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist (New)</th>
 		<th>Cancon</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Femcon</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Instrumental</th>
@@ -51,10 +51,37 @@
 	<h3>Percentage Totals</h3>
 	<table class='table-condensed report_table'>
 		<tr><th><th>Play Count<th>Percentage<th>Requirement</th>
-		<tr><th>Cancon Category 20</th><td>{{playsheet.totals.cc_20_count}} / {{playsheet.totals.cc_20_total}} </td><td ng-class='(playsheet.totals.cc_20_count/playsheet.totals.cc_20_total*100) >= playsheet.show.cc_20_req || playheet.totals.cc_20_count == 0 ? "":"red"'>({{playsheet.totals.cc_20_count/playsheet.totals.cc_20_total | percentage:2}})</td><td>{{playsheet.show.cc_20_req}} %</td></tr> 
-		<tr><th>Cancon Category 30</th><td>{{playsheet.totals.cc_30_count}} / {{playsheet.totals.cc_30_total}} </td><td ng-class='(playsheet.totals.cc_30_count/playsheet.totals.cc_30_total*100) >= playsheet.show.cc_30_req || playheet.totals.cc_30_count == 0 ? "":"red"'>({{playsheet.totals.cc_30_count  / playsheet.totals.cc_30_total | percentage:2}})</td><td>{{playsheet.show.cc_30_req}} %</td></tr>
-		<tr><th>Femcon</th><td>{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}} </td><td>({{playsheet.totals.femcon_count  / playsheet.totals.total | percentage:2}})</td><td>{{playsheet.show.fem_req}} %</td></tr>
-		<tr><th>Hit</th><td>{{playsheet.totals.hit_count}} / {{playsheet.totals.total}} </td><td>({{playsheet.totals.hit_count  / playsheet.totals.total | percentage:2}})</td><td>10%</td></tr>
+		<tr>
+			<th>Cancon Category 20</th>
+			<td>{{playsheet.totals.cc_20_count}} / {{playsheet.totals.cc_20_total}} </td>
+			<td ng-class='(playsheet.totals.cc_20_count/playsheet.totals.cc_20_total*100) >= playsheet.show.cc_20_req || playsheet.totals.cc_20_total == 0 ? "":"red"'>
+				({{playsheet.totals.cc_20_count/playsheet.totals.cc_20_total > 0 ? playsheet.totals.cc_20_count/playsheet.totals.cc_20_total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.cc_20_req}}%</td>
+		</tr> 
+		<tr>
+			<th>Cancon Category 30</th>
+			<td>{{playsheet.totals.cc_30_count}} / {{playsheet.totals.cc_30_total}} </td>
+			<td ng-class='(playsheet.totals.cc_30_count/playsheet.totals.cc_30_total*100) >= playsheet.show.cc_30_req || playsheet.totals.cc_30_total == 0 ? "":"red"'>
+				({{playsheet.totals.cc_30_count/playsheet.totals.cc_30_total > 0 ? playsheet.totals.cc_30_count/playsheet.totals.cc_30_total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.cc_30_req}}%</td>
+		</tr>
+		<tr>
+			<th>Femcon</th>
+			<td>{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}} </td>
+			<td ng-class='(playsheet.totals.femcon_count/playsheet.totals.total*100) >= playsheet.show.fem_req || playsheet.totals.total == 0 ? "" : "red"'>
+				({{playsheet.totals.femcon_count/playsheet.totals.total > 0 ? playsheet.totals.femcon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.fem_req}}%</td>
+		</tr>
+		<tr>
+			<th>Hit</th>
+			<td>{{playsheet.totals.hit_count}} / {{playsheet.totals.total}} </td>
+			<td ng-class='(playsheet.totals.hit_count/playsheet.totals.total*100) <= 10 || playsheet.totals.total == 0 ? "" : "red"'>
+				({{playsheet.totals.hit_count  / playsheet.totals.total > 0 ? playsheet.totals.hit_count  / playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td>10%</td></tr>
 	</table>
 </div>
 <hr>

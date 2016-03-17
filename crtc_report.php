@@ -69,7 +69,9 @@
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
 				<div class='col1 text-center'>
 					<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
-					<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
+					<?php if($using_sam): ?>
+						<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
+					<?php endif; ?> 
 					<div class='col1'>
 						Total Category 2: {{report.totals.cc_20_count}} / {{report.totals.cc_20_total}}
 						({{report.totals.cc_20_count/report.totals.cc_20_total > 0 ? report.totals.cc_20_count/report.totals.cc_20_total : 0 | percentage:0}}/35%)
@@ -148,7 +150,7 @@
 
 			</div>
 			<div id='report_list' ng-if='report.is_admin'>
-				<div ng-repeat='playsheet in report.playsheets | orderBy: playsheet.start_time' class='report_item' reportitem ></div>
+				<div ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
 			</div>
 		</div>
 
