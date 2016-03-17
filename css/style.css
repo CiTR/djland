@@ -1434,7 +1434,7 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 
 .crtc_report{
-  width:1600px;
+  max-width:1600px;
   margin-left:auto;
   margin-right:auto;
 }
