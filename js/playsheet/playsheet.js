@@ -19,7 +19,7 @@
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.socan = $('#socan').text() == 'true' ? true : false;
+        this.info.socan = $('#socan').text() == 'true' ? true : false;
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
@@ -77,42 +77,41 @@
             playitem.start.setSeconds(0);
         };
         this.updateTime = function(){
-            var now = new Date();
-            call.getNextShowTime(this_.active_show.id,now).then(function(response){
-                    console.log(response.data);
-                    var start_unix = response.data.start;
-                    var end_unix = response.data.end;
-                    this_.info.unix_time = response.data.start;
-                    this_.start = new Date(start_unix * 1000);
-                    this_.end = new Date(end_unix * 1000);
+		var now = new Date();
+		call.getNextShowTime(this_.active_show.id,now).then(function(response){
+			var start_unix = response.data.start;
+			var end_unix = response.data.end;
+			this_.info.unix_time = response.data.start;
+			this_.start = new Date(start_unix * 1000);
+			this_.end = new Date(end_unix * 1000);
 
 
-                    this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
-                    this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
-                    this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                    this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                    this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                    this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                    this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                    this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                    //Populate Template Row, then add 5 rows
-                    var show_date = this_.start.getDate();
-                                     //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
+			this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
+			this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
+			this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
+			this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
+			this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
+			this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
+			this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
+			this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
+			//Populate Template Row, then add 5 rows
+			var show_date = this_.start.getDate();
+				     //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
 
-                    this_.updateEnd();
-                    this_.updateStart();
+			this_.updateEnd();
+			this_.updateStart();
 
-                    if(this_.info.id < 1){
-                        call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                            this_.promotions = response.data;
-                            console.log(this_.promotions);
-                        },function(error){
-                            this_.log_error(error);
-                            call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                                this_.promotions = response.data;
-                            });
-                        });
-                    }
+			if(this_.info.id < 1){
+			call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+			    this_.promotions = response.data;
+			    console.log(this_.promotions);
+			},function(error){
+			    this_.log_error(error);
+			    call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+				this_.promotions = response.data;
+			    });
+			});
+		}
             });
         }
         this.updateShowValues = function(element){
@@ -261,10 +260,10 @@
                         console.log(this_.active_show);
                         call.getShowPlaysheets(this_.active_show.id).then(function(response){
                             //DISPLAY OLD PLAYSHEETS
-							this_.existing_playsheets = response.data.sort(function(a, b) {
-							var re = new RegExp('-','g');
-							return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
-							});
+				this_.existing_playsheets = response.data.sort(function(a, b) {
+				var re = new RegExp('-','g');
+				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+				});
                         });
                         //Populate the template row
                         var show_date = this_.start.getDate();
@@ -280,12 +279,8 @@
             }else{
 
                 this.podcast = {};
-
-                //TODO load ads.
-
                 this.info.status = '1';
                 this.info.type='Live';
-
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
@@ -319,15 +314,14 @@
 
                         call.getShowPlaysheets(this_.show_value).then(function(response){
                             //DISPLAY OLD PLAYSHEETS
-							this_.existing_playsheets = response.data.sort(function(a, b) {
-							var re = new RegExp('-','g');
-							return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
-							});
+				this_.existing_playsheets = response.data.sort(function(a, b) {
+				var re = new RegExp('-','g');
+				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+				});
 
                         });
-
+			//Get next show time from API, or best attempt if no showtimes
                        call.getNextShowTime(this_.active_show.id,now).then(function(response){
-                            console.log(response.data);
                             var start_unix = response.data.start;
                             var end_unix = response.data.end;
                             this_.start = new Date(start_unix * 1000);
@@ -343,7 +337,6 @@
                             this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
                             this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
 
-                            console.log(this_.start_hour);
                             //Populate Template Row, then add 5 rows
                             var show_date = this_.start.getDate();
                                                 //Update Podcast information
@@ -359,6 +352,7 @@
                                 this_.promotions = response.data;
                             },function(error){
                             this_.log_error(error);
+				//If it fails, try to load ads again
                                 call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
                                     this_.promotions = response.data;
                                 });
@@ -718,9 +712,6 @@
             }
         }
     });
-
-    //TODO: Use Socan Call to get socan status
-    var socan = false;
 })();
 
 $(document).ready(function(){
