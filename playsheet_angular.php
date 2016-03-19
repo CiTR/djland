@@ -222,7 +222,7 @@
 
 		</div>
 		<div class="crtc_totals">
-				<table class='col1'>
+				<table class='col1 table'>
 					<tr>
 						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>

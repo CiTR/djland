@@ -838,10 +838,10 @@ tr.playitems.socan > td > input.lang{
   }
 
   button.box {
-    background-color: transparent;
     background-image: none;;
   }
  button.socan, , .music_row_socan input, .music_row_socan button{
+    background-color: transparent;
     font-size:0.75em;
     max-width:90px;
   }
@@ -860,6 +860,9 @@ tr.playitems.socan > td > input.lang{
   bottom:0px;
   left:0px;
   width:100%;
+}
+.crtc_totals > table > tbody {
+	width:100%;
 }
 
 
@@ -1701,7 +1704,7 @@ height:auto;
 .table p, .table div {
 	display: table-row;
 }
-.table select, .table span, .table textarea {
+.table select, .table textarea {
 	display: table-cell;
 	padding: 3px;
 	vertical-align: top;

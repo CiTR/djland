@@ -187,7 +187,7 @@
                     this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
                     this_.spokenword_minutes = this_.info.spokenword_duration % 60;
                 }else{
-                    this_.spokenword_hours = null;
+                    this_.spokenword_hours = 0;
                     this_.spokenword_minutes = null;
                 }
                 this_.ads = response.data.ads;
@@ -223,7 +223,7 @@
                         this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
                         this_.spokenword_minutes = this_.info.spokenword_duration % 60;
                     }else{
-                        this_.spokenword_hours = null;
+                        this_.spokenword_hours = 0;
                         this_.spokenword_minutes = null;
                     }
                     //Set Show Data
@@ -281,7 +281,7 @@
                 this.podcast = {};
                 this.info.status = '1';
                 this.info.type='Live';
-                this.spokenword_hours = null;
+                this.spokenword_hours = 0;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
 
