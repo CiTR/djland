@@ -61,8 +61,9 @@ Schedule.prototype = {
 		var date = this.formatDate(date);
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/adschedule/"+ date,
+			url: "api2/public/adschedule",
 			dataType: "json",
+			data:{'date':date} ,
 			async: true
 		});
 	},
@@ -114,9 +115,9 @@ Schedule.prototype = {
 	},
 	formatDate:function(date){
 		date = new Date(date);
-		return [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('-') +
-				" " +
-				[("0" + date.getHours() ).slice(-2),("0" + date.getMinutes()).slice(-2),("0" + date.getSeconds()).slice(-2)].join(':');
+		var ret = [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('/');
+		console.log(ret);
+		return ret;
 	},
 	getHTML:function(showtime,index){
 		var this_ = this;

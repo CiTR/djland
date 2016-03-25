@@ -790,9 +790,11 @@ Route::post('/adschedule',function(){
 	return Response::json($ads);
 });
 
-Route::get('/adschedule/{date}',function($date = date){
+Route::get('/adschedule',function(){
+	
 	date_default_timezone_set('America/Los_Angeles');
-	$formatted_date = date('Y-M-d',strtotime($date));
+	$date = implode('-',explode('/',$_GET['date']));	
+	$formatted_date = date('Y-m-d',strtotime($date));
 	$unix = strtotime($formatted_date);
 	$parsed_date = date_parse($formatted_date);
 	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
@@ -804,8 +806,8 @@ Route::get('/adschedule/{date}',function($date = date){
 
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
-        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $week = (floor( (strtotime($date) - intval($day_of_week*$one_day)) /($one_day*7) ) % 2) + 1;
+        	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        	$week = (floor( (strtotime($date) - intval($day_of_week*$one_day)) /($one_day*7) ) % 2) + 1;
 
 
 		if($formatted_date == date('Y-M-d',strtotime('now'))){
@@ -858,7 +860,7 @@ Route::get('/adschedule/{date}',function($date = date){
 			$show_time->date = date('l F jS g:i a',$show_time->start_unix);
 			$show_time->start = date('g:i a',$show_time->start_unix);
 		}
-		return $shows;
+		return Response::json($shows);
 	}else{
 		http_response_code('400');
 		return "Not a Valid Date: {$formatted_date}";
