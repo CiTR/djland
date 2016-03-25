@@ -12,7 +12,7 @@
 		this.type = 'crtc';
 		var this_ = this;
 		this.loading = true;
-
+		this.show_count = 0;
 		this.init = function(){
 			//Initial loading requests
 
