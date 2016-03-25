@@ -882,7 +882,7 @@ div#main {
 	line-height:1.3em;
 	position:relative;
 }
-#mainleft input, #mainleft textarea{
+#mainleft textarea{
 	width:75%;
 	margin: 5px;
 	padding:5px;

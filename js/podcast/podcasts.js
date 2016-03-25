@@ -160,11 +160,6 @@
                 }
             });
         };
-
-        this.deactivate = function(podcast){
-            //Implement.
-
-        }
         this.formatError = function(error){
             return error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
         }
