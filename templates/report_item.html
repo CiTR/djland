@@ -52,9 +52,14 @@
 <?php if($using_sam): ?>
 	<div ng-show="report.type=='crtc' || report.type=='both'">
 		<h3>Ads Played in SAM</h3>
-		<table class='table-condensed report_table'>
-			<tr ng-repeat='ad in playsheet.ads_played'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
-		</table>
+		<div ng-show="playsheet.ads_played.length > 0">
+			<table class='table-condensed report_table'>
+				<tr ng-repeat='ad in playsheet.ads_played'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
+			</table>
+		</div>
+		<div ng-show="playsheet.ads_played.length == 0" class='text-center'>
+			No Ads Played.
+		</div>
 	</div>
 <?php endif; ?>
 	<h3>Spoken Word Duration</h3>

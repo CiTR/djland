@@ -102,47 +102,65 @@
 						<th>Femcon</th>
 						<th>Hits</th>
 					</tr>
-
-					<tr ng-repeat="(index,item) in report.show_totals track by index | orderBy:'index'">
-						<td>
-							<div ng-if='report.show_count > 1'>{{index}}</div>
-							<div ng-if='report.show_count == 1'>{{item}}</div>
-
-						</td>
-						<td ng-class='(item.cc_20_count/item.cc_20_total)*100 >= (item.show.cc_20_req || 35) || item.cc_20_total == 0 ? "":"red"'>
-							{{item.cc_20_count}} / {{item.cc_20_total}}
-							({{item.cc_20_count/item.cc_20_total > 0 ? item.cc_20_count/item.cc_20_total : 0 | percentage:0}} / {{item.show.cc_20_req || 35}}%)
-						</td>
-						<td ng-class='(item.cc_30_count/item.cc_30_total)*100 >=  (item.show.cc_30_req ||12) || item.cc_30_total == 0 ? "":"red"'>
-							{{item.cc_30_count}} / {{item.cc_30_total}}
-							({{item.cc_30_count/item.cc_30_total > 0 ? item.cc_30_count/item.cc_30_total : 0 | percentage:0}} / {{item.show.cc_30_req ||12}}%)
-						</td>
-						<td ng-class='(item.femcon_count/item.total)*100 >= (item.show.fem_req || 35) || item.total == 0 ? "":"red"'>
-							{{item.femcon_count}} / {{item.total}}
-							({{item.femcon_count/item.total > 0 ? item.femcon_count/item.total : 0 | percentage:0}} / {{item.show.fem_req || 35}}%)
-						</td>
-						<td ng-class='(item.hit_count/item.total)*100 < 10 || item.total == 0 ? "":"red"'>
-							{{item.hit_count}} / {{item.total}}
-							({{item.hit_count/item.total > 0 ? item.hit_count/item.total : 0 | percentage:0}} / 10% MAX)
-						</td>
-					</tr>
+					<div ng-if='report.show_count > 1'>
+						<tr ng-repeat="(index,item) in report.show_totals track by index | orderBy:'index'">
+							<td>{{index}}</td>
+							<td ng-class='(item.cc_20_count/item.cc_20_total)*100 >= (item.show.cc_20_req || 35) || item.cc_20_total == 0 ? "":"red"'>
+								{{item.cc_20_count}} / {{item.cc_20_total}}
+								({{item.cc_20_count/item.cc_20_total > 0 ? item.cc_20_count/item.cc_20_total : 0 | percentage:0}} / {{item.show.cc_20_req || 35}}%)
+							</td>
+							<td ng-class='(item.cc_30_count/item.cc_30_total)*100 >=  (item.show.cc_30_req ||12) || item.cc_30_total == 0 ? "":"red"'>
+								{{item.cc_30_count}} / {{item.cc_30_total}}
+								({{item.cc_30_count/item.cc_30_total > 0 ? item.cc_30_count/item.cc_30_total : 0 | percentage:0}} / {{item.show.cc_30_req ||12}}%)
+							</td>
+							<td ng-class='(item.femcon_count/item.total)*100 >= (item.show.fem_req || 35) || item.total == 0 ? "":"red"'>
+								{{item.femcon_count}} / {{item.total}}
+								({{item.femcon_count/item.total > 0 ? item.femcon_count/item.total : 0 | percentage:0}} / {{item.show.fem_req || 35}}%)
+							</td>
+							<td ng-class='(item.hit_count/item.total)*100 < 10 || item.total == 0 ? "":"red"'>
+								{{item.hit_count}} / {{item.total}}
+								({{item.hit_count/item.total > 0 ? item.hit_count/item.total : 0 | percentage:0}} / 10% MAX)
+							</td>
+						</tr>
+					</div>
+					<div ng-if='report.show_count == 1'>
+						<tr ng-repeat="(index,item) in report.playsheets track by index | orderBy:'index'">
+							<td>{{item.start_time}}</td>
+							<td ng-class='(item.totals.cc_20_count/item.totals.cc_20_total)*100 >= (item.totals.show.cc_20_req || 35) || item.totals.cc_20_total == 0 ? "":"red"'>
+								{{item.totals.cc_20_count}} / {{item.totals.cc_20_total}}
+								({{item.totals.cc_20_count/item.totals.cc_20_total > 0 ? item.totals.cc_20_count/item.totals.cc_20_total : 0 | percentage:0}} / {{item.totals.show.cc_20_req || 35}}%)
+							</td>
+							<td ng-class='(item.totals.cc_30_count/item.totals.cc_30_total)*100 >=  (item.totals.show.cc_30_req ||12) || item.totals.cc_30_total == 0 ? "":"red"'>
+								{{item.totals.cc_30_count}} / {{item.totals.cc_30_total}}
+								({{item.totals.cc_30_count/item.totals.cc_30_total > 0 ? item.totals.cc_30_count/item.totals.cc_30_total : 0 | percentage:0}} / {{item.totals.show.cc_30_req ||12}}%)
+							</td>
+							<td ng-class='(item.totals.femcon_count/item.totals.total)*100 >= (item.totals.show.fem_req || 35) || item.totals.total == 0 ? "":"red"'>
+								{{item.totals.femcon_count}} / {{item.totals.total}}
+								({{item.totals.femcon_count/item.totals.total > 0 ? item.totals.femcon_count/item.totals.total : 0 | percentage:0}} / {{item.totals.show.fem_req || 35}}%)
+							</td>
+							<td ng-class='(item.totals.hit_count/item.totals.total)*100 < 10 || item.totals.total == 0 ? "":"red"'>
+								{{item.totals.hit_count}} / {{item.totals.total}}
+								({{item.totals.hit_count/item.totals.total > 0 ? item.totals.hit_count/item.totals.total : 0 | percentage:0}} / 10% MAX)
+							</td>
+						</tr>
+					</div>	
 					<tr>
 						<td>Total</td>
 						<td ng-class='(report.totals.cc_20_count/report.totals.cc_20_total*100) >= 35 || report.totals.cc_20_total == 0 ?"":"red"'>
 							{{report.totals.cc_20_count}} / {{report.totals.cc_20_total}}
-							({{report.totals.cc_20_count/report.totals.cc_20_total > 0 ? report.totals.cc_20_count/report.totals.cc_20_total : 0 | percentage:0}}/35%)
+							({{report.totals.cc_20_count/report.totals.cc_20_total > 0 ? report.totals.cc_20_count/report.totals.cc_20_total : 0 | percentage:0}} / 35%)
 						</td>
 						<td ng-class='(report.totals.cc_30_count/report.totals.cc_30_total*100) >= 12 || report.totals.cc_30_total == 0 ?"":"red"'>
 							{{report.totals.cc_30_count}} / {{report.totals.cc_30_total}}
-							({{report.totals.cc_30_count/report.totals.cc_30_total > 0 ? report.totals.cc_30_count/report.totals.cc_30_total : 0 | percentage:0}}/12%)
+							({{report.totals.cc_30_count/report.totals.cc_30_total > 0 ? report.totals.cc_30_count/report.totals.cc_30_total : 0 | percentage:0}} / 12%)
 						</td>
 						<td ng-class='(report.totals.femcon_count/report.totals.total*100) >= 35 || report.totals.total == 0 ?"":"red"'>
 							{{report.totals.femcon_count}} / {{report.totals.total}}
-							({{report.totals.femcon_count/report.totals.total > 0 ? report.totals.femcon_count/report.totals.total : 0 | percentage:0}}/35%)
+							({{report.totals.femcon_count/report.totals.total > 0 ? report.totals.femcon_count/report.totals.total : 0 | percentage:0}} / 35%)
 						</td>
 						<td ng-class='(report.totals.hit_count/report.totals.total*100) < 10 || report.totals.total == 0 ?"":"red"'>
 							{{report.totals.hit_count}} / {{report.totals.total}}
-							({{report.totals.hit_count/report.totals.total > 0 ? report.totals.hit_count/report.totals.total : 0 | percentage:0}}/10% MAX)
+							({{report.totals.hit_count/report.totals.total > 0 ? report.totals.hit_count/report.totals.total : 0 | percentage:0}} / 10% MAX)
 						</td>
 					</tr>
 				</table>

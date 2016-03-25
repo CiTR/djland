@@ -503,7 +503,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
-			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
+			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->where('type','=','ad')->get();
 					
 			//initialize this playsheet's totals
 			$playsheet->totals = new stdClass();
@@ -570,7 +570,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 			//Update corresponding show totals, and overall
 			foreach($playsheet->totals as $key=>$item){
-				$show_totals[$playsheet->show_name]->$key += $item;
+				$show_totals[$playsheet->show['name']]->$key += $item;
 				$totals->$key += $item;
 			}
 		}

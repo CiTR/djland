@@ -327,7 +327,7 @@
                             this_.start = new Date(start_unix * 1000);
                             this_.end = new Date(end_unix * 1000);
 
-                            this_.info.unix_time = this_.start.getTime() / 1000;
+                            this_.info.unix_time = start_unix;
                             this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
                             this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
                             this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
