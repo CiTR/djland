@@ -1,8 +1,5 @@
 (function (){
     var app = angular.module('djland.podcasts', ['ui.bootstrap','djland.api','djland.utils',]);
-    
-
-
 
     app.controller('episodeList', function($scope, call, $interval, $location, $filter){
         this.Math = window.Math;

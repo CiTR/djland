@@ -20,8 +20,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getAds: function (time,duration){
 			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration);
 		},
-		getPromotions: function (time,duration){
-			return $http.get(API_URL_BASE+ '/promotions/' + time + '-' + duration);
+		getPromotions: function (time,duration,show_id){
+			return $http.get(API_URL_BASE+ '/promotions/' + time + '-' + duration + '/' + show_id);
 		},
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
@@ -35,7 +35,11 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShow: function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
-		getShowPlaysheets: function(show_id,offset){
+		getShowPlaysheets:function(show_id){
+			return $http.get(API_URL_BASE+'/show/'+show_id + '/playsheets');
+		},		
+		getMoreShowPlaysheets: function(show_id,offset){ 
+			if(!offset) offset = 0;
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
 		},
 		getShowEpisodes: function(show_id,offset){

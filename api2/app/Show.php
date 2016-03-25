@@ -124,10 +124,19 @@ class Show extends Model
                 }
             }
         }else{
-            $min = null;
+		//No showtimes for this show, create one.
+		$seconds_elapsed = strtotime('now')%$one_hour;
+	
+		if($seconds_elapsed <=15*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed;	
+		}elseif($seconds_elapsed > 15*$one_minute && $seconds_elapsed <= 45*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed + 30*$one_minute;
+		}else{
+			$start = strtotime('now') - $seconds_elapsed + $one_hour;
+		}
+		$end = $start + $one_hour;
+		$min = array('start'=>$start,'end'=>$end,'mins'=>$seconds_elapsed/$one_minute);
         }
-
-
         return $min;
     }
     public function make_show_xml(){
