@@ -1,5 +1,5 @@
 <?php
-include_once("session_header.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/session_header.php");
 //DB HEADER
 include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 global $station_info;

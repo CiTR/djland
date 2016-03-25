@@ -446,9 +446,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return Response::json($response);
 	});
 	Route::post('/report',function(){
-		require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-		require_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
-		
+		include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
 		//Get input variables and make sure they are set, otherwise abort with 400.
 		$member_id = isset($_SESSION['sv_id']) ? $_SESSION['sv_id'] : null;
 		if($member_id == null) return Response::json('You are not logged in');
@@ -504,14 +503,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
+			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
 			if($using_sam){
 				if( $playsheet->start_time && $playsheet->end_time){
-					$playsheet->ads = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
 				}
-				foreach($playsheet->ads as $ad){
+				foreach($playsheet->ads_played as $ad){
 					$playsheet->totals['ads'] += floor($ad['duration']/1000);
 				}
-			}			
+			}		
 			//initialize this playsheet's totals
 			$playsheet->totals = new stdClass();
 			$playsheet->totals->total=0;

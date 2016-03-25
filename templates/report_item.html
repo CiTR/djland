@@ -37,10 +37,22 @@
 		<td ng-show="report.type=='crtc' || report.type=='both'">{{playitem.crtc_category}}</td>
 	<tr>
 </table>
-<div ng-show="playsheet.ads.length > 0 && (report.type=='crtc' || report.type=='both')">
-	<h3>Ads</h3>
+<div ng-show="report.type=='crtc' || report.type=='both'">
+	<h3>Ads Scheduled</h3>
 	<table class='table-condensed report_table'>
-		<tr ng-repeat='ad in playsheet.ads'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
+		<tr><th>Name<th>Type<th>Time<th>Played</tr>		
+		<tr ng-repeat='ad in playsheet.ads'>
+			<td>{{ad.name}}</td>
+			<td>{{ad.type}}</td>
+			<td>{{ad.time}}</td>
+			<td><div ng-if="ad.played==1">&#9745;</div><div ng-if="ad.played==0">&#9744;</div></td>
+		</tr>
+	</table>
+</div>
+<div ng-show="playsheet.ads_played.length > 0 && (report.type=='crtc' || report.type=='both')">
+	<h3>Ads Played in SAM</h3>
+	<table class='table-condensed report_table'>
+		<tr ng-repeat='ad in playsheet.ads_played'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
 	</table>
 </div>
 	<h3>Spoken Word Duration</h3>
