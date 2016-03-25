@@ -26,6 +26,7 @@ class Ad extends Model
 		$sponsor->name = "Please mention your sponsor: ".$show->sponsor_name." - ".$show->sponsor_url;
 		$sponsor->time_block = $show_start_unix;
 		$sponsor->time = date('g:i a',date($show_start_unix));
+		$sponsor->played = 0;
 		$week_ads[] = $sponsor;
 	}
 	
@@ -38,6 +39,7 @@ class Ad extends Model
 					$id->name = 'You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver';
 					$id->time_block = $show_start_unix;
 					$id->time = date('g:i a',$date);
+					$id->played = 0;
 				$week_ads[] = $id;
 			}
 			if(date('i',$date) == '20' || date('i',$date) == '40'){
@@ -46,6 +48,7 @@ class Ad extends Model
 				$ad->name = 'Any Ad';
 				$ad->time_block = $show_start_unix;
 				$ad->time = date('g:i a',$date);
+				$ad->played = 0;
 				$week_ads[] = $ad;	
 			}
 			if(date('i',$date) == '20' || ( date('i',$date) == '40' && $show_duration == 30 * $one_minute ) ){
@@ -54,6 +57,7 @@ class Ad extends Model
 				$psa->name = 'Any PSA';
 				$psa->time_block = $show_start_unix;
 				$psa->time = date('g:i a',$date);
+				$psa->played = 0;				
 				$week_ads[] = $psa;
 			}
 			if( 
@@ -65,24 +69,27 @@ class Ad extends Model
 				$promo->name = 'Any Promo';
 				$promo->time_block = $show_start_unix;
 				$promo->time = date('g:i a',$date);
+				$promo->played = 0;
 				$week_ads[] = $promo;
 			}
 		}
 
 		
 		$announcement = new stdClass();
-			$announcement->type = 'announcement';
-			$announcement->name = 'Please announce the upcoming program';
-			$announcement->time_block = $show_start_unix;	
-			$announcement->time = date('g:i a',$show_start_unix + $show_duration - 5* $one_minute);
-
+		$announcement->type = 'announcement';
+		$announcement->name = 'Please announce the upcoming program';
+		$announcement->time_block = $show_start_unix;	
+		$announcement->time = date('g:i a',$show_start_unix + $show_duration - 5* $one_minute);
+		$announcement->played=0;
 		$week_ads[] = $announcement;
+	
 		if($show->sponsor_name != null && $show->sponsor_name != ''){
 			$sponsor = new stdClass();
 			$sponsor->type = 'announcement';
 			$sponsor->name = "Please mention your sponsor: ".$show->sponsor_name." - ".$show->sponsor_url;
 			$sponsor->time_block = $show_start_unix;
 			$sponsor->time = date('g:i a',date($show_start_unix + $show_duration));
+			$sponsor->played = 0;
 			$week_ads[] = $sponsor;
 		}
 		$index = 1;

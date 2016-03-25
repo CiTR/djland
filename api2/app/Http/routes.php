@@ -504,14 +504,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
 			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
-			if($using_sam){
-				if( $playsheet->start_time && $playsheet->end_time){
-					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
-				}
-				foreach($playsheet->ads_played as $ad){
-					$playsheet->totals['ads'] += floor($ad['duration']/1000);
-				}
-			}		
+					
 			//initialize this playsheet's totals
 			$playsheet->totals = new stdClass();
 			$playsheet->totals->total=0;
@@ -525,9 +518,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
 	
+			if($using_sam){
+				if( $playsheet->start_time && $playsheet->end_time){
+					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+				}
+				foreach($playsheet->ads_played as $ad){
+					$playsheet->totals->ads += floor($ad['duration']/1000);
+				}
+			}
 			
-			$playsheet->totals->total = 5;
-			//return Response::json($playsheet->totals);
 			//If this show hasn't been seen before, initialize it
 			if(!isset($show_totals[$playsheet->show_name])){
 				$show_totals[$playsheet->show['name']] = new stdClass();
