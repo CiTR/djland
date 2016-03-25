@@ -74,15 +74,25 @@ class Show extends Model
             $week_2_show_unix = $week_2_start + $show_time_unix_offset;
 
             //DST Offset
-            if( (date('I',$week_0_show_unix)=='0') ){
-                //$week_0_show_unix += 3600;
+            if( (date('I',$week_0_start)=='1') && (date('I',$week_0_show_unix) == '0') ){
+                $week_0_show_unix += 3600;
             }
-            if( (date('I',$week_1_show_unix)=='0') ){
-                //$week_1_show_unix += 3600;
+	if( (date('I',$week_0_start) =='0') && (date('I',$week_0_show_unix)=='1')){
+		$week_0_show_unix -= 3600;
+		}
+        if( (date('I',$week_1_start)=='1') && (date('I',$week_1_show_unix) == '0') ){    
+                $week_1_show_unix += 3600;
             }
-            if( (date('I',$week_2_show_unix)=='0') ){
-                //$week_2_show_unix += 3600;
+        if( (date('I',$week_1_start) =='0') && (date('I',$week_1_show_unix)=='1')){
+                $week_1_show_unix -= 3600;
+                }
+            if( (date('I',$week_2_start)=='1') && (date('I',$week_2_show_unix) == '0') ){    
+                $week_2_show_unix += 3600;
             }
+        if( (date('I',$week_2_start) =='0') && (date('I',$week_2_show_unix)=='1')){
+                $week_2_show_unix -= 3600;
+                }
+
 
             // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
                 if( $show_time['start_day'] == $day_of_week || $show_time['start_day'] > $day_of_week){
@@ -124,10 +134,19 @@ class Show extends Model
                 }
             }
         }else{
-            $min = null;
+		//No showtimes for this show, create one.
+		$seconds_elapsed = strtotime('now')%$one_hour;
+	
+		if($seconds_elapsed <=15*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed;	
+		}elseif($seconds_elapsed > 15*$one_minute && $seconds_elapsed <= 45*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed + 30*$one_minute;
+		}else{
+			$start = strtotime('now') - $seconds_elapsed + $one_hour;
+		}
+		$end = $start + $one_hour;
+		$min = array('start'=>$start,'end'=>$end,'mins'=>$seconds_elapsed/$one_minute);
         }
-
-
         return $min;
     }
     public function make_show_xml(){

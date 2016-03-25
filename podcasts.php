@@ -91,7 +91,7 @@ if(!isset($_GET['id'])){
                 <div id="popup"  ng-show="list.editing">
                     <p ng-click="list.editing = false;" id="closer"> X </p>
                     <h4 class='text-left'>Episode Title</h4>
-                    <input ng-model="list.editing.playsheet.title"/>
+                    <input class='col1' ng-model="list.editing.playsheet.title"/>
                     <h4 class='text-left'>Episode Summary</h4>
                     <textarea ng-model="list.editing.playsheet.summary" rows="8">
                     </textarea>
@@ -139,19 +139,19 @@ if(!isset($_GET['id'])){
                     <b>{{list.Math.floor( list.editing.podcast.duration /60/60 )  | number:0 }}h:{{(list.editing.podcast.duration /60)%60 | pad:2}}m: {{(list.editing.podcast.duration )%60 | pad:2 }}s</b>
 
                     <div class='double-padded-top'>
-                    <button ng-click="list.preview_start()">preview start</button>
-                    <button ng-click="list.preview_end()">preview end</button>
-                    <button ng-click="list.stop_sound()">stop playback</button>
-                    <div id='elapsed' ng-show='list.playing'></div>
+		            <button ng-click="list.preview_start()">preview start</button>
+		            <button ng-click="list.preview_end()">preview end</button>
+		            <button ng-click="list.stop_sound()">stop playback</button>
+		            <div id='elapsed' ng-show='list.playing'></div>
                     </div>
 
                     <h4 class='text-left double-padded-top'>Audio File Link</h4>
-                    <input ng-model="list.editing.podcast.url" readonly>
-                    </input><br/>
-
+                    <input class='col1' ng-model="list.editing.podcast.url" readonly/>
+                    
+			<div class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active" ng-show="list.is_admin==true"/></div>
                     <span id="message">{{message}}</span><br/><br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-                    <button ng-show="{{list.is_admin}}" ng-click="list.deactivate(list.editing.podcast);">Make this podcast inactive</button>
+                    
 
                     <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
                 </div>
