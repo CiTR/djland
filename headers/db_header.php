@@ -88,14 +88,15 @@ function CallAPI($method, $url, $data = false)
         case "PUT":
             curl_setopt($curl, CURLOPT_PUT, 1);
             break;
+	case "GET":
+		
+		break;
         default:
             if ($data)
                 $url = sprintf("%s?%s", $url, http_build_query($data));
     }
 
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+   
 
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -103,7 +104,6 @@ function CallAPI($method, $url, $data = false)
     $result = curl_exec($curl);
 
     curl_close($curl);
-
     return json_decode($result);
 }
 

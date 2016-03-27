@@ -1,5 +1,6 @@
 <?php
 
+use App\Option as Option;
 use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;
@@ -27,6 +28,12 @@ Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
+
+
+//Member Resource Routes
+	Route::get('resource',function(){
+		return Option::where('djland_option','=','member_resources')->get();
+	});
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
@@ -67,14 +74,14 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
-
+	
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
-
+		
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
-
+		
 		Route::get('list',function(){
 			$full_list = Member::select('id','firstname','lastname')->get();
 			foreach ($full_list as $m) {
