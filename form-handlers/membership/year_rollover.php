@@ -11,7 +11,7 @@ require_once("../../headers/security_header.php");
 if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
 //POST Updates membership year a member is required to have in their membership_years set (with paid set to 1) to have access
 //GET Gets the current mandatory membership year
-    $update_query = "UPDATE year_rollover SET membership_year=:year WHERE id='1'";
+    $update_query = "UPDATE djland_options SET value=:year WHERE djland_option='membership_cutoff'";
     $statement = $pdo_db->prepare($update_query);
     $statement->bindValue(':year',$_POST['year']);
     try{
@@ -23,7 +23,7 @@ if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset
         echo json_encode($pdoe->getMessage());
     }
 }else if(isset($_GET) && permission_level() >= $djland_permission_levels['member']['level']) {
-    $select_query = "SELECT membership_year FROM year_rollover WHERE id='1'";
+    $select_query = "SELECT value FROM djland_options WHERE djland_option='membership_cutoff'";
     $statement = $pdo_db->prepare($select_query);
     try{
         $statement->execute();
