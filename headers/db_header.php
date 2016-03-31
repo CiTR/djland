@@ -46,12 +46,6 @@ if($using_sam){
     }
 }
 function mysqli_result_dep($res, $row, $field=0) {
-//	echo 'called mysqli result';
-//	echo '<br/>';
-//	echo 'res:'.'<br/>';
-//	print_r($res);
-//	echo 'row:'.$row.'<br/>';
-//	echo 'field:'.$field.'<br/>';
 	if(is_object($res))
 		$res->data_seek($row);
 	else 	return false;
@@ -63,16 +57,6 @@ function mysqli_result_dep($res, $row, $field=0) {
 	else 	return false;
 
 }
-function getContent(){
-
-    if (0 === strlen(trim($content = file_get_contents('php://input'))))
-    {
-      $content = false;
-    }
-
-  return $content;
-}
-
 function CallAPI($method, $url, $data = false)
 {
     $curl = curl_init();
