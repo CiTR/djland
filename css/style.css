@@ -1226,7 +1226,17 @@ table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.n
   top:100px;
   right:10px;
 }
-
+/*------------------*/
+/* Member Resources */
+/*------------------*/
+textarea.member_resources_edit{
+	width:100%;
+	min-height:300px;
+	font-size: 0.8em;
+	margin-left:auto;
+	margin-right:auto;
+	white-space:pre;
+}
 
 
 /*----------------------*/

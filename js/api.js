@@ -81,11 +81,17 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getFundriveTotals: function(){
 			return $http.get(API_URL_BASE + '/fundrive/total');
 		},
+		getResources: function(){
+			return $http.get(API_URL_BASE + '/resource');
+		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
+		},
+		saveResources: function(resources){
+			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');

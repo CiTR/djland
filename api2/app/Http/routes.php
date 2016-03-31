@@ -31,10 +31,17 @@ Route::get('/', function () {
 
 
 //Member Resource Routes
-	Route::get('resource',function(){
+Route::group(array('prefix'=>'resource'),function(){
+
+	Route::get('/',function(){
 		return Option::where('djland_option','=','member_resources')->get();
 	});
-
+	Route::post('/',function(){
+		$resource = Option::where('djland_option','=','member_resources')->first();
+		$resource -> value = Input::get()['resources'];
+		return Response::json($resource->save());
+	});
+});
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 
