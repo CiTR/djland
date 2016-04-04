@@ -20,7 +20,6 @@ require_once("headers/menu_header.php");
 	<?php print_menu(); ?>
 
 		<div id="member_resources" class="center">
-			<p><strong>Member resources:</strong></p>
 			<div ng-bind-html='resources.htmlcontent.trusted'></div>
 		</div>
 		<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
