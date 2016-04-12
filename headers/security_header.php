@@ -95,13 +95,13 @@ function is_paid(){
 function is_trained(){
     global $pdo_db;
     //Session contains member id.
-    $query = "SELECT station_tour,technical_training,technical_training,production_training FROM membership WHERE id=:member_id";
+    $query = "SELECT station_tour,programming_training,technical_training,production_training FROM membership WHERE id=:member_id";
     $statement = $pdo_db->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if($result['station_tour'] != '0' &&  $result['technical_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
+        if($result['station_tour'] != '0' &&  $result['programming_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
         	return true;
         }else{
         	return false;
