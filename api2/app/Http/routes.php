@@ -785,11 +785,12 @@ Route::get('/adschedule/{date}',function($date = date){
 
 			$ads = Ad::where('time_block','=',$show_time->start_unix)->get();
 			$show_time->generated = false;
-			if(!$ads->first()){
+			if(count($ads) == 0){
 				$show_time->generated = true;
-				$ads = Ad::generateAds($show_time->start_unix,$show_time->duration,$show_time->id);
+				$show_time->ads = Ad::generateAds($show_time->start_unix,$show_time->duration,$show_time->id);
+			}else{
+				$show_time->ads = $ads;
 			}
-			$show_time->ads = $ads;
 			$show_time->date = date('l F jS g:i a',$show_time->start_unix);
 			$show_time->start = date('g:i a',$show_time->start_unix);
 		}
