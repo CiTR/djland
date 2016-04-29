@@ -113,6 +113,7 @@
                             });
                         });
                     }
+
             });
         }
         this.updateShowValues = function(element){
@@ -152,6 +153,7 @@
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+            this.updateSamPlays();
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -159,6 +161,7 @@
             this.end.setSeconds(this.end_second);
             this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+            this.updateSamPlays();
         }
 
         //Setting Show Times
@@ -271,7 +274,7 @@
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
                         if(this_.using_sam){
-                            this_.loadSamPlays();
+                            this_.updateSamPlays();
                         }
                         this_.loading = false;
                     });
@@ -365,7 +368,7 @@
                             });
                             this_.update();
                             if(this_.using_sam){
-                                this_.loadSamPlays();
+                                this_.updateSamPlays();
                             }
                             this_.loading = false;
                         });
@@ -655,7 +658,7 @@
             return djland_entry;
         };
         this.loadSamPlays = function () {
-            var this_ = this;
+            var this__ = this;
             call.getSamRecent(0).then(function (data) {
                 this_.samRecentPlays = [];
                 for (var samplay in data.data) {
@@ -672,6 +675,16 @@
             });
             this.sam_visible= false;
         };
+        this.updateSamPlays = function(){
+            var this_ = this;
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+                this_.samRecentPlays = [];
+                for (var samplay in data.data) {
+                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
+                }
+            });
+
+        }
 
 
         // Call Initialization function at end of controller
