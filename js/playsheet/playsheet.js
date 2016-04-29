@@ -153,7 +153,6 @@
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-            this.updateSamPlays();
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -161,7 +160,6 @@
             this.end.setSeconds(this.end_second);
             this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-            this.updateSamPlays();
         }
 
         //Setting Show Times
@@ -396,6 +394,8 @@
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
 
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+
+            this.updateSamPlays();
             console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
         });
         $scope.$watch('playsheet.info.end_time', function () {
@@ -405,6 +405,7 @@
             this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
             this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+            this.updateSamPlays();
             console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
         });
 
