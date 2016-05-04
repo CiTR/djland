@@ -80,13 +80,13 @@ class Show extends Model
 	if( (date('I',$week_0_start) =='0') && (date('I',$week_0_show_unix)=='1')){
 		$week_0_show_unix -= 3600;
 		}
-        if( (date('I',$week_1_start)=='1') && (date('I',$week_1_show_unix) == '0') ){    
+        if( (date('I',$week_1_start)=='1') && (date('I',$week_1_show_unix) == '0') ){
                 $week_1_show_unix += 3600;
             }
         if( (date('I',$week_1_start) =='0') && (date('I',$week_1_show_unix)=='1')){
                 $week_1_show_unix -= 3600;
                 }
-            if( (date('I',$week_2_start)=='1') && (date('I',$week_2_show_unix) == '0') ){    
+            if( (date('I',$week_2_start)=='1') && (date('I',$week_2_show_unix) == '0') ){
                 $week_2_show_unix += 3600;
             }
         if( (date('I',$week_2_start) =='0') && (date('I',$week_2_show_unix)=='1')){
@@ -168,8 +168,8 @@ class Show extends Model
 
         $xml[] = "<channel>";
         $xml[] = "<title>". $show['podcast_title'] . "</title>";
-
         $xml[] = "<description>" . $show['show_desc'] . "</description>";
+		$xml[] = "<language>en-us</language>"
         $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
         if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
