@@ -217,6 +217,12 @@ input, select, textarea, option{
 .padded-left{
     margin-left:10px;
 }
+.padded-right{
+	padding-right: 10px;
+}
+.double-margin-right{
+	margin-right: 40px;
+}
 .double-padded-top{
   padding-top:20px;
 }
@@ -377,6 +383,11 @@ input, select, textarea, option{
 .clearfix{
   clear:both;
 }
+
+/*
+index.php (login page) CSS
+*/
+
 
 
 /* CSS to make the YCBM Links not look bad and take up all the page width */
@@ -1078,12 +1089,13 @@ div#main {
   }
 
   #message{
-    padding:6px;
-    color:black;
-    position:fixed;
-    top:0;
-    left:40%;
-    background-color:mintcream;
+    margin:12px;
+    color:white;
+    position:static;
+	text-align: center;
+    //top:0;
+    //left:40%;
+    //background-color:mintcream;
     font-size:1.2em;
   }
 
