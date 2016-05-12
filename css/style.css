@@ -416,6 +416,13 @@ index.php (login page) CSS
   !important display:none;
 }
 
+/* LIBRARY page CSS */
+.library table{
+	/*width:1024px;*/
+	margin-left:auto;
+    margin-right:auto;
+}
+
 /* MENU STYLING CSS */
 #nav{
 	list-style:none;
