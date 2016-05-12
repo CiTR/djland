@@ -248,6 +248,22 @@ input, select, textarea, option{
   padding-top:2px;
 }
 
+.login-spacing-bar{
+	margin-top:7px;
+	margin-bottom:7px;
+	width=100%;
+	float:left;
+}
+
+.big-login-spacing-bar{
+	margin-top:7px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-bottom:7px;
+	width=100%;
+	float:left;
+}
+
 .overflow_hidden{
 	overflow:hidden;
 }

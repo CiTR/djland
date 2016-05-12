@@ -57,7 +57,9 @@ else {
 		<FORM METHOD=POST ACTION= <?php echo "'".$_SERVER['SCRIPT_NAME']."'"; ?> name='site_login' >
 			<h3>Welcome to DJ Land</h3>
 			<label for='username'>Login: </label><input type=text name='username' class='right double-margin-right'/><br/>
+			<div class='login-spacing-bar'></div>
 			<label for='password'>Password: </label><input type=password name='password' class='right double-margin-right'/><br/>
+			<div class='big-login-spacing-bar'></div>
 			<input type='submit' name='action' value='login'/>
 			<input type='submit' name='action' value='signup'/>
 		</FORM>
