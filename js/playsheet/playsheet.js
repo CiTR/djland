@@ -77,49 +77,48 @@
             playitem.start.setSeconds(0);
         };
         this.updateTime = function(){
-		var now = new Date();
-		call.getNextShowTime(this_.active_show.id,now).then(function(response){
-			var start_unix = response.data.start;
-			var end_unix = response.data.end;
-			this_.info.unix_time = response.data.start;
-			this_.start = new Date(start_unix * 1000);
-			this_.end = new Date(end_unix * 1000);
+            var now = new Date();
+            call.getNextShowTime(this_.active_show.id,now).then(function(response){
+                var start_unix = response.data.start;
+                var end_unix = response.data.end;
+                this_.info.unix_time = response.data.start;
+                this_.start = new Date(start_unix * 1000);
+                this_.end = new Date(end_unix * 1000);
 
 
-			this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
-			this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
-			this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-			this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-			this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-			this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-			this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-			this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-			//Populate Template Row, then add 5 rows
-			var show_date = this_.start.getDate();
-				     //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
+                this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
+                this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
+                this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
+                this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
+                this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
+                this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
+                this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
+                this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
+                //Populate Template Row, then add 5 rows
+                var show_date = this_.start.getDate();
+                                 //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
 
-			this_.updateEnd();
-			this_.updateStart();
+                this_.updateEnd();
+                this_.updateStart();
 
-			if(this_.info.id < 1){
-			call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-			    this_.promotions = response.data;
-			    console.log(this_.promotions);
-			},function(error){
-			    this_.log_error(error);
-			    call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-				this_.promotions = response.data;
-			    });
-			});
-		}
+                if(this_.info.id < 1){
+                    call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+                        this_.promotions = response.data;
+                    },function(error){
+                        this_.log_error(error);
+                        call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+                            this_.promotions = response.data;
+                        });
+                    });
+                }
             });
         }
         this.updateShowValues = function(element){
-
-            //When a new show is selected, updat all the information.
+            //When a new show is selected, update all the information.
+            
+            //Get the show object from shows member belongs to (if it exists)
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
             this.show = this.active_show.show;
-            console.log(this.active_show);
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
             this.info.edit_name = this.username;
@@ -270,7 +269,7 @@
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
                         if(this_.using_sam){
-                            this_.loadSamPlays();
+                            this_.updateSamPlays();
                         }
                         this_.loading = false;
                     });
@@ -321,7 +320,7 @@
 				});
 
                         });
-			//Get next show time from API, or best attempt if no showtimes
+			         //Get next show time from API, or best attempt if no showtimes
                        call.getNextShowTime(this_.active_show.id,now).then(function(response){
                             var start_unix = response.data.start;
                             var end_unix = response.data.end;
@@ -353,14 +352,14 @@
                                 this_.promotions = response.data;
                             },function(error){
                             this_.log_error(error);
-				//If it fails, try to load ads again
+				                //If it fails, try to load ads again
                                 call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
                                     this_.promotions = response.data;
                                 });
                             });
                             this_.update();
                             if(this_.using_sam){
-                                this_.loadSamPlays();
+                                this_.updateSamPlays();
                             }
                             this_.loading = false;
                         });
@@ -388,6 +387,8 @@
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
 
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+
+            this.updateSamPlays();
             console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
         });
         $scope.$watch('playsheet.info.end_time', function () {
@@ -397,6 +398,7 @@
             this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
             this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+            this.updateSamPlays();
             console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
         });
 
@@ -650,7 +652,7 @@
             return djland_entry;
         };
         this.loadSamPlays = function () {
-            var this_ = this;
+            var this__ = this;
             call.getSamRecent(0).then(function (data) {
                 this_.samRecentPlays = [];
                 for (var samplay in data.data) {
@@ -667,6 +669,16 @@
             });
             this.sam_visible= false;
         };
+        this.updateSamPlays = function(){
+            var this_ = this;
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+                this_.samRecentPlays = [];
+                for (var samplay in data.data) {
+                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
+                }
+            });
+
+        }
 
 
         // Call Initialization function at end of controller
