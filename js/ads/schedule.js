@@ -15,7 +15,8 @@ function Schedule(date){
 	this['cat-promises'] = Array();
 	this['html-promises'] = Array();
 	this.showtimes = Array();
-	if(!date) var date = this.formatDate(new Date());
+	if(!date) var date = $('.active-tab').attr('name');
+	console.log(date);
 	//Get initial Schedule
 	this.ready = this.getSchedule(date);
 
@@ -113,7 +114,9 @@ Schedule.prototype = {
 		}
 	},
 	formatDate:function(date){
+		console.log("date in:" + date);
 		date = new Date(date);
+		console.log(date);
 		return [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('-') +
 				" " +
 				[("0" + date.getHours() ).slice(-2),("0" + date.getMinutes()).slice(-2),("0" + date.getSeconds()).slice(-2)].join(':');

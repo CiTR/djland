@@ -280,12 +280,9 @@
             }else{
 
                 this.podcast = {};
-
-                //TODO load ads.
-
+                //Initiate Values
                 this.info.status = '1';
                 this.info.type='Live';
-
                 this.spokenword_hours = null;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
@@ -295,21 +292,22 @@
                     var shows = data.data.shows;
                     this_.member_shows = shows;
                     if(shows){
-                        //Cheat Code to get first active show.
+                        //Cheat Code to get first active show. Could change it to 
                         for(var show in this_.member_shows){
-                            console.log(shows[show].show.name.toString());
+                            //Set the active show to be the first show in list of active shows
                             this_.active_show = this_.member_shows[show];
                             this_.show = this_.active_show.show;
-
+                            //show_value is for the dropdown
                             this_.show_value = this_.active_show['id'];
+                            //Set show and podcast metadata
                             this_.info.show_id = parseInt(this_.active_show.id);
                             this_.info.host = this_.active_show.show.host;
                             this_.info.create_name = this_.info.host;
-
                             this_.podcast.author = this_.info.host;
                             this_.info.crtc = this_.active_show.crtc;
                             this_.info.lang = this_.active_show.lang || 'English';
 
+                            //For each default playitem, set the show_id so it is properly linked to the show
                             for(var playitem in this_.playitems){
                                 this_.playitems[playitem].show_id = this_.info.show_id;
                             }
