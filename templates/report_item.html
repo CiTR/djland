@@ -1,4 +1,4 @@
-<h3>{{playsheet.show.name}}</h3>
+<h3 class='double-padded-top'>{{playsheet.show.name}}</h3>
 <div class='text-center' ng-if='playsheet.status != 2'>(Draft)</div>
 <h4>{{playsheet.start_time}} - {{playsheet.end_time}}</h4>
 <table class='table-condensed crtc_report'>
@@ -8,7 +8,7 @@
 		<th>Album</th>
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Composer</th>
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Duration</th>
-		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist (New)</th>
 		<th>Cancon</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Femcon</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Instrumental</th>
@@ -31,18 +31,37 @@
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_inst==true">&#9745;</div><div ng-if="playitem.is_inst!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_part==true">&#9745;</div><div ng-if="playitem.is_part!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_hit==true">&#9745;</div><div ng-if="playitem.is_hit!=true">&#9744;</div></td>
-		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')"><div ng-if="playitem.is_theme==true">&#9745;</div><div ng-if="playitem.is_theme!=true">&#9744;</div></td>
-		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')"><div ng-if="playitem.is_background==true">&#9745;</div><div ng-if="playitem.is_background!=true">&#9744;</div></td>
+		<td ng-show="report.type=='socan' || report.type=='both'"><div ng-if="playitem.is_theme==true">&#9745;</div><div ng-if="playitem.is_theme!=true">&#9744;</div></td>
+		<td ng-show="report.type=='socan' || report.type=='both'"><div ng-if="playitem.is_background==true">&#9745;</div><div ng-if="playitem.is_background!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'">{{playitem.lang}}</td>
 		<td ng-show="report.type=='crtc' || report.type=='both'">{{playitem.crtc_category}}</td>
 	<tr>
 </table>
-<div ng-show="playsheet.ads.length > 0 && (report.type=='crtc' || report.type=='both')">
-	<h3>Ads</h3>
+<div ng-show="report.type=='crtc' || report.type=='both'">
+	<h3>Ads Scheduled</h3>
 	<table class='table-condensed report_table'>
-		<tr ng-repeat='ad in playsheet.ads'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
+		<tr><th>Name<th>Type<th>Time<th>Played</tr>		
+		<tr ng-repeat='ad in playsheet.ads'>
+			<td>{{ad.name}}</td>
+			<td>{{ad.type}}</td>
+			<td>{{ad.time}}</td>
+			<td><div ng-if="ad.played==1">&#9745;</div><div ng-if="ad.played==0">&#9744;</div></td>
+		</tr>
 	</table>
 </div>
+<?php if($using_sam): ?>
+	<div ng-show="report.type=='crtc' || report.type=='both'">
+		<h3>Ads Played in SAM</h3>
+		<div ng-show="playsheet.ads_played.length > 0">
+			<table class='table-condensed report_table'>
+				<tr ng-repeat='ad in playsheet.ads_played'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
+			</table>
+		</div>
+		<div ng-show="playsheet.ads_played.length == 0" class='text-center'>
+			No Ads Played.
+		</div>
+	</div>
+<?php endif; ?>
 	<h3>Spoken Word Duration</h3>
 	<div class='text-center'>
 		{{playsheet.spokenword_duration}} minutes
@@ -51,9 +70,37 @@
 	<h3>Percentage Totals</h3>
 	<table class='table-condensed report_table'>
 		<tr><th><th>Play Count<th>Percentage<th>Requirement</th>
-		<tr><th>Cancon</th><td>{{playsheet.totals.cancon[1]}} / {{playsheet.totals.cancon[0]}} </td><td>({{playsheet.totals.cancon[1]  / playsheet.totals.cancon[0] | percentage:2}})</td><td>{{playsheet.show.cc_req}} %</td></tr>
-		<tr><th>Femcon</th><td>{{playsheet.totals.femcon[1]}} / {{playsheet.totals.femcon[0]}} </td><td>({{playsheet.totals.femcon[1]  / playsheet.totals.femcon[0] | percentage:2}})</td><td>{{playsheet.show.fem_req}} %</td></tr>
-		<tr><th>Hit</th><td>{{playsheet.totals.hit[1]}} / {{playsheet.totals.hit[0]}} </td><td>({{playsheet.totals.hit[1]  / playsheet.totals.hit[0] | percentage:2}})</td><td>10%</td></tr>
+		<tr>
+			<th>Cancon Category 20</th>
+			<td>{{playsheet.totals.cc_20_count}} / {{playsheet.totals.cc_20_total}} </td>
+			<td ng-class='(playsheet.totals.cc_20_count/playsheet.totals.cc_20_total*100) >= playsheet.show.cc_20_req || playsheet.totals.cc_20_total == 0 ? "":"red"'>
+				({{playsheet.totals.cc_20_count/playsheet.totals.cc_20_total > 0 ? playsheet.totals.cc_20_count/playsheet.totals.cc_20_total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.cc_20_req}}%</td>
+		</tr> 
+		<tr>
+			<th>Cancon Category 30</th>
+			<td>{{playsheet.totals.cc_30_count}} / {{playsheet.totals.cc_30_total}} </td>
+			<td ng-class='(playsheet.totals.cc_30_count/playsheet.totals.cc_30_total*100) >= playsheet.show.cc_30_req || playsheet.totals.cc_30_total == 0 ? "":"red"'>
+				({{playsheet.totals.cc_30_count/playsheet.totals.cc_30_total > 0 ? playsheet.totals.cc_30_count/playsheet.totals.cc_30_total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.cc_30_req}}%</td>
+		</tr>
+		<tr>
+			<th>Femcon</th>
+			<td>{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}} </td>
+			<td ng-class='(playsheet.totals.femcon_count/playsheet.totals.total*100) >= playsheet.show.fem_req || playsheet.totals.total == 0 ? "" : "red"'>
+				({{playsheet.totals.femcon_count/playsheet.totals.total > 0 ? playsheet.totals.femcon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td>{{playsheet.show.fem_req}}%</td>
+		</tr>
+		<tr>
+			<th>Hit</th>
+			<td>{{playsheet.totals.hit_count}} / {{playsheet.totals.total}} </td>
+			<td ng-class='(playsheet.totals.hit_count/playsheet.totals.total*100) <= 10 || playsheet.totals.total == 0 ? "" : "red"'>
+				({{playsheet.totals.hit_count  / playsheet.totals.total > 0 ? playsheet.totals.hit_count  / playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td>10%</td></tr>
 	</table>
 </div>
 <hr>

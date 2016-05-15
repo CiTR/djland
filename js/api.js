@@ -35,7 +35,11 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShow: function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
-		getShowPlaysheets: function(show_id,offset){
+		getShowPlaysheets:function(show_id){
+			return $http.get(API_URL_BASE+'/show/'+show_id + '/playsheets');
+		},		
+		getMoreShowPlaysheets: function(show_id,offset){ 
+			if(!offset) offset = 0;
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
 		},
 		getShowEpisodes: function(show_id,offset){
@@ -65,8 +69,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getAdSchedule: function(){
 			return $http.get(API_URL_BASE+'/adschedule');
 		},
-		getReport: function(member_id,show_id,from,to){
-			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'member_id':member_id,'show_id':show_id,'from':from,'to':to}));
+		getReport: function(show_id,from,to,report_type){
+			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},
 		getFriends: function(){
 			return $http.get(API_URL_BASE+'/friends');
@@ -77,11 +81,17 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getFundriveTotals: function(){
 			return $http.get(API_URL_BASE + '/fundrive/total');
 		},
+		getResources: function(){
+			return $http.get(API_URL_BASE + '/resource');
+		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
+		},
+		saveResources: function(resources){
+			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');

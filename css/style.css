@@ -872,10 +872,10 @@ tr.playitems.socan > td > input.lang{
   }
 
   button.box {
-    background-color: transparent;
     background-image: none;;
   }
  button.socan, , .music_row_socan input, .music_row_socan button{
+    background-color: transparent;
     font-size:0.75em;
     max-width:90px;
   }
@@ -895,6 +895,9 @@ tr.playitems.socan > td > input.lang{
   left:0px;
   width:100%;
 }
+.crtc_totals > table > tbody {
+	width:100%;
+}
 
 
 /*
@@ -913,7 +916,7 @@ div#main {
 	line-height:1.3em;
 	position:relative;
 }
-#mainleft input, #mainleft textarea{
+#mainleft textarea{
 	width:75%;
 	margin: 5px;
 	padding:5px;
@@ -1258,7 +1261,17 @@ table.ads > tbody > tr > td > select.name, table.ads > tbody > tr > td > input.n
   top:100px;
   right:10px;
 }
-
+/*------------------*/
+/* Member Resources */
+/*------------------*/
+textarea.member_resources_edit{
+	width:100%;
+	min-height:300px;
+	font-size: 0.8em;
+	margin-left:auto;
+	margin-right:auto;
+	white-space:pre;
+}
 
 
 /*----------------------*/
@@ -1469,7 +1482,7 @@ table { border-collapse: collapse; }
 /*----------------------------*/
 
 .crtc_report{
-  width:1600px;
+  max-width:1600px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -1736,7 +1749,7 @@ height:auto;
 .table p, .table div {
 	display: table-row;
 }
-.table select, .table span, .table textarea {
+.table select, .table textarea {
 	display: table-cell;
 	padding: 3px;
 	vertical-align: top;

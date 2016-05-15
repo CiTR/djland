@@ -35,7 +35,7 @@
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.socan }">
+		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 
@@ -127,28 +127,28 @@
 		    <div id='container'>
 				<h3 class='double-padded-top'>Music</h3>
 				<table>
-					<tr class='music_row_heading border' ng-class="{socan: playsheet.socan }">
+					<tr class='music_row_heading border' ng-class="{socan: playsheet.info.socan }">
 						<th class='side-padded'>#</th>
-						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
-						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
+						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th><input value="Song" ng-class="{socan: playsheet.info.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th ng-show="playsheet.info.socan"><input ng-class="{socan: playsheet.info.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th ng-show="playsheet.info.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
+						<th ng-show="playsheet.info.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
 						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['cancon']}}" class="box cancon filled pad-top"></button>
 						<th><button tooltip="{{playsheet.help['femcon']}}" class="box femcon filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['instrumental']}}" class="box instrumental filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['partial']}}" class="box partial filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
-						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
-						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
+						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
+						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
 						<th><a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"/></th>
 						<th><th><th></th>
 					</tr>
 					<tbody ui-sortable id='playitems' ng-change='playsheet.checkIfComplete()' ng-update='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
-						<tr class='playitem border' ng-class="{socan: playsheet.socan }" playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
+						<tr class='playitem border' ng-class="{socan: playsheet.info.socan }" playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
 				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
@@ -222,7 +222,7 @@
 
 		</div>
 		<div class="crtc_totals">
-				<table class='col1'>
+				<table class='col1 table'>
 					<tr>
 						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>

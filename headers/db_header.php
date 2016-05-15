@@ -1,5 +1,5 @@
 <?php
-include_once("session_header.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
 //DB HEADER
 include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 global $station_info;
@@ -46,12 +46,6 @@ if($using_sam){
     }
 }
 function mysqli_result_dep($res, $row, $field=0) {
-//	echo 'called mysqli result';
-//	echo '<br/>';
-//	echo 'res:'.'<br/>';
-//	print_r($res);
-//	echo 'row:'.$row.'<br/>';
-//	echo 'field:'.$field.'<br/>';
 	if(is_object($res))
 		$res->data_seek($row);
 	else 	return false;
@@ -63,16 +57,6 @@ function mysqli_result_dep($res, $row, $field=0) {
 	else 	return false;
 
 }
-function getContent(){
-
-    if (0 === strlen(trim($content = file_get_contents('php://input'))))
-    {
-      $content = false;
-    }
-
-  return $content;
-}
-
 function CallAPI($method, $url, $data = false)
 {
     $curl = curl_init();
@@ -88,14 +72,15 @@ function CallAPI($method, $url, $data = false)
         case "PUT":
             curl_setopt($curl, CURLOPT_PUT, 1);
             break;
+	case "GET":
+		
+		break;
         default:
             if ($data)
                 $url = sprintf("%s?%s", $url, http_build_query($data));
     }
 
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+   
 
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -103,7 +88,6 @@ function CallAPI($method, $url, $data = false)
     $result = curl_exec($curl);
 
     curl_close($curl);
-
     return json_decode($result);
 }
 

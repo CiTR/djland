@@ -1,5 +1,6 @@
 <?php
 
+use App\Option as Option;
 use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;
@@ -28,6 +29,19 @@ Route::get('/', function () {
     return "Welcome to DJLand API 2.0";
 });
 
+
+//Member Resource Routes
+Route::group(array('prefix'=>'resource'),function(){
+
+	Route::get('/',function(){
+		return Option::where('djland_option','=','member_resources')->get();
+	});
+	Route::post('/',function(){
+		$resource = Option::where('djland_option','=','member_resources')->first();
+		$resource -> value = Input::get()['resources'];
+		return Response::json($resource->save());
+	});
+});
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 
@@ -67,14 +81,14 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
-
+	
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
-
+		
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
-
+		
 		Route::get('list',function(){
 			$full_list = Member::select('id','firstname','lastname')->get();
 			foreach ($full_list as $m) {
@@ -446,75 +460,140 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return Response::json($response);
 	});
 	Route::post('/report',function(){
-		$member_id = Input::get()['member_id'];
+		include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
+		//Get input variables and make sure they are set, otherwise abort with 400.
+		$member_id = isset($_SESSION['sv_id']) ? $_SESSION['sv_id'] : null;
+		if($member_id == null) return Response::json('You are not logged in');
+
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
+		if($from == null || $to == null) return Response::json("Not a valid range");
+		
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
-		$playsheets = Array();
-		$permissions = Member::find($member_id)->user->permission;
+		if($show_id == null) return Response::json("Not a valid show id");
+		
+		$report_type = isset(Input::get()['report_type']) ? Input::get()['report_type'] : null;
+		if($report_type == null) return Response::json("No report type specified");
 
+		//Initialize array for playsheets
+		$playsheets = array();
+		$playsheet_totals=array();
+
+		//If the member is staff or admin, the report should be for all shows
+		$permissions = Member::find($member_id)->user->permission;
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$shows = Show::all();
 		}else{
 			$shows =  Member::find($member_id)->shows;
 		}
+		//For each show available to the request user, get the playsheets for the period that match the specified show ID, or return all.
 		foreach($shows as $show){
-			if($show_id == 'all' || $show_id == $show['id']){
-				if($from != null && $to != null){
-					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from." 00:00:00")->where('start_time','<=',$to." 23:59:59")->get();
-				}else{
-					$ps[] = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->get();
-				}
+			if( $show_id=="all" || $show_id==$show['id']){
+				$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();	
 				foreach($ps as $sheet){
 					$playsheets[] = $sheet;
 				}
 			}
-
 		}
+		//Initialize overall totals
+		$totals = new stdClass();
+		$totals->total=0;
+		$totals->cc_20_total=0;
+		$totals->cc_20_count=0;
+		$totals->cc_30_total=0;
+		$totals->cc_30_count=0;
+		$totals->femcon_count=0;
+		$totals->hit_count=0;
+		$totals->new_count=0;
+		$totals->spokenword=0;
+		$totals->ads=0;
 
-		$total_ads = 0;
-		$total_spokenword = 0;
+		//create show_totals array
+		$show_totals = array();
+		//get totals for each playsheet		
 		foreach($playsheets as $p){
 			$playsheet = $p;
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
-			if( $p->start_time && $p->end_time){
-				$playsheet->ads = Historylist::where('date_played','<=',$p->end_time)->where('date_played','>=',$p->start_time)->where('songtype','=','A')->get();
+			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
+					
+			//initialize this playsheet's totals
+			$playsheet->totals = new stdClass();
+			$playsheet->totals->total=0;
+			$playsheet->totals->cc_20_total = 0;
+			$playsheet->totals->cc_20_count=0;
+			$playsheet->totals->cc_30_total=0;
+			$playsheet->totals->cc_30_count=0;
+			$playsheet->totals->femcon_count=0;
+			$playsheet->totals->hit_count=0;
+			$playsheet->totals->new_count=0;
+			$playsheet->totals->spokenword=0;
+			$playsheet->totals->ads=0;
+	
+			if($using_sam){
+				if( $playsheet->start_time && $playsheet->end_time){
+					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+				}
+				foreach($playsheet->ads_played as $ad){
+					$playsheet->totals->ads += floor($ad['duration']/1000);
+				}
 			}
-			$totals['cancon'][0] = 0;
-			$totals['femcon'][0] = 0;
-			$totals['cancon'][1] = 0;
-			$totals['femcon'][1] = 0;
-			$totals['hit'][0] = 0;
-			$totals['hit'][1] = 0;
-			$totals['ads'] = 0;
-			foreach($playsheet->ads as $ad){
-				$totals['ads'] += floor($ad['duration']/1000);
+			
+			//If this show hasn't been seen before, initialize it
+			if(!isset($show_totals[$playsheet->show_name])){
+				$show_totals[$playsheet->show['name']] = new stdClass();
+				$show_totals[$playsheet->show['name']]->total=0;
+				$show_totals[$playsheet->show['name']]->cc_20_total = 0;
+				$show_totals[$playsheet->show['name']]->cc_20_count=0;
+				$show_totals[$playsheet->show['name']]->cc_30_total=0;
+				$show_totals[$playsheet->show['name']]->cc_30_count=0;
+				$show_totals[$playsheet->show['name']]->femcon_count=0;
+				$show_totals[$playsheet->show['name']]->hit_count=0;
+				$show_totals[$playsheet->show['name']]->new_count=0;
+				$show_totals[$playsheet->show['name']]->spokenword=0;
+				$show_totals[$playsheet->show['name']]->ads=0;
+				
+				$show_totals[$playsheet->show['name']]->show = $playsheet->show;
+	
 			}
 			foreach($playsheet->playitems as $playitem){
-				//CANCON
-				$totals['cancon'][0] += 1;
-				if($playitem['is_canadian'] == '1') $totals['cancon'][1] += 1;
-				//FEMCON
-				$totals['femcon'][0] += 1;
-				if($playitem['is_fem'] == '1') $totals['femcon'][1] += 1;
-				//HIT
-				$totals['hit'][0] += 1;
-				if($playitem['is_hit'] == '1') $totals['hit'][1] += 1;
-
+				$playsheet->totals->total ++;
+				//Cat 20 and 30				
+				if($playitem['crtc_category']=='20'){
+					$playsheet->totals->cc_20_total ++;
+					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_20_count ++;
+				}else{
+					$playsheet->totals->cc_30_total ++;
+					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_30_count ++;
+				}				
+				//Femcon
+				if($playitem['is_fem'] == '1') $playsheet->totals->femcon_count ++;
+				//Hit
+				if($playitem['is_hit'] == '1') $playsheet->totals->hit_count ++;
+				//New 
+				if($playitem['is_new'] == '1') $playsheet->totals->new_count ++;
+	
+				//return Response::json($playsheet->totals);
 			}
+			
+			$playsheet->totals->spokenword = $playsheet->spokenword_duration;
+			$playsheet_totals[] = $playsheet;
 
-			$playsheet->totals = $totals;
-			$total_ads += $playsheet->totals['ads'];
-			$total_spokenword += $playsheet['spokenword_duration'];
+
+			//Update corresponding show totals, and overall
+			foreach($playsheet->totals as $key=>$item){
+				$show_totals[$playsheet->show['name']]->$key += $item;
+				$totals->$key += $item;
+			}
 		}
-		usort($playsheets,function($a,$b){
+		usort($playsheet_totals,function($a,$b){
 			$s1 = strtotime($a['start_time']);
 			$s2 = strtotime($b['start_time']);
 			return $s1-$s2;
 		});
-		return Response::json(array('playsheets'=>$playsheets,'totals'=>array('ads'=>$total_ads,'spokenword'=>$total_spokenword)));
+		return Response::json(array('playsheets'=>$playsheet_totals,'totals'=>$totals,'show_totals'=>$show_totals));
 	});
 
 	//Searching by Playsheet ID
@@ -725,9 +804,11 @@ Route::post('/adschedule',function(){
 	return Response::json($ads);
 });
 
-Route::get('/adschedule/{date}',function($date = date){
+Route::get('/adschedule',function(){
+	
 	date_default_timezone_set('America/Los_Angeles');
-	$formatted_date = date('Y-M-d',strtotime($date));
+	$date = implode('-',explode('/',$_GET['date']));	
+	$formatted_date = date('Y-m-d',strtotime($date));
 	$unix = strtotime($formatted_date);
 	$parsed_date = date_parse($formatted_date);
 	if($parsed_date["error_count"] == 0 && checkdate($parsed_date["month"], $parsed_date["day"], $parsed_date["year"])){
@@ -739,8 +820,8 @@ Route::get('/adschedule/{date}',function($date = date){
 
 		//Get Day of Week (0-6)
 		$day_of_week = date('w',strtotime($date));
-        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $week = (floor( (strtotime($date) - intval($day_of_week*$one_day)) /($one_day*7) ) % 2) + 1;
+        	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
+        	$week = (floor( (strtotime($date) - intval($day_of_week*$one_day)) /($one_day*7) ) % 2) + 1;
 
 
 		if($formatted_date == date('Y-M-d',strtotime('now'))){
@@ -794,7 +875,7 @@ Route::get('/adschedule/{date}',function($date = date){
 			$show_time->date = date('l F jS g:i a',$show_time->start_unix);
 			$show_time->start = date('g:i a',$show_time->start_unix);
 		}
-		return $shows;
+		return Response::json($shows);
 	}else{
 		http_response_code('400');
 		return "Not a Valid Date: {$formatted_date}";
