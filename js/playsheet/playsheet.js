@@ -199,6 +199,7 @@
             var this_ = this;
             //If playsheet exists, load it.
             if(this.info.id > 0){
+                //Get
                 call.getPlaysheetData(this.info.id).then(function(data){
                     var playsheet = data.data;
                     this_.info = {};

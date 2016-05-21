@@ -9,13 +9,23 @@ function Member(id){
 		this.interest_callback = this._queryInterests();
 		this.permission_callback = this._queryPermissions();
 		this.user_callback = this._queryUser();
-		$.when(this.info_callback, this.interest_callback, this.permission_callback,this.user_callback).then(function(info,interests,permissions,user){
+		this.show_callback = this._queryShows();
+
+		$.when(
+			this.info_callback,
+			this.interest_callback,
+			this.show_callback,
+			this.permission_callback,
+			this.user_callback
+			).then(function(info,interests,shows,permissions,user){
 			this_._initInfo(info[0]);
 			this_._initInterests(interests[0]);
+			this_._initShows(shows[0]);
 			this_._initPermissions(permissions[0]);
 			this_._initUser(user[0]);
 			this_.displayInfo();
 			this_.displayInterests();
+			this_.displayShows();
 			this_.displayPermissions();
 			this_.displayUser();
 			//console.log(this_);
@@ -79,10 +89,18 @@ Member.prototype = {
 	_initInterests:function(membership_years){
 		this.membership_years = membership_years;
 		document.getElementById('membership_year').options.length = 0;
+		var membership_year = $('#membership_year');
 		for(var year in membership_years){
-			$('#membership_year').append("<option value="+year+">"+year+"</option>");
+			membership_year.append("<option value="+year+">"+year+"</option>");
 		}
 
+	},
+	_initShows:function(shows){
+		this.member_shows = shows;
+		var member_shows_holder = $('#member_shows');
+		for(var show in this.member_shows){
+			member_shows_holder.append("<li value='"+show.id+"' class='removal'>"+show.name+"</li>");
+		}
 	},
 	_initPermissions:function(permissions){
 		this.permissions ={};
@@ -107,6 +125,15 @@ Member.prototype = {
 		return $.ajax({
 			type:"GET",
 			url: "api2/public/member/"+this_.member_id + "/years",
+			dataType: "json",
+			async: true
+		});
+	},
+	_queryShows:function(){
+		var this_ = this;
+		return $.ajax({
+			type:"GET",
+			url: "api2/public/member/"+this_.member_id +"/shows",
 			dataType: "json",
 			async: true
 		});
@@ -206,6 +233,10 @@ Member.prototype = {
 		}
 		setCheckbox(m['paid'],'paid');
 
+	},displayShows:function(){
+		for(var show in this.member_shows){
+
+		}
 	},displayPermissions:function(){
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);

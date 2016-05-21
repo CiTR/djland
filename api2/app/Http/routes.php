@@ -30,18 +30,6 @@ Route::get('/', function () {
 });
 
 
-//Member Resource Routes
-Route::group(array('prefix'=>'resource'),function(){
-
-	Route::get('/',function(){
-		return Option::where('djland_option','=','member_resources')->get();
-	});
-	Route::post('/',function(){
-		$resource = Option::where('djland_option','=','member_resources')->first();
-		$resource -> value = Input::get()['resources'];
-		return Response::json($resource->save());
-	});
-});
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 
@@ -81,6 +69,20 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
+
+
+	//Member Resource Routes
+	Route::group(array('prefix'=>'resource'),function(){
+
+		Route::get('/',function(){
+			return Option::where('djland_option','=','member_resources')->get();
+		});
+		Route::post('/',function(){
+			$resource = Option::where('djland_option','=','member_resources')->first();
+			$resource -> value = Input::get()['resources'];
+			return Response::json($resource->save());
+		});
+	});
 	
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
@@ -89,13 +91,94 @@ Route::group(['middleware' => 'auth'], function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
 		
-		Route::get('list',function(){
-			$full_list = Member::select('id','firstname','lastname')->get();
-			foreach ($full_list as $m) {
-				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
+		Route::get('search',function(){
+			/* 
+			 * Search Array:
+			 * ['search_parameter'] (name,interest,member_type)
+			 * ['search_value'] 
+			 * ['paid'] (1,0,'both')
+			 * ['membership_year'] ('all','2015/2016' ...)
+ 			 * ['has_show'] (1,0) *0 returns both.
+			 * ['order_by'] (renew_date,join_date,lastname,firstname,member_type)
+			 */
+			$search_parameter = Input::get()['search_parameter'];
+			$search_value = Input::get()['search_value'];
+			$paid = Input::get()['paid'];
+			$membership_year = Input::get()['membership_year'];
+			$has_show = Input::get()['has_show'];
+			$order_by = Input::get()['order_by'];
+
+			//Create base query.
+			$query = DB::table('membership as m')
+			->join('membership_years as my','m.id','=','my.member_id')
+			->leftJoin('member_show as ms','m.id','=','ms.member_id')
+			->select('m.id','m.firstname','m.lastname','my.membership_year','m.comments','m.primary_phone','m.email','m.member_type');
+
+			//Handle Search Type
+			switch($search_parameter){
+				case 'name':
+					$search_terms = explode(' ',$search_value);
+					$search_term_count = sizeof($search_terms);
+					if($search_term_count == 2){
+						//Assume we are searching "firstname lastname" or "lastname firstname"
+						$query->orWhere(function($subquery){
+							$subquery->where('m.firstname','LIKE','%'.$search_terms[0].'%')->where('m.lastname','LIKE','%'.$search_terms[1].'%');
+						})->orWhere(function($subquery){
+							$subquery->where('lm.astname','LIKE','%'.$search_terms[0].'%')->where('m.firstname','LIKE','%'.$search_terms[1].'%');
+						});
+					}else{
+						//Assume general search
+						$query->where('m.firstname','LIKE','%'.$search_value.'%')->orWhere('lastname','LIKE','%'.$search_value.'%');
+					}
+					break;
+				case 'interest':
+					$query->where('my.'.$search_value,'=','1');
+					break;
+				case 'member_type':
+					$query->where('m.member_type','=',$search_value);
+					break;
+				default:
+					break;
 			}
+			//Paid Status
+			if($paid != 'both'){
+				$query->where('my.paid','=',$paid);
+			}
+			//Return most recent membership year for member if no specific year chosen
+			if($membership_year != 'all'){
+				$query->where('my.membership_year','=',$membership_year);
+			}else{
+				$query->where('my.membership_year','=',function($subquery){
+					$subquery->from('membership_years as my_sub')->orderBy('my_sub.membership_year','DESC')->limit('1');
+				});
+			}
+			//If filtering by show
+			if($has_show == 1){
+				$query->whereIn('m.id',function($subquery){
+					$query->select('ms.member_id');
+				});
+			}
+			//Ordering
+			switch($order_by){
+				case 'created':
+                    $query->orderBy('my.create_date','DESC');
+                    break;
+                case 'firstname':
+                    $query->orderBy('m.firstname','ASC');
+                    break;
+                case 'lastname':
+                    $query->orderBy('m.lastname','ASC');
+                    break;
+                case 'member_type':
+                    $query->orderBy('m.member_type','DESC');
+                    break;
+                default:
+                    $query->orderBy('m.id','DESC');
+                    break;
+			}
+			$result = $query->get();
 			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $members;
+			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
 			else return "Nope";
 
 		});
@@ -119,7 +202,7 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
 
-			Route::post('/comments',function($id){
+			Route::post('comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
 				return Response:: json($member -> save());
@@ -258,7 +341,7 @@ Route::group(['middleware' => 'auth'], function(){
 /* Show Routes */
 Route::group(array('prefix'=>'show'),function(){
 	//Creating new Show
-	Route::post('/',function(){
+	Route::put('/',function(){
 		$show = Show::create((array) Input::get()['show']);
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];
@@ -429,6 +512,29 @@ Route::get('/social/{id}',function($show_id = id){
 
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
+	//Get: Return List of Playsheets descending by date updated.
+	Route::get('/',function(){
+		return Playsheet::orderBy('EDITED_AT','desc')->select('id','EDITED_AT');
+	});
+	//Create a new playsheet
+	Route::put('/',function(){
+		return Playsheet::create((array)Input::get()['playsheet']);
+	});
+	Route::group(array('prefix'=>'{id}'),function($id = id){
+		//Update Playsheet Information
+		Route::post('/',function($id){
+			return Playsheet::find($id)->update((array) Input::get()['playsheet']);
+		});
+		Route::group(array('prefix'=>'playitem'),function($id){
+			//Add a playitem to the playsheet
+			Route::put('/',function($id){
+				return Playitem::create((array) Input::get()['playitem']);
+			});
+		});
+	});
+
+
+
 	Route::get('/',function(){
 		return $playsheets = Playsheet::orderBy('id','desc')->select('id')->get();
 	});

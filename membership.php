@@ -241,10 +241,13 @@
 					<div class='col6'>Secondary Number:</div>
 					<div class='col6'><input id='secondary_phone' name='phone2' placeholder='Secondary Number' maxlength='10' onKeyPress="return numbersonly(this, event)"/></div>
 				</div>
+				<div class='contrainerrow'>
+					<ol class='inline-list col1 member_shows'>
 
+					</ol>
+				</div>
 				<hr>
 				<div class='containerrow'>
-
 					<div class='col2'>
 						<div class='col4'>Interests for: </div><div class='side-padded'><select class='left' id ='membership_year'></select></div>
 					</div>
