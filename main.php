@@ -1,7 +1,7 @@
 <?php
 include_once("headers/session_header.php");
 require_once("headers/menu_header.php");
-include_once("license_footer.php");
+//include_once(license_footer.php");
 ?>
 <html>
 	<head>

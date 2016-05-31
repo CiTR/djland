@@ -3,7 +3,7 @@ include_once("headers/session_header.php");
 require_once('headers/login_header.php');
 require_once('headers/db_header.php');
 require_once("headers/password.php");
-include_once("license_footer.php");
+//include_once("license_footer.php");
 //echo '<p>after password';
 //header("HTTP/1.0 302 Redirect\r\n");
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
