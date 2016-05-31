@@ -98,7 +98,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                 <input readonly class='wideinput' id='show_image' ng-model='show.info.show_img'>
                 <div class='double-padded-top' ng-controller="FileUploadCtrl">
                     <div  class="row">
-                        <label for="fileToUpload">Either choose files, or drag files</label><br/>
+						<label for="fileToUpload">Either choose files, or drag files. Accepted image formats are .png, .jpg, and .gif. </br>We recommend a size of at least 1400pxx1400px for iTunes Podcasting Support</label><br/>
                         <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
                     </div>
                     <div  id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
@@ -152,7 +152,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
-			<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
+						<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
                         <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>
