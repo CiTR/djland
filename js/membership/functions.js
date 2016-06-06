@@ -207,21 +207,21 @@ function decodeHTML(str){
                 return String.fromCharCode(dec);
             });
       }
-function queryMembers(search_paramenter,search_value,paid,membership_year,has_show,order_by){
-	var ajaxRequest = $.ajax({
+function queryMembers(search_parameter,search_value,paid,membership_year,has_show,order_by){
+	console.log('querying');
+	return $.ajax({
 		type:"GET",
 		url: "api2/public/member/search",
 		data: {
-			'search_parameter':search_paramenter,
+			'search_parameter':search_parameter,
 			'search_value':search_value,
 			'paid':paid,
 			'membership_year':membership_year,
 			'has_show':has_show,
-			'order_by':order_by
+			'order_by':order_by,
 		},dataType:'json',
 		async:true
 	});
-	return ajaxRequest;
 	/*
 	return $.ajax({
 		type:"GET",
@@ -279,7 +279,7 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		year = get('year_select',null,'search');
 	}
 	var has_show = 0;
-	$.when(queryMembers(search_by ,value ,paid ,year ,has_show ,order_by)).then(function(data){
+	$.when(queryMembers(search_by ,value ,paid ,year ,'0' ,order_by)).then(function(data){
 		$('#search_loading').hide();
 		var member_result_table = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');

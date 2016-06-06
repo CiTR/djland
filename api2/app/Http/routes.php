@@ -91,7 +91,7 @@ Route::group(['middleware' => 'auth'], function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
 		
-		Route::get('search',function(){
+		Route::get('/search',function(){
 			/* 
 			 * Search Array:
 			 * ['search_parameter'] (name,interest,member_type)
@@ -111,7 +111,7 @@ Route::group(['middleware' => 'auth'], function(){
 			//Create base query.
 			$query = DB::table('membership as m')
 			->join('membership_years as my','m.id','=','my.member_id')
-			->leftJoin('member_show as ms','m.id','=','ms.member_id')
+			->join('member_show as ms','m.id','=','ms.member_id')
 			->select('m.id','m.firstname','m.lastname','my.membership_year','m.comments','m.primary_phone','m.email','m.member_type');
 
 			//Handle Search Type
@@ -119,13 +119,15 @@ Route::group(['middleware' => 'auth'], function(){
 				case 'name':
 					$search_terms = explode(' ',$search_value);
 					$search_term_count = sizeof($search_terms);
+					print_r($search_terms);
 					if($search_term_count == 2){
 						//Assume we are searching "firstname lastname" or "lastname firstname"
 						$query->orWhere(function($subquery){
 							$subquery->where('m.firstname','LIKE','%'.$search_terms[0].'%')->where('m.lastname','LIKE','%'.$search_terms[1].'%');
-						})->orWhere(function($subquery){
-							$subquery->where('lm.astname','LIKE','%'.$search_terms[0].'%')->where('m.firstname','LIKE','%'.$search_terms[1].'%');
+						})->orWhere(function($subquery,$search_terms){
+							$subquery->where('m.lastname','LIKE','%'.$search_terms[0].'%')->where('m.firstname','LIKE','%'.$search_terms[1].'%');
 						});
+						
 					}else{
 						//Assume general search
 						$query->where('m.firstname','LIKE','%'.$search_value.'%')->orWhere('lastname','LIKE','%'.$search_value.'%');
@@ -138,9 +140,10 @@ Route::group(['middleware' => 'auth'], function(){
 					$query->where('m.member_type','=',$search_value);
 					break;
 				default:
+					print_r('Default');
 					break;
 			}
-			//Paid Status
+			/*//Paid Status
 			if($paid != 'both'){
 				$query->where('my.paid','=',$paid);
 			}
@@ -150,7 +153,9 @@ Route::group(['middleware' => 'auth'], function(){
 			}else{
 				$query->where('my.membership_year','=',function($subquery){
 					$subquery->from('membership_years as my_sub')->orderBy('my_sub.membership_year','DESC')->limit('1');
+					print_r($subquery);
 				});
+
 			}
 			//If filtering by show
 			if($has_show == 1){
@@ -175,7 +180,7 @@ Route::group(['middleware' => 'auth'], function(){
                 default:
                     $query->orderBy('m.id','DESC');
                     break;
-			}
+			}*/
 			$result = $query->get();
 			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
