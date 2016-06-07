@@ -83,19 +83,19 @@ Route::group(['middleware' => 'auth'], function(){
 			return Response::json($resource->save());
 		});
 	});
-	
+
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
-		
+
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
-		
+
 		Route::get('/search',function(){
-			/* 
+			/*
 			 * Search Array:
 			 * ['search_parameter'] (name,interest,member_type)
-			 * ['search_value'] 
+			 * ['search_value']
 			 * ['paid'] (1,0,'both')
 			 * ['membership_year'] ('all','2015/2016' ...)
  			 * ['has_show'] (1,0) *0 returns both.
@@ -119,18 +119,16 @@ Route::group(['middleware' => 'auth'], function(){
 				case 'name':
 					$search_terms = explode(' ',$search_value);
 					$search_term_count = sizeof($search_terms);
-					print_r($search_terms);
 					if($search_term_count == 2){
 						//Assume we are searching "firstname lastname" or "lastname firstname"
-						$query->orWhere(function($subquery){
-							$subquery->where('m.firstname','LIKE','%'.$search_terms[0].'%')->where('m.lastname','LIKE','%'.$search_terms[1].'%');
-						})->orWhere(function($subquery,$search_terms){
-							$subquery->where('m.lastname','LIKE','%'.$search_terms[0].'%')->where('m.firstname','LIKE','%'.$search_terms[1].'%');
+						$query->where(function($subquery)use($search_terms){
+							$subquery->whereRaw('(m.firstname LIKE "%'.$search_terms[0].'%" AND m.lastname LIKE "%'.$search_terms[1].'%")')->orWhereRaw('(m.firstname LIKE "%'.$search_terms[1].'%" and m.lastname LIKE "%'.$search_terms[0].'%")');
 						});
-						
 					}else{
 						//Assume general search
-						$query->where('m.firstname','LIKE','%'.$search_value.'%')->orWhere('lastname','LIKE','%'.$search_value.'%');
+						$query->where(function($subquery)use($search_value){
+							$subquery->where('m.firstname','LIKE','%'.$search_value.'%')->orWhere('lastname','LIKE','%'.$search_value.'%');
+						});
 					}
 					break;
 				case 'interest':
@@ -143,24 +141,22 @@ Route::group(['middleware' => 'auth'], function(){
 					print_r('Default');
 					break;
 			}
-			/*//Paid Status
+			//Paid Status
 			if($paid != 'both'){
 				$query->where('my.paid','=',$paid);
 			}
+
 			//Return most recent membership year for member if no specific year chosen
 			if($membership_year != 'all'){
-				$query->where('my.membership_year','=',$membership_year);
+				$query->having('my.membership_year','=',$membership_year);
 			}else{
-				$query->where('my.membership_year','=',function($subquery){
-					$subquery->from('membership_years as my_sub')->orderBy('my_sub.membership_year','DESC')->limit('1');
-					print_r($subquery);
-				});
-
+				$query->having('my.membership_year','=',DB::raw('(SELECT my2.membership_year FROM membership_years as my2 WHERE my2.id = my.id ORDER BY my2.membership_year DESC LIMIT 1)'));
 			}
+
 			//If filtering by show
 			if($has_show == 1){
 				$query->whereIn('m.id',function($subquery){
-					$query->select('ms.member_id');
+					$subquery->select('ms.member_id');
 				});
 			}
 			//Ordering
@@ -180,8 +176,9 @@ Route::group(['middleware' => 'auth'], function(){
                 default:
                     $query->orderBy('m.id','DESC');
                     break;
-			}*/
+			}
 			$result = $query->get();
+			echo $query->toSql();
 			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
 			else return "Nope";
@@ -580,10 +577,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
 		if($from == null || $to == null) return Response::json("Not a valid range");
-		
+
 		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
 		if($show_id == null) return Response::json("Not a valid show id");
-		
+
 		$report_type = isset(Input::get()['report_type']) ? Input::get()['report_type'] : null;
 		if($report_type == null) return Response::json("No report type specified");
 
@@ -601,7 +598,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		//For each show available to the request user, get the playsheets for the period that match the specified show ID, or return all.
 		foreach($shows as $show){
 			if( $show_id=="all" || $show_id==$show['id']){
-				$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();	
+				$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();
 				foreach($ps as $sheet){
 					$playsheets[] = $sheet;
 				}
@@ -622,14 +619,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 		//create show_totals array
 		$show_totals = array();
-		//get totals for each playsheet		
+		//get totals for each playsheet
 		foreach($playsheets as $p){
 			$playsheet = $p;
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
 			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
-					
+
 			//initialize this playsheet's totals
 			$playsheet->totals = new stdClass();
 			$playsheet->totals->total=0;
@@ -642,7 +639,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->new_count=0;
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
-	
+
 			if($using_sam){
 				if( $playsheet->start_time && $playsheet->end_time){
 					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
@@ -651,7 +648,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 					$playsheet->totals->ads += floor($ad['duration']/1000);
 				}
 			}
-			
+
 			//If this show hasn't been seen before, initialize it
 			if(!isset($show_totals[$playsheet->show_name])){
 				$show_totals[$playsheet->show['name']] = new stdClass();
@@ -665,30 +662,30 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show_totals[$playsheet->show['name']]->new_count=0;
 				$show_totals[$playsheet->show['name']]->spokenword=0;
 				$show_totals[$playsheet->show['name']]->ads=0;
-				
+
 				$show_totals[$playsheet->show['name']]->show = $playsheet->show;
-	
+
 			}
 			foreach($playsheet->playitems as $playitem){
 				$playsheet->totals->total ++;
-				//Cat 20 and 30				
+				//Cat 20 and 30
 				if($playitem['crtc_category']=='20'){
 					$playsheet->totals->cc_20_total ++;
 					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_20_count ++;
 				}else{
 					$playsheet->totals->cc_30_total ++;
 					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_30_count ++;
-				}				
+				}
 				//Femcon
 				if($playitem['is_fem'] == '1') $playsheet->totals->femcon_count ++;
 				//Hit
 				if($playitem['is_hit'] == '1') $playsheet->totals->hit_count ++;
-				//New 
+				//New
 				if($playitem['is_new'] == '1') $playsheet->totals->new_count ++;
-	
+
 				//return Response::json($playsheet->totals);
 			}
-			
+
 			$playsheet->totals->spokenword = $playsheet->spokenword_duration;
 			$playsheet_totals[] = $playsheet;
 
@@ -916,9 +913,9 @@ Route::post('/adschedule',function(){
 });
 
 Route::get('/adschedule',function(){
-	
+
 	date_default_timezone_set('America/Los_Angeles');
-	$date = implode('-',explode('/',$_GET['date']));	
+	$date = implode('-',explode('/',$_GET['date']));
 	$formatted_date = date('Y-m-d',strtotime($date));
 	$unix = strtotime($formatted_date);
 	$parsed_date = date_parse($formatted_date);
@@ -997,7 +994,7 @@ Route::get('/adschedule',function(){
 
 
 
-Route::get('/promotions/{unixtime}-{duration}/{show_id}',function($unixtime = unixtime,$duration = duration,$show_id = show_id){	
+Route::get('/promotions/{unixtime}-{duration}/{show_id}',function($unixtime = unixtime,$duration = duration,$show_id = show_id){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
 	if(sizeof($ads) > 0) return Response::json($ads);
 	else return Ad::generateAds($unixtime,$duration,$show_id);
