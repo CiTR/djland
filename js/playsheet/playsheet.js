@@ -439,7 +439,7 @@
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
 
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            this.updateSamPlays();
+            this_.updateSamPlays();
 			this_.getNewUnix();
 
         });
@@ -450,7 +450,7 @@
             this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
             this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            this.updateSamPlays();
+            this_.updateSamPlays();
             console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
 			this_.getNewUnix();
         });
