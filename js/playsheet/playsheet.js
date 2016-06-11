@@ -153,6 +153,7 @@
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -196,6 +197,50 @@
 
             });
         }
+		this.getNewUnix = function(){
+			if(this.loading == true) return;
+			//convert to seconds from javascripts milliseconds
+			var start_unix = this.start / 1000;
+			var end_unix = this.end / 1000;
+
+			//get minutes for start, and push unix to 0/30 minute mark on closest hour
+			var minutes = this.start.getMinutes();
+			start_unix-=minutes;
+			if(minutes >= 45){
+				//roll to the next hour by adding 3600s
+				start_unix+=60*60;
+			}else if(minutes < 45 && minutes >= 15){
+				//set to 30 minutes through by adding 1800s
+				start_unix+=30*60;
+			}else{
+				//already at zero minutes.
+			}
+			//Get minutes for end, and push unix to 0/30 minute mark on closes hour
+			minutes = this.end.getMinutes();
+			if(minutes >= 45){
+				//roll to the next hour by adding 3600s
+				end_unix+=60*60;
+			}else if(minutes < 45 && minutes >= 15){
+				//set to 30 minutes through by adding 1800s
+				end_unix+=30*60;
+			}else{
+				//already at zero minutes.
+			}
+
+			this.start_unix = start_unix;
+			this.end_unix = end_unix;
+			var duration = start_unix - end_unix;
+			if(this_.info.id < 1){
+				call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+					this_.promotions = response.data;
+				},function(error){
+					this_.log_error(error);
+					call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+						this_.promotions = response.data;
+					});
+				});
+			}
+		}
 
         //Initialization of Playsheet
         this.init = function(){
@@ -394,9 +439,9 @@
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
 
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-
             this.updateSamPlays();
-            console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
+			this_.getNewUnix();
+
         });
         $scope.$watch('playsheet.info.end_time', function () {
             this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy/MM/dd HH:mm:ss');
@@ -407,6 +452,7 @@
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
             this.updateSamPlays();
             console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
+			this_.getNewUnix();
         });
 
 
@@ -749,7 +795,7 @@ $(document).ready(function(){
     var fem_element = $('#fem_total');
     var playlist_element = $('#playlist_total');
     var hit_element = $('#hit_total');
-    
+
     setInterval(function(){
         crtc_totals();
     },3000);
@@ -757,7 +803,7 @@ $(document).ready(function(){
         var playitems_count = 0;
         var can_2_count = 0;
         var can_3_count = 0;
-        
+
         var can_2_total = 0;
         var can_3_total = 0;
         var fem_total = 0;
@@ -769,7 +815,7 @@ $(document).ready(function(){
             if($(this).find('button.femcon').hasClass('filled')) fem_total ++;
             if($(this).find('button.playlist').hasClass('filled')) playlist_total ++;
             if($(this).find('button.hit').hasClass('filled')) hit_total ++;
-            
+
             if($(this).find('select.crtc_category').val() == '20'){
                 can_2_count ++;
                 if($(this).find('button.cancon').hasClass('filled')) can_2_total ++;
@@ -781,15 +827,15 @@ $(document).ready(function(){
         can_2_element.text((can_2_total / (can_2_count!=0?can_2_count:1) * 100).toFixed(0) + "%");
         if(can_2_total/(can_2_count!=0?can_2_count:1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
         else can_2_element.removeClass('red');
-        
+
         can_3_element.text((can_3_total / (can_3_count!=0?can_3_count:1) * 100).toFixed(0) + "%");
          if(can_3_total/(can_3_count!=0?can_3_count:1) * 100 < can_3_required && can_3_count > 0) can_3_element.addClass('red');
         else can_3_element.removeClass('red');
-        
+
         fem_element.text((fem_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
          if(fem_total/(playitems_count!=0?playitems_count:1) * 100 < fem_required && playitems_count > 0) fem_element.addClass('red');
         else fem_element.removeClass('red');
-        
+
         playlist_element.text((playlist_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
         if(playlist_total/(playitems_count!=0?playitems_count:1) * 100 < playlist_required && playitems_count > 0) playlist_element.addClass('red');
         else playlist_element.removeClass('red');

@@ -18,7 +18,7 @@ function login ($username, $raw_password, $set_cookie) {
 	//Got to do the global
 	global $db,$pdo_db, $sv_username, $sv_login_fails;
 	global $cookiename_id, $cookiename_pass;
-	
+
 	// Query for information relating to account.
 	$user_query = "SELECT u.username, u.id, u.member_id, u.login_fails, u.password AS hash, gm.operator, gm.administrator, gm.staff, gm.workstudy,gm.volunteer,gm.dj,gm.member
 					FROM user AS u INNER JOIN group_members AS gm ON u.id = gm.user_id WHERE (u.username = :username AND gm.operator='1') OR (u.username= :username AND u.status LIKE '%Enabled%')";
@@ -27,8 +27,8 @@ function login ($username, $raw_password, $set_cookie) {
 		$user_statement = $pdo_db->prepare($user_query);
 		$user_statement->bindValue(':username',$username);
 		$user_statement->execute();
-		$user_result = $user_statement->fetch(PDO::FETCH_ASSOC);	
-		
+		$user_result = $user_statement->fetch(PDO::FETCH_ASSOC);
+
 		if(password_verify($raw_password,$user_result['hash'])){
 			$status = session_status();
 			switch($status){
@@ -45,7 +45,7 @@ function login ($username, $raw_password, $set_cookie) {
 			}
 			$_SESSION['sv_username'] = $user_result['username'];
 			$_SESSION['sv_id'] = $user_result['member_id'];
-			$_SESSION['sv_login_fails'] = $user_result['login_fails']; 
+			$_SESSION['sv_login_fails'] = $user_result['login_fails'];
 			/*	NOT USING COOKIES
 				$cookie_value = hash(time());
 				$insert_cookie = "UPDATE users SET cookie = :cookie WHERE username = :username";
@@ -58,8 +58,8 @@ function login ($username, $raw_password, $set_cookie) {
 			*/
 			return true;
 		}else{
-			echo "Incorrect Password";
-			
+			//echo "Incorrect Password";
+
 			$login_fail_query = "UPDATE users SET login_fails = :login_fails WHERE id=:id";
 			$login_fail_statement = $pdo_db->prepare($login_fail_query);
 			$login_fail_statement ->bindValue(':login_fails',$user_result['login_fails']+1);

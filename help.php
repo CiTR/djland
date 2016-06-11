@@ -61,7 +61,7 @@ $SAM  = array(
 "How do I play a track?",
 "Everything I play sounds really weird, what is wrong?",
 "After a song finishes, nothing happens. It won't play the next song automatically.",
-"I've loaded all of my songs into the queue, and it keeps playing a random son instead, what do I do?" ) ,
+"I've loaded all of my songs into the queue, and it keeps playing a random song instead, what do I do?" ) ,
 "answer"=>array(
 "Click on layout (found in the top menu bar), then hover over load, and click 'load default'. It should now go back to normal.<br> <img src='images/help/LAYOUT.png'>",
 "Check the faders on the board for SAM A and SAM B are up and turned on, also make sure that 'Air' is lighter on Deck A, and 'Cue' is lighter on Deck B. If there's still no sound, check the volume faders within SAM.<br><img src='images/help/AIRandCUE.png'>",

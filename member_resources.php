@@ -37,6 +37,7 @@ error_reporting(E_ALL);
 				<li>Interested in spoken word? Read our <a onclick="javascript:pageTracker._trackPageview('/downloads/wp-content/uploads/2009/06/SpokenWordFAQ.pdf');"  href="http://www.citr.ca/wp-content/uploads/2009/06/SpokenWordFAQ.pdf">Spoken Word FAQ</a></li>
 				<li>Watch this video to learn <a onclick="javascript:pageTracker._trackPageview('/outgoing/www.youtube.com/watch?v=xvJciUR_ZGU');"  href="http://www.youtube.com/watch?v=xvJciUR_ZGU">How to Submit Your Podcasts to itunes</a>.</li>
 				<li>Check out this <a onclick="javascript:pageTracker._trackPageview('/downloads/wp-content/uploads/2009/06/Trans-Style-Guide.pdf');"  href="http://www.citr.ca/wp-content/uploads/2009/06/Trans-Style-Guide.pdf">Trans Style Guide</a> to help you write clearly, consistently and respectfully about trans issues.</li>
+				<li>Read our <a onclick="javascript:pageTracker._trackPageview('/downloads/wp-content/uploads/2016/05/ITUNES-PODCASTING-GUIDE.pdf');"  href="http://www.citr.ca/wp-content/uploads/2016/05/ITUNES-PODCASTING-GUIDE.pdf">iTunes Podcasting Guide</a> for help getting your podcast on iTunes.</li>
 			</ul>
 			<p><strong>Training</strong></p>
 			<p>Sign up for our training tutorials (FORMS COMING SOON):</p>
