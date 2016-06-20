@@ -205,7 +205,7 @@
 
 			//get minutes for start, and push unix to 0/30 minute mark on closest hour
 			var minutes = this.start.getMinutes();
-			start_unix-=minutes;
+			start_unix-=minutes*60;
 			if(minutes >= 45){
 				//roll to the next hour by adding 3600s
 				start_unix+=60*60;
@@ -217,6 +217,7 @@
 			}
 			//Get minutes for end, and push unix to 0/30 minute mark on closes hour
 			minutes = this.end.getMinutes();
+            end_unix-=minutes*60;
 			if(minutes >= 45){
 				//roll to the next hour by adding 3600s
 				end_unix+=60*60;

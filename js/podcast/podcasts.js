@@ -181,9 +181,6 @@
             stream:true
         };
 
-
-
-
         this.elapsedTime = function(time){
             this.seconds_elapsed = (new Date().getTime() / 1000) -(this.audio_start.getTime()/1000);
             if(time == 'start'){
@@ -241,7 +238,7 @@
         }
         this.getPreviewUrl = function(start,end){
             return 'http://archive.citr.ca/py-test/archbrad/download?'+
-                    'archive=%2Fmnt%2Faudio-stor%2Flog'+
+                    'archive=%2Fmnt%2Faudio_stor%2Flog'+
                     '&startTime='+$filter('date')(start,'dd-MM-yyyy HH:mm:ss')+
                     '&endTime='+$filter('date')(end,'dd-MM-yyyy HH:mm:ss');
         }
