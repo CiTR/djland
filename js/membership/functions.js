@@ -285,12 +285,12 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		var member_result_header = $('#headerrow');
 		member_result_header.show();
 		for(var member in data){
-			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
-			var row = $('#row'+data[member].member_id);
-
-			for(var item in data[member]){
-				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
-				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
+			var m = data[member];
+			member_result_table.append("<tr id=row"+m.id+" class='member_row' name='"+m.id+"'></tr>");
+			var row = $('#row'+m.id);
+			for(var item in m){
+				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (m[item] != null ? m[item] : "") +"</td>");
+				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+m.id+"' value='"+ (m[item] != null ? m[item] : "") +"'></input></td>");
 			}
 			if($('#permission_level').text() >= permission_levels['administrator']['level']){
 				row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");

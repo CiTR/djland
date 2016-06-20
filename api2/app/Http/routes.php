@@ -178,7 +178,7 @@ Route::group(['middleware' => 'auth'], function(){
                     break;
 			}
 			$result = $query->get();
-			echo $query->toSql();
+			//echo $query->toSql();
 			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
 			else return "Nope";
