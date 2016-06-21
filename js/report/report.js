@@ -15,7 +15,7 @@
 		this.init = function(){
 			//Initial loading requests
 
-			call.getActiveMemberShows( this.member_id ).then(function(response){
+			call.getMemberShows( this.member_id ).then(function(response){
 				this_.shows = response.data.shows;
 			});
 			call.getMemberPermissions(this.member_id).then(function(response){
@@ -96,8 +96,7 @@
 			for(var i = 0; i < length; i++){
 				if(this.show_names.indexOf(this.playsheets[i].show.name) < 0) this.show_names.push(this.playsheets[i].show.name);
 			}
-			console.log(this.show_names);
-			console.log(this.show_names.length);
+
 			//Set defaults for the overall totals
 			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0,'hit_total':0,'ads':0,'spokenword':0};
 
@@ -106,6 +105,7 @@
 				//Get playsheets under their respective show names as we have multiple shows
 
 				for(var index in this.show_names){
+					
 					//Get list of applicable playsheets
 					var show_playsheets = this.playsheets.filter(function(obj){ return obj.show.name == this_.show_names[index]; });
 					//Get the show info for the show name
