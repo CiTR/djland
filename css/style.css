@@ -859,37 +859,6 @@ tr.playitems.socan > td > input.lang{
 	width:46px;
 
 }
-.crtc_totals{
-	background-color:black;
-	color: white;
-	position:fixed;
-	bottom:0px;
-	left:0px;
-	width:100%;
-}
-.tracklist_overlay{
-	position:fixed;
-	overflow:auto;
-	top:40px;
-	left:10%;
-	width:80%;
-	background-color:lightsteelblue;
-	z-index:21;
-	padding:20px;
-	color:darkblue;
-	border-size:1px;
-	border-color:white;
-}
-.tracklist_overlay span{
-	margin-left:40px;
-}
-.tracklist_overlay a.logout{
-	background-color:steelblue;
-	padding:2px;
-}
-.tracklist_overlay a.logout:hover{
-	color:greenyellow;
-}
 
 table#ads{
 	width:450px;
@@ -923,6 +892,51 @@ table#ads{
 	left:0px;
 	z-index:10;
 	/*	display:none;*/
+}
+
+.crtc_totals{
+	background-color:black;
+	color: white;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+
+/*
+ * Playsheet tracklist_overlay
+ */
+.tracklist_overlay{
+	position:fixed;
+	overflow:auto;
+	top:40px;
+	left:10%;
+	width:80%;
+	background-color:lightsteelblue;
+	z-index:21;
+	padding:20px;
+	color:darkblue;
+	border-size:1px;
+	border-color:white;
+}
+.tracklist_overlay span{
+	margin-left:40px;
+}
+.tracklist_overlay a.logout{
+	background-color:steelblue;
+	padding:2px;
+}
+.tracklist_overlay a.logout:hover{
+	color:greenyellow;
+}
+.dark{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	opacity: 0.7;
+	background-color:black;
 }
 
 
@@ -1859,182 +1873,12 @@ div.dupeSection span{
 	left:110px;
 }
 
-
-
 /*
- * Unknown css
+ * Login Styling
  */
-.dark{
-	position:fixed;
-	top:0;
-	left:0;
-	height:100%;
-	width:100%;
-	opacity: 0.7;
-	background-color:black;
-}
-th small{
-	color:black;
-}
-
-.ps_wrapper{
-	margin-left:15px;
-}
-
-.admin_picker{
-	position:absolute;
-	top:0px;
-
-	height:30%;
-	width:100%;
-	z-index:60;
-}
-
-.admin_picker span{
-	position: relative;
-	display:block;
-	margin-left:auto;
-	margin-right: auto;
-	margin-top:100px;
-	padding-top:50px;
-	text-align:center;
-	height:300px;
-	background-color: darkslategray;
-	width:100%;
-}
-
-
 #login{
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 200px;
 	width:300px;
-}
-
-table, td, tr{
-	text-align:left;
-}
-
-
-/* #SamList, #loaderButtons{
-display:inline;
-position:absolute;
-overflow-x: hidden;
-width:220px;
-} */
-#SamList{
-	position: relative;
-	float:left;
-	width:345px;
-
-	padding-left:0px;
-	z-index:3;
-	overflow-y: hidden;
-}
-
-
-
-#loaderButtons{
-	/*	top:40px;*/
-	position: relative;
-	float:left;
-	width:35px;
-	z-index:2;
-	overflow-y: hidden;
-
-}
-
-.loaderButton, .samsong{
-	position: relative;
-	float:left;
-	margin:1px 0 0 0;
-	padding:1px;
-	font-size:1em;
-	display:block;
-	height:19px;
-	text-align:left;
-	width:320px;
-}
-
-.loaderButton{
-	z-index:15;
-	width:30px;
-	background-color: #8F8;
-}
-
-.loaderButtonHover{
-	background-color:#7C7;
-}
-
-.samsong{
-	background-color: #CFC;
-	margin-left:0px;
-	z-index:2;
-	overflow-x: hidden;
-	overflow-y: hidden;
-	padding-left:10px;
-}
-
-.date{
-
-	font-size: 0.7em;
-	float:right;
-	z-index:5;
-}
-.panel-button{
-	position:fixed;
-	background-color: beige;
-	z-index:10;
-
-}
-
-.panel-button:hover{
-	background-color: lime;
-}
-
-#SamTab{
-	position: fixed;
-	top:100px;
-	right:15px;
-}
-#buttonLoadTimes{
-	top:125px;
-	right:15px;
-}
-
-#autosaver{
-	/*display:none;*/
-	top:150px;
-	right:15px;
-	width:75px;
-	height:50px;
-}
-
-#thisDate{
-	font-family: Arial;
-	float:right;
-}
-
-
-
-#inputbox
-{
-	width: 55px;
-}
-#checkbox
-{
-	width: 22px;
-}
-
-
-span.left{
-	/*width:750px;*/
-	display:inline;
-	float:left;
-}
-
-span.right{
-	width:200px;
-	display:inline;
-	float:right;
 }
