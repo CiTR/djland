@@ -28,28 +28,21 @@ Show Management:
 Maintain show and schedule info in DJLand to enable automatically pre-populating playsheets during the show air-time.
 
 Ad Scheduling and tracking:
-[still under development] - Ad scheduler that allows a staff member to select ads for individual shows.  A show's Ad Schedule is loaded into a playsheet while the show info is populated.  If SAM integration is enabled, DJLand can automatically import a list of Ads based on a SAM category.  Currently, this only works if SAM integration is enabled.
+Ad scheduler that allows a staff member to select ads for individual shows.  A show's Ad Schedule is loaded into a playsheet while the show info is populated.  If SAM integration is enabled, DJLand can automatically import a list of Ads based on a SAM category.  Currently, this only works if SAM integration is enabled.
 
 CRTC / SOCAN report generation:
 Pre-formatted reporting including a concise compliance summary for the CRTC and/or SOCAN.
 SOCAN periods can be set to automatically add Composer and time fields to Playsheets.
 
+Podcasting:
+Ties in with archiver software to create podcasts for each playsheet made at CiTR. Provides XMLs for podcasting to iTunes via feedburner, or directly from the XML. Please note that the repository for the archiver does not currently have set-up instructions, as we are working on re-creating the environment.
+
+
 
 INSTALLATION STEPS
+The setup files are not currently up to date. They will be updated to reflect changes soon. In the mean time, please contact Evan (technicalmanager@citr.ca) for assistance with setting up a DJLand instance.
 
-1) Download the latest version from https://github.com/citrtech/djland/archive/master.zip and copy the files to your server's public web directory ('www', 'public_html', or something similar)
-
-2) Create a MySQL database for DJland and a username / password for this database.
-
-3) Copy the file called config-sample.php to a new file in the same location called 'config.php'
-
-4) Edit config.php to enter your station info, database credentials, and enabled feature list
-
-5) open djland-example.com/setup.php to run the database setup script.
-
-6) open djland-example.com. If all goes well, you will see the DJLand login screen. See the config file for the default username and password.  You should change this
-
-Note: theShowList.html, and log.html must be writable by your hosting service (IUSR for IIS) or they will always be empty.
+The data structures found in the setup folder are up to date however, so if you wish to set up your database, and ask for further steps feel free to do so :)
 
 Developed and maintained by CiTR - www.citr.ca
 
