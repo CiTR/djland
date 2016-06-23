@@ -267,7 +267,7 @@ function add_handlers(){
 			$('.student').show();
 			$('.student').children().show();
 		}else{
-			$('.student').hide();
+			$('.student.containerrow').hide();
 		}
 	});
 

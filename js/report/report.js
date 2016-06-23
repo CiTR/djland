@@ -16,7 +16,7 @@
 		this.init = function(){
 			//Initial loading requests
 
-			call.getActiveMemberShows( this.member_id ).then(function(response){
+			call.getMemberShows( this.member_id ).then(function(response){
 				this_.shows = response.data.shows;
 			});
 			call.getMemberPermissions(this.member_id).then(function(response){

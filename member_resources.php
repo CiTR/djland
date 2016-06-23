@@ -19,6 +19,7 @@ require_once("headers/menu_header.php");
 
 	<?php print_menu(); ?>
 
+
 		<div id="member_resources" class="center">
 			<div ng-bind-html='resources.htmlcontent.trusted'></div>
 		</div>
