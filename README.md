@@ -40,8 +40,9 @@ Ties in with archiver software to create podcasts for each playsheet made at CiT
 
 
 INSTALLATION STEPS
+The setup files are not currently up to date. They will be updated to reflect changes soon. In the mean time, please contact Evan (technicalmanager@citr.ca) for assistance with setting up a DJLand instance.
 
-The setup files are not currently up to date. They will be updated to reflect changes soon. In the mean time, please contact Evan for assistance with setting up a DJLand instance.
+The data structures found in the setup folder are up to date however, so if you wish to set up your database, and ask for further steps feel free to do so :)
 
 Developed and maintained by CiTR - www.citr.ca
 
