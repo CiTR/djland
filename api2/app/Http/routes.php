@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
 
-    	//Donor By ID
+			//Donor By ID
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
 				Route::get('/',function($id){
@@ -90,7 +90,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
-
+		// Searching Membership
 		Route::get('/search',function(){
 			/*
 			 * Search Array:
@@ -183,6 +183,39 @@ Route::group(['middleware' => 'auth'], function(){
 			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
 			else return "Nope";
 
+		});
+		//Membership email List
+		Route::get('/email_list',function(){
+			$from = Input::get()['from'];
+			$to = Input::get()['to'];
+			$type = Input::get()['type'];
+			$value = Input::get()['value'];
+			$year = Input::get()['year'];
+
+			$query = Member::select('email')->orderBy('email','desc');
+
+			if($type == 'member_type') $query->where('member_type','=',$type);
+			elseif($type == 'interest'){
+				$query->whereExists(function($subquery)use($value){
+					$subquery->join('membership_years','member_id','=','id')->where(''.$value,'=','1');
+				});
+			}
+			else{
+				http_response_code(400);
+				return false;
+			}
+
+			if($from != null && $to != null) {
+				$query->where('date','<=',$to);
+				$query->where('create_date','>=',$from);
+			}
+
+			if($year != 'all'){
+				$query->whereExists(function($subquery)use($year){
+					$subquery->join('membership_years','member_id','=','id')->where('membership_year','=',$year);
+				});
+			}
+			return $query->get();
 		});
 
 		//Searching by member ID

@@ -222,14 +222,6 @@ function queryMembers(search_parameter,search_value,paid,membership_year,has_sho
 		},dataType:'json',
 		async:true
 	});
-	/*
-	return $.ajax({
-		type:"GET",
-		url: "form-handlers/membership/search.php",
-		data: { 'search_by':search_by,'value':value,'order_by':order_by,'paid':paid,'year':year},
-		dataType: "json",
-		async: true
-		});*/
 }
 
 //Returns all membership years present for member id
@@ -303,7 +295,7 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		}
 	});
 }
-
+//For saving comments from the search view
 function saveComments(){
 	var comments = {};
 
