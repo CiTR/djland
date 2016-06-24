@@ -73,7 +73,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 	//Member Resource Routes
 	Route::group(array('prefix'=>'resource'),function(){
-
 		Route::get('/',function(){
 			return Option::where('djland_option','=','member_resources')->get();
 		});
@@ -194,27 +193,32 @@ Route::group(['middleware' => 'auth'], function(){
 
 			$query = Member::select('email')->orderBy('email','desc');
 
-			if($type == 'member_type') $query->where('member_type','=',$type);
+			if($type == 'member_type'){
+				if($value != 'all')	$query->where('member_type','=',$type);	
+			} 
 			elseif($type == 'interest'){
-				$query->whereExists(function($subquery)use($value){
-					$subquery->join('membership_years','member_id','=','id')->where(''.$value,'=','1');
-				});
+				if($value != 'all'){
+					$query->whereExists(function($subquery)use($value){
+						$subquery->select('membership.id')->from('membership')->join('membership_years','membership_years.member_id','=','membership.id')->where('membership_years.'.$value,'=','1');
+					});	
+				}
 			}
 			else{
 				http_response_code(400);
 				return false;
 			}
 
-			if($from != null && $to != null) {
-				$query->where('date','<=',$to);
+			if($from != null && $to != null){
+				$query->where('create_date','<=',$to);
 				$query->where('create_date','>=',$from);
 			}
 
 			if($year != 'all'){
 				$query->whereExists(function($subquery)use($year){
-					$subquery->join('membership_years','member_id','=','id')->where('membership_year','=',$year);
+					$subquery->select('membership.id')->from('membership')->join('membership_years','membership_years.member_id','=','membership.id')->where('membership_year','=',$year);
 				});
 			}
+			echo $query->toSql();
 			return $query->get();
 		});
 
