@@ -191,16 +191,14 @@ Route::group(['middleware' => 'auth'], function(){
 			$value = Input::get()['value'];
 			$year = Input::get()['year'];
 
-			$query = Member::select('email')->orderBy('email','desc');
+			$query = Member::select('membership.email')->join('membership_years','membership_years.member_id','=','membership.id')->where('email','!=','null')->orderBy('email','desc');
 
 			if($type == 'member_type'){
-				if($value != 'all')	$query->where('member_type','=',$type);	
+				if($value != 'all')	$query->where('member_type','=',$value);	
 			} 
 			elseif($type == 'interest'){
 				if($value != 'all'){
-					$query->whereExists(function($subquery)use($value){
-						$subquery->select('membership.id')->from('membership')->join('membership_years','membership_years.member_id','=','membership.id')->where('membership_years.'.$value,'=','1');
-					});	
+					$query->where('membership_years.'.$value,'=','1');
 				}
 			}
 			else{
@@ -209,16 +207,14 @@ Route::group(['middleware' => 'auth'], function(){
 			}
 
 			if($from != null && $to != null){
-				$query->where('create_date','<=',$to);
-				$query->where('create_date','>=',$from);
+				$query->where('membership.create_date','<=',$to);
+				$query->where('membership.create_date','>=',$from);
 			}
 
 			if($year != 'all'){
-				$query->whereExists(function($subquery)use($year){
-					$subquery->select('membership.id')->from('membership')->join('membership_years','membership_years.member_id','=','membership.id')->where('membership_year','=',$year);
-				});
+				$query->where('membership_years.membership_year','=',$year);
 			}
-			echo $query->toSql();
+			//echo $query->toSql();
 			return $query->get();
 		});
 

@@ -355,10 +355,10 @@ function emailList(){
 			email_value = $(this).val();
 		}
 	});
-	console.log(get('email_select'));
+
 	var request = $.ajax({
 		type:"GET",
-        url: "form-handlers/membership/email_list.php",
+        url: "api2/public/member/email_list",
         data: {"type" : get('email_select'),'value': email_value, "year":get(null,'year_select','email'),"from":get('from'),"to":get('to') },
         dataType: "json",
         async: true
@@ -366,13 +366,16 @@ function emailList(){
 
 	$.when(request).then(
 		function(reply){
-			console.log(reply['emails']);
 			var email_list = $('#email_list');
 			email_list.val("");
 			var email_list_out = "";
-			for(var email in reply['emails']){
-				email_list_out += reply['emails'][email];
-				if(email != reply['emails'][reply['emails'].length-1]){
+			
+			var length = reply.length;
+
+			for(var email in reply){
+				email_list_out += reply[email].email;
+
+				if(email != length-2){
 					email_list_out += ", ";
 				}
 			}
