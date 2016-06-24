@@ -805,7 +805,6 @@ table.open_playsheet > tbody > tr > td.host{
 
 /* Playsheet Angular CSS */
 
-
 .host{
 	max-width:400px;
 }
@@ -895,12 +894,17 @@ table#ads{
 }
 
 .crtc_totals{
+	text-align:left;
 	background-color:black;
 	color: white;
 	position:fixed;
 	bottom:0px;
 	left:0px;
 	width:100%;
+}
+.crtc_totals > table.col1 > tbody {
+	width:100%;
+	display:table;
 }
 
 /*
