@@ -616,13 +616,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
 			$playsheet -> show_info = Show::find($ps->show_id);
-			$playsheet->socan = false;
-
-			foreach($socan as $period){
-				if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
-					$playsheet->socan = true;
-				}
-			}
+			$playsheet->socan = $playsheet->is_socan();
 			$playsheets[] = $playsheet;
 		}
 		return Response::json($playsheets);

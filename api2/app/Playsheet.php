@@ -31,9 +31,9 @@ class Playsheet extends Model
         $socan = Socan::all();
         foreach($socan as $period){
             if(
-			(strtotime($period['socanStart']) <= strtotime($this->start_time) && strtotime($period['socanEnd']) >= strtotime($this->end_time) ) ||
-			(strtotime($period['socanStart']) > strtotime($this->start_time) && strtotime($period['socanEnd']) >= strtotime($this->end_time) ) ||
-			(strtotime($period['socanStart']) <= strtotime($this->start_time) && strtotime($period['socanEnd']) < strtotime($this->end_time) )
+			(strtotime($this->start_time) <= strtotime($period['socanStart']) && strtotime($period['socanStart']) <= strtotime($this->end_time) ) ||
+			(strtotime($period['socanStart']) <= strtotime($this->start_time) && strtotime($this->end_time) <= strtotime($period['socanEnd']) ) ||
+			(strtotime($this->start_time) <= strtotime($period['socanEnd'])  && strtotime($period['socanEnd']) <= strtotime($this->end_time) )
 			){
                 return true;
             }
