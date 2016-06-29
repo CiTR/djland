@@ -113,6 +113,7 @@
                             });
                         });
                     }
+
             });
         }
         this.updateShowValues = function(element){
@@ -152,6 +153,7 @@
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -195,6 +197,51 @@
 
             });
         }
+		this.getNewUnix = function(){
+			if(this.loading == true) return;
+			//convert to seconds from javascripts milliseconds
+			var start_unix = this.start / 1000;
+			var end_unix = this.end / 1000;
+
+			//get minutes for start, and push unix to 0/30 minute mark on closest hour
+			var minutes = this.start.getMinutes();
+			start_unix-=minutes*60;
+			if(minutes >= 45){
+				//roll to the next hour by adding 3600s
+				start_unix+=60*60;
+			}else if(minutes < 45 && minutes >= 15){
+				//set to 30 minutes through by adding 1800s
+				start_unix+=30*60;
+			}else{
+				//already at zero minutes.
+			}
+			//Get minutes for end, and push unix to 0/30 minute mark on closes hour
+			minutes = this.end.getMinutes();
+            end_unix-=minutes*60;
+			if(minutes >= 45){
+				//roll to the next hour by adding 3600s
+				end_unix+=60*60;
+			}else if(minutes < 45 && minutes >= 15){
+				//set to 30 minutes through by adding 1800s
+				end_unix+=30*60;
+			}else{
+				//already at zero minutes.
+			}
+
+			this.start_unix = start_unix;
+			this.end_unix = end_unix;
+			var duration = start_unix - end_unix;
+			if(this_.info.id < 1){
+				call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+					this_.promotions = response.data;
+				},function(error){
+					this_.log_error(error);
+					call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+						this_.promotions = response.data;
+					});
+				});
+			}
+		}
 
         //Initialization of Playsheet
         this.init = function(){
@@ -271,7 +318,7 @@
                         this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
                         this_.checkIfComplete();
                         if(this_.using_sam){
-                            this_.loadSamPlays();
+                            this_.updateSamPlays();
                         }
                         this_.loading = false;
                     });
@@ -365,7 +412,7 @@
                             });
                             this_.update();
                             if(this_.using_sam){
-                                this_.loadSamPlays();
+                                this_.updateSamPlays();
                             }
                             this_.loading = false;
                         });
@@ -393,7 +440,9 @@
             this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
 
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            console.log("Start Time "+this_.info.start_time + " Start var =" +this_.start);
+            this_.updateSamPlays();
+			this_.getNewUnix();
+
         });
         $scope.$watch('playsheet.info.end_time', function () {
             this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy/MM/dd HH:mm:ss');
@@ -402,7 +451,9 @@
             this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
             this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
             if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
+            this_.updateSamPlays();
             console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
+			this_.getNewUnix();
         });
 
 
@@ -657,7 +708,7 @@
             return djland_entry;
         };
         this.loadSamPlays = function () {
-            var this_ = this;
+            var this__ = this;
             call.getSamRecent(0).then(function (data) {
                 this_.samRecentPlays = [];
                 for (var samplay in data.data) {
@@ -674,6 +725,16 @@
             });
             this.sam_visible= false;
         };
+        this.updateSamPlays = function(){
+            var this_ = this;
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
+                this_.samRecentPlays = [];
+                for (var samplay in data.data) {
+                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
+                }
+            });
+
+        }
 
 
         // Call Initialization function at end of controller

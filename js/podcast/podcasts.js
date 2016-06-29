@@ -1,6 +1,6 @@
 (function (){
     var app = angular.module('djland.podcasts', ['ui.bootstrap','djland.api','djland.utils',]);
-    
+
 
 
 
@@ -62,7 +62,7 @@
                         console.log(error);
                     });
                 }
-            }    
+            }
         }
 
         this.edit_episode = function (episode){
@@ -90,7 +90,7 @@
             this.editing.podcast.date =  this_.editing.playsheet.start_time;
             this.editing.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
-        }  
+        }
         this.updateEnd = function(){
             this.end.setSeconds(this.editing.end_second);
             this.end.setMinutes(this.editing.end_minute);
@@ -117,7 +117,7 @@
                 if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
                console.log("Start Time "+this_.editing.playsheet.start_time + " Start var =" +this_.start);
             }
-            
+
         });
         $scope.$watch('list.editing.playsheet.end_time', function () {
             if(this_.editing.playsheet != null){
@@ -139,7 +139,7 @@
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
-                    if(this_.start.getTime() > new Date("2015/06/01 00:00:00").getTime() && this_.editing.podcast.url != '' && this_.editing.podcast.url){
+                    if(this_.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this_.editing.podcast.url != '' && this_.editing.podcast.url){
                         call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                         alert("Successfully Saved");
                         },function(error){
@@ -181,9 +181,6 @@
             stream:true
         };
 
-
-
-
         this.elapsedTime = function(time){
             this.seconds_elapsed = (new Date().getTime() / 1000) -(this.audio_start.getTime()/1000);
             if(time == 'start'){
@@ -192,7 +189,7 @@
             }else if(time == 'end'){
                 var elapsed = new Date(this.end);
                  elapsed.setSeconds(this.end.getSeconds() - 10 + this.seconds_elapsed);
-            }         
+            }
             $('#elapsed').text($filter('date')(elapsed,'yyyy/MM/dd HH:mm:ss'));
         }
         this.load_and_play_sound = function(url,time){
@@ -241,7 +238,7 @@
         }
         this.getPreviewUrl = function(start,end){
             return 'http://archive.citr.ca/py-test/archbrad/download?'+
-                    'archive=%2Fmnt%2Faudio-stor%2Flog'+
+                    'archive=%2Fmnt%2Faudio_stor%2Flog'+
                     '&startTime='+$filter('date')(start,'dd-MM-yyyy HH:mm:ss')+
                     '&endTime='+$filter('date')(end,'dd-MM-yyyy HH:mm:ss');
         }
@@ -295,7 +292,7 @@
             url: function(start, end) {
                 console.warn(start);
                 var start_ = $filter('date')(start.getTime(),'dd-MM-yyyy HH:mm:ss');
-                var end_ = $filter('date')(end.getTime(),'dd-MM-yyyy HH:mm:ss');  
+                var end_ = $filter('date')(end.getTime(),'dd-MM-yyyy HH:mm:ss');
             }
         };
     }]);
