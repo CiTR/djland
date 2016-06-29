@@ -458,13 +458,13 @@
                 this.complete = true;
             }else{
                 this.missing = "You have empty values for these fields:"
-                + (m.artist == 1 ? "an artist,":"")
-                + (m.song == 1 ? 'a song title,':"" )
-                + (m.album == 1 ? 'an album,':"")
-                + (m.composer == 1 ? 'a composer,':'')
-                + (m.spokenword == 1 ? 'your spoken word duration,':"")
-                + (m.episode_title ==1 ? 'your episode title,':"")
-                + (m.episode_summary == 1 ? 'your episode description':"")
+                + (m.artist == 1 ? " an artist,":"")
+                + (m.song == 1 ? " a song title,":"" )
+                + (m.album == 1 ? " an album,":"")
+                + (m.composer == 1 ? " a composer,":'')
+                + (m.spokenword == 1 ? " your spoken word duration,":"")
+                + (m.episode_title ==1 ? " your episode title,":"")
+                + (m.episode_summary == 1 ? " your episode description":"")
                 + '.';
                 this.complete = false;
             }
@@ -515,6 +515,7 @@
                     });
                 }
             }else{
+                //TODO: Fix the grammar here
                 alert("You've already submitted this playsheet, please submit it instead");
             }
 
@@ -536,6 +537,7 @@
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
             }else if(this.start.getTime()/1000 - this.end.getTime()/1000 > 8*60*60){
+                //TODO: Make this correspond to a config constant so that we can adjust the length of the max podcast on the config - see #255
                 alert("This podcast is over 8 hours. 8 Hours is the maximum");
             }else{
                //Update Status to submitted playsheet
@@ -735,7 +737,7 @@ $(document).ready(function(){
     var fem_element = $('#fem_total');
     var playlist_element = $('#playlist_total');
     var hit_element = $('#hit_total');
-    
+
     setInterval(function(){
         crtc_totals();
     },3000);
@@ -743,7 +745,7 @@ $(document).ready(function(){
         var playitems_count = 0;
         var can_2_count = 0;
         var can_3_count = 0;
-        
+
         var can_2_total = 0;
         var can_3_total = 0;
         var fem_total = 0;
@@ -755,7 +757,7 @@ $(document).ready(function(){
             if($(this).find('button.femcon').hasClass('filled')) fem_total ++;
             if($(this).find('button.playlist').hasClass('filled')) playlist_total ++;
             if($(this).find('button.hit').hasClass('filled')) hit_total ++;
-            
+
             if($(this).find('select.crtc_category').val() == '20'){
                 can_2_count ++;
                 if($(this).find('button.cancon').hasClass('filled')) can_2_total ++;
@@ -767,15 +769,15 @@ $(document).ready(function(){
         can_2_element.text((can_2_total / (can_2_count!=0?can_2_count:1) * 100).toFixed(0) + "%");
         if(can_2_total/(can_2_count!=0?can_2_count:1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
         else can_2_element.removeClass('red');
-        
+
         can_3_element.text((can_3_total / (can_3_count!=0?can_3_count:1) * 100).toFixed(0) + "%");
          if(can_3_total/(can_3_count!=0?can_3_count:1) * 100 < can_3_required && can_3_count > 0) can_3_element.addClass('red');
         else can_3_element.removeClass('red');
-        
+
         fem_element.text((fem_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
          if(fem_total/(playitems_count!=0?playitems_count:1) * 100 < fem_required && playitems_count > 0) fem_element.addClass('red');
         else fem_element.removeClass('red');
-        
+
         playlist_element.text((playlist_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
         if(playlist_total/(playitems_count!=0?playitems_count:1) * 100 < playlist_required && playitems_count > 0) playlist_element.addClass('red');
         else playlist_element.removeClass('red');

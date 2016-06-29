@@ -1,12 +1,8 @@
-
-
-
-
 djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, $interval, apiService, show_id, channel_id, MAX_PODCAST_DURATION_HOURS, adminStatus) {
   $scope.adminStatus = adminStatus;
-  
+
   var loadAds = function (time) {
-    show_message('loading the ads...');
+    show_message('Loading the ads...');
     apiService.getAdsFromBlock(time)
         .then(function (result) {
           if (result.data) {
@@ -16,14 +12,14 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
             $scope.message.age = 4;
           } else {
 
-            var message = 'no ads found. have a great show!';
+            var message = 'No ads found. have a great show!';
             show_message(message);
             $scope.ad_message = message;
           }
 
         })
         .catch(function (result) {
-          var message = 'no ads found. have a great show!';
+          var message = 'No ads found. have a great show!';
           show_message(message);
           $scope.ad_message = message;
         });
@@ -47,7 +43,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
         $scope.shows = result;
       })
 
-  show_message('loading show data...');
+  show_message('Loading show data...');
 
   apiService.getShowData(show_id).then(function (showData) {
     var showData = showData.data;
@@ -74,7 +70,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
       var time = new Date($scope.playsheet.start_time);
 
-      show_message('initializing...');
+      show_message('Initializing...');
       apiService.getNextShow(time)
           .then(function (result) {
             $scope.message.text += '... done!';
@@ -176,7 +172,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     }
 
     if($scope.playsheet.podcast.duration == MAX_PODCAST_DURATION_HOURS*60*60){
-      show_message('maximum duration of a podcast is '+MAX_PODCAST_DURATION_HOURS+' hours.');
+      show_message('Maximum duration of a podcast is '+MAX_PODCAST_DURATION_HOURS+' hours.');
     } else {
 
     }
@@ -338,7 +334,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
       row.insert_song_length_second = $filter('pad')(length.getSeconds(), 2);
 
     }
-    // DATE STUFF (faking knowing the start of current episode
+    // DATE STUFF (faking knowing the start of current episode)
 
     $scope.episode = $scope.playsheet.podcast;
 
@@ -511,7 +507,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
             })
             .catch(function(result){
-              show_message('sorry, something went wrong while saving. Please try saving a draft');
+              show_message('Sorry, something went wrong while saving. Please try saving a draft');
               $scope.submitting = false;
             });
 
@@ -525,7 +521,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
             .then(function (result) {
               $scope.saving = false;
               var now = new Date();
-              show_message('draft saved at ' + now.getHours() + ':' + $filter('pad')(now.getMinutes(), 2));
+              show_message('Draft saved at ' + now.getHours() + ':' + $filter('pad')(now.getMinutes(), 2));
 
               if(!$scope.playsheet.id) {
                 var new_url = 'l.h/djland-podcast/playsheet.php?action=edit';
@@ -538,7 +534,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
               $scope.saving = false;
             }).catch(function (result) {
-              show_message('sorry, something went wrong. please try later');
+              show_message('Sorry, something went wrong. please try again later');
               $scope.saving = false;
             })
 
@@ -572,7 +568,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
 
       if ($scope.playsheet.type == 'Rebroadcast') {
 
-        $scope.loadButtonText = 'loading list...';
+        $scope.loadButtonText = 'Loading list...';
         apiService.getEveryonesPlaylists(2000, 0)
             .success(function (result) {
               $scope.available_playsheets = result;
@@ -671,5 +667,3 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
   };
 
 });
-
-
