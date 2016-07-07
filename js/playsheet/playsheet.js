@@ -509,13 +509,13 @@
                 this.complete = true;
             }else{
                 this.missing = "You have empty values for these fields:"
-                + (m.artist == 1 ? "an artist,":"")
-                + (m.song == 1 ? 'a song title,':"" )
-                + (m.album == 1 ? 'an album,':"")
-                + (m.composer == 1 ? 'a composer,':'')
-                + (m.spokenword == 1 ? 'your spoken word duration,':"")
-                + (m.episode_title ==1 ? 'your episode title,':"")
-                + (m.episode_summary == 1 ? 'your episode description':"")
+                + (m.artist == 1 ? " an artist,":"")
+                + (m.song == 1 ? " a song title,":"" )
+                + (m.album == 1 ? " an album,":"")
+                + (m.composer == 1 ? " a composer,":'')
+                + (m.spokenword == 1 ? " your spoken word duration,":"")
+                + (m.episode_title ==1 ? " your episode title,":"")
+                + (m.episode_summary == 1 ? " your episode description":"")
                 + '.';
                 this.complete = false;
             }
@@ -566,6 +566,7 @@
                     });
                 }
             }else{
+                //TODO: Fix the grammar here
                 alert("You've already submitted this playsheet, please submit it instead");
             }
 
@@ -587,6 +588,7 @@
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
             }else if(this.start.getTime()/1000 - this.end.getTime()/1000 > 8*60*60){
+                //TODO: Make this correspond to a config constant so that we can adjust the length of the max podcast on the config - see #255
                 alert("This podcast is over 8 hours. 8 Hours is the maximum");
             }else{
                //Update Status to submitted playsheet
