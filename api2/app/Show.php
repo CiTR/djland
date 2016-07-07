@@ -202,11 +202,11 @@ class Show extends Model
         //Build Each Podcast
         $key = array_keys($episodes->toArray());
         $num = count($key);
-        //if($testing_environment) $num = 200;
 		$count = 0;
 		foreach($episodes as $episode){
-			if($count >= $num){
+			if($count >= $num || $count >= 300){
 				break;
+				//TODO:: Implement archive XML once greater than 300.
 			}else{
 				//Get Objects
 	            $playsheet = $episode->playsheet;
