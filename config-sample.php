@@ -1,7 +1,7 @@
 <?php
 
+//Don't delete this line
 $enabled = array(); $station_info = array();
-
 
 //PLEASE CONFIGURE - below this line
 // Also please note this username and password: use to log in the first time.
@@ -9,8 +9,6 @@ $enabled = array(); $station_info = array();
 // after installing
 // admin user: 'admin'
 // admin pass: 'pass'
-
-
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
@@ -28,6 +26,12 @@ $station_info['timezone'] = 'America/Vancouver';
 // for a list of valid timezones, visit
 // http://ca1.php.net/manual/en/timezones.php
 
+//If you have two web applications hosted on the same website
+//$root_offset = "somewhere"
+$root_offset = ""
+$root_directory = $_SERVER['DOCUMENT_ROOT'].$root_offset;
+$web_root = getenv('HTTP_HOST').$root_offset;
+
 //*******************************************
 //* 2) Database info (MySQL)
 //*******************************************
@@ -36,13 +40,10 @@ $station_info['timezone'] = 'America/Vancouver';
 // enter your database credentials here.  If you are using MySQL on the same server
 // these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
 
-
-
 $djland_db_address = '127.0.0.1';
 $djland_db_username = 'djland-username';
 $djland_db_password = 'djland-password';
 $djland_db_dbname = 'djland-databasename';
-
 
 //*******************************************
 //* 3) DJLand Enabled Features
@@ -71,10 +72,11 @@ $enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not
 // to create a station-wide login so that DJ's don't have to log in and out everytime the show slot changes.
 // Although it would be more secure if DJ's are trained from the get-go
 // to always log out and log in using their own username at the start of the show,
-// this is just not what happened at CiTR so we leave this option available.
+// this is just not what happened at CiTR until 2015 so we leave this option available.
+
 
 // Filling this out just disables changing the password for this specific username.
-// You still have to create this user yourself.
+// You still have to create this user yourself!.
 $station_wide_login_name = 'djs';
 
 //*******************************************
@@ -99,19 +101,15 @@ $archive_access_url = $archive_tool_url.
     "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
 
 // use this to put podcast audio, rss xml files on a network drive that provides FTP access
-
-
-
 $audio_path_online = 'http://mypodcast.com/audio/';
 $audio_path_local = '/var/www/audio/or/something/';
 
 $xml_path_online   = 'http://mypodcast.com/rss/';
 $xml_path_local   = '/var/www/xml/or/something/';
 
-
-
-//default permission levels
-
+/* DJLAND Constants
+ * Be sure to update the constants.php file to include all constants if you wish to use them in JS
+ */
 
 $djland_membership_year_date = date('04/31/'.idate('Y'));
 
