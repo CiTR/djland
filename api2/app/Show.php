@@ -270,8 +270,9 @@ class Show extends Model
     }
     public static function clean($string){
         $string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
+		$string = htmlentities($string);
         $string = iconv('UTF-8', 'ASCII//IGNORE', $string);
-        $string = htmlentities($string);
+
         return $string;
     }
 
