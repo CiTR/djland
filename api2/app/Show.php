@@ -158,6 +158,7 @@ class Show extends Model
 
         $show["subtitle"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
+			if($testing_environment) echo $k."<br/>";
             $show[$k] = Show::clean($show[$k]);
             }
 
@@ -211,9 +212,7 @@ class Show extends Model
 				//Get Objects
 	            $playsheet = $episode->playsheet;
 	            $episode = $episode->getAttributes();
-
 	            if($testing_environment) echo $episode['date']."\n".$count."\n";
-
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
 	            foreach($episode as $index=>$var){
@@ -271,9 +270,8 @@ class Show extends Model
     }
     public static function clean($string){
         $string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
-        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $string = iconv('UTF-8', 'ASCII//IGNORE', $string);
         $string = htmlentities($string);
-        //$string = htmlentities($string, ENT_COMPAT,'UTF-8');
         return $string;
     }
 
