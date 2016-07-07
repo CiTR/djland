@@ -146,7 +146,7 @@ class Show extends Model
 
         //Get objects
         $show = $this;
-        $episodes = $this->podcasts()->orderBy('date','desc')->get();
+        $episodes = $this->podcasts()->where('active','=','1')->orderBy('date','desc')->get();
 
         $file_name = $this['podcast_slug'].'.xml';
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
@@ -202,38 +202,35 @@ class Show extends Model
         //Build Each Podcast
         $key = array_keys($episodes->toArray());
         $num = count($key);
-        if($testing_environment) $num = 200;
-        $i = 0;
-        $count = 0;
-        while( $count < $num-1  && $i < $num - 1 && $count < 300 ) {
-           $episode = $episodes[$key[$i]];
+        //if($testing_environment) $num = 200;
+		$count = 0;
+		foreach($episodes as $episode){
+			if($count >= $num){
+				break;
+			}else{
+				//Get Objects
+	            $playsheet = $episode->playsheet;
+	            $episode = $episode->getAttributes();
 
+	            if($testing_environment) echo $episode['date']."\n".$count."\n";
 
-            //Get Objects
-            $playsheet = $episode->playsheet;
-            $episode = $episode->getAttributes();
-            if($episode["active"]== '1') {
-                if($testing_environment) echo $episode['date']."\n".$count."\n";
-                $count ++;
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
-                foreach($episode as $index=>$var){
-                   $episode[$index] = Show::clean($episode[$index]);
-                }
-
-                $xml[] = "<item>";
-                $xml[] =  "<title>" . $episode["title"] . "</title>";
-                $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
-                $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
-                $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
+	            foreach($episode as $index=>$var){
+	               $episode[$index] = Show::clean($episode[$index]);
+	            }
+	            $xml[] = "<item>";
+	            $xml[] =  "<title>" . $episode["title"] . "</title>";
+	            $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
+	            $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
+	            $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
 				$xml[] =  "<description>" . $episode["summary"] . "</description>";
-                $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
-                $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
-                $xml[] = "</item>";
-
-            }
-            $i++;
-        }
+	            $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
+	            $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
+	            $xml[] = "</item>";
+			}
+			$count ++;
+		}
         $xml[] = "</channel>";
         $xml[] = "</rss>";
 

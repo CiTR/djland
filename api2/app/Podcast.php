@@ -73,6 +73,7 @@ class Podcast extends Model
     		$target_dir = '/home/podcast/audio/'.$year.'/';
     	}else{
     		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
+			if(!file_exists($target_dir)) mkdir($target_dir,0774);
     	}
 
     	//$target_dir = 'audio/'.$year.'/';
@@ -125,6 +126,7 @@ class Podcast extends Model
 	}
 
 	private function overwrite_audio(){
+		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
 		date_default_timezone_set('America/Vancouver');
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);
@@ -138,6 +140,11 @@ class Podcast extends Model
 
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';
+		if($testing_environment){
+			$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/';
+			if(!file_exists($target_dir)) mkdir($target_dir,0774);
+		}
+
 	    if($this->url != null){
 	    	 $file_name = explode('/',$this->url,6)[5];
     	}else{
@@ -153,6 +160,7 @@ class Podcast extends Model
 
 
 	    $target_file_name = $target_dir.$file_name;
+		if(!file_exists($target_file_name)) fopen($target_file_name,'w');
 
 	    //Get Audio from Archiver
 	    $file_from_archive = fopen($archive_url,'r');
