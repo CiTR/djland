@@ -100,14 +100,16 @@ Route::group(['middleware' => 'auth'], function(){
 			return Member::email_list($_GET['from'],$_GET['to'],$_GET['type'],$_GET['value'],$_GET['year']);
 		});
 
+		Route::get('/report/{year_start}/{year_end}',function($start=start,$end=end){
+			return Member::report($start,$end);
+		});
+
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
-
 			Route::get('/',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
-
 			});
 			Route::post('/',function($id){
 				$m = Member::find($id);
@@ -118,7 +120,6 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
-
 			Route::post('comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
@@ -173,7 +174,6 @@ Route::group(['middleware' => 'auth'], function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
-
 			});
 			Route::get('permission',function($member_id = id){
 				$permission_levels = Member::find($member_id)->user->permission;

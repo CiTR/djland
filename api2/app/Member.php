@@ -31,12 +31,12 @@ class Member extends Model
     public static function search($parameter,$value,$paid,$year,$has_show,$order){
         /*
          * Search Array:
-         * ['search_parameter'] (name,interest,member_type)
+         * ['parameter'] (name,interest,member_type)
          * ['value']
          * ['paid'] (1,0,'both')
-         * ['membership_year'] ('all','2015/2016' ...)
+         * ['year'] ('all','2015/2016' ...)
          * ['has_show'] (1,0) *0 returns both.
-         * ['order_by'] (renew_date,join_date,lastname,firstname,member_type)
+         * ['order'] (renew_date,join_date,lastname,firstname,member_type)
          */
 
         //Create base query.
@@ -119,8 +119,8 @@ class Member extends Model
         $query = Member::select('membership.email')->join('membership_years','membership_years.member_id','=','membership.id')->where('email','!=','null')->orderBy('email','desc');
 
         if($type == 'member_type'){
-            if($value != 'all') $query->where('member_type','=',$value);    
-        } 
+            if($value != 'all') $query->where('member_type','=',$value);
+        }
         elseif($type == 'interest'){
             if($value != 'all'){
                 $query->where('membership_years.'.$value,'=','1');
@@ -142,4 +142,10 @@ class Member extends Model
         //echo $query->toSql();
         return $query->get();
     }
+	public static function report($start,$end){
+		//TODO: Can Expand the api call to allow multi-year report queries.
+		$membership_year = $start.'/'.$end;
+		$student_query = DB::table('membership as m')->select('count(m.id) as count,sum(my.paid) as paid, sum(my.ads_psa) as ads_psa');
+
+	}
 }
