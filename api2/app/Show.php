@@ -269,10 +269,9 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-        $string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
-		$string = htmlentities($string);
-        $string = iconv('UTF-8', 'ASCII//IGNORE', $string);
-
+        $string = html_entity_decode($string,ENT_QUOTES,'UTF-8');
+        $string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
+	$string = htmlentities($string);
         return $string;
     }
 
