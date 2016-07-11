@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Response;
@@ -156,6 +155,5 @@ class Member extends Model
 			else $query->selectRaw('sum(CASE WHEN ISNULL(my.other) or my.other="" THEN 0 ELSE 1 END) as other');
 		}
 		return $query->get();
-
 	}
 }

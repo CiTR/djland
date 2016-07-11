@@ -15,4 +15,17 @@ class MembershipYear extends Model
     function member(){
     	return $this->belongsTo('App\Member');
     }
+	function rollover(){
+		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
+
+		}else return false;
+
+	}
+	function rollback(){
+		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
+
+		}else return false;
+	}
 }

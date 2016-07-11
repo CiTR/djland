@@ -28,7 +28,11 @@ Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
-
+Route::group(['middleware' => 'staff'],function(){
+	Route::get('/amistaff',function(){
+		return "Yes, you are";
+	});
+});
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
@@ -85,7 +89,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
-
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
