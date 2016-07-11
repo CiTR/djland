@@ -130,22 +130,27 @@ class Member extends Model
             http_response_code(400);
             return false;
         }
-
         if($from != null && $to != null){
             $query->where('membership.create_date','<=',$to);
             $query->where('membership.create_date','>=',$from);
         }
-
         if($year != 'all'){
             $query->where('membership_years.membership_year','=',$year);
         }
-        //echo $query->toSql();
         return $query->get();
     }
 	public static function report($start,$end){
+		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+
 		//TODO: Can Expand the api call to allow multi-year report queries.
 		$membership_year = $start.'/'.$end;
-		$student_query = DB::table('membership as m')->select('count(m.id) as count,sum(my.paid) as paid, sum(my.ads_psa) as ads_psa');
+		$query = DB::table('membership as m')->join('membership_years as my','my.member_id','=','m.id')->where('my.membership_year','=',$membership_year);
+		$query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
+		foreach($djland_interests as $key=>$value){
+			if($value != 'other') $query->selectRaw('sum(my.'.$value.') as '.$value);
+			else $query->selectRaw('sum(CASE WHEN ISNULL(my.other) or my.other="" THEN 0 ELSE 1 END) as other');
+		}
+		return $query->get();
 
 	}
 }
