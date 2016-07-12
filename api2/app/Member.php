@@ -142,4 +142,5 @@ class Member extends Model
         //echo $query->toSql();
         return $query->get();
     }
+
 }

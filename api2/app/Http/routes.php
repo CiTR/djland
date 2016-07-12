@@ -109,10 +109,12 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 
 			});
+			
 			Route::post('/',function($id){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
+			
 			Route::delete('/',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
@@ -123,8 +125,8 @@ Route::group(['middleware' => 'auth'], function(){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
 				return Response:: json($member -> save());
-
 			});
+
 			Route::get('training',function($id){
 				$member =  Member::find($id);
 				if($member->station_tour == '0' || $member->technical_training == '0' || $member->programming_training == '0' || $member->production_training == '0'){
@@ -133,23 +135,27 @@ Route::group(['middleware' => 'auth'], function(){
 					return 1;
 				}
 			});
+
 			Route::get('user',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
 				else return "Nope";
 			});
+
 			Route::post('user',function($id){
 				$m = Member::find($id);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
+
 			Route::post('permission',function($id){
 				$permission = Member::find($id)->user->permission;
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
 				else return "Nope";
 			});
+
 			Route::get('years',function($id){
 				$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
 				foreach($m_years as $year){
@@ -157,6 +163,7 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 				return Response::json($years);
 			});
+			
 			Route::post('years',function($id){
 				$m = Member::find($id);
 				$m_years = (array) json_decode(Input::get()['years']);
@@ -166,6 +173,7 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 				return "true";
 			});
+			
 			Route::post('password',function($id){
 				$m = Member::find($id);
 				$user = $m->user;
@@ -175,6 +183,7 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 
 			});
+			
 			Route::get('permission',function($member_id = id){
 				$permission_levels = Member::find($member_id)->user->permission;
 				unset($permission_levels->user_id);
@@ -182,6 +191,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$permission->permissions = $permission_levels;
 				return $permission_levels;
 			});
+			
 			Route::get('shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
 				if($permissions->staff ==1 || $permissions->administrator==1){
@@ -197,6 +207,7 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 				return  Response::json($shows);
 			});
+			
 			Route::get('active_shows', function($member_id = id){
 				$permissions = Member::find($member_id)->user->permission;
 				$shows = new stdClass();
@@ -216,7 +227,6 @@ Route::group(['middleware' => 'auth'], function(){
 				return  Response::json($shows);
 			});
 		});
-
 	});
 	//Show Private method
 	Route::get('/show/{id}/owners',function($id=id){
