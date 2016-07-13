@@ -94,7 +94,6 @@ Member.prototype = {
 		for(var year in membership_years){
 			membership_year.append("<option value="+year+">"+year+"</option>");
 		}
-
 	},
 	_initShows:function(shows){
 		this.member_shows = shows;
@@ -206,7 +205,8 @@ Member.prototype = {
 				console.log('data was not available');
 			});
 		}
-	},displayInterests:function(year){
+	},
+	displayInterests:function(year){
 		var m;
 		if(!year){
 			for(year in this.membership_years){
@@ -227,18 +227,21 @@ Member.prototype = {
 		}
 		setCheckbox(m['paid'],'paid');
 
-	},displayShows:function(){
+	},
+	displayShows:function(){
 		for(var show in this.member_shows){
-
+			//TODO: display member shows on membership page. 
 		}
-	},displayPermissions:function(){
+	},
+	displayPermissions:function(){
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);
 		}
-
-	},displayUser:function(){
+	},
+	displayUser:function(){
 		set(this.user_info.username,'username');
-	},renew:function(){
+	},
+	renew:function(){
         $.when(this.createMembershipYear(),this.updateInfo()).then(
     	function(r1,r2){
         	alert("Successfully Renewed");
@@ -247,14 +250,16 @@ Member.prototype = {
 		,function(err1,err2){
         	alert("Something went wrong");
         });
-    },update:function(){
+    },
+	update:function(){
     	$.when(this.updateInfo(),this.updateInterests()).then(function(){
     		alert("Successfully Updated");
     		window.location.href = 'main.php';
     	},function(err1,err2){
     		alert("Something went wrong");
     	});
-    },updateInfo:function(){
+    },
+	updateInfo:function(){
     	this.getInfo();
 		return $.ajax({
 			type:"POST",
@@ -264,7 +269,8 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},updateInterests:function(){
+	},
+	updateInterests:function(){
 		this.getInterests();
 		return $.ajax({
 			type:"POST",
@@ -274,7 +280,8 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},updatePermissions:function(){
+	},
+	updatePermissions:function(){
 		this.getPermissions();
 		return $.ajax({
 			type:"POST",
@@ -284,7 +291,8 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},updatePassword:function(){
+	},
+	updatePassword:function(){
 		if($('#password').val().length > 0){
 			return $.ajax({
 				type:"POST",
@@ -295,7 +303,8 @@ Member.prototype = {
 				dataType: "json"
 			});
 		}
-	},create:function(){
+	},
+	create:function(){
 		$.when(this.createMember()).then(
 			(function(response){
 				this.member_id = response;
@@ -311,8 +320,8 @@ Member.prototype = {
 				).bind(this);
 			}).bind(this)
 		);
-
-	},createMember:function(){
+	},
+	createMember:function(){
 		this.getInfo();
 		return $.ajax({
 			type:"POST",
@@ -322,7 +331,8 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},createUser:function(){
+	},
+	createUser:function(){
 		this_.user_info['username'] = get('username');
 		this_.user_info['password'] = get('password');
 		return $.ajax({
@@ -333,7 +343,8 @@ Member.prototype = {
 		 	},
 			dataType: "json"
 		});
-	},createMembershipYear:function(){
+	},
+	createMembershipYear:function(){
 		this.getInterests();
 		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this_.membership_years[get('membership_year')].paid = 1;
 		return $.ajax({
@@ -343,7 +354,7 @@ Member.prototype = {
 				"year": JSON.stringify(this.membership_years[get('membership_year')])
 		 	},
 			dataType: "json"
-		})
-	}
+		});
+	},
 
 }

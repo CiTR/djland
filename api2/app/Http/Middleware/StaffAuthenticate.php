@@ -8,7 +8,7 @@ use App\Member;
 class StaffAuthenticate
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request, and block it if not a staff member or admin.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
