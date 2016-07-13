@@ -104,7 +104,13 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
-
+			//Returns is the user has administrator priveledges or not.
+			Route::get('/admin',function($id){
+				$member = Member::find($id);
+				$permission = $member->user->permission;
+				if($permission['operator'] == 1 || $permission['administrator']==1 || $permission['staff'] == 1  || $member->type == 'Staff') return Response::json(true);
+				else return Response::json(false);
+			});
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
@@ -169,8 +175,8 @@ Route::group(['middleware' => 'auth'], function(){
 				return $permission_levels;
 			});
 			Route::get('shows', function($member_id = id){
-				$permissions = Member::find($member_id)->user->permission;
-				if($permissions->staff ==1 || $permissions->administrator==1){
+				$shows = new StdClass();
+				if(Member::find($member_id)->member_type == 'Staff'){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
@@ -799,7 +805,7 @@ Route::get('/adschedule/{date}',function($date = date){
 
 
 
-Route::get('/promotions/{unixtime}-{duration}/{show_id}',function($unixtime = unixtime,$duration = duration,$show_id = show_id){	
+Route::get('/promotions/{unixtime}-{duration}/{show_id}',function($unixtime = unixtime,$duration = duration,$show_id = show_id){
 	$ads = Ad::where('time_block','=',$unixtime)->orderBy('num','asc')->get();
 	if(sizeof($ads) > 0) return Response::json($ads);
 	else return Ad::generateAds($unixtime,$duration,$show_id);
