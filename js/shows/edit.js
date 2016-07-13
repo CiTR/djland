@@ -68,8 +68,8 @@
         this.isAdmin = function(){
             var this_ = this;
             //Call API to obtain permissions
-            call.getMemberPermissions(this.member_id).then(function(response){
-                if(response.data.administrator == '1' || response.data.staff == '1' ){
+            call.isAdmin(this.member_id).then(function(response){
+                if(response.data){
                     this_.is_admin = true;
                 }else{
                     this_.is_admin = false;

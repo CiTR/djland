@@ -155,7 +155,7 @@ class Show extends Model
 
         //Get objects
         $show = $this;
-        $episodes = $this->podcasts()->orderBy('date','desc')->get();
+        $episodes = $this->podcasts()->where('active','=','1')->orderBy('date','desc')->get();
 
         $file_name = $this['podcast_slug'].'.xml';
         $url_path = 'http://playlist.citr.ca/podcasting/xml/';
@@ -167,6 +167,7 @@ class Show extends Model
 
         $show["subtitle"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
+			if($testing_environment) echo $k."<br/>";
             $show[$k] = Show::clean($show[$k]);
             }
 
@@ -211,38 +212,33 @@ class Show extends Model
         //Build Each Podcast
         $key = array_keys($episodes->toArray());
         $num = count($key);
-        if($testing_environment) $num = 200;
-        $i = 0;
-        $count = 0;
-        while( $count < $num-1  && $i < $num - 1 && $count < 300 ) {
-           $episode = $episodes[$key[$i]];
-
-
-            //Get Objects
-            $playsheet = $episode->playsheet;
-            $episode = $episode->getAttributes();
-            if($episode["active"]== '1') {
-                if($testing_environment) echo $episode['date']."\n".$count."\n";
-                $count ++;
+		$count = 0;
+		foreach($episodes as $episode){
+			if($count >= $num || $count >= 300){
+				break;
+				//TODO:: Implement archive XML once greater than 300.
+			}else{
+				//Get Objects
+	            $playsheet = $episode->playsheet;
+	            $episode = $episode->getAttributes();
+	            if($testing_environment) echo $episode['date']."\n".$count."\n";
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
-                foreach($episode as $index=>$var){
-                   $episode[$index] = Show::clean($episode[$index]);
-                }
-
-                $xml[] = "<item>";
-                $xml[] =  "<title>" . $episode["title"] . "</title>";
-                $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
-                $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
-                $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
+	            foreach($episode as $index=>$var){
+	               $episode[$index] = Show::clean($episode[$index]);
+	            }
+	            $xml[] = "<item>";
+	            $xml[] =  "<title>" . $episode["title"] . "</title>";
+	            $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
+	            $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
+	            $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
 				$xml[] =  "<description>" . $episode["summary"] . "</description>";
-                $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
-                $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
-                $xml[] = "</item>";
-
-            }
-            $i++;
-        }
+	            $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
+	            $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
+	            $xml[] = "</item>";
+			}
+			$count ++;
+		}
         $xml[] = "</channel>";
         $xml[] = "</rss>";
 
@@ -282,10 +278,9 @@ class Show extends Model
         return $response;
     }
     public static function clean($string){
-        $string = html_entity_decode($string,ENT_NOQUOTES,'UTF-8');
-        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-        $string = htmlentities($string);
-        //$string = htmlentities($string, ENT_COMPAT,'UTF-8');
+        $string = html_entity_decode($string,ENT_QUOTES,'UTF-8');
+        $string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
+	$string = htmlentities($string);
         return $string;
     }
 

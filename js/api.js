@@ -37,8 +37,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		getShowPlaysheets:function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id + '/playsheets');
-		},		
-		getMoreShowPlaysheets: function(show_id,offset){ 
+		},
+		getMoreShowPlaysheets: function(show_id,offset){
 			if(!offset) offset = 0;
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
 		},
@@ -81,8 +81,11 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getFundriveTotals: function(){
 			return $http.get(API_URL_BASE + '/fundrive/total');
 		},
+
 		getResources: function(){
 			return $http.get(API_URL_BASE + '/resource');
+		isAdmin: function(member_id){
+			return $http.get(API_URL_BASE + '/member/'+ $member_id + '/admin');
 		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
