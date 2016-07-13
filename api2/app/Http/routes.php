@@ -123,9 +123,6 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
-<<<<<<< HEAD
-			Route::post('comments',function($id){
-=======
 			//Returns if the user has administrator priveledges or not.
 			Route::get('/admin',function($id){
 				$member = Member::find($id);
@@ -134,11 +131,9 @@ Route::group(['middleware' => 'auth'], function(){
 				else return Response::json(false);
 			});
 			Route::post('/comments',function($id){
->>>>>>> master
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
 				return Response:: json($member -> save());
-
 			});
 			Route::get('training',function($id){
 				$member =  Member::find($id);
