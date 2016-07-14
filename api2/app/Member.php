@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Response;
@@ -31,12 +30,12 @@ class Member extends Model
     public static function search($parameter,$value,$paid,$year,$has_show,$order){
         /*
          * Search Array:
-         * ['search_parameter'] (name,interest,member_type)
+         * ['parameter'] (name,interest,member_type)
          * ['value']
          * ['paid'] (1,0,'both')
-         * ['membership_year'] ('all','2015/2016' ...)
+         * ['year'] ('all','2015/2016' ...)
          * ['has_show'] (1,0) *0 returns both.
-         * ['order_by'] (renew_date,join_date,lastname,firstname,member_type)
+         * ['order'] (renew_date,join_date,lastname,firstname,member_type)
          */
 
         //Create base query.
@@ -119,8 +118,8 @@ class Member extends Model
         $query = Member::select('membership.email')->join('membership_years','membership_years.member_id','=','membership.id')->where('email','!=','null')->orderBy('email','desc');
 
         if($type == 'member_type'){
-            if($value != 'all') $query->where('member_type','=',$value);    
-        } 
+            if($value != 'all') $query->where('member_type','=',$value);
+        }
         elseif($type == 'interest'){
             if($value != 'all'){
                 $query->where('membership_years.'.$value,'=','1');
@@ -130,17 +129,31 @@ class Member extends Model
             http_response_code(400);
             return false;
         }
-
         if($from != null && $to != null){
             $query->where('membership.create_date','<=',$to);
             $query->where('membership.create_date','>=',$from);
         }
-
         if($year != 'all'){
             $query->where('membership_years.membership_year','=',$year);
         }
-        //echo $query->toSql();
         return $query->get();
     }
-
+	public static function report($start,$end){
+		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		//TODO: Can Expand the api call to allow multi-year report queries.
+		$membership_year = $start.'/'.$end;
+		$query = DB::table('membership as m')->join('membership_years as my','my.member_id','=','m.id')->where('my.membership_year','=',$membership_year);
+		//total members, and paid members
+		$query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
+		//Count member types
+		foreach($djland_member_types as $key=>$value){
+			$query->selectRaw('sum(CASE WHEN m.member_type = "'.$value.'" THEN 1 ELSE 0 END) as '.$value);
+		}
+		//Counting interest types
+		foreach($djland_interests as $key=>$value){
+			if($value != 'other') $query->selectRaw('sum(my.'.$value.') as '.$value);
+			else $query->selectRaw('sum(CASE WHEN ISNULL(my.other) or my.other="" THEN 0 ELSE 1 END) as other');
+		}
+		return $query->get();
+	}
 }

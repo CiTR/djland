@@ -28,7 +28,11 @@ Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
-
+Route::group(['middleware' => 'staff'],function(){
+	Route::get('/amistaff',function(){
+		return "Yes, you are";
+	});
+});
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
@@ -85,7 +89,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
-
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
 		});
@@ -100,14 +103,16 @@ Route::group(['middleware' => 'auth'], function(){
 			return Member::email_list($_GET['from'],$_GET['to'],$_GET['type'],$_GET['value'],$_GET['year']);
 		});
 
+		Route::get('/report/{year_start}/{year_end}',function($start=start,$end=end){
+			return Member::report($start,$end);
+		});
+
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
-
 			Route::get('/',function($id){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
-
 			});
 			
 			Route::post('/',function($id){
@@ -120,7 +125,6 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
-
 			Route::post('comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
@@ -181,7 +185,6 @@ Route::group(['middleware' => 'auth'], function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
-
 			});
 			
 			Route::get('permission',function($member_id = id){

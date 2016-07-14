@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-
 class Authenticate
 {
     /**
@@ -37,8 +36,8 @@ class Authenticate
         include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
         if(!(isset($_SESSION['sv_username']) && isset($_SESSION['sv_id']) )){
             return response('Unauthorized.', 401);
-        } 
-        
+        }
+
        /* if ($this->auth->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
