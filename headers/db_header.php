@@ -120,6 +120,20 @@ function get_time()
         return time();
     }
 }
+function getFormatName($format_id, $db){ 
+    
+    $query = "SELECT name FROM types_format WHERE id=".$format_id;
+    
+    if( $result = $db->query($query)){
+        while($row = $result->fetch_assoc()){
+                    return $row['name'];
+        }
+    
+    } else {    
+     return null;
+    }
+    
+}
 
 
 //END DB HEADER
