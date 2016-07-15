@@ -1,6 +1,6 @@
 <?php
 require_once("session_header.php");
-//error_reporting(0);
+error_reporting(0);
 
 //DB HEADER
 include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
@@ -134,6 +134,19 @@ function getFormatName($format_id, $db){
     }
     
 }
+
+function getFormats(){
+    $fresult = mysqli_query($db,"SELECT * FROM types_format ORDER BY 'sort', 'name'");
+    $fnum_rows = mysqli_num_rows($fresult);
+    $fcount = 0;
+    while($fcount < $fnum_rows) {
+        $fformat_name[mysqli_result_dep($fresult,$fcount,"id")] = mysqli_result_dep($fresult,$fcount,"name");
+        $fformat_id[mysqli_result_dep($fresult,$fcount,"name")] = mysqli_result_dep($fresult,$fcount,"id");
+        $fcount++;
+    }
+}
+
+getFormats();
 
 
 //END DB HEADER
