@@ -280,8 +280,8 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::group(['middleware'=>'staff'],function(){
 		Route::group(array('prefix'=>'alert'),function(){
 			Route::get('/',function(){
-				return Show::select('id','name','edit_date','show_alert')
-				->where('show_alert','!=','')->where('show_alert','!=','NULL')->where('active','=','1')
+				return Show::select('id','name','edit_date','alerts')
+				->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
 				->orderBy('edit_date','DESC')->get();
 			});
 		});
