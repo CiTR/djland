@@ -277,7 +277,16 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
-
+	Route::group(['middleware'=>'staff'],function(){
+		Route::group(array('prefix'=>'alert'),function(){
+			Route::get('/',function(){
+				return Show::select('id','name','edit_date','show_alert')
+				->where('show_alert','!=','')->where('show_alert','!=','NULL')->where('active','=','1')
+				->orderBy('edit_date','DESC')->get();
+			});
+		});
+	});
+	
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 
