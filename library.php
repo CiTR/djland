@@ -354,7 +354,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 		if($ed) {
 			printf("<option value=%s>%s", $format_id, $format);
 		}
-		foreach($djland_format_name as $var_key => $var_name) {
+		foreach($fformat_name as $var_key => $var_name) {
 			printf("<option value=%s>%s", $var_key, $var_name);
 		}
 ?>
@@ -419,7 +419,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level']){
 	Catalog #: <INPUT TYPE=text NAME=ascatalog size=10>
 	</td><td align=right nowrap>Format: <select name=asformat><option value=0>All
 <?php
-	foreach($djland_format_name as $var_key => $var_name) {
+	foreach($fformat_name as $var_key => $var_name) {
 		printf("<option value=%s>%s", $var_key, $var_name);
 	}
 ?>
