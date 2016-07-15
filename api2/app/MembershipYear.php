@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Option;
 class MembershipYear extends Model
 {
     protected $table = 'membership_years';
@@ -16,16 +16,17 @@ class MembershipYear extends Model
     	return $this->belongsTo('App\Member');
     }
 	function rollover(){
+		// Should only be called through staff middleware
 		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
-
+		if( permission_level() >= $djland_permission_levels['staff']['level']) {
+			$current_cutoff = Option::where('djland_option','=','membership_cutoff')->first();
 		}else return false;
-
 	}
 	function rollback(){
+		// Should only be called through staff middleware
 		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		if( (permission_level() >= $djland_permission_levels['staff']['level']) && isset($_POST) && isset($_POST['year'])) {
-
+		if( permission_level() >= $djland_permission_levels['staff']['level']) {
+			$current_cutoff = Option::where('djland_option','=','membership_cutoff')->first();
 		}else return false;
 	}
 }
