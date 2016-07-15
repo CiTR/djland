@@ -1,7 +1,6 @@
 $(document).ready ( function() {
 	init();
 
-
    $( "#from" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,

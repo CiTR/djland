@@ -1,7 +1,6 @@
 <?php
 //MENU HEADER
 require_once(dirname(__DIR__).'/config.php');
-//require_once(__DIR__.'\function_header.php');
 require_once('security_header.php');
 
 function admin_menu()

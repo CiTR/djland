@@ -1,9 +1,13 @@
 <?php
-include_once("session_header.php");
+require_once("session_header.php");
+//error_reporting(0);
+
 //DB HEADER
 include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
+
+
 //*******************************************
 //*******************************************
 //*******************************************
@@ -106,6 +110,17 @@ function CallAPI($method, $url, $data = false)
 
     return json_decode($result);
 }
+function get_time()
+{
+    $debug_time = false;
+    $the_fake_time = "2015/03/25 13:05:00";
+    if($debug_time){
+        return strtotime($the_fake_time);
+    } else {
+        return time();
+    }
+}
+
 
 //END DB HEADER
 ?>
