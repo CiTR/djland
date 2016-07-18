@@ -18,40 +18,49 @@
 
     app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
         this.loading = true;
-        var this_ = this;
         this.init = function(){
             this.is_admin = false;
-            var this_ = this;
             this.member_id = member_id;
             this.username = username;
             this.shared = shared;
             //Get List of all members
             this.getMemberList();
             //Get List of primary genres
-            call.getConstants().then(function(response){
-                this_.genres = response.data.genres;
-            });
+            call.getConstants().then(
+				(
+					function(response){
+		                this.genres = response.data.genres;
+		            }
+				).bind(this)
+			);
             //Get Shows Member can see
-            call.getMemberShows(this.member_id).then(function(response){
-                this_.member_shows = response.data.shows;
-                for(var show in this_.member_shows){
-                    if(this_.member_shows[show].show.name != null) this_.member_shows[show].show.name = tools.decodeHTML(this_.member_shows[show].show.name);
-                    if(this_.member_shows[show].show.host != null) this_.member_shows[show].show.host = tools.decodeHTML(this_.member_shows[show].show.host);
-                }
+            call.getMemberShows(this.member_id).then(
+				(
+					function(response){
+		                this.member_shows = response.data.shows;
+		                for(var show in this.member_shows){
+		                    if(this.member_shows[show].show.name != null) this.member_shows[show].show.name = tools.decodeHTML(this.member_shows[show].show.name);
+		                    if(this.member_shows[show].show.host != null) this.member_shows[show].show.host = tools.decodeHTML(this.member_shows[show].show.host);
+		                }
 
-                //Get First show in member_shows
-                for(var show in this_.member_shows){
-                    this_.active_show = this_.member_shows[show];
+		                //Get First show in member_shows
+		                for(var show in this.member_shows){
+		                    this.active_show = this.member_shows[show];
 
-                    break;
-                }
+		                    break;
+		                }
 
-                //Need to make the id a string
-                this_.show_value = ""+this_.active_show.id;
-                this_.loadShow();
-            },function(error){
-                this_.loading = false;
-            });
+		                //Need to make the id a string
+		                this.show_value = ""+this.active_show.id;
+		                this.loadShow();
+            		}
+				).bind(this)
+				,(
+					function(error){
+                		this.loading = false;
+            		}
+				).bind(this)
+			);
             //Calculating "current week" this math is really old. Returns 1 or 2
             //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
 
@@ -66,17 +75,21 @@
 
         }
         this.isAdmin = function(){
-            var this_ = this;
             //Call API to obtain permissions
-            call.isAdmin(this.member_id).then(function(response){
-                if(response.data){
-                    this_.is_admin = true;
-                }else{
-                    this_.is_admin = false;
-                }
-            },function(error){
-                console.log(error.data);
-            });
+            call.isAdmin(this.member_id).then(
+				(
+					function(response){
+		                if(response.data){
+		                    this.is_admin = true;
+		                }else{
+		                    this.is_admin = false;
+		                }
+		            }
+				).bind(this)
+				,function(error){
+                	console.log(error.data);
+	            }
+			);
         }
         this.newShow = function(){
             this.show_value = 0;
@@ -86,67 +99,86 @@
             this.show_owners = new Array();
             this.primary_genres = new Array();
             this.secondary_genres = new Array();
-            this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
-            this_.showtime_template = {show_id:this_.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+            this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
+            this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
 
         }
         this.loadShow = function(){
-            var this_ = this;
-            call.getShow(this_.active_show.id).then(function(response){
-                    this_.info = response.data;
+            call.getShow(this.active_show.id).then(
+				(
+					function(response){
+	                    this.info = response.data;
 
-                    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
-                    this_.info.name = tools.decodeHTML(this_.info.name);
-                    this_.info.show_desc = tools.decodeHTML(this_.info.show_desc);
-                    this_.shared.setShowName(this_.info.name);
-                    //Split genres on comma to allow user management
+	                    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
+	                    this.info.name = tools.decodeHTML(this.info.name);
+	                    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
+	                    this.shared.setShowName(this.info.name);
+	                    //Split genres on comma to allow user management
 
-                    this_.primary_genres = this_.info.primary_genre_tags != null ? this_.info.primary_genre_tags.split(',') : Array();
-                    this_.secondary_genres = this_.info.secondary_genre_tags != null ? this_.info.secondary_genre_tags.split(',') : Array();
+	                    this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
+	                    this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
 
 
-                    //Remove Social array from the show object.
-                    this_.socials = response.data.social;
-                    delete this_.info.social;
-                    this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
-                    this_.loading = false;
-            },function(error){
-                this_.loading = false;
-            });
+	                    //Remove Social array from the show object.
+	                    this.socials = response.data.social;
+	                    delete this.info.social;
+	                    this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
+	                    this.loading = false;
+            		}
+				).bind(this)
+				,(
+					function(error){
+	                	this.loading = false;
+	            	}
+				).bind(this)
+			);
             //Call API to get show owners
-            call.getShowOwners(this_.active_show.id).then(function(response)
-            {
-                //If no response make an empty object
-                if(response.data != null){
-                    this_.show_owners = response.data.owners;
-                }else{
-                    this_.show_owners = Array();
-                }
-            },function(error){
-
-            });
+            call.getShowOwners(this.active_show.id).then(
+				(
+					function(response)
+		            {
+		                //If no response make an empty object
+		                if(response.data != null){
+		                    this.show_owners = response.data.owners;
+		                }else{
+		                    this.show_owners = Array();
+		                }
+		            }
+				).bind(this)
+				,function(error){
+					console.log('Could not get show owners for the active show.')
+            	}
+			);
             //Call API to get show times
-            call.getShowTimes(this_.active_show.id).then(function(response){
-                this_.show_times = response.data;
-                this_.showtime_template = {show_id:this_.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-                //Allowing show times to be displayed in UI by splitting on colon
-                for(var showtime in this_.show_times){
-                    this_.show_times[showtime].start_hour = $filter('pad')(this_.show_times[showtime].start_time.split(':')[0],2);
-                    this_.show_times[showtime].start_minute = $filter('pad')(this_.show_times[showtime].start_time.split(':')[1],2);
-                    this_.show_times[showtime].end_hour = $filter('pad')(this_.show_times[showtime].end_time.split(':')[0],2);
-                    this_.show_times[showtime].end_minute = $filter('pad')(this_.show_times[showtime].end_time.split(':')[1],2);
-                }
-
-            },function(error){
-                this_.loading = false;
-            });
-
+            call.getShowTimes(this.active_show.id).then(
+				(
+					function(response){
+		                this.show_times = response.data;
+		                this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+		                //Allowing show times to be displayed in UI by splitting on colon
+		                for(var showtime in this.show_times){
+		                    this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
+		                    this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
+		                    this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
+		                    this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
+		                }
+		            }
+				).bind(this)
+				,(
+					function(error){
+		                this.loading = false;
+		            }
+				).bind(this)
+			);
         }
         this.getMemberList = function(){
-            var this_ = this;
-            call.getMemberList().then(function(response){
-                this_.member_list = response.data;
-            });
+            call.getMemberList().then(
+				(
+					function(response){
+		                this.member_list = response.data;
+		            }
+				).bind(this)
+			);
         }
 
         this.addFirstSocial = function(){
@@ -214,8 +246,13 @@
             this.updateSecondaryGenres();
         }
         this.updateShow = function(){
-            var this_ = this;
-            this.active_show=this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
+            this.active_show=this.member_shows.filter(
+				(
+					function(object){
+						if(object.id == this.show_value) return object;
+					}
+				).bind(this)
+			)[0];
             this.loadShow();
         }
         this.updateShowtime = function(showtime){
@@ -230,35 +267,33 @@
         }
 
         this.save = function(){
-            var this_ = this;
             this.info.edit_name = this.username;
             //this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
             console.log(this);
             this.message = 'saving...';
 
             if(this.info.id == 0){
-                call.saveNewShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
-					function(response){
-					//                    console.log(response.data.message);
-						var show = response.data['show'];
-						alert("Successfully Create New Show: "+this_.info.name);
-						this_.info.id = show['id'];
-						for(var sh in this_.show_times){
-							this_.show_times[sh].show_id = show['id'];
+                call.saveNewShow(this.info,this.socials,this.show_owners,this.show_times).then(
+					(
+						function(response){
+							var show = response.data['show'];
+							alert("Successfully Create New Show: "+this.info.name);
+							this.info.id = show['id'];
+							for(var sh in this.show_times){
+								this.show_times[sh].show_id = show['id'];
+							}
+							for(var s in this.social){
+								this.socials[s].show_id = show['id'];
+							}
 						}
-						for(var s in this_.social){
-							this_.socials[s].show_id = show['id'];
-						}
-						console.log(response);
-					},
+					).bind(this),
 					function(error){
 						alert("Failed to save");
 						console.error(response);
-
 					}
                 );
             }else{
-                call.saveShow(this_.info,this_.socials,this_.show_owners,this_.show_times).then(
+                call.saveShow(this.info,this.socials,this.show_owners,this.show_times).then(
                 function(response){
 //                    console.log(response.data.message);
                     alert("Successfully Saved");
@@ -277,9 +312,13 @@
             console.log('here');
         }
         $scope.$on('image_upload', function() {
-            $scope.$apply(function() {
-                 this_.info.show_img = shared.getShowImg();
-            });
+            $scope.$apply(
+				(
+					function() {
+		                 this.info.show_img = shared.getShowImg();
+		            }
+				).bind(this)
+			);
         });
 
 

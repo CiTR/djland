@@ -1,21 +1,29 @@
 (function (){
 	var app = angular.module('djland.open_fundrive',['djland.api']);
 
-	app.controller('openFundrive',function(call){
-		this.forms = Array();
-		this.donationTotal = 0;
-
-		this.load = function(){
-			var this_ = this;
-			call.getForms().then(function(response){
-				this_.forms = response.data;
-			});
-			call.getFundriveTotals().then(function(response){
-				this_.donationTotal = parseFloat(response.data);
-			});
+	app.controller('openFundrive',
+		function(call){
+			this.forms = Array();
+			this.donationTotal = 0;
+			this.load = function(){
+				call.getForms().then(
+					(
+						function(response){
+							this.forms = response.data;
+						}
+					).bind(this)
+				);
+				call.getFundriveTotals().then(
+					(
+						function(response){
+							this.donationTotal = parseFloat(response.data);
+						}
+					).bind(this)
+				);
+			}
+			this.load();
 		}
-		this.load();
-		});
+	);
 })();
 
 function go(element){

@@ -39,10 +39,30 @@ class Member extends Model
          */
 
         //Create base query.
-        $query = DB::table('membership as m')
-        ->join('membership_years as my','m.id','=','my.member_id')
-        ->join('member_show as ms','m.id','=','ms.member_id')
-        ->select('m.id','m.firstname','m.lastname','my.membership_year','m.comments','m.primary_phone','m.email','m.member_type');
+		$query = DB::table('membership as m');
+
+		if($year != 'all'){
+			$query->join('membership_years as my',function($join)use($year){
+				$join->on('m.id','=','my.member_id')->where('my.membership_year','=',$year);
+			});
+		}else{
+			$query->join(
+				DB::raw(
+					'(SELECT my.*
+					FROM membership_years my
+					INNER JOIN (
+						SELECT member_id,MAX(membership_year) AS max_my
+						FROM membership_years
+						GROUP BY member_id
+					) my2
+					ON my.member_id = my2.member_id
+					AND my.membership_year = my2.max_my
+					) my'
+				)
+			,'m.id','=','my.member_id');
+		}
+
+		$query->selectRaw('CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.id','my.membership_year','m.comments','m.primary_phone','m.email','m.member_type');
 
         //Handle Search Type
         switch($parameter){
@@ -76,18 +96,9 @@ class Member extends Model
             $query->where('my.paid','=',$paid);
         }
 
-        //Return most recent membership year for member if no specific year chosen
-        if($year != 'all'){
-            $query->having('my.membership_year','=',$year);
-        }else{
-            $query->having('my.membership_year','=',DB::raw('(SELECT my2.membership_year FROM membership_years as my2 WHERE my2.id = my.id ORDER BY my2.membership_year DESC LIMIT 1)'));
-        }
-
         //If filtering by show
         if($has_show == 1){
-            $query->whereIn('m.id',function($subquery){
-                $subquery->select('ms.member_id');
-            });
+            $query->whereExists('m.id','(SELECT member_id FROM member_show WHERE member_id = m.id)');
         }
         //Ordering
         switch($order){
@@ -108,11 +119,10 @@ class Member extends Model
                 break;
         }
         $result = $query->get();
-        //echo $query->toSql();
         $permissions = Member::find($_SESSION['sv_id'])->user->permission;
+
         if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($result);
         else return "Nope";
-
     }
     public static function email_list($from,$to,$type,$value,$year){
         $query = Member::select('membership.email')->join('membership_years','membership_years.member_id','=','membership.id')->where('email','!=','null')->orderBy('email','desc');
@@ -129,10 +139,12 @@ class Member extends Model
             http_response_code(400);
             return false;
         }
+
         if($from != null && $to != null){
             $query->where('membership.create_date','<=',$to);
             $query->where('membership.create_date','>=',$from);
         }
+
         if($year != 'all'){
             $query->where('membership_years.membership_year','=',$year);
         }
@@ -143,6 +155,7 @@ class Member extends Model
 		//TODO: Can Expand the api call to allow multi-year report queries.
 		$membership_year = $start.'/'.$end;
 		$query = DB::table('membership as m')->join('membership_years as my','my.member_id','=','m.id')->where('my.membership_year','=',$membership_year);
+		$query->select('m.id','m.member_type');
 		//total members, and paid members
 		$query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
 		//Count member types

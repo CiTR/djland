@@ -27,7 +27,6 @@ if( permission_level() >= $djland_permission_levels['staff']['level']) {
                             //Search for any combination of the words
                                 for($i = 0; $i < $size; $i++){
                                     $query.= $i > 0 ? " OR" : " WHERE (";
-
                                     $query.= " m.lastname LIKE :value{$i} OR m.firstname LIKE :value{$i}";
                                 }
                             }

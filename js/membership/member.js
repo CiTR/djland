@@ -30,6 +30,7 @@ function Member(id){
 				this.displayUser();
 			}).bind(this)
 			,function(err,err2){
+				//TODO: Log member load failing.
 				console.log("ERROR");
 			}
 		);
@@ -68,7 +69,6 @@ function Member(id){
 		};
 		this.user_info = {};
 	}
-
 	//Blank constructor as we want multiple constructors, and javascript does not support overloading. Instead use _init(arguments list...), _fromObj(Member), and query(id) to build the object.
 }
 
@@ -196,7 +196,6 @@ Member.prototype = {
 					set(this['member_info'][field],field);
 				}
 			}
-
 		}else{
 			$.when(request).then((function(data){
 				this.displayInfo();
@@ -214,9 +213,7 @@ Member.prototype = {
 			break;
 			}
 		}
-
 		m=this.membership_years[year];
-
 		for(var interest in interests){
 			if(interest != 'Other' && interest != 'membership_year'){
 				setCheckbox(m[interests[interest]],interests[interest]);
@@ -226,11 +223,10 @@ Member.prototype = {
 			}
 		}
 		setCheckbox(m['paid'],'paid');
-
 	},
 	displayShows:function(){
 		for(var show in this.member_shows){
-			//TODO: display member shows on membership page. 
+			//TODO: display member shows on membership page.
 		}
 	},
 	displayPermissions:function(){
@@ -333,8 +329,8 @@ Member.prototype = {
 		});
 	},
 	createUser:function(){
-		this_.user_info['username'] = get('username');
-		this_.user_info['password'] = get('password');
+		this.user_info['username'] = get('username');
+		this.user_info['password'] = get('password');
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/user",
@@ -346,7 +342,7 @@ Member.prototype = {
 	},
 	createMembershipYear:function(){
 		this.getInterests();
-		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this_.membership_years[get('membership_year')].paid = 1;
+		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this.membership_years[get('membership_year')].paid = 1;
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/member/"+this.member_id + '/year',
