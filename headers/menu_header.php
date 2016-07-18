@@ -1,7 +1,6 @@
 <?php
 //MENU HEADER
 require_once(dirname(__DIR__).'/config.php');
-//require_once(__DIR__.'\function_header.php');
 require_once('security_header.php');
 
 function admin_menu()
@@ -58,6 +57,7 @@ function print_menu(){
 						<li><a href="friends.php">Friends of CiTR</a></li>
 						<li><a href="scheduler.php">Ad Scheduler</a></li>
 						<li><a href="sam_ad_history.php">Sam Ad History</a></li>
+						<li><a href="show_alerts.php">Show Alert Listing</a></li>
 						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
 						<?php endif; ?>

@@ -2,7 +2,6 @@
 
 include_once("../headers/session_header.php");
 require("../headers/db_header.php");
-require("../headers/function_header.php");
 
 $today = date('Y-m-d');
 $from = strtotime('-1 week last friday');

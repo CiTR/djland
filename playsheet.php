@@ -1,7 +1,5 @@
 <?php
-include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 // Echos HTML head

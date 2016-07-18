@@ -2,7 +2,7 @@
 	<?php
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
-	require_once("headers/functions.php");
+	//require_once("headers/functions.php");
 	require_once("headers/socan_header.php");
 	require_once("headers/menu_header.php");
 	?>
