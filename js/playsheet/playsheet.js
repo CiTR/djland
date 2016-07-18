@@ -521,11 +521,10 @@
             }
         }
         this.saveDraft = function(){
-            var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
             var date = $filter('date')(this.start,'yyyy/MM/dd');
-            for(var playitem in this_.playitems){
-                this_.playitems[playitem].show_date = date;
+            for(var playitem in this.playitems){
+                this.playitems[playitem].show_date = date;
             }
 			this.podcast.date = this.info.start_time;
             this.podcast.show_id = this.info.show_id;
@@ -536,23 +535,32 @@
             if(this.info.status <= 1){
                 if(this.info.id < 1){
                     //New Playsheet
-                    this_.info.create_name = this_.username;
-					this_.info.show_name = this_.active_show.name;
-                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                        this_.info.id = response.data.id;
-                        for(var playitem in this_.playitems){
-                            this_.playitems[playitem].playsheet_id = this_.info.id;
-                        }
-                        var show_date = this_.start.getDate();
-                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                        this_.podcast.id = response.data.podcast_id;
-                        this_.podcast.playsheet_id = response.data.id;
-                        alert("Draft Saved");
+                    this.info.create_name = this.username;
+					this.info.show_name = this.active_show.name;
+                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+						(
+							function(response){
+		                        this.info.id = response.data.id;
+		                        for(var playitem in this.playitems){
+		                            this.playitems[playitem].playsheet_id = this.info.id;
+		                        }
+								this.promotions = response.data.ads;
 
-                    },function(error){
-                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
-                        this_.log_error(error);
-                    });
+		                        var show_date = this.start.getDate();
+		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+		                        this.podcast.id = response.data.podcast_id;
+		                        this.podcast.playsheet_id = response.data.id;
+		                        alert("Draft Saved");
+
+	                    	}
+						).bind(this),
+						(
+							function(error){
+                        		alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+                        		this.log_error(error);
+                    		}
+						).bind(this)
+					);
                 }else{
                     //Existing Playsheet
                     call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){

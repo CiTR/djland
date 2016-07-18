@@ -190,9 +190,10 @@ Route::group(['middleware' => 'auth'], function(){
 				return  Response::json($shows);
 			});
 			Route::get('active_shows', function($member_id = id){
-				$permissions = Member::find($member_id)->user->permission;
+				$member = Member::find($member_id);
+				$permissions = $member->user->permission;
 				$shows = new stdClass();
-				if($permissions->staff ==1 || $permissions->administrator==1){
+				if($member->member_type == 'Staff' || $permissions->staff ==1 || $permissions->administrator==1){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
@@ -287,7 +288,7 @@ Route::group(array('prefix'=>'show'),function(){
 			return Show::select('id','name','edit_date','alerts')
 			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
 			->orderBy('edit_date','DESC')->get();
-	});	
+	});
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 
@@ -435,10 +436,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$podcast_in['title'] = $ps->title;
 		$podcast_in['subtitle'] = $ps->summary;
 		$podcast = Podcast::create($podcast_in);
+		$playitems = array();
+		$ads = array();
 
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
-			Playitem::create($playitem);
+			$playitems[] = Playitem::create($playitem);
 		}
 		foreach(Input::get()['promotions'] as $ad){
 			$ad['playsheet_id'] = $ps->id;
@@ -449,10 +452,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}else{
 				$a = Ad::create((array) $ad);
 			}
+			$ads[] = $a;
 		}
 		$response = new stdClass();
 		$response->id = $ps->id;
 		$response->podcast_id = $podcast->id;
+		$response->ads = $ads;
 		return Response::json($response);
 	});
 	Route::post('/report',function(){
