@@ -283,7 +283,11 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
-
+	Route::get('/alert',function(){
+			return Show::select('id','name','edit_date','alerts')
+			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
+			->orderBy('edit_date','DESC')->get();
+	});	
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 

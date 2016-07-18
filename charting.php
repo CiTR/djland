@@ -1,11 +1,10 @@
 <?php
 
-include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){ ?>
+if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){
+ ?>
 
 <html>
 <head>
@@ -26,7 +25,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){ ?>
 
 <?php	print_menu(); ?>
  <center>
-        <input id="now" type="hidden" value="<?php echo get_time();?>">
+        <input id="now" type="hidden" value="<?php echo get_time(); ?>">
         <div class='text-center loading invisible' ><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
          <label for="from">Start Date: </label>
             <input type="text" id="from" name="from"/>
