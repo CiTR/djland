@@ -160,7 +160,7 @@ class Show extends Model
         foreach ($show as $k=>$field) {
 			if($testing_environment) echo $k."<br/>";
             $show[$k] = Show::clean($show[$k]);
-            }
+        }
 
         $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
 		$xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
@@ -168,13 +168,13 @@ class Show extends Model
 
 
         $xml[] = "<channel>";
-        $xml[] = "<title>". $show['podcast_title'] . "</title>";
-        $xml[] = "<description>" . $show['show_desc'] . "</description>";
+        $xml[] = "<title>". htmlspecialchars($show['podcast_title']) . "</title>";
+        $xml[] = "<description>" . htmlspecialchars($show['show_desc']) . "</description>";
 		$xml[] = "<language>en-us</language>";
-        $xml[] = "<itunes:summary>" . $show["show_desc"]. "</itunes:summary>";
-        if($show["host"]) $xml[] = "<itunes:author>" . $show["host"]. "</itunes:author>";
+        $xml[] = "<itunes:summary>" . htmlspecialchars($show["show_desc"]) . "</itunes:summary>";
+        if($show["host"]) $xml[] = "<itunes:author>" . htmlspecialchars($show["host"]). "</itunes:author>";
         $xml[] = "<itunes:keywords>". str_replace('/',',',htmlspecialchars(html_entity_decode($show["primary_genre_tags"])))."</itunes:keywords>";
-        $xml[] = "<itunes:subtitle>" . $show["subtitle"] . "</itunes:subtitle>";
+        $xml[] = "<itunes:subtitle>" . htmlspecialchars($show["subtitle"]) . "</itunes:subtitle>";
         $xml[] = "<itunes:owner>";
         $xml[] = "<itunes:name>CiTR 101.9 Vancouver</itunes:name>";
         $xml[] = "<itunes:email>Technicalservices@citr.ca</itunes:email>";
@@ -219,11 +219,11 @@ class Show extends Model
 	               $episode[$index] = Show::clean($episode[$index]);
 	            }
 	            $xml[] = "<item>";
-	            $xml[] =  "<title>" . $episode["title"] . "</title>";
+	            $xml[] =  "<title>" . htmlspecialchars($episode["title"]) . "</title>";
 	            $xml[] =  "<pubDate>" . $episode["iso_date"] . "</pubDate>";
-	            $xml[] =  "<itunes:subtitle>" . $episode["subtitle"] . "</itunes:subtitle>";
-	            $xml[] =  "<itunes:summary>" . $episode["summary"] . "</itunes:summary>";
-				$xml[] =  "<description>" . $episode["summary"] . "</description>";
+	            $xml[] =  "<itunes:subtitle>" . htmlspecialchars($episode["subtitle"]) . "</itunes:subtitle>";
+	            $xml[] =  "<itunes:summary>" . htmlspecialchars($episode["summary"]) . "</itunes:summary>";
+				$xml[] =  "<description>" . htmlspecialchars($episode["summary"]) . "</description>";
 	            $xml[] = '<enclosure url="'. $episode['url'] . '" length="' . $episode['length'] . '" type="audio/mpeg" />';
 	            $xml[] = '<guid isPermaLink="true">' . $episode['url'] . '</guid>';
 	            $xml[] = "</item>";
@@ -232,8 +232,6 @@ class Show extends Model
 		}
         $xml[] = "</channel>";
         $xml[] = "</rss>";
-
-
 
         if(!$testing_environment){
             $target_dir = '/home/playlist/public_html/podcasting/xml/';
