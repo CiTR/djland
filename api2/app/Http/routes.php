@@ -31,11 +31,6 @@ Route::get('/', function () {
     //return view('welcome');
     return "Welcome to DJLand API 2.0";
 });
-Route::group(['middleware' => 'staff'],function(){
-	Route::get('/amistaff',function(){
-		return "Yes, you are";
-	});
-});
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
@@ -48,13 +43,11 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::put('/',function(){
 				return Donor::create();
 			});
-
 			Route::get('/',function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
 				else return "Nope";
 			});
-
 			//Donor By ID
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
@@ -76,8 +69,6 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
-
-
 	//Member Resource Routes
 	Route::group(array('prefix'=>'resource'),function(){
 		Route::get('/',function(){
@@ -89,9 +80,6 @@ Route::group(['middleware' => 'auth'], function(){
 			return Response::json($resource->save());
 		});
 	});
-
-
-	
 });
 
 // Member Creation Routes
