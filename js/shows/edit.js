@@ -19,7 +19,7 @@
     app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
         this.loading = true;
         this.init = function(){
-            this.is_admin = false;
+            this.admin = false;
             this.member_id = member_id;
             this.username = username;
             this.shared = shared;
@@ -71,19 +71,15 @@
             var week_no = Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
             this.current_week = ((week_no % 2) +1);
             //Check if user is an administrator or staff
-            this.isAdmin();
+            this.isStaff();
 
         }
-        this.isAdmin = function(){
+        this.isStaff = function(){
             //Call API to obtain permissions
-            call.isAdmin(this.member_id).then(
+            call.isStaff(this.member_id).then(
 				(
 					function(response){
-		                if(response.data){
-		                    this.is_admin = true;
-		                }else{
-		                    this.is_admin = false;
-		                }
+		                this.admin = response.data;
 		            }
 				).bind(this)
 				,function(error){
