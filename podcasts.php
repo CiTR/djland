@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 ?>
     <html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">
     <base href='podcasts.php'>
-    <link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'>
+    <link rel="stylesheet" href='css/bootstrap.min.css'>
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
 
@@ -147,11 +147,11 @@ if(!isset($_GET['id'])){
 
                     <h4 class='text-left double-padded-top'>Audio File Link</h4>
                     <input class='col1' ng-model="list.editing.podcast.url" readonly/>
-                    
-			<div class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active" ng-show="list.is_admin==true"/></div>
+
+			<div class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active" ng-show="list.admin"/></div>
                     <span id="message">{{message}}</span><br/><br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-                    
+
 
                     <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
                 </div>

@@ -1,7 +1,7 @@
 <?php include_once('headers/menu_header.php'); ?>
 <html>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body class='wallpaper' ng-app='djland.report'>

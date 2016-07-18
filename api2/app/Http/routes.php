@@ -124,11 +124,8 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
 			//Returns if the user has administrator priveledges or not.
-			Route::get('/admin',function($id){
-				$member = Member::find($id);
-				$permission = $member->user->permission;
-				if($permission['operator'] == 1 || $permission['administrator']==1 || $permission['staff'] == 1  || $member->type == 'Staff') return Response::json(true);
-				else return Response::json(false);
+			Route::get('/staff',function($id){
+				return Response::json(Member::find($id)->isStaff());
 			});
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
@@ -207,9 +204,9 @@ Route::group(['middleware' => 'auth'], function(){
 				return  Response::json($shows);
 			});
 			Route::get('active_shows', function($member_id = id){
-				$permissions = Member::find($member_id)->user->permission;
+
 				$shows = new stdClass();
-				if($permissions->staff ==1 || $permissions->administrator==1){
+				if(Member::find($member_id)->isStaff()){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
@@ -694,8 +691,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		});
 	});
 	Route::get('member/{member_id}/{offset}',function($member_id = member_id,$offset = offset){
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
+		if(Member::find($member_id)->isStaff()){
 			$shows = Show::all();
 		}else{
 			$shows =  Member::find($member_id)->shows;

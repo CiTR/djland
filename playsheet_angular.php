@@ -7,7 +7,7 @@
 	require_once("headers/menu_header.php");
 	?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'>
+		<link rel='stylesheet' href='css/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 
 	</head>
@@ -222,7 +222,7 @@
 
 		</div>
 		<div class="crtc_totals">
-				<table class='col1 table'>
+				<table class='col1 table-condensed'>
 					<tr>
 						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>

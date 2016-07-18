@@ -10,14 +10,10 @@
 		this.done = false;
 		this.show_select = 'all';
 		//Check Admin Status
-		call.getMemberPermissions(this.member_id).then(
+		call.isStaff(this.member_id).then(
 			(
 				function(response){
-		            if(response.data.administrator == '1' || response.data.staff == '1' ){
-		                this.is_admin = true;
-		            }else{
-		                this.is_admin = false;
-		            }
+					this.admin = response.data;
         		}
 			).bind(this)
 			,(

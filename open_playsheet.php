@@ -6,7 +6,7 @@
 	require_once("headers/menu_header.php");
 	?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 
@@ -37,8 +37,8 @@
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.start_time}}</td>
 								<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' >{{item.status != 2 ? "(Draft)" : "" }}</td>
-								<td ng-if='open_playsheet.is_admin' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='edit_date'>{{item.edit_date}}</td>
-								<td ng-if='open_playsheet.is_admin'><button ng-click='open_playsheet.delete(item.id)' type='button' class='delete'>Delete</button></td>
+								<td ng-if='open_playsheet.admin' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='edit_date'>{{item.edit_date}}</td>
+								<td ng-if='open_playsheet.admin'><button ng-click='open_playsheet.delete(item.id)' type='button' class='delete'>Delete</button></td>
 						</tr>
 					</tbody>
 				</table>

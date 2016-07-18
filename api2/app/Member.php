@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Response;
+
 class Member extends Model
 {
     protected $table = 'membership';
@@ -17,7 +18,6 @@ class Member extends Model
     public function playsheets(){
         return $this->hasManyThrough('App\Playsheet','App\Show');
     }
-
     public function membershipYears(){
     	return $this->hasMany('App\MembershipYear');
     }
@@ -27,6 +27,9 @@ class Member extends Model
     public function user(){
     	return $this->hasOne('App\User');
     }
+	public function isStaff(){
+		return $this->member_type == 'Staff' || $this->user->permissions['staff'] ==1 || $this->user->permissions['administrator']==1 ? true : false;
+	}
     public static function search($parameter,$value,$paid,$year,$has_show,$order){
         /*
          * Search Array:
