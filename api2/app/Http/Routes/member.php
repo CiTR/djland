@@ -5,6 +5,33 @@ use App\Member as Member;
 use App\MembershipYear as MembershipYear;
 use App\Permission as Permission;
 Route::group(['middleware' => 'auth'], function(){
+	// Old Member Creation Routes
+	//TODO:: Move these into rest format.
+		Route::post('/member',function(){
+			$member = Member::create( (array) json_decode(Input::get()['member']));
+			return $member->id;
+		});
+		Route::post('/user',function(){
+			$user = json_decode(Input::get()['user']);
+			$user->password = password_hash($user->password,PASSWORD_DEFAULT);
+			$user->status = 'enabled';
+			$user->login_fails = '0';
+			$user = User::create((array) $user);
+			$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
+			Permission::create($permissions);
+			return $user->id;
+		});
+		Route::post('/member/{id}/year',function($id = id){
+			$member = Member::find($id);
+			$membership_year = json_decode(Input::get()['year']);
+			$membership_year->member_id = $id;
+			return MembershipYear::create((array) $membership_year) ? "true" : "false";
+		});
+
+
+
+
+
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 		Route::get('/',function(){
@@ -69,28 +96,40 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
-			Route::post('permission',function($id){
-				$permission = Member::find($id)->user->permission;
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
-				else return "Nope";
+			Route::group(array('prefix'=>'permission'),function($id){
+				Route::post('/',function($id){
+					$permission = Member::find($id)->user->permission;
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+					else return "Nope";
+				});
+				Route::get('/',function($member_id = id){
+					$permission_levels = Member::find($member_id)->user->permission;
+					unset($permission_levels->user_id);
+					$permission = new stdClass();
+					$permission->permissions = $permission_levels;
+					return $permission_levels;
+				});
 			});
-			Route::get('years',function($id){
-				$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
-				foreach($m_years as $year){
-					$years[$year->membership_year] = $year;
-				}
-				return Response::json($years);
+			Route::group(array('prefix'=>'years'),function($id){
+				Route::get('/',function($id){
+					$m_years = Member::find($id)->membershipYears()->orderBy('membership_year','desc')->get();
+					foreach($m_years as $year){
+						$years[$year->membership_year] = $year;
+					}
+					return Response::json($years);
+				});
+				Route::post('/',function($id){
+					$m = Member::find($id);
+					$m_years = (array) json_decode(Input::get()['years']);
+					$years = $m->membershipYears;
+					foreach($years as $year){
+						$year -> update( (array) $m_years[$year->membership_year]);
+					}
+					return "true";
+				});
 			});
-			Route::post('years',function($id){
-				$m = Member::find($id);
-				$m_years = (array) json_decode(Input::get()['years']);
-				$years = $m->membershipYears;
-				foreach($years as $year){
-					$year -> update( (array) $m_years[$year->membership_year]);
-				}
-				return "true";
-			});
+
 			Route::post('password',function($id){
 				$m = Member::find($id);
 				$user = $m->user;
@@ -99,13 +138,7 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
 			});
-			Route::get('permission',function($member_id = id){
-				$permission_levels = Member::find($member_id)->user->permission;
-				unset($permission_levels->user_id);
-				$permission = new stdClass();
-				$permission->permissions = $permission_levels;
-				return $permission_levels;
-			});
+
 			Route::get('shows', function($member_id = id){
 				$shows = new StdClass();
 				if(Member::find($member_id)->member_type == 'Staff'){

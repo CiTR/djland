@@ -35,40 +35,7 @@ Route::get('/', function () {
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 
-	//Fundrive Routes
-	Route::group(array('prefix'=>'fundrive'),function(){
-		//Donor Subsection
-		Route::group(array('prefix'=>'donor'),function(){
-			//Create a new Donor
-			Route::put('/',function(){
-				return Donor::create();
-			});
-			Route::get('/',function(){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
-				else return "Nope";
-			});
-			//Donor By ID
-			Route::group(array('prefix'=>'{id}'),function($id = id){
-				//Get a donor
-				Route::get('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
-					else return "Nope";
-				});
-				//Update a donor
-				Route::post('/',function($id){
-					return Response::json(Donor::find($id)->update( (array) Input::get()['donor']));
-				});
-				//Delete a donor
-				Route::delete('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::delete();
-					else return "Nope";
-				});
-			});
-		});
-	});
+
 	//Member Resource Routes
 	Route::group(array('prefix'=>'resource'),function(){
 		Route::get('/',function(){
@@ -82,27 +49,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 });
 
-// Member Creation Routes
-	Route::post('/member',function(){
-		$member = Member::create( (array) json_decode(Input::get()['member']));
-		return $member->id;
-	});
-	Route::post('/user',function(){
-		$user = json_decode(Input::get()['user']);
-		$user->password = password_hash($user->password,PASSWORD_DEFAULT);
-		$user->status = 'enabled';
-		$user->login_fails = '0';
-		$user = User::create((array) $user);
-		$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
-		Permission::create($permissions);
-		return $user->id;
-	});
-	Route::post('/member/{id}/year',function($id = id){
-		$member = Member::find($id);
-		$membership_year = json_decode(Input::get()['year']);
-		$membership_year->member_id = $id;
-		return MembershipYear::create((array) $membership_year) ? "true" : "false";
-	});
+
 
 
 
@@ -114,25 +61,7 @@ Route::get('/social/{id}',function($show_id = id){
 
 
 
-	Route::put('/podcast',function(){
-		$podcast = Podcast::create((array) Input::get()['podcast']);
-		$podcast->duration_from_playsheet();
-		return Response::json(array('id'=>$podcast->id));
-	});
-	Route::post('/podcast/{id}',function($id = id){
-		$podcast = Podcast::find($id);
-		$podcast->update(Input::get()['podcast']);
-	});
-	Route::post('/podcast/{id}/audio',function($id = id){
-		$podcast = Podcast::find($id);
-		$result = $podcast->make_podcast();
-		return $result;
-	});
-	Route::post('/podcast/{id}/overwrite',function($id = id){
-		$podcast = Podcast::find($id);
-		$result = $podcast->overwrite_podcast();
-		return $result;
-	});
+
 Route::group(array('prefix'=>'tools'),function(){
 	Route::get('/write_show_xmls',function(){
 		$shows = Show::orderBy('id')->get();
@@ -151,17 +80,7 @@ Route::group(array('prefix'=>'tools'),function(){
 });
 
 
- // Fundrive amount raised total, Externally accessible
-  Route::get('/fundrive/total',function(){
-	 include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
-	$donation_list = Donor::select('donation_amount')->get();
-	$total = 0;
-		  foreach ($donation_list as $donation) {
-	  //str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
-			  $total = $total + floatval(str_replace(",","",$donation->donation_amount));
-		  }
-	return $total;
-  });
+
 
 Route::post('/adschedule',function(){
 	$post = array();
@@ -391,55 +310,4 @@ Route::post('/error',function(){
 	$out .= '<p>'.$error.'</p>';
 	$result = file_put_contents($_SERVER['DOCUMENT_ROOT'].'/log.html',$out.PHP_EOL,FILE_APPEND);
 	return $result;
-});
-Route::group(array('prefix'=>'friends'),function(){
-	Route::get('/',function(){
-		return Friends::all();
-	});
-	Route::put('/',function(){
-		$friend = new Friends;
-		$friend->save();
-		return $friend;
-	});
-	Route::post('/',function(){
-		$friends = Input::get()['friends'];
-		foreach($friends as $friend){
-			$f = Friends::find($friend['id']);
-			unset($friend['id']);
-			$f->update((array) $friend);
-		}
-		Friends::write_static();
-		return Response::json($friends);
-	});
-	Route::delete('/{id}',function($id = id){
-		return Response::json(Friends::find($id)->delete());
-	});
-
-	Route::get('/static',function(){
-		return Friends::write_static();
-	});
-
-});
-
-Route::group(array('prefix'=>'specialbroadcasts'),function(){
-	Route::get('/',function(){
-		return SpecialBroadcasts::orderBy('id','desc')->get();
-	});
-	Route::put('/',function(){
-		$specialbroadcast = new SpecialBroadcasts;
-		$specialbroadcast->save();
-		return $specialbroadcast;
-	});
-	Route::post('/',function(){
-		$specialbroadcasts = Input::get()['specialbroadcasts'];
-		foreach($specialbroadcasts as $specialbroadcast){
-			$s = SpecialBroadcasts::find($specialbroadcast['id']);
-			unset($specialbroadcast['id']);
-			$s->update((array) $specialbroadcast);
-		}
-		return Response::json($specialbroadcasts);
-	});
-	Route::delete('/{id}',function($id =id){
-		return Response::json(SpecialBroadcasts::find($id)->delete());
-	});
 });
