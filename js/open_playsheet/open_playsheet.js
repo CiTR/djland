@@ -10,13 +10,11 @@
 		this.done = false;
 		this.show_select = 'all';
 		//Check Admin Status
-		call.getMemberPermissions(this.member_id).then(function(response){
-            if(response.data.administrator == '1' || response.data.staff == '1' ){
-                this_.is_admin = true;
-            }else{
-                this_.is_admin = false;
-            }
-        },function(error){
+		call.isStaff(this.member_id).then(
+			(function(response){
+				this.is_admin = response.data;
+	        }).bind(this)
+		,function(error){
             this_.log_error(error);
         });
 		//Get member shows
