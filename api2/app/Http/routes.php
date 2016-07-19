@@ -80,8 +80,8 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach ($full_list as $m) {
 				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
 			}
-			$member = Member::find($_SESSION['sv_id']);
-			if($member->isStaff()) return $members;
+			$member = Member::find($id);
+			if(Member::find($_SESSION['sv_id'])->isStaff()) return $members;
 			else return "Nope";
 
 		});
@@ -91,7 +91,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 			Route::get('/',function($id){
 				$member = Member::find($id);
-				if(Member::find($_SESSION['sv_id']) || $id = $_SESSION['sv_id']) return Member::find($id);
+				if(Member::find($_SESSION['sv_id']) || $id == $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
 			});
 			Route::post('/',function($id){
@@ -124,12 +124,12 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			Route::get('user',function($id){
 				$member =  Member::find($id);
-				if($member->isStaff() || $id = $_SESSION['sv_id']) return Member::find($id)->user;
+				if(Member::find($_SESSION['sv_id'])->isStaff() || $id == $_SESSION['sv_id']) return Member::find($id)->user;
 				else return "Nope";
 			});
 			Route::post('user',function($id){
 				$member = Member::find($id);
-				if($member->isStaff()  || $id = $_SESSION['sv_id']) return $member->user->update(Input::get()['user']) ? "true": "false";
+				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id == $_SESSION['sv_id']) return $member->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
 			Route::post('permission',function($id){
@@ -159,7 +159,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
+				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id == $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
 
 			});
