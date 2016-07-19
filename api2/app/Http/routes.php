@@ -41,8 +41,8 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 
 			Route::get('/',function(){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
+				$member = Member::find($_SESSION['sv_id']);
+				if($member->isStaff()) return Donor::all();
 				else return "Nope";
 			});
 
@@ -50,8 +50,8 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
 				Route::get('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
+					$member = Member::find($_SESSION['sv_id']);
+					if($member->isStaff()) return Donor::find($id);
 					else return "Nope";
 				});
 				//Update a donor
@@ -60,8 +60,8 @@ Route::group(['middleware' => 'auth'], function(){
 				});
 				//Delete a donor
 				Route::delete('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::delete();
+					$member = Member::find($_SESSION['sv_id']);
+					if($member->isStaff()) return Donor::delete();
 					else return "Nope";
 				});
 			});
@@ -80,8 +80,8 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach ($full_list as $m) {
 				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
 			}
-			$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-			if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $members;
+			$member = Member::find($_SESSION['sv_id']);
+			if($member->isStaff()) return $members;
 			else return "Nope";
 
 		});
@@ -90,25 +90,23 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 
 			Route::get('/',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
+				$member = Member::find($_SESSION['sv_id']);
+				if($member->isStaff() || $id = $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
-
 			});
 			Route::post('/',function($id){
 				$m = Member::find($id);
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
 			Route::delete('/',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
+				$member = Member::find($_SESSION['sv_id']);
+				if($member->isStaff()) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
 			//Returns if the user has administrator priveledges or not.
 			Route::get('/admin',function($id){
 				$member = Member::find($id);
-				$permission = $member->user->permission;
-				if($permission['operator'] == 1 || $permission['administrator']==1 || $permission['staff'] == 1  || $member->type == 'Staff') return Response::json(true);
+				if($member->isStaff()) return Response::json(true);
 				else return Response::json(false);
 			});
 			Route::post('/comments',function($id){
@@ -126,20 +124,19 @@ Route::group(['middleware' => 'auth'], function(){
 				}
 			});
 			Route::get('user',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
+				$member =  Member::find($id);
+				if($member->isStaff() || $id = $_SESSION['sv_id']) return Member::find($id)->user;
 				else return "Nope";
 			});
 			Route::post('user',function($id){
-				$m = Member::find($id);
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
+				$member = Member::find($id);
+				if($member->isStaff()  || $id = $_SESSION['sv_id']) return $member->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
 			Route::post('permission',function($id){
-				$permission = Member::find($id)->user->permission;
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				$member = Member::find($id);
+				$permissions = $member->user->permission;
+				if($member->isStaff() ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
 				else return "Nope";
 			});
 			Route::get('years',function($id){
@@ -590,11 +587,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		});
 	});
 	Route::get('member/{member_id}/{offset}',function($member_id = member_id,$offset = offset){
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
+		$member = Member::find($member_id);
+		if($member->isStaff()){
 			$shows = Show::all();
 		}else{
-			$shows =  Member::find($member_id)->shows;
+			$shows =  $member->shows;
 		}
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
@@ -609,11 +606,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return Response::json($playsheets);
 	});
 	Route::get('member/{member_id}',function($member_id = member_id){
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
+		$member = Member::find($member_id);
+		if($member->isStaff()){
 			$shows = Show::all();
 		}else{
-			$shows =  Member::find($member_id)->shows;
+			$shows =  $member->shows;
 		}
 		foreach($shows as $show){
 			$show_ids[] = $show->id;

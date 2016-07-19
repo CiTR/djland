@@ -131,7 +131,7 @@
         this.updateShowValues = function(element){
 
             //When a new show is selected, updat all the information.
-            this.active_show = this.member_shows.filter(function(object){if(object.id == this.show_value) return object;})[0];
+            this.active_show = this.member_shows.filter( (function(object){if(object.id == this.show_value) return object;}).bind(this))[0];
             this.show = this.active_show.show;
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
@@ -148,8 +148,8 @@
             call.getShowPlaysheets(this.active_show.id).then(function(response){
                 //DISPLAY OLD PLAYSHEETS
                 this.existing_playsheets = response.data.sort(function(a, b) {
-				var re = new RegExp('-','g');
-				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+					var re = new RegExp('-','g');
+					return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
 				});
             });
             this.updateTime();
@@ -194,7 +194,8 @@
         }
 
         this.loadRebroadcast = function(){
-            call.getPlaysheetData(this.existing_playsheet).then(function(response){
+            call.getPlaysheetData(this.existing_playsheet).then(
+				(function(response){
                 this.playitems = response.data.playitems;
                 this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
                 if(this.info.spokenword_duration != null){
@@ -205,7 +206,8 @@
                     this.spokenword_minutes = null;
                 }
                 this.ads = response.data.ads;
-            });
+			}).bind(this)
+			);
         }
 		this.getNewUnix = function(){
 			if(this.loading == true) return;
