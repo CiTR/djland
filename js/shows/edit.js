@@ -66,15 +66,12 @@
 
         }
         this.isAdmin = function(){
-            var this_ = this;
             //Call API to obtain permissions
-            call.isAdmin(this.member_id).then(function(response){
-                if(response.data){
-                    this_.is_admin = true;
-                }else{
-                    this_.is_admin = false;
-                }
-            },function(error){
+            call.isStaff(this.member_id).then(
+				(function(response){
+	                this.is_admin = response.data;
+            	}).bind(this)
+			,function(error){
                 console.log(error.data);
             });
         }
