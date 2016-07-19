@@ -90,8 +90,8 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 
 			Route::get('/',function($id){
-				$member = Member::find($_SESSION['sv_id']);
-				if($member->isStaff() || $id = $_SESSION['sv_id']) return Member::find($id);
+				$member = Member::find($id);
+				if(Member::find($_SESSION['sv_id']) || $id = $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
 			});
 			Route::post('/',function($id){
@@ -99,8 +99,8 @@ Route::group(['middleware' => 'auth'], function(){
 				return $m->update((array) json_decode(Input::get()['member']) ) ? "true": "false";
 			});
 			Route::delete('/',function($id){
-				$member = Member::find($_SESSION['sv_id']);
-				if($member->isStaff()) return Member::find($id)->delete() ? "true":"false";
+				$member = Member::find($id);
+				if(Member::find($_SESSION['sv_id'])->isStaff()) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
 			//Returns if the user has administrator priveledges or not.
