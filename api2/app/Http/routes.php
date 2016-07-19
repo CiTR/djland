@@ -509,7 +509,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 					}
 				}
 			}
-
 			return Response::json($response);
 		});
 		Route::delete('/',function($id){
@@ -569,7 +568,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		->orderBy('playsheets.id','desc')
 		->get();
 	});
-	
+
 	Route::get('list/{limit}',function($limit = limit){
 		$playsheets = Playsheet::orderBy('id','desc')->limit($limit)->get();
 		foreach($playsheets as $playsheet){

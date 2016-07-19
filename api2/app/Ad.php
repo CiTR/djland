@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use stdClass;
 class Ad extends Model
 {
-    //
     protected $table = 'adlog';
     protected $fillable = array('playsheet_id', 'num', 'time', 'type', 'name', 'played', 'sam_id', 'time_block');
     const CREATED_AT = 'create_date';
@@ -91,8 +90,6 @@ class Ad extends Model
 				$week_ads[] = $promo;
 			}
 		}
-
-
 		$announcement = new stdClass();
 			$announcement->type = 'announcement';
 			$announcement->name = 'Please announce the upcoming program';

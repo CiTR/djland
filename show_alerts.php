@@ -12,19 +12,18 @@
 	</head>
 	<body class='wallpaper'>
 		<?php
-			print_menu();			
+			print_menu();
 		?>
 		<div class='wrapper'>
 			<table class='table-hover table'>
 				<thead>
 					<tr>
 						<th>Show Name</th>
-						<th>Alert Updated At</th>
+						<th style='min-width:180px'>Alert Updated At</th>
 						<th>Alert</th>
 					</tr>
 				</thead>
 				<tbody>
-					
 				<?php
 					$alerts = array();
 					$api_base = 'http://'.$_SERVER['HTTP_HOST'];
@@ -35,9 +34,8 @@
 							echo $key != 'id' ? "<td>".$field."</td>" : '';
 						}
 						echo "</tr>";
-					}	
+					}
 				?>
-
 				</tbody>
 			</table>
 		</div>

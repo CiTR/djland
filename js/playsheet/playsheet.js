@@ -133,7 +133,6 @@
             //When a new show is selected, updat all the information.
             this.active_show = this.member_shows.filter(function(object){if(object.id == this.show_value) return object;})[0];
             this.show = this.active_show.show;
-            console.log(this.active_show);
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
             this.info.edit_name = this.username;
@@ -206,7 +205,6 @@
                     this.spokenword_minutes = null;
                 }
                 this.ads = response.data.ads;
-
             });
         }
 		this.getNewUnix = function(){
@@ -293,7 +291,7 @@
 	                    }
 	                    //Set Show Data
 	                    this.show = playsheet.show;
-	                    console.log(this.show);
+
 	                    this.playitems = playsheet.playitems;
 	                    this.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
 	                    this.promotions = playsheet.promotions;
@@ -302,7 +300,6 @@
 	                        $('#addRows').text("Add Row");
 	                    }
 	                    for(var playitem in this.playitems){
-	                        console.log(this.playitems[playitem]);
 	                        this.playitems[playitem].insert_song_start_hour = $filter('pad')( this.playitems[playitem].insert_song_start_hour , 2);
 	                        this.playitems[playitem].insert_song_start_minute = $filter('pad')( this.playitems[playitem].insert_song_start_minute , 2);
 	                        this.playitems[playitem].insert_song_length_minute = $filter('pad')( this.playitems[playitem].insert_song_length_minute , 2);
@@ -350,8 +347,6 @@
             }else{
 
                 this.podcast = {};
-
-                //TODO load ads.
 
                 this.info.status = '1';
                 this.info.type='Live';
@@ -706,76 +701,60 @@
                         this.podcast.show_id = this.info.show_id;
 
                         call.saveNewPodcast(this.podcast).then(
-						(
-							function(response){
-	                            this.podcast.id = response.data['id'];
-								console.log(response);
-	                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
-									(
-										function(response){
-			                                this.tracklist_overlay = true;
-			                                call.makePodcastAudio(this.podcast).then(
-												(
-													function(reponse){
-					                                    this.podcast_status = "Podcast Audio Created Successfully.";
-					                                }
-												).bind(this)
-												,(
-													function(error){
-					                                    this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-					                                    this.error = true;
-					                                    this.log_error(error);
-					                                }
-												).bind(this)
-											);
-										}
-									).bind(this)
-								);
-							}
-						).bind(this)
-						,(
-							function(error){
-                                this.podcast_status = "Podcast Not created";
-                                this.error = true;
-                                this.log_error(error);
-                                this.tracklist_overlay = true;
-                            }
-						).bind(this)
+						(function(response){
+                            this.podcast.id = response.data['id'];
+							console.log(response);
+                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+								(function(response){
+	                                this.tracklist_overlay = true;
+	                                call.makePodcastAudio(this.podcast).then(
+										(function(reponse){
+		                                    this.podcast_status = "Podcast Audio Created Successfully.";
+		                                }).bind(this)
+										,(function(error){
+			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+			                                this.error = true;
+			                                this.log_error(error);
+			                            }).bind(this)
+									);
+								}).bind(this)
+							);
+						}).bind(this)
+						,(function(error){
+                            this.podcast_status = "Podcast Not created";
+                            this.error = true;
+                            this.log_error(error);
+                            this.tracklist_overlay = true;
+                        }).bind(this)
                     	);
                     }else{
                         call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
-							(
-								function(response){
-		                            this.tracklist_overlay = true;
-		                            call.makePodcastAudio(this.podcast).then(
-										(
-											function(reponse){
-				                                this.podcast_status = "Podcast Audio Created Successfully.";
-				                            }
-										).bind(this)
-										,(
-											function(error){
-				                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-				                                this.error = true;
-				                                this.log_error(error);
-				                            }
-										).bind(this)
-									);
-                        		}
-							).bind(this)
-							,(
-								function(error){
-		                            this.podcast_status = "Podcast Not created";
-		                            this.error = true;
-		                            this.log_error(error);
-		                            this.tracklist_overlay = true;
-		                        }
-							).bind(this)
+							(function(response){
+	                            this.tracklist_overlay = true;
+	                            call.makePodcastAudio(this.podcast).then(
+									(
+										function(reponse){
+			                                this.podcast_status = "Podcast Audio Created Successfully.";
+			                            }
+									).bind(this)
+									,(
+										function(error){
+			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+			                                this.error = true;
+			                                this.log_error(error);
+			                            }
+									).bind(this)
+								);
+                    		}).bind(this)
+							,(function(error){
+	                            this.podcast_status = "Podcast Not created";
+	                            this.error = true;
+	                            this.log_error(error);
+	                            this.tracklist_overlay = true;
+	                        }).bind(this)
 						);
                     }
-
                 }
-
             }
         }
         this.log_error = function(error){
@@ -809,60 +788,50 @@
         };
         this.loadSamPlays = function () {
             call.getSamRecent(0).then(
-				(
-					function (data) {
-		                this.samRecentPlays = [];
-		                for (var samplay in data.data) {
-		                    this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
-		                }
+				(function (data) {
+		            this.samRecentPlays = [];
+		            for (var samplay in data.data) {
+		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
 		            }
-				).bind(this)
+		        }).bind(this)
 			);
         };
         this.samRange = function () {
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
-				(
-					function(data){
-		                for (var samplay in data.data) {
-		                    this.addSamPlay(this.formatSamPlay(data.data[samplay]));
-		                }
+				(function(data){
+		            for (var samplay in data.data) {
+		                this.addSamPlay(this.formatSamPlay(data.data[samplay]));
 		            }
-				).bind(this)
+		        }).bind(this)
 			);
             this.sam_visible= false;
         };
         this.updateSamPlays = function(){
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
-				(
-					function(data){
-		                this.samRecentPlays = [];
-		                for (var samplay in data.data) {
-		                    this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
-		                }
+				(function(data){
+		            this.samRecentPlays = [];
+		            for (var samplay in data.data) {
+		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
 		            }
-				).bind(this)
+		        }).bind(this)
 			);
-
         }
-
-        // Call Initialization function at end of controller
         this.init();
     });
 
     app.controller('datepicker', function($filter) {
-      this.today = function() {
-        this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
-      };
-      this.clear = function () {
-        this.dt = null;
-      };
-      this.open = function($event) {
-
-        $event.preventDefault();
-        $event.stopPropagation();
-        this.opened = true;
-      };
-      this.format = 'yyyy/MM/dd HH:mm:ss';
+		this.today = function() {
+			this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
+		};
+		this.clear = function () {
+			this.dt = null;
+		};
+		this.open = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			this.opened = true;
+		};
+		this.format = 'yyyy/MM/dd HH:mm:ss';
     });
 
     //Declares playitem attribute
@@ -889,12 +858,11 @@
             }
         }
     });
-
-    //TODO: Use Socan Call to get socan status
     var socan = false;
 })();
 
 $(document).ready(function(){
+
     var can_2_required = $('#can_2_required').text();
     var can_3_required = $('#can_3_required').text();
     var fem_required = $('#fem_required').text();
@@ -910,6 +878,7 @@ $(document).ready(function(){
     setInterval(function(){
         crtc_totals();
     },3000);
+
     function crtc_totals(){
         var playitems_count = 0;
         var can_2_count = 0;
