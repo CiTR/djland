@@ -106,8 +106,7 @@ Route::group(['middleware' => 'auth'], function(){
 			//Returns if the user has administrator priveledges or not.
 			Route::get('/staff',function($id){
 				$member = Member::find($id);
-				if($member->isStaff()) return Response::json(true);
-				else return Response::json(false);
+				return Response::json($member->isStaff());
 			});
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
