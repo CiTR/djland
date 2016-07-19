@@ -279,8 +279,12 @@ class Show extends Model
     }
     public static function clean($string){
         $string = html_entity_decode($string,ENT_QUOTES,'UTF-8');
+        #iconv ( string $in_charset , string $out_charset , string $str )
+        #//IGNORE silently discards characters that can't be represented in the target charset
         $string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
-	$string = htmlentities($string);
+        #Do not use htmlentities for XML; it’s intended for HTML and not XML. XML does only know the five entities amp, lt, gt, apos and quot. But htmlentities will use a lot more (those that are registered for HTML).
+        #Only 3 or 4 characters need to be escaped in a string of XML content: >, <, &, and optional ". Please read http://www.w3.org/TR/REC-xml/ "2.4 Character Data and Markup" and "4.6 Predefined Entities". THEN YOU can use 'htmlentities'
+	    $string = htmlspecialchars($string);
         return $string;
     }
 
