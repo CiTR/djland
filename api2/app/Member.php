@@ -17,11 +17,9 @@ class Member extends Model
     public function playsheets(){
         return $this->hasManyThrough('App\Playsheet','App\Show');
     }
-
     public function membershipYears(){
     	return $this->hasMany('App\MembershipYear');
     }
-
     public function permissions(){
     	return $this->user->permissions();
     }
