@@ -133,9 +133,9 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
 			Route::post('permission',function($id){
-				$member = Member::find($id);
+				$member = Member::find($_SESSION['sv_id']);
 				$permissions = $member->user->permission;
-				if($member->isStaff() ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				if($member->isStaff()) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
 				else return "Nope";
 			});
 			Route::get('years',function($id){
@@ -155,11 +155,11 @@ Route::group(['middleware' => 'auth'], function(){
 				return "true";
 			});
 			Route::post('password',function($id){
-				$m = Member::find($id);
+				$member = Member::find($_SESSION['sv_id']);
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
+				if($member->isStaff()  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
 
 			});
