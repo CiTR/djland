@@ -34,8 +34,6 @@ Route::get('/', function () {
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
-
-
 	//Member Resource Routes
 	Route::group(array('prefix'=>'resource'),function(){
 		Route::get('/',function(){
@@ -49,20 +47,12 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 });
 
-
-
-
-
-
-Route::get('/social/{id}',function($show_id = id){
-	return Social::where('show_id','=',$show_id)->get();
+Route::get('/social',function(){
+	return Social::all();
 });
 
-
-
-
-
 Route::group(array('prefix'=>'tools'),function(){
+	//re-writes all the show xmls.
 	Route::get('/write_show_xmls',function(){
 		$shows = Show::orderBy('id')->get();
 		echo "<pre>";
