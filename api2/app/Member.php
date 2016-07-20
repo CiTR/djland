@@ -17,7 +17,6 @@ class Member extends Model
     public function playsheets(){
         return $this->hasManyThrough('App\Playsheet','App\Show');
     }
-
     public function membershipYears(){
     	return $this->hasMany('App\MembershipYear');
     }
@@ -26,6 +25,9 @@ class Member extends Model
     }
     public function user(){
     	return $this->hasOne('App\User');
+    }
+    public function isStaff(){
+        return ($this->member_type == 'Staff' || $this->user->permissions['staff'] ==1 || $this->user->permissions['administrator']==1 || $this->user->permissions['operator'] ==1) ? true : false;
     }
     public static function search($parameter,$value,$paid,$year,$has_show,$order){
         /*
@@ -155,5 +157,5 @@ class Member extends Model
 			else $query->selectRaw('sum(CASE WHEN ISNULL(my.other) or my.other="" THEN 0 ELSE 1 END) as other');
 		}
 		return $query->get();
-	}
+    }
 }

@@ -18,8 +18,6 @@ require_once("headers/menu_header.php");
 	<body class='wallpaper' ng-controller='memberResourcesController as resources'>
 
 	<?php print_menu(); ?>
-
-
 		<div id="member_resources" class="center">
 			<div ng-bind-html='resources.htmlcontent.trusted'></div>
 		</div>

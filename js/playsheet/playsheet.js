@@ -14,7 +14,6 @@
 
         this.tracklist_overlay_header = "Thanks for submitting your playsheet";
         this.podcast_status = "Your podcast is being created";
-        var this_ = this;
 
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
@@ -26,7 +25,7 @@
 
 
         this.add = function(id){
-            var row = angular.copy(this_.row_template);
+            var row = angular.copy(this.row_template);
             this.playitems.splice(id+1,0,row);
             this.update();
         }
@@ -78,6 +77,7 @@
         };
         this.updateTime = function(){
             var now = new Date();
+<<<<<<< HEAD
             call.getNextShowTime(this_.active_show.id,now).then(function(response){
                 var start_unix = response.data.start;
                 var end_unix = response.data.end;
@@ -118,6 +118,63 @@
             
             //Get the show object from shows member belongs to (if it exists)
             this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
+=======
+            call.getNextShowTime(this.active_show.id,now).then(
+				(
+					function(response){
+	                    var start_unix = response.data.start;
+	                    var end_unix = response.data.end;
+	                    this.info.unix_time = response.data.start;
+	                    this.start = new Date(start_unix * 1000);
+	                    this.end = new Date(end_unix * 1000);
+
+
+	                    this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
+	                    this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
+	                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
+	                    this.start_minute = $filter('pad')(this.start.getMinutes(),2);
+	                    this.start_second = $filter('pad')(this.start.getSeconds(),2);
+	                    this.end_hour =  $filter('pad')(this.end.getHours(),2);
+	                    this.end_minute = $filter('pad')(this.end.getMinutes(),2);
+	                    this.end_second = $filter('pad')(this.end.getSeconds(),2);
+	                    //Populate Template Row, then add 5 rows
+	                    var show_date = this.start.getDate();
+                        //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
+
+	                    this.updateEnd();
+	                    this.updateStart();
+
+	                    if(this.info.id < 1){
+	                        call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+								(
+									function(response){
+			                            this.promotions = response.data;
+			                            console.log(this.promotions);
+			                        }
+								).bind(this)
+								,(
+									function(error){
+			                            this.log_error(error);
+			                            call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+											(
+												function(response){
+					                                this.promotions = response.data;
+					                            }
+											).bind(this)
+										);
+	                        		}
+								).bind(this)
+							);
+	                    }
+            		}
+				).bind(this)
+			);
+        }
+        this.updateShowValues = function(element){
+
+            //When a new show is selected, updat all the information.
+            this.active_show = this.member_shows.filter( (function(object){if(object.id == this.show_value) return object;}).bind(this))[0];
+>>>>>>> master
             this.show = this.active_show.show;
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
@@ -131,11 +188,11 @@
                 this.playitems[playitem].crtc_category = this.info.crtc;
                 this.playitems[playitem].lang = this.info.lang;
             }
-            call.getShowPlaysheets(this_.active_show.id).then(function(response){
+            call.getShowPlaysheets(this.active_show.id).then(function(response){
                 //DISPLAY OLD PLAYSHEETS
-                this_.existing_playsheets = response.data.sort(function(a, b) {
-				var re = new RegExp('-','g');
-				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+                this.existing_playsheets = response.data.sort(function(a, b) {
+					var re = new RegExp('-','g');
+					return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
 				});
             });
             this.updateTime();
@@ -180,19 +237,25 @@
         }
 
         this.loadRebroadcast = function(){
-            call.getPlaysheetData(this.existing_playsheet).then(function(response){
-                this_.playitems = response.data.playitems;
-                this_.info.spokenword_duration = response.data.playsheet.spokenword_duration;
-                if(this_.info.spokenword_duration != null){
-                    this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
-                    this_.spokenword_minutes = this_.info.spokenword_duration % 60;
+            call.getPlaysheetData(this.existing_playsheet).then(
+				(function(response){
+                this.playitems = response.data.playitems;
+                this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
+                if(this.info.spokenword_duration != null){
+                    this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
+                    this.spokenword_minutes = this.info.spokenword_duration % 60;
                 }else{
+<<<<<<< HEAD
                     this_.spokenword_hours = 0;
                     this_.spokenword_minutes = null;
+=======
+                    this.spokenword_hours = null;
+                    this.spokenword_minutes = null;
+>>>>>>> master
                 }
-                this_.ads = response.data.ads;
-
-            });
+                this.ads = response.data.ads;
+			}).bind(this)
+			);
         }
 		this.getNewUnix = function(){
 			if(this.loading == true) return;
@@ -228,23 +291,28 @@
 			this.start_unix = start_unix;
 			this.end_unix = end_unix;
 			var duration = start_unix - end_unix;
-			if(this_.info.id < 1){
-				call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-					this_.promotions = response.data;
-				},function(error){
-					this_.log_error(error);
-					call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-						this_.promotions = response.data;
-					});
-				});
+			if(this.info.id < 1){
+				call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+					(function(response){
+						this.promotions = response.data;
+					}).bind(this)
+					,(function(error){
+						this.log_error(error);
+						call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+							(function(response){
+								this.promotions = response.data;
+							}).bind(this)
+						);
+					}).bind(this)
+				);
 			}
 		}
 
         //Initialization of Playsheet
         this.init = function(){
-            var this_ = this;
             //If playsheet exists, load it.
             if(this.info.id > 0){
+<<<<<<< HEAD
                 //Get
                 call.getPlaysheetData(this.info.id).then(function(data){
                     var playsheet = data.data;
@@ -327,11 +395,103 @@
                 this.podcast = {};
                 this.info.status = '1';
                 this.info.type='Live';
+=======
+                call.getPlaysheetData(this.info.id).then(
+					(function(data){
+	                    var playsheet = data.data;
+	                    this.info = {};
+	                    for(var item in playsheet.playsheet){
+	                        this.info[item] = playsheet.playsheet[item];
+	                    }
+	                    var re = new RegExp('-','g');
+	                    this.info.start_time = this.info.start_time.replace(re,'/');
+	                    this.info.end_time = this.info.end_time.replace(re,'/');
+	                    //Create Extra Variables to allow proper display in UI
+	                    this.start = new Date(this.info.start_time);
+	                    this.end = new Date(this.info.end_time);
+	                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
+	                    this.start_minute = $filter('pad')(this.start.getMinutes(),2);
+	                    this.start_second = $filter('pad')(this.start.getSeconds(),2);
+	                    this.end_hour =  $filter('pad')(this.end.getHours(),2);
+	                    this.end_minute = $filter('pad')(this.end.getMinutes(),2);
+	                    this.end_second = $filter('pad')(this.end.getSeconds(),2);
+
+	                    if(this.info.spokenword_duration != null){
+	                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
+	                        this.spokenword_minutes = this.info.spokenword_duration % 60;
+	                    }else{
+	                        this.spokenword_hours = null;
+	                        this.spokenword_minutes = null;
+	                    }
+	                    //Set Show Data
+	                    this.show = playsheet.show;
+
+	                    this.playitems = playsheet.playitems;
+	                    this.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
+	                    this.promotions = playsheet.promotions;
+	                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
+	                    if(this.playitems < 1){
+	                        $('#addRows').text("Add Row");
+	                    }
+	                    for(var playitem in this.playitems){
+	                        this.playitems[playitem].insert_song_start_hour = $filter('pad')( this.playitems[playitem].insert_song_start_hour , 2);
+	                        this.playitems[playitem].insert_song_start_minute = $filter('pad')( this.playitems[playitem].insert_song_start_minute , 2);
+	                        this.playitems[playitem].insert_song_length_minute = $filter('pad')( this.playitems[playitem].insert_song_length_minute , 2);
+	                        this.playitems[playitem].insert_song_length_second = $filter('pad')( this.playitems[playitem].insert_song_length_second , 2);
+	                    }
+
+	                    //Get Member shows, and set active show
+	                    call.getActiveMemberShows(this.member_id).then(
+							(function(data){
+		                        var shows = data.data.shows;
+		                        this.member_shows = shows;
+		                        //Find what show this playsheet is for, and set it as active show to load information.
+		                        for(var show in this.member_shows){
+
+		                            if(this.show.name.toString() == shows[show].show.name.toString()){
+		                                this.active_show = this.member_shows[show];
+		                                this.show_value = shows[show]['id'];
+		                                this.show = shows[show]['show'];
+		                            }
+		                        }
+
+		                        call.getShowPlaysheets(this.active_show.id).then(
+									(function(response){
+			                            //DISPLAY OLD PLAYSHEETS
+										this.existing_playsheets = response.data.sort(
+											function(a, b) {
+											var re = new RegExp('-','g');
+											return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+											}
+										);
+		                        	}).bind(this)
+								);
+		                        //Populate the template row
+		                        var show_date = this.start.getDate();
+		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+		                        this.checkIfComplete();
+		                        if(this.using_sam){
+		                            this.updateSamPlays();
+		                        }
+		                        this.loading = false;
+		                    }).bind(this)
+						);
+                	}).bind(this)
+				);
+            }else{
+
+                this.podcast = {};
+
+                this.info.status = '1';
+                this.info.type='Live';
+
+>>>>>>> master
                 this.spokenword_hours = 0;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
 
                 //Get Shows Listing
+<<<<<<< HEAD
                 call.getActiveMemberShows(this.member_id).then(function(data){
                     var shows = data.data.shows;
                     this_.member_shows = shows;
@@ -415,111 +575,215 @@
                     }
 
                 });
+=======
+                call.getActiveMemberShows(this.member_id).then(
+					(function(data){
+	                    var shows = data.data.shows;
+	                    this.member_shows = shows;
+	                    if(shows){
+	                        //Cheat Code to get first active show.
+	                        for(var show in this.member_shows){
+	                            this.active_show = this.member_shows[show];
+	                            this.show = this.active_show.show;
+
+	                            this.show_value = this.active_show['id'];
+	                            this.info.show_id = parseInt(this.active_show.id);
+	                            this.info.host = this.active_show.show.host;
+	                            this.info.create_name = this.info.host;
+
+	                            this.podcast.author = this.info.host;
+	                            this.info.crtc = this.active_show.crtc;
+	                            this.info.lang = this.active_show.lang || 'English';
+
+	                            for(var playitem in this.playitems){
+	                                this.playitems[playitem].show_id = this.info.show_id;
+	                            }
+	                            break;
+	                        }
+	                        var now = new Date();
+
+	                        call.getShowPlaysheets(this.show_value).then(
+								(
+									function(response){
+										this.existing_playsheets = response.data.sort(
+											function(a, b) {
+												var re = new RegExp('-','g');
+												return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+											}
+										);
+		                        	}
+								).bind(this)
+							);
+
+	                       call.getNextShowTime(this.active_show.id,now).then(
+							   (
+								   function(response){
+			                            var start_unix = response.data.start;
+			                            var end_unix = response.data.end;
+			                            this.start = new Date(start_unix * 1000);
+			                            this.end = new Date(end_unix * 1000);
+
+			                            this.info.unix_time = this.start.getTime() / 1000;
+			                            this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
+			                            this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
+			                            this.start_hour =  $filter('pad')(this.start.getHours(),2);
+			                            this.start_minute = $filter('pad')(this.start.getMinutes(),2);
+			                            this.start_second = $filter('pad')(this.start.getSeconds(),2);
+			                            this.end_hour =  $filter('pad')(this.end.getHours(),2);
+			                            this.end_minute = $filter('pad')(this.end.getMinutes(),2);
+			                            this.end_second = $filter('pad')(this.end.getSeconds(),2);
+
+			                            //Populate Template Row, then add 5 rows
+			                            var show_date = this.start.getDate();
+			                                                //Update Podcast information
+			                            this.updatePodcastDate();
+			                            this.updateEnd();
+			                            this.updateStart();
+			                            this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+			                            this.addStartRow();
+			                            for(var i = 0; i<4; i++) {
+			                                this.add(this.playitems.length-1);
+			                            }
+			                            call.getPromotions(start_unix, end_unix-start_unix,this.active_show.id).then(
+											(function(response){
+				                                this.promotions = response.data;
+				                            }).bind(this)
+											,(function(error){
+				                            this.log_error(error);
+				                                call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+													(function(response){
+				                                    this.promotions = response.data;
+												}).bind(this));
+				                            }).bind(this)
+										);
+			                            this.update();
+			                            if(this.using_sam){
+			                                this.updateSamPlays();
+			                            }
+			                            this.loading = false;
+			                        }
+								).bind(this)
+							);
+	                    }else{
+	                        this.loading = false;
+	                    }
+	                }).bind(this)
+				);
+>>>>>>> master
             }
 
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.info.start_time;
-            this.podcast.iso_date = this.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
+            this.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
         }
         //When a playsheet item is added or removed, check for completeness
-        $scope.$watchCollection('playsheet.playitems', function () {
-            this_.update();
-        },true);
-        $scope.$watch('playsheet.info.start_time', function () {
-            this_.info.start_time = $filter('date')(this_.info.start_time,'yyyy/MM/dd HH:mm:ss');
-            this_.start = new Date(this_.info.start_time);
-            this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-            this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-            this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
+        $scope.$watchCollection('playsheet.playitems',
+			(function () {
+            	this.update();
+        	}).bind(this),true
+		);
+        $scope.$watch('playsheet.info.start_time',
+			(
+				function(){
+		            this.info.start_time = $filter('date')(this.info.start_time,'yyyy/MM/dd HH:mm:ss');
+		            this.start = new Date(this.info.start_time);
+		            this.start_hour =  $filter('pad')(this.start.getHours(),2);
+		            this.start_minute = $filter('pad')(this.start.getMinutes(),2);
+		            this.start_second = $filter('pad')(this.start.getSeconds(),2);
 
-            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            this_.updateSamPlays();
-			this_.getNewUnix();
-
-        });
-        $scope.$watch('playsheet.info.end_time', function () {
-            this_.info.end_time = $filter('date')(this_.info.end_time,'yyyy/MM/dd HH:mm:ss');
-            this_.end = new Date(this_.info.end_time);
-            this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-            this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-            this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-            if(this_.start && this_.end) this_.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-            this_.updateSamPlays();
-            console.log("End Time " + this_.info.end_time+" End var ="+  this_.end);
-			this_.getNewUnix();
-        });
+		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+		            this.updateSamPlays();
+					this.getNewUnix();
+        		}
+			).bind(this)
+		);
+        $scope.$watch('playsheet.info.end_time',
+			(
+				function () {
+		            this.info.end_time = $filter('date')(this.info.end_time,'yyyy/MM/dd HH:mm:ss');
+		            this.end = new Date(this.info.end_time);
+		            this.end_hour =  $filter('pad')(this.end.getHours(),2);
+		            this.end_minute = $filter('pad')(this.end.getMinutes(),2);
+		            this.end_second = $filter('pad')(this.end.getSeconds(),2);
+		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+		            this.updateSamPlays();
+		            console.log("End Time " + this.info.end_time+" End var ="+  this.end);
+					this.getNewUnix();
+		        }
+			).bind(this)
+		);
 
 
 
         this.update = function(){
-            $timeout(function(){this_.checkIfComplete();},100);
+            $timeout( (function(){this.checkIfComplete();}).bind(this),100);
         }
         this.checkIfComplete = function(){
-            var this_ = this;
             var playsheet_okay = 'true';
             this.missing = "You have empty values";
             if(this.info.start > this.info.end){
                 playsheet_okay = false;
             }
             var m= {'artist':0,'song':0,'album':0,'composer':0,'spokenword':0,'episode_title':0,'episode_summary':0};
-            $('.required').each(function(index,element){
-                $e = element;
+            $('.required').each(
+				(function(index,element){
+	                $e = element;
 
-                var model = $e.getAttribute('ng-model');
-                if( $(element).val() == "" || $(element).val() == null){
-                    playsheet_okay='false';
-                    switch(model){
-                        case "playitem.artist":
-                            if(this_.playitems.length>0) m.artist = 1;
-                            break;
-                        case 'playitem.album':
-                            if(this_.playitems.length>0) m.album = 1;
-                            break;
-                        case 'playitem.song':
-                            if(this_.playitems.length>0) m.song = 1;
-                            break;
-                        case 'playitem.composer':
-                            if(this_.playitems.length>0) m.composer= 1;
-                            break;
-                        case 'playsheet.spokenword_hours':
-                            m.spokenword = 1;
-                            break;
-                        case 'playsheet.spokenword_minutes':
-                            m.spokenword = 1;
-                            break;
-                        case 'playsheet.info.title':
-                            m.episode_title = 1;
-                            break;
-                        case 'playsheet.info.summary':
-                            m.episode_summary = 1;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
+	                var model = $e.getAttribute('ng-model');
+	                if( $(element).val() == "" || $(element).val() == null){
+	                    playsheet_okay='false';
+	                    switch(model){
+	                        case "playitem.artist":
+	                            if(this.playitems.length>0) m.artist = 1;
+	                            break;
+	                        case 'playitem.album':
+	                            if(this.playitems.length>0) m.album = 1;
+	                            break;
+	                        case 'playitem.song':
+	                            if(this.playitems.length>0) m.song = 1;
+	                            break;
+	                        case 'playitem.composer':
+	                            if(this.playitems.length>0) m.composer= 1;
+	                            break;
+	                        case 'playsheet.spokenword_hours':
+	                            m.spokenword = 1;
+	                            break;
+	                        case 'playsheet.spokenword_minutes':
+	                            m.spokenword = 1;
+	                            break;
+	                        case 'playsheet.info.title':
+	                            m.episode_title = 1;
+	                            break;
+	                        case 'playsheet.info.summary':
+	                            m.episode_summary = 1;
+	                            break;
+	                        default:
+	                            break;
+	                    }
+                	}
+            	}).bind(this)
+			);
             if(playsheet_okay == 'true'){
                 this.complete = true;
             }else{
                 this.missing = "You have empty values for these fields:"
-                + (m.artist == 1 ? "an artist,":"")
-                + (m.song == 1 ? 'a song title,':"" )
-                + (m.album == 1 ? 'an album,':"")
-                + (m.composer == 1 ? 'a composer,':'')
-                + (m.spokenword == 1 ? 'your spoken word duration,':"")
-                + (m.episode_title ==1 ? 'your episode title,':"")
-                + (m.episode_summary == 1 ? 'your episode description':"")
+                + (m.artist == 1 ? " an artist,":"")
+                + (m.song == 1 ? " a song title,":"" )
+                + (m.album == 1 ? " an album,":"")
+                + (m.composer == 1 ? " a composer,":'')
+                + (m.spokenword == 1 ? " your spoken word duration,":"")
+                + (m.episode_title ==1 ? " your episode title,":"")
+                + (m.episode_summary == 1 ? " your episode description":"")
                 + '.';
                 this.complete = false;
             }
         }
         this.saveDraft = function(){
-            var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
             var date = $filter('date')(this.start,'yyyy/MM/dd');
-            for(var playitem in this_.playitems){
-                this_.playitems[playitem].show_date = date;
+            for(var playitem in this.playitems){
+                this.playitems[playitem].show_date = date;
             }
 			this.podcast.date = this.info.start_time;
             this.podcast.show_id = this.info.show_id;
@@ -530,43 +794,59 @@
             if(this.info.status <= 1){
                 if(this.info.id < 1){
                     //New Playsheet
-                    this_.info.create_name = this_.username;
-					this_.info.show_name = this_.active_show.name;
-                    callback = call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                        this_.info.id = response.data.id;
-                        for(var playitem in this_.playitems){
-                            this_.playitems[playitem].playsheet_id = this_.info.id;
-                        }
-                        var show_date = this_.start.getDate();
-                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                        this_.podcast.id = response.data.podcast_id;
-                        this_.podcast.playsheet_id = response.data.id;
-                        alert("Draft Saved");
+                    this.info.create_name = this.username;
+					this.info.show_name = this.active_show.name;
+                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+						(
+							function(response){
+		                        this.info.id = response.data.id;
+		                        for(var playitem in this.playitems){
+		                            this.playitems[playitem].playsheet_id = this.info.id;
+		                        }
+								this.promotions = response.data.ads;
+								console.log(this.promotions);
+		                        var show_date = this.start.getDate();
+		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+		                        this.podcast.id = response.data.podcast_id;
+		                        this.podcast.playsheet_id = response.data.id;
+		                        alert("Draft Saved");
 
-                    },function(error){
-                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
-                        this_.log_error(error);
-                    });
+	                    	}
+						).bind(this),
+						(
+							function(error){
+                        		alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+                        		this.log_error(error);
+                    		}
+						).bind(this)
+					);
                 }else{
                     //Existing Playsheet
-                    call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                        for(var playitem in this_.playitems){
-                            this_.playitems[playitem].playsheet_id = this_.info.id;
-                        }
-                        alert("Draft Saved");
-                    },function(error){
-                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
-                        this_.log_error(error);
-                    });
+                    call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+						(
+							function(response){
+		                        for(var playitem in this.playitems){
+		                            this.playitems[playitem].playsheet_id = this.info.id;
+		                        }
+		                        alert("Draft Saved");
+		                    }
+						).bind(this)
+						,(
+							function(error){
+		                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+		                        this.log_error(error);
+		                    }
+						).bind(this)
+					);
                 }
             }else{
+                //TODO: Fix the grammar here
                 alert("You've already submitted this playsheet, please submit it instead");
             }
 
         }
         //Submit a Playsheet
         this.submit = function () {
-            var this_ = this;
             this.info.unix_time = this.start.getTime() / 1000;
             this.podcast.show_id = this.info.show_id;
 			this.podcast.date = this.info.start_time;
@@ -574,51 +854,66 @@
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
-			this_.info.show_name = this_.active_show.name;
+			this.info.show_name = this.active_show.name;
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
             }else if(this.start.getTime()/1000 - this.end.getTime()/1000 > 8*60*60){
+                //TODO: Make this correspond to a config constant so that we can adjust the length of the max podcast on the config - see #255
                 alert("This podcast is over 8 hours. 8 Hours is the maximum");
             }else{
                //Update Status to submitted playsheet
                 this.info.status = 2;
                 var date = $filter('date')(this.start,'yyyy/MM/dd');
-                for(var playitem in this_.playitems){
-                    this_.playitems[playitem].show_date = date;
+                for(var playitem in this.playitems){
+                    this.playitems[playitem].show_date = date;
                 }
 
                 this.updatePodcastDate();
 
                 if(this.info.id < 1){
                     //New Playsheet
-                    this_.info.create_name = this_.username;
+                    this.info.create_name = this.username;
 
-                    call.saveNewPlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                        for(var playitem in this_.playitems){
-                            this_.playitems[playitem].playsheet_id = this_.info.id;
-                        }
-                        this_.info.id = response.data.id;
-                        this_.podcast.id = response.data.podcast_id;
-                        this_.podcast.playsheet_id = response.data.id;
-                        this_.tracklist_overlay = true;
-                        call.makePodcastAudio(this_.podcast).then(function(reponse){
-                            this_.podcast_status = "Podcast Audio Created Successfully.";
-                        },function(error){
-                            this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-                            this_.error = true;
-                            this_.log_error(error);
-                        });
-
-                    },function(error){
-                        this_.tracklist_overlay_header = "An error has occurred while saving the playsheet";
-                        this_.podcast_status = "Podcast Not created";
-                        this_.error = true;
-                        this_.log_error(error);
-                        this_.tracklist_overlay = true;
-                    });
+                    call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+						(
+							function(response){
+		                        for(var playitem in this.playitems){
+		                            this.playitems[playitem].playsheet_id = this.info.id;
+		                        }
+								this.promotions = response.data.ads;
+		                        this.info.id = response.data.id;
+		                        this.podcast.id = response.data.podcast_id;
+		                        this.podcast.playsheet_id = response.data.id;
+		                        this.tracklist_overlay = true;
+		                        call.makePodcastAudio(this.podcast).then(
+									(
+										function(reponse){
+			                            	this.podcast_status = "Podcast Audio Created Successfully.";
+			                        	}
+									).bind(this)
+									,(
+										function(error){
+				                            this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+				                            this.error = true;
+				                            this.log_error(error);
+			                        	}
+									).bind(this)
+								);
+	                    	}
+						).bind(this)
+						,(
+							function(error){
+		                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+		                        this.podcast_status = "Podcast Not created";
+		                        this.error = true;
+		                        this.log_error(error);
+		                        this.tracklist_overlay = true;
+		                    }
+						).bind(this)
+					);
                 }else{
                     //Existing Playsheet
 
@@ -626,53 +921,66 @@
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
 
-                        call.saveNewPodcast(this_.podcast).then(function(response){
-                            this_.podcast.id = response.data['id'];
+                        call.saveNewPodcast(this.podcast).then(
+						(function(response){
+                            this.podcast.id = response.data['id'];
 							console.log(response);
-                            call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                                this_.tracklist_overlay = true;
-                                call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                    this_.podcast_status = "Podcast Audio Created Successfully.";
-                                },function(error){
-                                    this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-                                    this_.error = true;
-                                    this_.log_error(error);
-                                });
-
-                            },function(error){
-                                this_.podcast_status = "Podcast Not created";
-                                this_.error = true;
-                                this_.log_error(error);
-                                this_.tracklist_overlay = true;
-                            });
-                        });
+                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+								(function(response){
+	                                this.tracklist_overlay = true;
+	                                call.makePodcastAudio(this.podcast).then(
+										(function(reponse){
+		                                    this.podcast_status = "Podcast Audio Created Successfully.";
+		                                }).bind(this)
+										,(function(error){
+			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+			                                this.error = true;
+			                                this.log_error(error);
+			                            }).bind(this)
+									);
+								}).bind(this)
+							);
+						}).bind(this)
+						,(function(error){
+                            this.podcast_status = "Podcast Not created";
+                            this.error = true;
+                            this.log_error(error);
+                            this.tracklist_overlay = true;
+                        }).bind(this)
+                    	);
                     }else{
-                        call.savePlaysheet(this_.info,this_.playitems,this_.podcast,this_.promotions).then(function(response){
-                            this_.tracklist_overlay = true;
-                            call.makePodcastAudio(this_.podcast).then(function(reponse){
-                                this_.podcast_status = "Podcast Audio Created Successfully.";
-                            },function(error){
-                                this_.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-                                this_.error = true;
-                                this_.log_error(error);
-                            });
-                        },function(error){
-                            this_.podcast_status = "Podcast Not created";
-                            this_.error = true;
-                            this_.log_error(error);
-                            this_.tracklist_overlay = true;
-                        });
+                        call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+							(function(response){
+	                            this.tracklist_overlay = true;
+	                            call.makePodcastAudio(this.podcast).then(
+									(
+										function(reponse){
+			                                this.podcast_status = "Podcast Audio Created Successfully.";
+			                            }
+									).bind(this)
+									,(
+										function(error){
+			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+			                                this.error = true;
+			                                this.log_error(error);
+			                            }
+									).bind(this)
+								);
+                    		}).bind(this)
+							,(function(error){
+	                            this.podcast_status = "Podcast Not created";
+	                            this.error = true;
+	                            this.log_error(error);
+	                            this.tracklist_overlay = true;
+	                        }).bind(this)
+						);
                     }
-
                 }
-
             }
         }
         this.log_error = function(error){
-            var this_ = this;
-            this_.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+            this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
             var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
-
             call.error( error).then(function(response){
                 $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error has been logged');
             },function(error){
@@ -696,57 +1004,55 @@
             djland_entry.insert_song_length_second = $filter('pad')( (sam_play.duration/1000)%60 , 2);
             djland_entry.is_canadian = sam_play.mood.toLowerCase().indexOf('cancon') > -1 ? '1':'0';
             djland_entry.is_fem = sam_play.mood.toLowerCase().indexOf('femcon') > -1 ? '1':'0';
-            djland_entry.lang = this_.info.lang;
+            djland_entry.lang = this.info.lang;
             return djland_entry;
         };
         this.loadSamPlays = function () {
-            var this__ = this;
-            call.getSamRecent(0).then(function (data) {
-                this_.samRecentPlays = [];
-                for (var samplay in data.data) {
-                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
-                }
-            });
+            call.getSamRecent(0).then(
+				(function (data) {
+		            this.samRecentPlays = [];
+		            for (var samplay in data.data) {
+		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
+		            }
+		        }).bind(this)
+			);
         };
         this.samRange = function () {
-            var this_ = this;
-            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
-                for (var samplay in data.data) {
-                    this_.addSamPlay(this_.formatSamPlay(data.data[samplay]));
-                }
-            });
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
+				(function(data){
+		            for (var samplay in data.data) {
+		                this.addSamPlay(this.formatSamPlay(data.data[samplay]));
+		            }
+		        }).bind(this)
+			);
             this.sam_visible= false;
         };
         this.updateSamPlays = function(){
-            var this_ = this;
-            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(function(data){
-                this_.samRecentPlays = [];
-                for (var samplay in data.data) {
-                    this_.samRecentPlays.push(this_.formatSamPlay(data.data[samplay]));
-                }
-            });
-
+            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
+				(function(data){
+		            this.samRecentPlays = [];
+		            for (var samplay in data.data) {
+		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
+		            }
+		        }).bind(this)
+			);
         }
-
-
-        // Call Initialization function at end of controller
         this.init();
     });
 
     app.controller('datepicker', function($filter) {
-      this.today = function() {
-        this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
-      };
-      this.clear = function () {
-        this.dt = null;
-      };
-      this.open = function($event) {
-
-        $event.preventDefault();
-        $event.stopPropagation();
-        this.opened = true;
-      };
-      this.format = 'yyyy/MM/dd HH:mm:ss';
+		this.today = function() {
+			this.dt = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
+		};
+		this.clear = function () {
+			this.dt = null;
+		};
+		this.open = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			this.opened = true;
+		};
+		this.format = 'yyyy/MM/dd HH:mm:ss';
     });
 
     //Declares playitem attribute
@@ -773,9 +1079,14 @@
             }
         }
     });
+<<<<<<< HEAD
+=======
+    var socan = false;
+>>>>>>> master
 })();
 
 $(document).ready(function(){
+
     var can_2_required = $('#can_2_required').text();
     var can_3_required = $('#can_3_required').text();
     var fem_required = $('#fem_required').text();
@@ -791,6 +1102,7 @@ $(document).ready(function(){
     setInterval(function(){
         crtc_totals();
     },3000);
+
     function crtc_totals(){
         var playitems_count = 0;
         var can_2_count = 0;

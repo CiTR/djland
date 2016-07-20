@@ -1,7 +1,5 @@
 <?php
 //SECURITY HEADER
-
-include_once("session_header.php");
 //require_once("../config.php");
 require_once("db_header.php");
 require_once("login_header.php");
@@ -101,7 +99,9 @@ function is_trained(){
     try{
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if($result['station_tour'] != '0' &&  $result['programming_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
+        #Uncomment below for what trainings you require before members are deemed "trained"
+        #if($result['station_tour'] != '0' &&  $result['programming_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
+        if($result['programming_training'] != '0' &&  $result['technical_training'] != '0' &&  $result['production_training'] != '0'){
         	return true;
         }else{
         	return false;

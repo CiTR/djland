@@ -15,18 +15,20 @@
 		this.show_count = 0;
 		this.init = function(){
 			//Initial loading requests
-
-			call.getMemberShows( this.member_id ).then(function(response){
-				this_.shows = response.data.shows;
-			});
-			call.getMemberPermissions(this.member_id).then(function(response){
-				if(response.data.administrator == '1' || response.data.staff == '1' ){
-					this_.is_admin = true;
-				}else{
-					this_.is_admin = false;
-				}
-
-			},function(error){
+			call.getMemberShows( this.member_id ).then(
+				(function(response){
+				this.shows = response.data.shows;
+				}).bind(this)
+			);
+			call.getMemberPermissions(this.member_id).then(
+				(function(response){
+					if(response.data.administrator == '1' || response.data.staff == '1' ){
+						this.is_admin = true;
+					}else{
+						this.is_admin = false;
+					}
+				}).bind(this)
+			),function(error){
 
 			});
 			this.report();
@@ -38,12 +40,8 @@
 			this.loading = true;
 			call.getReport(this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd'),this.type).then(
 				function(response){
-					console.log(response);
 					this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
 					this_.totals = response.data.totals;
-					this_.show_totals = response.data.show_totals;
-					this_.show_count = Object.keys(this_.show_totals).length;
-
 					this_.loading = false;
 					//delay displaying so to reduce lag from object creation.
 					setTimeout(function(){
@@ -56,7 +54,6 @@
 					alert("Please try disabling adblock");
 				}
 			);
-
 		}
 		this.toggle_print = function(element){
 			var button = $('#print_friendly');
@@ -78,8 +75,6 @@
 				$('.lightgrey').addClass('red');
 				$('.lightgrey').toggleClass('lightgrey');
 			}
-
-
 		}
 		this.init();
 	});

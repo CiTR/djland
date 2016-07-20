@@ -2,10 +2,34 @@
 
 include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/functions.php");
+#require_once("headers/functions.php");
 require_once("headers/menu_header.php");
 
 error_reporting(E_ALL);
+
+function getPodcasts($member_id){
+	global $pdo_db,$djland_permission_levels;
+	// If the user is staff or admin, they can access all channels, otherwise they only can see their own podcasts
+	if(permission_level() >= $djland_permission_levels['staff']['level'] ){
+		$query = "SELECT s.name,s.id,count(pe.id) AS num_episodes FROM podcast_episodes AS pe INNER JOIN shows AS s ON s.id = pe.show_id GROUP BY s.id ORDER BY s.name ASC";
+		$statement = $pdo_db->prepare($query);
+
+	}else{
+		$query = "SELECT s.name,s.id,count(pe.id) AS num_episodes FROM podcast_episodes AS pe INNER JOIN shows AS s ON s.id = pe.show_id INNER JOIN member_show AS ms ON s.id = ms.show_id WHERE ms.member_id =:member_id GROUP BY s.id ORDER BY s.name ASC";
+		$statement = $pdo_db->prepare($query);
+		$statement -> bindValue(':member_id',$member_id);
+	}
+	try{
+		$statement->execute();
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+	}catch(PDOexception $pdoe){
+		echo $pdoe->getMessage();
+		return -1;
+	}
+	return $result;
+}
+
 ?>
     <html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">
     <base href='podcasts.php'>

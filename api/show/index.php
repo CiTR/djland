@@ -33,7 +33,6 @@ $query =   "SELECT
       shows.host as host_name,
       shows.podcast_title as podcast_title,
       shows.podcast_subtitle as podcast_subtitle,
-      shows.podcast_summary as podcast_summary,
       shows.secondary_genre_tags as podcast_keywords,
       shows.show_img as podcast_image_url,
       shows.podcast_xml as podcast_xml

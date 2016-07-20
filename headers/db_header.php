@@ -1,9 +1,14 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
-//DB HEADER
-include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+
+require_once("session_header.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+
+//If production, hide errors
+if(!$testing_environment) error_reporting(0);
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
+
+
 //*******************************************
 //*******************************************
 //*******************************************
@@ -90,6 +95,43 @@ function CallAPI($method, $url, $data = false)
     curl_close($curl);
     return json_decode($result);
 }
+function get_time()
+{
+    $debug_time = false;
+    $the_fake_time = "2015/03/25 13:05:00";
+    if($debug_time){
+        return strtotime($the_fake_time);
+    } else {
+        return time();
+    }
+}
+function getFormatName($format_id, $db){ 
+    
+    $query = "SELECT name FROM types_format WHERE id=".$format_id;
+    
+    if( $result = $db->query($query)){
+        while($row = $result->fetch_assoc()){
+                    return $row['name'];
+        }
+    
+    } else {    
+     return null;
+    }
+    
+}
+
+//Format Grabbing, Legacy.
+
+$fresult = mysqli_query($db,"SELECT * FROM types_format ORDER BY 'sort', 'name'");
+$fnum_rows = mysqli_num_rows($fresult);
+$fcount = 0;
+while($fcount < $fnum_rows) {
+    $fformat_name[mysqli_result_dep($fresult,$fcount,"id")] = mysqli_result_dep($fresult,$fcount,"name");
+    $fformat_id[mysqli_result_dep($fresult,$fcount,"name")] = mysqli_result_dep($fresult,$fcount,"id");
+    $fcount++;
+}
+
+
 
 //END DB HEADER
 ?>

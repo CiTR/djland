@@ -47,8 +47,8 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 
 			Route::get('/',function(){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
+				$member = Member::find($_SESSION['sv_id']);
+				if($member->isStaff()) return Donor::all();
 				else return "Nope";
 			});
 
@@ -56,8 +56,8 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::group(array('prefix'=>'{id}'),function($id = id){
 				//Get a donor
 				Route::get('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
+					$member = Member::find($_SESSION['sv_id']);
+					if($member->isStaff()) return Donor::find($id);
 					else return "Nope";
 				});
 				//Update a donor
@@ -66,8 +66,8 @@ Route::group(['middleware' => 'auth'], function(){
 				});
 				//Delete a donor
 				Route::delete('/',function($id){
-					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::delete();
+					$member = Member::find($_SESSION['sv_id']);
+					if($member->isStaff()) return Donor::delete();
 					else return "Nope";
 				});
 			});
@@ -102,16 +102,23 @@ Route::group(['middleware' => 'auth'], function(){
 			$_GET = Input::get();
 			return Member::email_list($_GET['from'],$_GET['to'],$_GET['type'],$_GET['value'],$_GET['year']);
 		});
-
 		Route::get('/report/{year_start}/{year_end}',function($start=start,$end=end){
 			return Member::report($start,$end);
+		}
+		Route::get('list',function(){
+			$full_list = Member::select('id','firstname','lastname')->get();
+			foreach ($full_list as $m) {
+				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
+			}
+			if(Member::find($_SESSION['sv_id'])->isStaff()) return $members;
+			else return "Nope";
 		});
 
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 			Route::get('/',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 || $id = $_SESSION['sv_id']) return Member::find($id);
+				$member = Member::find($id);
+				if(Member::find($_SESSION['sv_id']) || $id == $_SESSION['sv_id']) return Member::find($id);
 				else return "Nope";
 			});
 			
@@ -121,14 +128,20 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			
 			Route::delete('/',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
+				$member = Member::find($id);
+				if(Member::find($_SESSION['sv_id'])->isStaff()) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
+
 			Route::post('comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
 				return Response:: json($member -> save());
+			});
+			//Returns if the user has administrator priveledges or not.
+			Route::get('/staff',function($id){
+				$member = Member::find($id);
+				return Response::json($member->isStaff());
 			});
 
 			Route::get('training',function($id){
@@ -141,22 +154,21 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 
 			Route::get('user',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
+				$member =  Member::find($id);
+				if(Member::find($_SESSION['sv_id'])->isStaff() || $id == $_SESSION['sv_id']) return Member::find($id)->user;
 				else return "Nope";
 			});
 
 			Route::post('user',function($id){
-				$m = Member::find($id);
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
+				$member = Member::find($id);
+				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id == $_SESSION['sv_id']) return $member->user->update(Input::get()['user']) ? "true": "false";
 				else return "Nope";
 			});
 
 			Route::post('permission',function($id){
-				$permission = Member::find($id)->user->permission;
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
+				$member = Member::find($id);
+				$permission = $member->user->permission;
+				if(Member::find($_SESSION['sv_id'])->isStaff()) return $permission->update((array) json_decode(Input::get()['permission'] )) ? "true": "false";
 				else return "Nope";
 			});
 
@@ -179,11 +191,11 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			
 			Route::post('password',function($id){
-				$m = Member::find($id);
+				$member = Member::find($id);
 				$user = $m->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $user->save() ? "true":"false";
+				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id == $_SESSION['sv_id']) return $user->save() ? "true":"false";
 				else return "Nope";
 			});
 			
@@ -196,8 +208,8 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			
 			Route::get('shows', function($member_id = id){
-				$permissions = Member::find($member_id)->user->permission;
-				if($permissions->staff ==1 || $permissions->administrator==1){
+				$shows = new StdClass();
+				if(Member::find($member_id)->isStaff()){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
@@ -212,9 +224,10 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			
 			Route::get('active_shows', function($member_id = id){
-				$permissions = Member::find($member_id)->user->permission;
+				$member = Member::find($member_id);
+				$permissions = $member->user->permission;
 				$shows = new stdClass();
-				if($permissions->staff ==1 || $permissions->administrator==1){
+				if($member->isStaff()){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
@@ -240,7 +253,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
 		}
 		$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-		if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($owners);
+		if(Member::find($_SESSION['sv_id'])->isStaff() ) return Response::json($owners);
 		return "Nope";
 	});
 });
@@ -304,7 +317,11 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
-
+	Route::get('/alert',function(){
+			return Show::select('id','name','edit_date','alerts')
+			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
+			->orderBy('edit_date','DESC')->get();
+	});
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 
@@ -386,7 +403,6 @@ Route::group(array('prefix'=>'show'),function(){
 			$socan = Socan::all();
 			foreach($podcasts as $podcast){
 				$playsheet = $podcast->playsheet;
-
 				if($playsheet != null){
 					$playsheet->socan = false;
 					foreach($socan as $period){
@@ -416,14 +432,10 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::get('playsheets',function($id){
  			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
-
-
 		Route::get('social',function($id){
 			return Show::find($id)->social;
 		});
-
 		Route::get('times',function($id){
-			//return Showtimes::where('show_id','=',$show_id)->get();
 			return Show::find($id)->showtimes;
 		});
 		Route::get('nextshow/{current_time}',function($id,$time = current_time){
@@ -438,7 +450,6 @@ Route::group(array('prefix'=>'show'),function(){
 Route::get('/social/{id}',function($show_id = id){
 	return Social::where('show_id','=',$show_id)->get();
 });
-
 
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
@@ -475,10 +486,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$podcast_in['title'] = $ps->title;
 		$podcast_in['subtitle'] = $ps->summary;
 		$podcast = Podcast::create($podcast_in);
+		$playitems = array();
+		$ads = array();
 
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
-			Playitem::create($playitem);
+			$playitems[] = Playitem::create($playitem);
 		}
 		foreach(Input::get()['promotions'] as $ad){
 			$ad['playsheet_id'] = $ps->id;
@@ -489,149 +502,150 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}else{
 				$a = Ad::create((array) $ad);
 			}
+			$ads[] = $a;
 		}
 		$response = new stdClass();
 		$response->id = $ps->id;
 		$response->podcast_id = $podcast->id;
+		$response->ads = $ads;
 		return Response::json($response);
 	});
-	Route::post('/report',function(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
-		//Get input variables and make sure they are set, otherwise abort with 400.
-		$member_id = isset($_SESSION['sv_id']) ? $_SESSION['sv_id'] : null;
-		if($member_id == null) return Response::json('You are not logged in');
+	Route::group(array('middleware'=>'auth'),function(){
+		Route::post('/report',function(){
+			include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+			
+			$member = Member::find($_SESSION['sv_id']);
+			//TODO:: Move validation to using laravel ->where on the enclosure
+			//Check date validation
+			$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
+			$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
+			if($from == null || $to == null) return Response::json("Not a valid range");
+			//check if valid id
+			$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
+			if($show_id == null) return Response::json("Not a valid show id");
+			//check if valid type
+			$report_type = isset(Input::get()['report_type']) ? Input::get()['report_type'] : null;
+			if($report_type == null) return Response::json("No report type specified");
 
-		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
-		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
-		if($from == null || $to == null) return Response::json("Not a valid range");
+			//Initialize array for playsheets
+			$playsheets = array();
+			$playsheet_totals=array();
 
-		$show_id = isset(Input::get()['show_id']) ? Input::get()['show_id'] : null;
-		if($show_id == null) return Response::json("Not a valid show id");
-
-		$report_type = isset(Input::get()['report_type']) ? Input::get()['report_type'] : null;
-		if($report_type == null) return Response::json("No report type specified");
-
-		//Initialize array for playsheets
-		$playsheets = array();
-		$playsheet_totals=array();
-
-		//If the member is staff or admin, the report should be for all shows
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
-			$shows = Show::all();
-		}else{
-			$shows =  Member::find($member_id)->shows;
-		}
-		//For each show available to the request user, get the playsheets for the period that match the specified show ID, or return all.
-		foreach($shows as $show){
-			if( $show_id=="all" || $show_id==$show['id']){
-				$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();
-				foreach($ps as $sheet){
-					$playsheets[] = $sheet;
+			if($member->isStaff()){
+				$shows = Show::all();
+			}else{
+				$shows =  $member->shows;
+			}
+			//For each show available to the request user, get the playsheets for the period that match the specified show ID, or return all.
+			foreach($shows as $show){
+				if( $show_id=="all" || $show_id==$show['id']){
+					$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();
+					foreach($ps as $sheet){
+						$playsheets[] = $sheet;
+					}
 				}
 			}
-		}
-		//Initialize overall totals
-		$totals = new stdClass();
-		$totals->total=0;
-		$totals->cc_20_total=0;
-		$totals->cc_20_count=0;
-		$totals->cc_30_total=0;
-		$totals->cc_30_count=0;
-		$totals->femcon_count=0;
-		$totals->hit_count=0;
-		$totals->new_count=0;
-		$totals->spokenword=0;
-		$totals->ads=0;
+			//Initialize overall totals
+			$totals = new stdClass();
+			$totals->total=0;
+			$totals->cc_20_total=0;
+			$totals->cc_20_count=0;
+			$totals->cc_30_total=0;
+			$totals->cc_30_count=0;
+			$totals->femcon_count=0;
+			$totals->hit_count=0;
+			$totals->new_count=0;
+			$totals->spokenword=0;
+			$totals->ads=0;
 
-		//create show_totals array
-		$show_totals = array();
-		//get totals for each playsheet
-		foreach($playsheets as $p){
-			$playsheet = $p;
-			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
-			$playsheet->show = $p->show;
-			$playsheet->socan = $p->is_socan();
-			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
+			//create show_totals array
+			$show_totals = array();
+			//get totals for each playsheet
+			foreach($playsheets as $p){
+				$playsheet = $p;
+				$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
+				$playsheet->show = $p->show;
+				$playsheet->socan = $p->is_socan();
+				$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
 
-			//initialize this playsheet's totals
-			$playsheet->totals = new stdClass();
-			$playsheet->totals->total=0;
-			$playsheet->totals->cc_20_total = 0;
-			$playsheet->totals->cc_20_count=0;
-			$playsheet->totals->cc_30_total=0;
-			$playsheet->totals->cc_30_count=0;
-			$playsheet->totals->femcon_count=0;
-			$playsheet->totals->hit_count=0;
-			$playsheet->totals->new_count=0;
-			$playsheet->totals->spokenword=0;
-			$playsheet->totals->ads=0;
+				//initialize this playsheet's totals
+				$playsheet->totals = new stdClass();
+				$playsheet->totals->total=0;
+				$playsheet->totals->cc_20_total = 0;
+				$playsheet->totals->cc_20_count=0;
+				$playsheet->totals->cc_30_total=0;
+				$playsheet->totals->cc_30_count=0;
+				$playsheet->totals->femcon_count=0;
+				$playsheet->totals->hit_count=0;
+				$playsheet->totals->new_count=0;
+				$playsheet->totals->spokenword=0;
+				$playsheet->totals->ads=0;
 
-			if($using_sam){
-				if( $playsheet->start_time && $playsheet->end_time){
-					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+				if($using_sam){
+					if( $playsheet->start_time && $playsheet->end_time){
+						$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
+					}
+					foreach($playsheet->ads_played as $ad){
+						$playsheet->totals->ads += floor($ad['duration']/1000);
+					}
 				}
-				foreach($playsheet->ads_played as $ad){
-					$playsheet->totals->ads += floor($ad['duration']/1000);
+
+				//If this show hasn't been seen before, initialize it
+				if(!isset($show_totals[$playsheet->show_name])){
+					$show_totals[$playsheet->show['name']] = new stdClass();
+					$show_totals[$playsheet->show['name']]->total=0;
+					$show_totals[$playsheet->show['name']]->cc_20_total = 0;
+					$show_totals[$playsheet->show['name']]->cc_20_count=0;
+					$show_totals[$playsheet->show['name']]->cc_30_total=0;
+					$show_totals[$playsheet->show['name']]->cc_30_count=0;
+					$show_totals[$playsheet->show['name']]->femcon_count=0;
+					$show_totals[$playsheet->show['name']]->hit_count=0;
+					$show_totals[$playsheet->show['name']]->new_count=0;
+					$show_totals[$playsheet->show['name']]->spokenword=0;
+					$show_totals[$playsheet->show['name']]->ads=0;
+
+					$show_totals[$playsheet->show['name']]->show = $playsheet->show;
+
+				}
+				foreach($playsheet->playitems as $playitem){
+					$playsheet->totals->total ++;
+					//Cat 20 and 30
+					if($playitem['crtc_category']=='20'){
+						$playsheet->totals->cc_20_total ++;
+						if($playitem['is_canadian'] == '1') $playsheet->totals->cc_20_count ++;
+					}else{
+						$playsheet->totals->cc_30_total ++;
+						if($playitem['is_canadian'] == '1') $playsheet->totals->cc_30_count ++;
+					}
+					//Femcon
+					if($playitem['is_fem'] == '1') $playsheet->totals->femcon_count ++;
+					//Hit
+					if($playitem['is_hit'] == '1') $playsheet->totals->hit_count ++;
+					//New
+					if($playitem['is_new'] == '1') $playsheet->totals->new_count ++;
+
+					//return Response::json($playsheet->totals);
+				}
+
+				$playsheet->totals->spokenword = $playsheet->spokenword_duration;
+				$playsheet_totals[] = $playsheet;
+
+
+				//Update corresponding show totals, and overall
+				foreach($playsheet->totals as $key=>$item){
+					$show_totals[$playsheet->show['name']]->$key += $item;
+					$totals->$key += $item;
 				}
 			}
-
-			//If this show hasn't been seen before, initialize it
-			if(!isset($show_totals[$playsheet->show_name])){
-				$show_totals[$playsheet->show['name']] = new stdClass();
-				$show_totals[$playsheet->show['name']]->total=0;
-				$show_totals[$playsheet->show['name']]->cc_20_total = 0;
-				$show_totals[$playsheet->show['name']]->cc_20_count=0;
-				$show_totals[$playsheet->show['name']]->cc_30_total=0;
-				$show_totals[$playsheet->show['name']]->cc_30_count=0;
-				$show_totals[$playsheet->show['name']]->femcon_count=0;
-				$show_totals[$playsheet->show['name']]->hit_count=0;
-				$show_totals[$playsheet->show['name']]->new_count=0;
-				$show_totals[$playsheet->show['name']]->spokenword=0;
-				$show_totals[$playsheet->show['name']]->ads=0;
-
-				$show_totals[$playsheet->show['name']]->show = $playsheet->show;
-
-			}
-			foreach($playsheet->playitems as $playitem){
-				$playsheet->totals->total ++;
-				//Cat 20 and 30
-				if($playitem['crtc_category']=='20'){
-					$playsheet->totals->cc_20_total ++;
-					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_20_count ++;
-				}else{
-					$playsheet->totals->cc_30_total ++;
-					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_30_count ++;
-				}
-				//Femcon
-				if($playitem['is_fem'] == '1') $playsheet->totals->femcon_count ++;
-				//Hit
-				if($playitem['is_hit'] == '1') $playsheet->totals->hit_count ++;
-				//New
-				if($playitem['is_new'] == '1') $playsheet->totals->new_count ++;
-
-				//return Response::json($playsheet->totals);
-			}
-
-			$playsheet->totals->spokenword = $playsheet->spokenword_duration;
-			$playsheet_totals[] = $playsheet;
-
-
-			//Update corresponding show totals, and overall
-			foreach($playsheet->totals as $key=>$item){
-				$show_totals[$playsheet->show['name']]->$key += $item;
-				$totals->$key += $item;
-			}
-		}
-		usort($playsheet_totals,function($a,$b){
-			$s1 = strtotime($a['start_time']);
-			$s2 = strtotime($b['start_time']);
-			return $s1-$s2;
+			usort($playsheet_totals,function($a,$b){
+				$s1 = strtotime($a['start_time']);
+				$s2 = strtotime($b['start_time']);
+				return $s1-$s2;
+			});
+			return Response::json(array('playsheets'=>$playsheet_totals,'totals'=>$totals,'show_totals'=>$show_totals));
 		});
-		return Response::json(array('playsheets'=>$playsheet_totals,'totals'=>$totals,'show_totals'=>$show_totals));
 	});
-
+	
 	//Searching by Playsheet ID
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
@@ -661,8 +675,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		//Save Existing Playsheet
 		Route::post('/',function($id){
 			$ps = Playsheet::find($id);
+			$ps->update((array) Input::get()['playsheet']);
 			$response['playsheet'] = $ps;
-			$ps->update(Input::get()['playsheet']);
 			$ps->podcast->update((array) Input::get()['podcast']);
 			$response['podcast'] = $ps->podcast;
 
@@ -685,7 +699,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 					}
 				}
 			}
-
 			return Response::json($response);
 		});
 		Route::delete('/',function($id){
@@ -698,11 +711,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		});
 	});
 	Route::get('member/{member_id}/{offset}',function($member_id = member_id,$offset = offset){
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
+		$member = Member::find($member_id);
+		if($member->isStaff()){
 			$shows = Show::all();
 		}else{
-			$shows =  Member::find($member_id)->shows;
+			$shows =  $member->shows;
 		}
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
@@ -717,11 +730,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return Response::json($playsheets);
 	});
 	Route::get('member/{member_id}',function($member_id = member_id){
-		$permissions = Member::find($member_id)->user->permission;
-		if($permissions->staff ==1 || $permissions->administrator==1){
+		$member = Member::find($member_id);
+		if($member->isStaff()){
 			$shows = Show::all();
 		}else{
-			$shows =  Member::find($member_id)->shows;
+			$shows =  $member->shows;
 		}
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
@@ -745,6 +758,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		->orderBy('playsheets.id','desc')
 		->get();
 	});
+
 	Route::get('list/{limit}',function($limit = limit){
 		$playsheets = Playsheet::orderBy('id','desc')->limit($limit)->get();
 		foreach($playsheets as $playsheet){
