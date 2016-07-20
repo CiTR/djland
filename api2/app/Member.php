@@ -27,6 +27,6 @@ class Member extends Model
     	return $this->hasOne('App\User');
     }
 	public function isStaff(){
-		return $this->member_type == 'Staff' || $this->user->permissions['staff'] ==1 || $this->user->permissions['administrator']==1 ? true : false;
+		return ($this->member_type == 'Staff' || $this->user->permissions['staff'] ==1 || $this->user->permissions['administrator']==1 || $this->user->permissions['operator'] ==1) ? true : false;
 	}
 }

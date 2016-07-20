@@ -171,7 +171,7 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			Route::get('shows', function($member_id = id){
 				$shows = new StdClass();
-				if(Member::find($member_id)->member_type == 'Staff'){
+				if(Member::find($member_id)->isStaff()){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
@@ -188,7 +188,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$member = Member::find($member_id);
 				$permissions = $member->user->permission;
 				$shows = new stdClass();
-				if($member->member_type == 'Staff' || $permissions->staff ==1 || $permissions->administrator==1){
+				if($member->isStaff()){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
@@ -215,7 +215,7 @@ Route::group(['middleware' => 'auth'], function(){
 			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
 		}
 		$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-		if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($owners);
+		if(Member::find($_SESSION['sv_id'])->isStaff() ) return Response::json($owners);
 		return "Nope";
 	});
 });
