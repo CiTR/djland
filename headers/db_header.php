@@ -3,13 +3,9 @@
 require_once("session_header.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 
-<<<<<<< HEAD
 //If production, hide errors
 if(!$testing_environment) error_reporting(0);
-=======
-//DB HEADER
-include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
->>>>>>> 19d2cf8625dd8e5eb87437df1d0d3d0423105f44
+
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
 
