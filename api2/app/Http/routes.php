@@ -188,7 +188,7 @@ Route::group(['middleware' => 'auth'], function(){
 				$member = Member::find($member_id);
 				$permissions = $member->user->permission;
 				$shows = new stdClass();
-				if($member->isStaff()){
+				if(Member::find($_SESSION['sv_id'])->isStaff()){
 					$all_shows = Show::where('active','=','1')->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name,'crtc'=>$show->crtc_default,'lang'=>$show->lang_default];
