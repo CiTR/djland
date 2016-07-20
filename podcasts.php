@@ -9,8 +9,8 @@ error_reporting(E_ALL);
 
 function getPodcasts($member_id){
 	global $pdo_db,$djland_permission_levels;
-	// If the user is staff or admin, they can access all channels, otherwise they only can see their own podcasts
-	if(permission_level() >= $djland_permission_levels['staff']['level'] ){
+	// If the user is workstudy or staff, they can access all channels, otherwise they only can see their own podcasts
+	if(permission_level() >= $djland_permission_levels['workstudy']['level'] ){
 		$query = "SELECT s.name,s.id,count(pe.id) AS num_episodes FROM podcast_episodes AS pe INNER JOIN shows AS s ON s.id = pe.show_id GROUP BY s.id ORDER BY s.name ASC";
 		$statement = $pdo_db->prepare($query);
 
