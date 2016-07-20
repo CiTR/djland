@@ -1,7 +1,7 @@
 
 <html>
     <head>
-        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+        <link rel='stylesheet' href='../../../css/bootstrap.min.css'></script>
     </head>
     <body>
         <table class='table'>

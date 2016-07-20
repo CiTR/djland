@@ -1,7 +1,6 @@
 window.myNameSpace = window.myNameSpace || { };
 
 function Member(id){
-	var this_ = this;
 	this.member_id = id;
 
 	if(id != null){
@@ -17,21 +16,24 @@ function Member(id){
 			this.show_callback,
 			this.permission_callback,
 			this.user_callback
-			).then(function(info,interests,shows,permissions,user){
-			this_._initInfo(info[0]);
-			this_._initInterests(interests[0]);
-			this_._initShows(shows[0]);
-			this_._initPermissions(permissions[0]);
-			this_._initUser(user[0]);
-			this_.displayInfo();
-			this_.displayInterests();
-			this_.displayShows();
-			this_.displayPermissions();
-			this_.displayUser();
-			//console.log(this_);
-		},function(err,err2){
-			console.log("ERROR");
-		});
+		).then(
+			(function(info,interests,shows,permissions,user){
+				this._initInfo(info[0]);
+				this._initInterests(interests[0]);
+				this._initShows(shows[0]);
+				this._initPermissions(permissions[0]);
+				this._initUser(user[0]);
+				this.displayInfo();
+				this.displayInterests();
+				this.displayShows();
+				this.displayPermissions();
+				this.displayUser();
+			}).bind(this)
+			,function(err,err2){
+				//TODO: Log member load failing.
+				console.log("ERROR");
+			}
+		);
 	}else{
 		this.membership_years = new Array();
 		this.member_info = {
@@ -67,7 +69,6 @@ function Member(id){
 		};
 		this.user_info = {};
 	}
-
 	//Blank constructor as we want multiple constructors, and javascript does not support overloading. Instead use _init(arguments list...), _fromObj(Member), and query(id) to build the object.
 }
 
@@ -93,7 +94,6 @@ Member.prototype = {
 		for(var year in membership_years){
 			membership_year.append("<option value="+year+">"+year+"</option>");
 		}
-
 	},
 	_initShows:function(shows){
 		this.member_shows = shows;
@@ -112,46 +112,41 @@ Member.prototype = {
 		this.user_info = user;
 	},
 	_queryInfo:function(){
-		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id,
+			url: "api2/public/member/"+this.member_id,
 			dataType: "json",
 			async: true
 		});
 	},
 	_queryInterests:function(){
-		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id + "/years",
+			url: "api2/public/member/"+this.member_id + "/years",
 			dataType: "json",
 			async: true
 		});
 	},
 	_queryShows:function(){
-		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id +"/shows",
+			url: "api2/public/member/"+this.member_id +"/shows",
 			dataType: "json",
 			async: true
 		});
 	},
 	_queryPermissions:function(){
-		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id + "/permission",
+			url: "api2/public/member/"+this.member_id + "/permission",
 			dataType: "json",
 			async: true
 		});
 	},
 	_queryUser:function(){
-		var this_ = this;
 		return $.ajax({
 			type:"GET",
-			url: "api2/public/member/"+this_.member_id + "/user",
+			url: "api2/public/member/"+this.member_id + "/user",
 			dataType: "json",
 			async: true
 		});
@@ -169,7 +164,6 @@ Member.prototype = {
 				this['member_info'][field] = get(field);
 			}
 		}
-
 	},
 	getInterests:function(){
 		var membership_year = get('membership_year');
@@ -185,7 +179,6 @@ Member.prototype = {
 		this.membership_years[membership_year] = my;
 	},
 	getPermissions:function(){
-
 		var permissions = {};
 		for(var level in permission_levels){
 			if(level != 'operator') permissions[level] = getCheckbox('level_'+level);
@@ -193,7 +186,6 @@ Member.prototype = {
 		this.permissions = permissions;
 	},
 	displayInfo:function(request){
-		var this_ = this;
 		if(request == null){
 			setText(this.username,'username');
 			for(var field in this.member_info){
@@ -204,15 +196,16 @@ Member.prototype = {
 					set(this['member_info'][field],field);
 				}
 			}
-
 		}else{
-			$.when(request).then(function(data){
-				this_.displayInfo();
-			},function(error){
+			$.when(request).then((function(data){
+				this.displayInfo();
+			}).bind(this)
+			,function(error){
 				console.log('data was not available');
 			});
 		}
-	},displayInterests:function(year){
+	},
+	displayInterests:function(year){
 		var m;
 		if(!year){
 			for(year in this.membership_years){
@@ -220,9 +213,7 @@ Member.prototype = {
 			break;
 			}
 		}
-
 		m=this.membership_years[year];
-
 		for(var interest in interests){
 			if(interest != 'Other' && interest != 'membership_year'){
 				setCheckbox(m[interests[interest]],interests[interest]);
@@ -232,129 +223,134 @@ Member.prototype = {
 			}
 		}
 		setCheckbox(m['paid'],'paid');
-
-	},displayShows:function(){
+	},
+	displayShows:function(){
 		for(var show in this.member_shows){
-
+			//TODO: display member shows on membership page.
 		}
-	},displayPermissions:function(){
+	},
+	displayPermissions:function(){
 		for(var level in permission_levels){
 			if(level != 'operator') setCheckbox(this.permissions[level],"level_"+level);
 		}
-
-	},displayUser:function(){
+	},
+	displayUser:function(){
 		set(this.user_info.username,'username');
-	},renew:function(){
-
+	},
+	renew:function(){
         $.when(this.createMembershipYear(),this.updateInfo()).then(
     	function(r1,r2){
         	alert("Successfully Renewed");
         	window.location.href = 'main.php';
-        },function(err1,err2){
+        }
+		,function(err1,err2){
         	alert("Something went wrong");
         });
-    },update:function(){
+    },
+	update:function(){
     	$.when(this.updateInfo(),this.updateInterests()).then(function(){
     		alert("Successfully Updated");
     		window.location.href = 'main.php';
     	},function(err1,err2){
     		alert("Something went wrong");
     	});
-    },updateInfo:function(){
+    },
+	updateInfo:function(){
     	this.getInfo();
-		var this_ = this;
 		return $.ajax({
 			type:"POST",
-			url: "api2/public/member/"+this_.member_id,
+			url: "api2/public/member/"+this.member_id,
 			data: {
-				"member":JSON.stringify(this_.member_info)
+				"member":JSON.stringify(this.member_info)
 		 	},
 			dataType: "json"
 		});
-	},updateInterests:function(){
+	},
+	updateInterests:function(){
 		this.getInterests();
-		var this_ = this;
 		return $.ajax({
 			type:"POST",
-			url: "api2/public/member/"+this_.member_id+"/years",
+			url: "api2/public/member/"+this.member_id+"/years",
 			data: {
-				"years": JSON.stringify(this_.membership_years)
+				"years": JSON.stringify(this.membership_years)
 		 	},
 			dataType: "json"
 		});
-	},updatePermissions:function(){
+	},
+	updatePermissions:function(){
 		this.getPermissions();
-		console.log(this);
-		var this_ = this;
 		return $.ajax({
 			type:"POST",
-			url: "api2/public/member/"+this_.member_id+"/permission",
+			url: "api2/public/member/"+this.member_id+"/permission",
 			data: {
-				"permission":JSON.stringify(this_.permissions)
+				"permission":JSON.stringify(this.permissions)
 		 	},
 			dataType: "json"
 		});
-	},updatePassword:function(){
-		var this_ = this;
+	},
+	updatePassword:function(){
 		if($('#password').val().length > 0){
 			return $.ajax({
 				type:"POST",
-				url: "api2/public/member/"+this_.member_id+"/password",
+				url: "api2/public/member/"+this.member_id+"/password",
 				data: {
 					"password": getVal('password')
 			 	},
 				dataType: "json"
 			});
 		}
-	},create:function(){
-		var this_ = this;
-		$.when(this.createMember()).then(function(response){
-			this_.member_id = response;
-			this_.user_info['member_id'] = response;
-			$.when(this_.createUser()).then(function(response){
-				$.when(this_.createMembershipYear()).then(function(response){
-					alert("Successfully Submitted");
-					window.location.href = 'index.php';
-				})
-			});
-		});
-
-	},createMember:function(){
+	},
+	create:function(){
+		$.when(this.createMember()).then(
+			(function(response){
+				this.member_id = response;
+				this.user_info['member_id'] = response;
+				$.when(this.createUser()).then(
+					(function(response){
+					$.when(this.createMembershipYear()).then(
+						function(response){
+						alert("Successfully Submitted");
+						window.location.href = 'index.php';
+						})
+					})
+				).bind(this);
+			}).bind(this)
+		);
+	},
+	createMember:function(){
 		this.getInfo();
-		var this_ = this;
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/member",
 			data: {
-				"member": JSON.stringify(this_.member_info)
+				"member": JSON.stringify(this.member_info)
 		 	},
 			dataType: "json"
 		});
-	},createUser:function(){
-		var this_ = this;
-		this_.user_info['username'] = get('username');
-		this_.user_info['password'] = get('password');
-		var this_ = this;
+	},
+	createUser:function(){
+		this.user_info['username'] = get('username');
+		this.user_info['password'] = get('password');
 		return $.ajax({
 			type:"POST",
 			url: "api2/public/user",
 			data: {
-				"user": JSON.stringify(this_.user_info)
+				"user": JSON.stringify(this.user_info)
 		 	},
 			dataType: "json"
 		});
-	},createMembershipYear:function(){
-		var this_ = this;
+	},
+	createMembershipYear:function(){
 		this.getInterests();
-		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this_.membership_years[get('membership_year')].paid = 1;
+		if(this.member_info.member_type == 'Lifetime' || this.member_info.member_type == 'Staff') this.membership_years[get('membership_year')].paid = 1;
 		return $.ajax({
 			type:"POST",
-			url: "api2/public/member/"+this_.member_id + '/year',
+			url: "api2/public/member/"+this.member_id + '/year',
 			data: {
-				"year": JSON.stringify(this_.membership_years[get('membership_year')])
+				"year": JSON.stringify(this.membership_years[get('membership_year')])
 		 	},
 			dataType: "json"
-		})
-	}
+		});
+	},
 
 }

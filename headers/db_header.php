@@ -3,8 +3,13 @@
 require_once("session_header.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 
+<<<<<<< HEAD
 //If production, hide errors
 if(!$testing_environment) error_reporting(0);
+=======
+//DB HEADER
+include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+>>>>>>> 19d2cf8625dd8e5eb87437df1d0d3d0423105f44
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
 
@@ -78,14 +83,14 @@ function CallAPI($method, $url, $data = false)
             curl_setopt($curl, CURLOPT_PUT, 1);
             break;
 	case "GET":
-		
+
 		break;
         default:
             if ($data)
                 $url = sprintf("%s?%s", $url, http_build_query($data));
     }
 
-   
+
 
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -105,19 +110,19 @@ function get_time()
         return time();
     }
 }
-function getFormatName($format_id, $db){ 
-    
+function getFormatName($format_id, $db){
+
     $query = "SELECT name FROM types_format WHERE id=".$format_id;
-    
+
     if( $result = $db->query($query)){
         while($row = $result->fetch_assoc()){
                     return $row['name'];
         }
-    
-    } else {    
+
+    } else {
      return null;
     }
-    
+
 }
 
 //Format Grabbing, Legacy.

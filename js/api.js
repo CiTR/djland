@@ -37,8 +37,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		getShowPlaysheets:function(show_id){
 			return $http.get(API_URL_BASE+'/show/'+show_id + '/playsheets');
-		},		
-		getMoreShowPlaysheets: function(show_id,offset){ 
+		},
+		getMoreShowPlaysheets: function(show_id,offset){
 			if(!offset) offset = 0;
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
 		},
@@ -46,7 +46,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+offset);
 		},
 		getShowOwners: function(show_id){
-			return $http.get(API_URL_BASE+"/show/"+show_id+"/owners");
+			return $http.get(API_URL_BASE+"/show/"+show_id+"/owner");
 		},
 		getShowTimes: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");

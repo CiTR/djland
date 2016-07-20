@@ -1,7 +1,7 @@
 <html ng-app='djland.friends' >
 	<?php require_once("headers/menu_header.php"); ?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body class='wallpaper' ng-controller='friendsController as friends'>
