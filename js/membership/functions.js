@@ -228,7 +228,7 @@ function queryMembers(search_parameter,search_value,paid,membership_year,has_sho
 function queryMembershipYears(member_id){
     return $.ajax({
 		type:"GET",
-		url: "form-handlers/membership/membership_years.php",
+		url: "api2/public/membership_year",
 		data: {"member_id":member_id},
 		dataType: "json",
 		async: true
@@ -333,7 +333,7 @@ function yearlyReport(year_callback){
 		var year =	$('.year_select[name="report"]').val();
 		var ajax = $.ajax({
 				type:"GET",
-                url: "form-handlers/membership/report.php",
+                url: "api2/public/member/report",
                 data: {"year" : year},
                 dataType: "json",
                 async: true
