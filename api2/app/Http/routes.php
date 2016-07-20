@@ -80,7 +80,6 @@ Route::group(['middleware' => 'auth'], function(){
 			foreach ($full_list as $m) {
 				$members[] = ['id'=>$m->id,'firstname'=>$m->firstname,'lastname'=>$m->lastname];
 			}
-			$member = Member::find($id);
 			if(Member::find($_SESSION['sv_id'])->isStaff()) return $members;
 			else return "Nope";
 
