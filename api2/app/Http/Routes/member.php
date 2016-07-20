@@ -4,6 +4,10 @@ use App\User as User;
 use App\Member as Member;
 use App\MembershipYear as MembershipYear;
 use App\Permission as Permission;
+
+//Helpers
+use App\Show as Show;
+
 Route::group(['middleware' => 'auth'], function(){
 	// Old Member Creation Routes
 	//TODO:: Move these into rest format.

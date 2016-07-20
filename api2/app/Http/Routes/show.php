@@ -4,6 +4,8 @@ use App\Showtime as Showtime;
 use App\Host as Host;
 use App\Social as Social;
 
+//Helpers
+use App\Member as Member;
 
 Route::group(array('prefix'=>'show'),function(){
 	//Creating new Show
@@ -34,10 +36,11 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::get('/',function(){
 		return Show::all('id','name');
 	});
-
+	//Return shows that are active
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
 	});
+	//Return alerts for all shows
 	Route::get('/alert',function(){
 			return Show::select('id','name','edit_date','alerts')
 			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
@@ -45,25 +48,76 @@ Route::group(array('prefix'=>'show'),function(){
 	});
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
-		Route::group(['middleware' => 'auth'], function(){
-			Route::get('/owners',function($id=id){
-				$members = Show::find($id)->members;
-				$owners = new stdClass();
-				$owners->owners = [];
-				foreach ($members as $member) {
-					$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
-				}
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Response::json($owners);
-				return "Nope";
-			});
-		}
-
+		//Returns show object including social, showtimes
 		Route::get('/',function($id){
 			$show = Show::find($id);
 			$show->social = Show::find($id)->social;
+			$show->show_times = Show::find($id)->showtimes;
 			return Response::json($show);
 		});
+		Route::post('/',function($id){
+			return Response::json(Show::find($id)->update((array) Input::get()['show']));
+		});
+
+		Route::group(array('prefix'=>'social'),function($id){
+			//return all social entries for a show
+			Route::get('/',function($id){
+				return Response::json(Show::find($id)->social);
+			});
+			//Requires active session
+			Route::group(['middleware' => 'auth'], function(){
+				//Create a new social entry for a show
+				Route::put('/',function($id){
+					$social = Social::create(Input::get()['social']);
+					return Response::json(Show::find($id)->attach($social));
+				});
+				Route::group(array('prefix'=>'{social_id}'),function($id,$social_id=null){
+					//Update a social entry
+					Route::post('/',function($id,$social_id){
+						return Response::json(Social::find($social_id)->update((array) Input::get()['social']));
+					});
+					//Delete a social entry from a show
+					Route::delete('/',function($id,$social_id){
+						return Response::json(Social::delete($social_id));
+					});
+				});
+			});
+		});
+		//Requires staff permission level to access
+		Route::group(array('middleware'=>'staff'),function($id){
+			Route::group(array('prefix'=>'owner'),function($id){
+				//Get list of show owners
+				Route::get('/',function($id){
+					return Response::json(Show::find($id)->members()->select('membership.id','firstname','lastname')->get());
+				});
+				//Add a new owner to the show
+				Route::put('/',function($id){
+					return Response::json(Show::find($id)->members->attach(Input::get()['member_id']));
+				});
+				Route::group(array('prefix'=>'{member_id}'),function($id,$member_id=null){
+					Route::delete('/',function($id,$member_id){
+						return Response::json(Show::find($id)->members()->detach($member_id));
+					});
+				});
+			});
+		});
+
+
+		// //Requires active session
+		// Route::group(['middleware' => 'auth'], function(){
+		// 	Route::get('/owners',function($id=id){
+		// 		$members = Show::find($id)->members;
+		// 		$owners = new stdClass();
+		// 		$owners->owners = [];
+		// 		foreach ($members as $member) {
+		// 			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
+		// 		}
+		// 		if(Member::find($_SESSION['sv_id'])->isStaff() ) return Response::json($owners);
+		// 		return "Nope";
+		// 	});
+		// });
+
+
 		Route::post('/',function($id){
 			$show = Input::get()['show'];
 			$social = Input::get()['social'];
