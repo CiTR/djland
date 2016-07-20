@@ -9,33 +9,30 @@ use App\Permission as Permission;
 use App\Show as Show;
 
 Route::group(['middleware' => 'auth'], function(){
+	
 	// Old Member Creation Routes
 	//TODO:: Move these into rest format.
-		Route::post('/member',function(){
-			$member = Member::create( (array) json_decode(Input::get()['member']));
-			return $member->id;
-		});
-		Route::post('/user',function(){
-			$user = json_decode(Input::get()['user']);
-			$user->password = password_hash($user->password,PASSWORD_DEFAULT);
-			$user->status = 'enabled';
-			$user->login_fails = '0';
-			$user = User::create((array) $user);
-			$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
-			Permission::create($permissions);
-			return $user->id;
-		});
-		Route::post('/member/{id}/year',function($id = id){
-			$member = Member::find($id);
-			$membership_year = json_decode(Input::get()['year']);
-			$membership_year->member_id = $id;
-			return MembershipYear::create((array) $membership_year) ? "true" : "false";
-		});
-
-
-
-
-
+	Route::post('/member',function(){
+		$member = Member::create( (array) json_decode(Input::get()['member']));
+		return $member->id;
+	});
+	Route::post('/user',function(){
+		$user = json_decode(Input::get()['user']);
+		$user->password = password_hash($user->password,PASSWORD_DEFAULT);
+		$user->status = 'enabled';
+		$user->login_fails = '0';
+		$user = User::create((array) $user);
+		$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
+		Permission::create($permissions);
+		return $user->id;
+	});
+	Route::post('/member/{id}/year',function($id = id){
+		$member = Member::find($id);
+		$membership_year = json_decode(Input::get()['year']);
+		$membership_year->member_id = $id;
+		return MembershipYear::create((array) $membership_year) ? "true" : "false";
+	});
+	
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 		Route::get('/',function(){
@@ -76,6 +73,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::get('/staff',function($id){
 				return Response::json(Member::find($id)->isStaff());
 			});
+			//Returns the staff comments for the user
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
