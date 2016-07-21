@@ -61,6 +61,7 @@
             		}
 				).bind(this)
 			);
+
             //Calculating "current week" this math is really old. Returns 1 or 2
             //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
 
@@ -74,17 +75,6 @@
             this.isStaff();
 
         }
-<<<<<<< HEAD
-        this.isAdmin = function(){
-            //Call API to obtain permissions
-            call.isStaff(this.member_id).then(
-				(function(response){
-	                this.is_admin = response.data;
-            	}).bind(this)
-			,function(error){
-                console.log(error.data);
-            });
-=======
         this.isStaff = function(){
             //Call API to obtain permissions
             call.isStaff(this.member_id).then(
@@ -97,7 +87,6 @@
                 	console.log(error.data);
 	            }
 			);
->>>>>>> 19d2cf8625dd8e5eb87437df1d0d3d0423105f44
         }
         this.newShow = function(){
             this.show_value = 0;
