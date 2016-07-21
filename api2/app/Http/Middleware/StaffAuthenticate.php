@@ -18,8 +18,7 @@ class StaffAuthenticate
     {
 		return app(Authenticate::class)->handle($request, function ($request) use ($next) {
 			$member = Member::find($_SESSION['sv_id']);
-			$permission = $member->user->permission;
-			if($member->member_type == 'Staff' || $permission['operator'] == 1 || $permission['administrator'] == 1) return $next($request);
+			if($member->isStaff()) return $next($request);
 			else return response('You are not an authorized staff member.',401);
 		});
     }

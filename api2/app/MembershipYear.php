@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Response;
 use App\Option;
 class MembershipYear extends Model
 {
@@ -15,18 +16,18 @@ class MembershipYear extends Model
     function member(){
     	return $this->belongsTo('App\Member');
     }
-	function rollover(){
+	public static function rollover(){
 		// Should only be called through staff middleware
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		if( permission_level() >= $djland_permission_levels['staff']['level']) {
-			$current_cutoff = Option::where('djland_option','=','membership_cutoff')->first();
-		}else return false;
+		$cutoff = Option::where('djland_option','=','membership_cutoff')->first();
+		$cutoff_values = explode('/',$cutoff->value);
+		$new_cutoff = ($cutoff_values[0]+1)."/".($cutoff_values[1]+1);
+		return Option::where('djland_option','=','membership_cutoff')->update(['value'=>$new_cutoff]) == 1 ? $new_cutoff: 'Failed' ;
 	}
-	function rollback(){
+	public static function rollback(){
 		// Should only be called through staff middleware
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
-		if( permission_level() >= $djland_permission_levels['staff']['level']) {
-			$current_cutoff = Option::where('djland_option','=','membership_cutoff')->first();
-		}else return false;
+		$cutoff = Option::where('djland_option','=','membership_cutoff')->first();
+		$cutoff_values = explode('/',$cutoff->value);
+		$new_cutoff = ($cutoff_values[0]-1)."/".($cutoff_values[1]-1);
+		return Option::where('djland_option','=','membership_cutoff')->update(['value'=>$new_cutoff]) == 1 ? $new_cutoff : 'Failed' ;
 	}
 }

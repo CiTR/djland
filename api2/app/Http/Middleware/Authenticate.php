@@ -37,15 +37,6 @@ class Authenticate
         if(!(isset($_SESSION['sv_username']) && isset($_SESSION['sv_id']) )){
             return response('Unauthorized.', 401);
         }
-
-       /* if ($this->auth->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('/');
-            }
-        }*/
-
         return $next($request);
     }
 }

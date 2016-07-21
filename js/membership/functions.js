@@ -228,8 +228,7 @@ function queryMembers(search_parameter,search_value,paid,membership_year,has_sho
 function queryMembershipYears(member_id){
     return $.ajax({
 		type:"GET",
-		url: "api2/public/membership_year",
-		data: {"member_id":member_id},
+		url: "api2/public/membershipyear",
 		dataType: "json",
 		async: true
 		});
@@ -237,14 +236,16 @@ function queryMembershipYears(member_id){
 
 function loadYearSelect(){
 	var years = queryMembershipYears();
-	$.when(years).then(function(data){
-		$('.year_select').each(function(element){
-			for(var i=0; i<data['years'].length; i++){
-				$(this).append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
-			}
-			$(this).append("<option value='all'>All Years</option>");
+	$.when(years).then(
+		function(response){
+			$('.year_select').each(function(element){
+				for(var i=0; i<response.length; i++){
+					$(this).append("<option value="+response[i]['membership_year']+">"+response[i]['membership_year']+"</option>");
+				}
+				$(this).append("<option value='all'>All Years</option>");
 
-		});
+			}
+		);
 	},function(err){
 		console.log("failed to load years");
 	});
@@ -369,7 +370,7 @@ function emailList(){
 			var email_list = $('#email_list');
 			email_list.val("");
 			var email_list_out = "";
-			
+
 			var length = reply.length;
 
 			for(var email in reply){

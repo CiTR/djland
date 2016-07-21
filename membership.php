@@ -383,9 +383,12 @@
    				<h4>Admin Panel</h4>
    			</div>
    			<ul class="inner clean-list text-center">
-	            <li class="col4"><button id="year_rollover">Start new membership year</button></li>
-	            <li class="col4" id="current_year">Loading Current Membership Year...</li>
-	            <li class="col4" id="current_cutoff">Loading Current Cutoff...</li>
+				<li class=' col3'>
+					<div class="button_holder col2"><button type="button" id="year_rollover">Rollover to next cutoff year</button></div>
+					<div class="button_holder col2"><button type="button" id="year_rollback">Rollback to previous cutoff year</button></div>
+				</li>
+				<li class="col5" id="current_year">Loading Current Membership Year...</li>
+	            <li class="col5" id="current_cutoff">Loading Current Cutoff...</li>
 	            <li class="col4">Current membership year members must have renewed, and paid for to this current year</li>
     		</ul>
 
