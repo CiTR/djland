@@ -3,6 +3,7 @@ var cutoff_year;
 var current_year_element;
 var current_year;
 var cutoff_month = 5; // Greater or equal to may (start of may is the new membership year)
+
 $(document).ready ( function() {
     cutoff_year_element = $('#current_cutoff');
     current_year_element = $('#current_year');
@@ -15,7 +16,6 @@ $(document).ready ( function() {
 	current_year_element.text("Current year: "+current_year);
 	//load current cutoff year
 	getCutoff();
-
 	//Listeners for rollover/rollback
 	$(".button_holder").off('click','#year_rollover').on('click','#year_rollover',
 		function(){
@@ -30,7 +30,6 @@ $(document).ready ( function() {
     	}
 	);
 });
-
 function getCutoff(){
     var request = $.ajax({
         type:"GET",
@@ -47,7 +46,6 @@ function getCutoff(){
 		}
 	);
 }
-
 function rollover(){
 	//Is the cutoff year equal to the current membership year already?
 	if(cutoff_year.localeCompare(current_year) == 0){
