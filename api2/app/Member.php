@@ -68,7 +68,7 @@ class Member extends Model
 			,'m.id','=','my.member_id');
 		}
 
-		$query->selectRaw('CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.id','my.membership_year','m.comments','m.primary_phone','m.email','m.member_type');
+		$query->selectRaw('m.id, CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.email','m.primary_phone','m.member_type','m.comments','my.membership_year');
 
         //Handle Search Type
         switch($parameter){

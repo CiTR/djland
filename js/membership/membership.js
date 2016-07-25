@@ -15,7 +15,7 @@ $(document).ready ( function() {
 				},function(){
 
 				});
-			loadMember(1);
+			loadMember($('#member_id').text());
 			add_handlers();
 			yearlyReport(year_callback);
 

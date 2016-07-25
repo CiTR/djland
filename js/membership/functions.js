@@ -281,8 +281,9 @@ function displayMemberList(search_by,value,paid,year,order_by){
 			var m = data[member];
 			member_result_table.append("<tr id=row"+m.id+" class='member_row' name='"+m.id+"'></tr>");
 			var row = $('#row'+m.id);
-			for(var item in m){
-				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (m[item] != null ? m[item] : "") +"</td>");
+			row.append()
+			for(var item in m){	
+				if(item != 'id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (m[item] != null ? m[item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+m.id+"' value='"+ (m[item] != null ? m[item] : "") +"'></input></td>");
 			}
 			if($('#permission_level').text() >= permission_levels['administrator']['level']){
