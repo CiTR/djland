@@ -1,10 +1,11 @@
 <?php
+
 use App\Show as Show;
+
+//Helpers
 use App\Showtime as Showtime;
 use App\Host as Host;
 use App\Social as Social;
-
-//Helpers
 use App\Member as Member;
 
 Route::group(array('prefix'=>'show'),function(){

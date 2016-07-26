@@ -17,11 +17,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getPlaysheetData: function (playsheet_id) {
 			return $http.get(API_URL_BASE+ '/playsheet/' + playsheet_id);
 		},
-		getAds: function (time,duration){
-			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration);
-		},
-		getPromotions: function (time,duration,show_id){
-			return $http.get(API_URL_BASE+ '/promotions/' + time + '-' + duration + '/' + show_id);
+		getAds: function (time,duration,show_id){
+			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration + '/' + show_id);
 		},
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
@@ -117,14 +114,14 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		saveNewShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},
-		savePlaysheet: function(playsheet,playitems,podcast,promotions){
-			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'promotions':promotions}));
+		savePlaysheet: function(playsheet,playitems,podcast,ads){
+			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}));
 		},
 		saveEpisode: function(playsheet,podcast){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id+'/episode', angular.toJson({'playsheet':playsheet,'podcast':podcast}));
 		},
-		saveNewPlaysheet: function(playsheet,playitems,podcast,promotions){
-			return $http.put(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'promotions':promotions}) );
+		saveNewPlaysheet: function(playsheet,playitems,podcast,ads){
+			return $http.put(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}) );
 		},
 		saveNewPodcast: function(podcast){
 			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );

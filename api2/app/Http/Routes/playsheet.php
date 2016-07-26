@@ -54,7 +54,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
 		}
-		foreach(Input::get()['promotions'] as $ad){
+		foreach(Input::get()['ads'] as $ad){
 			$ad['playsheet_id'] = $ps->id;
 			if(isset($ad['id'])){
 				$a = Ad::find($ad['id']);
@@ -111,15 +111,15 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			foreach($playitems as $playitem){
 				$response['playitems'][] = Playitem::create((array)$playitem);
 			}
-			if(isset(Input::get()['promotions'])){
-				foreach(Input::get()['promotions'] as $ad){
+			if(isset(Input::get()['ads'])){
+				foreach(Input::get()['ads'] as $ad){
 					if(isset($ad['id'])){
 						$ad['playsheet_id'] = $ps->id;
 						$a = Ad::find($ad['id']);
 						unset($ad['id']);
-						$response['promotions'][] = $a->update((array) $ad);
+						$response['ads'][] = $a->update((array) $ad);
 					}else{
-						$response['promotions'][] = Ad::create((array) $ad);
+						$response['ads'][] = Ad::create((array) $ad);
 					}
 				}
 			}

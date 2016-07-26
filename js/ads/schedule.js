@@ -11,63 +11,65 @@ function Schedule(date){
 	this['promo'] = Array();
 	this['id'] = Array();
 	this['templates'] = {};
-	this['cat-promises'] = Array();
+	this['cat_promises'] = Array();
 	this['html-promises'] = Array();
 	this.showtimes = Array();
 	if(!date) var date = $('.active-tab').attr('name');
-	console.log(date);
+
 	//Get initial Schedule
 	this.ready = this.getSchedule(date);
-
+	//when we have retrieved all of our categories, create templates for the dropdowns
 	$.when(this.getCategory('ad'),this.getCategory('ubc'),this.getCategory('community'),this.getCategory('timely'),this.getCategory('promo'),this.getCategory('id')).then(
-	(
-		function(ad,ubc,community,timely,promo,id){
+		(function(ad,ubc,community,timely,promo,id){
+			//for each category in our list, create a new template for it
 			for(var category in this.categories){
-				this['cat-promises'].push(this.createCategoryTemplate(category));
+				this['cat_promises'].push(this.createCategoryTemplate(category));
 			}
 
-			this['cat-promises'].push(this.createPSATemplate(category));
+			//Separately do the PSA template, as it consists of ubc/timely/community
+			this['cat_promises'].push(this.createPSATemplate(category));
 
-			$.when(this['cat-promises']).then(
-			(
-				function(){
+			//then all our promises are done, then we initialze.
+			$.when(this['cat_promises']).then(
+				(function(){
 					this.init();
-				}
-			).bind(this);
-		}
-	).bind(this);
+				}).bind(this)
+			);
+		}).bind(this)
+	);
 }
 
 Schedule.prototype = {
 	init:function(){
 		$.when(this.ready).then(
-			(
-				function(response){
-		 			for(var item in response){
-						this.showtimes.push(response[item]);
-					}
-					$.when.apply($,this.categories).then(
-						(
-							function(){
-								this.displaySchedule();
-								$('.loading_bar').hide();
-							}
-						).bind(this),
+			(function(response){
+				//Get all our showtime responses
+				for(var item in response){
+					this.showtimes.push(response[item]);
+				}
+				//When our category list templates have loaded then display
+				$.when.apply($,this.cat_promises).then(
+					(
 						function(){
-							console.log("Category load had a failure");
-							this.init();
+							this.displaySchedule();
+							$('.loading_bar').hide();
 						}
-					);
-				}
-			).bind(this)
-			,(
-				function(error){
-					this.init();
-				}
-			).bind(this)
+					).bind(this),
+					function(){
+						//Retry
+						console.log("Category load had a failure");
+						this.init();
+					}
+				);
+			}).bind(this)
+			,(function(error){
+				//retry
+				this.init();
+			}).bind(this)
 		);
 	},
 	getSchedule:function(date){
+		//Call API to get the adschedule for the date
 		var date = this.formatDate(date);
 		return $.ajax({
 			type:"GET",
@@ -78,6 +80,7 @@ Schedule.prototype = {
 		});
 	},
 	displaySchedule:function(){
+		//Render the schedule
 		var promises = Array();
 		if(this.showtimes.length > 1){
 			for(var i = 0; i < this.showtimes.length; i++){
@@ -85,25 +88,20 @@ Schedule.prototype = {
 			}
 			//Display the initial showtimes
 			$.when.apply($,this['html-promises']).then(
-				(
-					function(){
-						for(var i = 0; i < this.showtimes.length; i++){
-							this.displayShowtime(arguments[i][0],i);
-						}
+				(function(){
+					for(var i = 0; i < this.showtimes.length; i++){
+						this.displayShowtime(arguments[i][0],i);
 					}
-				).bind(this)
+				}).bind(this)
 			);
 		}else if(this.showtimes.length > 0){
 			this['html-promises'][0] = this.getHTML(this.showtimes[0],0);
 			$.when(this['html-promises'][0]).then(
-				(
-					function(response){
-						this.displayShowtime(response,0);
-					}
-				).bind(this)
+				(function(response){
+					this.displayShowtime(response,0);
+				}).bind(this)
 			);
 		}
-
 	},
 	displayShowtime:function(showtime, index){
 		//Append the HTML from the requests
@@ -120,6 +118,7 @@ Schedule.prototype = {
 		}
 	},
 	saveSchedule:function(){
+		//Save the schedule by the form.serialize() trick utilizing array based form entries
 		if(this.showtimes.length > 0){
 			return $.ajax({
 				type:"POST",
@@ -130,13 +129,14 @@ Schedule.prototype = {
 		}
 	},
 	formatDate:function(date){
-		console.log("date in:" + date);
+		//format the date to a YYYY/MM/dd format
 		date = new Date(date);
 		var ret = [date.getFullYear(),("0" + (date.getMonth()+1)).slice(-2),("0" + date.getDate()).slice(-2)].join('/');
-		console.log(ret);
 		return ret;
 	},
 	getHTML:function(showtime,index){
+		//Get html for the schedule item
+		//TODO:: swap to generating DOM elements with dom fragments, or some other speedy dom creation technique
 		return $.ajax({
 			type:"POST",
 			url:"templates/ad_schedule_item.php",
@@ -145,6 +145,7 @@ Schedule.prototype = {
 		});
 	},
 	getCategories:function(){
+		//get our list ads/psas/etc for each category
 		var promises = [];
 		var categories = {'ad':"6",'ubc':"12",'community':"11",'timely':"13",'promo':"21","id":"18"};
 		for(var item in categories){
@@ -161,30 +162,28 @@ Schedule.prototype = {
 				async: false,
 			});
 		$.when(ajax).then(
-			(
-				function(response){
-					this[category] = response.sort(function(a,b){
-						if(a.title.toString() > b.title.toString()) return 1;
-						if(a.title.toString() < b.title.toString()) return -1;
-						return 0;
-					});
-				}
-			).bind(this)
-			,(
-				function(error){
-					//recursively calls on failure silently
-					this.getCategory(category);
-				}
-			).bind(this)
+			(function(response){
+				this[category] = response.sort(function(a,b){
+					if(a.title.toString() > b.title.toString()) return 1;
+					if(a.title.toString() < b.title.toString()) return -1;
+					return 0;
+				});
+			}).bind(this)
+			,(function(error){
+				//recursively calls on failure silently
+				this.getCategory(category);
+			}).bind(this)
 		);
 	},
 	createPSATemplate:function(promises){
+		//create the PSA template for us to copy (it amalgamates the entries in ubc,community,timely)
 		for(var item in this.ubc){ this.psa.push(this.ubc[item]); }
 		for(var item in this.community){ this.psa.push(this.community[item]); }
 		for(var item in this.timely){ this.psa.push(this.timely[item]); }
-		return this['cat-promises'].push(this.createCategoryTemplate('psa'));
+		return this['cat_promises'].push(this.createCategoryTemplate('psa'));
 	},
 	createCategoryTemplate:function(item){
+		//create a category template for us to copy.
 		var ad_list = this[item];
 		console.log("called");
 		var p = $.ajax({
@@ -199,6 +198,7 @@ Schedule.prototype = {
 		return p;
 	},
 	updateDropdown:function(list,type,value,index,num){
+		//Update the dropdown when the ad_type changes
 		var parent = $('#show_'+index+"_"+num).find('td.name');
 		if(type != 'announcement'){
 			$(parent).html("<select name='show[show_"+index+"_"+num+"][name]' class='name'></select>");
@@ -216,8 +216,6 @@ Schedule.prototype = {
 		$('#show_'+index).find('.ads').find('tr').each(function(i,obj){
 			count++;
 		});
-
-		console.log(count);
 	},
 	logError:function(error){
 		//Get relevant text from the eloquent error message

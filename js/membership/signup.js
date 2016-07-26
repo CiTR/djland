@@ -24,7 +24,7 @@ function getSelect($id){
 		return selectedValue;
 	}else{
 		return null;
-	}	
+	}
 }
 function getCheckbox($id){
 	var checkbox = $id;
@@ -49,68 +49,68 @@ function getCheckbox2($id){
 $(document).ready ( function() {
 
 	$('#submit_user').click( function() {
-	// TODO:
-	//* check if all fields are filled out correctly, then highlight incorrectly entered fields.
-	//* link to membership-add-handler to submit a new user.
-	//
+		// TODO:
+		//* check if all fields are filled out correctly, then highlight incorrectly entered fields.
+		//* link to membership-add-handler to submit a new user.
+		//
 
-	var faculty = getVal('faculty');
-	if(faculty == 'Other'){
-		faculty = getVal('faculty2');
-	}
-	var is_new = getVal('is_new');
-	var prompt = "Is this information correct? \nYour full name is "+getVal('firstname') + " " + getVal('lastname') + ". \n";
-	prompt += "Your current address is "+getVal('address')+ " "+ getVal('city') + " " + getVal('province')+ " " + getVal('postalcode') + ". \n"; 
-	prompt += "You are ";
-	prompt += get('canadian_citizen')  ? "a ":"not a ";
-	prompt += "canadian citizen, who is a " + (get('is_new') == 1 ? 'new':'returning');
-	if(getSelect('member_type') =='Student'){
-		prompt += " student in ";
-		
-		switch(get('year')){
-			case '1':
-				prompt += " their first year of ";
-				break;
+		var faculty = getVal('faculty');
+		if(faculty == 'Other'){
+			faculty = getVal('faculty2');
+		}
+		var is_new = getVal('is_new');
+		var prompt = "Is this information correct? \nYour full name is "+getVal('firstname') + " " + getVal('lastname') + ". \n";
+		prompt += "Your current address is "+getVal('address')+ " "+ getVal('city') + " " + getVal('province')+ " " + getVal('postalcode') + ". \n";
+		prompt += "You are ";
+		prompt += get('canadian_citizen')  ? "a ":"not a ";
+		prompt += "canadian citizen, who is a " + (get('is_new') == 1 ? 'new':'returning');
+		if(getSelect('member_type') =='Student'){
+			prompt += " student in ";
 
-			case '2':
-				prompt += " their second year of ";
-				break;
+			switch(get('year')){
+				case '1':
+					prompt += " their first year of ";
+					break;
 
-			case '3':
-				prompt += " their third year of ";
-				break;
+				case '2':
+					prompt += " their second year of ";
+					break;
 
-			case '4':
-				prompt += " their fourth year of ";
-				break;
+				case '3':
+					prompt += " their third year of ";
+					break;
 
-			case '5+':
-				prompt += " their fifth or higher year of ";
-				break;
+				case '4':
+					prompt += " their fourth year of ";
+					break;
 
-			default:
-				break;
-			}
+				case '5+':
+					prompt += " their fifth or higher year of ";
+					break;
 
-		prompt += faculty + " with student number " + getVal("student_no") + ". \n";
-	}else{
-		prompt += ' community member. \n';
-	}
+				default:
+					break;
+				}
 
-	prompt += "You can be reached at " + getVal('email') + ", " + getVal('primary_phone');
-	if(getVal('phone2')){
-		prompt += ", " + getVal('phone2');
-	}
-	
-	prompt += ". \n \nIf this is correct, please hit 'OK', or else hit 'cancel' to edit your information.";
+			prompt += faculty + " with student number " + getVal("student_no") + ". \n";
+		}else{
+			prompt += ' community member. \n';
+		}
 
-	if(confirm(prompt)==true){	
-		var member = new Member();
-		member.create();
+		prompt += "You can be reached at " + getVal('email') + ", " + getVal('primary_phone');
+		if(getVal('phone2')){
+			prompt += ", " + getVal('phone2');
+		}
+
+		prompt += ". \n \nIf this is correct, please hit 'OK', or else hit 'cancel' to edit your information.";
+
+		if(confirm(prompt)==true){
+			var member = new Member();
+				member.create();
 		}
 	});
 	$('#member_type').change(function (){
-		
+
 		if($('#member_type').val() == "Student"){
 			$('#row6').show();
 			$('#row6').children().show();
@@ -122,15 +122,15 @@ $(document).ready ( function() {
 			$('#row6').hide();
 			$('#row7').hide();
 			$('#student_no_container').hide();
-		}	
+		}
 	});
 	$('#faculty').change(function (){
-		
+
 		if($('#faculty').val() == "Other"){
 			$('#faculty2').show();
 		}else{
 			$('#faculty2').hide();
-		}	
+		}
 	});
 
 	$('.alumni_select').unbind().click( function(){
@@ -160,11 +160,11 @@ $(document).ready ( function() {
 
 
 	window.setInterval(checkBlocking,1000);
-	
-	
+
+
 
 	$('#username').keyup(function(){
-		var username = getVal('username');		
+		var username = getVal('username');
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/username_handler.php",
@@ -183,7 +183,7 @@ $(document).ready ( function() {
 				}
 			}).fail( function(){
 				$('#username_ok').text('connection error');
-			
+
 			});
 	});
 	$('#student_no').on('keyup',function(){
@@ -212,10 +212,10 @@ $(document).ready ( function() {
 				}
 			}).fail( function(){
 				$('#student_no_ok').text('connection error');
-			
+
 			});
-		}	
-		
+		}
+
 	});
 	$('#email').on('keyup',function(){
 		var email = get('email');
@@ -244,7 +244,7 @@ $(document).ready ( function() {
 
 
 	$('#username').blur(function(){
-		var username = getVal('username');		
+		var username = getVal('username');
 		$.ajax({
 			type:"POST",
 			url: "form-handlers/username_handler.php",
@@ -254,7 +254,7 @@ $(document).ready ( function() {
 				if(data[0].bool==1){
 					$('#username_ok').remove();
 						$('#username_check').append("<div id='username_ok'></div>");
-					
+
 					$('#username_ok').text("Username taken");
 
 				}
@@ -263,14 +263,14 @@ $(document).ready ( function() {
 				}
 			}).fail( function(){
 				$('#username_ok').text('connection error');
-			
+
 			});
-		
+
 	});
 	$('#password2').blur(function(){
 		if( $('#password_ok').text() == "Passwords match"){
 			$('#password_ok').remove();
-		}		
+		}
 	});
 
 	$('#student_no').blur(function(){
@@ -288,7 +288,7 @@ $(document).ready ( function() {
 					$('#student_no_ok').text("This student number is already registered!");
 				}
 				else if(student_no.length< 8){
-					
+
 					$('#student_no_ok').remove();
 					$('#student_no_check').append("<div id='student_no_ok'></div>");
 					$('#student_no_ok').text("Student number must be 8 characters long.");
@@ -298,17 +298,17 @@ $(document).ready ( function() {
 				}
 			}).fail( function(){
 				$('#student_no_ok').text('connection error');
-			
+
 			});
 		}
-		
+
 	});
 
 });
 	function checkBlocking(){
 		var allOkay = true;
-		
-	
+
+
 		if($('#username_ok').text() == 'Username taken'){
 			allOkay=false;
 			console.log("username not okay");
@@ -358,7 +358,7 @@ $(document).ready ( function() {
 		var password = getVal('password');
 		var password2 = getVal('password2');
 		$('#password_ok').remove();
-		
+
 		if(password.length < 4){
 			$('#password_check').append("<div id='password_ok' ></div>");
 			$('#password_ok').text("Password must be more than 4 characters");
@@ -387,7 +387,7 @@ $(document).ready ( function() {
 		keychar = String.fromCharCode(key);
 
 		// control keys
-		if ((key==null) || (key==0) || (key==8) || 
+		if ((key==null) || (key==0) || (key==8) ||
 		    (key==9) || (key==13) || (key==27) )
 		   return true;
 

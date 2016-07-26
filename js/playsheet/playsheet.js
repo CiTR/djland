@@ -2,7 +2,7 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.info = {};
-        this.promotions = {};
+        this.ads = {};
         this.playitems = {};
         this.podcast = {};
         this.info.id = playsheet_id;
@@ -77,48 +77,6 @@
         };
         this.updateTime = function(){
             var now = new Date();
-<<<<<<< HEAD
-            call.getNextShowTime(this_.active_show.id,now).then(function(response){
-                var start_unix = response.data.start;
-                var end_unix = response.data.end;
-                this_.info.unix_time = response.data.start;
-                this_.start = new Date(start_unix * 1000);
-                this_.end = new Date(end_unix * 1000);
-
-
-                this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
-                this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
-                this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                //Populate Template Row, then add 5 rows
-                var show_date = this_.start.getDate();
-                                 //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
-
-                this_.updateEnd();
-                this_.updateStart();
-
-                if(this_.info.id < 1){
-                    call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                        this_.promotions = response.data;
-                    },function(error){
-                        this_.log_error(error);
-                        call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                            this_.promotions = response.data;
-                        });
-                    });
-                }
-            });
-        }
-        this.updateShowValues = function(element){
-            //When a new show is selected, update all the information.
-            
-            //Get the show object from shows member belongs to (if it exists)
-            this.active_show = this.member_shows.filter(function(object){if(object.id == this_.show_value) return object;})[0];
-=======
             call.getNextShowTime(this.active_show.id,now).then(
 				(
 					function(response){
@@ -145,20 +103,20 @@
 	                    this.updateStart();
 
 	                    if(this.info.id < 1){
-	                        call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+	                        call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 								(
 									function(response){
-			                            this.promotions = response.data;
-			                            console.log(this.promotions);
+			                            this.ads = response.data;
+			                            console.log(this.ads);
 			                        }
 								).bind(this)
 								,(
 									function(error){
 			                            this.log_error(error);
-			                            call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+			                            call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 											(
 												function(response){
-					                                this.promotions = response.data;
+					                                this.ads = response.data;
 					                            }
 											).bind(this)
 										);
@@ -171,10 +129,8 @@
 			);
         }
         this.updateShowValues = function(element){
-
             //When a new show is selected, updat all the information.
             this.active_show = this.member_shows.filter( (function(object){if(object.id == this.show_value) return object;}).bind(this))[0];
->>>>>>> master
             this.show = this.active_show.show;
             this.info.show_id = parseInt(this.active_show.id);
             this.info.host = this.active_show.show.host;
@@ -292,15 +248,15 @@
 			this.end_unix = end_unix;
 			var duration = start_unix - end_unix;
 			if(this.info.id < 1){
-				call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+				call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 					(function(response){
-						this.promotions = response.data;
+						this.ads = response.data;
 					}).bind(this)
 					,(function(error){
 						this.log_error(error);
-						call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+						call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 							(function(response){
-								this.promotions = response.data;
+								this.ads = response.data;
 							}).bind(this)
 						);
 					}).bind(this)
@@ -345,7 +301,7 @@
                     console.log(this_.show);
                     this_.playitems = playsheet.playitems;
                     this_.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this_.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-                    this_.promotions = playsheet.promotions;
+                    this_.ads = playsheet.ads;
                     //If no playitems, change "Add Five Rows" button to say "Add Row" instead
                     if(this_.playitems < 1){
                         $('#addRows').text("Add Row");
@@ -428,7 +384,7 @@
 
 	                    this.playitems = playsheet.playitems;
 	                    this.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-	                    this.promotions = playsheet.promotions;
+	                    this.ads = playsheet.ads;
 	                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
 	                    if(this.playitems < 1){
 	                        $('#addRows').text("Add Row");
@@ -496,7 +452,7 @@
                     var shows = data.data.shows;
                     this_.member_shows = shows;
                     if(shows){
-                        //Cheat Code to get first active show. Could change it to 
+                        //Cheat Code to get first active show. Could change it to
                         for(var show in this_.member_shows){
                             //Set the active show to be the first show in list of active shows
                             this_.active_show = this_.member_shows[show];
@@ -555,13 +511,13 @@
                             for(var i = 0; i<4; i++) {
                                 this_.add(this_.playitems.length-1);
                             }
-                            call.getPromotions(start_unix, end_unix-start_unix,this_.active_show.id).then(function(response){
-                                this_.promotions = response.data;
+                            call.getAds(start_unix, end_unix-start_unix,this_.active_show.id).then(function(response){
+                                this_.ads = response.data;
                             },function(error){
                             this_.log_error(error);
 				                //If it fails, try to load ads again
-                                call.getPromotions(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                                    this_.promotions = response.data;
+                                call.getAds(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
+                                    this_.ads = response.data;
                                 });
                             });
                             this_.update();
@@ -644,15 +600,15 @@
 			                            for(var i = 0; i<4; i++) {
 			                                this.add(this.playitems.length-1);
 			                            }
-			                            call.getPromotions(start_unix, end_unix-start_unix,this.active_show.id).then(
+			                            call.getAds(start_unix, end_unix-start_unix,this.active_show.id).then(
 											(function(response){
-				                                this.promotions = response.data;
+				                                this.ads = response.data;
 				                            }).bind(this)
 											,(function(error){
 				                            this.log_error(error);
-				                                call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+				                                call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 													(function(response){
-				                                    this.promotions = response.data;
+				                                    this.ads = response.data;
 												}).bind(this));
 				                            }).bind(this)
 										);
@@ -796,15 +752,15 @@
                     //New Playsheet
                     this.info.create_name = this.username;
 					this.info.show_name = this.active_show.name;
-                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
 		                        this.info.id = response.data.id;
 		                        for(var playitem in this.playitems){
 		                            this.playitems[playitem].playsheet_id = this.info.id;
 		                        }
-								this.promotions = response.data.ads;
-								console.log(this.promotions);
+								this.ads = response.data.ads;
+								console.log(this.ads);
 		                        var show_date = this.start.getDate();
 		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
 		                        this.podcast.id = response.data.podcast_id;
@@ -822,7 +778,7 @@
 					);
                 }else{
                     //Existing Playsheet
-                    call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                    call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
 		                        for(var playitem in this.playitems){
@@ -877,13 +833,13 @@
                     //New Playsheet
                     this.info.create_name = this.username;
 
-                    call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                    call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
 		                        for(var playitem in this.playitems){
 		                            this.playitems[playitem].playsheet_id = this.info.id;
 		                        }
-								this.promotions = response.data.ads;
+								this.ads = response.data.ads;
 		                        this.info.id = response.data.id;
 		                        this.podcast.id = response.data.podcast_id;
 		                        this.podcast.playsheet_id = response.data.id;
@@ -925,7 +881,7 @@
 						(function(response){
                             this.podcast.id = response.data['id'];
 							console.log(response);
-                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 								(function(response){
 	                                this.tracklist_overlay = true;
 	                                call.makePodcastAudio(this.podcast).then(
@@ -949,7 +905,7 @@
                         }).bind(this)
                     	);
                     }else{
-                        call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                        call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 							(function(response){
 	                            this.tracklist_overlay = true;
 	                            call.makePodcastAudio(this.podcast).then(
