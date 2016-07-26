@@ -103,12 +103,18 @@
 						</select>
 					</li>
 					<li>
-						<button class='member_submit' name='search'>Search</button>
+						Has Show:
+						<input id='search_has_show' type='checkbox'/>
 					</li>
 					<li>
-						<button id='save_comments'>Save Comments</button>
+						<button class='member_submit' name='search'>Search</button>
 					</li>
+					
+					
 			</ul>
+			<div class='floating'>
+				<button id='save_comments'>Save Comments</button>
+			</div>	
 
 			<div id='membership_result' class='overflow_auto height_cap' name='search'>
 				<div id='search_loading' class='col1 text-center' name='search'>Loading...</div>

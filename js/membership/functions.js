@@ -207,7 +207,7 @@ function decodeHTML(str){
                 return String.fromCharCode(dec);
             });
       }
-function queryMembers(search_parameter,search_value,paid,membership_year,has_show,order_by){
+function queryMembers(search_parameter,search_value,paid,membership_year,search_has_show,order_by){
 	console.log('querying');
 	return $.ajax({
 		type:"GET",
@@ -217,7 +217,7 @@ function queryMembers(search_parameter,search_value,paid,membership_year,has_sho
 			'search_value':search_value,
 			'paid':paid,
 			'membership_year':membership_year,
-			'has_show':has_show,
+			'has_show':search_has_show,
 			'order_by':order_by,
 		},dataType:'json',
 		async:true
@@ -264,15 +264,13 @@ function loadMember(id){
 		console.log("Failed to load member");
 	});
 }
-function displayMemberList(search_by,value,paid,year,order_by){
+function displayMemberList(search_by,value,paid,year,search_has_show,order_by){
 	$('.member_row').remove();
 	$('#search_loading').show();
-
 	if(year == null){
 		year = get('year_select',null,'search');
 	}
-	var has_show = 0;
-	$.when(queryMembers(search_by ,value ,paid ,year ,'0' ,order_by)).then(function(data){
+	$.when(queryMembers(search_by ,value ,paid ,year ,'0',search_has_show, order_by)).then(function(data){
 		$('#search_loading').hide();
 		var member_result_table = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');

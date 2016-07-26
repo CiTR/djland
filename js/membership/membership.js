@@ -11,7 +11,7 @@ $(document).ready ( function() {
 
 			$.when(year_callback).then(
 				function(){
-					displayMemberList("name","","both",get(undefined,'year_select','search'),'created');
+					displayMemberList("name","","both",get(undefined,'year_select','search'),'0','created');
 				},function(){
 
 				});
@@ -124,7 +124,7 @@ function add_handlers(){
 						search_value = $(this).val();
 					}
 				});
-				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getCheckbox('search_has_show'),getVal('order_by'));
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){

@@ -3,7 +3,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/headers/session_header.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/headers/security_header.php');
 
 
-
 	$response = new stdClass();
 if( !( isset($_POST['friend_name']) ) ){
 	//Check if Show Name Set
