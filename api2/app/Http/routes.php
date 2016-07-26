@@ -33,7 +33,6 @@ Route::group(['middleware' => 'auth'], function(){
 			return Response::json($resource->save());
 		});
 	});
-
 });
 
 Route::get('/social',function(){
@@ -42,7 +41,10 @@ Route::get('/social',function(){
 
 Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
-	date_default_timezone_set('America/Los_Angeles');
+	//Since we aren't calling our security header, we need to ensure the timezone is set.
+	date_default_timezone_set($station_info['timezone']);
+
+	//if we are using sam, pull music from the historylist table
 	$result = array();
 	if($using_sam){
 		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
@@ -61,6 +63,8 @@ Route::get('/nowplaying',function(){
 	}else{
 		$result['music'] = null;
 	}
+
+	//CiTR uses week alternation, need to find out what week it is currently.
 	$day_of_week = date('w');
 	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
 	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
@@ -74,6 +78,7 @@ Route::get('/nowplaying',function(){
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
 
+	//If there is a special broadcast, the current show will be that.
 	$specialbroadcast = SpecialBroadcasts::whereRaw('start <= '.$now.' and end >= '.$now)->get();
 	if($specialbroadcast->first()){
 		//special broadcast exists
@@ -85,6 +90,7 @@ Route::get('/nowplaying',function(){
 		$result['showTime'] = "{$start_time} - {$end_time}";
 		$result['lastUpdated'] = date('D, d M Y g:i:s a',strtotime('now'));
 	}else{
+		//Get the current show if no special broadcast
 		$current_show = DB::select(DB::raw(
 		"SELECT s.*,sh.name as name,NOW() as time from show_times AS s INNER JOIN shows as sh ON s.show_id = sh.id
 			WHERE
