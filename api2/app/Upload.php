@@ -56,6 +56,8 @@ class Upload extends Model{
 			mkdir($target_dir,0755);
 		}
     
+		$target_file = $target_dir."/".$this->$file_name;
+
     	//Check if the category exists
     	if(array_key_exists($this->category,$djland_upload_types){
     		//Check if the file type is allowed for that category

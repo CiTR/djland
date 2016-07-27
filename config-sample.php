@@ -19,30 +19,31 @@ $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territo
 $station_info['timezone'] = 'America/Vancouver';
 // For timezone reference http://ca1.php.net/manual/en/timezones.php
 
-//MySQL database connection
+//Enable or disable features of DJLand
+$enabled['library'] = true; // searchable music catalog (for physical recordings)
+$enabled['shows'] = true; // show information database - used to pre-fill playsheets
+$enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
+$enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
+$enabled['report'] = true; // CRTC formatted printable report view
+$enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
+$enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
+$enabled['sam_integration'] = true;
+
+
+//Database Connections
 $djland_db_address = '127.0.0.1';
 $djland_db_username = 'djland-username';
 $djland_db_password = 'djland-password';
 $djland_db_dbname = 'djland-databasename';
 
-//Enable or disable features of DJLand
-$enabled['library'] = true; // searchable music catalog (for physical recordings)
-$enabled['shows'] = true; // show information database - used to pre-fill playsheets
-$enabled['adscheduler'] = false; // display what ads each programmer should play (only works if using SAM integration)
-$enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
-$enabled['report'] = true; // CRTC formatted printable report view
-$enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
-$enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
+if($enabled['sam_integration']){
+	$samDB_ip = 'ip address of computer running SAM mysql database';
+	$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
+	$samDB_pass = 'password for that user';
+	$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
+}
 
-//Are you wanting to connect DJLand to an existing SAM MySQL database
-$using_sam = false; 
-
-$samDB_ip = 'ip address of computer running SAM mysql database';
-$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-$samDB_pass = 'password for that user';
-$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-
-
+//Podcasting tools support
 if($enabled['podcast_tools']){
 	//Local paths & Remote URLs for use with podcasting
 	$path = array();
@@ -66,27 +67,6 @@ if($enabled['podcast_tools']){
 		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
 	}
 }
-//Local paths & Remote URLs for use with podcasting
-$path = array();
-$url = array();
-
-//Podcast paths
-$path['audio_base'] = '/home/podcast/audio';
-$url['audio_base'] = 'http://podcast.hostname.com/audio';
-$path['xml_base'] = '/home/podcast/xml';
-$url['xml_base']= 'http://podcast.hostname.com/xml';
-
-//Archiver Access
-$url['archiver_tool'] = 'http://archive.citr.ca';
-$url['archive_request'] = $archiver_tool_url.'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
-
-//Podcast local_dev paths
-if($testing_environment==true){
-	$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-	$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-	$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
-	$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
-}
 
 //The date at which your membership will roll into the next membership year.
 $djland_membership_cutoff_month=5;
@@ -107,7 +87,8 @@ $djland_training = array(
 	'Technical' => 'technical_training',
 	'Production'=> 'production_training',
 	'Programming'=> 'programming_training',
-	'Spoken Word'=> 'spoken_word_training');
+	'Spoken Word'=> 'spoken_word_training'
+	);
 
 //Things people can be interested in/be emailed about around the station
 $djland_interests = array(
@@ -144,7 +125,8 @@ $djland_program_years = array(
 	'2'=>'2',
 	'3'=>'3',
 	'4'=>'4',
-	'5+'=>'5');
+	'5+'=>'5'
+	);
 //University Faculty Listing
 $djland_faculties = array(
 	"Arts",
@@ -171,7 +153,9 @@ $djland_faculties = array(
 	"Public Health",
 	"Science",
 	"Social Work",
-	"Other");
+	"Other"
+	);
+
 //Province list
 $djland_provinces = array(
 	'AB',
@@ -185,7 +169,8 @@ $djland_provinces = array(
 	'ONT',
 	'QUE',
 	'SASK',
-	'YUK');
+	'YUK'
+	);
 //Primary genres for show filtering purposes
 $djland_primary_genres = array(
 	"Electronic",
@@ -207,30 +192,3 @@ $djland_upload_categories = array(
 	"episode_image"=>array('jpg','jpeg','gif','png','tiff'),
 	"episode_audio"=>array('mp3'),
 	);
-
-
-// debug time operations? leave false unless you
-// are developing and need to fake the current time
-// for some reason
-
-// in code, do these two things:
-// 1) use get_time() instead of time()
-// 2) always use get_time() as optional last parameter for all date() calls
-// 3) use hidden field to pass time to javascript
-//
-
-// developers visit DJland on GitHUB to check out latest version
-// or contribute to the project and submit a pull request!
-// http://www.github.com/citrtech/djland
-// project home page
-// http://www.djland.info
-// Developed by CiTR
-// http://www.citr.ca
-
-// contributors
-// Brad Winter
-// Evan Friday
-// Sandy Fang
-// Scott Pidzarko
-// Henry Chee
-//
