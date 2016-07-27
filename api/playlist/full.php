@@ -121,7 +121,7 @@ error_reporting(E_ALL);
     $rawdata['plays'][$i]['insert_song_length_second'] = str_pad(strval($play['insert_song_length_second']), 2, "0", STR_PAD_LEFT);
 
   }
-  if($using_sam){
+  if($enabled['sam_integration']){
       foreach($rawdata['ads'] as $i => $ad){
 
     $rawdata['ads'][$i]['played'] = ($ad['played'] == 1) ? true : false;

@@ -40,7 +40,7 @@ try{
 // watch this space for a list of those table names in case you want to use a
 // different digital media player
 
-if($using_sam){
+if($enabled['sam_integration']){
 
     global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
     $mysqli_sam = new mysqli($samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname);

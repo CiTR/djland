@@ -49,7 +49,7 @@
 		</tr>
 	</table>
 </div>
-<?php if($using_sam): ?>
+<?php if($enabled['sam_integration']): ?>
 	<div ng-show="report.type=='crtc' || report.type=='both'">
 		<h3>Ads Played in SAM</h3>
 		<div ng-show="playsheet.ads_played.length > 0">

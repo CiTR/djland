@@ -268,7 +268,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
 
-			if($using_sam){
+			if($enabled['sam_integration']){
 				if( $playsheet->start_time && $playsheet->end_time){
 					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
 				}
