@@ -11,5 +11,6 @@
 	$constants->program_years = $djland_program_years;
 	$constants->provinces = $djland_provinces;
 	$constants->genres = $djland_primary_genres;
+	$constants->cutoff_month = $djland_membership_cutoff_month;
 	echo json_encode($constants);
 ?>

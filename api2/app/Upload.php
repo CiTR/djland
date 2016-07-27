@@ -12,6 +12,9 @@ class Upload{
     	if($_FILES == null || $this->file_name == null || $this->path == null || $this->djland_category == null)
     		return false;
     	$file = $_FILES[0];
+    	
+    	
+
     	switch($file['type']){
 		case 'image/png':
 		case 'png':
@@ -38,6 +41,12 @@ class Upload{
 		default:
 			$imageFileType = 'null';
 			break;
+   		}
+
+   		$base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads";
+     	
+
     }
+
 
 }

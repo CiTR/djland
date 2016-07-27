@@ -2,20 +2,28 @@ var cutoff_year_element;
 var cutoff_year;
 var current_year_element;
 var current_year;
-var cutoff_month = 5; // Greater or equal to may (start of may is the new membership year)
+var cutoff_month = 0; // Greater or equal to may (start of may is the new membership year)
 
 $(document).ready ( function() {
     cutoff_year_element = $('#current_cutoff');
     current_year_element = $('#current_year');
 	var today = new Date();
-	if( today.getMonth() >= cutoff_month ) {
-		current_year = today.getFullYear() + "/" + (today.getFullYear() + 1);
-	}else{
-		current_year = (today.getFullYear() - 1) + "/" + (today.getFullYear() + 0);
-	}
-	current_year_element.text("Current year: "+current_year);
-	//load current cutoff year
-	getCutoff();
+
+
+	$.when(getCutoffMonth()).then(function(response){
+		//Loading the cutoff_month from config.php
+		cutoff_month = response.cutoff_month;
+		//check if we're into the next membership year or not
+		if( today.getMonth() >= cutoff_month ) {
+			current_year = today.getFullYear() + "/" + (today.getFullYear() + 1);
+		}else{
+			current_year = (today.getFullYear() - 1) + "/" + (today.getFullYear() + 0);
+		}
+		current_year_element.text("Current year: "+current_year);
+		//Loads what we have set as our cutoff
+		getCurrentCutoff();
+	});
+
 	//Listeners for rollover/rollback
 	$(".button_holder").off('click','#year_rollover').on('click','#year_rollover',
 		function(){
@@ -30,7 +38,16 @@ $(document).ready ( function() {
     	}
 	);
 });
-function getCutoff(){
+function getCutoffMonth(){
+	//load our cutoff month from config.php
+	return $.ajax({
+		type: "GET",
+		url: "headers/constants.php",
+		dataType:"json",
+		async:true
+	});
+}
+function getCurrentCutoff(){
     var request = $.ajax({
         type:"GET",
         url: "api2/public/membershipyear/cutoff",

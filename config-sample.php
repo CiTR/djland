@@ -95,7 +95,8 @@ $samDB_ip = 'ip address of computer running SAM mysql database';
 $samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
 $samDB_pass = 'password for that user';
 $samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-// used to retreive podcast audio
+
+// used to retreive podcast audio -- see archiver tool hosted in citrtech's github
 $archive_tool_url = 'http://archive.citr.ca';
 $archive_access_url = $archive_tool_url.
     "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
@@ -111,10 +112,12 @@ $xml_path_local   = '/var/www/xml/or/something/';
  * Be sure to update the constants.php file to include all constants if you wish to use them in JS
  */
 
-$djland_membership_year_date = date('04/31/'.idate('Y'));
+//The date at which your membership will roll into the next membership year.
+$djland_membership_cutoff_month=5;
 
+//Permission levels, their value, and the tooltip shown when you hover over it.
 $djland_permission_levels = array(
-    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Godmode.'),
+    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'"Power Overwhelming."'),
     'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
     'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
     'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
@@ -123,12 +126,14 @@ $djland_permission_levels = array(
     'dj'=>array('level'=>'2','name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
     'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
 	);
+//Possible trainings for members
 $djland_training = array(
-	'Station Tour' => 'station_tour',
 	'Technical' => 'technical_training',
 	'Production'=> 'production_training',
 	'Programming'=> 'programming_training',
 	'Spoken Word'=> 'spoken_word_training');
+
+//Things people can be interested in/be emailed about around the station
 $djland_interests = array(
 	'Arts'=>'arts',
 	'Ads and PSAs'=>'ads_psa',
@@ -150,16 +155,21 @@ $djland_interests = array(
 	"Indigenous Collective"=>"indigenous_collective",
 	"Accessibility Collective"=>"accessibility_collective",
 	"Other"=>"other");
+//Member types
 $djland_member_types = array(
 	'UBC Student'=>'Student',
 	'Community Member'=>'Community',
-	'Staff'=>'Staff');
+	'Staff'=>'Staff',
+	'Lifetime'=>'Lifetime'
+	);
+//University Year Listing
 $djland_program_years = array(
 	'1'=>'1',
 	'2'=>'2',
 	'3'=>'3',
 	'4'=>'4',
 	'5+'=>'5');
+//University Faculty Listing
 $djland_faculties = array(
 	"Arts",
 	"Applied Science",
@@ -186,6 +196,7 @@ $djland_faculties = array(
 	"Science",
 	"Social Work",
 	"Other");
+//Province list
 $djland_provinces = array(
 	'AB',
 	'BC',
@@ -199,6 +210,7 @@ $djland_provinces = array(
 	'QUE',
 	'SASK',
 	'YUK');
+//Primary genres for show filtering purposes
 $djland_primary_genres = array(
 	"Electronic",
 	"Experimental",
@@ -209,6 +221,15 @@ $djland_primary_genres = array(
 	"Rock / Pop / Indie",
 	"Roots / Blues / Folk",
 	"Talk"
+	);
+//Upload categories, and their accepted formats.
+$djland_upload_categories = array(
+	"show_image"=>array('jpg','jpeg','gif','png','tiff'),
+	"citr_friend_image"=>array('jpg','jpeg','gif','png','tiff'),
+	"special_broadcast_image"=>array('jpg','jpeg','gif','png','tiff'),
+	"member_resource"=>array('pdf','jpg','jpeg','gif','png','tiff'),
+	"episode_image"=>array('jpg','jpeg','gif','png','tiff'),
+	"episode_audio"=>array('mp3'),
 	);
 
 

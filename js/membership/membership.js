@@ -32,8 +32,6 @@ $(document).ready ( function() {
 window.setInterval(checkBlocking,1000);
 
 function add_handlers(){
-
-
 	//This makes page printer/user friendly and toggles on the button trigger
 	$('#print_friendly').on('click',function(element){
 		if(!$(this).hasClass('print_friendly')){
