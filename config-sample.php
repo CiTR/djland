@@ -29,7 +29,6 @@ $enabled['playsheets'] = true; // DJ's log in to the site from any computer with
 $enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
 $enabled['sam_integration'] = true;
 
-
 //Database Connections
 $djland_db_address = '127.0.0.1';
 $djland_db_username = 'djland-username';
