@@ -6,47 +6,62 @@ use Illuminate\Database\Eloquent\Model;
 
 class Upload extends Model{
 	protected $table = 'uploads';
-    protected $fillable = array('file_name','file_type','size','path','category','description','url','CREATED_AT','EDITED_AT');
+    protected $fillable = array('relation_id','file_name','file_type','size','path','category','description','url','CREATED_AT','EDITED_AT');
 
 
     public function upload($file){
+    	require_once($_SERVER['DOCUMENT_ROOT']."config.php");
+
     	if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
     		return false;
 
+    	//Get dirs based on file type 
+    	$base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+		
+		//chars to strip from names + dirs
+		$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
 
-    	
-    	switch($file['type']){
-		case 'image/png':
-		case 'png':
-			$this->file_type = '.png';
-			break;
-		case 'image/jpeg':
-		case 'jpeg':
-			$this->file_type = '.jpeg';
-			break;
-		case 'image/jpg':
-		case 'jpg':
-			$this->file_type = '.jpg';
-			break;
-		case 'image/gif':
-		case 'gif':
-			$this->file_type = '.gif';
-			break;
-		case 'pdf':
-			$this->file_type = '.pdf';
-			break;
-		case 'mp3':
-			$this->file_type = '.mp3';
-			break;
-		default:
-			$imageFileType = 'null';
-			break;
-   		}
+    	//Ensure the uploads folder exists, if not create it
+		if(!file_exists($base_dir)){
+			mkdir($base_dir,0755);
+		}
+	
+		//Ensure the category folder exists, if not create it
+    	$category_dir = $base_dir.$this->category."/";
+		if(!file_exists($category_dir)){
+			mkdir($category_dir,0755);
+		}
 
-   		$base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads";
-     	
+		//Ensure the target folder exists, if not create it
+		switch($this->category){
+			case 'show_image':
+				$show = Show::find($this->foreign_key);
+				$stripped_show_name = str_replace($strip,'',$show->name);
+				$target_dir = $category_dir.$stripped_show_name."/";
+				break;
+			case 'episode_image':
+				$podcast = Podcast::find($this->foreign_key);
+				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
+				$target_dir = $category_dir.$stripped_show_name."/".idate('y')."/";
+				break;
+			case 'episode_audio'
+				$podcast = Podcast::find($this->foreign_key);
+				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
+				break;
+			case default:
+				break;
 
+		}
+		if(!file_exists($target_dir)){
+			mkdir($target_dir,0755);
+		}
+    
+    	//Check if the category exists
+    	if(array_key_exists($this->category,$djland_upload_types){
+    		//Check if the file type is allowed for that category
+    		if( in_array($this->file_type,$djland_upload_types[$this->category])){
+
+    		}
+    	}
     }
-
-
 }
