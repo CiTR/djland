@@ -4,7 +4,7 @@ CREATE TABLE `uploads` (
   `file_type` varchar(45) NOT NULL,
   `path` tinytext,
   `size` tinytext,
-  `djland_category` varchar(45) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
   `description` tinytext,
   `url` tinytext,
   `CREATED_AT` datetime DEFAULT NULL,

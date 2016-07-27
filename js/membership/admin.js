@@ -9,7 +9,6 @@ $(document).ready ( function() {
     current_year_element = $('#current_year');
 	var today = new Date();
 
-
 	$.when(getCutoffMonth()).then(function(response){
 		//Loading the cutoff_month from config.php
 		cutoff_month = response.cutoff_month;
@@ -48,6 +47,7 @@ function getCutoffMonth(){
 	});
 }
 function getCurrentCutoff(){
+	//returns current year set as the cutoff
     var request = $.ajax({
         type:"GET",
         url: "api2/public/membershipyear/cutoff",

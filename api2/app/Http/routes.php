@@ -6,6 +6,7 @@ foreach ( File::allFiles(__DIR__.'/Routes') as $partial )
 }
 
 //DJLand classes
+use App\Social as Social;
 use App\Option as Option;
 use App\Show as Show;
 use App\Member as Member;

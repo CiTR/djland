@@ -2,19 +2,19 @@
 
 
 namespace App;
+use Illuminate\Database\Eloquent\Model;
 
-class Upload{
-	protected $table = 'membership';
-    protected $fillable = array('file_name','file_type','path','djland_category','description','url','size','CREATED_AT','EDITED_AT');
+class Upload extends Model{
+	protected $table = 'uploads';
+    protected $fillable = array('file_name','file_type','size','path','category','description','url','CREATED_AT','EDITED_AT');
 
 
     public function upload($file){
-    	if($_FILES == null || $this->file_name == null || $this->path == null || $this->djland_category == null)
+    	if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
     		return false;
-    	$file = $_FILES[0];
-    	
-    	
 
+
+    	
     	switch($file['type']){
 		case 'image/png':
 		case 'png':
@@ -33,9 +33,9 @@ class Upload{
 			$this->file_type = '.gif';
 			break;
 		case 'pdf':
-			$this->file_type = '.pdf'
+			$this->file_type = '.pdf';
 			break;
-		case 'mp3'
+		case 'mp3':
 			$this->file_type = '.mp3';
 			break;
 		default:
