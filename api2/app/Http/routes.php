@@ -155,7 +155,7 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			Route::post('password',function($id){
 				$member = Member::find($id);
-				$user = $m->user;
+				$user = $member->user;
 				$user->password = password_hash(Input::get()['password'],PASSWORD_DEFAULT);
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 				if(Member::find($_SESSION['sv_id'])->isStaff()  || $id == $_SESSION['sv_id']) return $user->save() ? "true":"false";
