@@ -195,22 +195,17 @@
         this.loadRebroadcast = function(){
             call.getPlaysheetData(this.existing_playsheet).then(
 				(function(response){
-                this.playitems = response.data.playitems;
-                this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
-                if(this.info.spokenword_duration != null){
-                    this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
-                    this.spokenword_minutes = this.info.spokenword_duration % 60;
-                }else{
-<<<<<<< HEAD
-                    this_.spokenword_hours = 0;
-                    this_.spokenword_minutes = null;
-=======
-                    this.spokenword_hours = null;
-                    this.spokenword_minutes = null;
->>>>>>> master
-                }
-                this.ads = response.data.ads;
-			}).bind(this)
+                    this.playitems = response.data.playitems;
+                    this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
+                    if(this.info.spokenword_duration != null){
+                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
+                        this.spokenword_minutes = this.info.spokenword_duration % 60;
+                    }else{
+                        this_.spokenword_hours = 0;
+                        this_.spokenword_minutes = null;
+                    }
+                    this.ads = response.data.ads;
+                }).bind(this)
 			);
         }
 		this.getNewUnix = function(){
@@ -268,90 +263,6 @@
         this.init = function(){
             //If playsheet exists, load it.
             if(this.info.id > 0){
-<<<<<<< HEAD
-                //Get
-                call.getPlaysheetData(this.info.id).then(function(data){
-                    var playsheet = data.data;
-                    this_.info = {};
-                    for(var item in playsheet.playsheet){
-                        this_.info[item] = playsheet.playsheet[item];
-                    }
-                    var re = new RegExp('-','g');
-                    this_.info.start_time = this_.info.start_time.replace(re,'/');
-                    this_.info.end_time = this_.info.end_time.replace(re,'/');
-                    //Create Extra Variables to allow proper display in UI
-                    this_.start = new Date(this_.info.start_time);
-                    this_.end = new Date(this_.info.end_time);
-                    this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                    this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                    this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                    this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                    this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                    this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-
-                    if(this_.info.spokenword_duration != null){
-                        this_.spokenword_hours = Math.floor(this_.info.spokenword_duration / 60);
-                        this_.spokenword_minutes = this_.info.spokenword_duration % 60;
-                    }else{
-                        this_.spokenword_hours = 0;
-                        this_.spokenword_minutes = null;
-                    }
-                    //Set Show Data
-                    this_.show = playsheet.show;
-                    console.log(this_.show);
-                    this_.playitems = playsheet.playitems;
-                    this_.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this_.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-                    this_.ads = playsheet.ads;
-                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
-                    if(this_.playitems < 1){
-                        $('#addRows').text("Add Row");
-                    }
-                    for(var playitem in this_.playitems){
-                        console.log(this_.playitems[playitem]);
-                        this_.playitems[playitem].insert_song_start_hour = $filter('pad')( this_.playitems[playitem].insert_song_start_hour , 2);
-                        this_.playitems[playitem].insert_song_start_minute = $filter('pad')( this_.playitems[playitem].insert_song_start_minute , 2);
-                        this_.playitems[playitem].insert_song_length_minute = $filter('pad')( this_.playitems[playitem].insert_song_length_minute , 2);
-                        this_.playitems[playitem].insert_song_length_second = $filter('pad')( this_.playitems[playitem].insert_song_length_second , 2);
-                    }
-
-                    //Get Member shows, and set active show
-                    call.getActiveMemberShows(this.member_id).then(function(data){
-                        var shows = data.data.shows;
-                        this_.member_shows = shows;
-                        //Find what show this playsheet is for, and set it as active show to load information.
-                        for(var show in this_.member_shows){
-
-                            if(this_.show.name.toString() == shows[show].show.name.toString()){
-                                this_.active_show = this_.member_shows[show];
-                                this_.show_value = shows[show]['id'];
-                                this_.show = shows[show]['show'];
-                            }
-                        }
-                        console.log(this_.active_show);
-                        call.getShowPlaysheets(this_.active_show.id).then(function(response){
-                            //DISPLAY OLD PLAYSHEETS
-				this_.existing_playsheets = response.data.sort(function(a, b) {
-				var re = new RegExp('-','g');
-				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
-				});
-                        });
-                        //Populate the template row
-                        var show_date = this_.start.getDate();
-                        this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                        this_.checkIfComplete();
-                        if(this_.using_sam){
-                            this_.updateSamPlays();
-                        }
-                        this_.loading = false;
-                    });
-
-                });
-            }else{
-
-                this.podcast = {};
-                this.info.status = '1';
-                this.info.type='Live';
-=======
                 call.getPlaysheetData(this.info.id).then(
 					(function(data){
 	                    var playsheet = data.data;
@@ -376,7 +287,7 @@
 	                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
 	                        this.spokenword_minutes = this.info.spokenword_duration % 60;
 	                    }else{
-	                        this.spokenword_hours = null;
+	                        this.spokenword_hours = 0;
 	                        this.spokenword_minutes = null;
 	                    }
 	                    //Set Show Data
@@ -440,98 +351,11 @@
 
                 this.info.status = '1';
                 this.info.type='Live';
-
->>>>>>> master
                 this.spokenword_hours = 0;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
 
                 //Get Shows Listing
-<<<<<<< HEAD
-                call.getActiveMemberShows(this.member_id).then(function(data){
-                    var shows = data.data.shows;
-                    this_.member_shows = shows;
-                    if(shows){
-                        //Cheat Code to get first active show. Could change it to
-                        for(var show in this_.member_shows){
-                            //Set the active show to be the first show in list of active shows
-                            this_.active_show = this_.member_shows[show];
-                            this_.show = this_.active_show.show;
-                            //show_value is for the dropdown
-                            this_.show_value = this_.active_show['id'];
-                            //Set show and podcast metadata
-                            this_.info.show_id = parseInt(this_.active_show.id);
-                            this_.info.host = this_.active_show.show.host;
-                            this_.info.create_name = this_.info.host;
-                            this_.podcast.author = this_.info.host;
-                            this_.info.crtc = this_.active_show.crtc;
-                            this_.info.lang = this_.active_show.lang || 'English';
-
-                            //For each default playitem, set the show_id so it is properly linked to the show
-                            for(var playitem in this_.playitems){
-                                this_.playitems[playitem].show_id = this_.info.show_id;
-                            }
-                            break;
-                        }
-                        var now = new Date();
-
-                        call.getShowPlaysheets(this_.show_value).then(function(response){
-                            //DISPLAY OLD PLAYSHEETS
-				this_.existing_playsheets = response.data.sort(function(a, b) {
-				var re = new RegExp('-','g');
-				return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
-				});
-
-                        });
-			         //Get next show time from API, or best attempt if no showtimes
-                       call.getNextShowTime(this_.active_show.id,now).then(function(response){
-                            var start_unix = response.data.start;
-                            var end_unix = response.data.end;
-                            this_.start = new Date(start_unix * 1000);
-                            this_.end = new Date(end_unix * 1000);
-
-                            this_.info.unix_time = start_unix;
-                            this_.info.start_time = $filter('date')(this_.start,'yyyy/MM/dd HH:mm:ss');
-                            this_.info.end_time = $filter('date')(this_.end,'yyyy/MM/dd HH:mm:ss');
-                            this_.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                            this_.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                            this_.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                            this_.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                            this_.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                            this_.end_second = $filter('pad')(this_.end.getSeconds(),2);
-
-                            //Populate Template Row, then add 5 rows
-                            var show_date = this_.start.getDate();
-                                                //Update Podcast information
-                            this_.updatePodcastDate();
-                            this_.updateEnd();
-                            this_.updateStart();
-                            this_.row_template = {"show_id":this_.active_show.id,"playsheet_id":this_.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this_.info.crtc,"lang":this_.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
-                            this_.addStartRow();
-                            for(var i = 0; i<4; i++) {
-                                this_.add(this_.playitems.length-1);
-                            }
-                            call.getAds(start_unix, end_unix-start_unix,this_.active_show.id).then(function(response){
-                                this_.ads = response.data;
-                            },function(error){
-                            this_.log_error(error);
-				                //If it fails, try to load ads again
-                                call.getAds(start_unix,end_unix-start_unix,this_.active_show.id).then(function(response){
-                                    this_.ads = response.data;
-                                });
-                            });
-                            this_.update();
-                            if(this_.using_sam){
-                                this_.updateSamPlays();
-                            }
-                            this_.loading = false;
-                        });
-                    }else{
-                        this_.loading = false;
-                    }
-
-                });
-=======
                 call.getActiveMemberShows(this.member_id).then(
 					(function(data){
 	                    var shows = data.data.shows;
@@ -625,9 +449,7 @@
 	                    }
 	                }).bind(this)
 				);
->>>>>>> master
             }
-
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.info.start_time;
@@ -1035,10 +857,6 @@
             }
         }
     });
-<<<<<<< HEAD
-=======
-    var socan = false;
->>>>>>> master
 })();
 
 $(document).ready(function(){

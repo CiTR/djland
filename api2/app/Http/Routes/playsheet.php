@@ -1,6 +1,7 @@
 <?php
 //Playsheet related classes
 use App\Playsheet as Playsheet;
+use App\Show as Show;
 use App\Playitem as Playitem;
 use App\Podcast as Podcast;
 use App\Ad as Ad;
@@ -36,8 +37,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			});
 		});
 	});
-
-
 
 	Route::get('/',function(){
 		return $playsheets = Playsheet::orderBy('id','desc')->select('id')->get();

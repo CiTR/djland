@@ -47,6 +47,8 @@ class Upload extends Model{
 			case 'episode_audio'
 				$podcast = Podcast::find($this->foreign_key);
 				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
+				$target_dir = $path['audio_base']."/".date('Y',strtotime);
+				$podcast->show->name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time));$year = date('Y',$start);
 				break;
 			case default:
 				break;

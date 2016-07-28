@@ -56,7 +56,7 @@ if($enabled['podcast_tools']){
 
 	//Archiver Access
 	$url['archiver_tool'] = 'http://archive.citr.ca';
-	$url['archive_request'] = $archiver_tool_url.'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
+	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
 
 	//Podcast local_dev paths
 	if($testing_environment==true){

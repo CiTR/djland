@@ -16,7 +16,7 @@ function admin_menu()
 }
 
 function print_menu(){
-	global $enabled,$djland_permission_levels,$enabled['sam_integration'];
+	global $enabled,$djland_permission_levels;
 ?>
 	<ul id=nav>
 		<?php
