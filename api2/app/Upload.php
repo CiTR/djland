@@ -5,21 +5,37 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Show;
 use App\Podcast;
-
+use InvalidArgumentException;
 
 class Upload extends Model{
 	protected $table = 'uploads';
-    protected $fillable = array('relation_id','file_name','file_type','size','path','category','description','url','CREATED_AT','EDITED_AT');
-
+    protected $fillable = array('relation_id','file_name','file_type','size','path','category','description','url','CREATED_AT','UPDATED_AT');
+	public function __construct($attributes = array()){
+		require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+		//Check to make sure we have correct format;
+		$allowed_file_types = $djland_upload_categories[$attributes['category']];
+		if( in_array($attributes['file_type'],$allowed_file_types) ){
+			parent::__construct($attributes);
+		}
+		else {
+			throw new InvalidArgumentException('File Type Not Allowed: '.$attributes['file_type']);
+		}
+	}
 
     public function uploadImage($file){
-    	require_once($_SERVER['DOCUMENT_ROOT']."config.php");
-		require_once($_SERVER['DOCUMENT_ROOT']."custom_exception.php");
-    	if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
-    		return false;
+    	require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/custom_exception.php");
+		$response = new StdClass();
+
+		if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
+			$response->response = "Valid file not given.";
+			$response->ok = false;
+			return $response;
 		$check = getimagesize($_FILES["file"]["tmp_name"]);
 		if($check == false){
-			return false;
+			$response->response = "File is not an image";
+			$response->ok = false;
+			return $response;
 		}
 
 
@@ -59,11 +75,12 @@ class Upload extends Model{
 			case 'friend_image':
 				$friend = Friend::find($this->foreign_key);
 				$stripped_name = str_replace($strip,'',$friend->name);
-			case 'special_broadcast_image'
+				break;
+			case 'special_broadcast_image':
 				$special_broadcast = SpecialBroadcast::find($this->foreign_key);
 				$stripped_name = str_replace($strip,'',$special_broadcast->name);
 				break;
-			case default:
+			case 'default':
 				break;
 		}
 		$target_file = $target_dir.$stripped_name.".".$today.$this->file_type;
@@ -77,7 +94,7 @@ class Upload extends Model{
 
 
     	//Check if the category exists
-    	if(array_key_exists($this->category,$djland_upload_types){
+    	if(array_key_exists($this->category,$djland_upload_types)){
     		//Check if the file type is allowed for that category
     		if( in_array($this->file_type,$djland_upload_types[$this->category])){
 

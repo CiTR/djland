@@ -16,7 +16,16 @@
 			return Upload::where('category','=',$category)->get();
 		});
 		Route::put('/',function(){
-			return Upload::create((array) Input::get()['upload']);
+
+			$upload = ['file_name'=>'name','file_type'=>'pdf','category'=>'show_image'];
+			try{
+				$success = Upload::create($upload);
+				return Response::json($success);
+			}catch(InvalidArgumentException $e){
+				http_response_code(415);
+				return Response::json(array('error'=>$e->getMessage()));
+			}
+			//return Upload::create((array) Input::get()['upload']);
 		});
 		Route::group(array('prefix'=>'{id}'),function($id = id){
 			Route::get('/',function($id){
