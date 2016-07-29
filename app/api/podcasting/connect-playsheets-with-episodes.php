@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+    <link rel='stylesheet' href='css/bootstrap/bootstrap.min.css'></script>
     </head>
     <body>
     	<table class='table'>
@@ -113,4 +113,3 @@
 //  print_r($playsheets_by_show);
 
 echo '<h2>'.$total_playsheets.' playsheets. '.$total_episodes.' episodes. '.$single_matches.' single matches found.  '.$big_matches.' big matches found</h2>';
-

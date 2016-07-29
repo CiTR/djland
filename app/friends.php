@@ -1,7 +1,7 @@
 <html ng-app='djland.friends' >
 	<?php require_once("headers/menu_header.php"); ?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body class='wallpaper' ng-controller='friendsController as friends'>
@@ -28,7 +28,7 @@
 							<div class='col2'>Discount<input class='padded-left' ng-model='friend.discount' placeholder='discount'></div>
 						</div>
 					</div>
-					<div class='left double-padded-top'>                   
+					<div class='left double-padded-top'>
 		                <input class='file{{friend.id}}' type="file" ng-model-instant/>
 		                <button type="button" ng-click="friends.imageUpload(friend.id,friend.name)">Upload</button>
 	                </div>

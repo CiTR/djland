@@ -1,13 +1,11 @@
 <?php
-include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 // Echos HTML head
 echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <base href='shows.php'>
-  <link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+  <link rel='stylesheet' href='css/bootstrap.min.css'></script>
 <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\">";
 
 ?>

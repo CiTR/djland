@@ -2,7 +2,6 @@
 
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
-	require_once("headers/function_header.php");
 	require_once("headers/menu_header.php");
 if( permission_level() < $djland_permission_levels['workstudy']['level']){
 	header("Location: main.php");
@@ -13,7 +12,7 @@ if( permission_level() < $djland_permission_levels['workstudy']['level']){
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
 
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel=stylesheet href='css/style.css' type='text/css'>
 		<title>DJLAND | Sam Ads</title>
 

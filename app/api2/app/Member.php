@@ -17,17 +17,16 @@ class Member extends Model
     public function playsheets(){
         return $this->hasManyThrough('App\Playsheet','App\Show');
     }
-
     public function membershipYears(){
     	return $this->hasMany('App\MembershipYear');
     }
-
     public function permissions(){
     	return $this->user->permissions();
     }
-    
-
     public function user(){
     	return $this->hasOne('App\User');
     }
+	public function isStaff(){
+		return $this->member_type == 'Staff' || $this->user->permissions['staff'] ==1 || $this->user->permissions['administrator']==1 ? true : false;
+	}
 }

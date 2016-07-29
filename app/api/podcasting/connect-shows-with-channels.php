@@ -13,7 +13,7 @@ $r2 = mysqli_query($db,$q2);
 ?>
 <html>
     <head>
-        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+        <link rel='stylesheet' href='css/bootstrap.min.css'></script>
     </head>
     <body>
         <a href='api/podcasting/connect-playsheets-with-episodes.php'>Connect Playlists with Episodes</a>
@@ -34,7 +34,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
 
     while ($show_row = mysqli_fetch_assoc($r) ){
-        
+
 
         $is_fillin = strpos(strtolower($show_row['name']),'fill-in')!==false;
 
@@ -94,7 +94,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
             if (!$found && (
                         (levenshtein($this_show_name, $pod_name) < 3)|| $pos_1!==false || $pos_2!==false
-//                        (strpos($this_show_name,$pod_name)) || (strpos($pod_name,$this_show_name)) 
+//                        (strpos($this_show_name,$pod_name)) || (strpos($pod_name,$this_show_name))
                     )
                 ){
                 $out.='<td>is the same as: ('.$pod['id'].') '.$pod['title'].'</td>';
@@ -111,21 +111,21 @@ echo count($pod_chans).' podcast channels found.<br/>';
                 if ($up_res = mysqli_query($db,$update_q)){
                     $out.='<td>.. updated the db</td>';
                 } else {
-                    
+
                 }
 
             } else {
-                            
-            }   
+
+            }
 
 
 
         }
         if (!$found){
-           $out.="<td>No Match Found</td>";     
+           $out.="<td>No Match Found</td>";
            //echo '<h2>no podcast automatically found: '.$show['name'].'</h2><br/><br/><br/>';
             //echo $show['name'].' - not found.(show #'.$show['id'].')...<br/>';
-            
+
             $show_str_lower = strtolower($show['name']);
             if(strpos($show_str_lower,'fill-in') !== false){
                     $query = "UPDATE podcast_channels SET podcast_channel.show_id = '284' WHERE id = '".$pod['id']."'";
@@ -148,7 +148,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
                 }else{
                     $tr_out = "<tr class=danger>";
                 }
-            }  
+            }
             if($show['active'] == 0) {
                 unset($shows[$i]);
             }
@@ -166,7 +166,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
     UPDATE `podcast_channels` SET `show_id`='294' WHERE `id`='393';
     UPDATE `podcast_channels` SET `show_id`='233' WHERE `id`='411';
     UPDATE `podcast_channels` SET `show_id`='183' WHERE `id`='442';";
-    
+
     if(mysqli_query($db,$final_query)){
         echo "<p>Successfully Updated Manually</p>";
     }else{
@@ -177,5 +177,3 @@ echo count($pod_chans).' podcast channels found.<br/>';
 
 </body>
 </html>
-
-

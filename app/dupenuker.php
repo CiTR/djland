@@ -8,7 +8,6 @@ $library_post_val = 'something-else';
 
 include_once("headers/session_header.php");
 require_once("headers/security_header.php");
-require_once("headers/function_header.php");
 require_once("headers/menu_header.php");
 
 

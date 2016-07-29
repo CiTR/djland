@@ -72,7 +72,6 @@ input, select, textarea, option{
 	background-color: #000977;
 }
 
-
 /* Background Colouring */
 .red{
 	background-color:red;
@@ -115,12 +114,9 @@ input, select, textarea, option{
 	color: white;
 	overflow: visible;
 }
-.wrapper:after{    background-color: grey;
+.wrapper:after{
+	background-color: grey;
 }
-
-
-
-
 .inner{
 	display:inline-block;
 	position: relative;
@@ -322,7 +318,7 @@ input, select, textarea, option{
 }
 
 /*
- * Text container styling
+ * Input/Button/textarea styling
  */
 .smalltext{
 	top:3px;
@@ -361,6 +357,9 @@ input, select, textarea, option{
 }
 .text-center{
 	text-align: center;
+}
+.large-button{
+	font-size:3em;
 }
 
 /*

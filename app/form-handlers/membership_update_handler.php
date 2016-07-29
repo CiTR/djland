@@ -1,7 +1,5 @@
 <?php
-	include_once("../headers/session_header.php");
 	require_once("../headers/db_header.php");
-	require_once("../headers/function_header.php");
 	require_once("../headers/password.php");
 	
 	$member_id = $_POST['member_id'];

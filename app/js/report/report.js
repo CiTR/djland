@@ -37,11 +37,8 @@
 			this.loading = true;
 			call.getReport(this.member_id,this.show_filter,$filter('date')(this.from, 'yyyy/MM/dd'),$filter('date')(this.to,'yyyy/MM/dd')).then(
 				function(response){
-					console.log(response);
 					this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
 					this_.totals = response.data.totals;
-					console.log(this_.totals);
-					console.log(this_.playsheets);
 					this_.loading = false;
 					//delay displaying so to reduce lag from object creation.
 					setTimeout(function(){
@@ -91,12 +88,10 @@
 			var length = this.playsheets.length;
 			//console if no playitems, just return
 			if(length <= 0)	return -1;
-
 			//Generate list of show names
 			for(var i = 0; i < length; i++){
 				if(this.show_names.indexOf(this.playsheets[i].show.name) < 0) this.show_names.push(this.playsheets[i].show.name);
 			}
-
 			//Set defaults for the overall totals
 			this.percentage_totals = {'playitems':0,'playitems_2':0,'playitems_3':0,'femcon_total':0,'cancon_2_total':0,'cancon_3_total':0,'hit_total':0,'ads':0,'spokenword':0};
 
@@ -105,7 +100,7 @@
 				//Get playsheets under their respective show names as we have multiple shows
 
 				for(var index in this.show_names){
-					
+
 					//Get list of applicable playsheets
 					var show_playsheets = this.playsheets.filter(function(obj){ return obj.show.name == this_.show_names[index]; });
 					//Get the show info for the show name
