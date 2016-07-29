@@ -4,33 +4,18 @@
 	app.controller('openPlaysheetController',function(call,$window,$scope){
 		this.pageY = window.pageYOffset;
 		this.member_id = $('#member_id').attr('value');
-		console.log(this.member_id);
 
 		this.offset = 0;
 		this.done = false;
 		this.show_select = 'all';
 		//Check Admin Status
 		call.isStaff(this.member_id).then(
-<<<<<<< HEAD
 			(function(response){
-				this.is_admin = response.data;
+				this.staff = response.data;
 	        }).bind(this)
 		,function(error){
             this_.log_error(error);
         });
-=======
-			(
-				function(response){
-					this.admin = response.data;
-        		}
-			).bind(this)
-			,(
-				function(error){
-		            this.log_error(error);
-		        }
-			).bind(this)
-		);
->>>>>>> 19d2cf8625dd8e5eb87437df1d0d3d0423105f44
 		//Get member shows
 		call.getActiveMemberShows(this.member_id).then(
 			(

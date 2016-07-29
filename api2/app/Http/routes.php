@@ -47,7 +47,7 @@ Route::get('/nowplaying',function(){
 
 	//if we are using sam, pull music from the historylist table
 	$result = array();
-	if($using_sam){
+	if($enabled['sam_integration']){
 		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
 			->where('songtype','=','S')->orderBy('date_played','DESC')->limit('1')->get();
 		$now = strtotime('now');

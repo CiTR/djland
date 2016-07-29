@@ -69,7 +69,7 @@
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
 				<div class='col1 text-center'>
 					<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
-					<?php if($using_sam): ?>
+					<?php if($enabled['sam_integration']): ?>
 						<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
 					<?php endif; ?> 
 					<div class='col1'>

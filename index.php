@@ -62,7 +62,7 @@ else {
 			<label for='password'>Password: </label><input type=password name='password' class='right double-margin-right'/><br/>
 			<div class='big-login-spacing-bar'></div>
 			<input type='submit' name='action' value='login'/>
-			<input type='submit' name='action' value='signup'/>
+			<?php if($enabled['membership']: ?><input type='submit' name='action' value='signup'/><? endif; ?>
 		</FORM>
 		If you forget your password, please email Hugo at volunteer@citr.ca
 		<div id = 'message' >

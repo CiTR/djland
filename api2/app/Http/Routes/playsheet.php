@@ -1,6 +1,7 @@
 <?php
 //Playsheet related classes
 use App\Playsheet as Playsheet;
+use App\Show as Show;
 use App\Playitem as Playitem;
 use App\Podcast as Podcast;
 use App\Ad as Ad;
@@ -36,8 +37,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			});
 		});
 	});
-
-
 
 	Route::get('/',function(){
 		return $playsheets = Playsheet::orderBy('id','desc')->select('id')->get();
@@ -268,7 +267,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
 
-			if($using_sam){
+			if($enabled['sam_integration']){
 				if( $playsheet->start_time && $playsheet->end_time){
 					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
 				}

@@ -12,11 +12,16 @@ class Upload extends Model{
     protected $fillable = array('relation_id','file_name','file_type','size','path','category','description','url','CREATED_AT','EDITED_AT');
 
 
-    public function upload($file){
+    public function uploadImage($file){
     	require_once($_SERVER['DOCUMENT_ROOT']."config.php");
-
+		require_once($_SERVER['DOCUMENT_ROOT']."custom_exception.php");
     	if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
     		return false;
+		$check = getimagesize($_FILES["file"]["tmp_name"]);
+		if($check == false){
+			return false;
+		}
+
 
     	//Get dirs based on file type
     	$base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
@@ -30,43 +35,46 @@ class Upload extends Model{
 		}
 
 		//Ensure the category folder exists, if not create it
-    	$category_dir = $base_dir.$this->category."/";
-		if(!file_exists($category_dir)){
-			mkdir($category_dir,0755);
+    	$target_dir = $base_dir.$this->category."/";
+		if(!file_exists($target_dir)){
+			mkdir($target_dir,0755);
 		}
+
+		$today = date('Y-m-d');
 
 		//Ensure the target folder exists, if not create it
 		switch($this->category){
 			case 'show_image':
 				$show = Show::find($this->foreign_key);
-				$stripped_show_name = str_replace($strip,'',$show->name);
-				$target_dir = $category_dir.$stripped_show_name."/";
+				$stripped_name = str_replace($strip,'',$show->name);
 				break;
 			case 'episode_image':
 				$podcast = Podcast::find($this->foreign_key);
-				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
-				$target_dir = $category_dir.$stripped_show_name."/";
+				$stripped_name = str_replace($strip,'',$podcast->show->name);
 				break;
-			case 'episode_audio':
-				$podcast = Podcast::find($this->foreign_key);
-				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
-				$target_dir = $category_dir.$stripped_show_name."/".idate('y')."/";
+			case 'member_resource':
+				$resource = Resource::find($this->foreign_key);
+				$stripped_name = str_replace($strip,'',$resource->name);
 				break;
 			case 'friend_image':
 				$friend = Friend::find($this->foreign_key);
-				$stripped_show_name = str_replace($strip,'',$friend->name);
-				break;
-			case 'member_resource':
-
-				break;
+				$stripped_name = str_replace($strip,'',$friend->name);
 			case 'special_broadcast_image'
+				$special_broadcast = SpecialBroadcast::find($this->foreign_key);
+				$stripped_name = str_replace($strip,'',$special_broadcast->name);
+				break;
 			case default:
 				break;
+		}
+		$target_file = $target_dir.$stripped_name.".".$today.$this->file_type;
+		$target_url = str_replace($_SERVER['DODCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
 
-		}
-		if(!file_exists($target_dir)){
-			mkdir($target_dir,0755);
-		}
+
+
+
+
+
+
 
     	//Check if the category exists
     	if(array_key_exists($this->category,$djland_upload_types){
@@ -76,4 +84,14 @@ class Upload extends Model{
     		}
     	}
     }
+	public function uploadAudio($file){
+		switch($this->category){
+			case 'episode_audio':
+				$podcast = Podcast::find($this->foreign_key);
+				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
+				$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
+				$target_file = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time));
+				break;
+		}
+	}
 }
