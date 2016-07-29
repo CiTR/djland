@@ -532,7 +532,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$promotions = Playsheet::find($id)->ads;
 				foreach($promotions as $key => $value){
 					//Get Ad Names From SAM
-					if($using_sam && is_numeric($value['name'])){
+					if($enabled['sam_integration'] && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 						if(count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
 					}else{
@@ -896,7 +896,7 @@ Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	date_default_timezone_set('America/Los_Angeles');
 	$result = array();
-	if($using_sam){
+	if($enabled['sam_integration']){
 		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
 			->where('songtype','=','S')->orderBy('date_played','DESC')->limit('1')->get();
 		$now = strtotime('now');

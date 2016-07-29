@@ -85,7 +85,7 @@ $station_wide_login_name = 'djs';
 // Playsheet entries from SAM can be edited and re-ordered just like manually entered items
 // DJ's can pull individual plays from a 'most recent' list or specify a time range and bulk-load plays
 
-$using_sam = false; // <- change to true if you want to integrate SAM with djland
+$enabled['sam_integration'] = false; // <- change to true if you want to integrate SAM with djland
 // if SAM Broadcaster is being used, it must be installed using the MySQL option
 // SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
 // Highly recommended to use local network.

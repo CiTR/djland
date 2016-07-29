@@ -17,13 +17,13 @@ function admin_menu()
 }
 
 function print_menu(){
-	global $enabled,$djland_permission_levels,$using_sam;
+	global $enabled,$djland_permission_levels;
 ?>
 	<ul id=nav>
 		<?php
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
-			echo "<div id='using_sam' class='hidden'>".($using_sam ?'1':'0')."</div>";
+			echo "<div id='using_sam' class='hidden'>".($enabled['sam_integration'] ?'1':'0')."</div>";
 			if( (permission_level() >= $djland_permission_levels['volunteer_leader']['level']) && $enabled['membership'] ):
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>

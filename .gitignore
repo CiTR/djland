@@ -1,26 +1,8 @@
 #Ignore Config Files
-headers/config.php
 config.php
-podcast-config.php
 
 #Ignore Logs
 log.html
-
-#Ignore Test directories
-test-audio
-test-xml
-
-#Ignore Any generated static pages.
-JSONDATA
-JSONDATA/*
-static
-logs/log.html
-php_errors.log
-
-#Ignore Media Uploads
-images/shows
-images/friends
-images/specialbroadcasts
 
 #Ignore Windows Crap
 Thumbs.db
@@ -34,19 +16,3 @@ Thumbs.db
 org.eclipse.php.core.prefs
 org.eclipse.wst.common.project.facet.core.xml
 
-#Ignore Web Configuration Files
-web.config
-.htaccess
-.htpasswd
-awstats*
-disabled_by_virtualmin.html
-icon
-
-#Ignore phpmyadmin
-phpmyadmin/
-
-#Ignore Python Development ENV
-PY
-
-#Ignore Generated XML Content
-*.xml
