@@ -7,6 +7,7 @@ CREATE TABLE `uploads` (
   `size` tinytext,
   `description` tinytext,
   `url` tinytext,
+  `relation_id` int(10) DEFAULT NULL,
   `CREATED_AT` datetime DEFAULT NULL,
   `UPDATED_AT` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)

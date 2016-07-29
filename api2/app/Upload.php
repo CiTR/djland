@@ -9,17 +9,14 @@ use InvalidArgumentException;
 
 class Upload extends Model{
 	protected $table = 'uploads';
-    protected $fillable = array('relation_id','file_name','file_type','size','path','category','description','url','CREATED_AT','UPDATED_AT');
-	public function __construct($attributes = array()){
+    protected $fillable = array('file_name','file_type','category','path','size','description','url','relation_id','CREATED_AT','UPDATED_AT');
+
+	public static function create(array $attributes = array()){
+		//Check to see if the file type is acceptable. If not, throw an exception.
 		require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-		//Check to make sure we have correct format;
 		$allowed_file_types = $djland_upload_categories[$attributes['category']];
-		if( in_array($attributes['file_type'],$allowed_file_types) ){
-			parent::__construct($attributes);
-		}
-		else {
-			throw new InvalidArgumentException('File Type Not Allowed: '.$attributes['file_type']);
-		}
+		if(!in_array($attributes['file_type'],$allowed_file_types)) throw new InvalidArgumentException('File Type Not Allowed: '.$attributes['file_type']);
+		return parent::create($attributes);
 	}
 
     public function uploadImage($file){
@@ -61,23 +58,23 @@ class Upload extends Model{
 		//Ensure the target folder exists, if not create it
 		switch($this->category){
 			case 'show_image':
-				$show = Show::find($this->foreign_key);
+				$show = Show::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$show->name);
 				break;
 			case 'episode_image':
-				$podcast = Podcast::find($this->foreign_key);
+				$podcast = Podcast::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$podcast->show->name);
 				break;
 			case 'member_resource':
-				$resource = Resource::find($this->foreign_key);
+				$resource = Resource::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$resource->name);
 				break;
 			case 'friend_image':
-				$friend = Friend::find($this->foreign_key);
+				$friend = Friend::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$friend->name);
 				break;
 			case 'special_broadcast_image':
-				$special_broadcast = SpecialBroadcast::find($this->foreign_key);
+				$special_broadcast = SpecialBroadcast::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$special_broadcast->name);
 				break;
 			case 'default':
