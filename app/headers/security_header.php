@@ -1,6 +1,5 @@
 <?php
 //SECURITY HEADER
-//require_once("../config.php");
 require_once("db_header.php");
 require_once("login_header.php");
 date_default_timezone_set($station_info['timezone']);

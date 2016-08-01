@@ -524,7 +524,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
 		Route::get('/',function($id){
-			require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+			require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 			$playsheet = new stdClass();
 			$playsheet -> playsheet = Playsheet::find($id);
 			if($playsheet -> playsheet != null){
@@ -896,7 +896,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 	});
 });
 Route::get('/nowplaying',function(){
-	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 	date_default_timezone_set('America/Los_Angeles');
 	$result = array();
 	if($enabled['sam_integration']){

@@ -31,7 +31,7 @@ class Podcast extends Model
     }
 
     private function make_audio(){
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		date_default_timezone_set('America/Vancouver');
 		if($this->duration > 8 * 60 * 60 || $this->duration < 0){
 			return "Duration Wrong";
@@ -48,8 +48,8 @@ class Podcast extends Model
 	    $iso_date = date('D, d M Y H:i:s O',$start);
 
 	    //Archiver URL to download from
-		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio_stor%2Flog";
-	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
+
+	    $archive_url = $url['archive_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
     	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
@@ -126,7 +126,7 @@ class Podcast extends Model
 	}
 
 	private function overwrite_audio(){
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		date_default_timezone_set('America/Vancouver');
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);

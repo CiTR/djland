@@ -3,7 +3,7 @@ require_once("session_header.php");
 error_reporting(0);
 
 //DB HEADER
-include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
 
@@ -120,19 +120,19 @@ function get_time()
         return time();
     }
 }
-function getFormatName($format_id, $db){ 
-    
+function getFormatName($format_id, $db){
+
     $query = "SELECT name FROM types_format WHERE id=".$format_id;
-    
+
     if( $result = $db->query($query)){
         while($row = $result->fetch_assoc()){
                     return $row['name'];
         }
-    
-    } else {    
+
+    } else {
      return null;
     }
-    
+
 }
 
 //Format Grabbing, Legacy.

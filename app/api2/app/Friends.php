@@ -13,7 +13,7 @@ class Friends extends Model
     protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
 
     public static function write_static(){
-        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+        require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 
 		if(!$testing_environment){
 			$static_page = fopen("/home/citr/citr-wp/app/static/friends.html",'w');
@@ -28,7 +28,7 @@ class Friends extends Model
 		$letters = array_keys($alphabetical);
 
 		$html = "<div>";
-		
+
 		$alphabet_nav = "<ul style='display:inline; font-size:1.5em; height:40px; list-style:none;'>";
 		foreach($letters as $letter){
 			$alphabet_nav .= "<li style='display:inline-block; padding:0px 5px 0px 5px;'><a href='#".$letter."'>".$letter."</a></li>";
