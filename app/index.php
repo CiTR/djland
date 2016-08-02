@@ -1,30 +1,29 @@
 <?php
+if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php')){
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/setup/setup.php');
+	return;
+}
+
 include_once("headers/session_header.php");
 require_once('headers/login_header.php');
 require_once('headers/db_header.php');
 require_once("headers/password.php");
-//include_once("license_footer.php");
-//echo '<p>after password';
-//header("HTTP/1.0 302 Redirect\r\n");
+
+
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
 	header("Location: membership_add.php");
-	//echo "signing up";
-	//printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=membership_add.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 else if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
 	logout();
 	$message = "Logged Out";
 	}
 else if(is_logged_in()) {
-	//header("Location: main.php");
 	printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 	}
 else if(isset($_POST['action']) && $_POST['action'] == "login") {
-	//isset($_POST['login']) && isset($_POST['password'])
 	if(login ($_POST['username'], $_POST['password'], isset( $_POST['permanent_cookie'] ) ) ) {
-		//header("Location: main.php");
-		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 
+		printf("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=main.php\"><link rel=stylesheet href=css/style.css type=text/css></head></html>");
 		}
 	else{
 		$message = "Login Failed <br> (Incorrect Password)".login($_POST['username'], $_POST['password'], isset($_POST['permanent_cookie']) );
@@ -35,15 +34,16 @@ else {
 	$message = " ";
 	}
 if (is_logged_in()) {
-	//header("Location: main.php");
+	header("Location: main.php");
 }
-
 else {
 ?>
-	<html>
-		<head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-		<link rel=stylesheet href=css/style.css type=text/css>
-		<title>DJ Land</title></head>
+<html>
+	<head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+	<link rel=stylesheet href=css/style.css type=text/css>
+	<link rel=stylesheet href=css/bootstrap.css type=text/css>
+	<title><?php echo $station_info['name'] ?></title>
+</head>
 <?php
 	preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
 	if (count($matches)>1){
