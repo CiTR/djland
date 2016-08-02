@@ -9,7 +9,6 @@ require_once('headers/login_header.php');
 require_once('headers/db_header.php');
 require_once("headers/password.php");
 
-
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
 	header("Location: membership_add.php");
 	}
