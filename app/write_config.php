@@ -1,6 +1,5 @@
-<pre>
 <?php
-if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php')) return;
+//if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php')) return;
 
 $file = fopen(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php','w');
 
@@ -18,13 +17,22 @@ $out[] = "//Enable or disable features of DJLand";
 write_post_to_array('enabled',$out);
 $out[] = "\n";
 
-$out[] = "//Database Connections"
+$out[] = "//Database Connections";
 write_post_to_array('db',$out);
-write_post_to_array('db_sam',$out);
+if(sizeof($_POST['db_sam']) >0){
+	$out[] = "\n";
+	write_post_to_array('db_sam',$out);
+}
 $out[] = "\n";
 
-$out[] = "//Podcasting Tools"
-write_post_to_array('podcasting',$out);
+$out[] = "//Podcasting Tools";
+echo "<pre>";
+print_r($_POST['enabled']);
+if( $_POST['enabled']['podcasting'] ){
+	write_post_to_array('path',$out);
+	$out[] = "\n";
+	write_post_to_array('url',$out);
+}
 
 
 //Ending, Write the file

@@ -56,76 +56,76 @@
 					<input name='db["address"]' placeholder='Address' />
 					<input name='db["username"]' placeholder='Username' />
 					<input name='db["password"]' placeholder='Password' />
-					<input name='db["username"]' placeholder='Database' />
+					<input name='db["database"]' placeholder='Database' />
 				</div>
 				<h4>SAM Database (optional)</h4>
 				<div>
-					<input name='sam_db["address"]' placeholder='Address' />
-					<input name='sam_db["username"]' placeholder='Username' />
-					<input name='sam_db["password"]' placeholder='Password' />
-					<input name='sam_db["username"]' placeholder='Database' />
+					<input name='db_sam["address"]' placeholder='Address' />
+					<input name='db_sam["username"]' placeholder='Username' />
+					<input name='db_sam["password"]' placeholder='Password' />
+					<input name='db_sam["database"]' placeholder='Database' />
 				</div>
 				<h2>Enabled Features</h2>
 				<dl class='dl-horizontal'>
 					<dt>Membership<dt>
 					<dd>
-						<select name='enabled["membership"]'/>
+						<select name='enabled[membership]' />
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Library</dt>
 					<dd>
-						<select name='enabled["library"]'/>
+						<select name='enabled[library]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Shows</dt>
 					<dd>
-						<select name='enabled["shows"]'/>
+						<select name='enabled[shows]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Ad Scheduler</dt>
 					<dd>
-						<select name='enabled["ad_scheduler"]'/>
+						<select name='enabled[ad_scheduler]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Charts</dt>
 					<dd>
-						<select name='enabled["charts"]'/>
+						<select name='enabled[charts]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Report</dt>
 					<dd>
-						<select name='enabled["report"]'/>
+						<select name='enabled[report]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Playsheet</dt>
 					<dd>
-						<select name='enabled["playsheet"]'/>
+						<select name='enabled[playsheet]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Podcasting</dt>
 					<dd>
-						<select name='enabled["podcasting"]'/>
+						<select name='enabled[podcasting]' />
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Sam Integration</dt>
 					<dd>
-						<select name='enabled["sam_integration"]'/>
+						<select name='enabled[sam_integration]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
