@@ -1,6 +1,6 @@
 <?php
 
-function run_sql_file($location){
+function run_sql_file($location,$db){
     //load file
     $commands = file_get_contents($location);
 
@@ -8,7 +8,7 @@ function run_sql_file($location){
     $lines = explode("\n",$commands);
     $commands = '';
     foreach($lines as $line){
-        $line = trim($line);
+//        $line = trim($line);
         if( $line && !startsWith($line,'--') ){
             $commands .= $line . "\n";
         }
@@ -20,10 +20,10 @@ function run_sql_file($location){
     //run commands
     $total = $success = 0;
     foreach($commands as $command){
-        if(trim($command)){
-            $success += (@mysql_query($command)==false ? 0 : 1);
+        //if(trim($command)){
+            $success += (@$db->query($command)==false ? 0 : 1);
             $total += 1;
-        }
+        //}
     }
 
     //return number of successful queries and total number of queries found
@@ -41,7 +41,7 @@ function startsWith($haystack, $needle){
 }
 
 function isSQL($file){
-    return substr($file,-4,4) == '.sql' ? true : false; 
+    return substr($file,-4,4) == '.sql' ? true : false;
 }
 
 ?>
