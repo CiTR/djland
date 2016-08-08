@@ -89,10 +89,7 @@
 			</div>
 			</div>
 			<div id='report_summary' class='invisible'>
-
 				<h4>{{report.from | date:'yyyy/MM/dd'}} - {{report.to | date:'yyyy/MM/dd'}}</h4>
-
-
 					<table class='table-condensed crtc_report'>
 						<tr>
 							<th>

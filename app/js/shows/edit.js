@@ -83,9 +83,9 @@
             this.show_owners = new Array();
             this.primary_genres = new Array();
             this.secondary_genres = new Array();
-            this_.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
-            this_.showtime_template = {show_id:this_.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-
+            this.social_template = {show_id: this_.info.id, social_name: "" , social_url:""};
+            this.showtime_template = {show_id:this_.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+			this.loading=false;
         }
         this.loadShow = function(){
             var this_ = this;

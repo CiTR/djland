@@ -30,14 +30,15 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
             </script>
             <div class='text-center' ng-show='show.loading == true'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
             <div ng-hide="show.member_shows || show.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-            <div id='wrapper' ng-show='show.info'>
+			<button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
+			<div id='wrapper' ng-show='show.info'>
 
 
                Select show to edit:
                 <select ng-model="show.show_value" ng-change="show.updateShow()" >
                     <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option>
                 </select>
-                <button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
+
                 <h4 class='text-left double-padded-top'> Show name </h4>
                 <div ng-switch on='show.is_admin'>
                     <div ng-switch-when="true">

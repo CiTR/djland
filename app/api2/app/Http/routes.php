@@ -450,6 +450,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		return Response::json($response);
 	});
 	Route::post('/report',function(){
+		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		$member = Member::find(Input::get()['member_id']);
 		$from = isset(Input::get()['from']) ? str_replace('/','-',Input::get()['from']) : null;
 		$to = isset(Input::get()['to']) ? str_replace('/','-',Input::get()['to']) : null;
@@ -483,7 +484,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
-			if( $p->start_time && $p->end_time){
+			if( $p->start_time && $p->end_time && $enabled['sam_integration']){
 				$playsheet->ads = Historylist::where('date_played','<=',$p->end_time)->where('date_played','>=',$p->start_time)->where('songtype','=','A')->get();
 			}
 			$totals['cancon'][0] = 0;

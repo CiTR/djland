@@ -5,7 +5,7 @@ $file = fopen(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php','w');
 
 $out[] = "<?php";
 $out[] = "//Set to false in production environment";
-$out[] = "\$tesing_environment = true;";
+$out[] = "\$testing_environment = true;";
 $out[] = "\n";
 $out[] = "//Radio Station Info";
 write_post_to_array('station_info',$out);

@@ -33,7 +33,7 @@
 				</div>
 				<h4>Time Zone</h4>
 				<div>
-					<select name='station_info[time_zone]'>
+					<select name='station_info[timezone]'>
 						<?php
 						foreach(timezone_identifiers_list() as $key=>$value){
 							echo substr($value,0,7) == "America" ? "<option value='".$value."' ".($value=="America/Vancouver" ? "selected" : "").">".$value."</option>" : "";

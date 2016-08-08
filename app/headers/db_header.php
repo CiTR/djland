@@ -7,14 +7,14 @@ require_once("session_header.php");
 require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 if(!$testing_environment) error_reporting(0);
 
-global $station_info;
+global $station_info,$db;
 date_default_timezone_set($station_info['timezone']);
 
 
 //*******************************************
 //*******************************************
 //*******************************************
-$db['link'] = new mysqli($db['address'], $db['username'], $db['password'], $db['name']);
+$db['link'] = new mysqli($db['address'], $db['username'], $db['password'], $db['database']);
 
 
 if (mysqli_connect_error()) {
@@ -22,7 +22,7 @@ if (mysqli_connect_error()) {
     . mysqli_connect_error());
 }
 try{
-	$hostandaddress = "mysql:dbname=".$db['name'].";host=".$db['address'];
+	$hostandaddress = "mysql:dbname=".$db['database'].";host=".$db['address'];
 
 	$pdo_db = new PDO($hostandaddress,$db['username'],$db['password']);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -46,7 +46,7 @@ try{
 
 if($enabled['sam_integration']){
     global $sam_db;
-    $sam_db['link'] = $mysqli_sam = new mysqli($sam_db['address'], $sam_db['username'], $sam_db['password'], $sam_db['name']);
+    $sam_db['link'] = $mysqli_sam = new mysqli($sam_db['address'], $sam_db['username'], $sam_db['password'], $sam_db['database']);
 
     if (mysqli_connect_error()) {
         echo 'there is a connection error';

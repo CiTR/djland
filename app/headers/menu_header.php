@@ -22,7 +22,7 @@ function print_menu(){
 		<?php
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
-			echo "<div id='using_sam' class='hidden'>".($enabled['sam_integration'] ?'1':'0')."</div>";
+			echo "<div id='using_sam' class='hidden'>".($enabled['sam_integration'] == "true" ?'1':'0')."</div>";
 			if( (permission_level() >= $djland_permission_levels['volunteer_leader']['level']) && $enabled['membership'] ):
 		?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>
@@ -81,7 +81,7 @@ function print_menu(){
 			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
 		<?php
 			endif;
-			if($enabled['playsheets'] && permission_level() >= $djland_permission_levels['dj']['level']): ?>
+			if($enabled['playsheet'] && permission_level() >= $djland_permission_levels['dj']['level']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>
