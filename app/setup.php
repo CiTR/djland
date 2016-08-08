@@ -18,22 +18,22 @@
 				<h2>Station Info</h2>
 				<h4>General Info</h4>
 				<div>
-					<input name='station_info["station_name"]' placeholder='Station Name' />
-					<input name='station_info["call_letters"]' placeholder='Call Letters' />
-					<input name='station_info["frequency"]' placeholder='Frequency' />
-					<input name='station_info["website"]' placeholder='Website' />
-					<input name='station_info["station_id"]' placeholder='Default Station ID' />
-					<input name='station_info["tech_email"]' placeholder='Tech Help Email' />
+					<input name='station_info[station_name]' placeholder='Station Name' />
+					<input name='station_info[call_letters]' placeholder='Call Letters' />
+					<input name='station_info[frequency]' placeholder='Frequency' />
+					<input name='station_info[website]' placeholder='Website' />
+					<input name='station_info[station_id]' placeholder='Default Station ID' />
+					<input name='station_info[tech_email]' placeholder='Tech Help Email' />
 				</div>
 				<h4>Station Location</h4>
 				<div>
-					<input name='station_info["city"]' placeholder='City'/>
-					<input name='station_info["province"]' placeholder='Province/Territory'/>
-					<input name='station_info["country"]' placeholder='Country' />
+					<input name='station_info[city]' placeholder='City'/>
+					<input name='station_info[province]' placeholder='Province/Territory'/>
+					<input name='station_info[country]' placeholder='Country' />
 				</div>
 				<h4>Time Zone</h4>
 				<div>
-					<select name='station_info["time_zone"]'>
+					<select name='station_info[time_zone]'>
 						<?php
 						foreach(timezone_identifiers_list() as $key=>$value){
 							echo substr($value,0,7) == "America" ? "<option value='".$value."' ".($value=="America/Vancouver" ? "selected" : "").">".$value."</option>" : "";
@@ -53,79 +53,79 @@
 				<h2>Database Connections</h2>
 				<h4>DJLand Database</h4>
 				<div>
-					<input name='db["address"]' placeholder='Address' />
-					<input name='db["username"]' placeholder='Username' />
-					<input name='db["password"]' placeholder='Password' />
-					<input name='db["username"]' placeholder='Database' />
+					<input name='db[address]' placeholder='Address' />
+					<input name='db[username]' placeholder='Username' />
+					<input name='db[password]' placeholder='Password' />
+					<input name='db[database]' placeholder='Database' />
 				</div>
 				<h4>SAM Database (optional)</h4>
 				<div>
-					<input name='sam_db["address"]' placeholder='Address' />
-					<input name='sam_db["username"]' placeholder='Username' />
-					<input name='sam_db["password"]' placeholder='Password' />
-					<input name='sam_db["username"]' placeholder='Database' />
+					<input name='sam_db[address]' placeholder='Address' />
+					<input name='sam_db[username]' placeholder='Username' />
+					<input name='sam_db[password]' placeholder='Password' />
+					<input name='sam_db[database]' placeholder='Database' />
 				</div>
 				<h2>Enabled Features</h2>
 				<dl class='dl-horizontal'>
 					<dt>Membership<dt>
 					<dd>
-						<select name='enabled["membership"]'/>
+						<select name='enabled[membership]' />
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Library</dt>
 					<dd>
-						<select name='enabled["library"]'/>
+						<select name='enabled[library]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Shows</dt>
 					<dd>
-						<select name='enabled["shows"]'/>
+						<select name='enabled[shows]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Ad Scheduler</dt>
 					<dd>
-						<select name='enabled["ad_scheduler"]'/>
+						<select name='enabled[ad_scheduler]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Charts</dt>
 					<dd>
-						<select name='enabled["charts"]'/>
+						<select name='enabled[charts]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Report</dt>
 					<dd>
-						<select name='enabled["report"]'/>
+						<select name='enabled[report]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Playsheet</dt>
 					<dd>
-						<select name='enabled["playsheet"]'/>
+						<select name='enabled[playsheet]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Podcasting</dt>
 					<dd>
-						<select name='enabled["podcasting"]'/>
+						<select name='enabled[podcasting]' />
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
 					</dd>
 					<dt>Sam Integration</dt>
 					<dd>
-						<select name='enabled["sam_integration"]'/>
+						<select name='enabled[sam_integration]'/>
 							<option value='true' selected>Yes</option>
 							<option value='false'>No</option>
 						</select>
@@ -134,18 +134,18 @@
 				<h2>Podcasting Variables (optional)</h2>
 				<h4>Audio Paths</h4>
 				<div>
-					<input name='path["audio_base"]' class='form-control' placeholder='/path/to/audio/base' />
-					<input name='url["audio_base"]' class='form-control' placeholder='http://path/to/hosted/audio/base' />
+					<input name='path[audio_base]' class='form-control' placeholder='/path/to/audio/base' />
+					<input name='url[audio_base]' class='form-control' placeholder='http://path/to/hosted/audio/base' />
 				</div>
 				<h4>Show XML Paths</h4>
 				<div>
-					<input name='path["xml_base"]' class='form-control' placeholder='/path/to/xml/base' />
-					<input name='url["xml_base"]' class='form-control' placeholder='http://path/to/hosted/xml/base' />
+					<input name='path[xml_base]' class='form-control' placeholder='/path/to/xml/base' />
+					<input name='url[xml_base]' class='form-control' placeholder='http://path/to/hosted/xml/base' />
 				</div>
 				<h4>Podcast Audio Generator</h4>
 				<div>
-					<input name='url["archiver_tool"]' class='form-control' placeholder='Podcast Audio Tool URL' />
-					<input name='url["archiver_request"]' class='form-control' placeholder='Podcast Audio Generation Request URL' />
+					<input name='url[archiver_tool]' class='form-control' placeholder='Podcast Audio Tool URL' />
+					<input name='url[archiver_request]' class='form-control' placeholder='Podcast Audio Generation Request URL' />
 				</div>
 				<div>
 					<br/>

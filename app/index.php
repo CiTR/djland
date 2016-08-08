@@ -2,11 +2,9 @@
 if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/setup.php');
 	return;
-}else{
-	echo "Config Fine";
 }
 
-include_once("headers/session_header.php");
+require_once("headers/session_header.php");
 require_once('headers/login_header.php');
 require_once('headers/db_header.php');
 require_once("headers/password.php");
