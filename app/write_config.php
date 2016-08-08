@@ -18,12 +18,12 @@ $out[] = "//Enable or disable features of DJLand";
 write_post_to_array('enabled',$out);
 $out[] = "\n";
 
-$out[] = "//Database Connections"
+$out[] = "//Database Connections";
 write_post_to_array('db',$out);
-write_post_to_array('db_sam',$out);
+write_post_to_array('sam_db',$out);
 $out[] = "\n";
 
-$out[] = "//Podcasting Tools"
+$out[] = "//Podcasting Tools";
 write_post_to_array('podcasting',$out);
 
 

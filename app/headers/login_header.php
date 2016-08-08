@@ -16,7 +16,7 @@ function get_username() {
 }
 function login ($username, $raw_password, $set_cookie) {
 	//Got to do the global
-	global $db,$pdo_db, $sv_username, $sv_login_fails;
+	global $db, $sv_username, $sv_login_fails;
 	global $cookiename_id, $cookiename_pass;
 
 	// Query for information relating to account.
@@ -24,7 +24,7 @@ function login ($username, $raw_password, $set_cookie) {
 					FROM user AS u INNER JOIN group_members AS gm ON u.id = gm.user_id WHERE (u.username = :username AND gm.operator='1') OR (u.username= :username AND u.status LIKE '%Enabled%')";
 
 	try{
-		$user_statement = $pdo_db->prepare($user_query);
+		$user_statement = $db['pdo_link']->prepare($user_query);
 		$user_statement->bindValue(':username',$username);
 		$user_statement->execute();
 		$user_result = $user_statement->fetch(PDO::FETCH_ASSOC);
@@ -61,7 +61,7 @@ function login ($username, $raw_password, $set_cookie) {
 			//echo "Incorrect Password";
 
 			$login_fail_query = "UPDATE users SET login_fails = :login_fails WHERE id=:id";
-			$login_fail_statement = $pdo_db->prepare($login_fail_query);
+			$login_fail_statement = $db['pdo_link']->prepare($login_fail_query);
 			$login_fail_statement ->bindValue(':login_fails',$user_result['login_fails']+1);
 			$login_fail_statement ->bindValue(':id',$user_result['id']);
 

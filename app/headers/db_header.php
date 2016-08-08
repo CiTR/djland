@@ -1,9 +1,12 @@
 <?php
 require_once("session_header.php");
-error_reporting(0);
+
+
 
 //DB HEADER
 require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+if(!$testing_environment) error_reporting(0);
+
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
 
@@ -11,17 +14,20 @@ date_default_timezone_set($station_info['timezone']);
 //*******************************************
 //*******************************************
 //*******************************************
-$db = new mysqli($djland_db_address, $djland_db_username, $djland_db_password, $djland_db_dbname);
+$db['link'] = new mysqli($db['address'], $db['username'], $db['password'], $db['name']);
+
 
 if (mysqli_connect_error()) {
 	print('Connect Error for djland db (' . mysqli_connect_errno() . ') '
     . mysqli_connect_error());
 }
 try{
-	$hostandaddress = "mysql:dbname=".$djland_db_dbname.";host=".$djland_db_address;
-	$pdo_db = new PDO($hostandaddress,$djland_db_username,$djland_db_password);
+	$hostandaddress = "mysql:dbname=".$db['name'].";host=".$db['address'];
+
+	$pdo_db = new PDO($hostandaddress,$db['username'],$db['password']);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$pdo_db -> exec("set names utf8");
+	$db['pdo_link'] = $pdo_db;
 }catch(PDOException $e){
 	echo $e->getMessage();
 	if ( extension_loaded('pdo') ){
@@ -39,9 +45,8 @@ try{
 // different digital media player
 
 if($enabled['sam_integration']){
-
-    global $samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname;
-    $mysqli_sam = new mysqli($samDB_ip, $samDB_user, $samDB_pass, $samDB_dbname);
+    global $sam_db;
+    $sam_db['link'] = $mysqli_sam = new mysqli($sam_db['address'], $sam_db['username'], $sam_db['password'], $sam_db['name']);
 
     if (mysqli_connect_error()) {
         echo 'there is a connection error';
@@ -124,7 +129,7 @@ function getFormatName($format_id, $db){
 
     $query = "SELECT name FROM types_format WHERE id=".$format_id;
 
-    if( $result = $db->query($query)){
+    if( $result = $db['link']->query($query)){
         while($row = $result->fetch_assoc()){
                     return $row['name'];
         }
@@ -137,7 +142,7 @@ function getFormatName($format_id, $db){
 
 //Format Grabbing, Legacy.
 
-$fresult = mysqli_query($db,"SELECT * FROM types_format ORDER BY 'sort', 'name'");
+$fresult = mysqli_query($db['link'],"SELECT * FROM types_format ORDER BY 'sort', 'name'");
 $fnum_rows = mysqli_num_rows($fresult);
 $fcount = 0;
 while($fcount < $fnum_rows) {

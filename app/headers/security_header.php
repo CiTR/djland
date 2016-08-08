@@ -35,7 +35,7 @@ function is_member($test_group) {
 		return false;
 	}
 	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.userid = g.userid WHERE u.username = '".$_SESSION['sv_username']."'";
-	$result = $db->query($query);
+	$result = $db['link']->query($query);
 	$permissions = $result->fetch_assoc();
 	if($permissions[$test_group] == '1' || $permissions['operator'] == '1' || $permissions['administrator'] == '1'){
 		return true;
@@ -50,7 +50,7 @@ function permission_level(){
 		return -1;
 	}
 	$query = "SELECT gm.* FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
-	$result = $db->query($query);
+	$result = $db['link']->query($query);
 	$level = -1; //failure return value
 	if($result){
 		$permissions = $result->fetch_object();
@@ -60,7 +60,7 @@ function permission_level(){
 			}
 		}
 	}else{
-		echo "Database Error:".mysqli_error($db);
+		echo "Database Error:".mysqli_error($db['link']);
 	}
 
 	if(!is_paid() && ($level < $djland_permission_levels['staff']['level'])){
@@ -70,10 +70,10 @@ function permission_level(){
 }
 
 function is_paid(){
-    global $pdo_db;
+    global $db;
     //Session contains member id.
     $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
-    $statement = $pdo_db->prepare($query);
+    $statement = $db['pdo_link']->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
         $statement->execute();
