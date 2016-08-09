@@ -42,7 +42,6 @@
                 //Get First show in member_shows
                 for(var show in this_.member_shows){
                     this_.active_show = this_.member_shows[show];
-
                     break;
                 }
 
