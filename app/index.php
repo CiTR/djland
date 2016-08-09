@@ -1,8 +1,9 @@
 <?php
-if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php')){
+if(!file_exists(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php') || (isset($_POST['next_form']) && $_POST['next_form'] == 'write_config') || (isset($_POST['next_form']) && $_POST['next_form'] == 'setup_database')){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/setup.php');
 	return;
 }
+
 
 require_once("headers/session_header.php");
 require_once('headers/login_header.php');

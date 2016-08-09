@@ -8,8 +8,8 @@ function run_sql_file($location,$db){
     $lines = explode("\n",$commands);
     $commands = '';
     foreach($lines as $line){
-//        $line = trim($line);
-        if( $line && !startsWith($line,'--') ){
+        $line = trim($line);
+        if( $line && !startsWith($line,'--')){
             $commands .= $line . "\n";
         }
     }
@@ -17,20 +17,31 @@ function run_sql_file($location,$db){
     //convert to array
     $commands = explode(";", $commands);
 
+	$response = array();
     //run commands
-    $total = $success = 0;
     foreach($commands as $command){
-        //if(trim($command)){
-            $success += (@$db->query($command)==false ? 0 : 1);
-            $total += 1;
-        //}
+		if(strlen($command) > 1){
+			$total = $success = 0;
+			$error = array();
+			$result = ($db->query($command)==false ? 0 : 1);
+	        $success += $result;
+	        $total += 1;
+			if($result == 0){
+				$error[] = $db->error;
+			}
+			$response[] = array(
+		        "success" => $success,
+		        "total" => $total,
+				"command"=> $command,
+				"error" => $error
+		    );
+		}
+
+
     }
 
     //return number of successful queries and total number of queries found
-    return array(
-        "success" => $success,
-        "total" => $total
-    );
+    return $response;
 }
 
 

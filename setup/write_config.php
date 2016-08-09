@@ -56,7 +56,7 @@ function write_to_array($array,$name,& $out){
 	$assoc = array_keys($array) !== range(0,count($array)-1);
 	$out[] = "\$".$name." = array(";
 	foreach($array as $key=>$item){
-		if(!is_array($item)) $out[] = ($key && $assoc ? "\"".$key."\" => \"":"\"").$item."\",";
+		if(!is_array($item)) $out[] = ($key && $assoc ? "\"".$key."\" => ":"").($item =='true'||$item=='false' ? '':"\"").$item.($item =='true'||$item=='false' ? '':"\"").",";
 		else{
 			$out[] = format_inner_array($item,$key);
 		}
@@ -78,3 +78,10 @@ function format_inner_array($array,$name){
 	$temp[] = "),";
 	return join("",$temp);
 }
+?>
+<h1>Config Written!</h1>
+Please make sure your config is setup properly before heading to the next step.
+<form action='index.php' method='post'>
+	<input style='display:none' name='next_form' value='setup_database'/>
+	<button name='submit'>Create Database</button>
+</form>
