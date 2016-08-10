@@ -82,28 +82,28 @@
 	$db->query("START TRANSACTION");
 	$error[0] = "ERROR";
 	
-	$result = $db -> query($insert_membership);
+	$result = $db['link'] -> query($insert_membership);
 	if(!$result){
 		$fail = true;
 		$error[1] = "Error with member insert ";
 		$error[2] = mysqli_error($db);
 	}
 	else{
-		$result = $db -> query($insert_membership_year);
+		$result = $db['link'] -> query($insert_membership_year);
 		if(!$result){
 			$fail = true;
 			$error[1] = "Error with membership year insert ";
 			$error[2] = mysqli_error($db);
 		}
 		else{
-			$result = $db -> query($insert_user);
+			$result = $db['link'] -> query($insert_user);
 			if(!$result){
 				$error[1] = "Error with user insert ";
 				$error[2] = mysqli_error($db);
 				$fail = true;
 			}
 			else{
-				$result = $db -> query($insert_group_member);
+				$result = $db['link'] -> query($insert_group_member);
 				if(!$result){
 					$error[1] = "Error with group insert ";
 					$error[2] = mysqli_error($db);
@@ -118,13 +118,13 @@
 	}
 	
 	if($fail){
-		if( !( $db -> rollback() ) ){
+		if( !( $db['link'] -> rollback() ) ){
 			$error[1] = " Rollback failed";
 			$error[2] = $insert_membership.$insert_membership_year.$insert_user.$insert_group_member;
 		}
 		echo json_encode($error);
 	}else{
-		if( !( $db -> commit() ) ){
+		if( !( $db['link'] -> commit() ) ){
 			$error[1] = " Commit failed";
 			$error[2] = $insert_membership.$insert_membership_year.$insert_user.$insert_group_member;
 			echo json_encode($error);

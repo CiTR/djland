@@ -7,7 +7,7 @@ if(isset($_POST['id'])){
  
 $delete_query = "DELETE FROM socan WHERE idSOCAN = ".$id;
  echo $delete_query;
-	if(mysqli_query($db,$delete_query))
+	if(mysqli_query($db['link'],$delete_query))
 	{echo "row".$id."deleted";}
  }
  

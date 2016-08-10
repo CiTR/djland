@@ -14,7 +14,7 @@ if ($_POST[$library_post_key] == $library_post_val){
 		
 	//	SELECT playsheet_id, name, played, sam_id FROM adlog WHERE playsheet_id >= '$min' AND playsheet_id <= '$max' AND LEFT(type,2) = 'AD'  ORDER BY playsheet_id ASC";
 		
-		if( $result = $db->query($query)){
+		if( $result = $db['link']->query($query)){
 			echo "deleted!";
 			} else {
 			echo "citr database problem :(";
@@ -68,7 +68,7 @@ if ($_POST[$library_post_key] == $library_post_val){
 				AND p1.id != p2.id
 				ORDER BY p1.title
 				";
-		if( $result = $db->query($query)){
+		if( $result = $db['link']->query($query)){
 			echo 'db request successful:<br/>';
 			$dbrows = array();
 			
@@ -85,7 +85,7 @@ if ($_POST[$library_post_key] == $library_post_val){
 						.$v['catalog'].'</a></span><br/>';
 				echo 'Artist:<span>'.$v['artist'].'</span><br/>';
 				echo 'Title:<span>'.$v['title'].'</span><br/>';
-				echo 'Format:<span>'.getFormatName($v['format_id'], $db).'</span><br/>';
+				echo 'Format:<span>'.getFormatName($v['format_id'], $db['link']).'</span><br/>';
 				echo 'Label:<span>'.$v['label'].'</span><br/>';
 				echo 'Genre:<span>'.$v['genre'].'</span><br/>';
 				echo 'Added:<span>'.$v['added'].'</span><br/>';
