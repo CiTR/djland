@@ -18,7 +18,7 @@ print("</head>");
 
 //Data Setup
 print_menu();
-$SOCAN_FLAG=socanCheck($db);
+$SOCAN_FLAG=socanCheck($db['link']);
 
 
 //separate classifications( ex. show editing, ad editing, playsheet, sam)
