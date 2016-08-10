@@ -535,7 +535,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$promotions = Playsheet::find($id)->ads;
 				foreach($promotions as $key => $value){
 					//Get Ad Names From SAM
-					if($using_sam && is_numeric($value['name'])){
+					if($enabled['sam_integration'] && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 						if(count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
 					}else{
@@ -899,7 +899,7 @@ Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	date_default_timezone_set('America/Los_Angeles');
 	$result = array();
-	if($using_sam){
+	if($enabled['sam_integration']){
 		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
 			->where('songtype','=','S')->orderBy('date_played','DESC')->limit('1')->get();
 		$now = strtotime('now');
@@ -917,8 +917,8 @@ Route::get('/nowplaying',function(){
 		$result['music'] = null;
 	}
 	$day_of_week = date('w');
-	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+	//Get mod 2 of (current unix minus days to last sunday) then divide by 8.64E7 * 7 to get number of weeks elapsed since epoch start.
+	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) );
     if ((int) $current_week % 2 == 0){
         $current_week_val = 1;
     } else {
@@ -928,7 +928,7 @@ Route::get('/nowplaying',function(){
 	//We use 0 = Sunday instead of 7
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
-
+	$result['current_week'] = $current_week_val;
 	$specialbroadcast = SpecialBroadcasts::whereRaw('start <= '.$now.' and end >= '.$now)->get();
 	if($specialbroadcast->first()){
 		//special broadcast exists

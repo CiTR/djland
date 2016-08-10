@@ -36,7 +36,7 @@ function is_member($test_group) {
 		return false;
 	}
 	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.userid = g.userid WHERE u.username = '".$_SESSION['sv_username']."'";
-	$result = $db->query($query);
+	$result = $db['link']->query($query);
 	$permissions = $result->fetch_assoc();
 	if($permissions[$test_group] == '1' || $permissions['operator'] == '1' || $permissions['administrator'] == '1'){
 		return true;
@@ -51,7 +51,7 @@ function permission_level(){
 		return -1;
 	}
 	$query = "SELECT gm.* FROM group_members AS gm INNER JOIN user AS u ON u.id = gm.user_id WHERE u.username='".$_SESSION['sv_username']."'";
-	$result = $db->query($query);
+	$result = $db['link']->query($query);
 	$level = -1; //failure return value
 	if($result){
 		$permissions = $result->fetch_object();
@@ -120,7 +120,7 @@ function has_show_access($show_id){
 	if (permission_level() >= $djland_permission_levels['staff']) return true;
 
 	$query = 'SELECT count(member_id) AS count FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
-	if ( !isset($show_id) || $result = mysqli_query($db, $query)) {
+	if ( !isset($show_id) || $result = mysqli_query($db['link'], $query)) {
 		$count = mysqli_fetch_assoc($result);
 		if($count > 0){
 			return true;

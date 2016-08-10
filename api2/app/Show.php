@@ -33,8 +33,13 @@ class Show extends Model
         $time = strtotime('now');
         //Get Day of Week (0-6)
         $day_of_week = date('w',$time);
-        //Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-        $current_week = floor( ($time - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+		//Get mod 2 of (current unix minus days to last sunday) then divide by 8.64E7 * 7 to get number of weeks elapsed since epoch start.
+		$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) );
+		if ((int) $current_week % 2 == 0){
+			$current_week = 1;
+		} else {
+			$current_week = 2;
+		};
 
         //Get Current Time (0-23:0-59:0-59)
         $current_time = date('H:i:s',strtotime('now'));

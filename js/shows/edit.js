@@ -56,11 +56,15 @@
 
             //New Method for getting current week
             var d = new Date();
-            d.setHours(0,0,0);
-            d.setDate(d.getDate()+4-(d.getDay()||7));
-            var week_no = Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+			//Get most recent sunday at 12:00:00am
+			d.setHours(0,0,0);
+            d.setDate(d.getDate()-(d.getDay()||7));
+			//Get Days since epoch start. Then divide by 7 for weeks. Then round down.
+            var week_no = Math.floor(((d/8.64e7))/7);
+			//divide by 2, and then add one so we have 1||2 instead of 0||1
             this.current_week = ((week_no % 2) +1);
-            //Check if user is an administrator or staff
+
+			//Check if user is an administrator or staff
             this.isAdmin();
 
         }
