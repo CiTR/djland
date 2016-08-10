@@ -918,7 +918,7 @@ Route::get('/nowplaying',function(){
 	}
 	$day_of_week = date('w');
 	//Get mod 2 of (current unix minus days to last sunday) then divide by 8.64E7 * 7 to get number of weeks elapsed since epoch start.
-	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) );
+	$current_week = floor( (date(strtotime('now')) - intval($day_of_week*60*60*24)) /(60*60*24*7) );
     if ((int) $current_week % 2 == 0){
         $current_week_val = 1;
     } else {
