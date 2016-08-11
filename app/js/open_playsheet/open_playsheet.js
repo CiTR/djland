@@ -13,9 +13,10 @@
 			(function(response){
 				this.is_admin = response.data;
 	        }).bind(this)
-		,function(error){
-            this_.log_error(error);
-        });
+			,(function(error){
+            this.log_error(error);
+        	}).bind(this)
+    	);
 		//Get member shows
 		call.getActiveMemberShows(this.member_id).then(
 			(function(response){
@@ -24,8 +25,6 @@
 			}).bind(this)
 		);
         this.log_error = function(error){
-            var this_ = this;
-
             var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
             call.error( this.error).then(function(response){
                 $('#error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error has been logged');
@@ -40,8 +39,6 @@
 			}
 
 			if(!this.done && !this.loading){
-
-				console.log('calling more');
 				this.loading = true;
 				if(this.show_select == 'all'){
 					call.getMemberPlaysheets(this.member_id,this.offset).then(

@@ -28,6 +28,7 @@ Route::get('/', function () {
     return "Welcome to DJLand API 2.0";
 });
 
+
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 
