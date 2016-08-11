@@ -33,7 +33,7 @@
 	  //$get_playitems = "SELECT * FROM playitems WHERE playsheet_id = ".$psid;
 	 //query database for all songs played in this playlist, encode to json object and pass back.
 	 
-	  if($playitems = $db->query($get_playitems)){
+	  if($playitems = $db['link']->query($get_playitems)){
 		$rows = array();
 		while($r = mysqli_fetch_array($playitems)){
 			$rows[] = $r;	

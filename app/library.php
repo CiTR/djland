@@ -37,10 +37,10 @@ if(permission_level() >= $djland_permission_levels['member']['level'] && isset($
 
 	if(isset($_GET['searchdesc']) && $_GET['searchdesc']) {
 		$search_term = fas($_GET['searchdesc']);
-		$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library,types_format WHERE MATCH(library.artist,library.title,library.label,library.genre) AGAINST ('$search_term' IN BOOLEAN MODE) AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library,types_format WHERE MATCH(library.artist,library.title,library.label,library.genre) AGAINST ('$search_term' IN BOOLEAN MODE) AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
 		$snum_rows = mysqli_num_rows($sresult);
 		if(!$snum_rows) {
-			$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library,types_format WHERE (library.artist LIKE '%".$search_term."%' OR library.title LIKE '%".$search_term."%' OR library.label LIKE '%".$search_term."%' OR library.genre LIKE '%".$search_term."%') AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
+			$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library,types_format WHERE (library.artist LIKE '%".$search_term."%' OR library.title LIKE '%".$search_term."%' OR library.label LIKE '%".$search_term."%' OR library.genre LIKE '%".$search_term."%') AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
 			$snum_rows = mysqli_num_rows($sresult);
 		}
 	}
@@ -65,11 +65,11 @@ if(permission_level() >= $djland_permission_levels['member']['level'] && isset($
 
 		$search_order = "ORDER BY ". fas($_GET['asorder']) . (isset($_GET['asdescending']) ? " DESC " : " ");
 
-		$sresult = mysqli_query($db,"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE ". $search_query ."types_format.id = library.format_id ".$search_order."LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db['link'],"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE ". $search_query ."types_format.id = library.format_id ".$search_order."LIMIT $record_start, $record_limit");
 		$snum_rows = mysqli_num_rows($sresult);
 	}
 	else {
-		$sresult = mysqli_query($db,"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE types_format.id = library.format_id ORDER BY library.id DESC LIMIT $record_start, $record_limit");
+		$sresult = mysqli_query($db['link'],"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE types_format.id = library.format_id ORDER BY library.id DESC LIMIT $record_start, $record_limit");
 		$snum_rows = mysqli_num_rows($sresult);
 	}
 	$scount = 0;
@@ -209,7 +209,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 	$scount = 0;
 	while(isset($_POST['id'.$scount]) && isset($_POST['newcat'.$scount])) {
 		if($_POST['newcat'.$scount]) {
-			mysqli_query($db,"UPDATE `library` SET catalog='".fas($_POST['newcat'.$scount])."' WHERE id='".fas($_POST['id'.$scount])."'");
+			mysqli_query($db['link'],"UPDATE `library` SET catalog='".fas($_POST['newcat'.$scount])."' WHERE id='".fas($_POST['id'.$scount])."'");
 			echo "<br>Catalog: " . $_POST['oldcat'.$scount] . " changed to: " . $_POST['newcat'.$scount];
 		}
 		$scount++;
@@ -225,7 +225,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		$id = 0;
 	}
 
-	$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
+	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
 	printf("<br><table><tr><td>");
 	printf("<center><br><h1>Library Record</h1></center>");
@@ -265,10 +265,10 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 			$ed = fas($_POST['id']);
 		}
 		else {
-			mysqli_query($db,"INSERT INTO `library` (id, added) VALUES (NULL, '$current_date')");
-			$ed = mysqli_insert_id($db);
+			mysqli_query($db['link'],"INSERT INTO `library` (id, added) VALUES (NULL, '$current_date')");
+			$ed = mysqli_insert_id($db['link']);
 		}
-		$sresult = mysqli_query($db, "UPDATE `library` SET format_id='".fas($_POST['format'])."', catalog='".fas($_POST['catalog'])."', cancon='".(isset($_POST['cancon'])?1:0)."', femcon='".(isset($_POST['femcon'])?1:0)."', local='".(isset($_POST['local'])?1:0)."', playlist='".(isset($_POST['playlist'])?1:0)."', compilation='".(isset($_POST['compilation'])?1:0)."', digitized='".(isset($_POST['digitized'])?1:0)."', status='".fas($_POST['status'])."', artist='".fas($_POST['artist'])."', title='".fas($_POST['title'])."', label='".fas($_POST['label'])."', genre='".fas($_POST['genre'])."', modified='$current_date' WHERE id='$ed'");
+		$sresult = mysqli_query($db['link'], "UPDATE `library` SET format_id='".fas($_POST['format'])."', catalog='".fas($_POST['catalog'])."', cancon='".(isset($_POST['cancon'])?1:0)."', femcon='".(isset($_POST['femcon'])?1:0)."', local='".(isset($_POST['local'])?1:0)."', playlist='".(isset($_POST['playlist'])?1:0)."', compilation='".(isset($_POST['compilation'])?1:0)."', digitized='".(isset($_POST['digitized'])?1:0)."', status='".fas($_POST['status'])."', artist='".fas($_POST['artist'])."', title='".fas($_POST['title'])."', label='".fas($_POST['label'])."', genre='".fas($_POST['genre'])."', modified='$current_date' WHERE id='$ed'");
 
 
 
@@ -276,7 +276,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 //		printf("<center><br><h1>Record %s</h1>", $submit_edit ? "Updated" : "Added");
 		printf("<center>");
 
-		$sresult = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='".$ed."' AND types_format.id = library.format_id");
+		$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='".$ed."' AND types_format.id = library.format_id");
 		if(mysqli_num_rows($sresult)) {
 
 
@@ -316,7 +316,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 	}
 	else if(isset($_GET['action']) && $_GET['action'] == 'edit') {
 		$ed = fas($_GET['id']);
-		$result = mysqli_query($db,"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='".fas($_GET['id'])."' AND types_format.id = library.format_id");
+		$result = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='".fas($_GET['id'])."' AND types_format.id = library.format_id");
 	}
 	else {
 		$ed = 0;

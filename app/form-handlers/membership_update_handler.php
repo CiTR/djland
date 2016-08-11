@@ -79,41 +79,41 @@
 	}
 	$update_group_member = "UPDATE group_members  SET administrator='".$is_administrator."',staff='".$is_staff."',workstudy='".$is_workstudy."',volunteer='".$is_volunteer."',dj='".$is_dj."',member='".$is_member."' WHERE userid ='".$userid."';";
 	$fail=false;
-	$db->query("START TRANSACTION");
+	$db['link']->query("START TRANSACTION");
 	
 	$error[0] = "ERROR";
 	
 
-	$result = $db -> query($update_membership);
+	$result = $db['link']-> query($update_membership);
 	if(!$result){
 		$fail = true;
 		$error[1] = "Error with member update ";
-		$error[2] = mysqli_error($db);
+		$error[2] = mysqli_error($db['link']);
 		$error[3] = $update_membership;
 	}
 	else{
 		//check if updating membership years
 		if(isset($_POST['membership_year'])){
-			$result = $db -> query($update_membership_year);
+			$result = $db['link'] -> query($update_membership_year);
 			if(!$result){
 				$fail = true;
 				$error[1] = "Error with membership year update ";
-				$error[2] = mysqli_error($db);
+				$error[2] = mysqli_error($db['link']);
 			}
 			//Check if updating user information
 			if(isset($_POST['is_member'])){
-				$result = $db -> query($update_group_member);
+				$result = $db['link'] -> query($update_group_member);
 				if(!$result){
 					$error[1] = "Error with permission update";
-					$error[2] = mysqli_error($db);
+					$error[2] = mysqli_error($db['link']);
 					$fail = true;
 				}
 				else{
 					if($new_password != null){
-						$result = $db -> query($update_user);
+						$result = $db['link'] -> query($update_user);
 						if(!$result){
 						$error[1] = "Error with user update ";
-						$error[2] = mysqli_error($db);
+						$error[2] = mysqli_error($db['link']);
 						$fail = true;
 						}
 					}
@@ -128,18 +128,18 @@
 	}
 	
 	if($fail){
-		if( !( $db -> rollback() ) ){
+		if( !( $db['link'] -> rollback() ) ){
 			$error[1] = " Rollback failed";
 			$error[2] = $update_membership.$update_membership_year.$update_user.$update_group_member;
 		}
 		echo json_encode($error);
 	}else{
-		if( !( $db -> commit() ) ){
+		if( !( $db['link'] -> commit() ) ){
 			$error[1] = " Commit failed";
 			$error[2] = $update_membership.$update_membership_year.$update_user.$update_group_member;
 			echo json_encode($error);
 		}
 		else echo json_encode($update_membership.$update_membership_year.$update_user.$update_group_member);
 	}
-	$db->close();
+	$db['link']->close();
 ?>

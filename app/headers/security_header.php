@@ -4,14 +4,6 @@ require_once("db_header.php");
 require_once("login_header.php");
 date_default_timezone_set($station_info['timezone']);
 
-
-//Remove slashes added by stupid magic quotes
-/*if(get_magic_quotes_gpc()==1) {
-	foreach($_GET as $key=>$var) $_GET["$key"] = stripslashes($var);
-	foreach($_POST as $key=>$var) $_POST["$key"] = stripslashes($var);
-	foreach($_COOKIE as $key=>$var) $_COOKIE["$key"] = stripslashes($var);
-}*/
-
 //function to addslashes
 function fas($some_string) {
 	return addslashes($some_string);
@@ -119,7 +111,7 @@ function has_show_access($show_id){
 	if (permission_level() >= $djland_permission_levels['staff']) return true;
 
 	$query = 'SELECT count(member_id) AS count FROM member_show WHERE show_id = '.$show_id .' AND member_id = '.$_SESSION['sv_id'];
-	if ( !isset($show_id) || $result = mysqli_query($db, $query)) {
+	if ( !isset($show_id) || $result = mysqli_query($db['link'], $query)) {
 		$count = mysqli_fetch_assoc($result);
 		if($count > 0){
 			return true;

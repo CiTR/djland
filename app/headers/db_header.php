@@ -1,8 +1,6 @@
 <?php
 require_once("session_header.php");
 
-
-
 //DB HEADER
 require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 if(!$testing_environment) error_reporting(0);
@@ -11,9 +9,6 @@ global $station_info,$db;
 date_default_timezone_set($station_info['timezone']);
 
 
-//*******************************************
-//*******************************************
-//*******************************************
 $db['link'] = new mysqli($db['address'], $db['username'], $db['password'], $db['database']);
 
 
@@ -23,7 +18,6 @@ if (mysqli_connect_error()) {
 }
 try{
 	$hostandaddress = "mysql:dbname=".$db['database'].";host=".$db['address'];
-
 	$pdo_db = new PDO($hostandaddress,$db['username'],$db['password']);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$pdo_db -> exec("set names utf8");
@@ -55,12 +49,6 @@ if($enabled['sam_integration']){
     }
 }
 function mysqli_result_dep($res, $row, $field=0) {
-//	echo 'called mysqli result';
-//	echo '<br/>';
-//	echo 'res:'.'<br/>';
-//	print_r($res);
-//	echo 'row:'.$row.'<br/>';
-//	echo 'field:'.$field.'<br/>';
 	if(is_object($res))
 		$res->data_seek($row);
 	else 	return false;
@@ -128,7 +116,6 @@ function get_time()
 function getFormatName($format_id, $db){
 
     $query = "SELECT name FROM types_format WHERE id=".$format_id;
-
     if( $result = $db['link']->query($query)){
         while($row = $result->fetch_assoc()){
                     return $row['name'];

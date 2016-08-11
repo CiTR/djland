@@ -16,7 +16,7 @@ $insert_to = date("Y-m-d H:i:s",strtotime($to));
 // $socan_query ="SELECT idSOCAN FROM socan ORDER BY idSOCAN DESC LIMIT 1";
 // $result=mysqli_query($db,$socan_query);
 $query="SELECT MAX(idSOCAN) FROM socan";
-$result = mysqli_query($db,$query);
+$result = mysqli_query($db['link'],$query);
 $row = mysqli_fetch_row($result);
 $highest_id = $row[0];
 
@@ -24,7 +24,7 @@ $highest_id = $row[0];
 // echo "Max ID value is: ".$highest_id."<br>";
 $newID=$highest_id+1; 
 $insert_query = "INSERT INTO socan (idSOCAN,socanStart,socanEnd) VALUES ('$newID','$insert_from','$insert_to')";
-if(mysqli_query($db,$insert_query))
+if(mysqli_query($db['link'],$insert_query))
 { echo "New Socan Period Created! :) ";
 echo "This period will Start: ".$insert_from." and End: ".$insert_to."<br><br>(Refresh the page to see it)"; }
 else

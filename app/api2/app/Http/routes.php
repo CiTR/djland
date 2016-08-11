@@ -918,8 +918,8 @@ Route::get('/nowplaying',function(){
 		$result['music'] = null;
 	}
 	$day_of_week = date('w');
-	//Get mod 2 of (current unix - time since start of last sunday divided by one week). Then add 1 to get 2||1 instead of 1||0
-	$current_week = floor( (date('now') - intval($day_of_week*60*60*24)) /(60*60*24*7) ) % 2 + 1;
+	//Get mod 2 of (current unix minus days to last sunday) then divide by 8.64E7 * 7 to get number of weeks elapsed since epoch start.
+	$current_week = floor( (date(strtotime('now')) - intval($day_of_week*60*60*24)) /(60*60*24*7) );
     if ((int) $current_week % 2 == 0){
         $current_week_val = 1;
     } else {
@@ -929,7 +929,7 @@ Route::get('/nowplaying',function(){
 	//We use 0 = Sunday instead of 7
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
-
+	$result['current_week'] = $current_week_val;
 	$specialbroadcast = SpecialBroadcasts::whereRaw('start <= '.$now.' and end >= '.$now)->get();
 	if($specialbroadcast->first()){
 		//special broadcast exists

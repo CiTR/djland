@@ -8,7 +8,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get('/headers/constants.php');
 		},
 		getMemberPlaysheets: function (member_id,offset) {
-			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset ? offset : 0);
+			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset || 0);
 		},
 		getPlaysheets: function (limit) {
 			limit = limit || 50;
@@ -36,10 +36,10 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
 		getShowPlaysheets: function(show_id,offset){
-			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+(offset ? offset : 0 ));
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset || 0);
 		},
 		getShowEpisodes: function(show_id,offset){
-			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+(offset  ? offset : 0));
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+offset || 0);
 		},
 		getShowOwners: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/owners");
