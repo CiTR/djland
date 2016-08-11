@@ -9,8 +9,7 @@ class Playsheet extends Model
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
     protected $table 	= 'playsheets';
-    //protected $hidden 	= array();
-   	//protected $fillable	= array('show_id','host_id','spokenword','spokenword_duration','crtc','lang','type','edit_date','edit_name','podcast_episode');
+   	protected $fillable	= array('show_id','show_name','host_id','spokenword','spokenword_duration','crtc','lang','type','edit_date','edit_name','podcast_episode');
     protected $guarded	= array('id');
     public function show(){
      	return $this->belongsTo('App\Show');
