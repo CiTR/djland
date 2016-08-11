@@ -34,7 +34,7 @@ function is_member($test_group) {
 	if(!isset($_SESSION['sv_username'])) {
 		return false;
 	}
-	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.userid = g.userid WHERE u.username = '".$_SESSION['sv_username']."'";
+	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.id = g.user_id WHERE u.username = '".$_SESSION['sv_username']."'";
 	$result = $db['link']->query($query);
 	$permissions = $result->fetch_assoc();
 	if($permissions[$test_group] == '1' || $permissions['operator'] == '1' || $permissions['administrator'] == '1'){
