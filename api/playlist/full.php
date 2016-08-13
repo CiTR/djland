@@ -45,7 +45,7 @@ $query_for_playsheet = 'SELECT playsheets.*,
 if ( $result = mysqli_query($db['link'],$query_for_playsheet)){
   $rawdata['playlist'] = mysqli_fetch_assoc($result);
 } else {
-  $error .= mysqli_error($db);
+  $error .= mysqli_error($db['link']);
   finish();
 }
 
@@ -71,7 +71,7 @@ if ($result = mysqli_query($db['link'],$query_for_ads)){
     $rawdata['ads'] []= $row;
   }
 } else {
-  $error .= mysqli_error($db);
+  $error .= mysqli_error($db['link']);
   finish();
 }
 
@@ -188,7 +188,7 @@ error_reporting(E_ALL);
   $rawdata['playlist']['end_time'] = Date(DATE_RFC2822,strtotime($rawdata['playlist']['end_time']));
 
 } else {
-  $error .= '<br/>'.mysqli_error($db).'<br/>'.$query;
+  $error .= '<br/>'.mysqli_error($db['link']).'<br/>'.$query;
 }
 unset($rawdata['playlist']['edit_date']);
 

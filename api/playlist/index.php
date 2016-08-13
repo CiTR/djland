@@ -74,14 +74,14 @@ if ( $result = mysqli_query($db['link'], $query) ) {
 
       }
   } else {
-    $error .= '<br/>'.mysqli_error($db);
+    $error .= '<br/>'.mysqli_error($db['link']);
   }
 
   $rawdata['songs'] = $plays;
 
 
 } else {
-  $error .= '<br/>'.mysqli_error($db);
+  $error .= '<br/>'.mysqli_error($db['link']);
 }
 
 /*if (!(is_null($rawdata['host']) || ($rawdata['host'])=='') ){

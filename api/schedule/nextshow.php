@@ -22,7 +22,7 @@ if ($show_id = users_show()){
             $rawdata []= $row;
         }
     } else {
-        $error .= mysqli_error($db);
+        $error .= mysqli_error($db['link']);
     }
     $last_sun = strtotime('last sunday');
     $candidates = array();

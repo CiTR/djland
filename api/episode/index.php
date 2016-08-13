@@ -63,7 +63,7 @@ if ($result = mysqli_query($db['link'], $query) ) {
 
     }
   } else {
-    $error .= '<br/>'.mysqli_error($db);
+    $error .= '<br/>'.mysqli_error($db['link']);
   }
 
   $query = 'SELECT id AS show_id FROM shows WHERE podcast_channel_id = '.$rawdata['channel_id'];
@@ -81,7 +81,7 @@ if ($result = mysqli_query($db['link'], $query) ) {
 
     }
   } else {
-    $error .= '<br/>'.mysqli_error($db);
+    $error .= '<br/>'.mysqli_error($db['link']);
   }
 
 
@@ -89,7 +89,7 @@ if ($result = mysqli_query($db['link'], $query) ) {
 
 
 } else {
-  $error .= '<br/>'.mysqli_error($db);
+  $error .= '<br/>'.mysqli_error($db['link']);
 }
 
 

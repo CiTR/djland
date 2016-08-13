@@ -40,7 +40,7 @@ foreach($times as $i => $row){
       $row['url']."')";
 
   if(mysqli_query($db['link'],$query)) echo 'good';
-  else echo mysqli_error($db).'<hr>'.$query;
+  else echo mysqli_error($db['link']).'<hr>'.$query;
 
 }
 print_r($times);

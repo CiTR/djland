@@ -20,7 +20,7 @@ function load_ads_from_saved_playsheet($ps_id){
       return json_encode($data);
   } else {
      global $db;
-     header('HTTP/1.0 400 '.mysqli_error($db));
+     header('HTTP/1.0 400 '.mysqli_error($db['link']));
  }
 
 }
@@ -31,7 +31,7 @@ function load_ads_from_time_block($unix){
     return json_encode($data);
   } else {
     global $db;
-    header('HTTP/1.0 400 '.mysqli_error($db));
+    header('HTTP/1.0 400 '.mysqli_error($db['link']));
   }
 
 }

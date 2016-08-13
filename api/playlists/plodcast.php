@@ -19,7 +19,7 @@ if ($result = mysqli_query($db['link'], $query) ) {
         $playlists [] = $row;
     }
 } else {
-    $error .= mysqli_error($db);
+    $error .= mysqli_error($db['link']);
     finish();
 }
 
@@ -35,7 +35,7 @@ if ($result2 = mysqli_query($db['link'], $query2) ) {
         $podcasts [] = $row;
     }
 } else {
-    $error .= mysqli_error($db);
+    $error .= mysqli_error($db['link']);
     finish();
 }
 

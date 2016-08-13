@@ -35,7 +35,7 @@ if ($result = mysqli_query($db['link'], $query) ) {
 
   }
 } else {
-  $error .= mysqli_error($db);
+  $error .= mysqli_error($db['link']);
 }
 
 
