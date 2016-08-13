@@ -6,7 +6,7 @@
 
 error_reporting(E_ALL);
 
-require_once('../../headers/db_header.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/headers/db_header.php');
 
 date_default_timezone_set('America/Vancouver');
 
