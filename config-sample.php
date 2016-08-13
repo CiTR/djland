@@ -1,14 +1,7 @@
 <?php
 
-//Don't delete this line
 $enabled = array(); $station_info = array();
-
-//PLEASE CONFIGURE - below this line
-// Also please note this username and password: use to log in the first time.
-// Please change this password or create a new admin user and delete 'admin'
-// after installing
-// admin user: 'admin'
-// admin pass: 'pass'
+$testing_environment = true;
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
@@ -26,27 +19,9 @@ $station_info['timezone'] = 'America/Vancouver';
 // for a list of valid timezones, visit
 // http://ca1.php.net/manual/en/timezones.php
 
-//If you have two web applications hosted on the same website
-//$root_offset = "somewhere"
-$root_offset = ""
-$root_directory = $_SERVER['DOCUMENT_ROOT'].$root_offset;
-$web_root = getenv('HTTP_HOST').$root_offset;
 
 //*******************************************
-//* 2) Database info (MySQL)
-//*******************************************
-//
-
-// enter your database credentials here.  If you are using MySQL on the same server
-// these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
-
-$djland_db_address = '127.0.0.1';
-$djland_db_username = 'djland-username';
-$djland_db_password = 'djland-password';
-$djland_db_dbname = 'djland-databasename';
-
-//*******************************************
-//* 3) DJLand Enabled Features
+//* 2) DJLand Enabled Features
 //*******************************************
 //
 
@@ -62,56 +37,62 @@ $enabled['charts'] = true; // Chart week display for the music director - pulls 
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not implemented yet
-
+$enabled['sam_integration'] = false;
 
 //*******************************************
-//* 4) optional station-wide login
+//* 3) Database info (MySQL)
 //*******************************************
 //
-// if your station has many DJ's that play live on the air in a row you might opt
-// to create a station-wide login so that DJ's don't have to log in and out everytime the show slot changes.
-// Although it would be more secure if DJ's are trained from the get-go
-// to always log out and log in using their own username at the start of the show,
-// this is just not what happened at CiTR until 2015 so we leave this option available.
 
-
-// Filling this out just disables changing the password for this specific username.
-// You still have to create this user yourself!.
-$station_wide_login_name = 'djs';
+// enter your database credentials here.  If you are using MySQL on the same server
+// these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
+$db = array(
+	'address'=>'localhost',
+	'username'=>'username',
+	'password'=>'password',
+	'database'=>'database',
+	);
+$sam_db = array(
+	'address'=>'sam_host_ip',
+	'username'=>'username',
+	'password'=>'password',
+	'database'=>'database',
+	)
 
 //*******************************************
-//* 5) Optional SAM Broadcaster integration - http://spacial.com/sam-broadcaster
+//* 4) Podcast Configuration
 //*******************************************
-// This enables access to items played from a SAM installation
-// DJ's can pull individual items into playsheets for "typing-free" playsheet logging
-// Playsheet entries from SAM can be edited and re-ordered just like manually entered items
-// DJ's can pull individual plays from a 'most recent' list or specify a time range and bulk-load plays
 
-$using_sam = false; // <- change to true if you want to integrate SAM with djland
-// if SAM Broadcaster is being used, it must be installed using the MySQL option
-// SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
-// Highly recommended to use local network.
-$samDB_ip = 'ip address of computer running SAM mysql database';
-$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-$samDB_pass = 'password for that user';
-$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-// used to retreive podcast audio
-$archive_tool_url = 'http://archive.citr.ca';
-$archive_access_url = $archive_tool_url.
-    "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
 
-// use this to put podcast audio, rss xml files on a network drive that provides FTP access
-$audio_path_online = 'http://mypodcast.com/audio/';
-$audio_path_local = '/var/www/audio/or/something/';
+if($enabled['podcast_tools']){
+	//Local paths & Remote URLs for use with podcasting
+	$path = array();
+	$url = array();
 
-$xml_path_online   = 'http://mypodcast.com/rss/';
-$xml_path_local   = '/var/www/xml/or/something/';
+	//Podcast paths
+	$path['audio_base'] = '/home/podcast/audio';
+	$url['audio_base'] = 'http://podcast.hostname.com/audio';
+	$path['xml_base'] = '/home/podcast/xml';
+	$url['xml_base']= 'http://podcast.hostname.com/xml';
 
-/* DJLAND Constants
- * Be sure to update the constants.php file to include all constants if you wish to use them in JS
- */
+	//Archiver Access
+	$url['archiver_tool'] = 'http://archive.citr.ca';
+	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
 
-$djland_membership_year_date = date('04/31/'.idate('Y'));
+	//Podcast local_dev paths
+	if($testing_environment==true){
+		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+	}
+}
+
+//*******************************************
+//* 5) DJLand Configuration Constants / Variables. (Not you must manually edit your database to support changes here)
+//*******************************************
+
+$djland_membership_rollover_month = 5;
 
 $djland_permission_levels = array(
     'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Godmode.'),
@@ -124,7 +105,6 @@ $djland_permission_levels = array(
     'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
 	);
 $djland_training = array(
-	'Station Tour' => 'station_tour',
 	'Technical' => 'technical_training',
 	'Production'=> 'production_training',
 	'Programming'=> 'programming_training',
