@@ -41,7 +41,7 @@ $query =   "SELECT
 
 $data = array();
 
-if ($result = mysqli_query($db, $query) ) {
+if ($result = mysqli_query($db['link'], $query) ) {
   $data = mysqli_fetch_assoc($result);
   $show_id = isset($data['show_id']) ? $data['show_id'] : 0;
   if ($show_id) {
@@ -51,7 +51,7 @@ if ($result = mysqli_query($db, $query) ) {
           from social
           where show_id = $show_id";
     $social = array();
-    if ($result = mysqli_query($db, $query)) {
+    if ($result = mysqli_query($db['link'], $query)) {
       while ($row = mysqli_fetch_assoc($result)) {
           $social[] = array(
             'type'  =>  html_entity_decode($row['social_name'],ENT_QUOTES),

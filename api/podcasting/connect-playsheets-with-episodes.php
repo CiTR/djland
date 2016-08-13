@@ -11,7 +11,7 @@
 
 		    $q = 'SELECT id,start_time, status, show_id from playsheets where status =2 order by show_id asc';
 
-		    $r = mysqli_query($db,$q);
+		    $r = mysqli_query($db['link'],$q);
 
 		    $q2 = 'SELECT podcast_episodes.id as episode_id ,
 		            podcast_episodes.title,
@@ -21,7 +21,7 @@
 		            podcast_episodes.show_id
 		            FROM podcast_episodes
 		            INNER JOIN shows ON shows.id = podcast_episodes.show_id order by shows.id asc';
-		    $r2 = mysqli_query($db,$q2);
+		    $r2 = mysqli_query($db['link'],$q2);
 
 		    $episodes = array();
 		    $playsheets = array();

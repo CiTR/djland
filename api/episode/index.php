@@ -37,7 +37,7 @@ WHERE podcast_episodes.id = ".$id.";";
 
 $rawdata = array();
 
-if ($result = mysqli_query($db, $query) ) {
+if ($result = mysqli_query($db['link'], $query) ) {
   if (mysqli_num_rows($result) == 0) {
     $error .= "no podcast episode found with this ID: ".$id;
     $blame_request = true;
@@ -52,7 +52,7 @@ if ($result = mysqli_query($db, $query) ) {
 
   $query = 'SELECT playsheets.id as playlist_id FROM playsheet WHERE playsheets.podcast_episode = '.$id;
 
-  if ($result2 = mysqli_query($db, $query)){
+  if ($result2 = mysqli_query($db['link'], $query)){
     if (mysqli_num_rows($result2) == 0){
       $rawdata['playlist_id'] = '';
     } else {
@@ -68,7 +68,7 @@ if ($result = mysqli_query($db, $query) ) {
 
   $query = 'SELECT id AS show_id FROM shows WHERE podcast_channel_id = '.$rawdata['channel_id'];
 
-  if ($result2 = mysqli_query($db, $query)){
+  if ($result2 = mysqli_query($db['link'], $query)){
     if (mysqli_num_rows($result2) == 0){
       $rawdata['show_id'] = '0';
     } else {

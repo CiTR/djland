@@ -18,7 +18,7 @@ $query = "SELECT show_times.start_day as start_day,
             FROM show_times join shows on show_times.show_id = shows.id
             WHERE active = 1";
 
-if ($result = mysqli_query($db,$query)){
+if ($result = mysqli_query($db['link'],$query)){
 
   while ( $row = mysqli_fetch_assoc($result)){
     $rawdata []= $row;

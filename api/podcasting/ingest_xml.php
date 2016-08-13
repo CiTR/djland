@@ -32,7 +32,7 @@ foreach ($xml_urls as $key => $xml_url) {
     $continue = true;
     $check_q = "SELECT * FROM podcast_channels WHERE xml = '".$xml_url."'";
 
-    if ($check_r = mysqli_query($db, $check_q)){
+    if ($check_r = mysqli_query($db['link'], $check_q)){
         if (mysqli_num_rows($check_r) >= 1){
             $continue = false;
             echo "<br/> already a podcast channel for ".$xml_url;
@@ -111,7 +111,7 @@ foreach ($xml_urls as $key => $xml_url) {
 
                 $exists_q = "SELECT id FROM podcast_channels WHERE " .
                     "xml ='" . htmlentities(addslashes($channel_info['xml'])) . "' ";
-                $exists_r = mysqli_query($db, $exists_q);
+                $exists_r = mysqli_query($db['link'], $exists_q);
 
                 if (mysqli_num_rows($exists_r) == 1) {
                     echo "\n there is already a podcast with this xml." . htmlentities(addslashes($channel_info['xml'])) . "  updating episodes...";
@@ -119,7 +119,7 @@ foreach ($xml_urls as $key => $xml_url) {
                     $channel_id = $channel_id['id'];
                 } else {
 
-                    if ($result = mysqli_query($db, $channel_q)) {
+                    if ($result = mysqli_query($db['link'], $channel_q)) {
                         $channel_id = mysqli_insert_id($db);
                         //                    echo '<h2>channel inserted! (id is '.$channel_id.')</h2>';
                     } else {
@@ -236,7 +236,7 @@ function ingest_episodes($episodes,$channel_id, $db){
             "0,'".
             $episode['LENGTH']."','1');";
 
-        if ($result = mysqli_query($db,$episode_insert)){
+        if ($result = mysqli_query($db['link'],$episode_insert)){
 //            echo '<br/>episode inserted<br/>';
             $big_count = $big_count +1;
         } else {

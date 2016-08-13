@@ -27,7 +27,7 @@ $query = '
     DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 
-if ($result = mysqli_query($db, $query) ) {
+if ($result = mysqli_query($db['link'], $query) ) {
 
   while ($row = mysqli_fetch_assoc($result)) {
 

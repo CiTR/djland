@@ -20,7 +20,7 @@ $query =   "SELECT 	shows.id as id,
 
 $data = array();
 
-if ($result = mysqli_query($db, $query) ) {
+if ($result = mysqli_query($db['link'], $query) ) {
 
   while ($row = mysqli_fetch_assoc($result)) {
 

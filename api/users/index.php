@@ -15,7 +15,7 @@ if(isset($_GET['LIMIT'])) $limit = $_GET['LIMIT']; else $limit = 100;
   $query = 'SELECT * FROM user WHERE `status` = \'enabled\' ORDER BY edit_date DESC limit ' . $limit . ' OFFSET ' . $offset;
 
 $rawdata = array();
-if ($result = mysqli_query($db, $query) ) {
+if ($result = mysqli_query($db['link'], $query) ) {
 
   while ($row = mysqli_fetch_assoc($result)) {
 

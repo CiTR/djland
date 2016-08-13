@@ -42,7 +42,7 @@ $query_for_playsheet = 'SELECT playsheets.*,
             FROM playsheets
             WHERE playsheets.id = '.$id;
 
-if ( $result = mysqli_query($db,$query_for_playsheet)){
+if ( $result = mysqli_query($db['link'],$query_for_playsheet)){
   $rawdata['playlist'] = mysqli_fetch_assoc($result);
 } else {
   $error .= mysqli_error($db);
@@ -54,7 +54,7 @@ if (is_numeric($rawdata['playlist']['podcast_episode'])){
     $query_for_podcast = 'SELECT * FROM podcast_episodes
             WHERE id = '.$rawdata['playlist']['podcast_episode'];
 
-    if ($result = mysqli_query($db,$query_for_podcast)){
+    if ($result = mysqli_query($db['link'],$query_for_podcast)){
       $rawdata['playlist']['podcast'] = mysqli_fetch_assoc($result);
     }
 
@@ -65,7 +65,7 @@ $query_for_ads = 'SELECT
             FROM adlog
           WHERE adlog.playsheet_id ='.$id;
 
-if ($result = mysqli_query($db,$query_for_ads)){
+if ($result = mysqli_query($db['link'],$query_for_ads)){
     $rawdata['ads'] = array();
   while ($row = mysqli_fetch_assoc($result)){
     $rawdata['ads'] []= $row;
@@ -84,14 +84,14 @@ $query_for_songs = 'SELECT *
           ORDER BY id DESC';
 
 
-if ( $result = mysqli_query($db, $query_for_songs) ) {
+if ( $result = mysqli_query($db['link'], $query_for_songs) ) {
   $rawdata['plays'] = array();
 
   while ($row = mysqli_fetch_assoc($result)) {
 
     $song_q = 'SELECT * from songs where ID = '.$row['song_id'];
 
-    if ($result2 = mysqli_query($db, $song_q)){
+    if ($result2 = mysqli_query($db['link'], $song_q)){
       while ($row2 = mysqli_fetch_assoc($result2)){
         $row['song'] = $row2;
       }

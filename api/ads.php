@@ -48,7 +48,7 @@ function dbLoad($table, $fields, $values) {
   $query .= implode(',',$where_clauses);
 
   global $db;
-  if( $result = mysqli_query($db, $query)){
+  if( $result = mysqli_query($db['link'], $query)){
     $arr = [];
     while ( $row = $result->fetch_array()){
       $arr []= $row;

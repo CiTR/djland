@@ -9,7 +9,7 @@ $error = "";
 
 $query = "SELECT * FROM special_events";
 
-if ($result = mysqli_query($db,$query)){
+if ($result = mysqli_query($db['link'],$query)){
 
   while ( $row = mysqli_fetch_assoc($result)){
     $rawdata []= $row;

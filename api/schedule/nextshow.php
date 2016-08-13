@@ -17,7 +17,7 @@ if (isset($_GET['time'])){
 }
 if ($show_id = users_show()){
     $query = "SELECT * FROM show_times where show_id = ".$show_id
-    if ($result = mysqli_query($db,$query)){
+    if ($result = mysqli_query($db['link'],$query)){
         while ( $row = mysqli_fetch_assoc($result)){
             $rawdata []= $row;
         }

@@ -70,7 +70,7 @@ if (isset($_POST['url']) && isset($_POST['channel']) && isset($_POST['data'])){
 		'`author` = "'.$episode['author'].'",'.
 		'`active` = "'.$episode['active'].'"';
 
-	if($result = mysqli_query($db, $upsert_query)){
+	if($result = mysqli_query($db['link'], $upsert_query)){
 
 		echo 'success';
 	} else {
