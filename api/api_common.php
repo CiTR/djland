@@ -22,7 +22,7 @@ function finish(){
   global $db;
 
   if($error != ''){
-            mysqli_close($db);
+            mysqli_close($db['link']);
             echo $error;
             if($blame_request){
               header('HTTP/1.0 400 '.$error);
@@ -46,7 +46,7 @@ function finish(){
       echo utf8_json_encode( $data );
     //}
   }
-  mysqli_close($db);
+  mysqli_close($db['link']);
   die();
 }
 
@@ -91,7 +91,7 @@ function get_array($table, $idfield = 'id', $fields = 'basic'){
     $query = 'SELECT * FROM ' . $table . ' ORDER BY edit_date DESC limit ' . $limit . ' OFFSET ' . $offset;
   }
   $array = array();
-  if ($result = mysqli_query($db, $query) ) {
+  if ($result = mysqli_query($db['link'], $query) ) {
 
     while ($row = mysqli_fetch_assoc($result)) {
 
@@ -99,7 +99,7 @@ function get_array($table, $idfield = 'id', $fields = 'basic'){
 
     }
   } else {
-    $error .= mysqli_error($db);
+    $error .= mysqli_error($db['link']);
   }
   return $array;
 
@@ -108,7 +108,7 @@ function get_array($table, $idfield = 'id', $fields = 'basic'){
 function singleRowByID($table, $id){
 
   global $db;
-  return singleRowFromDB($db, $table, $id);
+  return singleRowFromDB($db['link'], $table, $id);
 }
 
 function singleRowByIDFromSam($table,$id){
@@ -120,10 +120,10 @@ function singleRowFromDB($db, $table, $id){
   global $error;
 
   $q = 'SELECT * from '.$table.' where id ='.$id;
-  if ($error == '' && $result = mysqli_query($db, $q)){
+  if ($error == '' && $result = mysqli_query($db['link'], $q)){
     return mysqli_fetch_assoc($result);
   } else {
-    $error .= mysqli_error($db);
+    $error .= mysqli_error($db['link']);
     return false;
   }
 }
@@ -143,7 +143,7 @@ function getIDbyRow($table,$array){
 
   $q .= $q_values;
 
-  if ($error == '' && $result = mysqli_query($db, $q)){
+  if ($error == '' && $result = mysqli_query($db['link'], $q)){
     if (mysqli_num_rows($result) == 0) {
       return false;
     }
