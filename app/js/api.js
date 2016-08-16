@@ -83,6 +83,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		isStaff: function(member_id){
 			return $http.get(API_URL_BASE + '/member/'+ member_id + '/staff');
 		},
+		isAdmin: function(member_id){
+			return $http.get(API_URL_BASE + '/member/' + member_id + '/admin');
+		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},

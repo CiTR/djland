@@ -16,7 +16,7 @@
 				<li>
 					Filter By Show:
 					<select ng-model='report.show_filter'>
-						<div ng-if="{{list.is_admin}}">
+						<div ng-if="{{list.is_staff}}">
 							<option selected value='all'>All Shows</option>
 						</div>
 						<option ng-repeat='show in report.shows' value='{{show.id}}'>{{show.name}}</option>
@@ -51,7 +51,7 @@
 				    	</div>
 				</li>
 				<li>
-					<select ng-show='report.is_admin' ng-model='report.type'>
+					<select ng-show='report.is_staff' ng-model='report.type'>
 						<option value='crtc'>CRTC Report</option>
 						<option value='socan'>Socan Report</option>
 						<option value='both'>Combined Report</option>
@@ -148,7 +148,7 @@
 						</tr>
 					</table>
 			</div>
-			<div id='report_list' ng-if='report.is_admin'>
+			<div id='report_list' ng-if='report.is_staff'>
 				<div ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
 			</div>
 		</div>

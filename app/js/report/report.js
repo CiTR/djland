@@ -20,16 +20,13 @@
 				this.shows = response.data.shows;
 				}).bind(this)
 			);
-			call.getMemberPermissions(this.member_id).then(
+			call.
+			call.isStaff(this.member_id).then(
 				(function(response){
-					if(response.data.administrator == '1' || response.data.staff == '1' ){
-						this.is_admin = true;
-					}else{
-						this.is_admin = false;
-					}
+					this.is_staff = response.data == true ? true : false;
 				}).bind(this)
 				,function(error){
-					
+
 				}
 			);
 			this.report();

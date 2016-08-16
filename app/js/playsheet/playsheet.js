@@ -19,6 +19,7 @@
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
         this.info.socan = $('#socan').text() == 'true' ? true : false;
+        console.log(this.info.socan);
     	this.tags = tags;
     	this.help = help;
         this.complete = false;

@@ -30,9 +30,9 @@ class Member extends Model
     public function isStaff(){
         return ($this->member_type == 'Staff' || $this->user->permission['workstudy'] == 1 || $this->user->permission['staff'] ==1 || $this->user->permission['administrator']==1 || $this->user->permission['operator'] ==1) ? true : false;
     }
-	public function isAdmin(){
-		return ($this->user->permission['administrator']==1 || $this->user->permission['operator'] ==1) ? true : false;
-	}
+    public function isAdmin(){
+    	return ($this->user->permission['administrator']==1 || $this->user->permission['operator'] ==1) ? true : false;
+    }
     public static function search($parameter,$value,$paid,$year,$has_show,$order){
         /*
          * Search Array:

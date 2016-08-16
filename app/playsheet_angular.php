@@ -2,8 +2,6 @@
 	<?php
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
-	//require_once("headers/functions.php");
-	require_once("headers/socan_header.php");
 	require_once("headers/menu_header.php");
 	?>
 	<head>
@@ -31,11 +29,11 @@
 		</script>
 		<?php print_menu(); ?>
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
-		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; else echo socanCheck($db); ?></div>
+		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; ?></div>
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan }">
+		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan==true }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 

@@ -9,7 +9,7 @@ use App\Permission as Permission;
 use App\Show as Show;
 
 Route::group(['middleware' => 'auth'], function(){
-	
+
 	// Old Member Creation Routes
 	//TODO:: Move these into rest format.
 	Route::post('/member',function(){
@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'], function(){
 		$membership_year->member_id = $id;
 		return MembershipYear::create((array) $membership_year) ? "true" : "false";
 	});
-	
+
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 		Route::get('/',function(){
@@ -72,6 +72,10 @@ Route::group(['middleware' => 'auth'], function(){
 			//Returns if the user has administrator priveledges or not.
 			Route::get('/staff',function($id){
 				return Response::json(Member::find($id)->isStaff());
+			});
+			//Returns if the user has administrative priveledges or not.
+			Route::get('/admin',function($id){
+				return Response::json(Member::find($id)->isAdmin());
 			});
 			//Returns the staff comments for the user
 			Route::post('/comments',function($id){

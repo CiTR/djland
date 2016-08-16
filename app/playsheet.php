@@ -69,15 +69,10 @@ echo "<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
                    in available_playsheets ">
           </select>
 
-          <button ng-click="loadPlays(desired_playsheet)">{{available_playsheets.length > 1? '<-- load plays from this playsheet' : '...'}}</button>
+          <button ng-click="loadPlays(desired_playsheet)">{{(available_playsheets.length > 1) ? 'load plays from this playsheet' : '...'}}</button>
           </span>
         <br/>Show: {{playsheet.show_id}}
         <br/>
-
-        <!--    <br/>Date:   <button >{{date | date: 'mediumDate'}}</button> (click to change)
-            <br/>Time:   <span ng-controller="timepicker" class="timepicker">
-                                <timepicker ng-model="date" ></timepicker>
-                        </span>-->
         <br/>Host: <input ng-model="playsheet.host"></input>
         <br/>Language: <input ng-model="playsheet.lang"></input>
         <br/>CRTC Category: <button class="crtc" ng-model="playsheet.crtc"

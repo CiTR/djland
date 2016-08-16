@@ -3,7 +3,6 @@
 use App\Playsheet as Playsheet;
 use App\Show as Show;
 use App\Playitem as Playitem;
-use App\Podcast as Podcast;
 use App\Ad as Ad;
 use App\Socan as Socan;
 
@@ -23,7 +22,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 	//Create a new playsheet
 	Route::put('/',function(){
-		return Playsheet::create((array)Input::get()['playsheet']);
+		$playsheet_object = Playsheet::create((array) Input::get()['playsheet']);
 	});
 	Route::post('/report',function(){
 		include_once(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
@@ -120,7 +119,6 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show_totals[$playsheet->show['name']]->new_count=0;
 				$show_totals[$playsheet->show['name']]->spokenword=0;
 				$show_totals[$playsheet->show['name']]->ads=0;
-
 				$show_totals[$playsheet->show['name']]->show = $playsheet->show;
 
 			}
@@ -143,11 +141,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 
 				//return Response::json($playsheet->totals);
 			}
-
 			$playsheet->totals->spokenword = $playsheet->spokenword_duration;
 			$playsheet_totals[] = $playsheet;
-
-
 			//Update corresponding show totals, and overall
 			foreach($playsheet->totals as $key=>$item){
 				$show_totals[$playsheet->show['name']]->$key += $item;
@@ -210,7 +205,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Get Existing Playsheet
 		Route::get('/',function($id){
-			require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+			require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 			$playsheet = new stdClass();
 			$playsheet -> playsheet = Playsheet::find($id);
 			if($playsheet -> playsheet != null){

@@ -1,5 +1,5 @@
 <?php
-
+use App\Podcast as Podcast;
 
 Route::put('/podcast',function(){
 	$podcast = Podcast::create((array) Input::get()['podcast']);
