@@ -12,9 +12,9 @@ global $_GET;
 global $db;
 
 $offset = isset($_GET['OFFSET']) && is_numeric($_GET['OFFSET']) ? $_GET['OFFSET'] * 1 : 0;
-$limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT'])  ? $_GET['LIMIT']  * 1 : 100;
+$limit  = isset($_GET['LIMIT'])  && is_numeric($_GET['LIMIT']) == 1 ? $_GET['LIMIT'] : 100;
 
-  $query = 'SELECT playsheets.id,
+$query = 'SELECT playsheets.id,
       playsheets.edit_date
     FROM playsheets
     WHERE status = 2 

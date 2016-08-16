@@ -1,12 +1,9 @@
 <?php
 require_once("session_header.php");
-//error_reporting(0);
-
-//DB HEADER
 include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 global $station_info;
 date_default_timezone_set($station_info['timezone']);
-
+if(!$testing_environment) error_reporting(0);
 
 //*******************************************
 //*******************************************
