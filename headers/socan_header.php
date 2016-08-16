@@ -3,7 +3,7 @@
 //SOCAN_HEADER
 function socanCheck($db) {
 	
-	if($socanPeriods = $db->query("SELECT * FROM socan ORDER BY socanStart DESC")){
+	if($socanPeriods = $db['link']->query("SELECT * FROM socan ORDER BY socanStart DESC")){
 		
 
 		while($socanrow = $socanPeriods->fetch_array())

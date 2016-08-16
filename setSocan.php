@@ -36,7 +36,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 		print_menu();
 		$query="SELECT MAX(idSOCAN) FROM socan";
-				$result = mysqli_query($db,$query);
+				$result = mysqli_query($db['link'],$query);
 				$row = mysqli_fetch_row($result);
 				$num_id = $row[0];
 		?>
@@ -60,7 +60,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 				<?php
 				$request_query="SELECT * FROM socan ORDER BY idSOCAN";
-				if($result=mysqli_query($db,$request_query))
+				if($result=mysqli_query($db['link'],$request_query))
 				{
 					?>
 					<table id='socanTable' class='table col1'>
