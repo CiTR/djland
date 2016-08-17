@@ -11,6 +11,7 @@
 	$db_connection = new mysqli($db['address'], $db['username'], $db['password']);
 	$create_schema = 'CREATE SCHEMA djland';
 	$schema_result = $db_connection->query($create_schema);
+
 	echo "<tr><td>Create Schema</td>";
 	echo "<td>".($schema_result ? 1 : 0)."/1</td>";
 	echo "<td>".$create_schema."</td>";

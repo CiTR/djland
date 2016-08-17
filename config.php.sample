@@ -1,20 +1,12 @@
 <?php
 
-<<<<<<< HEAD:config-sample.php
 //Initialize config arrays.
-$enabled = array(); 
-$station_info = array();
-
-//Set to false in production
-$testing_environment = true;
-=======
 $enabled = array(); $station_info = array();
 $testing_environment = true;
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
 //*******************************************
->>>>>>> setup:config.php.sample
 
 //Radio station info
 $station_info['call_letters'] = 'CiTR';
@@ -26,18 +18,14 @@ $station_info['website'] = 'CiTR.ca';
 $station_info['tech_email'] = 'tech_person@station.ca';
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 $station_info['timezone'] = 'America/Vancouver';
-<<<<<<< HEAD:config-sample.php
-// For timezone reference http://ca1.php.net/manual/en/timezones.php
-=======
-// for a list of valid timezones, visit
-// http://ca1.php.net/manual/en/timezones.php
 
+// For timezone reference http://ca1.php.net/manual/en/timezones.php
 
 //*******************************************
 //* 2) DJLand Enabled Features
 //*******************************************
 //
->>>>>>> setup:config.php.sample
+
 
 //Enable or disable features of DJLand
 $enabled['library'] = true; // searchable music catalog (for physical recordings)
@@ -46,18 +34,9 @@ $enabled['adscheduler'] = true; // display what ads each programmer should play 
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
-<<<<<<< HEAD:config-sample.php
 $enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
 $enabled['sam_integration'] = true;
 
-//Database Connections
-$djland_db_address = '127.0.0.1';
-$djland_db_username = 'djland-username';
-$djland_db_password = 'djland-password';
-$djland_db_dbname = 'djland-databasename';
-=======
-$enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not implemented yet
-$enabled['sam_integration'] = false;
 
 //*******************************************
 //* 3) Database info (MySQL)
@@ -77,7 +56,7 @@ $sam_db = array(
 	'username'=>'username',
 	'password'=>'password',
 	'database'=>'database',
-	)
+	);
 
 //*******************************************
 //* 4) Podcast Configuration
@@ -111,49 +90,8 @@ if($enabled['podcast_tools']){
 //*******************************************
 //* 5) DJLand Configuration Constants / Variables. (Not you must manually edit your database to support changes here)
 //*******************************************
-<<<<<<< HEAD:config.php.sample
-// This enables access to items played from a SAM installation
-// DJ's can pull individual items into playsheets for "typing-free" playsheet logging
-// Playsheet entries from SAM can be edited and re-ordered just like manually entered items
-// DJ's can pull individual plays from a 'most recent' list or specify a time range and bulk-load plays
-
-$enabled['sam_integration'] = false; // <- change to true if you want to integrate SAM with djland
-// if SAM Broadcaster is being used, it must be installed using the MySQL option
-// SAM integration is fast if the IP address is on the local network (something like 192.168.x.x)
-// Highly recommended to use local network.
-$samDB_ip = 'ip address of computer running SAM mysql database';
-$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-$samDB_pass = 'password for that user';
-$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-// used to retreive podcast audio
-$archive_tool_url = 'http://archive.citr.ca';
-$archive_access_url = $archive_tool_url.
-    "/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog";
-
-// use this to put podcast audio, rss xml files on a network drive that provides FTP access
-$audio_path_online = 'http://mypodcast.com/audio/';
-$audio_path_local = '/var/www/audio/or/something/';
-
-$xml_path_online   = 'http://mypodcast.com/rss/';
-$xml_path_local   = '/var/www/xml/or/something/';
-
-/* DJLAND Constants
- * Be sure to update the constants.php file to include all constants if you wish to use them in JS
- */
-
-$djland_membership_year_date = date('04/31/'.idate('Y'));
-=======
 
 $djland_membership_rollover_month = 5;
->>>>>>> master:config-sample.php
->>>>>>> setup:config.php.sample
-
-if($enabled['sam_integration']){
-	$samDB_ip = 'ip address of computer running SAM mysql database';
-	$samDB_user = 'mysql username of above mysql database with select, insert, etc priveleges';
-	$samDB_pass = 'password for that user';
-	$samDB_dbname = 'name of SAM table in the db (probably is SAMDB)';
-}
 
 //Podcasting tools support
 if($enabled['podcast_tools']){
@@ -185,7 +123,7 @@ $djland_membership_cutoff_month=5;
 
 //Permission levels, their value, and the tooltip shown when you hover over it.
 $djland_permission_levels = array(
-    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'"Power Overwhelming."'),
+    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Power Overwhelming.'),
     'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
     'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
     'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
@@ -297,17 +235,10 @@ $djland_primary_genres = array(
 	);
 //Upload categories, and their accepted formats.
 $djland_upload_categories = array(
-<<<<<<< HEAD:config-sample.php
-	"show_image"=>array('jpg','jpeg','gif','png','tiff'),
-	"friend_image"=>array('jpg','jpeg','gif','png','tiff'),
-	"special_broadcast_image"=>array('jpg','jpeg','gif','png','tiff'),
-	"member_resource"=>array('pdf','jpg','jpeg','gif','png','tiff'),
-=======
 	"show_image"=>array('jpg','jpeg','gif','png'),
 	"friend_image"=>array('jpg','jpeg','gif','png'),
 	"special_broadcast_image"=>array('jpg','jpeg','gif','png'),
 	"member_resource"=>array('pdf','jpg','jpeg','gif','png'),
->>>>>>> setup:config.php.sample
 	"episode_image"=>array('jpg','jpeg','gif','png','tiff'),
 	"episode_audio"=>array('mp3'),
 	);

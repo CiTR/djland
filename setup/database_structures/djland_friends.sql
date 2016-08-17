@@ -7,7 +7,7 @@ CREATE TABLE `friends` (
   `address` tinytext,
   `website` varchar(60) DEFAULT NULL,
   `phone` varchar(17) DEFAULT NULL,
-  `discount` varchar(45) DEFAULT NULL,
+  `discount` tinytext DEFAULT NULL,
   `image_url` varchar(120) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `edited` timestamp NULL DEFAULT NULL,

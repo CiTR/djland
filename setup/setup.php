@@ -20,12 +20,13 @@
 					<h2>Station Info</h2>
 					<h4>General Info</h4>
 					<div>
-						<input name='station_info[station_name]' placeholder='Station Name' />
+						<input name='station_info[name]' placeholder='Station Name' />
 						<input name='station_info[call_letters]' placeholder='Call Letters' />
 						<input name='station_info[frequency]' placeholder='Frequency' />
 						<input name='station_info[website]' placeholder='Website' />
 						<input name='station_info[station_id]' placeholder='Default Station ID' />
 						<input name='station_info[tech_email]' placeholder='Tech Help Email' />
+						<input name='station_info[password_recovery_email]' placeholder='Password Recovery Email'/>
 					</div>
 					<h4>Station Location</h4>
 					<div>
@@ -136,13 +137,13 @@
 					<h2>Podcasting Variables (optional)</h2>
 					<h4>Audio Paths</h4>
 					<div>
-						<input name='path[audio_base]' class='form-control' placeholder='/path/to/audio/base' />
-						<input name='url[audio_base]' class='form-control' placeholder='http://path/to/hosted/audio/base' />
+						Local Path to Audio<input name='path[audio_base]' class='form-control' placeholder='/path/to/audio/base' />
+						Web Path to Audio<input name='url[audio_base]' class='form-control' placeholder='http://path/to/hosted/audio/base' />
 					</div>
 					<h4>Show XML Paths</h4>
 					<div>
-						<input name='path[xml_base]' class='form-control' placeholder='/path/to/xml/base' />
-						<input name='url[xml_base]' class='form-control' placeholder='http://path/to/hosted/xml/base' />
+						Local Path to XMLs<input name='path[xml_base]' class='form-control' placeholder='/path/to/xml/base' />
+						Web Path to XMLs<input name='url[xml_base]' class='form-control' placeholder='http://path/to/hosted/xml/base' />
 					</div>
 					<h4>Podcast Audio Generator</h4>
 					<div>
