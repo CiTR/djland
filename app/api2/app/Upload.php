@@ -27,7 +27,9 @@ class Upload extends Model{
 			$response->text = "Valid file not given.";
 			$response->success = false;
 			return $response;
-		$check = getimagesize($_FILES["file"]["tmp_name"]);
+		}
+		$temp_file = $_FILES['file']['tmp_file'];
+		$check = getimagesize($temp_file);
 
 		if($check == false){
 			$response->text = "File is not an image";
@@ -85,7 +87,7 @@ class Upload extends Model{
 
 		if(move_uploaded_file($_FILES['file']['tmp_name'],$target_file){
 			if(chmod($target_file,0661)){
-				$response->text = "The file ". basename( $_FILES["friendFile"]["name"]). " has been uploaded.";
+				$response->text = "The file ". basename( $temp_file['name']). " has been uploaded.";
 				$respones->success = true;
 				$response->path = $target_file;
 				$response->url = $target_url;
@@ -109,6 +111,10 @@ class Upload extends Model{
 				$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
 				$target_file = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time));
 				break;
+			default:
+				//we only accepting audio files for episode audio right now.
+				break;
 		}
+		if(getID3())
 	}
 }
