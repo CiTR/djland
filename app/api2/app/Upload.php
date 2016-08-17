@@ -21,17 +21,17 @@ class Upload extends Model{
 
     public function uploadImage($file){
     	require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-		require_once($_SERVER['DOCUMENT_ROOT']."/custom_exception.php");
 		$response = new StdClass();
 
 		if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
-			$response->response = "Valid file not given.";
-			$response->ok = false;
+			$response->text = "Valid file not given.";
+			$response->success = false;
 			return $response;
 		$check = getimagesize($_FILES["file"]["tmp_name"]);
+
 		if($check == false){
-			$response->response = "File is not an image";
-			$response->ok = false;
+			$response->text = "File is not an image";
+			$response->success = false;
 			return $response;
 		}
 
@@ -83,20 +83,23 @@ class Upload extends Model{
 		$target_file = $target_dir.$stripped_name.".".$today.$this->file_type;
 		$target_url = str_replace($_SERVER['DODCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
 
-
-
-
-
-
-
-
-    	//Check if the category exists
-    	if(array_key_exists($this->category,$djland_upload_types)){
-    		//Check if the file type is allowed for that category
-    		if( in_array($this->file_type,$djland_upload_types[$this->category])){
-
-    		}
-    	}
+		if(move_uploaded_file($_FILES['file']['tmp_name'],$target_file){
+			if(chmod($target_file,0661)){
+				$response->text = "The file ". basename( $_FILES["friendFile"]["name"]). " has been uploaded.";
+				$respones->success = true;
+				$response->path = $target_file;
+				$response->url = $target_url;
+				return $response;
+			}else{
+				$response->text = "Could not set permissions for file.";
+				$response->success = false;
+				return $response;
+			}
+		}else{
+			$response->text = "Could not move file to directory.";
+			$response->success = false;
+			return $response;
+		}
     }
 	public function uploadAudio($file){
 		switch($this->category){
