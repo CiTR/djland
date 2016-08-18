@@ -23,7 +23,7 @@ class Upload extends Model{
     	require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 		$response = new StdClass();
 
-		if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null)
+		if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null){
 			$response->text = "Valid file not given.";
 			$response->success = false;
 			return $response;
@@ -36,7 +36,6 @@ class Upload extends Model{
 			$response->success = false;
 			return $response;
 		}
-
 
     	//Get dirs based on file type
     	$base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
@@ -54,8 +53,6 @@ class Upload extends Model{
 		if(!file_exists($target_dir)){
 			mkdir($target_dir,0755);
 		}
-
-		$today = date('Y-m-d');
 
 		//Ensure the target folder exists, if not create it
 		switch($this->category){
@@ -82,10 +79,13 @@ class Upload extends Model{
 			case 'default':
 				break;
 		}
+
+		//Generate File Names & Directories
+		$today = date('Y-m-d');
 		$target_file = $target_dir.$stripped_name.".".$today.$this->file_type;
 		$target_url = str_replace($_SERVER['DODCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
 
-		if(move_uploaded_file($_FILES['file']['tmp_name'],$target_file){
+		if(move_uploaded_file($_FILES['file']['tmp_name'],$target_file)){
 			if(chmod($target_file,0661)){
 				$response->text = "The file ". basename( $temp_file['name']). " has been uploaded.";
 				$respones->success = true;
@@ -104,17 +104,65 @@ class Upload extends Model{
 		}
     }
 	public function uploadAudio($file){
+		if(!$file){
+			$response->text = "Valid file not given.";
+			$response->success = false;
+			return $response;
+		}
+		if(!id3_get_tag($temp_file)){
+			$response->success = false;
+			$response->text = 'File is not a valid mp3 file';
+			return $response;
+		}
+
+		//chars to strip from names + dirs
+		$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','?','!');
+
 		switch($this->category){
 			case 'episode_audio':
-				$podcast = Podcast::find($this->foreign_key);
-				$stripped_show_name = str_replace($strip,'',$podcast->show->name);
+				//Get the podcast
+				$podcast = Podcast::find($this->relation_id);
+
+				//Strip unwanted chars from the show name and convert & to and
+				$stripped_show_name = str_replace('&','and',str_replace($strip,'',$podcast->show->name));
+
+				//Create the file directory,name, and url
 				$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
-				$target_file = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time));
+				//check if file exists already. If so, we overwrite existing file
+				if($podcast->length && $podcast->length > 0 || $podcast->url != null){
+					$target_file_name = $target_dir.explode('/',$this->url,6)[5];
+				}else{
+					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time).'.mp3');
+				}
+				$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$target_file_name;
 				break;
 			default:
 				//we only accepting audio files for episode audio right now.
 				break;
 		}
-		if(getID3())
+
+		$target_file = fopen($target_file_name,'wb');
+		$num_bytes = 0;
+		//check if the file opens
+		if($target_file){
+			while(!feof($temp_file)){
+				$buffer = fread($file_from_archive,1024*16);
+				$num_bytes += fwrite($target_file,$buffer);
+			}
+
+			$podcast->length = $num_bytes;
+			$podcast->save();
+			$response['audio'] = array('url'=>$podcast->url,'size'=>$num_bytes);
+			$response['xml'] = $podcast->show->make_show_xml();
+
+			while(is_resource($target_file)){
+				//make sure we close the file handle
+				fclose($target_file);
+			}
+		}else{
+			$response->success = false;
+			$response->text = "Failed to open file for write";
+		}
+		return $response;
 	}
 }

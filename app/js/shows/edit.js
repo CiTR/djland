@@ -98,7 +98,7 @@
       this.secondary_genres = new Array();
       this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
       this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-    }
+	}
     this.loadShow = function(){
       call.getShow(this.active_show.id).then(
         (
@@ -109,6 +109,7 @@
             this.info.name = tools.decodeHTML(this.info.name);
             this.info.show_desc = tools.decodeHTML(this.info.show_desc);
             this.shared.setShowName(this.info.name);
+			this.shared.setShowId(this.info.id);
             //Split genres on comma to allow user management
 
             this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
@@ -436,19 +437,25 @@
         function uploadCanceled(evt) {
           $scope.$apply(function(){
             $scope.progressVisible = false
-          })
-          alert("The upload has been canceled by the user or the browser dropped the connection.")
+			});
+          alert("The upload has been canceled by the user or the browser dropped the connection.");
         }
       });
 
       app.factory('shared',function($rootScope){
         var service = {};
+		service.show_id = "";
         service.show_img = "";
         service.show_name = "";
+		service.getShowID = function(){
+			return this.show_id;
+		}
+		service.setShowID = function(id){
+			this.show_id = id;
+		}
         service.setShowImg = function(image_url){
           this.show_img = image_url;
           $rootScope.$broadcast('image_upload');
-
         }
         service.getShowImg = function(){
           return this.show_img;

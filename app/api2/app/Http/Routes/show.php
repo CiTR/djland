@@ -51,7 +51,8 @@ Route::group(array('prefix'=>'show'),function(){
 	Route::group(array('prefix'=>'{id}'),function($id=id){
 		//Returns show object including social, showtimes
 		Route::get('/',function($id){
-			$show = Show::find($id);
+			if(!$show = Show::find($id)) return null;
+
 			$show->social = Show::find($id)->social;
 			$show->show_times = Show::find($id)->showtimes;
 			return Response::json($show);
@@ -59,7 +60,14 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::post('/',function($id){
 			return Response::json(Show::find($id)->update((array) Input::get()['show']));
 		});
-
+		Route::group(array('prefix'=>'image'),function($id){
+			Route::get('/',function($id){
+				return Response::json(Show::find($id)->image);
+			});
+			Route::put('/',function($id){
+				return Response::json(Upload::create((array) Input::get()['image']));
+			});
+		});
 		Route::group(array('prefix'=>'social'),function($id){
 			//return all social entries for a show
 			Route::get('/',function($id){

@@ -173,12 +173,6 @@ class Podcast extends Model
 
 			//If we open local file
 			if($target_file){
-				//Attempt to add ID3 Tags
-				//if($tags && $error == '') {
-		        //    rewind($target_file);
-		        //    write_tags($tags,$info['uri']);
-		        //    rewind($target_file);
-
 				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
 				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 16mb bytes
@@ -196,7 +190,7 @@ class Podcast extends Model
 				}
 			}
 			while(is_resource($file_from_archive)){
-			   //Handle still open
+			   //Archive file handle still open
 			   fclose($file_from_archive);
 			}
 		}

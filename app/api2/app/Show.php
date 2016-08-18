@@ -24,6 +24,9 @@ class Show extends Model
     public function showtimes(){
         return $this->hasMany('App\Showtime');
     }
+	public function image(){
+		return $this->hasMany('App\Upload','relation_id','id');
+	}
     public function nextShowTime(){
         date_default_timezone_set('America/Los_Angeles');
 
@@ -142,9 +145,9 @@ class Show extends Model
         }else{
 		//No showtimes for this show, create one.
 		$seconds_elapsed = strtotime('now')%$one_hour;
-	
+
 		if($seconds_elapsed <=15*$one_minute){
-			$start = strtotime('now') - $seconds_elapsed;	
+			$start = strtotime('now') - $seconds_elapsed;
 		}elseif($seconds_elapsed > 15*$one_minute && $seconds_elapsed <= 45*$one_minute){
 			$start = strtotime('now') - $seconds_elapsed + 30*$one_minute;
 		}else{
