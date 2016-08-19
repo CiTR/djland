@@ -7,6 +7,7 @@ use App\Showtime as Showtime;
 use App\Host as Host;
 use App\Social as Social;
 use App\Member as Member;
+use App\Upload as Upload;
 
 Route::group(array('prefix'=>'show'),function(){
 	//Creating new Show
@@ -64,8 +65,18 @@ Route::group(array('prefix'=>'show'),function(){
 			Route::get('/',function($id){
 				return Response::json(Show::find($id)->image);
 			});
-			Route::put('/',function($id){
-				return Response::json(Upload::create((array) Input::get()['image']));
+			Route::post('/',function($id){
+				if(Input::hasFile('image')){
+					$file = Input::file('image');
+					try{
+						$upload = Upload::create(array('category'=>'show_image','relation_id'=>$id,'size'=>$file->getClientSize(),'file_type'=>$file->getClientOriginalExtension()));
+						return Response::json($upload->uploadImage($file));
+					}catch(Exception $iae){
+						return Response::json($iae->getMessage(),500);
+					}
+				}else{
+					return Response::json('No File',500);
+				}
 			});
 		});
 		Route::group(array('prefix'=>'social'),function($id){

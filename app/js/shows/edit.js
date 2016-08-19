@@ -80,7 +80,7 @@
       call.isStaff(this.member_id).then(
         (
           function(response){
-            this.admin = response.data;
+            this.is_admin = response.data;
           }
         ).bind(this)
         ,function(error){
@@ -109,12 +109,11 @@
             this.info.name = tools.decodeHTML(this.info.name);
             this.info.show_desc = tools.decodeHTML(this.info.show_desc);
             this.shared.setShowName(this.info.name);
-			this.shared.setShowId(this.info.id);
+			this.shared.setShowID(this.info.id);
             //Split genres on comma to allow user management
 
             this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
             this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
-
 
             //Remove Social array from the show object.
             this.socials = response.data.social;
@@ -177,7 +176,27 @@
         ).bind(this)
       );
     }
+	this.uploadImage = function(){
+		var form = new FormData($('#upload_image'));
+		var file = $('#image_file')[0].files[0];
+		console.log(file);
+		form.append('image',file);
 
+		var request = $.ajax({
+			url: 'api2/public/show/'+shared.getShowID()+'/image',
+			method: 'POST',
+			dataType: 'json',
+			processData: false,
+			contentType: false,
+			data: form
+		});
+		$.when(request).then((function(response){
+			this.info.show_img = response.url;
+			console.log(response);
+		}).bind(this),function(error){
+			alert(error.responseText);
+		});
+	}
     this.addFirstSocial = function(){
       //Add template row for social
       this.socials.push(angular.copy(this.social_template));
@@ -322,125 +341,131 @@
         this.init();
       });
 
-      //FILE UPLOAD CONTROLLER
-      app.controller('FileUploadCtrl',function($scope,$rootScope,shared){
-
-        //============== DRAG & DROP =============
-        // source for drag&drop: http://www.webappers.com/2011/09/28/drag-drop-file-upload-with-html5-javascript/
-        var dropbox = document.getElementById("dropbox")
-        $scope.dropText = 'Drop show image file here...'
-        this.shared = shared;
-
-        // init event handlers
-        function dragEnterLeave(evt) {
-          evt.stopPropagation()
-          evt.preventDefault()
-          $scope.$apply(function(){
-            $scope.dropText = 'Drop show image file here...'
-            $scope.dropClass = ''
-          })
-        }
-        dropbox.addEventListener("dragenter", dragEnterLeave, false)
-        dropbox.addEventListener("dragleave", dragEnterLeave, false)
-        dropbox.addEventListener("dragover", function(evt) {
-          evt.stopPropagation()
-          evt.preventDefault()
-          var clazz = 'not-available'
-          var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0
-          $scope.$apply(function(){
-            $scope.dropText = ok ? 'Drop show image file here...' : 'Only files are allowed!'
-            $scope.dropClass = ok ? 'over' : 'not-available'
-          })
-        }, false)
-        dropbox.addEventListener("drop", function(evt) {
-          console.log('drop evt:', JSON.parse(JSON.stringify(evt.dataTransfer)))
-          evt.stopPropagation()
-          evt.preventDefault()
-          $scope.$apply(function(){
-            $scope.dropText = 'Drop show image file here...'
-            $scope.dropClass = ''
-          })
-          var files = evt.dataTransfer.files
-          if (files.length > 0) {
-            $scope.$apply(function(){
-              $scope.files = []
-              for (var i = 0; i < files.length; i++) {
-                $scope.files.push(files[i])
-              }
-            })
-          }
-        }, false)
-        //============== DRAG & DROP =============
-
-        $scope.setFiles = function(element) {
-          $scope.$apply(function($scope) {
-            console.log('files:', element.files);
-            // Turn the FileList object into an Array
-            $scope.files = []
-            for (var i = 0; i < element.files.length; i++) {
-              $scope.files.push(element.files[i])
-            }
-            $scope.progressVisible = false
-          });
-        };
-
-        $scope.uploadFile = function() {
-          if(shared.getShowName() == "" || shared.getShowName() == null){
-            alert("Please set a show name first!");
-          }else{
-            var fd = new FormData()
-            for (var i in $scope.files) {
-              fd.append("showFile", $scope.files[i])
-            }
-            fd.append('show_name',$('#show_name').val());
-            var xhr = new XMLHttpRequest()
-            xhr.upload.addEventListener("progress", uploadProgress, false)
-            xhr.addEventListener("load", uploadComplete, false)
-            xhr.addEventListener("error", uploadFailed, false)
-            xhr.addEventListener("abort", uploadCanceled, false)
-            xhr.open("POST", "/form-handlers/shows/image_upload.php");
-            $scope.progressVisible = true
-            xhr.send(fd);
-          }
-        }
-
-        function uploadProgress(evt) {
-          $scope.$apply(function(){
-            if (evt.lengthComputable) {
-              $scope.progress = Math.round(evt.loaded * 100 / evt.total)
-            } else {
-              $scope.progress = 'unable to compute'
-            }
-          })
-        }
-
-        function uploadComplete(evt) {
-          /* This event is raised when the server send back a response */
-          var response_object = JSON.parse(evt.target.responseText);
-          var status = evt.target.status;
-          var response = response_object.response;
-          var path = response_object.path;
-          var web_path = response_object.web_path;
-          var upload_ok = response_object.ok;
-          $scope.files = new Array();
-          alert(response);
-          if(upload_ok){
-            //$('#show_image').val(web_path);
-            shared.setShowImg(web_path);
-          }
-        }
-
-        function uploadFailed(evt) {
-          alert("There was an error attempting to upload the file.")
-        }
-
-        function uploadCanceled(evt) {
-          $scope.$apply(function(){
-            $scope.progressVisible = false
-			});
-          alert("The upload has been canceled by the user or the browser dropped the connection.");
-        }
-      });
+    //   //FILE UPLOAD CONTROLLER
+    //   app.controller('FileUploadCtrl',function($scope,$rootScope,shared){
+	  //
+    //     //============== DRAG & DROP =============
+    //     // source for drag&drop: http://www.webappers.com/2011/09/28/drag-drop-file-upload-with-html5-javascript/
+    //     var dropbox = document.getElementById("dropbox")
+    //     $scope.dropText = 'Drop show image file here...'
+    //     this.shared = shared;
+	  //
+    //     // init event handlers
+    //     function dragEnterLeave(evt) {
+    //       evt.stopPropagation()
+    //       evt.preventDefault()
+    //       $scope.$apply(function(){
+    //         $scope.dropText = 'Drop show image file here...'
+    //         $scope.dropClass = ''
+    //       })
+    //     }
+    //     dropbox.addEventListener("dragenter", dragEnterLeave, false)
+    //     dropbox.addEventListener("dragleave", dragEnterLeave, false)
+    //     dropbox.addEventListener("dragover", function(evt) {
+    //       evt.stopPropagation()
+    //       evt.preventDefault()
+    //       var clazz = 'not-available'
+    //       var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0
+    //       $scope.$apply(function(){
+    //         $scope.dropText = ok ? 'Drop show image file here...' : 'Only files are allowed!'
+    //         $scope.dropClass = ok ? 'over' : 'not-available'
+    //       })
+    //     }, false)
+    //     dropbox.addEventListener("drop", function(evt) {
+    //       console.log('drop evt:', JSON.parse(JSON.stringify(evt.dataTransfer)))
+    //       evt.stopPropagation()
+    //       evt.preventDefault()
+    //       $scope.$apply(function(){
+    //         $scope.dropText = 'Drop show image file here...'
+    //         $scope.dropClass = ''
+    //       })
+    //       var files = evt.dataTransfer.files
+    //       if (files.length > 0) {
+    //         $scope.$apply(function(){
+    //           $scope.files = []
+    //           for (var i = 0; i < files.length; i++) {
+    //             $scope.files.push(files[i])
+    //           }
+    //         })
+    //       }
+    //     }, false)
+    //     //============== DRAG & DROP =============
+	  //
+    //     $scope.setFiles = function(element) {
+    //       $scope.$apply(function($scope) {
+    //         console.log('files:', element.files);
+    //         // Turn the FileList object into an Array
+    //         $scope.files = []
+    //         for (var i = 0; i < element.files.length; i++) {
+    //           $scope.files.push(element.files[i])
+    //         }
+    //         $scope.progressVisible = false
+    //       });
+    //     };
+	  //
+    //     $scope.uploadFile = function() {
+    //       if(shared.getShowName() == "" || shared.getShowName() == null){
+    //         alert("Please set a show name first!");
+    //       }else{
+    //         var fd = new FormData()
+    //         for (var i in $scope.files) {
+    //           fd.append("image", $scope.files[i])
+    //         }
+	// 		fd.append("showname",shared.getShowName());
+	  //
+	  //
+	// 		$.when(request).then(function(response){
+	// 			console.log(response);
+	// 		});
+	  //
+	// 		// var xhr = new XMLHttpRequest()
+    //         // xhr.upload.addEventListener("progress", uploadProgress, false)
+    //         // xhr.addEventListener("load", uploadComplete, false)
+    //         // xhr.addEventListener("error", uploadFailed, false)
+    //         // xhr.addEventListener("abort", uploadCanceled, false)
+    //         // xhr.open("PUT", "/api2/public/show/"+shared.getShowID()+'/image');
+    //         // $scope.progressVisible = true
+    //         // xhr.send(fd);
+    //       }
+    //     }
+	  //
+    //     function uploadProgress(evt) {
+    //       $scope.$apply(function(){
+    //         if (evt.lengthComputable) {
+    //           $scope.progress = Math.round(evt.loaded * 100 / evt.total)
+    //         } else {
+    //           $scope.progress = 'unable to compute'
+    //         }
+    //       })
+    //     }
+	  //
+    //     function uploadComplete(evt) {
+    //       /* This event is raised when the server send back a response */
+    //       var response_object = JSON.parse(evt.target.responseText);
+    //       var status = evt.target.status;
+    //       var response = response_object.response;
+    //       var path = response_object.path;
+    //       var web_path = response_object.web_path;
+    //       var upload_ok = response_object.ok;
+    //       $scope.files = new Array();
+    //       alert(response);
+    //       if(upload_ok){
+    //         //$('#show_image').val(web_path);
+    //         shared.setShowImg(web_path);
+    //       }
+    //     }
+	  //
+    //     function uploadFailed(evt) {
+    //       alert("There was an error attempting to upload the file.")
+    //     }
+	  //
+    //     function uploadCanceled(evt) {
+    //       $scope.$apply(function(){
+    //         $scope.progressVisible = false
+	// 		});
+    //       alert("The upload has been canceled by the user or the browser dropped the connection.");
+    //     }
+    //   });
 
       app.factory('shared',function($rootScope){
         var service = {};

@@ -13,26 +13,18 @@ class Upload extends Model{
 
 	public static function create(array $attributes = array()){
 		//Check to see if the file type is acceptable. If not, throw an exception.
-		require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
+		require_once(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
 		$allowed_file_types = $djland_upload_categories[$attributes['category']];
 		if(!in_array($attributes['file_type'],$allowed_file_types)) throw new InvalidArgumentException('File Type Not Allowed: '.$attributes['file_type']);
 		return parent::create($attributes);
 	}
 
     public function uploadImage($file){
-    	require_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-		$response = new StdClass();
+    	require_once(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
+		$response = new \StdClass();
 
-		if($_FILES == null || $this->file_name == null || $this->path == null || $this->category == null){
+		if($file == null || $this->category == null){
 			$response->text = "Valid file not given.";
-			$response->success = false;
-			return $response;
-		}
-		$temp_file = $_FILES['file']['tmp_file'];
-		$check = getimagesize($temp_file);
-
-		if($check == false){
-			$response->text = "File is not an image";
 			$response->success = false;
 			return $response;
 		}
@@ -51,18 +43,20 @@ class Upload extends Model{
 		//Ensure the category folder exists, if not create it
     	$target_dir = $base_dir.$this->category."/";
 		if(!file_exists($target_dir)){
-			mkdir($target_dir,0755);
+			mkdir($target_dir,0775);
 		}
 
 		//Ensure the target folder exists, if not create it
 		switch($this->category){
 			case 'show_image':
 				$show = Show::find($this->relation_id);
-				$stripped_name = str_replace($strip,'',$show->name);
+				$target_dir = $target_dir.str_replace($strip,'',$show->name).'/';
+				$stripped_name = str_replace($strip,'',explode('.',$file->getClientOriginalName())[0]);
 				break;
 			case 'episode_image':
 				$podcast = Podcast::find($this->relation_id);
-				$stripped_name = str_replace($strip,'',$podcast->show->name);
+				$target_dir = $target_dir.str_replace($strip,'',$podcast->show->name);
+				$stripped_name = str_replace($strip,'',explode('.',$file->getClientOriginalName())[0]);
 				break;
 			case 'member_resource':
 				$resource = Resource::find($this->relation_id);
@@ -79,16 +73,22 @@ class Upload extends Model{
 			case 'default':
 				break;
 		}
-
+		$target_dir = str_replace(' ','_',$target_dir);
+		$stripped_name = str_replace(' ','_',$stripped_name);
 		//Generate File Names & Directories
 		$today = date('Y-m-d');
-		$target_file = $target_dir.$stripped_name.".".$today.$this->file_type;
-		$target_url = str_replace($_SERVER['DODCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
+		$target_file_name = $stripped_name.".".$this->file_type;
+		$target_file = $target_dir.$target_file_name;
+		$target_url = str_replace($_SERVER['DOCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
+		if($file->move($target_dir,$target_file_name)){
+			if(chmod($target_file,0665)){
+				$this->file_name = $target_file_name;
+				$this->path = $target_file;
+				$this->url = $target_url;
+				$this->save();
 
-		if(move_uploaded_file($_FILES['file']['tmp_name'],$target_file)){
-			if(chmod($target_file,0661)){
-				$response->text = "The file ". basename( $temp_file['name']). " has been uploaded.";
-				$respones->success = true;
+				$response->text = "The file ".$target_file_name. " has been uploaded.";
+				$response->success = true;
 				$response->path = $target_file;
 				$response->url = $target_url;
 				return $response;
