@@ -11,7 +11,9 @@ class Friends extends Model
     protected $table = 'friends';
    	protected $guarded	= array('id');
     protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
-
+	public function image(){
+		return $this->hasOne('App\Upload','relation_id','id');
+	}
     public static function write_static(){
         require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 

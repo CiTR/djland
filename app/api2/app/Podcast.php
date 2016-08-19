@@ -17,6 +17,9 @@ class Podcast extends Model
     public function show(){
     	return $this->belongsTo('App\Show');
     }
+	public function image(){
+		return $this->hasOne('App\Upload','relation_id','id');
+	}
     public function make_podcast(){
     	$response = $this->make_audio();
     	return $response;

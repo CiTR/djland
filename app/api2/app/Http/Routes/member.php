@@ -83,25 +83,50 @@ Route::group(['middleware' => 'auth'], function(){
 				$member -> comments = json_decode(Input::get()['comments']);
 				return Response:: json($member -> save());
 			});
+			//returns if a user is trained or not.
 			Route::get('training',function($id){
+				Require_once(dirname($_SERVER['DOCUIMENT_ROOT'])."/config.php");
 				$member =  Member::find($id);
-				if($member->station_tour == '0' || $member->technical_training == '0' || $member->programming_training == '0' || $member->production_training == '0'){
-					return 0;
-				}else{
-					return 1;
+				foreach($djland_training as $key=>$training){
+					if($member->$training == '0') return 0;
 				}
+				return 1;
 			});
-			Route::get('user',function($id){
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
-				else return "Nope";
+			//Currently Unused Member Image code
+			Route::group(array('prefix'=>'image'),function($id){
+				//Gets member images
+				Route::get('/',function($id){
+					return Response::json(Show::find($id)->image);
+				});
+				//uploads a member image
+				Route::post('/',function($id){
+					if(Input::hasFile('image')){
+						$file = Input::file('image');
+						try{
+							$upload = Upload::create(array('category'=>'member_image','relation_id'=>$id,'size'=>$file->getClientSize(),'file_type'=>$file->getClientOriginalExtension()));
+							return Response::json($upload->uploadImage($file));
+						}catch(Exception $iae){
+							return Response::json($iae->getMessage(),500);
+						}
+					}else{
+						return Response::json('No File',500);
+					}
+				});
 			});
-			Route::post('user',function($id){
-				$m = Member::find($id);
-				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
-				else return "Nope";
+			Route::group(array('prefix'=>'/user'),function($id){
+				Route::get('/',function($id){
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return Member::find($id)->user;
+					else return "Nope";
+				});
+				Route::post('/',function($id){
+					$m = Member::find($id);
+					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
+					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1  || $id = $_SESSION['sv_id']) return $m->user->update(Input::get()['user']) ? "true": "false";
+					else return "Nope";
+				});
 			});
+
 			Route::group(array('prefix'=>'permission'),function($id){
 				Route::post('/',function($id){
 					$permission = Member::find($id)->user->permission;
@@ -179,6 +204,5 @@ Route::group(['middleware' => 'auth'], function(){
 				return  Response::json($shows);
 			});
 		});
-
 	});
 });
