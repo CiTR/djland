@@ -23,7 +23,7 @@
 				return Upload::find($id)->update((array) Input::get()['upload']);
 			});
 			Route::delete('/',function($id){
-				return Upload::find($id)->delete();
+				return Response::json(Upload::find($id)->delete());
 			});
 		});
 	});

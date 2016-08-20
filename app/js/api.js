@@ -47,6 +47,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShowTimes: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
 		},
+		getShowImages: function(show_id){
+			return $http.get(API_URL_BASE+'/show/'+show_id+'/image');
+		},
 		getNextShowTime: function(show_id,current_time){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow/"+current_time);
 		},
@@ -133,6 +136,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		deletePlaysheet:function(id){
 			return $http.delete(API_URL_BASE+'/playsheet/' + id);
+		},
+		deleteImage:function(id){
+			return $http.delete(API_URL_BASE+'/upload/'+id);
 		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');

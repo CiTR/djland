@@ -361,7 +361,27 @@ input, select, textarea, option{
 .large-button{
 	font-size:3em;
 }
+img.thumb{
+	max-width:200px;
+}
+.image-container{
+	width:200px;
+	margin-top:10px;
+	height:150px;
+	float:left;
+	position:relative;
 
+}
+.image-delete{
+	position:absolute;
+	top:0px;
+	right:0px;
+}
+.image-select{
+	position:absolute;
+	top:0px;
+	left:0px;
+}
 /*
  * Datepicker CSS
  */

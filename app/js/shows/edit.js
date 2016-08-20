@@ -100,72 +100,73 @@
       this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
 	}
     this.loadShow = function(){
-      call.getShow(this.active_show.id).then(
-        (
-          function(response){
-            this.info = response.data;
+		call.getShow(this.active_show.id).then(
+		(
+		  function(response){
+		    this.info = response.data;
 
-            //If either of these have HTML chars strip them so it will save without, the user being none the wiser
-            this.info.name = tools.decodeHTML(this.info.name);
-            this.info.show_desc = tools.decodeHTML(this.info.show_desc);
-            this.shared.setShowName(this.info.name);
+		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
+		    this.info.name = tools.decodeHTML(this.info.name);
+		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
+		    this.shared.setShowName(this.info.name);
 			this.shared.setShowID(this.info.id);
-            //Split genres on comma to allow user management
+		    //Split genres on comma to allow user management
 
-            this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
-            this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
+		    this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
+		    this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
 
-            //Remove Social array from the show object.
-            this.socials = response.data.social;
-            delete this.info.social;
-            this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
-            this.loading = false;
-          }
-        ).bind(this)
-        ,(
-          function(error){
-            this.loading = false;
-          }
-        ).bind(this)
-      );
-      //Call API to get show owners
-      call.getShowOwners(this.active_show.id).then(
-        (
-          function(response)
-          {
-            //If no response make an empty object
-            if(response.data != null){
-              this.show_owners = response.data.owners;
-            }else{
-              this.show_owners = Array();
-            }
-          }
-        ).bind(this)
-        ,function(error){
-          console.log('Could not get show owners for the active show.')
-        }
-      );
-      //Call API to get show times
-      call.getShowTimes(this.active_show.id).then(
-        (
-          function(response){
-            this.show_times = response.data;
-            this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-            //Allowing show times to be displayed in UI by splitting on colon
-            for(var showtime in this.show_times){
-              this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
-              this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
-              this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
-              this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
-            }
-          }
-        ).bind(this)
-        ,(
-          function(error){
-            this.loading = false;
-          }
-        ).bind(this)
-      );
+		    //Remove Social array from the show object.
+		    this.socials = response.data.social;
+		    delete this.info.social;
+		    this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
+		    this.loading = false;
+		  }
+		).bind(this)
+		,(
+		  function(error){
+		    this.loading = false;
+		  }
+		).bind(this)
+		);
+		//Call API to get show owners
+		call.getShowOwners(this.active_show.id).then(
+			(function(response)
+				{
+			    //If no response make an empty object
+			    if(response.data != null){
+			      this.show_owners = response.data.owners;
+			    }else{
+			      this.show_owners = Array();
+			    }
+			}).bind(this)
+			,function(error){
+				console.log('Could not get show owners for the active show.')
+			}
+		);
+		//Call API to get show times
+		call.getShowTimes(this.active_show.id).then(
+			(function(response){
+			    this.show_times = response.data;
+			    this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+			    //Allowing show times to be displayed in UI by splitting on colon
+			    for(var showtime in this.show_times){
+			      this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
+			      this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
+			      this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
+			      this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
+			    }
+			}).bind(this)
+			,(function(error){
+				this.loading = false;
+			}).bind(this)
+		);
+		call.getShowImages(this.active_show.id).then(
+			(function(response){
+				this.images = response.data;
+				console.log(this.images);
+			}).bind(this)
+
+		);
     }
     this.getMemberList = function(){
       call.getMemberList().then(
@@ -196,6 +197,13 @@
 		}).bind(this),function(error){
 			alert(error.responseText);
 		});
+	}
+	this.deleteImage = function(image_id){
+		call.deleteImage(image_id).then((function(){
+			var id = this.images.indexOf(this.images.filter(function(object){if(object.id == image_id) return object;})[0]);
+			console.log(id);
+			this.images.splice(id,1);
+		}).bind(this));
 	}
     this.addFirstSocial = function(){
       //Add template row for social

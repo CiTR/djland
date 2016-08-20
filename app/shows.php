@@ -90,7 +90,15 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input readonly class='fullinput' id='show_image' ng-model='show.info.show_img'>
+                <input readonly class='fullinput' id='show_image' ng-model='show.info.image'>
+				Select an existing image, or upload a new one.
+				<div class='col1'>
+					<div class='image-container' ng-repeat='image in show.images | orderBy:image.id'>
+						<input class='image-select' ng-click='show.info.image = image.url' type='checkbox' value='{{image.id}}' ng-checked='image.url == show.info.image' />
+						<img class='thumb' src='{{image.url}}'/>
+						<button type='button' class='image-delete' ng-click='show.deleteImage(image.id)'>X</button>
+					</div>
+				</div>
                 <div class='double-padded-top'>
                     <div  class="row">
                         <label for="fileToUpload" >Either choose files, or drag files</label><br/>

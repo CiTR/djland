@@ -63,7 +63,7 @@ Route::group(array('prefix'=>'show'),function(){
 		});
 		Route::group(array('prefix'=>'image'),function($id){
 			Route::get('/',function($id){
-				return Response::json(Show::find($id)->image);
+				return Response::json(Show::find($id)->images);
 			});
 			Route::post('/',function($id){
 				if(Input::hasFile('image')){

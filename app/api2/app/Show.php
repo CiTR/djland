@@ -7,7 +7,7 @@ class Show extends Model
     protected $table = 'shows';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'show_img', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
+    protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'image', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
 
     public function members(){
         return $this->belongsToMany('App\Member','member_show');
@@ -24,7 +24,7 @@ class Show extends Model
     public function showtimes(){
         return $this->hasMany('App\Showtime');
     }
-	public function image(){
+	public function images(){
 		return $this->hasMany('App\Upload','relation_id','id');
 	}
     public function nextShowTime(){
