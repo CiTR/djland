@@ -20,15 +20,15 @@ class Friends extends Model
 		}else{
 			$static_page = fopen($_SERVER['DOCUMENT_ROOT']."/static/friends.html",'w');
 		}
-		$friends = Friends::orderBy('name','asc')->get();
+		$friends = Friends::whereNotNull('name')->orderBy('name','asc')->get();
 		$alphabetical = array();
 		foreach($friends as $friend){
-			$alphabetical[$friend->name[0]][] = $friend;
+			$alphabetical[substr(trim($friend->name),0,1)][] = $friend;
 		}
 		$letters = array_keys($alphabetical);
 
 		$html = "<div>";
-		
+
 		$alphabet_nav = "<ul style='display:inline; font-size:1.5em; height:40px; list-style:none;'>";
 		foreach($letters as $letter){
 			$alphabet_nav .= "<li style='display:inline-block; padding:0px 5px 0px 5px;'><a href='#".$letter."'>".$letter."</a></li>";
