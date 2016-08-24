@@ -665,7 +665,7 @@
 	                        this.podcast.id = response.data.podcast_id;
 	                        this.podcast.playsheet_id = response.data.id;
 	                        this.tracklist_overlay = true;
-							if($('#audio_file')[0].files.length > 0){
+							if($('#audio_file')[0].files){
 								this.uploadAudio(this.podcast.id);
 							}else{
 								call.makePodcastAudio(this.podcast).then(
@@ -701,9 +701,7 @@
 								(function(response){
 	                                this.tracklist_overlay = true;
 									if($('#audio_file')[0].files.length > 0){
-										call.saveNewPodcast(this.podcast).then(function(response){
-											this.uploadAudio(response.podcast.id);
-										});
+										this.uploadAudio(response.podcast.id);
 									}else{
 										call.makePodcastAudio(this.podcast).then(
 											(function(reponse){
@@ -731,9 +729,7 @@
 							(function(response){
 	                            this.tracklist_overlay = true;
 								if($('#audio_file')[0].files.length > 0){
-									call.savePodcast(this.podcast).then(function(response){
-										this.uploadAudio(response.podcast.id);
-									});
+									this.uploadAudio(response.podcast.id);
 								}else{
 									call.makePodcastAudio(this.podcast).then(
 										(function(reponse){

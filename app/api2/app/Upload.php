@@ -137,7 +137,7 @@ class Upload extends Model{
 				if($podcast->length && $podcast->length > 0 || $podcast->url != null){
 					$target_file_name = $target_dir.explode('/',$podcast->url,6)[5];
 				}else{
-					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time).'.mp3');
+					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time)).'.mp3';
 				}
 				$target_url = 'http://playlist.citr.ca/podcasting/audio/'.date('Y',strtotime($podcast->playsheet->start_time)).'/'.$target_file_name;
 				break;
@@ -147,6 +147,7 @@ class Upload extends Model{
 		}
 
 		if($file->move($target_dir,$target_file_name)){
+			$podcast->url = $target_url;
 			$podcast->length = $file->getClientSize();
 			$podcast->save();
 			$response['audio'] = array('url'=>$podcast->url);

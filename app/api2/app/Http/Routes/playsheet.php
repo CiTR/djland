@@ -5,7 +5,7 @@ use App\Show as Show;
 use App\Playitem as Playitem;
 use App\Ad as Ad;
 use App\Socan as Socan;
-
+use App\Podcast as Podcast;
 //Assisting Classes
 use App\Member as Member;
 
