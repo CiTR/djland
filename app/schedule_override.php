@@ -75,18 +75,21 @@
 							</div>
 						</div>
 					</div>
-					<div class='image_upload'>
-						<!-- Image uploading -->
-						<div class='right'>
-							<div class='left col1'>
-				                <input class='file{{broadcast.id}} left' type="file" ng-model-instant/>
-				                <button type="button" class='left' ng-click="broadcasts.imageUpload(broadcast.id,broadcast.name)">Upload</button>
-			                </div>
-			                <div class='broadcast_image'>
-	                    		<img src="{{broadcast.image}}" alt='No Image Uploaded'/>
-	                		</div>
-	                	</div>
-            		</div>
+					<div class='right'>
+						<div class='double-padded-top'>
+							<div  class="row">
+								<label for="fileToUpload" >Choose Image File</label><br/>
+								<input type="file" name='image_file' id='image_file'/>
+							</div>
+							<button type="button" ng-click='broadcasts.uploadImage(broadcast.id)' >Upload</button>
+						</div>
+						<div class=' col1'>
+							<div class='image-container'>
+								<img class='thumb' src='{{broadcast.image}}'/>
+							</div>
+						</div>
+
+					</div>
 
 				</li>
 			</ul>

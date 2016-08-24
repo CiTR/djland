@@ -125,6 +125,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		saveEpisode: function(playsheet,podcast){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id+'/episode', angular.toJson({'playsheet':playsheet,'podcast':podcast}));
 		},
+		savePodcast: function(podcast){
+			return $http.put(API_URL_BASE+'/podcast', angular.toJson({'podcast':podcast}));
+		},
 		saveNewPlaysheet: function(playsheet,playitems,podcast,ads){
 			return $http.put(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}) );
 		},

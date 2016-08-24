@@ -6,8 +6,8 @@
         this.times = Array();
         this.shows = Array();
 		this.loading = true;
-        var this_ = this;	
-		this.init = function(){ 
+        var this_ = this;
+		this.init = function(){
 			this.loadBroadcasts();
 		}
 		this.loadBroadcasts = function(){
@@ -40,7 +40,7 @@
             var this_ = this;
             call.addBroadcast().then(function(response){
                 this_.initTime(this_.list.push({'id':response.data.id,'start':new Date() / 1000,'end':new Date() / 1000}) - 1);
-            });            
+            });
 		}
         this.save = function(){
             call.saveBroadcasts(this.list).then(function(response){
@@ -73,41 +73,32 @@
             this.list[index].end = this_.list[index].time.end_time / 1000;
 
         }
-        this.imageUpload = function(id,name){
-            var this_ = this;            
-            var input = $('.file'+id);
-            var fileExtension = ['jpeg', 'jpg', 'png', 'gif'];
-            if($.inArray(input.val().split('.').pop().toLowerCase(), fileExtension) == -1){
-                alert('Only formats allowed are:' + fileExtension.join(', '));
-            }else{
-                console.log(input.prop('files')[0]);
-                var form = new FormData();
-                form.append('specialbroadcastFile',input.prop('files')[0]);
-                form.append('specialbroadcast_name',name);
-                var ajax = $.ajax({
-                    type:"POST",
-                    processData: false,
-                    contentType: false,
-                    data: form,
-                    url: "/form-handlers/specialbroadcasts/image_upload.php",
-                    dataType: "json",
-                    async: true,
-
-                });
-                $.when(ajax).then(function(response){
-                    var broadcast = this_.list.filter(function(object){if(object.id == id) return object;})[0];                  
-                    $scope.$apply(function(){
-                        broadcast.image = response.web_path+ "?" + new Date().getTime();
-                    });
-                });
-            }
-           
-        }
+		this.uploadImage = function(id){
+			var form = new FormData();
+			var file = $('#image_file')[0].files[0];
+			form.append('image',file);
+			var request = $.ajax({
+				url: 'api2/public/specialbroadcasts/'+id+'/image',
+				method: 'POST',
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				data: form
+			});
+			$.when(request).then((function(response){
+				console.log(id);
+				console.log(response);
+				this.list.filter(function(object){if(object.id == id) return object;})[0].image = response.url;
+				$scope.$apply();
+			}).bind(this),function(error){
+				alert(error.responseText);
+			});
+		}
 
         this.init();
 	});
 
-    
+
 
 
 })();

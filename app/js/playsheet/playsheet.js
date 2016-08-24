@@ -19,7 +19,6 @@
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
         this.info.socan = $('#socan').text() == 'true' ? true : false;
-        console.log(this.info.socan);
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
@@ -657,45 +656,40 @@
                     this.info.create_name = this.username;
 
                     call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
-						(
-							function(response){
-		                        for(var playitem in this.playitems){
-		                            this.playitems[playitem].playsheet_id = this.info.id;
-		                        }
-								this.ads = response.data.ads;
-		                        this.info.id = response.data.id;
-		                        this.podcast.id = response.data.podcast_id;
-		                        this.podcast.playsheet_id = response.data.id;
-		                        this.tracklist_overlay = true;
-		                        call.makePodcastAudio(this.podcast).then(
-									(
-										function(reponse){
-			                            	this.podcast_status = "Podcast Audio Created Successfully.";
-			                        	}
-									).bind(this)
-									,(
-										function(error){
-				                            this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-				                            this.error = true;
-				                            this.log_error(error);
-			                        	}
-									).bind(this)
+						(function(response){
+	                        for(var playitem in this.playitems){
+	                            this.playitems[playitem].playsheet_id = this.info.id;
+	                        }
+							this.ads = response.data.ads;
+	                        this.info.id = response.data.id;
+	                        this.podcast.id = response.data.podcast_id;
+	                        this.podcast.playsheet_id = response.data.id;
+	                        this.tracklist_overlay = true;
+							if($('#audio_file')[0].files.length > 0){
+								this.uploadAudio(this.podcast.id);
+							}else{
+								call.makePodcastAudio(this.podcast).then(
+									(function(reponse){
+			                            this.podcast_status = "Podcast Audio Created Successfully.";
+			                        }).bind(this)
+									,(function(error){
+				                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+				                        this.error = true;
+				                        this.log_error(error);
+			                        }).bind(this)
 								);
-	                    	}
-						).bind(this)
-						,(
-							function(error){
-		                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
-		                        this.podcast_status = "Podcast Not created";
-		                        this.error = true;
-		                        this.log_error(error);
-		                        this.tracklist_overlay = true;
-		                    }
-						).bind(this)
+							}
+	                    }).bind(this)
+						,(function(error){
+	                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+	                        this.podcast_status = "Podcast Not created";
+	                        this.error = true;
+	                        this.log_error(error);
+	                        this.tracklist_overlay = true;
+		                }).bind(this)
 					);
                 }else{
                     //Existing Playsheet
-
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
@@ -703,20 +697,25 @@
                         call.saveNewPodcast(this.podcast).then(
 						(function(response){
                             this.podcast.id = response.data['id'];
-							console.log(response);
                             call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 								(function(response){
 	                                this.tracklist_overlay = true;
-	                                call.makePodcastAudio(this.podcast).then(
-										(function(reponse){
-		                                    this.podcast_status = "Podcast Audio Created Successfully.";
-		                                }).bind(this)
-										,(function(error){
-			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-			                                this.error = true;
-			                                this.log_error(error);
-			                            }).bind(this)
-									);
+									if($('#audio_file')[0].files.length > 0){
+										call.saveNewPodcast(this.podcast).then(function(response){
+											this.uploadAudio(response.podcast.id);
+										});
+									}else{
+										call.makePodcastAudio(this.podcast).then(
+											(function(reponse){
+					                            this.podcast_status = "Podcast Audio Created Successfully.";
+					                        }).bind(this)
+											,(function(error){
+						                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+						                        this.error = true;
+						                        this.log_error(error);
+					                        }).bind(this)
+										);
+									}
 								}).bind(this)
 							);
 						}).bind(this)
@@ -731,20 +730,22 @@
                         call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 							(function(response){
 	                            this.tracklist_overlay = true;
-	                            call.makePodcastAudio(this.podcast).then(
-									(
-										function(reponse){
-			                                this.podcast_status = "Podcast Audio Created Successfully.";
-			                            }
-									).bind(this)
-									,(
-										function(error){
-			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-			                                this.error = true;
-			                                this.log_error(error);
-			                            }
-									).bind(this)
-								);
+								if($('#audio_file')[0].files.length > 0){
+									call.savePodcast(this.podcast).then(function(response){
+										this.uploadAudio(response.podcast.id);
+									});
+								}else{
+									call.makePodcastAudio(this.podcast).then(
+										(function(reponse){
+				                            this.podcast_status = "Podcast Audio Created Successfully.";
+				                        }).bind(this)
+										,(function(error){
+					                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+					                        this.error = true;
+					                        this.log_error(error);
+				                        }).bind(this)
+									);
+								}
                     		}).bind(this)
 							,(function(error){
 	                            this.podcast_status = "Podcast Not created";
@@ -766,7 +767,26 @@
                 $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error could not be logged :(');
             });
         }
-
+		this.uploadAudio = function(podcast_id){
+			var form = new FormData();
+			var file = $('#audio_file')[0].files[0];
+			form.append('audio',file);
+			var request = $.ajax({
+				url: 'api2/public/podcast/'+podcast_id+'/audio',
+				method: 'POST',
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				data: form
+			});
+			$.when(request).then((function(response){
+				console.log(response);
+				this.list.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
+				$scope.$apply();
+			}).bind(this),function(error){
+				alert(error.responseText);
+			});
+		}
         this.addSamPlay = function (sam_playitem) {
             this.playitems.splice(this.playitems.length,0,sam_playitem);
             console.log(sam_playitem);

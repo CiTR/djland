@@ -11,7 +11,7 @@ use App\Option as Option;
 use App\Show as Show;
 use App\Member as Member;
 use App\Permission as Permission;
-use App\SpecialBroadcasts as SpecialBroadcasts;
+use App\SpecialBroadcast as SpecialBroadcast;
 
 
 //SAM CLASSES
@@ -78,7 +78,7 @@ Route::get('/nowplaying',function(){
 	$yesterday = ($day_of_week - 1);
 	$tomorrow = ($day_of_week + 1);
 	$result['current_week'] = $current_week_val;
-	$specialbroadcast = SpecialBroadcasts::whereRaw('start <= '.$now.' and end >= '.$now)->get();
+	$specialbroadcast = SpecialBroadcast::whereRaw('start <= '.$now.' and end >= '.$now)->get();
 	if($specialbroadcast->first()){
 		//special broadcast exists
 		$specialbroadcast = $specialbroadcast->first();

@@ -192,8 +192,9 @@
 			data: form
 		});
 		$.when(request).then((function(response){
-			this.info.show_img = response.url;
-			console.log(response);
+			this.info.image = response.url;
+			this.images.push(response);
+			$scope.$apply();
 		}).bind(this),function(error){
 			alert(error.responseText);
 		});

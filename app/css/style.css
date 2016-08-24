@@ -363,6 +363,7 @@ input, select, textarea, option{
 }
 img.thumb{
 	max-width:200px;
+	max-height:150px;
 }
 .image-container{
 	width:200px;

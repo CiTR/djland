@@ -159,7 +159,7 @@ class Show extends Model
         return $min;
     }
     public function make_show_xml(){
-        require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+        require(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
         error_reporting(E_ALL);
 
         //Get objects
@@ -176,7 +176,6 @@ class Show extends Model
 
         $show["subtitle"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
-			if($testing_environment) echo $k."<br/>";
             $show[$k] = Show::clean($show[$k]);
             }
 
@@ -208,11 +207,11 @@ class Show extends Model
 
         $xml[] = "</itunes:category>";
 
-        if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
+        if($show["image"]) $xml[] = '<itunes:image href="'. $show["image"].'"/>';
 
         $xml[] = "<image>";
         $xml[] = "<link>http://www.citr.ca</link>";
-        $xml[] = "<url>" . $show["show_img"]. "</url>";
+        $xml[] = "<url>" . $show["image"]. "</url>";
         $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
         $xml[] = "<link>" .$show["website"]. "</link> ";
@@ -230,7 +229,6 @@ class Show extends Model
 				//Get Objects
 	            $playsheet = $episode->playsheet;
 	            $episode = $episode->getAttributes();
-	            if($testing_environment) echo $episode['date']."\n".$count."\n";
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
 	            foreach($episode as $index=>$var){
@@ -254,9 +252,9 @@ class Show extends Model
 
 
         if(!$testing_environment){
-            $target_dir = '/home/playlist/public_html/podcasting/xml/';
+            $target_dir = $path['xml_base'];
          }else{
-            $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
+            $target_dir = $path['test_xml_base'];
             if(!file_exists($target_dir)) mkdir($target_dir,0774);
         }
 

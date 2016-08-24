@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Show;
 use App\Podcast;
+use App\SpecialBroadcast as SpecialBroadcast;
 use InvalidArgumentException;
 
 class Upload extends Model{
@@ -20,7 +21,7 @@ class Upload extends Model{
 	}
 
     public function uploadImage($file){
-    	require_once(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
+    	require(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
 		$response = new \StdClass();
 
 		if($file == null || $this->category == null){
@@ -77,21 +78,25 @@ class Upload extends Model{
 		$stripped_name = str_replace(' ','_',$stripped_name);
 		//Generate File Names & Directories
 		$today = date('Y-m-d');
+
 		$target_file_name = $stripped_name.".".$this->file_type;
+		//append number if file of same name uploaded.
+		$i=1;
+		while(file_exists($target_dir.$target_file_name)){
+			$target_file_name = $stripped_name."-".$i.".".$this->file_type;
+			$i++;
+		}
+
 		$target_file = $target_dir.$target_file_name;
 		$target_url = str_replace($_SERVER['DOCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
 		if($file->move($target_dir,$target_file_name)){
-			if(chmod($target_file,0665)){
+			if(chmod($target_file,0775)){
 				$this->file_name = $target_file_name;
 				$this->path = $target_file;
 				$this->url = $target_url;
 				$this->save();
 
-				$response->text = "The file ".$target_file_name. " has been uploaded.";
-				$response->success = true;
-				$response->path = $target_file;
-				$response->url = $target_url;
-				return $response;
+				return $this;
 			}else{
 				$response->text = "Could not set permissions for file.";
 				$response->success = false;
@@ -104,14 +109,10 @@ class Upload extends Model{
 		}
     }
 	public function uploadAudio($file){
+		require(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
 		if(!$file){
 			$response->text = "Valid file not given.";
 			$response->success = false;
-			return $response;
-		}
-		if(!id3_get_tag($temp_file)){
-			$response->success = false;
-			$response->text = 'File is not a valid mp3 file';
 			return $response;
 		}
 
@@ -127,41 +128,33 @@ class Upload extends Model{
 				$stripped_show_name = str_replace('&','and',str_replace($strip,'',$podcast->show->name));
 
 				//Create the file directory,name, and url
-				$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
+				if(!$testing_environment){
+					$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
+				}else{
+					$target_dir = $path['test_audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
+				}
 				//check if file exists already. If so, we overwrite existing file
 				if($podcast->length && $podcast->length > 0 || $podcast->url != null){
-					$target_file_name = $target_dir.explode('/',$this->url,6)[5];
+					$target_file_name = $target_dir.explode('/',$podcast->url,6)[5];
 				}else{
 					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time).'.mp3');
 				}
-				$target_url = 'http://playlist.citr.ca/podcasting/audio/'.$year.'/'.$target_file_name;
+				$target_url = 'http://playlist.citr.ca/podcasting/audio/'.date('Y',strtotime($podcast->playsheet->start_time)).'/'.$target_file_name;
 				break;
 			default:
 				//we only accepting audio files for episode audio right now.
 				break;
 		}
 
-		$target_file = fopen($target_file_name,'wb');
-		$num_bytes = 0;
-		//check if the file opens
-		if($target_file){
-			while(!feof($temp_file)){
-				$buffer = fread($file_from_archive,1024*16);
-				$num_bytes += fwrite($target_file,$buffer);
-			}
-
-			$podcast->length = $num_bytes;
+		if($file->move($target_dir,$target_file_name)){
+			$podcast->length = $file->getClientSize();
 			$podcast->save();
-			$response['audio'] = array('url'=>$podcast->url,'size'=>$num_bytes);
+			$response['audio'] = array('url'=>$podcast->url);
 			$response['xml'] = $podcast->show->make_show_xml();
 
-			while(is_resource($target_file)){
-				//make sure we close the file handle
-				fclose($target_file);
-			}
 		}else{
 			$response->success = false;
-			$response->text = "Failed to open file for write";
+			$response->text = "Failed to move file";
 		}
 		return $response;
 	}

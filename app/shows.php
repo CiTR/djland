@@ -101,7 +101,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
 				</div>
                 <div class='double-padded-top'>
                     <div  class="row">
-                        <label for="fileToUpload" >Either choose files, or drag files</label><br/>
+                        <label for="fileToUpload" >Choose an Image file</label><br/>
                         <input type="file" name='image_file' id='image_file'/>
                     </div>
 					<button type="button" ng-click='show.uploadImage()' >Upload</button>

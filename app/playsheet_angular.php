@@ -171,6 +171,8 @@
 					<input class='wideinput required' ng-change='playsheet.checkIfComplete()' ng-model = 'playsheet.info.title'/>
 					<h4>Episode Description</h4>
 					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
+					<h4>Upload Episode Audio</h4>
+					<input type="file" name='audio_file' id='audio_file'/>
 			</div>
 
 			<hr style="side-padded">

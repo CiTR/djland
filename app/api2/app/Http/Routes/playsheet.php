@@ -22,7 +22,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 	});
 	//Create a new playsheet
 	Route::put('/',function(){
-		$playsheet_object = Playsheet::create((array) Input::get()['playsheet']);
+		return Playsheet::create((array) Input::get()['playsheet']);
 	});
 	Route::post('/report',function(){
 		include_once(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");

@@ -1,6 +1,6 @@
 <?php
 use App\Podcast as Podcast;
-
+use App\Upload as Upload;
 Route::group(array('prefix'=>'podcast'),function(){
 	Route::put('/',function(){
 		$podcast = Podcast::create((array) Input::get()['podcast']);
@@ -12,10 +12,23 @@ Route::group(array('prefix'=>'podcast'),function(){
 			$podcast = Podcast::find($id);
 			$podcast->update(Input::get()['podcast']);
 		});
-		Route::post('/audio',function($id ){
+		Route::get('/audio',function($id ){
 			$podcast = Podcast::find($id);
 			$result = $podcast->make_podcast();
 			return $result;
+		});
+		Route::post('/audio',function($id){
+			if(Input::hasFile('audio')){
+				$file = Input::file('audio');
+				try{
+					$upload = Upload::create(array('category'=>'episode_audio','relation_id'=>$id,'size'=>$file->getClientSize(),'file_type'=>$file->getClientOriginalExtension()));
+					return Response::json($upload->uploadAudio($file));
+				}catch(InvalidArgumentException $iae){
+					return Response::json($iae->getMessage(),500);
+				}
+			}else{
+				return Response::json('No File',500);
+			}
 		});
 		Route::post('/overwrite',function($id){
 			$podcast = Podcast::find($id);
@@ -35,7 +48,7 @@ Route::group(array('prefix'=>'podcast'),function(){
 				try{
 					$upload = Upload::create(array('category'=>'special_broadcast_image','relation_id'=>$id,'size'=>$file->getClientSize(),'file_type'=>$file->getClientOriginalExtension()));
 					return Response::json($upload->uploadImage($file));
-				}catch(Exception $iae){
+				}catch(InvalidArgumentException $iae){
 					return Response::json($iae->getMessage(),500);
 				}
 			}else{
