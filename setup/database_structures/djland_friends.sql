@@ -26,10 +26,10 @@ CREATE TABLE `friends` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `address` tinytext,
-  `website` varchar(60) DEFAULT NULL,
+  `website` varchar(100) DEFAULT NULL,
   `phone` varchar(17) DEFAULT NULL,
   `discount` varchar(45) DEFAULT NULL,
-  `image_url` varchar(120) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `edited` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -45,4 +45,4 @@ CREATE TABLE `friends` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-20 15:07:27
+-- Dump completed on 2016-08-24 13:02:20
