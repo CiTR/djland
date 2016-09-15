@@ -47,6 +47,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getShowTimes: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
 		},
+		getUploads: function(){
+			return $http.get(API_URL_BASE+'/upload');
+		},
 		getNextShowTime: function(show_id,current_time){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow/"+current_time);
 		},

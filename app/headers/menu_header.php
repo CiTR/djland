@@ -18,7 +18,7 @@ function admin_menu()
 function print_menu(){
 	global $enabled,$djland_permission_levels;
 ?>
-	<ul id=nav>
+	<ul id="nav">
 		<?php
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
