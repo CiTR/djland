@@ -15,7 +15,9 @@ $station_info['city'] = 'Vancouver';
 $station_info['province']= 'BC';
 $station_info['country'] = 'Canada';
 $station_info['website'] = 'CiTR.ca';
-$station_info['tech_email'] = 'tech_person@station.ca';
+$station_info['tech_email'] = 'tech_person@station.ca'; // The contact for the technical support person at the station
+$station_info['password_recovery_email'] = 'person@station.ca'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['password_recovery_name'] = 'Person'; //Used on the login screen, a person people can email to reset their djland passwords for them
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 $station_info['timezone'] = 'America/Vancouver';
 
@@ -27,15 +29,16 @@ $station_info['timezone'] = 'America/Vancouver';
 //
 
 
-//Enable or disable features of DJLand
+//Enable or disable features of DJLand - enable using true or false
+$enabled['membership'] = true; // Membership info management
 $enabled['library'] = true; // searchable music catalog (for physical recordings)
 $enabled['shows'] = true; // show information database - used to pre-fill playsheets
 $enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
-$enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
-$enabled['sam_integration'] = true;
+$enabled['podcast_tools'] = true; // show podcast manager
+$enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
 
 
 //*******************************************
