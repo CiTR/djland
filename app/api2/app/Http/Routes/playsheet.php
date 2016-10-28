@@ -216,7 +216,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$promotions = Playsheet::find($id)->ads;
 				foreach($promotions as $key => $value){
 					//Get Ad Names From SAM
-					if($using_sam && is_numeric($value['name'])){
+					if($enabled['sam_integration'] && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
 						if(count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
 					}else{
