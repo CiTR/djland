@@ -55,7 +55,7 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 					<input type='submit' name='action' value='signup'/>
 				<?php endif; ?>
 			</form>
-			If you forget your password, please email <a href='mailto:<?php echo $station_info['password_recovery_email']; ?>'><?php echo $station_info['password_recovery_email']; ?></a>
+			If you forget your password, please email <?php echo $station_info['password_recovery_name']; ?> at <a href='mailto:<?php echo $station_info['password_recovery_email']; ?>'><?php echo $station_info['password_recovery_email']; ?></a>
 			<div>
 				<?php echo $message; ?>
 			</div>

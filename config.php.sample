@@ -36,7 +36,7 @@ $enabled['shows'] = true; // show information database - used to pre-fill playsh
 $enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
-$enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
+$enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = true; // show podcast manager
 $enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
 
