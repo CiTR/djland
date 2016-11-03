@@ -106,8 +106,11 @@ class Member extends Model
         }
 
         //If filtering by show
-        if($has_show == 1){
-            $query->whereExists('m.id','(SELECT member_id FROM member_show WHERE member_id = m.id)');
+        //if($has_show == 1){
+        //    $query->whereExists('m.id','(SELECT member_id FROM member_show WHERE member_id = m.id)');
+        //}
+        if($has_show != 'both'){
+            $query->where('m.has_show','=',$has_show);
         }
         //Ordering
         switch($order){

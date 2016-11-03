@@ -125,8 +125,6 @@ function setCheckbox(value,id){
 	}else{
 		$('#'+id).prop('checked',false);
 	}
-
-
 }
 function setText(value,id){
 	$target = $('#'+id);
@@ -270,7 +268,7 @@ function displayMemberList(search_by,value,paid,year,search_has_show,order_by){
 	if(year == null){
 		year = get('year_select',null,'search');
 	}
-	$.when(queryMembers(search_by ,value ,paid ,year ,'0',search_has_show, order_by)).then(function(data){
+	$.when(queryMembers(search_by ,value ,paid ,year , search_has_show, order_by)).then(function(data){
 		$('#search_loading').hide();
 		var member_result_table = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');
@@ -280,7 +278,7 @@ function displayMemberList(search_by,value,paid,year,search_has_show,order_by){
 			member_result_table.append("<tr id=row"+m.id+" class='member_row' name='"+m.id+"'></tr>");
 			var row = $('#row'+m.id);
 			row.append()
-			for(var item in m){	
+			for(var item in m){
 				if(item != 'id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (m[item] != null ? m[item] : "") +"</td>");
 				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+m.id+"' value='"+ (m[item] != null ? m[item] : "") +"'></input></td>");
 			}
@@ -348,7 +346,6 @@ function yearlyReport(year_callback){
 }
 
 function emailList(){
-
 	var email_value;
 	$('.email_select_value').each(function(e){
 		if($(this).is(':visible')){

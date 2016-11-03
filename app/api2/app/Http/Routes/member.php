@@ -69,11 +69,11 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
-			//Returns if the user has administrator priveledges or not.
+			//Returns if the user has staff privileges or not.
 			Route::get('/staff',function($id){
 				return Response::json(Member::find($id)->isStaff());
 			});
-			//Returns if the user has administrative priveledges or not.
+			//Returns if the user has administrative privileges or not.
 			Route::get('/admin',function($id){
 				return Response::json(Member::find($id)->isAdmin());
 			});

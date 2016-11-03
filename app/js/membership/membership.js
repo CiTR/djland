@@ -110,7 +110,6 @@ function add_handlers(){
     	saveComments();
     });
 
-
 	//CLICKING A PAGE SUBMISSION BUTTON
 	$('.member_submit').unbind().click( function(){
 		var action = $(this).attr('name');
@@ -123,7 +122,7 @@ function add_handlers(){
 					}
 				});
 				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getCheckbox('search_has_show'),getVal('order_by'));
-				break;
+				br11eak;
 			case 'edit':
 				if(confirm("Save changes?")){
 					$.when(member.updateInfo(), member.updateInterests(), member.updatePermissions(), member.updatePassword()).then(function(d1,d2,d3,d4){
@@ -163,7 +162,6 @@ function add_handlers(){
 	$('#email_date_range').unbind().click( function(){
 		$('#email_date_container').toggleClass('hidden');
 	});
-
 
 	//SEARCH TYPE LISTENER
 	$('#search_by').unbind().change( function(){
