@@ -367,6 +367,10 @@
 	   						<div class='col2'>Community:</div>
 	   						<div id='report_community' class='col2'></div>
    						</li>
+                        <li class='report_row lifetime'>
+	   						<div class='col2'>Lifetime:</div>
+	   						<div id='report_lifetime' class='col2'></div>
+   						</li>
 	   					<li class='report_row staff'>
 	   						<div class='col2'>Staff:</div>
 	   						<div id='report_staff' class='col2'></div>

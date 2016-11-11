@@ -53,6 +53,10 @@ Route::group(['middleware' => 'auth'], function(){
 			return Member::report($start,$end);
 		});
 
+        Route::get('/report/all',function(){
+            return Member::reportAllYears();
+        });
+
 		//Searching by member ID
 		Route::group(array('prefix'=>'{id}'), function($id = id){
 			Route::get('/',function($id){

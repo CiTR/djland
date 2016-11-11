@@ -2,6 +2,12 @@
 
 //Initialize config arrays.
 $enabled = array(); $station_info = array();
+
+//**************************************************************************************
+//* If you are using the testing environment variable, make sure to create a static/ folder in the app/ folder.
+//* Inside that, create a friends.html file - otherwise using the friends feature will not save successfully. This file is .gitignored.
+//* (it's built off writing to a file, and if the testing_environment variable is set to true that's where it writes)
+//**************************************************************************************
 $testing_environment = true;
 
 //*******************************************

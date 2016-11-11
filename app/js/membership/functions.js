@@ -206,6 +206,7 @@ function decodeHTML(str){
             });
       }
 function queryMembers(search_parameter,search_value,paid,membership_year,search_has_show,order_by){
+    console.log(search_parameter + " " + search_value + " " + paid + " " + membership_year + " " + search_has_show + " " + order_by);
 	console.log('querying');
 	return $.ajax({
 		type:"GET",
@@ -326,20 +327,50 @@ function saveComments(){
 
 }
 
+//Get the yearly report from the API and insert into the DOM elements for the yearly report page
 function yearlyReport(year_callback){
 	$.when(year_callback).then(function(){
+        console.log(year_callback);
 		var year =	$('.year_select[name="report"]').val();
+        console.log(year);
+        var query_url = "api2/public/member/report/" + year.substring(0,4) + "/" + year.substring(5,9); //year is in format "2016/2017"
+        console.log(query_url);
 		var ajax = $.ajax({
 				type:"GET",
-                url: "api2/public/member/report",
-                data: {"year" : year},
+                url: query_url,
+                data: {},
                 dataType: "json",
                 async: true
 			}).success(function(data){
-				console.log(data);
-				for(var item in data){
-					set(data[item],item);
-				}
+				//for(var item in data[0]){
+                //    console.log(data[0][item]);
+				//	set(data[item],item);
+				//}
+                //console.log(data);
+                ins = data[0];
+                console.log(ins);
+                //insert the values into DOM
+                var report_total = $('#report_total');
+                report_total.html(ins.count);
+                var report_paid = $('#report_paid');
+                report_paid.html(ins.paid);
+                var report_unpaid = $('#report_unpaid');
+                report_unpaid.html(ins.count - ins.paid);
+                var report_student = $('#report_student');
+                report_student.html(ins.Student);
+                var report_community = $('#report_community');
+                report_community.html(ins.Community);
+                var report_lifetime = $('#report_lifetime');
+                report_lifetime.html(ins.Lifetime);
+                var report_staff = $('#report_staff');
+                report_staff.html(ins.Staff);
+
+                console.log(interests);
+                for(var interest in interests){
+                    var value = interests[interest];
+                    $('#report_' + value).html(ins[value]);
+                }
+
 			});
 
 	});

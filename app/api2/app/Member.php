@@ -163,11 +163,32 @@ class Member extends Model
         return $query->get();
     }
 	public static function report($start,$end){
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+        //TODO: Have global config in api for location of config.php
+		include($_SERVER['DOCUMENT_ROOT'].'/../config.php');
 		//TODO: Can Expand the api call to allow multi-year report queries.
 		$membership_year = $start.'/'.$end;
+        //Query setup
 		$query = DB::table('membership as m')->join('membership_years as my','my.member_id','=','m.id')->where('my.membership_year','=',$membership_year);
 		$query->select('m.id','m.member_type');
+		//total members, and paid members
+		$query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
+		//Count member types
+		foreach($djland_member_types as $key=>$value){
+			$query->selectRaw('sum(CASE WHEN m.member_type = "'.$value.'" THEN 1 ELSE 0 END) as '.$value);
+		}
+		//Counting interest types
+		foreach($djland_interests as $key=>$value){
+			if($value != 'other') $query->selectRaw('sum(my.'.$value.') as '.$value);
+			else $query->selectRaw('sum(CASE WHEN ISNULL(my.other) or my.other="" THEN 0 ELSE 1 END) as other');
+		}
+		return $query->get();
+    }
+    public static function reportAllYears(){
+        //TODO: Have global config in api for location of config.php
+		include($_SERVER['DOCUMENT_ROOT'].'/../config.php');
+
+        //Query setup
+		$query = DB::table('membership as m')->join('membership_years as my','my.member_id','=','m.id')->whereNotNull('my.membership_year');
 		//total members, and paid members
 		$query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
 		//Count member types

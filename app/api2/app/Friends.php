@@ -10,7 +10,7 @@ class Friends extends Model
     const UPDATED_AT = 'edited';
     protected $table = 'friends';
    	protected $guarded	= array('id');
-    protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
+    protected $fillable = array('name','address', 'phone', 'website','discount','image',);
 	public function image(){
 		return $this->hasOne('App\Upload','relation_id','id');
 	}
