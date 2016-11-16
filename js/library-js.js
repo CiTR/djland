@@ -59,7 +59,7 @@ function editLine(source) {
 	if(tr.nextSibling.id != "editableLine") {
 		var newtr1 = document.createElement("tr");
 		newtr1.id = "editableLine";
-		newtr1.innerHTML = "<td> </td><td> </td><td><INPUT TYPE=text size=5></td><td><INPUT TYPE=text size=1></td><td>Artist: <INPUT TYPE=text size=20> Title: <INPUT TYPE=text size=23></td>";
+		newtr1.innerHTML = "<td> </td><td> </td><td><INPUT TYPE=text size=5 style='float:right'></td><td><INPUT TYPE=text size=1 style='float:right'></td><td>Artist: <INPUT TYPE=text size=20> Title: <INPUT TYPE=text size=23></td>";
 
 		var newtr2 = document.createElement("tr");
 		newtr2.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Label: <INPUT TYPE=text size=20> Genre: <INPUT TYPE=text size=20></td>";
@@ -82,7 +82,7 @@ function editLine(source) {
 }
 
 function save(source) {
-	
+
 }
 
 function cancel(source) {
