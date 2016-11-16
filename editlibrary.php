@@ -118,8 +118,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 		<table border=0 align=center>
 			<tr>
-				<td align=right nowrap style="padding-right:20px">Select All <input type=checkbox name="selectall"></td>
-				<td align=right nowrap>Deselect All <input type=checkbox name="deselectall"></td>
+				<td align=right nowrap>Select All <input type=checkbox onClick="toggle(this)"></td>
 		</table>
 		<br />
 	<?php
@@ -181,7 +180,8 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 	foreach($dbarray as $i => $row) {
 
-		printf("<tr>");
+		printf("<tr id='albumEntry'><td onClick='editLine(this)' class='editButton'>edit</td>");
+		printf("<td><input type=checkbox name='entry'></td>");
 		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
 
 		$title = "Catalog: " . htmlspecialchars($row["catalog"]);

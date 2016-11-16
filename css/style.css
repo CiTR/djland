@@ -1848,6 +1848,15 @@ button#submit_user.red{
 	font-size: 0.75em;
 }
 
+.editButton {
+	padding-right:10px;
+}
+
+.editButton:hover {
+	cursor:pointer;
+	color:lightgrey;
+}
+
 /*
  * Duplicate Nuker Page
  */
