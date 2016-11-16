@@ -1,0 +1,351 @@
+<?php
+require_once("headers/security_header.php");
+require_once("headers/menu_header.php");
+?>
+
+<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+<link rel=stylesheet href=css/style.css type=text/css>
+<title>DJLAND | music library</title>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/library-js.js"></script>
+
+<?php
+//<script src="js/jquery.form.js"></script>
+//<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+//  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+
+echo "</head><body class='wallpaper'>";
+
+print_menu();
+
+echo "<div class=library>";
+
+// *** SEARCH MODE ***
+// *** If action=search, get search terms from URL and query database ***
+if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['action']) && $_GET['action'] == "search") {
+
+	printf("<br /><table><tr><td>");
+	printf("<center><h1>Edit Library Entries</h1></center>");
+	printf("<hr width=50%%>");
+	printf("<br /><center><h2>Change the album information</h2></center><br />");
+
+	?>
+		<table border=0 align=center>
+			<tr>
+				<td align=left nowrap>
+					<INPUT TYPE=hidden NAME=action VALUE=search>
+					<table border=0>
+						<tr>
+							<td align=right nowrap>Catalog #: <INPUT TYPE=text NAME=ascatalog size=10></td>
+							<td align=right nowrap>Format:
+								<select name=asformat><option value=0>All
+									<?php
+										foreach($fformat_name as $var_key => $var_name) {
+											printf("<option value=%s>%s", $var_key, $var_name);
+										}
+									?>
+								</select>
+								Status: <INPUT TYPE=text NAME=asstatus size=2>
+							</td>
+						</tr>
+						<tr>
+							<td align=right nowrap>Artist: <INPUT TYPE=text NAME=asartist></td>
+							<td align=right nowrap>Title: <INPUT TYPE=text NAME=astitle></td>
+						</tr>
+						<tr>
+							<td align=right nowrap>Label: <INPUT TYPE=text NAME=aslabel></td>
+							<td align=right nowrap>Genre: <INPUT TYPE=text NAME=asgenre></td>
+						</tr>
+						<tr>
+							<td align=right nowrap>Added: <INPUT TYPE=text NAME=asadded></td>
+							<td align=right nowrap>Modified: <INPUT TYPE=text NAME=asmodified></td>
+						</tr>
+						<tr>
+							<td align=right nowrap>Cancon: <input type=checkbox name="ascancon">
+									Femcon: <input type=checkbox name="asfemcon">
+									Local: <input type=checkbox name="aslocal">
+							</td>
+							<td align=right nowrap> Playlist: <input type=checkbox name="asplaylist">
+									Compilation: <input type=checkbox name="ascompliation">
+									in SAM: <input type=checkbox name="asdigitized">
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	<?php
+
+	printf("<hr width=50%%>");
+	printf("<center><br /><input type=submit VALUE='Apply Changes to Selected'></center><br />");
+
+	?>
+	<!--JAVASCRIPT HELPER CALLS-->
+	<script language=JavaScript>
+		<!--
+		var isConfirmed = false;
+		//window.onbeforeunload = ConfirmExit;
+		function ExitOkay(setTo) {
+			isConfirmed = setTo;
+			return setTo;
+		}
+		function ConfirmExit() {
+			if (!isConfirmed) {
+				return "CHANGES WILL BE LOST!";
+			}
+		}
+		function EnterPressed(event) {
+			if (document.all) {
+				if (event.keyCode == 13) {  // handles IE browsers...
+					event.keyCode = 9;
+				}
+			}
+			else if (document.getElementById) { // handles NS and Mozilla browsers...
+				if (event.which == 13) {
+					event.keyCode = 9;
+				}
+			}
+			else if (document.layers) { // handles NS ver. 4+ browsers...
+				if (event.which == 13) {
+					event.keyCode = 9;
+				}
+			}
+		}
+		-->
+	</script>
+
+		<table border=0 align=center>
+			<tr>
+				<td align=right nowrap style="padding-right:20px">Select All <input type=checkbox name="selectall"></td>
+				<td align=right nowrap>Deselect All <input type=checkbox name="deselectall"></td>
+		</table>
+		<br />
+	<?php
+
+	$record_limit = 100; // the number of search results to display per page
+	$record_start = (isset($_GET['start']) && $_GET['start']) ? (int)$_GET['start'] : 0;
+	$record_prev = ($record_start >= $record_limit) ? $record_start - $record_limit : -1;
+
+	$record_next = $record_limit + $record_start;
+
+	if(isset($_GET['searchdesc']) && $_GET['searchdesc']) {
+		$search_term = fas($_GET['searchdesc']);
+		$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library,types_format WHERE MATCH(library.artist,library.title,library.label,library.genre) AGAINST ('$search_term' IN BOOLEAN MODE) AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
+		$snum_rows = mysqli_num_rows($sresult);
+		if(!$snum_rows) {
+			$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library,types_format WHERE (library.artist LIKE '%".$search_term."%' OR library.title LIKE '%".$search_term."%' OR library.label LIKE '%".$search_term."%' OR library.genre LIKE '%".$search_term."%') AND types_format.id = library.format_id ORDER BY library.title LIMIT $record_start, $record_limit");
+			$snum_rows = mysqli_num_rows($sresult);
+		}
+	}
+	else if(isset($_GET['ascatalog'])) {
+		$search_query = "";
+		$search_query .= (isset($_GET['ascatalog']) && $_GET['ascatalog']) ? "library.catalog LIKE '" . fas($_GET['ascatalog']) . "%' AND " : "";
+		$search_query .= (isset($_GET['asformat']) && $_GET['asformat']) ? "library.format_id='" . fas($_GET['asformat']) . "' AND " : "";
+		$search_query .= (isset($_GET['asstatus']) && $_GET['asstatus']) ? "library.status LIKE '" . fas($_GET['asstatus']) . "%' AND " : "";
+		$search_query .= (isset($_GET['asartist']) && $_GET['asartist']) ? "library.artist LIKE '" . fas($_GET['asartist']) . "%' AND " : "";
+		$search_query .= (isset($_GET['astitle']) && $_GET['astitle']) ? "library.title LIKE '" . fas($_GET['astitle']) . "%' AND " : "";
+		$search_query .= (isset($_GET['aslabel']) && $_GET['aslabel']) ? "library.label LIKE '" . fas($_GET['aslabel']) . "%' AND " : "";
+		$search_query .= (isset($_GET['asgenre']) && $_GET['asgenre']) ? "library.genre LIKE '" . fas($_GET['asgenre']) . "%' AND " : "";
+		$search_query .= (isset($_GET['asadded']) && $_GET['asadded']) ? "library.added LIKE '" . fas($_GET['asadded']) . "%' AND " : "";
+		$search_query .= (isset($_GET['asmodified']) && $_GET['asmodified']) ? "library.modified LIKE '" . fas($_GET['asmodified']) . "%' AND " : "";
+
+		$search_query .= (isset($_GET['ascancon'])) ? "library.cancon='1' AND " : "";
+		$search_query .= (isset($_GET['asfemcon'])) ? "library.femcon='1' AND " : "";
+		$search_query .= (isset($_GET['aslocal'])) ? "library.local='1' AND " : "";
+		$search_query .= (isset($_GET['ascompilation'])) ? "library.compilation='1' AND " : "";
+		$search_query .= (isset($_GET['asdigitized'])) ? "library.digitized='1' AND " : "";
+		$search_query .= (isset($_GET['asplaylist'])) ? "library.playlist='1' AND added >'". date('Y-m-d', strtotime("-6 months")) ."' AND " : "";
+
+		$search_order = "ORDER BY ". fas($_GET['asorder']) . (isset($_GET['asdescending']) ? " DESC " : " ");
+
+		$sresult = mysqli_query($db['link'],"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE ". $search_query ."types_format.id = library.format_id ".$search_order."LIMIT $record_start, $record_limit");
+		$snum_rows = mysqli_num_rows($sresult);
+	}
+	else {
+		$sresult = mysqli_query($db['link'],"SELECT library.*, library.id, types_format.name AS format FROM library,types_format WHERE types_format.id = library.format_id ORDER BY library.id DESC LIMIT $record_start, $record_limit");
+		$snum_rows = mysqli_num_rows($sresult);
+	}
+	$scount = 0;
+
+	printf("<table border=0>");
+
+	$dbarray = array();
+	while($r = mysqli_fetch_array($sresult)) {
+		$r['id'] = $r[0]; // weird fix
+		$dbarray []=$r;
+	}
+
+	$scount = 0;
+
+	foreach($dbarray as $i => $row) {
+
+		printf("<tr>");
+		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
+
+		$title = "Catalog: " . htmlspecialchars($row["catalog"]);
+		$title .= "\nFormat: " . htmlspecialchars($row["format"]);
+		$title .= "\nStatus: " . htmlspecialchars($row["status"]);
+		$title .= "\nArtist: " . htmlspecialchars($row["artist"]);
+		$title .= "\nTitle: " . htmlspecialchars($row["title"]);
+		$title .= "\nLabel: " . htmlspecialchars($row["label"]);
+		$title .= "\nGenre: " . htmlspecialchars($row["genre"]);
+		$title .= "\nAdded: " . htmlspecialchars($row["added"]);
+		$title .= "\nModified: " . htmlspecialchars($row["modified"]);
+		$title .= "\nCancon: " . (htmlspecialchars($row["cancon"] ? "Yes" : "No"));
+		$title .= "\nFemcon: " . (htmlspecialchars($row["femcon"] ? "Yes" : "No"));
+		$title .= "\nLocal: " . (htmlspecialchars($row["local"] ? "Yes" : "No"));
+		$title .= "\nPlaylist: " . (htmlspecialchars($row["playlist"] ? "Yes" : "No"));
+		$title .= "\nCompilation: " . (htmlspecialchars($row["compilation"] ? "Yes" : "No"));
+		$title .= "\nIn SAM: " . (htmlspecialchars($row["digitized"] ? "Yes" : "No"));
+
+		echo "<center>|".$row['format']."|</center></td><td><a href=".$_SERVER['SCRIPT_NAME'].
+				"?action=view&id=".$row['id']." title='".$title."'>(".$row["artist"].") - ".$row["title"].
+				"</a> ";
+
+		if ($row['cancon']==1) echo '<img src="images/tags/cc.png" title="Canadian Content"  height="15"/>';
+		if ($row['femcon']==1) echo '<img src="images/tags/fe.png" title="Female Content" height="15"/>';
+		if ($row['local']==1) echo '<img src="images/tags/local.png" title="Local Content" height="15"/>';
+		if ($row['digitized']==1) echo '<img src="images/tags/sam.png" title="Available to play in SAM" height="15"/>';
+
+		echo "</td></tr>";
+		$scount++;
+	}
+
+	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
+	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
+
+	printf("</table><center>%s %s</center>", $prev_url, $next_url);
+
+	?></td></tr></table><?php
+}
+// ** VIEW LIBRARY RECORD
+else if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['action']) && $_GET['action'] == "view") {
+
+	if(isset($_GET['id']) && $_GET['id']) {
+		$id = fas($_GET['id']);
+	}
+	else {
+		$id = 0;
+	}
+
+	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
+
+	printf("<br><table><tr><td>");
+	printf("<center><br><h1>Library Record</h1></center>");
+	if(mysqli_num_rows($sresult)) {
+			printf("<table align=center border=0>");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+			printf("<tr><td>Local: %s</td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<td>Playlist: %s</td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+			printf("<tr><td>Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td>in SAM: %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+			printf("</table><br>");
+	}
+	else {
+		printf("<br>No Such Record...<br><br>");
+	}
+	?></td></tr></table><?php
+
+}
+// ** SEARCH LIBRARY
+else if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
+
+	printf("<br><table><tr><td><center><br><h1>Search Library</h1></center>");
+
+	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
+	printf("<INPUT TYPE=text NAME=searchdesc>");
+	printf(" <INPUT TYPE=submit VALUE=\"Basic Search\">\n");
+	printf("</FORM></CENTER>\n");
+
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
+	printf("<INPUT TYPE=submit VALUE=\"Recent Entries\">\n");
+	printf("</FORM></CENTER>\n");
+
+	printf("<hr width=50%%><CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
+?>
+	<table border=0 align=center>
+		<tr>
+			<td align=left nowrap>
+				<INPUT TYPE=hidden NAME=action VALUE=search>
+				<table border=0>
+					<tr>
+						<td align=right nowrap>Catalog #: <INPUT TYPE=text NAME=ascatalog size=10></td>
+						<td align=right nowrap>Format:
+							<select name=asformat><option value=0>All
+								<?php
+									foreach($fformat_name as $var_key => $var_name) {
+										printf("<option value=%s>%s", $var_key, $var_name);
+									}
+								?>
+							</select>
+							Status: <INPUT TYPE=text NAME=asstatus size=2>
+						</td>
+					</tr>
+					<tr>
+						<td align=right nowrap>Artist: <INPUT TYPE=text NAME=asartist></td>
+						<td align=right nowrap>Title: <INPUT TYPE=text NAME=astitle></td>
+					</tr>
+					<tr>
+						<td align=right nowrap>Label: <INPUT TYPE=text NAME=aslabel></td>
+						<td align=right nowrap>Genre: <INPUT TYPE=text NAME=asgenre></td>
+					</tr>
+					<tr>
+						<td align=right nowrap>Added: <INPUT TYPE=text NAME=asadded></td>
+						<td align=right nowrap>Modified: <INPUT TYPE=text NAME=asmodified></td>
+					</tr>
+					<tr>
+						<td align=right nowrap>Cancon: <input type=checkbox name="ascancon">
+								Femcon: <input type=checkbox name="asfemcon">
+								Local: <input type=checkbox name="aslocal">
+						</td>
+						<td align=right nowrap> Playlist: <input type=checkbox name="asplaylist">
+								Compilation: <input type=checkbox name="ascompliation">
+								in SAM: <input type=checkbox name="asdigitized">
+						</td>
+					</tr>
+					<tr>
+						<td align=right nowrap>Order by: <select name=asorder>
+								<option value=library.artist>Artist
+								<option value=library.catalog>Catalog #
+								<option value=library.added>Date Added
+								<option value=library.modified>Date Modified
+								<option value=library.genre>Genre
+								<option value=library.label>Label
+								<option value=library.status>Status
+								<option value=library.title>Title
+							</select>
+						</td>
+						<td align=right nowrap>Descending: <input type=checkbox name="asdescending"></td>
+					</tr>
+				</table>
+				<center>
+  				<br />
+					<input type=submit VALUE="Advanced Search">
+				</center>
+			</td>
+		</tr>
+	</table>
+	</FORM></CENTER>
+	</td></tr></table>
+<?php
+
+}
+
+echo "</div>";
+printf("</body></html>");
+
+?>

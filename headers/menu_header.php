@@ -39,6 +39,9 @@ function print_menu(){
 						<?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 						<?php endif; ?>
+            <?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
+						<li><a href="editlibrary.php">Edit Library Entries</a></li>
+						<?php endif; ?>
 					</ul>
 				</div>
 			</div>
