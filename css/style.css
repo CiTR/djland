@@ -1588,6 +1588,120 @@ table { border-collapse: collapse; }
 }
 
 /*----------------------------*/
+/*----New Music Submission CSS RULES----*/
+/*----------------------------*/
+
+#container{
+	height:auto;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.containerrow{
+	text-align:right;
+	display:inline-block;
+	width:100%;
+	overflow:visible;
+	margin-bottom:2px;
+}
+#print_broadcastly{
+	position:absolute;
+	right:0px;
+	top:80px;
+}
+.print_wrapper{
+	max-width:800px;
+}
+.submission{
+	width:1024px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -2px;
+	z-index: 3;
+	margin-bottom: 15px;
+}
+
+.submission ul{
+	background-color:inherit;
+}
+
+#submission_header{
+	list-style: none;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:0px;
+	padding-top:2px;
+}
+#submission_header li,#search_header li{
+	float:left;
+	position:relative;
+	margin-right:2px;
+	border:none;
+}
+#search_container{
+	width:auto;
+	display:inline-block;
+}
+#submission_result{
+	float:left;
+	width:100%;
+	background:inherit;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	margin-bottom:10px;
+}
+
+.submission_result_row{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+	text-align:left;
+	overflow:hidden;
+}
+#headerrow{
+	background-color: #a4a4a4;
+}
+#submission_table tr td,submisison_table tr th{
+	padding-right:5px;
+}
+
+.report_row:hover>div{
+	background-color:blue;
+}
+.submission_row:hover{
+	cursor: pointer; cursor: hand;
+	background-color:blue;
+}
+.submission_row.delete{
+	background-color:red;
+}
+#submisison_year{
+	margin-left:auto;
+	margin-right:auto;
+}
+.submission_year_row td{
+	padding-left:10px;
+	padding-right:10px;
+}
+#submission_header > li > select{
+	max-width:150px;
+}
+.memlabel{
+	padding-left:15px;
+}
+#submit_user{
+	height:30px;
+	width:150px;
+	color:black;
+	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+	-webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+	box-shadow:inset 0px 0px 1px #BEBEBE;
+}
+
+/*----------------------------*/
 /*----MEMBERSHIP CSS RULES----*/
 /*----------------------------*/
 
