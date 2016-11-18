@@ -287,7 +287,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 // ** SEARCH LIBRARY
 else if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 
-	printf("<br><table><tr><td><center><br><h1>Search Library</h1></center>");
+	printf("<br><table><tr><td><center><br><h1>Search to Edit Library</h1></center>");
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
