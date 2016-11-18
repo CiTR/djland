@@ -66,6 +66,7 @@ function print_menu(){
 						<li><a href="show_alerts.php">Show Alert Listing</a></li>
 						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
+							<li><a href="genremanager.php">Genre Manager</a></li>							</li>
 						<?php endif; ?>
 					</ul>
 				</div>

@@ -190,6 +190,111 @@ $djland_primary_genres = array(
 	"Roots / Blues / Folk",
 	"Talk"
 	);
+$djland_subgenres = array(
+	"Electronic" => array(
+		"Ambient",
+		"Bass",
+		"Chiptune"
+		"Drum and Bass",
+		"Dub",
+		"Dubstep",
+		"Electo",
+		"Future Bass",
+		"Hardstyle",
+		"House",
+		"Glitch"
+		"Jungle"
+		"Tech House",
+		"Acid House",
+		"Tropical House",
+		"Deep House",
+		"Techno",
+		"Trance",
+		"Psy Trance",
+		"Trap",
+		"Vapourwave"
+	),
+	"Experimental" => array(
+		"Avant Garde",
+		"Sound Art",
+		"Radio Art",
+		"Noise",
+		"Drone",
+		"Minimalist",
+		"Free Improv"
+	),
+	"Hip Hop / R&B / Soul" => array(
+	),
+	"International" => array(
+		"Reggae",
+		""
+	),
+	"Jazz / Classical" ,
+	"Punk / Hardcore / Metal" => array(
+		"Alternative Metal",
+		"Black Metal",
+		"Crust Punk",
+		"Death Metal",
+		"Deathcore",
+		"Doom Metal",
+		"Emo",
+		"Garage Punk",
+		"Glam Metal",
+		"Grindcore",
+		"Hardcore Punk",
+		"Heavy Metal",
+		"Folk Metal",
+		"Melodic Punk",
+		"Post-Metal",
+		"Power Metal",
+		"Progressive Metal",
+		"Punk",
+		"Punk Rock",
+		"Screamo",
+		"Speed Metal",
+		"Stoner Metal",
+		"Symphonic Metal",
+		"Thrash",
+		"Thrash Metal",
+	),
+	"Rock / Pop / Indie" => array(
+		"Alternative Rock",
+		"College Rock",
+		"Classic Rock",
+		"Experimental Rock",
+		"Goth Rock",
+		"Grunge",
+		"Hard Rock",
+		"Indie Rock",
+		"Indie",
+		"Pop",
+		"90's Pop",
+		"Progressive Rock",
+		"Top 40"
+	),
+	"Roots / Blues / Folk" => array(
+		"African Blues",
+		"Bluegrass",
+		"Canadiana",
+		"Canadian Blues",
+		"Chicago Blues",
+		"Country",
+		"Gospel"
+	),
+	"Talk" => array(
+		"Arts and Culture Talk"
+		"Comedy",
+		"Lecture",
+		"Lifestyle",
+		"Daytime Talk",
+		"Historical Recording"
+		"Late Night",
+		"News",
+		"Interview",
+		"Sports Talk Radio",
+		"Talk Radio"
+	)
+);
 
 
 // debug time operations? leave false unless you
