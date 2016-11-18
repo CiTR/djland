@@ -5,13 +5,18 @@
  * Add this file as a <script>, and provide your own CSS.
  */
 
- var form, trackButton, albumArtButton, submitButton;
- var trackNumber = 1;
+var form, trackButton, albumArtButton, submitButton;
+var trackNumber = 1;
 
 window.addEventListener('load', function() {
   form = document.getElementById("submit-field");
   fillForm();
 });
+
+function wordpressLoad() {
+  form = document.getElementById("submit-field");
+  fillForm();
+}
 
 function fillForm() {
   // Instructions at the top.
