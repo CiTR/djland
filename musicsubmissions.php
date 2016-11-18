@@ -134,26 +134,26 @@
    			</div>
 			<hr>
    			<div class="container" style="display: block;">
-				<div id="row1" class="containerrow">
+				<div class="containerrow">
 					<div class="col5">Band Name: </div>
 					<div class="col5" id="username" name="username">Band Name Here</div>
 					<div class="col5">From: </div>
 					<div class="col5" id="username" name="username">Vancouver, Canada</div>
 				</div>
 
-				<div id="row2" class="containerrow">
+				<div class="containerrow">
 					<div class="col5">Album: </div>
 					<div class="col5">Album Name Here</div>
 					<div class="col5">Label: </div>
 					<div class="col5">Mint Records</div>
 				</div>
-				<div id="row3 " class="containerrow">
+				<div class="containerrow">
 					<div class="col5">Genre: </div>
 					<div class="col5">Genre Here</div>
 					<div class="col5">Genre Tags: </div>
 					<div class="col5">Tag1, Tag2, Tag3</div>
 				</div>
-				<div id="row4 " class="containerrow">
+				<div class="containerrow">
 					<div class="col5">Release Date: </div>
 					<div class="col5">Month, Day Year</div>
 					<div class="col5">Submission Date: </div>
@@ -424,13 +424,13 @@
 							});
 						</script>
 							<select class="js-example-basic-single vueselect" style="width:30%;">
-								<option value="CD">CD</option>
-								<option value="LP">LP</option>
-								<option value="7in">7"</option>
-								<option value="CASS">CASSETE</option>
-								<option value ="CART">CART</option>
-								<option value="MP3">MP3</option>
-								<option value="MD">MD</option>
+								<option class='vueselect' value="CD">CD</option>
+								<option class='vueselect' value="LP">LP</option>
+								<option class='vueselect' value="7in">7"</option>
+								<option class='vueselect' value="CASS">CASSETE</option>
+								<option class='vueselect' value ="CART">CART</option>
+								<option class='vueselect' value="MP3">MP3</option>
+								<option class='vueselect' value="MD">MD</option>
 								<option value="??">Unknown</option>
 							</select>
 					</div>
@@ -497,11 +497,13 @@
 							<select class="js-example-basic-single vueselect" style="width:70%;">
 								<option value"none">No Subgenre</option>
 								<?php foreach($djland_subgenres as $genre => $subgenre_array){
+									printf("<optgroup label=\"$genre\">");
 									if(is_array($subgenre_array)){
 										foreach($subgenre_array as $subgenre){
 											printf("<option value=\"$subgenre\">$subgenre</option>");
 										}
 									}
+									printf("</optgroup>");
 								} ?>
 							</select>
 					</div>
