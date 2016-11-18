@@ -324,36 +324,34 @@ function add_handlers(){
 	});
 }
 
-
 function checkBlocking(){
-		var allOkay = true;
-		$('.required').each( function(){
-			if( !$.trim( $(this).val() )){
-			allOkay=false;
-			}
-		});
-
-		if($('#username_ok').text() == 'Username taken'){
+	var allOkay = true;
+	$('.required').each( function(){
+		if( !$.trim( $(this).val() )){
+		allOkay=false;
+		}
+	});
+	if($('#username_ok').text() == 'Username taken'){
+		allOkay=false;
+	}
+	if($('#password_ok').text() == 'Passwords do not match' || $('#password_ok').text() == 'Password must be more than 4 characters'){
+		allOkay=false;
+	}
+	if(getVal('member_type')=='Student'){
+		if(!$.trim(getVal('student_no'))){
 			allOkay=false;
 		}
-		if($('#password_ok').text() == 'Passwords do not match' || $('#password_ok').text() == 'Password must be more than 4 characters'){
+		if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
 			allOkay=false;
-		}
-		if(getVal('member_type')=='Student'){
-			if(!$.trim(getVal('student_no'))){
-				allOkay=false;
-			}
-			if($('#student_no_ok').length > 0 && $('#student_no_ok').text() != "Okay"){
-				allOkay=false;
-			}
-		}
-		if (allOkay){
-		$('.member_submit[name="edit"]').attr('disabled',false);
-		$('.member_submit[name="edit"]').text("Submit");
-		$('.member_submit[name="edit"]').removeClass("red");
-		}else{
-			$('.member_submit[name="edit"]').attr('disabled',true);
-			$('.member_submit[name="edit"]').text("Form Not Complete");
-			$('.member_submit[name="edit"]').addClass("red");
 		}
 	}
+	if (allOkay){
+	$('.member_submit[name="edit"]').attr('disabled',false);
+	$('.member_submit[name="edit"]').text("Submit");
+	$('.member_submit[name="edit"]').removeClass("red");
+	}else{
+		$('.member_submit[name="edit"]').attr('disabled',true);
+		$('.member_submit[name="edit"]').text("Form Not Complete");
+		$('.member_submit[name="edit"]').addClass("red");
+	}
+}

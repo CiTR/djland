@@ -28,8 +28,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 	printf("<br /><table><tr><td>");
 	printf("<center><h1>Edit Library Entries</h1></center>");
-	printf("<hr width=50%%>");
-	printf("<br /><center><h2>Change the album information</h2></center><br />");
+	printf("<br /><hr width=800px><br />");
 
 	?>
 		<table border=0 align=center>
@@ -38,36 +37,36 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 					<INPUT TYPE=hidden NAME=action VALUE=search>
 					<table border=0>
 						<tr>
-							<td align=right nowrap>Catalog #: <INPUT TYPE=text NAME=ascatalog size=10></td>
-							<td align=right nowrap>Format:
+							<td align=left colspan="6" style='padding-left:10px;padding-bottom:20px'>Please enter the changes you would like to make to the record(s):</td>
+						</tr>
+						<tr>
+							<td align=left style='padding-left:10px'>Catalog #: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=ascatalog size=10></td>
+							<td align=left style='padding-left:10px'>Format: </td><td align=left style='padding-left:5px'>
 								<select name=asformat><option value=0>All
 									<?php
 										foreach($fformat_name as $var_key => $var_name) {
 											printf("<option value=%s>%s", $var_key, $var_name);
 										}
 									?>
-								</select>
-								Status: <INPUT TYPE=text NAME=asstatus size=2>
-							</td>
+								</select></td>
+							<td align=left style='padding-left:10px'>Status: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asstatus size=2></td>
 						</tr>
 						<tr>
-							<td align=right nowrap>Artist: <INPUT TYPE=text NAME=asartist></td>
-							<td align=right nowrap>Title: <INPUT TYPE=text NAME=astitle></td>
+							<td align=left style='padding-left:10px'>Artist: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asartist></td>
+							<td align=left style='padding-left:10px'>Title: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=astitle></td>
+							<td align=left style='padding-left:10px'>Label: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=aslabel></td>
 						</tr>
 						<tr>
-							<td align=right nowrap>Label: <INPUT TYPE=text NAME=aslabel></td>
-							<td align=right nowrap>Genre: <INPUT TYPE=text NAME=asgenre></td>
+							<td align=left style='padding-left:10px'>Genre: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asgenre></td>
+							<td align=left style='padding-left:10px'>Added: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asadded></td>
+							<td align=left style='padding-left:10px'>Modified: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asmodified></td>
 						</tr>
 						<tr>
-							<td align=right nowrap>Added: <INPUT TYPE=text NAME=asadded></td>
-							<td align=right nowrap>Modified: <INPUT TYPE=text NAME=asmodified></td>
-						</tr>
-						<tr>
-							<td align=right nowrap>Cancon: <input type=checkbox name="ascancon">
+							<td align=left style='padding-left:10px' colspan=6><br />
+									Cancon: <input type=checkbox name="ascancon">
 									Femcon: <input type=checkbox name="asfemcon">
 									Local: <input type=checkbox name="aslocal">
-							</td>
-							<td align=right nowrap> Playlist: <input type=checkbox name="asplaylist">
+									Playlist: <input type=checkbox name="asplaylist">
 									Compilation: <input type=checkbox name="ascompliation">
 									in SAM: <input type=checkbox name="asdigitized">
 							</td>
@@ -78,7 +77,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 		</table>
 	<?php
 
-	printf("<hr width=50%%>");
+	printf("<br /><hr width=800px>");
 	printf("<center><br /><input type=submit VALUE='Apply Changes to Selected'></center><br />");
 
 	?>
@@ -241,21 +240,21 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 		printf("<hr width=80%%><br />");
 			if(mysqli_num_rows($sresult)) {
 					printf("<table align=center border=0>");
-					printf("<tr><td align=left>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
-					printf("<tr><td align=left>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
-					printf("<tr><td align=left>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
-					printf("<tr><td align=left>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
-					printf("<tr><td align=left>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
-					printf("<tr><td align=left>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
-					printf("<tr><td align=left>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
-					printf("<tr><td align=left>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
-					printf("<tr><td align=left>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
-					printf("<tr><td align=left>Cancon:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
-					printf("<tr><td align=left>Femcon:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-					printf("<tr><td align=left>Local:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-					printf("<tr><td align=left>Playlist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-					printf("<tr><td align=left>Compilation:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
-					printf("<tr><td align=left>in SAM:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+					printf("<tr><td align=left>Catalog: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+					printf("<tr><td align=left>Format: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+					printf("<tr><td align=left>Status: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+					printf("<tr><td align=left>Artist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+					printf("<tr><td align=left>Title: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+					printf("<tr><td align=left>Label: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+					printf("<tr><td align=left>Genre: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+					printf("<tr><td align=left>Added: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+					printf("<tr><td align=left>Modified: <br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
+					printf("<tr><td align=left>Cancon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+					printf("<tr><td align=left>Femcon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+					printf("<tr><td align=left>Local: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+					printf("<tr><td align=left>Playlist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+					printf("<tr><td align=left>Compilation: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+					printf("<tr><td align=left>in SAM: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
 					printf("</table><br>");
 			}
 			else {

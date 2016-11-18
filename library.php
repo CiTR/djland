@@ -237,21 +237,21 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		printf("<hr width=80%%><br />");
 			if(mysqli_num_rows($sresult)) {
 					printf("<table align=center border=0>");
-					printf("<tr><td align=left>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
-					printf("<tr><td align=left>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
-					printf("<tr><td align=left>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
-					printf("<tr><td align=left>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
-					printf("<tr><td align=left>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
-					printf("<tr><td align=left>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
-					printf("<tr><td align=left>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
-					printf("<tr><td align=left>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+					printf("<tr><td align=left>Catalog: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+					printf("<tr><td align=left>Format: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+					printf("<tr><td align=left>Status: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+					printf("<tr><td align=left>Artist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+					printf("<tr><td align=left>Title: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+					printf("<tr><td align=left>Label: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+					printf("<tr><td align=left>Genre: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+					printf("<tr><td align=left>Added: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
 					printf("<tr><td align=left>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
-					printf("<tr><td align=left>Cancon:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
-					printf("<tr><td align=left>Femcon:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-					printf("<tr><td align=left>Local:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-					printf("<tr><td align=left>Playlist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-					printf("<tr><td align=left>Compilation:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
-					printf("<tr><td align=left>in SAM:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+					printf("<tr><td align=left>Cancon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+					printf("<tr><td align=left>Femcon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+					printf("<tr><td align=left>Local: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+					printf("<tr><td align=left>Playlist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+					printf("<tr><td align=left>Compilation: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+					printf("<tr><td align=left>in SAM: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
 					printf("</table><br>");
 			}
 			else {

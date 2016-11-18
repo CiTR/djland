@@ -17,6 +17,7 @@
 
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 		<script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
+		<script type='text/javascript' src='js/genremanager/genremanager.js'/></script>
         <script type='text/javascript' src='js/constants.js'/></script>
         <script type="text/javascript" src="js/test.js"></script>
 
@@ -34,6 +35,8 @@
 		<div style='width:1028px; margin-left:auto; margin-right:auto;'>
 			<div id='wrapper' class='grey' style='width:51%;float:left'>
 				<h3>Genres</h3>
+				<div id="addgenre" class="right pad-bottom"><button>Add New</button></div>
+				<br />
 				<br />
 				<div id="submisison_result" class="left overflow_auto height_cap" name="search">
 					<table id="submission_table" name="search">
@@ -61,6 +64,8 @@
 			</div>
 			<div id='wrapper' class="grey" style='width:44%;float:right'>
 				<h3>Subgenres</h3>
+				<div id="addsubgenre" class="right pad-bottom"><button>Add New</button></div>
+				<br />
 				<br />
 				<div id="submisison_result" class="left overflow_auto height_cap" name="search">
 					<table id="submission_table" name="search">
