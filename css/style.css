@@ -1591,6 +1591,45 @@ table { border-collapse: collapse; }
 /*----New Music Submission CSS RULES----*/
 /*----------------------------*/
 
+#submissionspopup{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:400px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+#submissionscloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionscloser:hover{
+	color:red;
+}
+#titleBox{
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-bottom:10px;
+	width: 40%;
+	display:inline;
+}
+#editTitleBox{
+	padding-left: 10px;
+	padding-top: 20px;
+	padding-bottom: 40px;
+	width: 40%;
+	display:inline;
+	margin-right: 100%;
+}
+
 #container{
 	height:auto;
 	width:100%;
