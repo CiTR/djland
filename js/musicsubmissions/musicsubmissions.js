@@ -9,14 +9,13 @@ $(document).ready ( function() {
 });
 function add_submission_handlers(){
 	//This makes page printer/user friendly and toggles on the button trigger
-	//TODO
 	$('#print_friendly').on('click',function(element){
 		if(!$(this).hasClass('print_friendly')){
 			$(this).text('Normal View');
-			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').hide();
+			$('#admin-nav, #nav, #tab-nav, #headerrow, #submission_header').hide();
 
 			$('body').removeClass('wallpaper');
-			$('.membership').removeClass('grey');
+			$('.submission').removeClass('grey');
 			//make printer friendly
 			$('.staff_comment, .delete_member').each(function(element){
 				$(this).hide();
@@ -26,17 +25,15 @@ function add_submission_handlers(){
 				$(this).removeClass('hidden');
 			});
 
-
 			//$('#search').addClass('inline_block');
-			$('#membership_result').removeClass('overflow_auto').removeClass('height_cap').addClass('overflow_visible');
+			$('#submission_result').removeClass('overflow_auto').removeClass('height_cap').addClass('overflow_visible');
 		}else{
 			//return to normal
 			$(this).text('Print View');
-			$('#admin-nav, #nav, #tab-nav, #headerrow, #membership_header').show();
-
+			$('#admin-nav, #nav, #tab-nav, #headerrow, #submission_header').show();
 
 			$('body').addClass('wallpaper');
-			$('.membership').addClass('grey');
+			$('.submission').addClass('grey');
 
 			$('.staff_comment, .delete_member').each(function(element){
 				$(this).show();
@@ -45,7 +42,7 @@ function add_submission_handlers(){
 				$(this).addClass('hidden');
 			});
 			//$('#search').removeClass('inline_block');
-			$('#membership_result').removeClass('overflow_visible').addClass('height_cap').addClass('overflow_auto');
+			$('#submission_result').removeClass('overflow_visible').addClass('height_cap').addClass('overflow_auto');
 		}
 		$(this).toggleClass('print_friendly');
 	});
@@ -60,17 +57,8 @@ function add_submission_handlers(){
 	$('#search').off('click','#save_comments').on('click','#save_comments',function(element){
 		saveComments();
 	});
-	//Listener for viewing individual members from clicking on their row
-    $("#tagrow1").click(function(e){
-		$('#submissionspopup').show();
-    });
-	$("#tagrow2").click(function(e){
-		$('#submissionspopup').show();
-    });
-	$("#tagrow3").click(function(e){
-		$('#submissionspopup').show();
-    });
-	$("#tagrow4").click(function(e){sd 	
+	//Listener for viewing the tagging sidebar from clicking on their row
+    $(".tagrow").click(function(e){
 		$('#submissionspopup').show();
     });
 	$("#submissionscloser").click(function(e){
@@ -79,6 +67,19 @@ function add_submission_handlers(){
 	$("#tagcancel").click(function(e){
 		$('#submissionspopup').hide();
     });
+	//Listener for viewing the review from clicking on their row
+	$(".reviewrow").click(function(e){
+		$('#view_submissions').show();
+    });
+	$("#view_submissions_closer").click(function(e){
+		$('#view_submissions').hide();
+	});
+	$(".reviewedrow").click(function(e){
+		$('#reviewed_submissions_view').show();
+    });
+	$("#reviewed_submissions_closer").click(function(e){
+		$('#reviewed_submissions_view').hide();
+	});
 	//CHANGING TABS
 	$('#tab-nav').off('click','.member_action').on('click','.member_action', function(e){
 		$('.member_action').attr('class','nodrop inactive-tab member_action');

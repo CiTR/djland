@@ -55,7 +55,7 @@
 			</ul>
 			<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']): ?>
 
-			<!-- Begin Tab 1 "member search" -->
+			<!-- Begin Tab 1 "new submissions search" -->
 			<div id="new_submissions" class="submission grey clearfix padded-right">
 				<ul id="submission_header" name="search" class="clean-list inline-list">
 					<li id="search">Search By:
@@ -103,7 +103,7 @@
 					</li>
 				</ul>
 
-				<div id="submission_result" class="left overflow_auto height_cap padded side-padded" name="search">
+				<div id="submission_result" class="left overflow_auto height_cap" name="search">
 					<table id="submission_table" name="search">
 						<tbody>
 							<tr id="music_row_heading border" style="display: table-row;">
@@ -116,22 +116,26 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border" name="1277"><td class="submission_row_element">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border" name="1276"><td class="submission_row_element">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border" name="1275"><td class="submission_row_element">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border" name="1274"><td class="submission_row_element">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td class="submission_row_element submission_type">Experimental Electronic</td><td class="submission_row_element membership_year">July 22nd 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border" name="1273"><td class="submission_row_element">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td class="submission_row_element submission_type">Goth, Punk</td><td class="submission_row_element membership_year">September 20th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border" name="1272"><td class="submission_row_element">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1277"><td class="submission_row_element">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1276"><td class="submission_row_element">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1275"><td class="submission_row_element">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1274"><td class="submission_row_element">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td class="submission_row_element submission_type">Experimental Electronic</td><td class="submission_row_element membership_year">July 22nd 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1273"><td class="submission_row_element">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td class="submission_row_element submission_type">Goth, Punk</td><td class="submission_row_element membership_year">September 20th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewrow" name="1272"><td class="submission_row_element">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<!-- Begin Submission view" -->
-				<div id='view_submissions' class='grey clearfix'>
+				<div id='view_submissions' class='hidden submission grey clearfix'>
 					<div class="col1">
 						<br>
 						<h3>Review Submission</h3>
 						<br>
+						<div class="right">
+							<button id="view_submissions_closer">X</button>
+						</div>
 					</div>
+
 					<hr>
 					<div class="container" style="display: block;">
 						<div class="containerrow">
@@ -254,8 +258,8 @@
 			</div>
 
 			<!-- Begin Tab 2 "reviewed submissions view" -->
-			<div id="reviewed_submissions" class='hidden submission grey clearfix'>
-				<ul id="submission_header" name="search" class="clean-list inline-list	">
+			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right'>
+				<ul id="submission_header" name="search" class="clean-list inline-list">
 						<li id="search">Search By:
 							<select id="search_by">
 								<option value="name">Submission Date</option>
@@ -310,7 +314,7 @@
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
 					<table id="submission_table" name="search">
 						<tbody>
-							<tr id="headerrow" style="display: table-row;">
+							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -320,24 +324,30 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr class="submission_row" name="1277"><td class="submission_row_element name">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td>Hugo Noriega</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
-							<tr class="submission_row" name="1276"><td class="submission_row_element name">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td>Madeline Taylor</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
-							<tr class="submission_row" name="1275"><td class="submission_row_element name">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_2"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
-							<tr class="submission_row" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_3"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
-							<tr class="submission_row" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_4"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr class="submission_row" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td>Emily Stryker</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_5"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1277"><td class="submission_row_element name">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td>Hugo Noriega</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1276"><td class="submission_row_element name">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td>Madeline Taylor</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1275"><td class="submission_row_element name">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_2"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_3"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_4"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border reviewedrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td>Emily Stryker</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_5"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 							<tr>
 								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
 						</tbody>
 					</table>
+					<br />
+					<hr />
+					<br />
 				</div>
-				<!-- Begin Submission view" -->
-				<div id='' class='grey clearfix'>
+				<!-- Begin Reviewed Submission view" -->
+				<div id='reviewed_submissions_view' class='hidden submission grey clearfix'>
 					<div class="col1">
 						<br>
-						<h3>Review Submission</h3>
+						<h3>View Review</h3>
 						<br>
+						<div class="right">
+							<button id="reviewed_submissions_closer">X</button>
+						</div>
 					</div>
 					<hr>
 					<div class="container" style="display: block;">
@@ -460,8 +470,8 @@
 				</div>
 			</div>
 
-			<!--Begin Tab 4 "Tagging Interface" -->
-			<div id="tag" class="hidden submission grey clearfix">
+			<!--Begin Tab 3 "Tagging Interface" -->
+			<div id="tag" class="hidden submission grey clearfix padded-right">
 				<ul id="submission_header" name="search" class="clean-list inline-list	">
 					<li id="search">Search By:
 						<select id="search_by">
@@ -507,7 +517,7 @@
 					</li>
 				</ul>
 
-				<div id="submisison_result" class="left overflow_auto height_cap" name="search">
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					<table id="submission_table" name="search">
 						<tbody>
 							<tr id="headerrow" style="display: table-row;">
@@ -520,17 +530,17 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr id="tagrow1" class="submission_row tag_row" name="1277"><td class="submission_row_element name">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
-							<tr id="tagrow2" class="submission_row tag_row" name="1276"><td class="submission_row_element name">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
-							<tr id="tagrow3" class="submission_row tag_row" name="1275"><td class="submission_row_element name">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
-							<tr id="tagrow4" class="submission_row tag_row" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td class="submission_row_element submission_type">Experimental Electronic</td><td class="submission_row_element membership_year">July 22nd 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
-							<tr id="tagrow5" class="submission_row tag_row" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td class="submission_row_element submission_type">Goth, Punk</td><td class="submission_row_element membership_year">September 20th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr id="tagrow6" class="submission_row tag_row" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1277"><td class="submission_row_element name">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1276"><td class="submission_row_element name">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1275"><td class="submission_row_element name">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td class="submission_row_element submission_type">Experimental Electronic</td><td class="submission_row_element membership_year">July 22nd 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td class="submission_row_element submission_type">Goth, Punk</td><td class="submission_row_element membership_year">September 20th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
+							<tr class="playitem border tagrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<div id="submissionspopup" class="hidden">
+			<div id="submissionspopup" class="hidden submission">
 				<div style="display:block">
 					<p id="submissionscloser"> X </p>
 					<br />

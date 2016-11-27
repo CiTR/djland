@@ -1612,7 +1612,7 @@ table { border-collapse: collapse; }
 	padding-left: 5px;
 	padding-right: 5px;
 	padding-top: 3px;
-	padding-bottom:3px;	
+	padding-bottom:3px;
 }
 
 #submissionspopup{
@@ -1696,6 +1696,8 @@ table { border-collapse: collapse; }
 	margin-right: auto;
 	margin-top:0px;
 	padding-top:2px;
+	padding-right:5px;
+	padding-left:5px;
 }
 #submission_header li,#search_header li{
 	float:left;
@@ -1715,6 +1717,10 @@ table { border-collapse: collapse; }
 	margin-right:auto;
 	text-align:center;
 	margin-bottom:10px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
 }
 
 .submission_result_row{
@@ -1729,6 +1735,9 @@ table { border-collapse: collapse; }
 }
 #submission_table tr td,submission_table tr th{
 	padding-right:5px;
+}
+#submission_table tr:hover{
+	background-color: blue;
 }
 
 .report_row:hover>div{
