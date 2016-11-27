@@ -716,5 +716,64 @@
 			</div>
    		</div>
    		<?php endif; ?>
+
+		<!-- Manual Submission Tab -->
+		<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']):
+		?>
+		<div id='manual_submission' class='hidden membership grey clearfix'>
+			<div style="padding:10px">
+				<h3 class="page-title-default text-center">Manual Album Submission</h3>
+				<div class="row">
+					<div class="entry-content col-sm-8 col-sm-offset-2">
+				<div class="entry-content-inner">
+					<p>Please submit a minimum of four 320kbps MP3 files.</p>
+					<p>0 files uploaded.</p>
+					<div style="border-style:solid;border-width:1px;margin-bottom:20px">
+						<p style="text-align:center"><em>File name:</em> </p>
+						<p style="text-align:center">Track name:</p>
+						<input type="text" style="width:90%; margin-left:5%">
+						<p style="text-align:center">Composer(s):</p>
+						<input type="text" style="width:90%; margin-left:5%">
+						<p style="text-align:center">Performer:</p>
+						<input type="text" style="width:90%; margin-left:5%; margin-bottom: 30px">
+					</div>
+					<div class='col1 text-center'>
+						<p><button name='add_album_art'>Add another file</button></p>
+					</div>
+					<form>
+						<div style="width:50%;float:left;">
+							Artist: <input type="text" style="width:95%;margin-bottom:30px">
+						</div>
+						<div style="width:50%;float:right;">
+							Contact email: <input type="text" style="width:100%;margin-bottom:30px;">
+						</div>
+						<div style="width:50%;float:left;">
+							Label: <input type="text" style="width:95%;margin-bottom:30px">
+						</div>
+						<div style="width:50%;float:right;">
+							Location: <input type="text" style="width:100%;margin-bottom:30px;">
+						</div>
+						<div style="width:50%;float:left;">
+							Album credit: <input type="text" style="width:95%;margin-bottom:30px">
+						</div>
+						<div style="width:50%;float:right;">
+							Album name: <input type="text" style="width:100%;margin-bottom:30px;">
+						</div>
+						<div class='col1 text-center'>
+							<button name='add_album_art'>Add Album Art</button>
+						</div>
+						<div class='col1 text-center'>
+							<br />
+							<img src= "../images/citr-placeholder-square.svg"></img>
+							<br />
+								<br />
+						</div>
+						<div class='col1 text-center'>
+							<button name='edit' class='member_submit red' disabled='true'>Form Not Complete</button>
+						</div>
+					</form>
+			</div>
+		</div>
+		<?php endif; ?>
 	</body>
 </html>
