@@ -21,10 +21,11 @@
         <script type='text/javascript' src='js/constants.js'/></script>
         <script type="text/javascript" src="js/test.js"></script>
 
-
+		<script src="js/jquery.form.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		<script>
 			$(function() {
-			$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+			$( ".datepicker" ).datepicker({ dateFormat: "yy/mm/dd" });
 			});
 		</script>
 	</head>
@@ -63,7 +64,7 @@
 				</div>
 			</div>
 			<div id='wrapper' class="grey" style='width:44%;float:right'>
-				<h3>Subgenres</h3>
+				<h3>Subgenres for the Electronic Genre</h3>
 				<div id="addsubgenre" class="right pad-bottom"><button>Add New</button></div>
 				<br />
 				<br />

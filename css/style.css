@@ -367,8 +367,8 @@ input, select, textarea, option{
  */
 
 div#ui-datepicker-div{
-	max-width:200px;
-	max-height:300px;
+	max-width:300px;
+	max-height:2500px;
 	margin-top:0px;
 	z-index:50 !important;
 }
