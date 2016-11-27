@@ -720,7 +720,7 @@ div.ui-datepicker{
 	position:relative;
 	list-style:none;
 	width:1024px;
-	margin-left:auto;
+	margin-left:0;
 	margin-right:auto;
 	min-height:28px;
 	height:auto;
@@ -1601,6 +1601,20 @@ table { border-collapse: collapse; }
 .select2-choice {
 	color: #333;
 }
+
+.submissioncontainer {
+	width: 1040px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.submission_row_element{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom:3px;	
+}
+
 #submissionspopup{
 	position:fixed;
 	bottom:0;
@@ -1664,7 +1678,7 @@ table { border-collapse: collapse; }
 }
 .submission{
 	width:1024px;
-	margin-left: auto;
+	margin-left: 0;
 	margin-right: auto;
 	margin-top: -2px;
 	z-index: 3;
@@ -1713,7 +1727,7 @@ table { border-collapse: collapse; }
 #headerrow{
 	background-color: #a4a4a4;
 }
-#submission_table tr td,submisison_table tr th{
+#submission_table tr td,submission_table tr th{
 	padding-right:5px;
 }
 
