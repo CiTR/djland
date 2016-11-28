@@ -77,29 +77,7 @@
 							</tr>
 						</thead>
 						<tbody id=subgenrelisting>
-							<?php /* foreach($djland_subgenres as $genre => $subgenre_array){
-								if(is_array($subgenre_array)){
-									foreach($subgenre_array as $subgenre){
-										printf("<tr class=\"submission_row\">
-										<td class=\"submission_row_element name\">$subgenre</td>
-										<td class=\"submission_row_element email\">Digital Library</td>
-										<td class=\"submission_row_element primary_phone\">Andy</td>
-										<td class=\"submission_row_element submission_type\">Nov 14th, 2016</td>
-										<td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete_0\"><div class=\"check hidden\">❏</div></td>
-										</tr>");
-									}
-								}
-							} */
-							/*foreach($djland_subgenres["Electronic"] as $subgenre){
-										printf("<tr class=\"playitem border subgenrerow\">
-										<td class=\"submission_row_element name\">$subgenre</td>
-										<td class=\"submission_row_element email\">Digital Library</td>
-										<td class=\"submission_row_element primary_phone\">Andy</td>
-										<td class=\"submission_row_element submission_type\">Nov 14th, 2016</td>
-										<td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete_0\"><div class=\"check hidden\">❏</div></td>
-										</tr>");
-							} */
-							?>
+							
 						</tbody>
 					</table>
 				</div>

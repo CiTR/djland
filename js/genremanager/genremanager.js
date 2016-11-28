@@ -78,4 +78,11 @@ function updateSubGenreListing(genre){
 	}
 
 	$("#subgenrelisting").html(newstring);
+
+	//Add listeners on newly inserted rows
+	$(".subgenrerow").dblclick(function(e){
+		var toedit = $(this).closest("tr").find("td:eq(0)").text();
+		$("#subgenrebox").text(toedit);
+		$( "#subgenredialog" ).dialog( "open" );
+	});
 }
