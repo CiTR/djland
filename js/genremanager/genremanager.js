@@ -18,20 +18,21 @@ function add_genremanager_listener(){
 		var genre=prompt("Enter new subgenre:","Type here");
 	});
 	$(".genrerow").click(function(e){
-		console.log("Single Click");
 		activegenre = $(this).closest("tr").find("td:eq(0)").text();
 		var string="Subgenres for the " + activegenre + " Genre"
 		$("#subgenretitle").text(string);
 		updateSubGenreListing(activegenre);
 	});
 	$(".genrerow").dblclick(function(e){
+		var toedit = $(this).closest("tr").find("td:eq(0)").text();
+		$("#genrebox").text(toedit);
 		$( "#genredialog" ).dialog( "open" );
 	});
 	$(".subgenrerow").dblclick(function(e){
+		var toedit = $(this).closest("tr").find("td:eq(0)").text();
+		$("#subgenrebox").text(toedit);
 		$( "#subgenredialog" ).dialog( "open" );
 	});
-
-
 }
 
 $( function() {
@@ -63,9 +64,9 @@ $( function() {
 
 function updateSubGenreListing(genre){
 	var newstring = "";
-	console.log(genre);
+
 	var list = subgenres[genre];
-	console.log(list);	
+
 	for(var subgenre in list){
 		var tempstring = "<tr class=\"playitem border subgenrerow\">" +
 		"<td class=\"submission_row_element name\">" + list[subgenre] +
@@ -75,6 +76,6 @@ function updateSubGenreListing(genre){
 		"<td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete_0\"><div class=\"check hidden\">❏</div></td></tr>"
 		newstring = newstring + tempstring;
 	}
-	console.log(newstring);
+
 	$("#subgenrelisting").html(newstring);
 }

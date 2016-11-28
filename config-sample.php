@@ -232,7 +232,7 @@ $djland_subgenres = array(
 	),
 	"International" => array(
 		"Reggae",
-		""
+		"World"
 	),
 	"Jazz / Classical" => array(
 		"Avant-Garde",

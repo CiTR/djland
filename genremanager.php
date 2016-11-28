@@ -107,10 +107,10 @@
 		</div>
 
 		<div id="genredialog" title="Edit Genre">
-  			<textarea>Genre Here</textarea>
+  			<textarea id="genrebox">Genre Here</textarea>
 		</div>
 		<div id="subgenredialog" title="Edit Subgenre">
-			<textarea>Subgenre Here</textarea>
+			<textarea id="subgenrebox">Subgenre Here</textarea>
 		</div>
 	</body>
 </html>
