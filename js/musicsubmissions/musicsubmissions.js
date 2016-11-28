@@ -112,5 +112,7 @@ function add_submission_handlers(){
 		$(this.closest('tr')).toggleClass('delete');
 
 	});
+	//Listener for blue highlighting for the submisisons result tables
 	//TODO: Handler for blue highlighting on
+
 }

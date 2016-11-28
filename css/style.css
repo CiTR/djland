@@ -1736,7 +1736,7 @@ table { border-collapse: collapse; }
 #submission_table tr td,submission_table tr th{
 	padding-right:5px;
 }
-#submission_table tr:hover{
+#submission_table tbody>tr:hover{
 	background-color: blue;
 }
 

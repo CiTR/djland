@@ -224,12 +224,38 @@ $djland_subgenres = array(
 		"Free Improv"
 	),
 	"Hip Hop / R&B / Soul" => array(
+		"Contemporary R&B",
+		"Motown",
+		"Neo Soul",
+		"Rap",
+		"Turntableism"
 	),
 	"International" => array(
 		"Reggae",
 		""
 	),
-	"Jazz / Classical" ,
+	"Jazz / Classical" => array(
+		"Avant-Garde",
+		"Baroque",
+		"Bebop",
+		"Chamber Music",
+		"Chant",
+		"Choral",
+		"Classical Crossover",
+		"Early Music",
+		"High Classical",
+		"Impressionist",
+		"Jazz Blues",
+		"Medieval",
+		"Minimalism",
+		"Modern Composition",
+		"Opera",
+		"Orchestral",
+		"Renaissance",
+		"Romantic",
+		"Symphonic Jazz",
+		"Wedding Music"
+	),
 	"Punk / Hardcore / Metal" => array(
 		"Alternative Metal",
 		"Black Metal",
