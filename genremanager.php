@@ -77,7 +77,7 @@
 							</tr>
 						</thead>
 						<tbody id=subgenrelisting>
-							
+
 						</tbody>
 					</table>
 				</div>
@@ -88,6 +88,12 @@
   			<textarea id="genrebox">Genre Here</textarea>
 		</div>
 		<div id="subgenredialog" title="Edit Subgenre">
+			<textarea id="subgenrebox">Subgenre Here</textarea>
+		</div>
+		<div id="addgenredialog" title="Add Genre">
+  			<textarea id="genrebox">Genre Here</textarea>
+		</div>
+		<div id="addsubgenredialog" title="Add Subgenre">
 			<textarea id="subgenrebox">Subgenre Here</textarea>
 		</div>
 	</body>

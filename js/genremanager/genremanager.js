@@ -12,10 +12,10 @@ function add_genremanager_listener(){
 	updateSubGenreListing(activegenre);
 
     $("#addgenre").click(function(e){
-		var genre=prompt("Enter new genre:","Type here");
+		$( "#addgenredialog" ).dialog( "open" );
     });
 	$("#addsubgenre").click(function(e){
-		var genre=prompt("Enter new subgenre:","Type here");
+		$( "#addsubgenredialog" ).dialog( "open" );
 	});
 	$(".genrerow").click(function(e){
 		activegenre = $(this).closest("tr").find("td:eq(0)").text();
@@ -53,6 +53,32 @@ $( function() {
 	 autoOpen: false,
 	 buttons: {
         "Apply": function() {
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+   });
+});
+$( function() {
+   $( "#addgenredialog" ).dialog({
+	 autoOpen: false,
+	 buttons: {
+        "Add": function() {
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+   });
+});
+$( function() {
+   $( "#addsubgenredialog" ).dialog({
+	 autoOpen: false,
+	 buttons: {
+        "Add": function() {
           $( this ).dialog( "close" );
         },
         Cancel: function() {
