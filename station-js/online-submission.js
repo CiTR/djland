@@ -50,9 +50,9 @@ function submitForm() {
   var album     = albumField.value;
   var genre     = genrePicker.value;
   var date      = dateField.value;
-  var canada    = canadaBox.value;
-  var vancouver = vancouverBox.value;
-  var female    = femArtistBox.value;
+  var canada    = canadaBox.checked;
+  var vancouver = vancouverBox.checked;
+  var female    = femArtistBox.checked;
   var comments  = commentField.value;
 
   var submission = document.getElementById("submit-button-div");

@@ -430,13 +430,13 @@ img.emoji {
 		</div>
 		<div class="album-row">
 			<div>
-				<input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band
+				<label><input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band</label>
 			</div>
 			<div>
-				<input type="checkbox" id="vancouver-artist" style="margin-right:20px"/>Vancouver, BC artist/band
+				<label><input type="checkbox" id="vancouver-artist" style="margin-right:20px" />Vancouver, BC artist/band</label>
 			</div>
 			<div>
-				<input type="checkbox" id="female-artist" style="margin-right:20px"/>Female artist/band
+				<label><input type="checkbox" id="female-artist" style="margin-right:20px" />Female artist/band</label>
 			</div>
 		</div>
 		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
