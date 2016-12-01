@@ -28,8 +28,14 @@
 		<?php
         print_menu();
         ?>
-		<div style='width:1028px; margin-left:auto; margin-right:auto;'>
-			<div id='wrapper' class='grey' style='width:51%;float:left'>
+		<div>
+			<h2> Genre Manager</h2>
+			<div class='col1 text-center'>
+				<h5>Double click a row to edit the genre or subgenre</h5>
+			</div>
+		</div>
+		<div style='width:1080px; margin-left:auto; margin-right:auto;'>
+			<div id='wrapper' class='grey' style='width:50.5%;float:left'>
 				<h3>Genres</h3>
 				<div id="addgenre" class="right pad-bottom"><button>Add New</button></div>
 				<br />
