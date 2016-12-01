@@ -41,6 +41,7 @@ window.addEventListener('load', function() {
 
 function submitForm() {
   var missing = [];
+  var success = true;
 
   var artist    = artistField.value;
   var email     = contactField.value;
@@ -55,8 +56,41 @@ function submitForm() {
   var female    = femArtistBox.checked;
   var comments  = commentField.value;
 
-  var submission = document.getElementById("submit-button-div");
-  submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+  if (artist == "") {
+    success = false;
+    missing.push("\n• Artist / Band name");
+  }
+  if (email == "") {
+    success = false;
+    missing.push("\n• Contact email");
+  }
+  if (city == "") {
+    success = false;
+    missing.push("\n• Home city");
+  }
+  if (album == "") {
+    success = false;
+    missing.push("\n• Album name");
+  }
+  if (genre == "") {
+    success = false;
+    missing.push("\n• Genre");
+  }
+  if (date == "") {
+    success = false;
+    missing.push("\n• Date released");
+  }
+
+  if (success) {
+    var submission = document.getElementById("submit-button-div");
+    submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+  } else {
+    var alertString = "You are missing the following fields:";
+    for (var i = 0; i < missing.length; i++) {
+      alertString += missing[i];
+    }
+    alert(alertString);
+  }
 
 }
 
