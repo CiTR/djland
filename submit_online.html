@@ -383,34 +383,36 @@ img.emoji {
 		<div class="entry-content col-sm-8 col-sm-offset-2">
 	<div class="entry-content-inner">
 
+		<p>Items with a &#9733; are required.</p>
 		<form>
 			<div class="album-row">
 			<div style="width:50%;float:left;">
-				Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
+				&#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
 			</div>
 			<div style="width:50%;float:right;">
-				Contact email: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
+				&#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
 			</div>
 		</div>
 		<div class="album-row">
 			<div style="width:50%;float:left;">
-				Record label: <input type="text" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
+				Record label: <input type="text" id="record-label" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
 			</div>
 			<div style="width:50%;float:right;">
-				Home city: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="London, England">
+				&#9733; Home city: <input type="text" id="home-city" style="width:100%;margin-bottom:30px;" placeholder="London, England">
 			</div>
 		</div>
 		<div class="album-row">
 			<div style="width:50%;float:left;">
-				(For bands) Member names: <input type="text" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
+				(For bands) Member names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
 			</div>
 			<div style="width:50%;float:right;">
-				Album name: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
+				&#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
 			</div>
 		</div>
 		<div class="album-row">
 			<div style="width: 50%;float:left;">
-				Genre: <select name="Pick a genre" style="width:95%;margin-bottom:30px;">
+				&#9733; Genre: <select name="Pick a genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
+					<!-- TODO: populate this with present genres from DB -->
 					<option>Rock</option>
 					<option>Electronic</option>
 					<option>Hip hop</option>
@@ -418,21 +420,21 @@ img.emoji {
 				</select>
 			</div>
 			<div style="width: 50%;float:right;">
-				Date released: <input type="text" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
 			</div>
 		</div>
 		<div class="album-row">
 			<div>
-				<input type="checkbox" style="margin-right:20px;" />Canadian artist/band
+				<input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band
 			</div>
 			<div>
-				<input type="checkbox" style="margin-right:20px"/>Vancouver, BC artist/band
+				<input type="checkbox" id="vancouver-artist" style="margin-right:20px"/>Vancouver, BC artist/band
 			</div>
 			<div>
-				<input type="checkbox" style="margin-right:20px"/>Female artist/band
+				<input type="checkbox" id="female-artist" style="margin-right:20px"/>Female artist/band
 			</div>
 		</div>
-		<br>Comments: <textarea rows="4" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
+		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
 		<!--
 			<div class="button-container">
 				<a id="album-art-button" class="btn btn-primary" style="width:100%;text-align:center"> Add album art (optional)</a>

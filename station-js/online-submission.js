@@ -5,30 +5,46 @@
  * Add this file as a <script>, and provide your own CSS.
  */
 
-var form, trackButton, albumArtButton, submitButton, artistField;
-var trackNumber = 1;
+var form, trackButton, albumArtButton, submitButton;
+var artistField, contactField, recordField, cityField, memberField;
+var albumField, genrePicker, dateField, canadaBox, vancouverBox;
+var femArtistBox, commentField, cover, trackNumber, nameField;
+var composerField, performerField;
 
 window.addEventListener('load', function() {
-  form = document.getElementById("submit-field");
+  form           = document.getElementById("submit-field");
   albumArtButton = document.getElementById("album-art-input-button");
-  trackButton = document.getElementById("new-track-button-input");
-  submitButton = document.getElementById("submit-button");
-  artistField = document.getElementById("artist-name");
+  trackButton    = document.getElementById("new-track-button-input");
+  submitButton   = document.getElementById("submit-button");
+  artistField    = document.getElementById("artist-name");
+  contactField   = document.getElementById("contact-email");
+  recordField    = document.getElementById("record-label");
+  cityField      = document.getElementById("home-city");
+  memberField    = document.getElementById("member-names");
+  albumField     = document.getElementById("album-name");
+  genrePicker    = document.getElementById("genre-picker");
+  dateField      = document.getElementById("date-released");
+  canadaBox      = document.getElementById("canada-artist");
+  vancouverBox   = document.getElementById("vancouver-artist");
+  femArtistBox   = document.getElementById("female-artist");
+  commentField   = document.getElementById("comments-box");
 
-  submitButton.addEventListener('click', function() {
-    // TODO: Verify information entered and send to DJLand.
-  });
+  submitButton.addEventListener('click', submitForm);
+
   albumArtButton.addEventListener('change', handleAlbum, false);
 
   trackButton.addEventListener('change', handleTracks, false);
 
-
-  // fillForm();
 });
 
+function submitForm() {
+
+}
+
 function handleAlbum(evt) {
+  // TODO: add file name; make sure you can replace with new album
   var files = evt.target.files;
-  var cover = files[0];
+  cover = files[0];
 
   if(cover.type.match('image.*')) {
     var reader = new FileReader();
@@ -49,7 +65,7 @@ function handleAlbum(evt) {
 function handleTracks(evt) {
   var files = evt.target.files;
   var warning = false;
-  // TODO: Needs to check for music files
+  // TODO: Needs to remove non-music files from files[]
   for (var i = 0, f; f = files[i]; i++) {
 
     if (!f.type.match('audio.*')) {
@@ -58,7 +74,7 @@ function handleTracks(evt) {
     }
 
     var fileName = f.name;
-    addTrackForm(fileName, i);
+    addTrackForm(fileName, i+1);
   }
   if (warning) alert("Please only upload audio files");
 }
@@ -67,7 +83,6 @@ function addTrackForm(fileName, trackNo) {
   // Create the surrounding div.
   var divNode = document.createElement("div");
   divNode.setAttribute("id", "track-" + trackNo);
-  // trackNumber++;
   divNode.setAttribute("class", "track-form");
 
   // Add the file name
@@ -85,8 +100,7 @@ function addTrackForm(fileName, trackNo) {
 
   childNode = document.createElement("input");
   childNode.setAttribute("class", "track-number-field");
-  childNode.setAttribute("value", trackNumber);
-  trackNumber++;
+  childNode.setAttribute("value", trackNo);
   divNode.appendChild(childNode);
 
   // Add the track name field
@@ -121,14 +135,12 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
-  // form.insertBefore(divNode, trackButton);
 }
 
+/*
 function fillForm() {
 
   // ----- Create the album form. ----- //
-
-  /*
 
   newNode = document.createElement("div");
   newNode.setAttribute("id", "artist-input-album");
@@ -244,6 +256,7 @@ function fillForm() {
     // TODO: Verify information entered and send to DJLand.
   });
 
-  */
+
 
 }
+*/
