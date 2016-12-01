@@ -9,7 +9,7 @@ var form, trackButton, albumArtButton, submitButton;
 var artistField, contactField, recordField, cityField, memberField;
 var albumField, genrePicker, dateField, canadaBox, vancouverBox;
 var femArtistBox, commentField, cover, trackNumber, nameField;
-var composerField, performerField;
+var composerField, performerField, albumViewer;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -28,6 +28,7 @@ window.addEventListener('load', function() {
   vancouverBox   = document.getElementById("vancouver-artist");
   femArtistBox   = document.getElementById("female-artist");
   commentField   = document.getElementById("comments-box");
+  albumViewer    = document.getElementById("album-viewer");
 
   submitButton.addEventListener('click', submitForm);
 
@@ -42,7 +43,6 @@ function submitForm() {
 }
 
 function handleAlbum(evt) {
-  // TODO: add file name; make sure you can replace with new album
   var files = evt.target.files;
   cover = files[0];
 
@@ -54,7 +54,9 @@ function handleAlbum(evt) {
         var span = document.createElement('span');
         span.setAttribute('id', 'thumb-span');
         span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
-        document.getElementById("album-viewer").insertBefore(span, null);
+        albumViewer.innerHTML = "";
+        // document.getElementById("album-viewer").insertBefore(span, null);
+        albumViewer.insertBefore(span, null);
       };
     })(cover);
 

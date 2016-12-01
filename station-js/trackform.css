@@ -43,9 +43,7 @@
 
 #album-art-button, #new-track-button {
   background-color: #eb6748;
-}
-#new-track-button {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #submit-button {
@@ -55,6 +53,9 @@
   margin-bottom: 50px;
 }
 
+#album-viewer {
+  margin-top: 10px;
+}
 .thumb {
   clear: both;
   width: auto;
