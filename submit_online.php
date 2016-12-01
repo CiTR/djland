@@ -413,10 +413,15 @@ img.emoji {
 			<div style="width: 50%;float:left;">
 				&#9733; Genre: <select name="Pick a genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
 					<!-- TODO: populate this with present genres from DB -->
-					<option>Rock</option>
 					<option>Electronic</option>
-					<option>Hip hop</option>
-					<option>Country</option>
+					<option>Experimental</option>
+					<option>Hip Hop / R&B / Soul</option>
+					<option>International</option>
+					<option>Jazz/Classical</option>
+					<option>Punk / Hardcore / Metal</option>
+					<option>Rock / Pop / Indie</option>
+					<option>Roots / Blues / Folk</option>
+					<option>Talk</option>
 				</select>
 			</div>
 			<div style="width: 50%;float:right;">
