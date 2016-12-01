@@ -40,11 +40,14 @@
   letter-spacing: 0.1em;
   color: white;
 }
-/*
+
 #album-art-button, #new-track-button {
   background-color: #eb6748;
 }
-*/
+#new-track-button {
+  margin-bottom: 20px;
+}
+
 #submit-button {
   background-color: green;
   border-color: green;

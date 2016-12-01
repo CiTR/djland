@@ -10,8 +10,8 @@ var trackNumber = 1;
 
 window.addEventListener('load', function() {
   form = document.getElementById("submit-field");
-  albumArtButton = document.getElementById("album-art-button");
-  trackButton = document.getElementById("new-track-button");
+  albumArtButton = document.getElementById("album-art-input-button");
+  trackButton = document.getElementById("new-track-button-input");
   submitButton = document.getElementById("submit-button");
   artistField = document.getElementById("artist-name");
 
