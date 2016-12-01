@@ -1733,6 +1733,9 @@ table { border-collapse: collapse; }
 #headerrow{
 	background-color: #a4a4a4;
 }
+#submission_table {
+	width: 100%;
+}
 #submission_table tr td,submission_table tr th{
 	padding-right:5px;
 }
