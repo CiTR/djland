@@ -10,6 +10,7 @@ var artistField, contactField, recordField, cityField, memberField;
 var albumField, genrePicker, dateField, canadaBox, vancouverBox;
 var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
+var totalTracks = 0;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -83,6 +84,7 @@ function handleAlbum(evt) {
 
 function handleTracks(evt) {
   var files = evt.target.files;
+  var filesAdded = 0;
   var warning = false;
   // TODO: Needs to remove non-music files from files[]
   for (var i = 0, f; f = files[i]; i++) {
@@ -93,9 +95,11 @@ function handleTracks(evt) {
     }
 
     var fileName = f.name;
-    addTrackForm(fileName, i+1);
+    addTrackForm(fileName, (totalTracks + i + 1) );
+    filesAdded++;
   }
   if (warning) alert("Please only upload audio files");
+  totalTracks = totalTracks + filesAdded;
 }
 
 function addTrackForm(fileName, trackNo) {
