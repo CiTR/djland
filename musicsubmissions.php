@@ -855,56 +855,114 @@
 			?>
 			<div id='manual_submission' class='hidden submission grey clearfix'>
 				<div style="padding:10px">
-					<h3 class="page-title-default text-center">Manual Album Submission</h3>
+					<div class="row">
+						<div class="col-sm-12 page-header">
+							<h1 class="page-title-default text-center">Manual Music Submission</h1>
+						</div>
+					</div>
 					<div class="row">
 						<div class="entry-content col-sm-8 col-sm-offset-2">
 					<div class="entry-content-inner">
-						<p>Please submit a minimum of four 320kbps MP3 files.</p>
-						<p>0 files uploaded.</p>
-						<div style="border-style:solid;border-width:1px;margin-bottom:20px">
-							<p style="text-align:center"><em>File name:</em> </p>
-							<p style="text-align:center">Track name:</p>
-							<input type="text" style="width:90%; margin-left:5%">
-							<p style="text-align:center">Composer(s):</p>
-							<input type="text" style="width:90%; margin-left:5%">
-							<p style="text-align:center">Performer:</p>
-							<input type="text" style="width:90%; margin-left:5%; margin-bottom: 30px">
-						</div>
-						<div class='col1 text-center'>
-							<p><button name='add_album_art'>Add another file</button></p>
-						</div>
 						<form>
+							<div class="album-row">
 							<div style="width:50%;float:left;">
-								Artist: <input type="text" style="width:95%;margin-bottom:30px">
+								Artist / Band name*: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
 							</div>
 							<div style="width:50%;float:right;">
-								Contact email: <input type="text" style="width:100%;margin-bottom:30px;">
+								Contact email*: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
 							</div>
+						</div>
+						<div class="album-row">
 							<div style="width:50%;float:left;">
-								Label: <input type="text" style="width:95%;margin-bottom:30px">
+								Record label: <input type="text" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
 							</div>
 							<div style="width:50%;float:right;">
-								Location: <input type="text" style="width:100%;margin-bottom:30px;">
+								Home city: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="London, England">
 							</div>
+						</div>
+						<div class="album-row">
 							<div style="width:50%;float:left;">
-								Album credit: <input type="text" style="width:95%;margin-bottom:30px">
+								(For bands) Member names: <input type="text" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
 							</div>
 							<div style="width:50%;float:right;">
-								Album name: <input type="text" style="width:100%;margin-bottom:30px;">
+								Album name*: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
 							</div>
-							<div class='col1 text-center'>
-								<button name='add_album_art'>Add Album Art</button>
+						</div>
+						<div class="album-row">
+							<div style="width: 50%;float:left;">
+								Genre*: <script type="text/javascript">
+									$(document).ready(function() {
+									$(".js-example-basic-single").select2();
+									});
+								</script>
+								<select class="js-example-basic-single vueselect" style="width:70%;">
+									<?php foreach($djland_primary_genres as $genre){
+										printf("<option value=\"$genre\">$genre</option>");
+									} ?>
+								</select>
 							</div>
-							<div class='col1 text-center'>
-								<br />
-								<img src= "../images/citr-placeholder-square.svg"></img>
-								<br />
-									<br />
+							<div style="width: 50%;float:right;">
+								Date released*: <input type="text" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
 							</div>
-							<div class='col1 text-center'>
-								<button name='edit' class='member_submit red' disabled='true'>Form Not Complete</button>
+						</div>
+						<div class="album-row col1">
+							<div class='col3'>
+								<input type="checkbox" style="margin-right:20px;" />Canadian artist/band
 							</div>
-						</form>
+							<div class='col3'>
+								<input type="checkbox" style="margin-right:20px"/>Vancouver, BC artist/band
+							</div>
+							<div class='col3'>
+								<input type="checkbox" style="margin-right:20px"/>Female artist/band
+							</div>
+						</div>
+						<div class='col1 padded'>
+							<br>Comments: <textarea rows="4" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
+						</div>
+					</form>
+
+					<div class="col1 text-center">
+						<p>Add album art (optional):</p>
+						<input type="file" id="album-art-input-button" style="display:none" />
+						<button id="album-art-button" class="submission-button">
+							Add Album Art (Optional)
+						</button>
+						<output id="album-viewer"></output>
+
+						<script>
+							$('#album-art-button').click(function(){ $('#album-art-input-button').trigger('click');});
+						</script>
+
+							<p>Note: We accept .jpeg or .png files of at least size 300 by 300 pixels.</p>
+							<p>Please submit a minimum of four 320kbps MP3 files.</p>
+
+							<div id="submit-field"></div>
+
+							<input type="file" id="new-track-button-input" style="display:none" multiple/>
+							<button id="new-track-button" class="submission-button">
+								Add files
+							</button>
+
+							<script>
+								$('#new-track-button').click(function(){ $('#new-track-button-input').trigger('click');});
+							</script>
+
+					</div>
+
+					<div class="containerrow double-padded-top">
+						<div class="col1 text-center">
+							<hr />
+							<div class='padded'>
+								<button name="edit" class="member_submit">Submit</button>
+							</div>
+						</div>
+					</div>
+					<div class="containerrow">
+						<div class="col1 text-center">
+							*indicates a required field
+						</div>
+					</div>
+
 				</div>
 			</div>
 			<?php endif; ?>
