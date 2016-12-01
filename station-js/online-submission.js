@@ -39,6 +39,23 @@ window.addEventListener('load', function() {
 });
 
 function submitForm() {
+  var missing = [];
+
+  var artist    = artistField.value;
+  var email     = contactField.value;
+  var label     = recordField.value;
+  var city      = cityField.value;
+  var members   = memberField.value;
+  var album     = albumField.value;
+  var genre     = genrePicker.value;
+  var date      = dateField.value;
+  var canada    = canadaBox.value;
+  var vancouver = vancouverBox.value;
+  var female    = femArtistBox.value;
+  var comments  = commentField.value;
+
+  var submission = document.getElementById("submit-button-div");
+  submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting!</p>";
 
 }
 
