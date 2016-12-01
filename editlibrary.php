@@ -57,7 +57,19 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 							<td align=left style='padding-left:10px'>Label: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=aslabel></td>
 						</tr>
 						<tr>
-							<td align=left style='padding-left:10px'>Genre: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asgenre></td>
+							<td align=left style='padding-left:10px'>Genre: </td>
+							<td align=left style='padding-left:5px'>
+								<script type="text/javascript">
+									$(document).ready(function() {
+									$(".js-example-basic-single").select2();
+									});
+								</script>
+									<select class="js-example-basic-single vueselect" style="width:70%;">
+										<?php foreach($djland_primary_genres as $genre){
+											printf("<option value=\"$genre\">$genre</option>");
+										} ?>
+									</select>
+							</td>
 							<td align=left style='padding-left:10px'>Added: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asadded></td>
 							<td align=left style='padding-left:10px'>Modified: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asmodified></td>
 						</tr>
