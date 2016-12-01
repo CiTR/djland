@@ -1,3 +1,7 @@
+.album-row {
+  clear: both;
+}
+
 .track-form {
   border-style:solid;
   border-width:1px;
