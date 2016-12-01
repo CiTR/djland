@@ -1,0 +1,47 @@
+.track-form {
+  border-style:solid;
+  border-width:1px;
+  margin-bottom:30px;
+  padding-bottom: 20px;
+}
+
+.track-file-name {
+  text-align:center;
+}
+
+.track-number-label {
+  margin-left: 5%;
+  margin-bottom: 2px;
+}
+.track-number-field {
+  width:7%;
+  margin-left: 5%;
+}
+
+.input-track-label {
+  text-align:center;
+  margin:2px;
+}
+.input-track-field {
+  width:90%;
+  margin-left:5%;
+  margin-bottom: 15px;
+}
+
+.submission-button {
+  text-transform: uppercase;
+  width: 100%;
+  border-radius: 3px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  color: white;
+}
+#album-art-button, #new-track-button {
+  background-color: #eb6748;
+}
+#submit-button {
+  background-color: green;
+  border-color: green;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}

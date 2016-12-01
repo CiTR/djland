@@ -10,31 +10,31 @@ var trackNumber = 1;
 
 window.addEventListener('load', function() {
   form = document.getElementById("submit-field");
-  fillForm();
-});
+  albumArtButton = document.getElementById("album-art-button");
+  // trackButton = document.getElementById("new-track-button");
+  submitButton = document.getElementById("submit-button");
 
-function wordpressLoad() {
-  form = document.getElementById("submit-field");
-  fillForm();
-}
-
-function fillForm() {
-  // Instructions at the top.
-  var newNode = document.createElement("p");
-  newNode.appendChild(document.createTextNode("Please submit a minimum of four 320kbps MP3 files."));
-  form.appendChild(newNode);
-
-  // Create the 'Add Track' button.
-  trackButton = document.createElement("button");
-  trackButton.setAttribute("id", "new-track-button");
-  trackButton.appendChild(document.createTextNode("Add Track"));
-  form.appendChild(trackButton);
+  submitButton.addEventListener('click', function() {
+    // TODO: Verify information entered and send to DJLand.
+  });
+  albumArtButton.addEventListener('click', function() {
+    // TODO: Make this prompt user for image file.
+  });
+  /*
   trackButton.addEventListener('click', function() {
     // TODO: Prompt user for file.
     addTrackForm();
   });
+  */
+
+  fillForm();
+});
+
+function fillForm() {
 
   // ----- Create the album form. ----- //
+
+  /*
 
   newNode = document.createElement("div");
   newNode.setAttribute("id", "artist-input-album");
@@ -119,6 +119,26 @@ function fillForm() {
     // TODO: Make this prompt user for image file.
   });
 
+    // Instructions for adding tracks.
+    var newNode = document.createElement("p");
+    newNode.appendChild(document.createTextNode("Please submit a minimum of four 320kbps MP3 files."));
+    form.appendChild(newNode);
+
+    */
+
+    // Create the 'Add Track' button.
+    trackButton = document.createElement("button");
+    trackButton.setAttribute("id", "new-track-button");
+    trackButton.setAttribute("class", "submission-button");
+    trackButton.appendChild(document.createTextNode("Add Track"));
+    form.appendChild(trackButton);
+    trackButton.addEventListener('click', function() {
+      // TODO: Prompt user for file.
+      addTrackForm();
+    });
+
+
+    /*
   // Create the 'Submit' button.
   submitButton = document.createElement("button");
   submitButton.setAttribute("id", "submit-button");
@@ -128,22 +148,37 @@ function fillForm() {
     // TODO: Verify information entered and send to DJLand.
   });
 
+  */
+
 }
 
 function addTrackForm() {
   // Create the surrounding div.
   var divNode = document.createElement("div");
   divNode.setAttribute("id", "track-" + trackNumber);
-  trackNumber++;
+  // trackNumber++;
   divNode.setAttribute("class", "track-form");
 
   // Add the file name
   var childNode = document.createElement("p");
   childNode.setAttribute("class", "track-file-name");
   // TODO: use name of file given.
-  childNode.appendChild(document.createTextNode("file" + (trackNumber - 1) + "name.mp3"));
+  childNode.appendChild(document.createTextNode("file" + trackNumber + "name.mp3"));
   divNode.appendChild(childNode);
 
+  // Add the track number field
+  childNode = document.createElement("p");
+  childNode.setAttribute("class", "track-number-label");
+  childNode.appendChild(document.createTextNode("Track number:"));
+  divNode.appendChild(childNode);
+
+  childNode = document.createElement("input");
+  childNode.setAttribute("class", "track-number-field");
+  childNode.setAttribute("value", trackNumber);
+  trackNumber++;
+  divNode.appendChild(childNode);
+
+  // Add the track name field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
   childNode.appendChild(document.createTextNode("Track name:"));
@@ -153,6 +188,7 @@ function addTrackForm() {
   childNode.setAttribute("class", "input-track-field");
   divNode.appendChild(childNode);
 
+  // Add the composer field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
   childNode.appendChild(document.createTextNode("Composer(s):"));
@@ -162,6 +198,7 @@ function addTrackForm() {
   childNode.setAttribute("class", "input-track-field");
   divNode.appendChild(childNode);
 
+  // Add the performer field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
   childNode.appendChild(document.createTextNode("Performer(s):"));
