@@ -40,12 +40,24 @@
   letter-spacing: 0.1em;
   color: white;
 }
+/*
 #album-art-button, #new-track-button {
   background-color: #eb6748;
 }
+*/
 #submit-button {
   background-color: green;
   border-color: green;
   margin-top: 30px;
   margin-bottom: 50px;
+}
+
+.thumb {
+  clear: both;
+  width: auto;
+  height: auto;
+  /* max-height: 500px; */
+  max-width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
