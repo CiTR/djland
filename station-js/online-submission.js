@@ -55,7 +55,7 @@ function submitForm() {
   var comments  = commentField.value;
 
   var submission = document.getElementById("submit-button-div");
-  submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting!</p>";
+  submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
 
 }
 
