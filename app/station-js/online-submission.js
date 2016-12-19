@@ -10,6 +10,7 @@ var artistField, contactField, recordField, cityField, memberField;
 var albumField, genrePicker, dateField, canadaBox, vancouverBox;
 var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
+var totalTracks = 0;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -39,6 +40,57 @@ window.addEventListener('load', function() {
 });
 
 function submitForm() {
+  var missing = [];
+  var success = true;
+
+  var artist    = artistField.value;
+  var email     = contactField.value;
+  var label     = recordField.value;
+  var city      = cityField.value;
+  var members   = memberField.value;
+  var album     = albumField.value;
+  var genre     = genrePicker.value;
+  var date      = dateField.value;
+  var canada    = canadaBox.checked;
+  var vancouver = vancouverBox.checked;
+  var female    = femArtistBox.checked;
+  var comments  = commentField.value;
+
+  if (artist == "") {
+    success = false;
+    missing.push("\n• Artist / Band name");
+  }
+  if (email == "") {
+    success = false;
+    missing.push("\n• Contact email");
+  }
+  if (city == "") {
+    success = false;
+    missing.push("\n• Home city");
+  }
+  if (album == "") {
+    success = false;
+    missing.push("\n• Album name");
+  }
+  if (genre == "") {
+    success = false;
+    missing.push("\n• Genre");
+  }
+  if (date == "") {
+    success = false;
+    missing.push("\n• Date released");
+  }
+
+  if (success) {
+    var submission = document.getElementById("submit-button-div");
+    submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+  } else {
+    var alertString = "You are missing the following fields:";
+    for (var i = 0; i < missing.length; i++) {
+      alertString += missing[i];
+    }
+    alert(alertString);
+  }
 
 }
 
@@ -66,6 +118,7 @@ function handleAlbum(evt) {
 
 function handleTracks(evt) {
   var files = evt.target.files;
+  var filesAdded = 0;
   var warning = false;
   // TODO: Needs to remove non-music files from files[]
   for (var i = 0, f; f = files[i]; i++) {
@@ -76,9 +129,11 @@ function handleTracks(evt) {
     }
 
     var fileName = f.name;
-    addTrackForm(fileName, i+1);
+    addTrackForm(fileName, (totalTracks + i + 1) );
+    filesAdded++;
   }
   if (warning) alert("Please only upload audio files");
+  totalTracks = totalTracks + filesAdded;
 }
 
 function addTrackForm(fileName, trackNo) {

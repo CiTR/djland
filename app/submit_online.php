@@ -430,13 +430,13 @@ img.emoji {
 		</div>
 		<div class="album-row">
 			<div>
-				<input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band
+				<label><input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band</label>
 			</div>
 			<div>
-				<input type="checkbox" id="vancouver-artist" style="margin-right:20px"/>Vancouver, BC artist/band
+				<label><input type="checkbox" id="vancouver-artist" style="margin-right:20px" />Vancouver, BC artist/band</label>
 			</div>
 			<div>
-				<input type="checkbox" id="female-artist" style="margin-right:20px"/>Female artist/band
+				<label><input type="checkbox" id="female-artist" style="margin-right:20px" />Female artist/band</label>
 			</div>
 		</div>
 		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
@@ -473,6 +473,7 @@ img.emoji {
 
 		<div id="submit-field"></div>
 
+
 		<input type="file" id="new-track-button-input" style="display:none" multiple/>
 		<button id="new-track-button" class="submission-button">
 			Add files
@@ -492,9 +493,11 @@ img.emoji {
 			<a href="" class="btn btn-primary" style="width:100%;text-align:center;margin-top:30px;background-color:green;border:green;margin-bottom:20px;"> Submit </a>
 		</div>
 	-->
-	<button id="submit-button" class="submission-button">
-		SUBMIT
-	</button>
+	<div id="submit-button-div">
+		<button id="submit-button" class="submission-button">
+			SUBMIT
+		</button>
+	</div>
 
 </div>	</div>
 </article>    </main><!-- /.main -->
