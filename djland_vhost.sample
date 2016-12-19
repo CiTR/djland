@@ -1,0 +1,11 @@
+<VirtualHost djland:80>
+    ServerAdmin webmaster@dummy.djland.example.com
+    DocumentRoot "PATH-TO-REPO/djland/app"
+    ServerName djland
+    ErrorLog "logs/djland.log"
+    CustomLog "logs/djland-custom.log" common
+    <Directory "PATH-TO-REPO/djland" >
+        AllowOverride all
+        Require all granted
+    </Directory>
+</VirtualHost>
