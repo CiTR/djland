@@ -1,20 +1,44 @@
 <?php
-//All CiTR wordpress go in here
+//All CiTR wordpress-related enpoints go in here
 //This is in a seperate file to avoid having to worry about keeping endpoints for DJLand also compatible with CiTR.ca
 //In addition it also ensures that should others want to connect DJLand to their site, they can just delete this file or drop another in with suitable routes
 
 use App\Show as Show;
 use App\Showtime as Showtime;
+use App\Social as Social;
+use App\Playsheet as Playsheet;
+use App\Podcast as Podcast;
 
 Route::group(array('prefix'=>'DJLandConnector'),function(){
 	Route::group(array('prefix'=>'show'),function(){
 		//just one show with given ID
 		Route::get('/{id}',function($id=id){
-			if(!$show = Show::find($id)) return null;
-
-			$show->id = Show::find($id)->id;
-			$show->edit_date = Show::find($id)->edit_date;
-			return Response::json($show);
+			//First we get the needed info from the shows table
+			if(!Show::find($id)) return null;
+			$data = Show::select('id as show_id',
+			      'name',
+			      'last_show',
+			      'create_date',
+				  'edit_date',
+				  //above Was previously (not sure if this matters?):
+			      //GREATEST(shows.edit_date,'0000-00-00 00:00:00') as edit_date,
+			      'active',
+			      'primary_genre_tags',
+			      'secondary_genre_tags',
+			      'website',
+			      'rss',
+			      'show_desc',
+			      'alerts',
+			      'image as show_img',
+			      'host as host_name',
+			      'podcast_title as podcast_title',
+			      'podcast_subtitle AS podcast_subtitle',
+			      'secondary_genre_tags as podcast_keywords',
+			      'image as podcast_image_url',
+			      'podcast_xml')->where('id','=',$id)->get();
+			//And all the social links for that show from the social table
+			$data['social_links'] = Social::select('social_name','social_url')->where('show_id','=',$id)->get();
+			return Response::json( $data );
 		});
 	});
 	Route::group(array('prefix'=>'shows'),function(){
@@ -25,7 +49,12 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 	});
 	Route::group(array('prefix'=>'playlist'),function(){
 		Route::get('/{id}',function($id=id){
-			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
+			$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get();
+			$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get();
+			//For some reason ->merge() didn't work so we did this and it did
+			$ret = array_merge($playsheet[0]->toArray(), $podcast[0]->toArray());
+			$ret['songs'] = Playsheet::find($id)->playitems;
+			return Response::json($ret);
 		});
 	});
 	Route::group(array('prefix'=>'playlists'),function(){
@@ -35,21 +64,9 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 	});
 	Route::group(array('prefix'=>'schedule'),function(){
 		Route::get('/',function(){
-			//Query from APIV1:
-			/*
-			$query = "SELECT show_times.start_day as start_day,
-			            show_times.start_time as start_time,
-			            show_times.end_day as end_day,
-			            show_times.end_time as end_time,
-			            show_times.alternating as alternating,
-			            show_times.show_id,
-			             shows.id as show_id,
-			             shows.active as active
-			            FROM show_times join shows on show_times.show_id = shows.id
-			            WHERE active = 1";
-			*/
-			//TODO
-			return DB::table('show_times')->join('shows', 'show_times.show_id', '=', 'shows.id')->where('shows.active', '=', 1)->get();
+			return DB::table('show_times')->join('shows', 'show_times.show_id', '=', 'shows.id')->select('show_times.start_day',
+			'show_times.start_time','show_times.end_day','show_times.end_time','show_times.alternating','show_times.show_id',
+			'shows.id as show_id', 'shows.active as active')->where('shows.active', '=', 1)->get();
 		});
 	});
 	//We currently have a perfectly fine endpoint at api2/public/specialbroadcasts
