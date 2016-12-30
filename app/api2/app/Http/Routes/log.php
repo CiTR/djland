@@ -2,6 +2,7 @@
 //Routes in this file inplement DB-based logger routes for DJLand
 
 use App\Log as Log;
+use App\Member as Member;
 
 //All routes in this group require that we be logged in to use
 Route::group(array('middleware'=>'auth'),function(){
@@ -13,8 +14,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$limit=Input::get('limit');
 				if(!is_numeric($limit) ){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . Input::get('offset') . "\"";
-					$error= array('error'=>'Non-numerical limit passed to /api2/public/log/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical limit passed to /api2/public/log/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -24,8 +24,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$offset=Input::get('offset');
 				if(!is_numeric($offset)){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . $offset . "\"";
-					$error= array('error'=>'Non-numerical offset passed to /api2/public/log/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical offset passed to /api2/public/log/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -39,8 +38,7 @@ Route::group(array('middleware'=>'auth'),function(){
 			if(is_numeric($limit) && is_numeric($offset) ){
 				return Response::json( Log::select('index','error','data','user','DATE_CREATED')->offset($offset)->limit($limit)->get() );
 			} else{
-				$error= array('error'=>'Non-numerical limit or offset passed to /api2/public/log/bylimitoffset/{limit}/{offset}', 'data'=>$input,'user'=>'API_CALL');
-				Log::create($error);
+				Log::write('Non-numerical limit or offset passed to /api2/public/log/bylimitoffset/{limit}/{offset}',$input);
 				return "API error, check DJLand API Log";
 			}
 		});
@@ -53,8 +51,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$limit=Input::get('limit');
 				if(!is_numeric($limit) ){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . Input::get('offset') . "\"";
-					$error= array('error'=>'Non-numerical limit passed to /api2/public/log/bydatebefore/{date}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical limit passed to /api2/public/log/bydatebefore/{date}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -64,8 +61,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$offset=Input::get('offset');
 				if(!is_numeric($offset)){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . $offset . "\"";
-					$error= array('error'=>'Non-numerical offset passed to /api2/public/log/bydatebefore/{date}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical offset passed to /api2/public/log/bydatebefore/{date}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -81,8 +77,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$limit=Input::get('limit');
 				if(!is_numeric($limit) ){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . Input::get('offset') . "\"";
-					$error= array('error'=>'Non-numerical limit passed to /api2/public/log/bydateafter/{date}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical limit passed to /api2/public/log/bydateafter/{date}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -92,8 +87,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$offset=Input::get('offset');
 				if(!is_numeric($offset)){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . $offset . "\"";
-					$error= array('error'=>'Non-numerical offset passed to /api2/public/log/bydateafter/{date}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical offset passed to /api2/public/log/bydateafter/{date}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -111,8 +105,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$limit=Input::get('limit');
 				if(!is_numeric($limit) ){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . Input::get('offset') . "\"";
-					$error= array('error'=>'Non-numerical limit passed to /api2/public/log/bydaterange/{start}/{end}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical limit passed to /api2/public/log/bydaterange/{start}/{end}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -122,8 +115,7 @@ Route::group(array('middleware'=>'auth'),function(){
 				$offset=Input::get('offset');
 				if(!is_numeric($offset)){
 					$input = "Input was: \"" . $limit . "\", offset was: \"" . $offset . "\"";
-					$error= array('error'=>'Non-numerical offset passed to /api2/public/log/bydaterange/{start}/{end}/?limit=&offset=', 'data'=>$input,'user'=>'API_CALL');
-					Log::create($error);
+					Log::write('Non-numerical offset passed to /api2/public/log/bydaterange/{start}/{end}/?limit=&offset=',$input);
 					return "API error, check DJLand API Log";
 				}
 			} else {
@@ -136,8 +128,7 @@ Route::group(array('middleware'=>'auth'),function(){
 			if(is_numeric($id)){
 				return Response::json(Log::where('index','=',$id)->get());
 			} else {
-				$error= array('error'=>'Non-numerical id passed to /api2/public/log/byid/{id}', 'data'=>"The id entered was: ".$id,'user'=>'API_CALL');
-				Log::create($error);
+				Log::write('Non-numerical id passed to /api2/public/log/byid/{id}', "The id entered was: ".$id);
 				return "API error, check DJLand API Log";
 			}
 		});
@@ -145,14 +136,12 @@ Route::group(array('middleware'=>'auth'),function(){
 			return Response::json(Log::where('user','=',$user)->get() );
 		});
 		/* Not used - probably never a use case where an external body would want to write to djland's log
-		   Unless of course we can figure out how to only get djland itself to be able to write to it's DB log through it's own api
-		   Not sure how to do that -Scott
+		   Otherwise we just use Log::write from within the API
 		Route::post('/',function(){
 		});
 		Route::delete('/{id}',function(){
 		});
 		Route::put('/{id}',function(){
-
 		});
 		*/
 	});
