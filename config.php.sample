@@ -2,20 +2,27 @@
 
 //Initialize config arrays.
 $enabled = array(); $station_info = array();
+
+//**************************************************************************************
+//* If you are using the testing environment variable, make sure to create a static/ folder in the app/ folder.
+//* Inside that, create a friends.html file - otherwise using the friends feature will not save successfully. This file is .gitignored.
+//* (it's built off writing to a file, and if the testing_environment variable is set to true that's where it writes)
+//**************************************************************************************
 $testing_environment = true;
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
 //*******************************************
 
-//Radio station info
 $station_info['call_letters'] = 'CiTR';
 $station_info['frequency'] = '101.9fm';
 $station_info['city'] = 'Vancouver';
 $station_info['province']= 'BC';
 $station_info['country'] = 'Canada';
 $station_info['website'] = 'CiTR.ca';
-$station_info['tech_email'] = 'tech_person@station.ca';
+$station_info['tech_email'] = 'tech_person@station.ca'; // The contact for the technical support person at the station
+$station_info['password_recovery_email'] = 'person@station.ca'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['password_recovery_name'] = 'Person'; //Used on the login screen, a person people can email to reset their djland passwords for them
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 $station_info['timezone'] = 'America/Vancouver';
 
@@ -27,15 +34,16 @@ $station_info['timezone'] = 'America/Vancouver';
 //
 
 
-//Enable or disable features of DJLand
+//Enable or disable features of DJLand - enable using true or false
+$enabled['membership'] = true; // Membership info management
 $enabled['library'] = true; // searchable music catalog (for physical recordings)
 $enabled['shows'] = true; // show information database - used to pre-fill playsheets
 $enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
-$enabled['playsheets'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
-$enabled['podcast_tools'] = true; // show podcast manager.  Not implemented yet
-$enabled['sam_integration'] = true;
+$enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
+$enabled['podcast_tools'] = true; // show podcast manager
+$enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
 
 
 //*******************************************
@@ -64,6 +72,13 @@ $sam_db = array(
 
 
 if($enabled['podcast_tools']){
+	//The maximum allowed podcast length in hours*minutes*seconds
+	//ie. set to 8*60*60 for 8 hour maximum limit
+	//set to -1 if you want podcasts to have no maximum length (WARNING: NOT RECOMMENDED IN PRODUCTION ENVIRONMENTS)
+	$max_podcast_length=8*60*60;
+	//Unlimited length - comment above and uncomment below:
+	//$max_podcast_length = -1;
+
 	//Local paths & Remote URLs for use with podcasting
 	$path = array();
 	$url = array();
@@ -88,7 +103,7 @@ if($enabled['podcast_tools']){
 }
 
 //*******************************************
-//* 5) DJLand Configuration Constants / Variables. (Not you must manually edit your database to support changes here)
+//* 5) DJLand Configuration Constants / Variables. (Note: you must manually edit your database to support changes here)
 //*******************************************
 
 $djland_membership_rollover_month = 5;
@@ -100,6 +115,7 @@ if($enabled['podcast_tools']){
 	$url = array();
 
 	//Podcast paths
+	//TODO: Update to OS independent paths
 	$path['audio_base'] = '/home/podcast/audio';
 	$url['audio_base'] = 'http://podcast.hostname.com/audio';
 	$path['xml_base'] = '/home/podcast/xml';

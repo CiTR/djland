@@ -104,17 +104,21 @@
 					</li>
 					<li>
 						Has Show:
-						<input id='search_has_show' type='checkbox'/>
+						<select id='search_has_show'>
+                            <option value='both'>Both</option>
+							<option value='1'>Has Show</option>
+							<option value='0'>No Show</option>
+                        </select>
 					</li>
 					<li>
 						<button class='member_submit' name='search'>Search</button>
 					</li>
-					
-					
+
+
 			</ul>
 			<div class='floating'>
 				<button id='save_comments'>Save Comments</button>
-			</div>	
+			</div>
 
 			<div id='membership_result' class='overflow_auto height_cap' name='search'>
 				<div id='search_loading' class='col1 text-center' name='search'>Loading...</div>
@@ -362,6 +366,10 @@
 	   					<li class='report_row community'>
 	   						<div class='col2'>Community:</div>
 	   						<div id='report_community' class='col2'></div>
+   						</li>
+                        <li class='report_row lifetime'>
+	   						<div class='col2'>Lifetime:</div>
+	   						<div id='report_lifetime' class='col2'></div>
    						</li>
 	   					<li class='report_row staff'>
 	   						<div class='col2'>Staff:</div>

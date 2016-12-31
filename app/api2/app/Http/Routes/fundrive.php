@@ -3,6 +3,7 @@ use App\Friends as Friends;
 use App\Member as Member;
 use App\Permission as Permission;
 use App\User as User;
+use App\Donor as Donor;
 
 //Fundrive Routes
 

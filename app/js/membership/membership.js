@@ -11,7 +11,7 @@ $(document).ready ( function() {
 
 			$.when(year_callback).then(
 				function(){
-					displayMemberList("name","","both",get(undefined,'year_select','search'),'0','created');
+					displayMemberList("name","","both",get(undefined,'year_select','search'),'both','created');
 				},function(){
 
 				});
@@ -85,7 +85,7 @@ function add_handlers(){
 					search_value = $(this).val();
 				}
 			});
-			displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+			displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('search_has_show'), getVal('order_by'));
 		}
 		$('.membership#'+$(this).attr('name')).show();
 
@@ -99,7 +99,6 @@ function add_handlers(){
 		$('.membership#view').show();
     });
 
-
     //Listener for adding 'updated' to allow only updated comments to be submitted for saving
     $('#membership_table').off('keyup','.staff_comment').on('keyup','.staff_comment',function(element){
     	$(this).addClass('updated');
@@ -109,7 +108,6 @@ function add_handlers(){
     $('#search').off('click','#save_comments').on('click','#save_comments',function(element){
     	saveComments();
     });
-
 
 	//CLICKING A PAGE SUBMISSION BUTTON
 	$('.member_submit').unbind().click( function(){
@@ -122,7 +120,7 @@ function add_handlers(){
 						search_value = $(this).val();
 					}
 				});
-				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getCheckbox('search_has_show'),getVal('order_by'));
+				displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('search_has_show'),getVal('order_by'));
 				break;
 			case 'edit':
 				if(confirm("Save changes?")){
@@ -139,7 +137,7 @@ function add_handlers(){
 								search_value = $(this).val();
 							}
 						});
-						displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
+						displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('search_has_show'), getVal('order_by'));
 					},function(e1,e2,e3,e4){
 						console.log(e1);
 						console.log(e2);
@@ -163,7 +161,6 @@ function add_handlers(){
 	$('#email_date_range').unbind().click( function(){
 		$('#email_date_container').toggleClass('hidden');
 	});
-
 
 	//SEARCH TYPE LISTENER
 	$('#search_by').unbind().change( function(){
@@ -205,7 +202,6 @@ function add_handlers(){
         			})
         		);
         	}
-
 	        $.when.apply($,requests).then(function(){
 	        	alert("Successfully deleted: "+members_names.toString());
 	        },function(err){
@@ -217,7 +213,6 @@ function add_handlers(){
     //Toggling red bar for showing members you are going to delete
     $('.membership').off('change','.delete_member').on('change','.delete_member',function(e) {
         $(this.closest('tr')).toggleClass('delete');
-
     });
 
 	//MEMBER YEAR RELOAD
@@ -251,7 +246,6 @@ function add_handlers(){
 		}
 	});
 	$('#faculty').change(function (){
-
 		if($('#faculty').val() == "Other"){
 			$('#faculty2').show();
 		}else{
@@ -268,7 +262,6 @@ function add_handlers(){
 			$('.student.containerrow').hide();
 		}
 	});
-
 	$( "#from" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,
@@ -278,7 +271,6 @@ function add_handlers(){
         $( "#to" ).datepicker( "option", "minDate",selectedDate);
       }
     });
-
 	$( "#to" ).datepicker({
       defaultDate: "+0d",
       changeMonth: true,
@@ -288,8 +280,6 @@ function add_handlers(){
         $( "#from" ).datepicker( "option", "maxDate", selectedDate);
       }
     });
-
-
     $('#student_no').blur(function(){
 		var student_no = getVal('student_no');
 		if(student_no != ""){

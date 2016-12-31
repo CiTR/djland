@@ -9,6 +9,7 @@ use App\Social as Social;
 use App\Member as Member;
 use App\Upload as Upload;
 use App\Socan as Socan;
+
 Route::group(array('prefix'=>'show'),function(){
 	//Creating new Show
 	Route::put('/',function(){
@@ -241,7 +242,6 @@ Route::group(array('prefix'=>'show'),function(){
 		Route::get('playsheets',function($id){
  			return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
 		});
-
 
 		Route::get('social',function($id){
 			return Show::find($id)->social;
