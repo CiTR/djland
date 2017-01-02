@@ -93,7 +93,7 @@
 			});
 			$.when(request).then((function(response){
 				console.log(response);
-				this.list.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
+				this.episodes.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
 				$scope.$apply();
 			}).bind(this),function(error){
 				alert(error.responseText);

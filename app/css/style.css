@@ -19,7 +19,6 @@ body {
 	display:none;
 }
 
-
 ul, li {
 	padding-left: 0
 }
@@ -371,12 +370,19 @@ img.thumb{
 	height:150px;
 	float:left;
 	position:relative;
-
+	margin:1px;
+	border: solid 1px #AAAAAA;
 }
 .image-delete{
 	position:absolute;
 	top:0px;
 	right:0px;
+}
+
+button.:hover,
+input.image-select:hover
+{
+	cursor:pointer;
 }
 .image-select{
 	position:absolute;
@@ -1241,7 +1247,6 @@ div#main {
 	margin-right:auto;
 	display:block;
 	float:left;
-
 }
 
 .podcast_block_inner{
@@ -1321,6 +1326,10 @@ button{
 	height:300px;
 	max-height:75%;
 	overflow:auto;
+}
+
+#wrapper audio{
+	width:90%;
 }
 
 

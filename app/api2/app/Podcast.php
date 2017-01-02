@@ -1,10 +1,6 @@
 <?php
 
 namespace App;
-//Instead use config.php constant
-//define('PODCAST_LIMIT_HOURS',8);
-//PODCAST_LIMIT_SECONDS=PODCAST*3600;
-define('PODCAST_LIMIT_SECONDS',$max_podcast_length);
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,7 +36,7 @@ class Podcast extends Model
 		date_default_timezone_set('America/Vancouver');
 		//Use the max_podcast_length Configuration Constant
 		//Computes with hours * minutes * seconds
-		if($this->duration > $max_podcast_length) || $this->duration < 0){
+		if(($this->duration > $max_podcast_length) || $this->duration < 0){
 			return "Duration Wrong";
 		}
 		//Date Initialization
