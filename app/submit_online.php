@@ -434,7 +434,7 @@ img.emoji {
           <input type="checkbox" id="female-artist" style="margin-right:20px" />
           FemCon
           <span class="tooltip-target">?</span>
-          <span class="tooltip-box">Are you a Female artist/band?</span>
+          <span class="tooltip-box">Are you a female artist/band?</span>
         </label>
       </div>
 			<div>
@@ -454,7 +454,7 @@ img.emoji {
         </label>
 			</div>
 		</div>
-		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
+		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs."></textarea>
 		<!--
 			<div class="button-container">
 				<a id="album-art-button" class="btn btn-primary" style="width:100%;text-align:center"> Add album art (optional)</a>
