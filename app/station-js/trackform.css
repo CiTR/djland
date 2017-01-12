@@ -65,3 +65,35 @@
   margin-left: 5%;
   margin-right: 5%;
 }
+
+.tooltip-target {
+  clear: none;
+  color: #eb6748;
+  border: 1px solid;
+  border-radius: 3px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.tooltip-target:hover {
+  color: #343834;
+  background-color: #eb6748;
+}
+.tooltip-box {
+  color: #343834;
+  background-color: white;
+  display: none;
+  /*
+  border: 1px solid;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  */
+  clear: none;
+}
+.tooltip-target:hover + .tooltip-box {
+  display: inline-block;
+}
