@@ -429,14 +429,29 @@ img.emoji {
 			</div>
 		</div>
 		<div class="album-row">
+      <div>
+        <label>
+          <input type="checkbox" id="female-artist" style="margin-right:20px" />
+          FemCon
+          <span class="tooltip-target">?</span>
+          <span class="tooltip-box">Are you a Female artist/band?</span>
+        </label>
+      </div>
 			<div>
-				<label><input type="checkbox" id="canada-artist" style="margin-right:20px;" />Canadian artist/band</label>
+				<label class="can-van-fem">
+          <input type="checkbox" id="canada-artist" style="margin-right:20px;" />
+          CanCon
+          <span class="tooltip-target">?</span>
+          <span class="tooltip-box">Are you a Canadian artist/band?</span>
+        </label>
 			</div>
 			<div>
-				<label><input type="checkbox" id="vancouver-artist" style="margin-right:20px" />Vancouver, BC artist/band</label>
-			</div>
-			<div>
-				<label><input type="checkbox" id="female-artist" style="margin-right:20px" />Female artist/band</label>
+				<label>
+          <input type="checkbox" id="vancouver-artist" style="margin-right:20px" />
+          Local
+          <span class="tooltip-target">?</span>
+          <span class="tooltip-box">Are you a Vancouver artist/band?</span>
+        </label>
 			</div>
 		</div>
 		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
