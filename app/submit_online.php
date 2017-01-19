@@ -432,25 +432,37 @@ img.emoji {
       <div>
         <label>
           <input type="checkbox" id="female-artist" style="margin-right:20px" />
-          FemCon
+          FemCon: Self-identifying female in 2 of the 4 MPWR categories
           <span class="tooltip-target">?</span>
-          <span class="tooltip-box">Are you a female artist/band?</span>
+          <span class="tooltip-box">
+            M &mdash; Music composed by a self-identified female<br>
+            P &mdash; Performer of music or lyrics is self-identified female<br>
+            W &mdash; Words written by a self-identified female<br>
+            R &mdash; Recording done by or or produced by a self-identified female
+          </span>
         </label>
       </div>
 			<div>
 				<label class="can-van-fem">
           <input type="checkbox" id="canada-artist" style="margin-right:20px;" />
-          CanCon
+          CanCon: You fullfill at least 2 of the 4 MAPL categories
           <span class="tooltip-target">?</span>
-          <span class="tooltip-box">Are you a Canadian artist/band?</span>
+          <span class="tooltip-box">
+            M &mdash; Music composed by a Canadian<br>
+            A &mdash; Artist performing music or lyrics is Canadian<br>
+            P &mdash; Performance is recorded or live broadcast in Canada<br>
+            L &mdash; Lyrics written by a Canadian
+          </span>
         </label>
 			</div>
 			<div>
 				<label>
           <input type="checkbox" id="vancouver-artist" style="margin-right:20px" />
-          Local
+          Local: You / your band is located in the Greater Vancouver Area
+          <!--
           <span class="tooltip-target">?</span>
-          <span class="tooltip-box">Are you a Vancouver artist/band?</span>
+          -->
+          <span class="tooltip-box">You / your band is located in the Greater Vancouver Area</span>
         </label>
 			</div>
 		</div>
