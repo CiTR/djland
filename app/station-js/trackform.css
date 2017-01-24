@@ -84,6 +84,10 @@
   color: #343834;
   background-color: white;
   display: none;
+  width: 80%;
+  border: 1px solid;
+  border-radius: 3px;
+  padding: 5px;
   /*
   border: 1px solid;
   border-radius: 3px;
@@ -95,5 +99,5 @@
   clear: none;
 }
 .tooltip-target:hover + .tooltip-box {
-  display: inline-block;
+  display: block;
 }
