@@ -47,17 +47,20 @@ class Upload extends Model{
 			mkdir($target_dir,0775);
 		}
 
+		$currtime = time();
+		$date_string = date('Y') . '_' . date('m') . '_' . date('d');
+
 		//Ensure the target folder exists, if not create it
 		switch($this->category){
 			case 'show_image':
 				$show = Show::find($this->relation_id);
-				$target_dir = $target_dir.str_replace($strip,'',$show->name).'/';
-				$stripped_name = str_replace($strip,'',explode('.',$file->getClientOriginalName())[0]);
+				$target_dir = $target_dir.str_replace($strip,'',$show->name);
+				$stripped_name = str_replace($strip,'',$show->name . '_show_image_' . $date_string . '_' . $currtime);
 				break;
 			case 'episode_image':
 				$podcast = Podcast::find($this->relation_id);
 				$target_dir = $target_dir.str_replace($strip,'',$podcast->show->name);
-				$stripped_name = str_replace($strip,'',explode('.',$file->getClientOriginalName())[0]);
+				$stripped_name = str_replace($strip,'',$podcast->show->name . '_episode_image_' . $date_string . '_' . $currtime);
 				break;
 			case 'member_resource':
 				$resource = Resource::find($this->relation_id);
@@ -80,24 +83,46 @@ class Upload extends Model{
 		$today = date('Y-m-d');
 
 		$target_file_name = $stripped_name.".".$this->file_type;
+		$target_file = $target_dir . '/' . $target_file_name;
+
 		//append number if file of same name uploaded.
 		$i=1;
-		while(file_exists($target_dir.$target_file_name)){
+		while(file_exists($target_file)){
 			$target_file_name = $stripped_name."-".$i.".".$this->file_type;
+			$target_file = $target_dir .'/' . $target_file_name;
 			$i++;
 		}
 
-		$target_file = $target_dir.$target_file_name;
 		$target_url = str_replace($_SERVER['DOCUMENT_ROOT'],'http://'.$_SERVER['SERVER_NAME'],$target_file);
+
+		switch($this->category){
+			case 'show_image':
+				$show = Show::find($this->relation_id)->update(array('image'=>$target_url));
+				break;
+			case 'episode_image':
+				$podcast = Podcast::find($this->relation_id);
+				$podcast->image = $target_url;
+				$podcast->save();
+				break;
+		}
+
+
+
+		if( ! is_dir($target_dir)) {
+			mkdir($target_dir);
+			chmod($target_dir,0775);
+		}
+
 		if($file->move($target_dir,$target_file_name)){
-			if(chmod($target_file,0775)){
+			try{
+				chmod($target_file,0775);
 				$this->file_name = $target_file_name;
 				$this->path = $target_file;
 				$this->url = $target_url;
 				$this->save();
-
 				return $this;
-			}else{
+			}
+			catch(Exception $e) {
 				$response->text = "Could not set permissions for file.";
 				$response->success = false;
 				return $response;
@@ -119,34 +144,42 @@ class Upload extends Model{
 		//chars to strip from names + dirs
 		$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','?','!');
 
+
 		switch($this->category){
 			case 'episode_audio':
+				if(!$testing_environment){
+					$url_base = $url['audio_base'];
+					$path_base = $path['audio_base'];
+				}else{
+					$url_base = $url['test_audio_base'];
+					$path_base = $path['test_audio_base'];
+				}
+
 				//Get the podcast
 				$podcast = Podcast::find($this->relation_id);
 
 				//Strip unwanted chars from the show name and convert & to and
-				$stripped_show_name = str_replace('&','and',str_replace($strip,'',$podcast->show->name));
+				$stripped_show_name = str_replace(array('&',' '),array('and','-'),str_replace($strip,'',$podcast->show->name));
 
 				//Create the file directory,name, and url
-				if(!$testing_environment){
-					$target_dir = $path['audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
-				}else{
-					$target_dir = $path['test_audio_base']."/".date('Y',strtotime($podcast->playsheet->start_time));
-				}
+				$target_dir = $path_base . "/".date('Y',strtotime($podcast->playsheet->start_time));
+
 				//check if file exists already. If so, we overwrite existing file
-				if($podcast->length && $podcast->length > 0 || $podcast->url != null){
-					$target_file_name = $target_dir.explode('/',$podcast->url,6)[5];
+				if($podcast->length && $podcast->length > 0 && $podcast->url != null){
+					$target_file_name = preg_replace('/(.+'.$this->add_slashes(str_replace('http://','',$url_base)).'\/)/','',$podcast->url);
 				}else{
 					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time)).'.mp3';
 				}
-				$target_url = 'http://playlist.citr.ca/podcasting/audio/'.date('Y',strtotime($podcast->playsheet->start_time)).'/'.$target_file_name;
+
+				$target_url = $url_base . '/' . date('Y',strtotime($podcast->playsheet->start_time)) . '/' .$target_file_name;
+
 				break;
 			default:
 				//we only accepting audio files for episode audio right now.
 				break;
 		}
 
-		if($file->move($target_dir,$target_file_name)){
+		if($file->move($target_dir,$target_dir.'/'.$target_file_name)){
 			$podcast->url = $target_url;
 			$podcast->length = $file->getClientSize();
 			$podcast->save();
@@ -158,5 +191,8 @@ class Upload extends Model{
 			$response->text = "Failed to move file";
 		}
 		return $response;
+	}
+	public function add_slashes($string) {
+		return str_replace('/','\/',$string);
 	}
 }

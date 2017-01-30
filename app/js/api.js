@@ -7,6 +7,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getConstants: function(){
 			return $http.get('/headers/constants.php');
 		},
+		getEpisodeImage: function(podcast_id){
+			return $http.get(API_URL_BASE + '/podcast/' + podcast_id + '/image');
+		},
 		getMemberPlaysheets: function (member_id,offset) {
 			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset || 0);
 		},
@@ -145,6 +148,9 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		deleteImage:function(id){
 			return $http.delete(API_URL_BASE+'/upload/'+id);
+		},
+		deleteEpisodeImage:function(podcast_id) {
+			return $http.delete(API_URL_BASE+'/podcast/'+podcast_id+'/image');
 		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');

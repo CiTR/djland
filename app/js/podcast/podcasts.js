@@ -78,6 +78,8 @@
             this.editing.end_hour = $filter('pad')(this.end.getHours(),2);
             this.editing.end_minute = $filter('pad')(this.end.getMinutes(),2);
             this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
+
+			this.episode_image = call.getEpisodeImage(this.editing.podcast.id);
         }
 		this.uploadAudio = function(podcast_id){
 			var form = new FormData();
@@ -98,6 +100,33 @@
 			}).bind(this),function(error){
 				alert(error.responseText);
 			});
+		}
+		this.uploadImage = function(){
+			var form = new FormData($('#upload_image'));
+			var file = $('#image_file')[0].files[0];
+			console.log(file);
+			form.append('image',file);
+
+			var request = $.ajax({
+				url: 'api2/public/podcast/'+this.editing.podcast.id+'/image',
+				method: 'POST',
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				data: form
+			});
+
+			$.when(request).then((function(response){
+				this.editing.podcast.image = response.url;
+				$scope.$apply();
+			}).bind(this),function(error){
+				alert(error.responseText);
+			});
+		}
+		this.deleteImage = function(){
+			call.deleteEpisodeImage(this.editing.pdocast.id).then((function(){
+				this.editing.podcast.image = '';
+			}).bind(this));
 		}
         this.updateStart = function(){
             this.start.setSeconds(this.editing.start_second);
