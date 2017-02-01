@@ -84,19 +84,17 @@
   color: #343834;
   background-color: white;
   display: none;
-  width: 80%;
+  width: 90%;
   border: 1px solid;
   border-radius: 3px;
   padding: 5px;
-  /*
-  border: 1px solid;
-  border-radius: 3px;
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  */
+  position: relative;
+  margin: auto;
   clear: none;
+}
+.tooltip-box p {
+  margin: 0px;
+  clear: right;
 }
 .tooltip-target:hover + .tooltip-box {
   display: block;
