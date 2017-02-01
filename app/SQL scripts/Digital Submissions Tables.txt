@@ -1,0 +1,88 @@
+//** --------------------------------------------------
+//**
+//** Alter "library" table - couldn't get foreign keys
+//** to work
+//**
+//** --------------------------------------------------
+
+ALTER TABLE `djland`.`library` 
+ADD COLUMN `songlist_id` BIGINT(20) NULL DEFAULT NULL AFTER `modified`,
+ADD COLUMN `description` LONGTEXT NULL AFTER `songlist_id`,
+ADD COLUMN `email` TINYTEXT NULL AFTER `description`;
+
+//** --------------------------------------------------
+//**
+//** Create "submissions" table - couldn't get foreign
+//** keys to work
+//**
+//** --------------------------------------------------
+
+CREATE TABLE `djland`.`submissions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `format_id` TINYINT(3) NULL,
+  `catalog` TINYTEXT NULL,
+  `crtc` INT NULL,
+  `cancon` TINYINT(1) NULL,
+  `femcon` TINYINT(1) NULL,
+  `local` INT NULL,
+  `playlist` TINYINT(1) NULL,
+  `compilation` TINYINT(1) NULL,
+  `digitized` TINYINT(1) NULL,
+  `status` TINYTEXT NULL,
+  `artist` TINYTEXT NULL,
+  `title` TINYTEXT NULL,
+  `label` TINYTEXT NULL,
+  `genre` TINYTEXT NULL,
+  `submitted` DATE NULL,
+  `assignee` INT NULL,
+  `reviewed` TINYINT(1) NULL,
+  `approved` TINYINT(1) NULL,
+  `description` LONGTEXT NULL,
+  `location` VARCHAR(30) NULL,
+  `email` TINYTEXT NULL,
+  `songlist` BIGINT(20) NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `djland`.`submissions` 
+CHANGE COLUMN `assignee` `assignee` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `songlist` `songlist` BIGINT(20) UNSIGNED NOT NULL ;
+
+ALTER TABLE `djland`.`submissions`
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
+  
+//** --------------------------------------------------
+//**
+//** Create "archive" table
+//**
+//** --------------------------------------------------
+
+CREATE TABLE `djland`.`archive` (
+  `id` INT NOT NULL,
+  `contact` TINYTEXT NULL,
+  `catalog` TINYTEXT NULL,
+  `artist` TINYTEXT NULL,
+  `title` TINYTEXT NULL,
+  `submitted` DATE NULL,
+  PRIMARY KEY (`id`));
+  
+ALTER TABLE `djland`.`archive` 
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);  
+  
+//** --------------------------------------------------
+//**
+//** Create "rejected" table
+//**
+//** --------------------------------------------------
+
+CREATE TABLE `djland`.`rejected` (
+  `id` INT NOT NULL,
+  `email` TINYTEXT NULL,
+  `artist` TINYTEXT NULL,
+  `title` TINYTEXT NULL,
+  `submitted` DATE NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `djland`.`rejected` 
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
