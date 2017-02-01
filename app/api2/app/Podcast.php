@@ -75,7 +75,7 @@ class Podcast extends Model
     	if(!$testing_environment){
     		$target_dir = '/home/podcast/audio/'.$year.'/';
     	}else{
-    		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
+    		$target_dir = $path['test_audio_base'].$year.'/';
 			if(!file_exists($target_dir)) mkdir($target_dir,0774);
     	}
 
@@ -144,7 +144,7 @@ class Podcast extends Model
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';
 		if($testing_environment){
-			$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/';
+			$target_dir = $path['test_audio_base'].'/';
 			if(!file_exists($target_dir)) mkdir($target_dir,0774);
 		}
 

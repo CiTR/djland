@@ -6,7 +6,7 @@
 			return MembershipYear::select('membership_year')->groupBy('membership_year')->orderBy('membership_year','DESC')->get();
 		});
 		Route::get('/cutoff',function(){
-			return Response::json(Option::select('value AS cutoff')->where('djland_option','=','membership_cutoff')->first());
+			return Response::json(Option::select('value AS cutoff')->where('djland_option', '=', 'membership_cutoff')->first());
 		});
 		Route::group(array('middleware'=>'admin'),function(){
 			Route::post('/rollover',function(){
