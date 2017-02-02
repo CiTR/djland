@@ -12,13 +12,15 @@
 
 
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
-    <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+  <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+	<script type='text/javascript' src='js/constants.js'></script>
 	<script type='text/javascript' src="js/angular.js"></script>
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
 	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
+
 	<script type='text/javascript' src='js/playsheet/constants.js'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
@@ -27,6 +29,7 @@
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 		var username = "<?php echo $_SESSION['sv_username']; ?>";
 		</script>
+
 		<?php print_menu(); ?>
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
 		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; ?></div>
@@ -171,8 +174,9 @@
 					<input class='wideinput required' ng-change='playsheet.checkIfComplete()' ng-model = 'playsheet.info.title'/>
 					<h4>Episode Description</h4>
 					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
+					<!-- commented out for now - need to implement feature for only some shows to upload their own audio
 					<h4>Upload Episode Audio</h4>
-					<input type="file" name='audio_file' id='audio_file'/>
+					<input type="file" name='audio_file' id='audio_file'/> -->
 			</div>
 
 			<hr style="side-padded">

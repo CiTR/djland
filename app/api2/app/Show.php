@@ -44,7 +44,6 @@ class Show extends Model
 			$current_week = 2;
 		};
 
-
         //Get Current Time (0-23:0-59:0-59)
         $current_time = date('H:i:s',strtotime('now'));
 
@@ -252,9 +251,9 @@ class Show extends Model
 
 
         if(!$testing_environment){
-            $target_dir = $path['xml_base'];
+            $target_dir = $path['xml_base'].'/';
          }else{
-            $target_dir = $path['test_xml_base'];
+            $target_dir = $path['test_xml_base'].'/';
             if(!file_exists($target_dir)) mkdir($target_dir,0774);
         }
 

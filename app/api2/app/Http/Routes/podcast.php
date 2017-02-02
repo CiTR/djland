@@ -28,7 +28,13 @@ Route::group(array('prefix'=>'podcast'),function(){
 					return Response::json($iae->getMessage(),500);
 				}
 			}else{
-				return Response::json('No File',500);
+				try{
+					$podcast = Podcast::find($id);
+					$result = $podcast->make_podcast();
+					return $result;
+				}catch(InvalidArgumentException $iae){
+					return Response::json($iae->getMessage(),500);
+				}
 			}
 		});
 		Route::post('/overwrite',function($id){
@@ -41,7 +47,7 @@ Route::group(array('prefix'=>'podcast'),function(){
 			Route::get('/',function($id){
 				return Response::json(array('image'=>Podcast::find($id)->image()));
 			});
-			//Uploads a podcast imag
+			//Uploads a podcast image
 			Route::post('/',function($id){
 				if(Input::hasFile('image')){
 					$file = Input::file('image');

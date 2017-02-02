@@ -83,7 +83,7 @@ if($enabled['podcast_tools']){
 	$path = array();
 	$url = array();
 
-	//Podcast paths
+	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	$path['audio_base'] = '/home/podcast/audio';
 	$url['audio_base'] = 'http://podcast.hostname.com/audio';
 	$path['xml_base'] = '/home/podcast/xml';
@@ -93,7 +93,7 @@ if($enabled['podcast_tools']){
 	$url['archiver_tool'] = 'http://archive.citr.ca';
 	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
 
-	//Podcast local_dev paths
+	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	if($testing_environment==true){
 		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
 		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
@@ -114,18 +114,18 @@ if($enabled['podcast_tools']){
 	$path = array();
 	$url = array();
 
-	//Podcast paths
+	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	//TODO: Update to OS independent paths
 	$path['audio_base'] = '/home/podcast/audio';
 	$url['audio_base'] = 'http://podcast.hostname.com/audio';
 	$path['xml_base'] = '/home/podcast/xml';
 	$url['xml_base']= 'http://podcast.hostname.com/xml';
 
-	//Archiver Access
+	//Archiver Access - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	$url['archiver_tool'] = 'http://archive.citr.ca';
 	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
 
-	//Podcast local_dev paths
+	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	if($testing_environment==true){
 		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
 		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";

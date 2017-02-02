@@ -1,5 +1,6 @@
 window.myNameSpace = window.myNameSpace || { };
 var faculties,training,interests,provinces,member_types,permission_levels,program_years,primary_genres,constants_request;
+var max_podcast_length;
 $(document).ready ( function() {
 	getConstants();
 	function getConstants(){
@@ -18,8 +19,9 @@ $(document).ready ( function() {
 			permission_levels = data['permission_levels'];
 			program_years = data['program_years'];
 			primary_genres = data['primary_genres'];
+			max_podcast_length = data['max_podcast_length'];
 		}).fail(function(data){
-			console.log("failed to load constants");
+			console.log("Failed to load constants");
 		});
 	}
 });
