@@ -57,7 +57,7 @@ $sam_db = array(
 	'username'=>'username',
 	'password'=>'password',
 	'database'=>'database',
-	)
+	);
 
 //*******************************************
 //* 4) Podcast Configuration
