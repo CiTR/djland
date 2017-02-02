@@ -86,7 +86,6 @@
 	                    this.start = new Date(start_unix * 1000);
 	                    this.end = new Date(end_unix * 1000);
 
-
 	                    this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
 	                    this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
 	                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
@@ -626,22 +625,24 @@
         this.submit = function () {
             this.info.unix_time = this.start.getTime() / 1000;
             this.podcast.show_id = this.info.show_id;
-			      this.podcast.date = this.info.start_time;
+			this.podcast.date = this.info.start_time;
             this.podcast.active = 1;
             this.podcast.title = this.info.title;
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
-			      this.info.show_name = this.active_show.name;
+			this.info.show_name = this.active_show.name;
+            console.log("Start time:" + this.info.start_time + " End Time:" + this.info.end_time);
+            console.log(this.start.getTime() / 1000);
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
-            }else {
-            } if(this.start.getTime()/1000 - this.end.getTime()/1000 > this.max_podcast_length){
+            }else if(this.end.getTime()/1000 - this.start.getTime()/1000 > this.max_podcast_length){ // Divide by 10000 because milliseconds
                 this.max_podcast_length_hours = this.max_podcast_length / 3600;
                 alert("This podcast is over " + this.max_podcast_length_hours + " hours. " + this.max_podcast_length_hours + " Hours is the maximum");
-            }else{
+            }else{ //The start and end times work - proceed to make podcast
+
                //Update Status to submitted playsheet
                 this.info.status = 2;
                 var date = $filter('date')(this.start,'yyyy/MM/dd');
@@ -660,27 +661,27 @@
 	                        for(var playitem in this.playitems){
 	                            this.playitems[playitem].playsheet_id = this.info.id;
 	                        }
-							this.ads = response.data.ads;
+							            this.ads = response.data.ads;
 	                        this.info.id = response.data.id;
 	                        this.podcast.id = response.data.podcast_id;
 	                        this.podcast.playsheet_id = response.data.id;
 	                        this.tracklist_overlay = true;
-              //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
-              //if($('#audio_file')[0].files){
-								//this.uploadAudio(this.podcast.id);
-							//}else{
-								call.makePodcastAudio(this.podcast).then(
-									(function(reponse){
-			                            this.podcast_status = "Podcast Audio Created Successfully.";
-			                        }).bind(this)
-									,(function(error){
-				                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-				                        this.error = true;
+                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+                //if($('#audio_file')[0].files){
+				    //this.uploadAudio(this.podcast.id);
+			    //}else{
+					call.makePodcastAudio(this.podcast).then(
+						(function(reponse){
+			                this.podcast_status = "Podcast Audio Created Successfully.";
+			            }).bind(this)
+							,(function(error){
+				                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+				                this.error = true;
                                 console.log(error);
-				                        this.log_error(error);
-			                        }).bind(this)
-								);
-							//}
+				                    this.log_error(error);
+			                }).bind(this)
+						);
+				//}
 	                    }).bind(this)
 						,(function(error){
 	                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
@@ -702,7 +703,7 @@
                             call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 								(function(response){
 	                                this.tracklist_overlay = true;
-                  //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+                                    //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
 									//if($('#audio_file')[0].files.length > 0){
 										//this.uploadAudio(response.podcast.id);
 									//}else{
@@ -731,7 +732,7 @@
                         call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 							(function(response){
 	                            this.tracklist_overlay = true;
-                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+                                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
 								//if($('#audio_file')[0].files.length > 0){
 									//this.uploadAudio(response.podcast.id);
 								//}else{
