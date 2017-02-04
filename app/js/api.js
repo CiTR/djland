@@ -7,8 +7,11 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getConstants: function(){
 			return $http.get('/headers/constants.php');
 		},
+		getEpisodeImage: function(podcast_id){
+			return $http.get(API_URL_BASE + '/podcast/' + podcast_id + '/image');
+		},
 		getMemberPlaysheets: function (member_id,offset) {
-			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset);
+			return $http.get(API_URL_BASE + '/playsheet/member/' + member_id + '/'+offset || 0);
 		},
 		getPlaysheets: function (limit) {
 			limit = limit || 50;
@@ -17,11 +20,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getPlaysheetData: function (playsheet_id) {
 			return $http.get(API_URL_BASE+ '/playsheet/' + playsheet_id);
 		},
-		getAds: function (time,duration){
-			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration);
-		},
-		getPromotions: function (time,duration,show_id){
-			return $http.get(API_URL_BASE+ '/promotions/' + time + '-' + duration + '/' + show_id);
+		getAds: function (time,duration,show_id){
+			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration + '/' + show_id);
 		},
 		getMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
@@ -36,16 +36,25 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE+'/show/'+show_id);
 		},
 		getShowPlaysheets: function(show_id,offset){
-			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset );
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset || 0);
+		},
+		getMoreShowPlaysheets: function(show_id,offset){
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/playsheets' +'/'+offset || 0 );
 		},
 		getShowEpisodes: function(show_id,offset){
-			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+offset);
+			return $http.get(API_URL_BASE + '/show/' + show_id + '/episodes/'+offset || 0);
 		},
 		getShowOwners: function(show_id){
-			return $http.get(API_URL_BASE+"/show/"+show_id+"/owners");
+			return $http.get(API_URL_BASE+"/show/"+show_id+"/owner");
 		},
 		getShowTimes: function(show_id){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/times");
+		},
+		getShowImages: function(show_id){
+			return $http.get(API_URL_BASE+'/show/'+show_id+'/image');
+		},
+		getUploads: function(){
+			return $http.get(API_URL_BASE+'/upload');
 		},
 		getNextShowTime: function(show_id,current_time){
 			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow/"+current_time);
@@ -57,7 +66,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE+"/member/list");
 		},
 		getSamRecent: function(offset){
-			return $http.get(API_URL_BASE+"/SAM/recent/"+offset);
+			return $http.get(API_URL_BASE+"/SAM/recent/"+offset || 0);
 		},
 		getSamRange: function(from,to){
 			return $http.get(API_URL_BASE+"/SAM/range?from="+from+"&to="+to);
@@ -65,8 +74,8 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getAdSchedule: function(){
 			return $http.get(API_URL_BASE+'/adschedule');
 		},
-		getReport: function(member_id,show_id,from,to){
-			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'member_id':member_id,'show_id':show_id,'from':from,'to':to}));
+		getReport: function(show_id,from,to,report_type){
+			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},
 		getFriends: function(){
 			return $http.get(API_URL_BASE+'/friends');
@@ -77,14 +86,23 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		getFundriveTotals: function(){
 			return $http.get(API_URL_BASE + '/fundrive/total');
 		},
+		getResources: function(){
+			return $http.get(API_URL_BASE + '/resource');
+		},
 		isStaff: function(member_id){
 			return $http.get(API_URL_BASE + '/member/'+ member_id + '/staff');
+		},
+		isAdmin: function(member_id){
+			return $http.get(API_URL_BASE + '/member/' + member_id + '/admin');
 		},
 		addFriend: function(){
 			return $http.put(API_URL_BASE+'/friends');
 		},
 		saveFriends: function(friends){
 			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
+		},
+		saveResources: function(resources){
+			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');
@@ -107,14 +125,17 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		saveNewShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},
-		savePlaysheet: function(playsheet,playitems,podcast,promotions){
-			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'promotions':promotions}));
+		savePlaysheet: function(playsheet,playitems,podcast,ads){
+			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}));
 		},
 		saveEpisode: function(playsheet,podcast){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id+'/episode', angular.toJson({'playsheet':playsheet,'podcast':podcast}));
 		},
-		saveNewPlaysheet: function(playsheet,playitems,podcast,promotions){
-			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'promotions':promotions}) );
+		savePodcast: function(podcast){
+			return $http.put(API_URL_BASE+'/podcast', angular.toJson({'podcast':podcast}));
+		},
+		saveNewPlaysheet: function(playsheet,playitems,podcast,ads){
+			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}) );
 		},
 		saveNewPodcast: function(podcast){
 			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
@@ -124,6 +145,12 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 		},
 		deletePlaysheet:function(id){
 			return $http.delete(API_URL_BASE+'/playsheet/' + id);
+		},
+		deleteImage:function(id){
+			return $http.delete(API_URL_BASE+'/upload/'+id);
+		},
+		deleteEpisodeImage:function(podcast_id) {
+			return $http.delete(API_URL_BASE+'/podcast/'+podcast_id+'/image');
 		},
 		makePodcastAudio: function(podcast){
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/audio');

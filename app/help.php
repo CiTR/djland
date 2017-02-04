@@ -4,8 +4,6 @@ require_once("headers/menu_header.php");
 require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 
-
-
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 print("<title>DJland help</title>");
@@ -18,8 +16,10 @@ print("</head>");
 
 //Data Setup
 print_menu();
-$SOCAN_FLAG=socanCheck($db['link']);
-
+//Commented out as we can do this through the API
+//$SOCAN_FLAG=socanCheck($db['link']);
+$socan_check_uri = "http://djland/api2/public/socan/check";
+$SOCAN_FLAG=$socan_check_uri;
 
 //separate classifications( ex. show editing, ad editing, playsheet, sam)
 
@@ -96,8 +96,6 @@ $socan = array(
 "answer"=>array("You can either play the song in SAM, and the use the SAM tool in the playsheet to add your songs (it will pull the time played and duration for you!) or use the CUE and END buttons to cue the start of your song, and end of your song (it will calculate the duration for you)","CUE and END buttons are in case you did not play a track through SAM, it helps you estimate both the start time (when you hit cue) and the duration (calculated for you when you hit end)","You have to check the extra fields 'background' and 'theme' if you played a song as either of these.")
 );
 
-
-
 $data = array($playsheet, $SAM, $report);
 
 array_push( $data, $socan);
@@ -110,18 +108,13 @@ array_push($data, $showlist);
 array_push($data, $reporting);
 array_push($data, $ads);
 }
-if(permission_level() >= $djland_permission_levels['dj']['staff']) {
-array_push($data, $memberAdd);
+if(permission_level() >= $djland_permission_levels['staff']['level']) {
+array_push($data, $membership);
 }
-
-
 
 // echo $showlistEditing[question][0];
 // echo $showlistEditing[answer][0];
 $numObjects = sizeOf($data);
-
-
-
 
 print("<body class='wallpaper'>");
 print("<div id='wrapper'>");
@@ -129,27 +122,24 @@ print("<div id='wrapper'>");
 print("<h1><center>DJLand Help</center></h1>");
 echo "<center>(Click on the questions to get the answers)</center>";
 for($i=0;$i<$numObjects;$i++){
-$numObjectsInside = sizeOf($data[$i]['question']);
+    $numObjectsInside = sizeOf($data[$i]['question']);
 
-echo "<div class=QAcontainer id=QAcontainer".$i."><img id='QAicon".$i."' class='QAicon collapsed' src='images/collapsed.png'>".$data[$i][title][0]."</div>";
+    echo "<div class=QAcontainer id=QAcontainer".$i."><img id='QAicon".$i."' class='QAicon collapsed' src='images/collapsed.png'>".$data[$i]["title"][0]."</div>";
 
-for($j=0;$j<$numObjectsInside;$j++){
-echo "<div class=QAelement id=QAelement".$i." name=element".$j." style='display:block;'>";
-echo "<div class=QAquestion id=QAquestion".$i." name=QAquestion".$j."><img id='QAicon".$i."' name='QAicon".$j."' class='QAicon collapsed' src='images/collapsed.png' >Q: ".$data[$i][question][$j]."</div>";
-echo "<div class=QAanswer id=QAanswer".$i." name=QAanswer".$j." style='display:none;'>A: ".$data[$i][answer][$j]."</div>";
-echo "</div>";
+    for($j=0;$j<$numObjectsInside;$j++){
+        echo "<div class=QAelement id=QAelement".$i." name=element".$j." style='display:block;'>";
+        echo "<div class=QAquestion id=QAquestion".$i." name=QAquestion".$j."><img id='QAicon".$i."' name='QAicon".$j."' class='QAicon collapsed' src='images/collapsed.png' >Q: ".$data[$i]["question"][$j]."</div>";
+        echo "<div class=QAanswer id=QAanswer".$i." name=QAanswer".$j." style='display:none;'>A: ".$data[$i]["answer"][$j]."</div>";
+        echo "</div>";
+    }
 }
-}
-
 
 print("<p style='position:relative; bottom:10px; text-align:center;'>
 If you would like to see something added to this page, contact
-<a href='mailto:Technicalservices@citr.ca'> Technical Services.
+<a href='mailto: " + $station_info['tech_email'] + ">
 </a>
 </p>
 ");
-
-
 
 print("</div>");
 print("</body>");

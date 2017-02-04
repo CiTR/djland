@@ -1,14 +1,15 @@
 <?php
-require_once("session_header.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
-global $station_info;
-date_default_timezone_set($station_info['timezone']);
-if(!$testing_environment) error_reporting(0);
 
-//*******************************************
-//*******************************************
-//*******************************************
+require_once("session_header.php");
+//DB HEADER
+require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+if(!$testing_environment) error_reporting(0);
+global $station_info,$db;
+date_default_timezone_set($station_info['timezone']);
+
+
 $db['link'] = new mysqli($db['address'], $db['username'], $db['password'], $db['database']);
+
 
 if (mysqli_connect_error()) {
 	print('Connect Error for djland db (' . mysqli_connect_errno() . ') '
@@ -19,6 +20,7 @@ try{
 	$pdo_db = new PDO($hostandaddress,$db['username'],$db['password']);
 	$pdo_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$pdo_db -> exec("set names utf8");
+	$db['pdo_link'] = $pdo_db;
 }catch(PDOException $e){
 	echo $e->getMessage();
 	if ( extension_loaded('pdo') ){
@@ -36,9 +38,7 @@ try{
 // different digital media player
 
 if($enabled['sam_integration']){
-
     global $sam_db;
-
     $sam_db['link'] = $mysqli_sam = new mysqli($sam_db['address'], $sam_db['username'], $sam_db['password'], $sam_db['database']);
 
     if (mysqli_connect_error()) {
@@ -48,12 +48,6 @@ if($enabled['sam_integration']){
     }
 }
 function mysqli_result_dep($res, $row, $field=0) {
-//	echo 'called mysqli result';
-//	echo '<br/>';
-//	echo 'res:'.'<br/>';
-//	print_r($res);
-//	echo 'row:'.$row.'<br/>';
-//	echo 'field:'.$field.'<br/>';
 	if(is_object($res))
 		$res->data_seek($row);
 	else 	return false;
@@ -65,16 +59,6 @@ function mysqli_result_dep($res, $row, $field=0) {
 	else 	return false;
 
 }
-function getContent(){
-
-    if (0 === strlen(trim($content = file_get_contents('php://input'))))
-    {
-      $content = false;
-    }
-
-  return $content;
-}
-
 function CallAPI($method, $url, $data = false)
 {
     $curl = curl_init();
@@ -90,14 +74,15 @@ function CallAPI($method, $url, $data = false)
         case "PUT":
             curl_setopt($curl, CURLOPT_PUT, 1);
             break;
+	case "GET":
+
+		break;
         default:
             if ($data)
                 $url = sprintf("%s?%s", $url, http_build_query($data));
     }
 
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+
 
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -105,7 +90,6 @@ function CallAPI($method, $url, $data = false)
     $result = curl_exec($curl);
 
     curl_close($curl);
-
     return json_decode($result);
 }
 function get_time()
@@ -121,8 +105,7 @@ function get_time()
 function getFormatName($format_id, $db){
 
     $query = "SELECT name FROM types_format WHERE id=".$format_id;
-
-    if( $result = $db->query($query)){
+    if( $result = $db['link']->query($query)){
         while($row = $result->fetch_assoc()){
                     return $row['name'];
         }

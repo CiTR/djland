@@ -7,7 +7,7 @@ class Show extends Model
     protected $table = 'shows';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'show_img', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
+    protected $fillable = array('name', 'host', 'primary_genre_tags', 'secondary_genre_tags', 'weekday', 'start_time', 'end_time', 'pl_req', 'cc_req', 'indy_req', 'fem_req', 'last_show', 'create_date', 'create_name', 'edit_date', 'edit_name', 'active', 'crtc_default', 'lang_default', 'website', 'rss', 'show_desc', 'notes', 'image', 'sponsor_name', 'sponsor_url', 'showtype', 'alerts', 'podcast_xml', 'podcast_slug', 'podcast_title', 'podcast_subtitle', 'podcast_summary', 'podcast_author');
 
     public function members(){
         return $this->belongsToMany('App\Member','member_show');
@@ -24,6 +24,9 @@ class Show extends Model
     public function showtimes(){
         return $this->hasMany('App\Showtime');
     }
+	public function images(){
+		return $this->hasMany('App\Upload','relation_id','id');
+	}
     public function nextShowTime(){
         date_default_timezone_set('America/Los_Angeles');
 
@@ -40,7 +43,6 @@ class Show extends Model
 		} else {
 			$current_week = 2;
 		};
-
 
         //Get Current Time (0-23:0-59:0-59)
         $current_time = date('H:i:s',strtotime('now'));
@@ -140,14 +142,23 @@ class Show extends Model
                 }
             }
         }else{
-            $min = null;
+		//No showtimes for this show, create one.
+		$seconds_elapsed = strtotime('now')%$one_hour;
+
+		if($seconds_elapsed <=15*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed;
+		}elseif($seconds_elapsed > 15*$one_minute && $seconds_elapsed <= 45*$one_minute){
+			$start = strtotime('now') - $seconds_elapsed + 30*$one_minute;
+		}else{
+			$start = strtotime('now') - $seconds_elapsed + $one_hour;
+		}
+		$end = $start + $one_hour;
+		$min = array('start'=>$start,'end'=>$end,'mins'=>$seconds_elapsed/$one_minute);
         }
-
-
         return $min;
     }
     public function make_show_xml(){
-        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+        require(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
         error_reporting(E_ALL);
 
         //Get objects
@@ -164,7 +175,6 @@ class Show extends Model
 
         $show["subtitle"] = substr($show["show_desc"],0,200);
         foreach ($show as $k=>$field) {
-			if($testing_environment) echo $k."<br/>";
             $show[$k] = Show::clean($show[$k]);
             }
 
@@ -196,11 +206,11 @@ class Show extends Model
 
         $xml[] = "</itunes:category>";
 
-        if($show["show_img"]) $xml[] = '<itunes:image href="'. $show["show_img"].'"/>';
+        if($show["image"]) $xml[] = '<itunes:image href="'. $show["image"].'"/>';
 
         $xml[] = "<image>";
         $xml[] = "<link>http://www.citr.ca</link>";
-        $xml[] = "<url>" . $show["show_img"]. "</url>";
+        $xml[] = "<url>" . $show["image"]. "</url>";
         $xml[] = "<title>" . htmlspecialchars(html_entity_decode($show["podcast_title"])) . "</title>";
         $xml[] = "</image>";
         $xml[] = "<link>" .$show["website"]. "</link> ";
@@ -218,7 +228,6 @@ class Show extends Model
 				//Get Objects
 	            $playsheet = $episode->playsheet;
 	            $episode = $episode->getAttributes();
-	            if($testing_environment) echo $episode['date']."\n".$count."\n";
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
 	            foreach($episode as $index=>$var){
@@ -242,9 +251,9 @@ class Show extends Model
 
 
         if(!$testing_environment){
-            $target_dir = '/home/playlist/public_html/podcasting/xml/';
+            $target_dir = $path['xml_base'].'/';
          }else{
-            $target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-xml/';
+            $target_dir = $path['test_xml_base'].'/';
             if(!file_exists($target_dir)) mkdir($target_dir,0774);
         }
 

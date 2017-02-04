@@ -10,20 +10,22 @@ class Friends extends Model
     const UPDATED_AT = 'edited';
     protected $table = 'friends';
    	protected $guarded	= array('id');
-    protected $fillable = array('name','address', 'phone', 'website','discount','image_url',);
-
+    protected $fillable = array('name','address', 'phone', 'website','discount','image',);
+	public function image(){
+		return $this->hasOne('App\Upload','relation_id','id');
+	}
     public static function write_static(){
-        include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+        require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 
 		if(!$testing_environment){
 			$static_page = fopen("/home/citr/citr-wp/app/static/friends.html",'w');
 		}else{
 			$static_page = fopen($_SERVER['DOCUMENT_ROOT']."/static/friends.html",'w');
 		}
-		$friends = Friends::whereNotNull('name')->orderBy('name','asc')->get();
+		$friends = Friends::orderBy('name','asc')->get();
 		$alphabetical = array();
 		foreach($friends as $friend){
-			$alphabetical[substr(trim($friend->name),0,1)][] = $friend;
+			$alphabetical[$friend->name[0]][] = $friend;
 		}
 		$letters = array_keys($alphabetical);
 

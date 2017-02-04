@@ -13,13 +13,13 @@ if(isset($_GET['show'])) $show_id = $_GET['show']; else $show_id = 0;
 
 $query = 'SELECT * FROM playsheets WHERE playsheets.show_id = '.$show_id.' ORDER BY playsheets.start_time DESC ';
 
-if ($result = mysqli_query($db['link'], $query) ) {
+if ($result = mysqli_query($db, $query) ) {
     $playlists = array();
     while ($row = mysqli_fetch_assoc($result)) {
         $playlists [] = $row;
     }
 } else {
-    $error .= mysqli_error($db['link']);
+    $error .= mysqli_error($db);
     finish();
 }
 
@@ -29,13 +29,13 @@ $query2 = '
   SELECT * FROM podcast_episodes
   WHERE show_id = '.$show_id;
 
-if ($result2 = mysqli_query($db['link'], $query2) ) {
+if ($result2 = mysqli_query($db, $query2) ) {
     $podcasts = array();
     while ($row = mysqli_fetch_assoc($result2)) {
         $podcasts [] = $row;
     }
 } else {
-    $error .= mysqli_error($db['link']);
+    $error .= mysqli_error($db);
     finish();
 }
 

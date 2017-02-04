@@ -2,25 +2,25 @@
 	<?php
 	include_once("headers/session_header.php");
 	require_once("headers/security_header.php");
-	//require_once("headers/functions.php");
-	require_once("headers/socan_header.php");
 	require_once("headers/menu_header.php");
 	?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'>
+		<link rel='stylesheet' href='css/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 
 	</head>
 
 
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
-    <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+  <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+	<script type='text/javascript' src='js/constants.js'></script>
 	<script type='text/javascript' src="js/angular.js"></script>
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
 	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
+
 	<script type='text/javascript' src='js/playsheet/constants.js'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
@@ -29,13 +29,14 @@
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 		var username = "<?php echo $_SESSION['sv_username']; ?>";
 		</script>
+
 		<?php print_menu(); ?>
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
-		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; else echo socanCheck($db['link']); ?></div>
+		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; ?></div>
 		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
 
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.socan }">
+		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan==true }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 
@@ -127,28 +128,28 @@
 		    <div id='container'>
 				<h3 class='double-padded-top'>Music</h3>
 				<table>
-					<tr class='music_row_heading border' ng-class="{socan: playsheet.socan }">
+					<tr class='music_row_heading border' ng-class="{socan: playsheet.info.socan }">
 						<th class='side-padded'>#</th>
-						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th><input value="Song" ng-class="{socan: playsheet.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th ng-show="playsheet.socan"><input ng-class="{socan: playsheet.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.socan }"></input></th>
-						<th ng-show="playsheet.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
-						<th ng-show="playsheet.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
+						<th><input value="Artist" readonly tooltip="{{playsheet.help.artist}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th><input value="Song" ng-class="{socan: playsheet.info.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th ng-show="playsheet.info.socan"><input ng-class="{socan: playsheet.info.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.info.socan }"></input></th>
+						<th ng-show="playsheet.info.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
+						<th ng-show="playsheet.info.socan"><input value ="Duration(M:S)"tooltip="{{timeHelp2}}" class='socantiming'></input></th>
 						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['cancon']}}" class="box cancon filled pad-top"></button>
 						<th><button tooltip="{{playsheet.help['femcon']}}" class="box femcon filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['instrumental']}}" class="box instrumental filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['partial']}}" class="box partial filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
-						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
-						<th ng-show="playsheet.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
+						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
+						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
 						<th><a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"/></th>
 						<th><th><th></th>
 					</tr>
 					<tbody ui-sortable id='playitems' ng-change='playsheet.checkIfComplete()' ng-update='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
-						<tr class='playitem border' ng-class="{socan: playsheet.socan }" playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
+						<tr class='playitem border' ng-class="{socan: playsheet.info.socan }" playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
 					</tbody>
 				</table>
 				<button id="addRows" class='right' ng-click='playsheet.addFiveRows()'>Add Five More Rows</button>
@@ -173,6 +174,9 @@
 					<input class='wideinput required' ng-change='playsheet.checkIfComplete()' ng-model = 'playsheet.info.title'/>
 					<h4>Episode Description</h4>
 					<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
+					<!-- commented out for now - need to implement feature for only some shows to upload their own audio
+					<h4>Upload Episode Audio</h4>
+					<input type="file" name='audio_file' id='audio_file'/> -->
 			</div>
 
 			<hr style="side-padded">
@@ -222,7 +226,7 @@
 
 		</div>
 		<div class="crtc_totals">
-				<table class='col1'>
+				<table class='col1 table-condensed'>
 					<tr>
 						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>

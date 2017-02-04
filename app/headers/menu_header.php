@@ -1,6 +1,6 @@
 <?php
 //MENU HEADER
-require_once(dirname(__DIR__).'/config.php');
+require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 require_once('security_header.php');
 
 function admin_menu()
@@ -18,7 +18,7 @@ function admin_menu()
 function print_menu(){
 	global $enabled,$djland_permission_levels;
 ?>
-	<ul id=nav>
+	<ul id="nav">
 		<?php
 			echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
 			echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
@@ -39,7 +39,7 @@ function print_menu(){
 						<?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
 						<li><a href="library.php?action=add">Update Library</a></li>
 						<?php endif; ?>
-            			<?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
+                        <?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
 						<li><a href="editlibrary.php">Edit Library Entries</a></li>
 						<?php endif; ?>
 						<?php if( permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
@@ -66,7 +66,7 @@ function print_menu(){
 						<li><a href="show_alerts.php">Show Alert Listing</a></li>
 						<?php if(permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
-							<li><a href="genremanager.php">Genre Manager</a></li>							</li>
+                            <li><a href="genremanager.php">Genre Manager</a></li>
 						<?php endif; ?>
 					</ul>
 				</div>
@@ -88,7 +88,7 @@ function print_menu(){
 			<li class=nodrop ><a href="crtc_report.php">Reporting</a></li>
 		<?php
 			endif;
-			if($enabled['playsheets'] && permission_level() >= $djland_permission_levels['dj']['level']): ?>
+			if($enabled['playsheet'] && permission_level() >= $djland_permission_levels['dj']['level']): ?>
 				<li class=drop><a href="playsheet_angular.php">Episodes</a>
 					<div class="dropdown small">
 						<div class=small>

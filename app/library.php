@@ -216,7 +216,6 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 	}
 	?></td></tr></table><?php
 }
-//** VIEW LIBRARY RECORD
 else if(permission_level() >= $djland_permission_levels['member']['level'] && isset($_GET['action']) && $_GET['action'] == "view") {
 
 	if(isset($_GET['id']) && $_GET['id']) {
@@ -228,36 +227,36 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
-	printf("<br />");
+		printf("<br />");
 	printf("<div><center><br /><h1>Library Record</h1><br /></center></div>");
 
 	printf("<div style='width:1050px;margin:auto'>");
 	printf("<div id='wrapper' style='width:500px;float:left'>");
 		printf("<br /><h2>Album Information</h2><br />");
 		printf("<hr width=80%%><br />");
-			if(mysqli_num_rows($sresult)) {
-					printf("<table align=center border=0>");
-					printf("<tr><td align=left>Catalog: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
-					printf("<tr><td align=left>Format: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
-					printf("<tr><td align=left>Status: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
-					printf("<tr><td align=left>Artist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
-					printf("<tr><td align=left>Title: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
-					printf("<tr><td align=left>Label: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
-					printf("<tr><td align=left>Genre: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
-					printf("<tr><td align=left>Added: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
-					printf("<tr><td align=left>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
-					printf("<tr><td align=left>Cancon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
-					printf("<tr><td align=left>Femcon: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-					printf("<tr><td align=left>Local: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-					printf("<tr><td align=left>Playlist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-					printf("<tr><td align=left>Compilation: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
-					printf("<tr><td align=left>in SAM: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
-					printf("</table><br>");
-			}
-			else {
-				printf("<br>No Such Record...<br><br>");
-			}
-	printf("</div>");
+	if(mysqli_num_rows($sresult)) {
+			printf("<table align=center border=0>");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
+			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
+			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+			printf("<tr><td>Local: %s</td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<td>Playlist: %s</td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+			printf("<tr><td>Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+			printf("<tr><td>in SAM: %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+			printf("</table><br>");
+	}
+	else {
+		printf("<br>No Such Record...<br><br>");
+	}
+printf("</div>");
 	printf("<div id='wrapper' style='width:500px;float:right'>");
 		printf("<br /><h2>Preview Songs</h2><br />");
 		printf("<hr width=80%%><br />");

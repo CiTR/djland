@@ -10,7 +10,7 @@ function file_extension($xml_url){
 }
 
 $directory_html = file_get_contents('http://playlist.citr.ca/podcasting/xml/');
-//Get all filenames in this directory 
+//Get all filenames in this directory
 preg_match_all('/podcasting\/xml\/[a-zA-Z0-9_-]*.'.$extension_type.'/', $directory_html, $xml_urls);
 
 $show_names_query = "SELECT id,name from shows";
@@ -21,11 +21,11 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 ?>
 <html>
     <head>
-        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+        <link rel='stylesheet' href='css/bootstrap.min.css'></script>
     </head>
     <body>
     	<table class='table-condensed table-hover'>
-            <tr><th>URL</th><th>Podcast Channel</th><th>Search Name</th><th>Show ID</th><th> Show Name </th><th>Episodes</th></tr>       
+            <tr><th>URL</th><th>Podcast Channel</th><th>Search Name</th><th>Show ID</th><th> Show Name </th><th>Episodes</th></tr>
 
 
 			<?php
@@ -37,9 +37,9 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 				$statement = $pdo_db->prepare($show_query);
 				$statement -> execute();
 				$shows = $statement->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				foreach($xml_urls as $key => $url){
-					
+
 					$channel = new stdClass();
 					$xml_url = 'http://playlist.citr.ca/'.$url;
 
@@ -48,7 +48,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 					if(file_extension($xml_url) == $extension_type){
 						$parser = xml_parser_create();
 						$raw_xml = file_get_contents($xml_url);
-						
+
 						$slug_replace = array('/podcasting/xml/','.xml');
 						if($raw_xml){
 							xml_parse_into_struct($parser, $raw_xml, $parsed_xml, $index);
@@ -105,7 +105,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 							if( preg_match( $match, $show_name ) ){
 								$show_matches[] = $show;
-							}		
+							}
 						}
 					}
 					if(count($show_matches) == 0){
@@ -119,7 +119,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 										$show_matches[] = $show;
 									}
 								}
-							}	
+							}
 						}
 					}
 					if(count($show_matches) == 0){
@@ -131,16 +131,16 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						}
 					}
 
-					
+
 					//Give show channel information, otherwise make a new show with this channel information
 					if(count($show_matches) > 0 && $show_matches[0]['id'] != null){
 						$show_id = $show_matches[0]['id'];
-						$update_query = "UPDATE shows SET 
+						$update_query = "UPDATE shows SET
 							podcast_title=:title,
 							podcast_subtitle=:subtitle,
 							podcast_summary=:summary,
 							podcast_xml=:xml,
-							podcast_slug=:slug 
+							podcast_slug=:slug
 							WHERE id=:id";
 						$statement = $pdo_db->prepare($update_query);
 						$statement ->bindvalue(":id",$show_matches[0]['id']);
@@ -235,7 +235,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 											$episode[$name] = $value;
 										}
 									}
-									
+
 								}
 
 								$increment ++;
@@ -278,7 +278,7 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						}
 					}
 
-					$insert_query = "INSERT INTO podcast_episodes SET 
+					$insert_query = "INSERT INTO podcast_episodes SET
 						show_id=:show_id,
 						title=:title,
 						subtitle=:subtitle,
@@ -310,11 +310,11 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 						}
 					}
 
-					           
-					
+
+
 					echo count($show_matches) == 0 ? "<tr class='danger'>": "<tr>";
 					echo "<td>{$xml_url}</td><td>{$channel->title}</td><td>{$channel_name}</td><td>";
-					
+
 					//Display matches
 					echo count($show_matches) > 1 ? "<ul>":"";
 					if(count($show_matches) == 0 || $show_matches[0]['id'] == null){
@@ -335,10 +335,9 @@ $show_names = $statement -> fetchAll(PDO::FETCH_ASSOC);
 					echo sizeOf($episodes);
 					echo "</td><tr>";
 
-					
+
 				}
-?>	
+?>
 		</table>
     </body>
 </html>
-

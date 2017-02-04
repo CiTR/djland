@@ -68,7 +68,7 @@ if($update_audio){
 if ($error == ''){
     $query = "SELECT * FROM podcast_episodes WHERE channel_id = ".$channel_info['id']." order by date asc";
     $episodes = array();
-    if ($result2 = mysqli_query($db['link'], $query) ){
+    if ($result2 = mysqli_query($db, $query) ){
         while($row = mysqli_fetch_assoc($result2)) {
             $episodes []= $row;
         }

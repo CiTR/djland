@@ -1,7 +1,7 @@
 <html ng-app='djland.friends' >
 	<?php require_once("headers/menu_header.php"); ?>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body class='wallpaper' ng-controller='friendsController as friends'>
@@ -17,14 +17,14 @@
 					<hr/>
 					<h3 class='text-left'>{{friend.name}}</h3>
 
-					<div class='col1'>Name  <input ng-model='friend.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
+					<div class='col1'><input ng-model='friend.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
 					<div class='friend_info'>
 						<div class='col1 double-padded-top'>
-							<div class='col2'>Address<input class='padded-left' ng-model='friend.address' placeholder='address'></div>
+							<div class='col2'>Name<input class='padded-left' ng-model='friend.address' placeholder='address'></div>
 							<div class='col2'>Website<input class='padded-left' ng-model='friend.website' placeholder='website'></div>
 						</div>
 						<div class='col1 double-padded-top'>
-							<div class='col2'>Phone <input class='padded-left' ng-model='friend.phone' placeholder='phone'></div>
+							<div class='col2'>Phone<input class='padded-left' ng-model='friend.phone' placeholder='phone'></div>
 							<div class='col2'>Discount<input class='padded-left' ng-model='friend.discount' placeholder='discount'></div>
 						</div>
 					</div>
