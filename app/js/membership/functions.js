@@ -125,8 +125,6 @@ function setCheckbox(value,id){
 	}else{
 		$('#'+id).prop('checked',false);
 	}
-
-
 }
 function setText(value,id){
 	$target = $('#'+id);
@@ -207,22 +205,29 @@ function decodeHTML(str){
                 return String.fromCharCode(dec);
             });
       }
-function queryMembers(search_by,value,paid,year,order_by){
+function queryMembers(search_parameter,search_value,paid,membership_year,search_has_show,order_by){
+    console.log(search_parameter + " " + search_value + " " + paid + " " + membership_year + " " + search_has_show + " " + order_by);
+	console.log('querying');
 	return $.ajax({
 		type:"GET",
-		url: "form-handlers/membership/search.php",
-		data: { 'search_by':search_by,'value':value,'order_by':order_by,'paid':paid,'year':year},
-		dataType: "json",
-		async: true
-		});
+		url: "api2/public/member/search",
+		data: {
+			'search_parameter':search_parameter,
+			'search_value':search_value,
+			'paid':paid,
+			'membership_year':membership_year,
+			'has_show':search_has_show,
+			'order_by':order_by,
+		},dataType:'json',
+		async:true
+	});
 }
 
 //Returns all membership years present for member id
 function queryMembershipYears(member_id){
     return $.ajax({
 		type:"GET",
-		url: "form-handlers/membership/membership_years.php",
-		data: {"member_id":member_id},
+		url: "api2/public/membershipyear",
 		dataType: "json",
 		async: true
 		});
@@ -230,14 +235,16 @@ function queryMembershipYears(member_id){
 
 function loadYearSelect(){
 	var years = queryMembershipYears();
-	$.when(years).then(function(data){
-		$('.year_select').each(function(element){
-			for(var i=0; i<data['years'].length; i++){
-				$(this).append("<option value="+data['years'][i]+">"+data['years'][i]+"</option>");
-			}
-			$(this).append("<option value='all'>All Years</option>");
+	$.when(years).then(
+		function(response){
+			$('.year_select').each(function(element){
+				for(var i=0; i<response.length; i++){
+					$(this).append("<option value="+response[i]['membership_year']+">"+response[i]['membership_year']+"</option>");
+				}
+				$(this).append("<option value='all'>All Years</option>");
 
-		});
+			}
+		);
 	},function(err){
 		console.log("failed to load years");
 	});
@@ -256,25 +263,25 @@ function loadMember(id){
 		console.log("Failed to load member");
 	});
 }
-function displayMemberList(search_by,value,paid,year,order_by){
+function displayMemberList(search_by,value,paid,year,search_has_show,order_by){
 	$('.member_row').remove();
 	$('#search_loading').show();
-
 	if(year == null){
 		year = get('year_select',null,'search');
 	}
-	$.when(queryMembers(search_by ,value ,paid ,year ,order_by)).then(function(data){
+	$.when(queryMembers(search_by ,value ,paid ,year , search_has_show, order_by)).then(function(data){
 		$('#search_loading').hide();
 		var member_result_table = $('#membership_table[name="search"]');
 		var member_result_header = $('#headerrow');
 		member_result_header.show();
 		for(var member in data){
-			member_result_table.append("<tr id=row"+data[member].member_id+" class='member_row' name='"+data[member].member_id+"'></tr>");
-			var row = $('#row'+data[member].member_id);
-
-			for(var item in data[member]){
-				if(item != 'member_id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (data[member][item] != null ? data[member][item] : "") +"</td>");
-				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+data[member].member_id+"' value='"+ (data[member][item] != null ? data[member][item] : "") +"'></input></td>");
+			var m = data[member];
+			member_result_table.append("<tr id=row"+m.id+" class='member_row' name='"+m.id+"'></tr>");
+			var row = $('#row'+m.id);
+			row.append()
+			for(var item in m){
+				if(item != 'id' && item != 'comments') row.append("<td class='member_row_element "+item+"'>"+ (m[item] != null ? m[item] : "") +"</td>");
+				else if(item == 'comments') row.append("<td><input class='staff_comment' id='comment"+m.id+"' value='"+ (m[item] != null ? m[item] : "") +"'></input></td>");
 			}
 			if($('#permission_level').text() >= permission_levels['administrator']['level']){
 				row.append("<td><input type='checkbox' class='delete_member' id='delete_"+member+"'></td>");
@@ -287,7 +294,7 @@ function displayMemberList(search_by,value,paid,year,order_by){
 		}
 	});
 }
-
+//For saving comments from the search view
 function saveComments(){
 	var comments = {};
 
@@ -320,37 +327,66 @@ function saveComments(){
 
 }
 
+//Get the yearly report from the API and insert into the DOM elements for the yearly report page
 function yearlyReport(year_callback){
 	$.when(year_callback).then(function(){
+        console.log(year_callback);
 		var year =	$('.year_select[name="report"]').val();
+        console.log(year);
+        var query_url = "api2/public/member/report/" + year.substring(0,4) + "/" + year.substring(5,9); //year is in format "2016/2017"
+        console.log(query_url);
 		var ajax = $.ajax({
 				type:"GET",
-                url: "form-handlers/membership/report.php",
-                data: {"year" : year},
+                url: query_url,
+                data: {},
                 dataType: "json",
                 async: true
 			}).success(function(data){
-				console.log(data);
-				for(var item in data){
-					set(data[item],item);
-				}
+				//for(var item in data[0]){
+                //    console.log(data[0][item]);
+				//	set(data[item],item);
+				//}
+                //console.log(data);
+                ins = data[0];
+                console.log(ins);
+                //insert the values into DOM
+                var report_total = $('#report_total');
+                report_total.html(ins.count);
+                var report_paid = $('#report_paid');
+                report_paid.html(ins.paid);
+                var report_unpaid = $('#report_unpaid');
+                report_unpaid.html(ins.count - ins.paid);
+                var report_student = $('#report_student');
+                report_student.html(ins.Student);
+                var report_community = $('#report_community');
+                report_community.html(ins.Community);
+                var report_lifetime = $('#report_lifetime');
+                report_lifetime.html(ins.Lifetime);
+                var report_staff = $('#report_staff');
+                report_staff.html(ins.Staff);
+
+                console.log(interests);
+                for(var interest in interests){
+                    var value = interests[interest];
+                    $('#report_' + value).html(ins[value]);
+                }
+
 			});
 
 	});
 }
 
 function emailList(){
-
 	var email_value;
 	$('.email_select_value').each(function(e){
 		if($(this).is(':visible')){
 			email_value = $(this).val();
 		}
 	});
-	console.log(get('email_select'));
+
 	var request = $.ajax({
 		type:"GET",
-        url: "form-handlers/membership/email_list.php",
+        url: "api2/public/member/email_list",
         data: {"type" : get('email_select'),'value': email_value, "year":get(null,'year_select','email'),"from":get('from'),"to":get('to') },
         dataType: "json",
         async: true
@@ -358,13 +394,16 @@ function emailList(){
 
 	$.when(request).then(
 		function(reply){
-			console.log(reply['emails']);
 			var email_list = $('#email_list');
 			email_list.val("");
 			var email_list_out = "";
-			for(var email in reply['emails']){
-				email_list_out += reply['emails'][email];
-				if(email != reply['emails'][reply['emails'].length-1]){
+
+			var length = reply.length;
+
+			for(var email in reply){
+				email_list_out += reply[email].email;
+
+				if(email != length-2){
 					email_list_out += ", ";
 				}
 			}

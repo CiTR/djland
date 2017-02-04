@@ -9,7 +9,7 @@
 require_once('../api_common.php');
 
 $q = 'delete from special_events;';
-mysqli_query($db['link'],$q);
+mysqli_query($db,$q);
 
 $times = array();
 
@@ -39,8 +39,8 @@ foreach($times as $i => $row){
       $row['image']."','".
       $row['url']."')";
 
-  if(mysqli_query($db['link'],$query)) echo 'good';
-  else echo mysqli_error($db['link']).'<hr>'.$query;
+  if(mysqli_query($db,$query)) echo 'good';
+  else echo mysqli_error($db).'<hr>'.$query;
 
 }
 print_r($times);

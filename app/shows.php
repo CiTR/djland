@@ -1,10 +1,9 @@
 <?php
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
-
 if( permission_level() < $djland_permission_levels['dj']['level']){
-	    header("Location: main.php");
-	}
+	header("Location: main.php");
+}
 ?>
     <html>
     <head>
@@ -30,14 +29,13 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
             </script>
             <div class='text-center' ng-show='show.loading == true'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
             <div ng-hide="show.member_shows || show.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-            <div id='wrapper' ng-show='show.info'>
-
-
+			<button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
+			<div id='wrapper' ng-show='show.info'>
                Select show to edit:
                 <select ng-model="show.show_value" ng-change="show.updateShow()" >
                     <option ng-repeat="item in show.member_shows | orderBy:'name'" value="{{item.id}}">{{item.name}}</option>
                 </select>
-                <button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
+
                 <h4 class='text-left double-padded-top'> Show name </h4>
                 <div ng-switch on='show.is_admin'>
                     <div ng-switch-when="true">
@@ -92,29 +90,21 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input readonly class='wideinput' id='show_image' ng-model='show.info.show_img'>
-                <div class='double-padded-top' ng-controller="FileUploadCtrl">
+                <input readonly class='fullinput' id='show_image' ng-model='show.info.image'>
+				Select an existing image, or upload a new one.
+				<div class='col1'>
+					<div class='image-container' ng-repeat='image in show.images | orderBy:image.id'>
+						<input class='image-select' ng-click='show.info.image = image.url' type='checkbox' value='{{image.id}}' ng-checked='image.url == show.info.image' />
+						<img class='thumb' src='{{image.url}}'/>
+						<button type='button' class='image-delete' ng-click='show.deleteImage(image.id)'>X</button>
+					</div>
+				</div>
+                <div class='double-padded-top'>
                     <div  class="row">
-                        <label for="fileToUpload">Either choose files, or drag files</label><br/>
-                        <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+                        <label for="fileToUpload" >Choose an Image file</label><br/>
+                        <input type="file" name='image_file' id='image_file'/>
                     </div>
-                    <div  id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
-                    <div ng-show="files.length">
-                        <div ng-repeat="file in files.slice(0)">
-                            <span>{{file.webkitRelativePath || file.name}}</span>
-                            (<span ng-switch="file.size > 1024*1024">
-                            <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-                            <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-                            </span>)
-                        </div>
-                    <input type="button" ng-click="uploadFile()" value="Upload" />
-                    <div ng-show="progressVisible">
-                        <div class="percent">{{progress}}%</div>
-                            <div class="progress-bar">
-                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
-                            </div>
-                        </div>
-                    </div>
+					<button type="button" ng-click='show.uploadImage()' >Upload</button>
                 </div>
                 <h4 class='text-left double-padded-top'>Social Media Links</h4>
                 <button ng-click='show.addFirstSocial()' ng-hide='show.socials.length > 0'>+</button>
@@ -148,7 +138,8 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
 
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
-                        <tr><td>Cancon<td><input class='smallinput' name='cancon' ng-model='show.info.cc_req'>%</tr>
+                        <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
+			<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
                         <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>

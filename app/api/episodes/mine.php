@@ -9,7 +9,7 @@ $query = "SELECT * FROM podcast_episodes WHERE channel_id = ".users_channel();
 //execute the query.
 
 $episodes = array();
-if ($result = mysqli_query($db['link'], $query) ){
+if ($result = mysqli_query($db, $query) ){
 
 	while($row = mysqli_fetch_assoc($result)) {
 		$episodes []= $row;

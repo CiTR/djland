@@ -38,7 +38,7 @@ if(array_key_exists('id',$playlist)){
 
     $delete_q = 'DELETE FROM playitems WHERE playsheet_id = '.$playlist_id;
 
-    if($error=='' && $result = mysqli_query($db['link'],$delete_q)){
+    if($error=='' && $result = mysqli_query($db,$delete_q)){
 
     } else {
         $error .= 'could not delete plays before adding updated plays. ';

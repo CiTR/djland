@@ -2,7 +2,7 @@
     var app = angular.module('djland.editPlaysheet',['djland.api','djland.utils','ui.sortable','ui.bootstrap']);
 	app.controller('PlaysheetController',function($filter,$rootScope,$scope,$interval,$timeout,call){
         this.info = {};
-        this.promotions = {};
+        this.ads = {};
         this.playitems = {};
         this.podcast = {};
         this.info.id = playsheet_id;
@@ -11,18 +11,18 @@
         this.loading = true;
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         this.months_of_year = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-
         this.tracklist_overlay_header = "Thanks for submitting your playsheet";
         this.podcast_status = "Your podcast is being created";
-
+        //TODO: Set this from the config constant
+        this.max_podcast_length = 8*60*60;
+        this.tech_email = "technicalservices@citr.ca";
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.socan = $('#socan').text() == 'true' ? true : false;
-    	this.tags = tags;
-    	this.help = help;
+        this.info.socan = $('#socan').text() == 'true' ? true : false;
+    	  this.tags = tags;
+    	  this.help = help;
         this.complete = false;
-
 
         this.add = function(id){
             var row = angular.copy(this.row_template);
@@ -86,7 +86,6 @@
 	                    this.start = new Date(start_unix * 1000);
 	                    this.end = new Date(end_unix * 1000);
 
-
 	                    this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
 	                    this.info.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
 	                    this.start_hour =  $filter('pad')(this.start.getHours(),2);
@@ -103,20 +102,20 @@
 	                    this.updateStart();
 
 	                    if(this.info.id < 1){
-	                        call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+	                        call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 								(
 									function(response){
-			                            this.promotions = response.data;
-			                            console.log(this.promotions);
+			                            this.ads = response.data;
+			                            console.log(this.ads);
 			                        }
 								).bind(this)
 								,(
 									function(error){
 			                            this.log_error(error);
-			                            call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+			                            call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 											(
 												function(response){
-					                                this.promotions = response.data;
+					                                this.ads = response.data;
 					                            }
 											).bind(this)
 										);
@@ -129,7 +128,6 @@
 			);
         }
         this.updateShowValues = function(element){
-
             //When a new show is selected, updat all the information.
             this.active_show = this.member_shows.filter( (function(object){if(object.id == this.show_value) return object;}).bind(this))[0];
             this.show = this.active_show.show;
@@ -196,17 +194,17 @@
         this.loadRebroadcast = function(){
             call.getPlaysheetData(this.existing_playsheet).then(
 				(function(response){
-                this.playitems = response.data.playitems;
-                this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
-                if(this.info.spokenword_duration != null){
-                    this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
-                    this.spokenword_minutes = this.info.spokenword_duration % 60;
-                }else{
-                    this.spokenword_hours = null;
-                    this.spokenword_minutes = null;
-                }
-                this.ads = response.data.ads;
-			}).bind(this)
+                    this.playitems = response.data.playitems;
+                    this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
+                    if(this.info.spokenword_duration != null){
+                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
+                        this.spokenword_minutes = this.info.spokenword_duration % 60;
+                    }else{
+                        this_.spokenword_hours = 0;
+                        this_.spokenword_minutes = null;
+                    }
+                    this.ads = response.data.ads;
+                }).bind(this)
 			);
         }
 		this.getNewUnix = function(){
@@ -244,15 +242,15 @@
 			this.end_unix = end_unix;
 			var duration = start_unix - end_unix;
 			if(this.info.id < 1){
-				call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+				call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 					(function(response){
-						this.promotions = response.data;
+						this.ads = response.data;
 					}).bind(this)
 					,(function(error){
 						this.log_error(error);
-						call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+						call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 							(function(response){
-								this.promotions = response.data;
+								this.ads = response.data;
 							}).bind(this)
 						);
 					}).bind(this)
@@ -288,7 +286,7 @@
 	                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
 	                        this.spokenword_minutes = this.info.spokenword_duration % 60;
 	                    }else{
-	                        this.spokenword_hours = null;
+	                        this.spokenword_hours = 0;
 	                        this.spokenword_minutes = null;
 	                    }
 	                    //Set Show Data
@@ -296,7 +294,7 @@
 
 	                    this.playitems = playsheet.playitems;
 	                    this.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-	                    this.promotions = playsheet.promotions;
+	                    this.ads = playsheet.ads;
 	                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
 	                    if(this.playitems < 1){
 	                        $('#addRows').text("Add Row");
@@ -352,7 +350,6 @@
 
                 this.info.status = '1';
                 this.info.type='Live';
-
                 this.spokenword_hours = 0;
                 this.spokenword_minutes = null;
                 this.podcast.active = 0;
@@ -426,15 +423,15 @@
 			                            for(var i = 0; i<4; i++) {
 			                                this.add(this.playitems.length-1);
 			                            }
-			                            call.getPromotions(start_unix, end_unix-start_unix,this.active_show.id).then(
+			                            call.getAds(start_unix, end_unix-start_unix,this.active_show.id).then(
 											(function(response){
-				                                this.promotions = response.data;
+				                                this.ads = response.data;
 				                            }).bind(this)
 											,(function(error){
 				                            this.log_error(error);
-				                                call.getPromotions(start_unix,end_unix-start_unix,this.active_show.id).then(
+				                                call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 													(function(response){
-				                                    this.promotions = response.data;
+				                                    this.ads = response.data;
 												}).bind(this));
 				                            }).bind(this)
 										);
@@ -452,7 +449,6 @@
 	                }).bind(this)
 				);
             }
-
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.info.start_time;
@@ -474,7 +470,7 @@
 		            this.start_second = $filter('pad')(this.start.getSeconds(),2);
 
 		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-		            this.updateSamPlays();
+		            if(this.using_sam) this.updateSamPlays();
 					this.getNewUnix();
         		}
 			).bind(this)
@@ -488,7 +484,7 @@
 		            this.end_minute = $filter('pad')(this.end.getMinutes(),2);
 		            this.end_second = $filter('pad')(this.end.getSeconds(),2);
 		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-		            this.updateSamPlays();
+		            if(this.using_sam) this.updateSamPlays();
 		            console.log("End Time " + this.info.end_time+" End var ="+  this.end);
 					this.getNewUnix();
 		        }
@@ -566,7 +562,7 @@
             for(var playitem in this.playitems){
                 this.playitems[playitem].show_date = date;
             }
-			this.podcast.date = this.info.start_time;
+			      this.podcast.date = this.info.start_time;
             this.podcast.show_id = this.info.show_id;
             this.updatePodcastDate();
             this.podcast.title = this.info.title;
@@ -576,16 +572,16 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-					this.info.show_name = this.active_show.name;
-                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+					          this.info.show_name = this.active_show.name;
+                    callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
 		                        this.info.id = response.data.id;
 		                        for(var playitem in this.playitems){
 		                            this.playitems[playitem].playsheet_id = this.info.id;
 		                        }
-								this.promotions = response.data.ads;
-								console.log(this.promotions);
+								this.ads = response.data.ads;
+								console.log(this.ads);
 		                        var show_date = this.start.getDate();
 		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
 		                        this.podcast.id = response.data.podcast_id;
@@ -596,14 +592,14 @@
 						).bind(this),
 						(
 							function(error){
-                        		alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+                        		alert("Draft was not saved. Please contact your station technical services at " + this.tech_email);
                         		this.log_error(error);
                     		}
 						).bind(this)
 					);
                 }else{
                     //Existing Playsheet
-                    call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                    call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
 		                        for(var playitem in this.playitems){
@@ -614,15 +610,14 @@
 						).bind(this)
 						,(
 							function(error){
-		                        alert("Draft was not saved. Please contract tecnical services at technicalservices@citr.ca or technicalmanager@citr.ca");
+		                        alert("Draft was not saved. Please contact your station technical services at " + this.tech_email);
 		                        this.log_error(error);
 		                    }
 						).bind(this)
 					);
                 }
             }else{
-                //TODO: Fix the grammar here
-                alert("You've already submitted this playsheet, please submit it instead");
+                alert("Draft not saved - you've already submitted this playsheet. Please re-submit this playsheet to save new information");
             }
 
         }
@@ -636,15 +631,18 @@
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
 			this.info.show_name = this.active_show.name;
+            console.log("Start time:" + this.info.start_time + " End Time:" + this.info.end_time);
+            console.log(this.start.getTime() / 1000);
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
             }else if(new Date(this.info.start_time) > new Date(this.info.end_time)){
                 alert("End time is before start time");
-            }else if(this.start.getTime()/1000 - this.end.getTime()/1000 > 8*60*60){
-                //TODO: Make this correspond to a config constant so that we can adjust the length of the max podcast on the config - see #255
-                alert("This podcast is over 8 hours. 8 Hours is the maximum");
-            }else{
+            }else if(this.end.getTime()/1000 - this.start.getTime()/1000 > this.max_podcast_length){ // Divide by 10000 because milliseconds
+                this.max_podcast_length_hours = this.max_podcast_length / 3600;
+                alert("This podcast is over " + this.max_podcast_length_hours + " hours. " + this.max_podcast_length_hours + " Hours is the maximum");
+            }else{ //The start and end times work - proceed to make podcast
+
                //Update Status to submitted playsheet
                 this.info.status = 2;
                 var date = $filter('date')(this.start,'yyyy/MM/dd');
@@ -658,46 +656,43 @@
                     //New Playsheet
                     this.info.create_name = this.username;
 
-                    call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
-						(
-							function(response){
-		                        for(var playitem in this.playitems){
-		                            this.playitems[playitem].playsheet_id = this.info.id;
-		                        }
-								this.promotions = response.data.ads;
-		                        this.info.id = response.data.id;
-		                        this.podcast.id = response.data.podcast_id;
-		                        this.podcast.playsheet_id = response.data.id;
-		                        this.tracklist_overlay = true;
-		                        call.makePodcastAudio(this.podcast).then(
-									(
-										function(reponse){
-			                            	this.podcast_status = "Podcast Audio Created Successfully.";
-			                        	}
-									).bind(this)
-									,(
-										function(error){
-				                            this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-				                            this.error = true;
-				                            this.log_error(error);
-			                        	}
-									).bind(this)
-								);
-	                    	}
-						).bind(this)
-						,(
-							function(error){
-		                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
-		                        this.podcast_status = "Podcast Not created";
-		                        this.error = true;
-		                        this.log_error(error);
-		                        this.tracklist_overlay = true;
-		                    }
-						).bind(this)
+                    call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
+						(function(response){
+	                        for(var playitem in this.playitems){
+	                            this.playitems[playitem].playsheet_id = this.info.id;
+	                        }
+							            this.ads = response.data.ads;
+	                        this.info.id = response.data.id;
+	                        this.podcast.id = response.data.podcast_id;
+	                        this.podcast.playsheet_id = response.data.id;
+	                        this.tracklist_overlay = true;
+                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+                //if($('#audio_file')[0].files){
+				    //this.uploadAudio(this.podcast.id);
+			    //}else{
+					call.makePodcastAudio(this.podcast).then(
+						(function(reponse){
+			                this.podcast_status = "Podcast Audio Created Successfully.";
+			            }).bind(this)
+							,(function(error){
+				                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+				                this.error = true;
+                                console.log(error);
+				                    this.log_error(error);
+			                }).bind(this)
+						);
+				//}
+	                    }).bind(this)
+						,(function(error){
+	                        this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+	                        this.podcast_status = "Podcast Not created";
+	                        this.error = true;
+	                        this.log_error(error);
+	                        this.tracklist_overlay = true;
+		                }).bind(this)
 					);
                 }else{
                     //Existing Playsheet
-
                     if(this.podcast.id < 1){
                         this.podcast.playsheet_id = this.info.id;
                         this.podcast.show_id = this.info.show_id;
@@ -705,51 +700,56 @@
                         call.saveNewPodcast(this.podcast).then(
 						(function(response){
                             this.podcast.id = response.data['id'];
-							console.log(response);
-                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                            call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 								(function(response){
 	                                this.tracklist_overlay = true;
-	                                call.makePodcastAudio(this.podcast).then(
-										(function(reponse){
-		                                    this.podcast_status = "Podcast Audio Created Successfully.";
-		                                }).bind(this)
+                                    //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+									//if($('#audio_file')[0].files.length > 0){
+										//this.uploadAudio(response.podcast.id);
+									//}else{
+										call.makePodcastAudio(this.podcast).then(
+											(function(reponse){
+					                            this.podcast_status = "Podcast Audio Created Successfully.";
+					                        }).bind(this)
 										,(function(error){
-			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-			                                this.error = true;
-			                                this.log_error(error);
-			                            }).bind(this)
-									);
+						                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+						                        this.error = true;
+						                        this.log_error(error);
+					                        }).bind(this)
+										);
+									//}
 								}).bind(this)
 							);
 						}).bind(this)
 						,(function(error){
-                            this.podcast_status = "Podcast Not created";
+                            this.podcast_status = "Podcast not created";
                             this.error = true;
                             this.log_error(error);
                             this.tracklist_overlay = true;
                         }).bind(this)
                     	);
                     }else{
-                        call.savePlaysheet(this.info,this.playitems,this.podcast,this.promotions).then(
+                        call.savePlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 							(function(response){
 	                            this.tracklist_overlay = true;
-	                            call.makePodcastAudio(this.podcast).then(
-									(
-										function(reponse){
-			                                this.podcast_status = "Podcast Audio Created Successfully.";
-			                            }
-									).bind(this)
-									,(
-										function(error){
-			                                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-			                                this.error = true;
-			                                this.log_error(error);
-			                            }
-									).bind(this)
-								);
+                                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
+								//if($('#audio_file')[0].files.length > 0){
+									//this.uploadAudio(response.podcast.id);
+								//}else{
+									call.makePodcastAudio(this.podcast).then(
+										(function(reponse){
+				                            this.podcast_status = "Podcast Audio Created Successfully.";
+				                        }).bind(this)
+										,(function(error){
+					                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+					                        this.error = true;
+					                        this.log_error(error);
+				                        }).bind(this)
+									);
+								//}
                     		}).bind(this)
 							,(function(error){
-	                            this.podcast_status = "Podcast Not created";
+	                            this.podcast_status = "Podcast not created";
 	                            this.error = true;
 	                            this.log_error(error);
 	                            this.tracklist_overlay = true;
@@ -761,14 +761,35 @@
         }
         this.log_error = function(error){
             this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
+            console.log(error);
             var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
             call.error( error).then(function(response){
-                $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error has been logged');
+                $('#playsheet_error').append("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
             },function(error){
-                $('#playsheet_error').append('Please contact technical services at technicalservices@citr.ca or technicalmanager@citr.ca. Your error could not be logged :(');
+                $('#playsheet_error').append("Please contact your station technical services at " + this.tech_email + ". Your error could not be logged :(");
             });
         }
-
+    //TODO: need to implement feature for only some shows to upload their own audio
+		//this.uploadAudio = function(podcast_id){
+		//	var form = new FormData();
+		//	var file = $('#audio_file')[0].files[0];
+		//	form.append('audio',file);
+		//	var request = $.ajax({
+		//		url: 'api2/public/podcast/'+podcast_id+'/audio',
+		//		method: 'POST',
+		//		dataType: 'json',
+		//		processData: false,
+		//		contentType: false,
+		//		data: form
+		//	});
+		//	$.when(request).then((function(response){
+		//		console.log(response);
+		//		this.list.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
+		//		$scope.$apply();
+		//	}).bind(this),function(error){
+		//		alert(error.responseText);
+		//	});
+		//}
         this.addSamPlay = function (sam_playitem) {
             this.playitems.splice(this.playitems.length,0,sam_playitem);
             console.log(sam_playitem);
@@ -860,7 +881,6 @@
             }
         }
     });
-    var socan = false;
 })();
 
 $(document).ready(function(){

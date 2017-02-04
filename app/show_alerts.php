@@ -6,7 +6,7 @@
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel=stylesheet href='css/style.css' type='text/css'>
 		<title>DJLAND | Show Alert Listing</title>
 	</head>

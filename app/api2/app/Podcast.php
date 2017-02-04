@@ -2,8 +2,6 @@
 
 namespace App;
 
-define('PODCAST_LIMIT_HOURS',8);
-
 use Illuminate\Database\Eloquent\Model;
 
 class Podcast extends Model
@@ -17,6 +15,9 @@ class Podcast extends Model
     public function show(){
     	return $this->belongsTo('App\Show');
     }
+	public function image(){
+		return $this->hasOne('App\Upload','relation_id','id');
+	}
     public function make_podcast(){
     	$response = $this->make_audio();
     	return $response;
@@ -31,9 +32,11 @@ class Podcast extends Model
     }
 
     private function make_audio(){
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		date_default_timezone_set('America/Vancouver');
-		if($this->duration > 8 * 60 * 60 || $this->duration < 0){
+		//Use the max_podcast_length Configuration Constant
+		//Computes with hours * minutes * seconds
+		if(($this->duration > $max_podcast_length) || $this->duration < 0){
 			return "Duration Wrong";
 		}
 		//Date Initialization
@@ -48,8 +51,8 @@ class Podcast extends Model
 	    $iso_date = date('D, d M Y H:i:s O',$start);
 
 	    //Archiver URL to download from
-		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio_stor%2Flog";
-	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
+
+	    $archive_url = $url['archive_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
     	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
@@ -72,7 +75,7 @@ class Podcast extends Model
     	if(!$testing_environment){
     		$target_dir = '/home/podcast/audio/'.$year.'/';
     	}else{
-    		$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/'.$year.'/';
+    		$target_dir = $path['test_audio_base'].'/'.$year.'/';
 			if(!file_exists($target_dir)) mkdir($target_dir,0774);
     	}
 
@@ -126,7 +129,7 @@ class Podcast extends Model
 	}
 
 	private function overwrite_audio(){
-		include($_SERVER['DOCUMENT_ROOT'].'/config.php');
+		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		date_default_timezone_set('America/Vancouver');
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);
@@ -141,7 +144,7 @@ class Podcast extends Model
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';
 		if($testing_environment){
-			$target_dir = $_SERVER['DOCUMENT_ROOT'].'/test-audio/';
+			$target_dir = $path['test_audio_base'].'/';
 			if(!file_exists($target_dir)) mkdir($target_dir,0774);
 		}
 
@@ -173,12 +176,6 @@ class Podcast extends Model
 
 			//If we open local file
 			if($target_file){
-				//Attempt to add ID3 Tags
-				//if($tags && $error == '') {
-		        //    rewind($target_file);
-		        //    write_tags($tags,$info['uri']);
-		        //    rewind($target_file);
-
 				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
 				   $buffer = fread($file_from_archive, 1024*16);  // use a buffer of 16mb bytes
@@ -196,7 +193,7 @@ class Podcast extends Model
 				}
 			}
 			while(is_resource($file_from_archive)){
-			   //Handle still open
+			   //Archive file handle still open
 			   fclose($file_from_archive);
 			}
 		}

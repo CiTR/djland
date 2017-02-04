@@ -1,12 +1,12 @@
 <?php include_once('headers/menu_header.php'); ?>
 <html>
 	<head>
-		<link rel='stylesheet' href='js/bootstrap/bootstrap.min.css'></script>
+		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body class='wallpaper'>
-		<?php 
-		print_menu(); 
+		<?php
+		print_menu();
 		$one_day = 60*60*24;
 		?>
 		<select class='invisible' id="ad-template"></select>
@@ -26,7 +26,7 @@
 				<li class = "tab nodrop inactive-tab <?php echo ($i >= 10 ? 'invisible' : '');?>" name="<?php echo date('Y/m/d H:i:s',strtotime('today') + $one_day*$i); ?>" value="<?php echo $i; ?>"> <?php echo date('Y/m/d',strtotime('today') + $one_day*$i); ?></li>
 			<?php endfor; ?>
 
-		</ul> 
+		</ul>
 		<div class='grey loadingbar_container'>
 			<div><img class='rounded loading_bar' width ='300' height='20' src='images/loading.gif'/></div>
 		</div>

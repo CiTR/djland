@@ -14,9 +14,9 @@ function is_logged_in() {
 function get_username() {
 	return (is_logged_in() ? $_SESSION['sv_username'] : "Unknown");
 }
-function login ($username, $raw_password, $set_cookie) {
+function login ($username, $raw_password) {
 	//Got to do the global
-	global $db,$pdo_db, $sv_username, $sv_login_fails;
+	global $db, $sv_username, $sv_login_fails;
 	global $cookiename_id, $cookiename_pass;
 
 	// Query for information relating to account.
@@ -24,7 +24,7 @@ function login ($username, $raw_password, $set_cookie) {
 					FROM user AS u INNER JOIN group_members AS gm ON u.id = gm.user_id WHERE (u.username = :username AND gm.operator='1') OR (u.username= :username AND u.status LIKE '%Enabled%')";
 
 	try{
-		$user_statement = $pdo_db->prepare($user_query);
+		$user_statement = $db['pdo_link']->prepare($user_query);
 		$user_statement->bindValue(':username',$username);
 		$user_statement->execute();
 		$user_result = $user_statement->fetch(PDO::FETCH_ASSOC);
@@ -46,25 +46,12 @@ function login ($username, $raw_password, $set_cookie) {
 			$_SESSION['sv_username'] = $user_result['username'];
 			$_SESSION['sv_id'] = $user_result['member_id'];
 			$_SESSION['sv_login_fails'] = $user_result['login_fails'];
-			/*	NOT USING COOKIES
-				$cookie_value = hash(time());
-				$insert_cookie = "UPDATE users SET cookie = :cookie WHERE username = :username";
-				$cookie_statement = $pdo_db->prepare($insert_cookie);
-				$cookie_statement->bindValue(':username',)
-				if($set_cookie){
-					setcookie($cookiename_id, $username, time() + 2678400);
-					setcookie($cookiename_pass, time(), time() + 2678400);
-				}
-			*/
 			return true;
 		}else{
-			//echo "Incorrect Password";
-
 			$login_fail_query = "UPDATE users SET login_fails = :login_fails WHERE id=:id";
-			$login_fail_statement = $pdo_db->prepare($login_fail_query);
+			$login_fail_statement = $db['pdo_link']->prepare($login_fail_query);
 			$login_fail_statement ->bindValue(':login_fails',$user_result['login_fails']+1);
 			$login_fail_statement ->bindValue(':id',$user_result['id']);
-
 			return false;
 		}
 	}catch(PDOException $pdoe){
@@ -90,15 +77,12 @@ function cookie_login () {
 }
 
 function logout () {
-	global $cookiename_id, $cookiename_pass;
-	//unset any cookies
-	if(isset($_COOKIE[$cookiename_id]) && isset($_COOKIE[$cookiename_pass])) {
-		setcookie($cookiename_id);
-		setcookie($cookiename_pass);
-	}
+	if(!is_logged_in()) return;
 	unset($_SESSION['sv_username']);
-
+	unset($_SESSION['sv_id']);
+	unset($_SESSION['sv_login_fails']);
 	session_destroy();
+	header("Location: index.php");
 }
 //END LOGIN HEADER
 ?>

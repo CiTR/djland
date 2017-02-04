@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+    <link rel='stylesheet' href='css/bootstrap/bootstrap.min.css'></script>
     </head>
     <body>
     	<table class='table'>
@@ -11,7 +11,7 @@
 
 		    $q = 'SELECT id,start_time, status, show_id from playsheets where status =2 order by show_id asc';
 
-		    $r = mysqli_query($db['link'],$q);
+		    $r = mysqli_query($db,$q);
 
 		    $q2 = 'SELECT podcast_episodes.id as episode_id ,
 		            podcast_episodes.title,
@@ -21,7 +21,7 @@
 		            podcast_episodes.show_id
 		            FROM podcast_episodes
 		            INNER JOIN shows ON shows.id = podcast_episodes.show_id order by shows.id asc';
-		    $r2 = mysqli_query($db['link'],$q2);
+		    $r2 = mysqli_query($db,$q2);
 
 		    $episodes = array();
 		    $playsheets = array();
@@ -113,4 +113,3 @@
 //  print_r($playsheets_by_show);
 
 echo '<h2>'.$total_playsheets.' playsheets. '.$total_episodes.' episodes. '.$single_matches.' single matches found.  '.$big_matches.' big matches found</h2>';
-

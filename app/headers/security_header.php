@@ -1,17 +1,8 @@
 <?php
 //SECURITY HEADER
-//require_once("../config.php");
 require_once("db_header.php");
 require_once("login_header.php");
 date_default_timezone_set($station_info['timezone']);
-
-
-//Remove slashes added by stupid magic quotes
-/*if(get_magic_quotes_gpc()==1) {
-	foreach($_GET as $key=>$var) $_GET["$key"] = stripslashes($var);
-	foreach($_POST as $key=>$var) $_POST["$key"] = stripslashes($var);
-	foreach($_COOKIE as $key=>$var) $_COOKIE["$key"] = stripslashes($var);
-}*/
 
 //function to addslashes
 function fas($some_string) {
@@ -35,7 +26,7 @@ function is_member($test_group) {
 	if(!isset($_SESSION['sv_username'])) {
 		return false;
 	}
-	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.userid = g.userid WHERE u.username = '".$_SESSION['sv_username']."'";
+	$query = "SELECT * FROM group_members AS g INNER JOIN user AS u ON u.id = g.user_id WHERE u.username = '".$_SESSION['sv_username']."'";
 	$result = $db['link']->query($query);
 	$permissions = $result->fetch_assoc();
 	if($permissions[$test_group] == '1' || $permissions['operator'] == '1' || $permissions['administrator'] == '1'){
@@ -61,7 +52,7 @@ function permission_level(){
 			}
 		}
 	}else{
-		echo "Database Error:".mysqli_error($db);
+		echo "Database Error:".mysqli_error($db['link']);
 	}
 
 	if(!is_paid() && ($level < $djland_permission_levels['staff']['level'])){
@@ -71,10 +62,10 @@ function permission_level(){
 }
 
 function is_paid(){
-    global $pdo_db;
+    global $db;
     //Session contains member id.
     $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT membership_year FROM year_rollover WHERE id='1') AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
-    $statement = $pdo_db->prepare($query);
+    $statement = $db['pdo_link']->prepare($query);
     $statement->bindValue(':member_id',$_SESSION['sv_id']);
     try{
         $statement->execute();

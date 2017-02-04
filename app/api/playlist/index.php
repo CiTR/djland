@@ -37,7 +37,7 @@ $query = 'SELECT
 
 $rawdata = array();
 
-if ( $result = mysqli_query($db['link'], $query) ) {
+if ( $result = mysqli_query($db, $query) ) {
   if (mysqli_num_rows($result) == 0) {
     //$error = " no playlist found with this ID: ".$id;
     //$blame_request = true;
@@ -57,7 +57,7 @@ if ( $result = mysqli_query($db['link'], $query) ) {
 
   $query = 'SELECT artist, album as title, song, composer, playitems.id FROM playitems WHERE playitems.playsheet_id='.$id .' order by playitems.id asc';
 
-  if ($result2 = mysqli_query($db['link'], $query)){
+  if ($result2 = mysqli_query($db, $query)){
       if (mysqli_num_rows($result2) == 0){
         //$error .= " no plays in this playlist! ";
         //$blame_request = true;
@@ -74,14 +74,14 @@ if ( $result = mysqli_query($db['link'], $query) ) {
 
       }
   } else {
-    $error .= '<br/>'.mysqli_error($db['link']);
+    $error .= '<br/>'.mysqli_error($db);
   }
 
   $rawdata['songs'] = $plays;
 
 
 } else {
-  $error .= '<br/>'.mysqli_error($db['link']);
+  $error .= '<br/>'.mysqli_error($db);
 }
 
 /*if (!(is_null($rawdata['host']) || ($rawdata['host'])=='') ){

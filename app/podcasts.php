@@ -31,12 +31,13 @@ function getPodcasts($member_id){
 }
 
 ?>
-    <html><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW">
-    <base href='podcasts.php'>
-    <link rel="stylesheet" href='js/bootstrap/bootstrap.min.css'>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-</head>
-
+<html>
+	<head>
+		<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+	    <base href='podcasts.php'>
+	    <link rel="stylesheet" href='css/bootstrap.min.css'>
+	    <link rel="stylesheet" href="css/style.css" type="text/css">
+	</head>
 <body class='wallpaper'>
  <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
 <?php print_menu();
@@ -114,9 +115,9 @@ if(!isset($_GET['id'])){
 
                 <div id="popup"  ng-show="list.editing">
                     <p ng-click="list.editing = false;" id="closer"> X </p>
-                    <h4 class='text-left'>Episode Title</h4>
-                    <input ng-model="list.editing.playsheet.title"/>
-                    <h4 class='text-left'>Episode Summary</h4>
+                    <h4 class='text-left col1'>Episode Title</h4>
+                    <input class='col1' ng-model="list.editing.playsheet.title"/>
+                    <h4 class='text-left col1'>Episode Summary</h4>
                     <textarea ng-model="list.editing.playsheet.summary" rows="8">
                     </textarea>
 
@@ -138,9 +139,8 @@ if(!isset($_GET['id'])){
                             s:<select ng-model="list.editing.start_second" ng-options="n for n in [] | range:0:60"
                                       ng-change="list.updateStart()"></select>
                         </div>
-
-
                     </div>
+
                     <div>
                         <h5>End Time: {{list.editing.playsheet.end_time | date:'yyyy/MM/dd HH:mm:ss'}}</h5>
                         <div ng-controller='datepicker as date' >
@@ -158,31 +158,52 @@ if(!isset($_GET['id'])){
                         </div>
                     </div>
 
-
-                    <h4 class='text-left double-padded-top'>Episode Duration</h4>
+                    <h4 class='col1 text-left double-padded-top'>Episode Duration</h4>
                     <b>{{list.Math.floor( list.editing.podcast.duration /60/60 )  | number:0 }}h:{{(list.editing.podcast.duration /60)%60 | pad:2}}m: {{(list.editing.podcast.duration )%60 | pad:2 }}s</b>
 
-                    <div class='double-padded-top'>
-                    <button ng-click="list.preview_start()">preview start</button>
-                    <button ng-click="list.preview_end()">preview end</button>
-                    <button ng-click="list.stop_sound()">stop playback</button>
-                    <div id='elapsed' ng-show='list.playing'></div>
+                    <div class='col1 double-padded-top'>
+			            <button ng-click="list.preview_start()">preview start</button>
+			            <button ng-click="list.preview_end()">preview end</button>
+			            <button ng-click="list.stop_sound()">stop playback</button>
+			            <div id='elapsed' ng-show='list.playing'></div>
                     </div>
 
-                    <h4 class='text-left double-padded-top'>Audio File Link</h4>
-                    <input ng-model="list.editing.podcast.url" readonly>
-                    </input><br/>
+					<div class='col1 double-padded-top'>
+						<h4 class='text-left'>Episode Image</h4>
+						<div class='image-container'>
+							<img class='thumb' src='{{list.editing.podcast.image}}'/>
+							<button type='button' class='image-delete' ng-click='list.deleteImage(image.id)'>X</button>
+						</div>
 
-                    <span id="message">{{message}}</span><br/><br/>
+						<input type="file" name='image_file' id='image_file'/>
+						<button type="button" ng-click='list.uploadImage()' >Upload</button>
+						<h4 class='text-left'>Episode Image Link</h4>
+	                    <input class='col1' ng-model="list.editing.podcast.image" readonly/>
+					</div>
+
+
+
+					<div class='col1 double-padded-top'>
+						<h4 class='text-left double-padded-top'>Upload Audio File</h4>
+						<input type="file" name='audio_file' id='audio_file'/>
+						<button type="button" ng-click='list.uploadAudio(list.editing.podcast.id)' >Upload</button>
+						<h4 class='text-left'>Audio File Link</h4>
+	                    <input class='col1' ng-model="list.editing.podcast.url" readonly/>
+					</div>
+
+					<br/>
+					<div ng-show="list.admin" class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active"/></div>
+                    <span id="message">{{message}}</span>
+					<br/>
+					<br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-                    <button ng-show="{{list.is_admin}}" ng-click="list.deactivate(list.editing.podcast);">Make this podcast inactive</button>
+
 
                     <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
                 </div>
             </div>
         </div>
     </div>
-
 
 <?php
 }

@@ -17,12 +17,12 @@ if (isset($_GET['time'])){
 }
 if ($show_id = users_show()){
     $query = "SELECT * FROM show_times where show_id = ".$show_id
-    if ($result = mysqli_query($db['link'],$query)){
+    if ($result = mysqli_query($db,$query)){
         while ( $row = mysqli_fetch_assoc($result)){
             $rawdata []= $row;
         }
     } else {
-        $error .= mysqli_error($db['link']);
+        $error .= mysqli_error($db);
     }
     $last_sun = strtotime('last sunday');
     $candidates = array();

@@ -5,15 +5,15 @@ require_once('../api_common.php');
 
 $q = 'SELECT id,name, active from shows';
 
-$r = mysqli_query($db['link'],$q);
+$r = mysqli_query($db,$q);
 
 $q2 = 'SELECT id,title from podcast_channels';
 
-$r2 = mysqli_query($db['link'],$q2);
+$r2 = mysqli_query($db,$q2);
 ?>
 <html>
     <head>
-        <link rel='stylesheet' href='../../../js/bootstrap/bootstrap.min.css'></script>
+        <link rel='stylesheet' href='css/bootstrap.min.css'></script>
     </head>
     <body>
         <a href='api/podcasting/connect-playsheets-with-episodes.php'>Connect Playlists with Episodes</a>
@@ -108,7 +108,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
                 unset($pod_chans[$j]);
                 unset($shows[$i]);
 
-                if ($up_res = mysqli_query($db['link'],$update_q)){
+                if ($up_res = mysqli_query($db,$update_q)){
                     $out.='<td>.. updated the db</td>';
                 } else {
 
@@ -129,12 +129,12 @@ echo count($pod_chans).' podcast channels found.<br/>';
             $show_str_lower = strtolower($show['name']);
             if(strpos($show_str_lower,'fill-in') !== false){
                     $query = "UPDATE podcast_channels SET podcast_channel.show_id = '284' WHERE id = '".$pod['id']."'";
-                    if ($up_res = mysqli_query($db['link'],$query)){
+                    if ($up_res = mysqli_query($db,$query)){
                         $out.='<td>.. Caught Fill-In!</td>';
                     }else{
                          $out .='<td><h4>no podcast automatically found: '.$show['name'].' Setting show_id to 1</h4></td>';
                        $query = "Update podcast_channels SET show_id = 1  where show_id = 0";
-                        if(mysqli_query($db['link'],$query)){
+                        if(mysqli_query($db,$query)){
                             $tr_out = "<tr class=warning>";
                         }else{
                             $tr_out = "<tr class=danger>";
@@ -143,7 +143,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
             }else{
                 $out .='<td><h4>podcast not automatically found: '.$show['name'].' Setting show_id to 1</h4></td>';
                 $query = "Update podcast_channels SET show_id = 1  where show_id = 0";
-                if(mysqli_query($db['link'],$query)){
+                if(mysqli_query($db,$query)){
                     $tr_out = "<tr class=warning>";
                 }else{
                     $tr_out = "<tr class=danger>";
@@ -167,7 +167,7 @@ echo count($pod_chans).' podcast channels found.<br/>';
     UPDATE `podcast_channels` SET `show_id`='233' WHERE `id`='411';
     UPDATE `podcast_channels` SET `show_id`='183' WHERE `id`='442';";
 
-    if(mysqli_query($db['link'],$final_query)){
+    if(mysqli_query($db,$final_query)){
         echo "<p>Successfully Updated Manually</p>";
     }else{
         echo "<p> Manual update failed </p>";

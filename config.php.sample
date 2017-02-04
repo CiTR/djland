@@ -1,0 +1,393 @@
+<?php
+
+//Initialize config arrays.
+$enabled = array(); $station_info = array();
+
+//**************************************************************************************
+//* If you are using the testing environment variable, make sure to create a static/ folder in the app/ folder.
+//* Inside that, create a friends.html file - otherwise using the friends feature will not save successfully. This file is .gitignored.
+//* (it's built off writing to a file, and if the testing_environment variable is set to true that's where it writes)
+//**************************************************************************************
+$testing_environment = true;
+
+//*******************************************
+//* 1) Radio Station Info (default is CiTR for demo)
+//*******************************************
+
+$station_info['call_letters'] = 'CiTR';
+$station_info['frequency'] = '101.9fm';
+$station_info['city'] = 'Vancouver';
+$station_info['province']= 'BC';
+$station_info['country'] = 'Canada';
+$station_info['website'] = 'CiTR.ca';
+$station_info['tech_email'] = 'tech_person@station.ca'; // The contact for the technical support person at the station
+$station_info['password_recovery_email'] = 'person@station.ca'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['password_recovery_name'] = 'Person'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
+$station_info['timezone'] = 'America/Vancouver';
+
+// For timezone reference http://ca1.php.net/manual/en/timezones.php
+
+//*******************************************
+//* 2) DJLand Enabled Features
+//*******************************************
+//
+
+
+//Enable or disable features of DJLand - enable using true or false
+$enabled['membership'] = true; // Membership info management
+$enabled['library'] = true; // searchable music catalog (for physical recordings)
+$enabled['shows'] = true; // show information database - used to pre-fill playsheets
+$enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
+$enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
+$enabled['report'] = true; // CRTC formatted printable report view
+$enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
+$enabled['podcast_tools'] = true; // show podcast manager
+$enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
+$enabled['submissions_and_review']= true // Submissions and review system
+
+//*******************************************
+//* 3) Database info (MySQL)
+//*******************************************
+//
+
+// enter your database credentials here.  If you are using MySQL on the same server
+// these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
+$db = array(
+	'address'=>'localhost',
+	'username'=>'username',
+	'password'=>'password',
+	'database'=>'database',
+	);
+$sam_db = array(
+	'address'=>'sam_host_ip',
+	'username'=>'username',
+	'password'=>'password',
+	'database'=>'database',
+	);
+
+//*******************************************
+//* 4) Podcast Configuration
+//*******************************************
+
+
+if($enabled['podcast_tools']){
+	//The maximum allowed podcast length in hours*minutes*seconds
+	//ie. set to 8*60*60 for 8 hour maximum limit
+	//set to -1 if you want podcasts to have no maximum length (WARNING: NOT RECOMMENDED IN PRODUCTION ENVIRONMENTS)
+	$max_podcast_length=8*60*60;
+	//Unlimited length - comment above and uncomment below:
+	//$max_podcast_length = -1;
+
+	//Local paths & Remote URLs for use with podcasting
+	$path = array();
+	$url = array();
+
+	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
+	$path['audio_base'] = '/home/podcast/audio';
+	$url['audio_base'] = 'http://podcast.hostname.com/audio';
+	$path['xml_base'] = '/home/podcast/xml';
+	$url['xml_base']= 'http://podcast.hostname.com/xml';
+
+	//Archiver Access
+	$url['archiver_tool'] = 'http://archive.citr.ca';
+	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
+
+	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
+	if($testing_environment==true){
+		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+	}
+}
+
+//*******************************************
+//* 5) DJLand Configuration Constants / Variables. (Note: you must manually edit your database to support changes here)
+//*******************************************
+
+$djland_membership_rollover_month = 5;
+
+//Podcasting tools support
+if($enabled['podcast_tools']){
+	//Local paths & Remote URLs for use with podcasting
+	$path = array();
+	$url = array();
+
+	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
+	//TODO: Update to OS independent paths
+	$path['audio_base'] = '/home/podcast/audio';
+	$url['audio_base'] = 'http://podcast.hostname.com/audio';
+	$path['xml_base'] = '/home/podcast/xml';
+	$url['xml_base']= 'http://podcast.hostname.com/xml';
+
+	//Archiver Access - do not use trailing slashes (ie. we want /audio vs. /audio/)
+	$url['archiver_tool'] = 'http://archive.citr.ca';
+	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
+
+	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
+	if($testing_environment==true){
+		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+	}
+}
+
+//The date at which your membership will roll into the next membership year.
+$djland_membership_cutoff_month=5;
+
+//Permission levels, their value, and the tooltip shown when you hover over it.
+$djland_permission_levels = array(
+    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Power Overwhelming.'),
+    'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
+    'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
+    'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
+	'volunteer_leader'=>array('level'=>'4','name'=>'Volunteer Leader','tooltip'=>'Volunteer Leader: Access to library, email lists, and schedule overrides.'),
+    'volunteer'=>array('level'=>'3','name'=>'Volunteer','tooltip'=>'Volunteer: Access to charts, edit library, ad history.'),
+    'dj'=>array('level'=>'2','name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
+    'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
+	);
+//Possible trainings for members
+$djland_training = array(
+	'Technical' => 'technical_training',
+	'Production'=> 'production_training',
+	'Programming'=> 'programming_training',
+	'Spoken Word'=> 'spoken_word_training'
+	);
+
+//Things people can be interested in/be emailed about around the station
+$djland_interests = array(
+	'Arts'=>'arts',
+	'Ads and PSAs'=>'ads_psa',
+	'Digital Library'=>'digital_library',
+	'DJ101.9'=>'dj',
+	'Illustrate for Discorder'=>'discorder_illustrate',
+	'Writing for Discorder'=>'discorder_write',
+	'Live Broadcasting'=>'live_broadcast',
+	'Music'=>'music',
+	'News'=>'news',
+	'Photography'=>'photography',
+	'Programming Committee'=>'programming_committee',
+	'Promos and Outreach'=>'promotions_outreach',
+	'Show Hosting'=>'show_hosting',
+	'Sports'=>'sports',
+	'Tabling'=>'tabling',
+	'Web and Tech'=>'tech',
+	"Women's Collective"=>'womens_collective',
+	"Indigenous Collective"=>"indigenous_collective",
+	"Accessibility Collective"=>"accessibility_collective",
+	"Other"=>"other");
+//Member types
+$djland_member_types = array(
+	'UBC Student'=>'Student',
+	'Community Member'=>'Community',
+	'Staff'=>'Staff',
+	'Lifetime'=>'Lifetime'
+	);
+//University Year Listing
+$djland_program_years = array(
+	'1'=>'1',
+	'2'=>'2',
+	'3'=>'3',
+	'4'=>'4',
+	'5+'=>'5'
+	);
+//University Faculty Listing
+$djland_faculties = array(
+	"Arts",
+	"Applied Science",
+	"Architecture",
+	"Archival Studies",
+	"Audiology",
+	"Business",
+	"Community Planning",
+	"Continuing Studies",
+	"Dentistry",
+	"Doctoral Studies",
+	"Education",
+	"Environmental Health",
+	"Forestry",
+	"Graduate Studies",
+	"Journalism",
+	"Kinesiology",
+	"Land and Food Systems",
+	"Law","Medicine",
+	"Music",
+	"Nursing",
+	"Pharmaceutical",
+	"Public Health",
+	"Science",
+	"Social Work",
+	"Other"
+	);
+
+//Province list
+$djland_provinces = array(
+	'AB',
+	'BC',
+	'MAN',
+	'NB',
+	'NFL',
+	'NS',
+	'NVT',
+	'NWT',
+	'ONT',
+	'QUE',
+	'SASK',
+	'YUK'
+	);
+//Primary genres for show filtering purposes
+$djland_primary_genres = array(
+	"Electronic",
+	"Experimental",
+	"Hip Hop / R&B / Soul",
+	"International",
+	"Jazz / Classical" ,
+	"Punk / Hardcore / Metal" ,
+	"Rock / Pop / Indie",
+	"Roots / Blues / Folk",
+	"Talk"
+	);
+//Subgenres used for digital library management
+$djland_subgenres = array(
+	"Electronic" => array(
+		"Ambient",
+		"Bass",
+		"Chiptune"
+		"Drum and Bass",
+		"Dub",
+		"Dubstep",
+		"Electo",
+		"Future Bass",
+		"Hardstyle",
+		"House",
+		"Glitch"
+		"Jungle"
+		"Tech House",
+		"Acid House",
+		"Tropical House",
+		"Deep House",
+		"Techno",
+		"Trance",
+		"Psy Trance",
+		"Trap",
+		"Vapourwave"
+	),
+	"Experimental" => array(
+		"Avant Garde",
+		"Sound Art",
+		"Radio Art",
+		"Noise",
+		"Drone",
+		"Minimalist",
+		"Free Improv"
+	),
+	"Hip Hop / R&B / Soul" => array(
+		"Contemporary R&B",
+		"Motown",
+		"Neo Soul",
+		"Rap",
+		"Turntableism"
+	),
+	"International" => array(
+		"Reggae",
+		"World"
+	),
+	"Jazz / Classical" => array(
+		"Avant-Garde",
+		"Baroque",
+		"Bebop",
+		"Chamber Music",
+		"Chant",
+		"Choral",
+		"Classical Crossover",
+		"Early Music",
+		"High Classical",
+		"Impressionist",
+		"Jazz Blues",
+		"Medieval",
+		"Minimalism",
+		"Modern Composition",
+		"Opera",
+		"Orchestral",
+		"Renaissance",
+		"Romantic",
+		"Symphonic Jazz",
+		"Wedding Music"
+	),
+	"Punk / Hardcore / Metal" => array(
+		"Alternative Metal",
+		"Black Metal",
+		"Crust Punk",
+		"Death Metal",
+		"Deathcore",
+		"Doom Metal",
+		"Emo",
+		"Garage Punk",
+		"Glam Metal",
+		"Grindcore",
+		"Hardcore Punk",
+		"Heavy Metal",
+		"Folk Metal",
+		"Melodic Punk",
+		"Post-Metal",
+		"Power Metal",
+		"Progressive Metal",
+		"Punk",
+		"Punk Rock",
+		"Screamo",
+		"Speed Metal",
+		"Stoner Metal",
+		"Symphonic Metal",
+		"Thrash",
+		"Thrash Metal",
+	),
+	"Rock / Pop / Indie" => array(
+		"Alternative Rock",
+		"College Rock",
+		"Classic Rock",
+		"Experimental Rock",
+		"Goth Rock",
+		"Grunge",
+		"Hard Rock",
+		"Indie Rock",
+		"Indie",
+		"Pop",
+		"90's Pop",
+		"Progressive Rock",
+		"Top 40"
+	),
+	"Roots / Blues / Folk" => array(
+		"African Blues",
+		"Bluegrass",
+		"Canadiana",
+		"Canadian Blues",
+		"Chicago Blues",
+		"Country",
+		"Gospel"
+	),
+	"Talk" => array(
+		"Arts and Culture Talk"
+		"Comedy",
+		"Lecture",
+		"Lifestyle",
+		"Daytime Talk",
+		"Historical Recording"
+		"Late Night",
+		"News",
+		"Interview",
+		"Sports Talk Radio",
+		"Talk Radio"
+	)
+);
+
+//Upload categories, and their accepted formats.
+$djland_upload_categories = array(
+	"show_image"=>array('jpg','jpeg','gif','png'),
+	"friend_image"=>array('jpg','jpeg','gif','png'),
+	"special_broadcast_image"=>array('jpg','jpeg','gif','png'),
+	"member_resource"=>array('pdf','jpg','jpeg','gif','png'),
+	"episode_image"=>array('jpg','jpeg','gif','png','tiff'),
+	"episode_audio"=>array('mp3'),
+	);

@@ -20,7 +20,7 @@ function load_ads_from_saved_playsheet($ps_id){
       return json_encode($data);
   } else {
      global $db;
-     header('HTTP/1.0 400 '.mysqli_error($db['link']));
+     header('HTTP/1.0 400 '.mysqli_error($db));
  }
 
 }
@@ -31,7 +31,7 @@ function load_ads_from_time_block($unix){
     return json_encode($data);
   } else {
     global $db;
-    header('HTTP/1.0 400 '.mysqli_error($db['link']));
+    header('HTTP/1.0 400 '.mysqli_error($db));
   }
 
 }
@@ -48,7 +48,7 @@ function dbLoad($table, $fields, $values) {
   $query .= implode(',',$where_clauses);
 
   global $db;
-  if( $result = mysqli_query($db['link'], $query)){
+  if( $result = mysqli_query($db, $query)){
     $arr = [];
     while ( $row = $result->fetch_array()){
       $arr []= $row;
