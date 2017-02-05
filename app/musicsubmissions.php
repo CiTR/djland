@@ -18,8 +18,8 @@
 
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 		<script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
-        <script type='text/javascript' src='js/constants.js'/></script>
-        <script type='text/javascript' src='js/membership/member.js'></script>
+	    <script type='text/javascript' src='js/constants.js'/></script>
+
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
@@ -40,17 +40,16 @@
         print_menu();
         ?>
 
-        <button id='print_friendly'>Print View</button>
-		<div class='submissioncontainer' >
+        <div class='submissioncontainer' >
 			<ul id ='tab-nav'>
 				<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
-					<li class="tab nodrop active-tab member_action" name="new_submissions">New Submissions</li>
-					<li class="tab nodrop inactive-tab member_action" name="reviewed_submissions">Reviewed Submsisions</li></li>
-					<li class="tab nodrop inactive-tab member_action" name="tag">Tag Accepted Submsisions</li></li>
+					<li class="tab nodrop active-tab submission_action" name="new_submissions">New Submissions</li>
+					<li class="tab nodrop inactive-tab submission_action" name="reviewed_submissions">Reviewed Submsisions</li></li>
+					<li class="tab nodrop inactive-tab submission_action" name="tag">Tag Accepted Submsisions</li></li>
 				<?php endif;
 				if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
-				<li class="tab nodrop inactive-tab member_action" name="admin">Submission Admin</li>
-				<li class="tab nodrop inactive-tab member_action" name="manual_submission">Manual Submission</li>
+				<li class="tab nodrop inactive-tab submission_action" name="admin">Submission Admin</li>
+				<li class="tab nodrop inactive-tab submission_action" name="manual_submission">Manual Submission</li>
 				<?php endif; ?>
 			</ul>
 			<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']): ?>
@@ -696,7 +695,7 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files to Library</button>
+						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files for Approval</button>
 					</div>
 				</div>
 			</div>

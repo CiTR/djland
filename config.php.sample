@@ -44,7 +44,7 @@ $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = true; // show podcast manager
 $enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
-$enabled['submissions_and_review']= true // Submissions and review system
+$enabled['submissions_and_review']= true; // Submissions and review system
 
 //*******************************************
 //* 3) Database info (MySQL)
@@ -262,8 +262,8 @@ $djland_subgenres = array(
 		"Future Bass",
 		"Hardstyle",
 		"House",
-		"Glitch"
-		"Jungle"
+		"Glitch",
+		"Jungle",
 		"Tech House",
 		"Acid House",
 		"Tropical House",
@@ -341,7 +341,7 @@ $djland_subgenres = array(
 		"Stoner Metal",
 		"Symphonic Metal",
 		"Thrash",
-		"Thrash Metal",
+		"Thrash Metal"
 	),
 	"Rock / Pop / Indie" => array(
 		"Alternative Rock",
@@ -368,12 +368,12 @@ $djland_subgenres = array(
 		"Gospel"
 	),
 	"Talk" => array(
-		"Arts and Culture Talk"
+		"Arts and Culture Talk",
 		"Comedy",
 		"Lecture",
 		"Lifestyle",
 		"Daytime Talk",
-		"Historical Recording"
+		"Historical Recording",
 		"Late Night",
 		"News",
 		"Interview",

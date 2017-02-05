@@ -5,7 +5,7 @@
 //**
 //** --------------------------------------------------
 
-ALTER TABLE `djland`.`library` 
+ALTER TABLE `djland`.`library`
 ADD COLUMN `songlist_id` BIGINT(20) NULL DEFAULT NULL AFTER `modified`,
 ADD COLUMN `description` LONGTEXT NULL AFTER `songlist_id`,
 ADD COLUMN `email` TINYTEXT NULL AFTER `description`;
@@ -43,13 +43,13 @@ CREATE TABLE `djland`.`submissions` (
   `songlist` BIGINT(20) NULL,
   PRIMARY KEY (`id`));
 
-ALTER TABLE `djland`.`submissions` 
+ALTER TABLE `djland`.`submissions`
 CHANGE COLUMN `assignee` `assignee` INT(10) UNSIGNED NOT NULL ,
 CHANGE COLUMN `songlist` `songlist` BIGINT(20) UNSIGNED NOT NULL ;
 
 ALTER TABLE `djland`.`submissions`
 ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
-  
+
 //** --------------------------------------------------
 //**
 //** Create "archive" table
@@ -64,11 +64,11 @@ CREATE TABLE `djland`.`archive` (
   `title` TINYTEXT NULL,
   `submitted` DATE NULL,
   PRIMARY KEY (`id`));
-  
-ALTER TABLE `djland`.`archive` 
+
+ALTER TABLE `djland`.`archive`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
-ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);  
-  
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
+
 //** --------------------------------------------------
 //**
 //** Create "rejected" table
@@ -83,6 +83,25 @@ CREATE TABLE `djland`.`rejected` (
   `submitted` DATE NULL,
   PRIMARY KEY (`id`));
 
-ALTER TABLE `djland`.`rejected` 
+ALTER TABLE `djland`.`rejected`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
+
+ALTER TABLE `dev.djland`.`submissions`
+ADD COLUMN `tags` TINYTEXT NULL DEFAULT NULL AFTER `genre`,
+ADD COLUMN `releasedate` DATE NULL DEFAULT NULL AFTER `submitted`,
+ADD COLUMN `credit` TINYTEXT NULL AFTER `songlist`,
+ADD COLUMN `art_url` TINYTEXT NULL DEFAULT NULL AFTER `credit`,
+ADD COLUMN `review_comments` TINYTEXT NULL AFTER `art_url`,
+ADD COLUMN `staff_comment` VARCHAR(45) NULL AFTER `review_comments`;
+
+ALTER TABLE `dev.djland`.`archive`
+RENAME TO  `dev.djland`.`submissions_archive` ;
+
+ALTER TABLE `dev.djland`.`rejected`
+RENAME TO  `dev.djland`.`submissions_rejected` ;
+
+ALTER TABLE `dev.djland`.`submissions`
+CHANGE COLUMN `assignee` `assignee` INT(10) UNSIGNED NULL ;
+CHANGE COLUMN `review_comments` `review_comments` TEXT NULL DEFAULT NULL ;
+CHANGE COLUMN `location` `location` TINYTEXT NULL DEFAULT NULL ;
