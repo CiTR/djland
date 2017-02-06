@@ -163,7 +163,7 @@
 						<h3>Review Submission</h3>
 						<br>
 						<div class="right">
-							<button id="view_submissions_closer">X</button>
+							<button id="view_submissions_closer">Close</button>
 						</div>
 					</div>
 
