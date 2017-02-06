@@ -12,6 +12,42 @@ use App\Submissions as Submissions;
     Route::get('/submissions/{id}', function($id){
         return Response::json(Submissions::find($id));
     });
+    //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
+    //the submission format (ie. CD, LP or MP3) defaults to MP3.
+    Route::post('/submission', function(){
+        try{
+            //TODO: Maintain genre data integrity
+            //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+            //foreach($primary_genres as $genre) {
+            //    if(Input::get('genre') == $genre){
+                    $ingenre = Input::get('genre');
+            //    } else {
+            //        return "Invalid genre specified";
+            //    }
+                $id = Submissions::create([
+                    'artist' => Input::get('artist'),
+                    'title' => Input::get('title'),
+                    'genre' => $ingenre,
+                    'email' => Input::get('email'),
+                    'label' => Input::get('label'),
+                    'location' => Input::get('location'),
+                    'credit' => Input::get('credit'),
+                    'releasedate' => Input::get('releasedate'),
+                    'cancon' => Input::get('cancon'),
+                    'femcon' => Input::get('femcon'),
+                    'local' => Input::get('local'),
+                    'description' => Input::get('description'),
+                    'art_url' => Input::get('art_url'),
+                    'songlist' => Input::get('songlist'),
+                    'format_id' => Input::get('format_id'),
+                    'status' => 'unreviewed'
+                ]);
+            return $id;
+
+        } catch(Exception $e){
+            return $e->getMessage();
+        }
+    });
     Route::group(['prefix'=>'submissions'],function(){
         //Get list of submissions that are unreviewed
         Route::get('/bystatus/unreviewed/', function(){
@@ -101,42 +137,7 @@ use App\Submissions as Submissions;
         Route::get('/search', function(){
             return;
         });
-        //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
-        //the submission format (ie. CD, LP or MP3) defaults to MP3.
-        Route::post('/', function(){
-            try{
-                //TODO: Maintain genre data integrity
-                //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
-                //foreach($primary_genres as $genre) {
-                //    if(Input::get('genre') == $genre){
-                        $ingenre = Input::get('genre');
-                //    } else {
-                //        return "Invalid genre specified";
-                //    }
-                    $id = Submission::create([
-                        'artist' => Input::get('artist'),
-                        'title' => Input::get('title'),
-                        'genre' => $ingenre,
-                        'email' => Input::get('email'),
-                        'label' => Input::get('label'),
-                        'location' => Input::get('location'),
-                        'credit' => Input::get('credit'),
-                        'releasedate' => Input::get('releasedate'),
-                        'cancon' => Input::get('cancon'),
-                        'femcon' => Input::get('femcon'),
-                        'local' => Input::get('local'),
-                        'description' => Input::get('description'),
-                        'art_url' => Input::get('art_url'),
-                        'songlist' => Input::get('songlist'),
-                        'format_id' => Input::get('format_id'),
-                        'status' => 'unreviewed'
-                    ]);
-                return $id;
 
-            } catch(Exception $e){
-                return $e->getMessage();
-            }
-        });
         //Post to this route when a user reviews a new submisison
         Route::post('/review', function(){
 
