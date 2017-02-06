@@ -107,3 +107,14 @@ CHANGE COLUMN `review_comments` `review_comments` TEXT NULL DEFAULT NULL ;
 CHANGE COLUMN `location` `location` TINYTEXT NULL DEFAULT NULL ;
 ADD COLUMN `created_at` DATETIME NULL AFTER `staff_comment`;
 ADD COLUMN `updated_at` DATETIME NULL AFTER `created_at`;
+
+ALTER TABLE `dev.djland`.`submissions_archive` 
+ADD COLUMN `format_id` TINYINT(3) NULL AFTER `submitted`,
+ADD COLUMN `cancon` TINYINT(1) NULL AFTER `format_id`,
+ADD COLUMN `femcon` TINYINT(1) NULL AFTER `cancon`,
+ADD COLUMN `local` TINYINT(1) NULL AFTER `femcon`,
+ADD COLUMN `label` TINYTEXT NULL AFTER `local`,
+ADD COLUMN `review_comments` TINYTEXT NULL AFTER `label`;
+
+ALTER TABLE `dev.djland`.`submissions` 
+CHANGE COLUMN `reviewed` `reviewed` INT(10) NULL DEFAULT NULL ;
