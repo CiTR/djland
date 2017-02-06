@@ -1,6 +1,8 @@
 <?php
 
 use App\Submissions as Submissions;
+use App\Submissions_Archive as Archive;
+use App\Submissions_Rejected as Rejected;
 use Carbon\Carbon;
 
 //Apps inside middleware require login
@@ -139,7 +141,10 @@ use Carbon\Carbon;
         Route::get('/search', function(){
             return;
         });
-
+        // TODO: Search past archived submissions
+        Route::get('/archived', function(){
+            return;
+        });
         //Post to this route when a user reviews a new submisison
         Route::put('/review', function(){
 
@@ -154,6 +159,18 @@ use Carbon\Carbon;
         });
         //Post to this route when staff approve tags and send submission to library
         Route::put('/tolibrary', function(){
+
+        });
+        //TODO: Post to this route to reject a submission
+        Route::post('/reject', function(){
+
+        });
+        //TODO: Post to this route to restore a rejected submission
+        Route::post('/restore', function(){
+
+        });
+        //TODO: Post to this route to find new digital submissions
+        Route::post('/getnew', function(){
 
         });
     });

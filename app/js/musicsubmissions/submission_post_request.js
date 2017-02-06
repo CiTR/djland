@@ -24,17 +24,16 @@ function createSubmission(format) {
    var cancon      = document.getElementById('canada-artist').checked;
    var local       = document.getElementById('vancouver-artist').checked;
    var description = document.getElementById('comments-box').value;
-   console.log(description);
 
-   // var art_url  = TODO, below is temporary
    var trackNo     = "1";
    //var songlist    = [];
-   var songlist = 10;
+   var songlist    = 10;
    /* while (document.getElementById('track-' + trackNo) != null) {
      e = document.getElementById('track-' + trackNo).childNodes[4].value;
      songlist.push(e);
      trackNo = (Number(trackNo) + 1).toString();
     }*/
+   // var art_url  = TODO, below is temporary
    var art_url     = "https://cdn.pastemagazine.com/www/system/images/photo_albums/best-album-covers-2012/large/photo_9459_0.jpg?1384968217";
 
    $.ajax({
@@ -61,7 +60,8 @@ function createSubmission(format) {
    })
 
    .done(function() {
-     alert("Success");
+   var successBox = document.getElementById("submit-button-div");
+   successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
    })
 
    .fail(function() {

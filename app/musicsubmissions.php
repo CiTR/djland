@@ -47,8 +47,8 @@
 			<ul id ='tab-nav'>
 				<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
 					<li class="tab nodrop active-tab submission_action" name="new_submissions">New Submissions</li>
-					<li class="tab nodrop inactive-tab submission_action" name="reviewed_submissions">Reviewed Submsisions</li></li>
-					<li class="tab nodrop inactive-tab submission_action" name="tag">Tag Accepted Submsisions</li></li>
+					<li class="tab nodrop inactive-tab submission_action" name="reviewed_submissions">Reviewed Submissions</li></li>
+					<li class="tab nodrop inactive-tab submission_action" name="tag">Tag Accepted Submissions</li></li>
 				<?php endif;
 				if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
 				<li class="tab nodrop inactive-tab submission_action" name="approve">Approve</li>

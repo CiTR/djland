@@ -75,8 +75,10 @@ function submitForm() {
   }
 
   if (success) {
+    /*
     var submission = document.getElementById("submit-button-div");
     submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+    */
     createSubmission("MP3");
   } else {
     var alertString = "You are missing the following fields:";
