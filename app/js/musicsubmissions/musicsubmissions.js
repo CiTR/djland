@@ -416,6 +416,7 @@ function populateTrashedSubmissions(submissions){
 		}
 		add_submission_handlers();
 	}
+}
 
 //Submission AJAX
 var form, trackButton, albumArtButton, submitButton;
