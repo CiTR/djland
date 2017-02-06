@@ -1,6 +1,7 @@
 <?php
 
 use App\Submissions as Submissions;
+use Carbon\Carbon;
 
 //Apps inside middleware require login
 //Route::group(['middleware' => 'auth'], function(){
@@ -40,7 +41,8 @@ use App\Submissions as Submissions;
                     'art_url' => Input::get('art_url'),
                     'songlist' => Input::get('songlist'),
                     'format_id' => Input::get('format_id'),
-                    'status' => 'unreviewed'
+                    'status' => 'unreviewed',
+                    'submitted' => Carbon::today()->toDateString()
                 ]);
             return $id;
 
@@ -139,19 +141,19 @@ use App\Submissions as Submissions;
         });
 
         //Post to this route when a user reviews a new submisison
-        Route::post('/review', function(){
+        Route::put('/review', function(){
 
         });
         //Post to this route when staff approve a review for a submisison
-        Route::post('/approve', function(){
+        Route::put('/approve', function(){
 
         });
         //Post to this route when a user has tagged a submission
-        Route::post('/tag', function(){
+        Route::put('/tag', function(){
 
         });
         //Post to this route when staff approve tags and send submission to library
-        Route::post('/tolibrary', function(){
+        Route::put('/tolibrary', function(){
 
         });
     });

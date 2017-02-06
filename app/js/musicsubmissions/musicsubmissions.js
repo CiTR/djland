@@ -7,6 +7,7 @@ $(document).ready ( function() {
 		add_submission_handlers();
 	});
 	populateTables();
+	console.log(new Date().toISOString().slice(0, 10).replace('T', ' ') );
 });
 /********************
  ***** Handlers *****
@@ -498,7 +499,7 @@ function submitForm() {
   if (success) {
     var submission = document.getElementById("submit-button-div");
     submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-    postRequest("CD");
+    createSubmission("CD");
   } else {
     var alertString = "You are missing the following fields:";
     for (var i = 0; i < missing.length; i++) {

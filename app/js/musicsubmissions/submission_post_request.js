@@ -4,7 +4,7 @@
  * Michael Adria, Capstone 2016/2017
  */
 
-function postRequest(format) {
+function createSubmission(format) {
     //Hack, TODO: Reference the types_format DB table
    if(format == "CD"){
        var format_id = 1;
@@ -24,40 +24,18 @@ function postRequest(format) {
    var cancon      = document.getElementById('canada-artist').checked;
    var local       = document.getElementById('vancouver-artist').checked;
    var description = document.getElementById('comments-box').value;
+   console.log(description);
+
    // var art_url  = TODO, below is temporary
    var trackNo     = "1";
    //var songlist    = [];
-   var songlist = 10;    
+   var songlist = 10;
    /* while (document.getElementById('track-' + trackNo) != null) {
      e = document.getElementById('track-' + trackNo).childNodes[4].value;
      songlist.push(e);
      trackNo = (Number(trackNo) + 1).toString();
     }*/
    var art_url     = "https://cdn.pastemagazine.com/www/system/images/photo_albums/best-album-covers-2012/large/photo_9459_0.jpg?1384968217";
-
-/*
-   $.post("api2/public/submission",
-   {
-     format_id: format_id,
-     artist: artist,
-     email: email,
-     label: label,
-     location: location,
-     credit: credit,
-     title: title,
-     genre: genre,
-     releasedate: releasedate,
-     femcon: femcon,
-     cancon: cancon,
-     local: local,
-     description: description,
-     songlist: songlist,
-     art_url: art_url
-   },
-   function(status) {
-     alert("Status: " + status);
-   });
-   */
 
    $.ajax({
      url: "api2/public/submission/",
@@ -76,7 +54,7 @@ function postRequest(format) {
        local: local,
        description: description,
        songlist: songlist,
-       art_url: art_url
+       art_url: art_url,
      },
      type: "POST",
      // dataType: "json",
