@@ -22,6 +22,15 @@ function add_submission_handlers(){
 	$('#search').off('click','#save_comments').on('click','#save_comments',function(element){
 		saveComments();
 	});
+	//Listener for closing stuff with ESC
+	$(document).keyup(function(e) {
+	    if (e.keyCode == 27) { // escape key maps to keycode `27`
+	        $('#submissionspopup').hide();
+			$('#submissionsapprovalpopup').hide();
+			$('#view_submissions').hide();
+	    	$('#reviewed_submissions_view').hide();
+		}
+	});
 	//Listener for viewing the tagging sidebar from clicking on their row
     $(".tagrow").click(function(e){
 		$('#submissionspopup').show();
@@ -31,6 +40,15 @@ function add_submission_handlers(){
     });
 	$("#tagcancel").click(function(e){
 		$('#submissionspopup').hide();
+    });
+	$(".approverow").click(function(e){
+		$('#submissionsapprovalpopup').show();
+    });
+	$("#submissionsapprovalcloser").click(function(e){
+		$('#submissionsapprovalpopup').hide();
+    });
+	$("#approvecancel").click(function(e){
+		$('#submissionsapprovalpopup').hide();
     });
 	//Listener for viewing the review from clicking on their row
 	$(".reviewrow").click(function(e){
