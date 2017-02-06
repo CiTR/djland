@@ -1638,6 +1638,53 @@ table { border-collapse: collapse; }
 #submissionscloser:hover{
 	color:red;
 }
+#submissionsapprovalpopup{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:400px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+#submissionscloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionscloser:hover{
+	color:red;
+}
+{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:400px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+#submissionsapprovalcloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionsapprovalcloser:hover{
+	color:red;
+}
+
 #titleBox{
 	padding-left: 10px;
 	padding-top: 10px;
