@@ -54,7 +54,12 @@ function add_submission_handlers(){
     });
 	//Listener for viewing the review from clicking on their row
 	$(".reviewrow").click(function(e){
-		$('#view_submissions').show();
+		// $('#view_submissions').show();
+
+    var idSubmission = $(this).attr('name');
+    // console.log(idSubmission);
+    getSubmissionData(idSubmission);
+
     });
 	$("#view_submissions_closer").click(function(e){
 		$('#view_submissions').hide();
@@ -417,6 +422,24 @@ function populateTrashedSubmissions(submissions){
 		}
 		add_submission_handlers();
 	}
+}
+
+// Getting data for a specific submission given the ID.
+function getSubmissionData(id) {
+  $.ajax({
+    type: "GET",
+    url: "api2/public/submissions/" + id,
+    dataType: "json",
+    async: true,
+    success: function(data) {
+      console.log(data);
+      displayReviewBox(data);
+    }
+  });
+}
+
+function displayReviewBox(data) {
+  // stuff
 }
 
 //Submission AJAX
