@@ -102,8 +102,10 @@ ALTER TABLE `dev.djland`.`rejected`
 RENAME TO  `dev.djland`.`submissions_rejected` ;
 
 ALTER TABLE `dev.djland`.`submissions`
-CHANGE COLUMN `assignee` `assignee` INT(10) UNSIGNED NULL ;
-CHANGE COLUMN `review_comments` `review_comments` TEXT NULL DEFAULT NULL ;
-CHANGE COLUMN `location` `location` TINYTEXT NULL DEFAULT NULL ;
-ADD COLUMN `created_at` DATETIME NULL AFTER `staff_comment`;
-ADD COLUMN `updated_at` DATETIME NULL AFTER `created_at`;
+CHANGE COLUMN `assignee` `assignee` INT(10) UNSIGNED NULL,
+CHANGE COLUMN `review_comments` `review_comments` TEXT NULL DEFAULT NULL,
+CHANGE COLUMN `location` `location` TINYTEXT NULL DEFAULT NULL,
+ADD COLUMN `created_at` DATETIME NULL AFTER `staff_comment`,
+ADD COLUMN `updated_at` DATETIME NULL AFTER `created_at`,
+CHANGE COLUMN `reviewed` `reviewed` INT(10) NULL DEFAULT NULL,
+CHANGE COLUMN `review_comments` `review_comments` MEDIUMTEXT NULL DEFAULT NULL ;
