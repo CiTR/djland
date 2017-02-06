@@ -1,6 +1,8 @@
 <?php
 
 use App\Submissions as Submissions;
+use App\Submissions_Archive as Archive;
+use App\Submissions_Rejected as Rejected;
 
 //Apps inside middleware require login
 Route::group(['middleware' => 'auth'], function(){
@@ -28,6 +30,10 @@ Route::group(['middleware' => 'auth'], function(){
         });
         //Generic search ending - specify what we're looking for with 'status'
         Route::get('/search', function(){
+            return;
+        });
+        // TODO: Search past archived submissions
+        Route::get('/archived', function(){
             return;
         });
         //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
@@ -80,6 +86,18 @@ Route::group(['middleware' => 'auth'], function(){
         });
         //Post to this route when staff approve tags and send submission to library
         Route::post('/tolibrary', function(){
+
+        });
+        //TODO: Post to this route to reject a submission
+        Route::post('/reject', function(){
+
+        });
+        //TODO: Post to this route to restore a rejected submission
+        Route::post('/restore', function(){
+
+        });
+        //TODO: Post to this route to find new digital submissions
+        Route::post('/getnew', function(){
 
         });
     });
