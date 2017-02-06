@@ -232,7 +232,7 @@ input, select, textarea, option{
 .login-spacing-bar{
 	margin-top:7px;
 	margin-bottom:7px;
-	width=100%;
+	width:100%;
 	float:left;
 }
 
@@ -241,7 +241,7 @@ input, select, textarea, option{
 	padding-top:10px;
 	padding-bottom:10px;
 	margin-bottom:7px;
-	width=100%;
+	width:100%;
 	float:left;
 }
 
@@ -1040,7 +1040,7 @@ button.box.theme.filled {
 
 button.box {
 	background-color: transparent;
-	background-image: none;;
+	background-image: none;
 }
 button.socan, , .music_row_socan input, .music_row_socan button{
 	font-size:0.75em;
@@ -1567,7 +1567,7 @@ table { border-collapse: collapse; }
 	text-align:center;
 }
 .crtc_report > tbody > tr > th {
-	background-color: rgba(255,255,255,.10);;
+	background-color: rgba(255,255,255,.10);
 }
 
 .report_tag{
