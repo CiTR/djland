@@ -13,6 +13,7 @@
 
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<link rel=stylesheet href='css/style.css' type='text/css'>
+	<link rel="stylesheet" href="./station-js/trackform.css" />
 
 		<title>DJLAND | Music Submissions</title>
 
@@ -24,6 +25,8 @@
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
+  	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
+    <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
 
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -851,6 +854,168 @@
 					<div class="row">
 						<div class="entry-content col-sm-8 col-sm-offset-2">
 					<div class="entry-content-inner">
+
+            <p>Items with a &#9733; are required.</p>
+            <form>
+              <div class="album-row">
+              <div style="width:50%;float:left;">
+                &#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width:50%;float:left;">
+                Record label: <input type="text" id="record-label" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Home city: <input type="text" id="home-city" style="width:100%;margin-bottom:30px;" placeholder="London, England">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width:50%;float:left;">
+                (For bands) Member names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width: 50%;float:left;">
+                &#9733; Genre: <select name="Pick a genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
+                  <!-- TODO: populate this with present genres from DB -->
+                  <option>Electronic</option>
+                  <option>Experimental</option>
+                  <option>Hip Hop / R&B / Soul</option>
+                  <option>International</option>
+                  <option>Jazz/Classical</option>
+                  <option>Punk / Hardcore / Metal</option>
+                  <option>Rock / Pop / Indie</option>
+                  <option>Roots / Blues / Folk</option>
+                  <option>Talk</option>
+                </select>
+              </div>
+              <div style="width: 50%;float:right;">
+                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+              </div>
+            </div>
+            <div class="album-row">
+              <div class="fem-can-van">
+                <label>
+                  <input type="checkbox" id="female-artist" style="margin-right:20px" />
+                  FemCon: Self-identifying female in 2 of the 4 MPWR categories
+                  <span class="tooltip-target">?</span>
+                  <span class="tooltip-box">
+                    <p>
+                      <strong>M</strong>usic composed by a self-identified female
+                    </p>
+                    <p>
+                      <strong>P</strong>erformer of music or lyrics is self-identified female
+                    </p>
+                    <p>
+                      <strong>W</strong>ords written by a self-identified female
+                    </p>
+                    <p>
+                      <strong>R</strong>ecording done by or or produced by a self-identified female
+                    </p>
+                  </span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" id="canada-artist" style="margin-right:20px;" />
+                  CanCon: You fullfill at least 2 of the 4 MAPL categories
+                  <span class="tooltip-target">?</span>
+                  <span class="tooltip-box">
+                    <p>
+                      <strong>M</strong>usic composed by a Canadian
+                    </p>
+                    <p>
+                      <strong>A</strong>rtist performing music or lyrics is Canadian
+                    </p>
+                    <p>
+                      <strong>P</strong>erformance is recorded or live broadcast in Canada
+                    </p>
+                    <p>
+                      <strong>L</strong>yrics written by a Canadian
+                    </p>
+                  </span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" id="vancouver-artist" style="margin-right:20px" />
+                  Local: You / your band is located in the Greater Vancouver Area
+                  <!--
+                  <span class="tooltip-target">?</span>
+                  -->
+                  <span class="tooltip-box">You / your band is located in the Greater Vancouver Area</span>
+                </label>
+              </div>
+            </div>
+            <br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs."></textarea>
+            <!--
+              <div class="button-container">
+                <a id="album-art-button" class="btn btn-primary" style="width:100%;text-align:center"> Add album art (optional)</a>
+              </div>
+            -->
+              <!--
+            -->
+            </form>
+
+            <!--
+            <button id="album-art-button" class="submission-button">
+            Add Album Art (Optional)
+            </button>
+            -->
+
+            <p>We accept .jpg or .png files of at least 500 by 500 pixels.</p>
+            <input type="file" id="album-art-input-button" style="display:none" />
+            <button id="album-art-button" class="submission-button">
+            Add Album Art (Optional)
+            </button>
+            <output id="album-viewer"></output>
+
+            <script>
+            $('#album-art-button').click(function(){ $('#album-art-input-button').trigger('click');});
+            </script>
+
+            <!--
+            <p>Note: We accept .jpeg or .png files of at least size 300 by 300 pixels.</p>
+            -->
+            <p>Please submit a minimum of four 320kbps MP3 files.</p>
+
+            <div id="submit-field"></div>
+
+
+            <input type="file" id="new-track-button-input" style="display:none" multiple/>
+            <button id="new-track-button" class="submission-button">
+              Add files
+            </button>
+
+            <script>
+              $('#new-track-button').click(function(){ $('#new-track-button-input').trigger('click');});
+            </script>
+
+            <!--
+            <div id="new-track-button" class="button-container">
+              <a href="" class="btn btn-primary" style="width:100%;text-align:center"> Add another file </a>
+            </div>
+            -->
+            <!--
+            <div id="submit-button" class="button-container" style="color:green">
+              <a href="" class="btn btn-primary" style="width:100%;text-align:center;margin-top:30px;background-color:green;border:green;margin-bottom:20px;"> Submit </a>
+            </div>
+            -->
+            <div id="submit-button-div">
+            <button id="submit-button" class="submission-button">
+              SUBMIT
+            </button>
+            </div>
+
+
+            <!--
 						<form>
 							<div class="album-row">
 							<div style="width:50%;float:left;">
@@ -950,6 +1115,7 @@
 							*indicates a required field
 						</div>
 					</div>
+        -->
 
 				</div>
 			</div>
