@@ -13,6 +13,7 @@
 
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<link rel=stylesheet href='css/style.css' type='text/css'>
+	<link rel="stylesheet" href="./station-js/trackform.css" />
 
 		<title>DJLAND | Music Submissions</title>
 
@@ -24,6 +25,8 @@
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
+  	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
+    <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
 
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -48,6 +51,7 @@
 					<li class="tab nodrop inactive-tab submission_action" name="tag">Tag Accepted Submsisions</li></li>
 				<?php endif;
 				if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
+				<li class="tab nodrop inactive-tab submission_action" name="approve">Approve</li>
 				<li class="tab nodrop inactive-tab submission_action" name="admin">Submission Admin</li>
 				<li class="tab nodrop inactive-tab submission_action" name="manual_submission">Manual Submission</li>
 				<?php endif; ?>
@@ -101,10 +105,10 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
-
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
+					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="newSubmissionCd">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -115,9 +119,40 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border reviewrow" name="1277"><td class="submission_row_element">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border reviewrow" name="1276"><td class="submission_row_element">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border reviewrow" name="1275"><td class="submission_row_element">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submission_result" class="left overflow_auto height_cap" name="search">
+					MP3s
+					<table id="submission_table" name="search">
+						<tbody name="newSubmissionMP3">
+							<tr id="music_row_heading border" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee  </th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submission_result" class="left overflow_auto height_cap" name="search">
+					Other
+					<table id="submission_table" name="search">
+						<tbody name="newSubmissionOther">
+							<tr id="music_row_heading border" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee  </th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -308,8 +343,9 @@
 				</ul>
 
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
+					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="reviewedSubmissionCd">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -320,8 +356,46 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr class="playitem border reviewedrow" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_3"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border reviewedrow" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_4"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
+							<tr>
+								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submission_result" class="right overflow_auto height_cap" name="search">
+					MP3s
+					<table id="submission_table" name="search">
+						<tbody name="reviewedSubmissionMP3">
+							<tr id="music_row_heading border" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Submission</th>
+								<th>Staff Comments</th>
+								<th>Reviewed By</th>
+								<th>Approved?</th>
+								<th>Approve</th>
+								<th>Discard</th>
+							</tr>
+							<tr>
+								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submission_result" class="right overflow_auto height_cap" name="search">
+					Other
+					<table id="submission_table" name="search">
+						<tbody name="reviewedSubmissionOther">
+							<tr id="music_row_heading border" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Submission</th>
+								<th>Staff Comments</th>
+								<th>Reviewed By</th>
+								<th>Approved?</th>
+								<th>Approve</th>
+								<th>Discard</th>
+							</tr>
 							<tr>
 								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
@@ -437,7 +511,7 @@
 
 						<div class="containerrow padded">
 							<div class="col4">What did you think about the album as a whole?:</div>
-							<textarea id="comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
+							<textarea readonly="true" id="comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
 						</div>
 
 						<div class="containerrow padded">
@@ -508,10 +582,10 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
-
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="toTagSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -522,8 +596,40 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border tagrow" name="1273"><td class="submission_row_element name">EdiT</td><td class="submission_row_element email">Crying over Pros for no reason</td><td class="submission_row_element primary_phone">September 10th 2016</td><td class="submission_row_element submission_type">Electronic</td><td class="submission_row_element membership_year">September 19th 2002</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border tagrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submisison_result" class="left overflow_auto height_cap side-padded" name="search">
+					MP3s
+					<table id="submission_table" name="search">
+						<tbody name="toTagSubmissionMP3">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee</th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					Other
+					<table id="submission_table" name="search">
+						<tbody name="toTagSubmissionOther">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee</th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -701,9 +807,278 @@
 			</div>
 			<?php endif; ?>
 
+			<!--- Begin Tab 4 "add to library" -->
+			<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+			<div id="approve" class="hidden submission grey clearfix">
+				<ul id="submission_header" name="search" class="clean-list inline-list	">
+					<li id="search">Search By:
+						<select id="search_by">
+							<option value="name">Submission Date</option>
+							<option value="interest">Date of Release</option>
+							<option value="member_type">Artist</option>
+							<option value="album">Album</option>
+							<option value="Assigned to">Assignee</option>
+						</select>
+						<input class="search_value" name="name" placeholder="Text">
+						<select class="search_value hidden" name="interest">
+						<option value="arts">Arts</option><option value="ads_psa">Ads and PSAs</option><option value="digital_library">Digital Library</option><option value="dj">DJ101.9</option><option value="discorder">Illustrate for Discorder</option><option value="discorder_2">Writing for Discorder</option><option value="live_broadcast">Live Broadcasting</option><option value="music">Music</option><option value="news">News</option><option value="photography">Photography</option><option value="programming_committee">Programming Committee</option><option value="promotions_outreach">Promos and Outreach</option><option value="show_hosting">Show Hosting</option><option value="sports">Sports</option><option value="tabling">Tabling</option><option value="tech">Web and Tech</option><option value="womens_collective">Women's Collective</option><option value="indigenous_collective">Indigenous Collective</option><option value="accessibility_collective">Accessibility Collective</option><option value="other">Other						</option></select>
+						<select class="search_value hidden" name="member_type">
+						<option value="Student">UBC Student</option><option value="Community">Community Member</option><option value="Staff">Staff</option><option value="Lifetime">Lifetime</option>						</select>
+					</li>
+					<li>
+						<select id="paid_status">
+							<option value="both">Complete or Incomplete</option>
+							<option value="1">Only Complete</option>
+							<option value="0">Only Incomplete</option>
+						</select>
+					</li>
+					<li>
+						<select class="year_select" name="search">
+						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
+					</li>
+					<li>
+						Order By
+						<select id="order_by">
+							<option value="created">Submission Date</option>
+							<option value="id">Date of Release</option>
+							<option value="lastname">Artist</option>
+							<option value="firstname">Album</option>
+							<option value="member_type">Genre</option>
+							<option value="Assignee">Assignee</option>
+						</select>
+					</li>
+					<li>
+						<button class="submisison_submit" name="search">Search</button>
+					</li>
+					<li>
+						<button id="save_comments">Save Comments</button>
+					</li>
+				</ul>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					CDs
+					<table id="submission_table" name="search">
+						<tbody name="taggedSubmissionCd">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Tagger</th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					MP3s
+					<table id="submission_table" name="search">
+						<tbody name="taggedSubmissionMP3">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Tagger</th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					Other
+					<table id="submission_table" name="search">
+						<tbody name="taggedSubmissionOther">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Tagger</th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="submissionsapprovalpopup" class="hidden submission">
+				<div style="display:block">
+					<p id="submissionsapprovalcloser"> X </p>
+					<br />
+					<h3> Approve Tags </h3>
+					<br />
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Catalog # </b>
+						</div>
+						<div id="editTitleBox">
+							<input id="editTitle" placeholder="Title here" />
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Format* </b>
+						</div>
+						<div id="editTitleBox">
+							<script type="text/javascript">
+								$(document).ready(function() {
+								$(".js-example-basic-single").select2();
+								});
+							</script>
+								<select class="js-example-basic-single vueselect" style="width:30%;">
+									<option class='vueselect' value="CD">CD</option>
+									<option class='vueselect' value="LP">LP</option>
+									<option class='vueselect' value="7in">7"</option>
+									<option class='vueselect' value="CASS">CASSETE</option>
+									<option class='vueselect' value ="CART">CART</option>
+									<option class='vueselect' value="MP3">MP3</option>
+									<option class='vueselect' value="MD">MD</option>
+									<option value="??">Unknown</option>
+								</select>
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Album Title* </b>
+						</div>
+						<div id="editTitleBox">
+							<input id="editTitle" placeholder="Title here" />
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Artist* </b>
+						</div>
+						<div id="editTitleBox">
+							<input id="editTitle" placeholder="Title here" />
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Album Credit </b>
+						</div>
+						<div id="editTitleBox">
+							<input id="editTitle" placeholder="Title here" />
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Label </b>
+						</div>
+						<div id="editTitleBox">
+							<input id="editTitle" placeholder="Title here" />
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Genre* </b>
+						</div>
+						<div id="editTitleBox">
+							<script type="text/javascript">
+								$(document).ready(function() {
+								$(".js-example-basic-single").select2();
+								});
+							</script>
+								<select class="js-example-basic-single vueselect" style="width:70%;">
+									<?php foreach($djland_primary_genres as $genre){
+										printf("<option value=\"$genre\">$genre</option>");
+									} ?>
+								</select>
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div id="titleBox">
+							<b> Subgenre </b>
+						</div>
+						<div id="editTitleBox">
+							<script type="text/javascript">
+								$(document).ready(function() {
+								$(".js-example-basic-single").select2();
+								});
+							</script>
+								<select class="js-example-basic-single vueselect" style="width:70%;">
+									<option value"none">No Subgenre</option>
+									<?php foreach($djland_subgenres as $genre => $subgenre_array){
+										printf("<optgroup label=\"$genre\">");
+										if(is_array($subgenre_array)){
+											foreach($subgenre_array as $subgenre){
+												printf("<option value=\"$subgenre\">$subgenre</option>");
+											}
+										}
+										printf("</optgroup>");
+									} ?>
+								</select>
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								Cancon
+							</div>
+						</div>
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								Femcon
+							</div>
+						</div>
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								Is Local
+							</div>
+						</div>
+					</div>
+					<div class="double-padded-top">
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								Playlist
+							</div>
+						</div>
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								Compilation
+							</div>
+						</div>
+						<div class="col3">
+							<div id="titleBox">
+								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+							</div>
+							<div id="titleBox">
+								In SAM
+							</div>
+						</div>
+					</div>
+					<br />
+					<br />
+					<div class='col2 text-right padded-right'>
+						<button name='approvecancel' id='approvecancel'>Cancel</button>
+					</div>
+					<div class='padded-left'>
+						<button name='edit' class='submissions_submit'>Add to Library</button>
+					</div>
+				</div>
+			</div>
 
 			<!-- Begin Tab 5 "submissions admin" -->
-			<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
 			<div id="admin" class="hidden submission grey clearfix">
 				<div class="col1">
 				<br>
@@ -815,7 +1190,7 @@
 
 						<div id="submission_result" class="right overflow_auto height_cap" name="search">
 							<table id="submission_table" name="search">
-								<tbody>
+								<tbody name="trashedSubmissions">
 									<tr id="headerrow" style="display: table-row;">
 										<th>Artist</th>
 										<th>Album</th>
@@ -826,7 +1201,6 @@
 										<th>Approve /&nbsp</th>
 										<th>Discard</th>
 									</tr>
-									<tr class="submission_row" name="1277"><td class="submission_row_element name">Justin Beiber</td><td class="submission_row_element email">Another Terrible Album</td><td class="submission_row_element primary_phone">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td>Hugo Noriega</td><td>No</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" checked class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
 									<tr>
 										<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 									</tr>
@@ -838,7 +1212,7 @@
 			</div>
 			<?php endif; ?>
 
-			<!-- Manual Submission Tab -->
+			<!-- Begin Tav 6: Manual Submission Tab -->
 			<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']):
 			?>
 			<div id='manual_submission' class='hidden submission grey clearfix'>
@@ -851,6 +1225,168 @@
 					<div class="row">
 						<div class="entry-content col-sm-8 col-sm-offset-2">
 					<div class="entry-content-inner">
+
+            <p>Items with a &#9733; are required.</p>
+            <form>
+              <div class="album-row">
+              <div style="width:50%;float:left;">
+                &#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width:50%;float:left;">
+                Record label: <input type="text" id="record-label" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Home city: <input type="text" id="home-city" style="width:100%;margin-bottom:30px;" placeholder="London, England">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width:50%;float:left;">
+                (For bands) Member names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
+              </div>
+              <div style="width:50%;float:right;">
+                &#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
+              </div>
+            </div>
+            <div class="album-row">
+              <div style="width: 50%;float:left;">
+                &#9733; Genre: <select name="Pick a genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
+                  <!-- TODO: populate this with present genres from DB -->
+                  <option>Electronic</option>
+                  <option>Experimental</option>
+                  <option>Hip Hop / R&B / Soul</option>
+                  <option>International</option>
+                  <option>Jazz/Classical</option>
+                  <option>Punk / Hardcore / Metal</option>
+                  <option>Rock / Pop / Indie</option>
+                  <option>Roots / Blues / Folk</option>
+                  <option>Talk</option>
+                </select>
+              </div>
+              <div style="width: 50%;float:right;">
+                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+              </div>
+            </div>
+            <div class="album-row">
+              <div class="fem-can-van">
+                <label>
+                  <input type="checkbox" id="female-artist" style="margin-right:20px" />
+                  FemCon: Self-identifying female in 2 of the 4 MPWR categories
+                  <span class="tooltip-target">?</span>
+                  <span class="tooltip-box">
+                    <p>
+                      <strong>M</strong>usic composed by a self-identified female
+                    </p>
+                    <p>
+                      <strong>P</strong>erformer of music or lyrics is self-identified female
+                    </p>
+                    <p>
+                      <strong>W</strong>ords written by a self-identified female
+                    </p>
+                    <p>
+                      <strong>R</strong>ecording done by or or produced by a self-identified female
+                    </p>
+                  </span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" id="canada-artist" style="margin-right:20px;" />
+                  CanCon: You fullfill at least 2 of the 4 MAPL categories
+                  <span class="tooltip-target">?</span>
+                  <span class="tooltip-box">
+                    <p>
+                      <strong>M</strong>usic composed by a Canadian
+                    </p>
+                    <p>
+                      <strong>A</strong>rtist performing music or lyrics is Canadian
+                    </p>
+                    <p>
+                      <strong>P</strong>erformance is recorded or live broadcast in Canada
+                    </p>
+                    <p>
+                      <strong>L</strong>yrics written by a Canadian
+                    </p>
+                  </span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" id="vancouver-artist" style="margin-right:20px" />
+                  Local: You / your band is located in the Greater Vancouver Area
+                  <!--
+                  <span class="tooltip-target">?</span>
+                  -->
+                  <span class="tooltip-box">You / your band is located in the Greater Vancouver Area</span>
+                </label>
+              </div>
+            </div>
+            <br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs."></textarea>
+            <!--
+              <div class="button-container">
+                <a id="album-art-button" class="btn btn-primary" style="width:100%;text-align:center"> Add album art (optional)</a>
+              </div>
+            -->
+              <!--
+            -->
+            </form>
+
+            <!--
+            <button id="album-art-button" class="submission-button">
+            Add Album Art (Optional)
+            </button>
+            -->
+
+            <p>We accept .jpg or .png files of at least 500 by 500 pixels.</p>
+            <input type="file" id="album-art-input-button" style="display:none" />
+            <button id="album-art-button" class="submission-button">
+            Add Album Art (Optional)
+            </button>
+            <output id="album-viewer"></output>
+
+            <script>
+            $('#album-art-button').click(function(){ $('#album-art-input-button').trigger('click');});
+            </script>
+
+            <!--
+            <p>Note: We accept .jpeg or .png files of at least size 300 by 300 pixels.</p>
+            -->
+            <p>Please submit a minimum of four 320kbps MP3 files.</p>
+
+            <div id="submit-field"></div>
+
+
+            <input type="file" id="new-track-button-input" style="display:none" multiple/>
+            <button id="new-track-button" class="submission-button">
+              Add files
+            </button>
+
+            <script>
+              $('#new-track-button').click(function(){ $('#new-track-button-input').trigger('click');});
+            </script>
+
+            <!--
+            <div id="new-track-button" class="button-container">
+              <a href="" class="btn btn-primary" style="width:100%;text-align:center"> Add another file </a>
+            </div>
+            -->
+            <!--
+            <div id="submit-button" class="button-container" style="color:green">
+              <a href="" class="btn btn-primary" style="width:100%;text-align:center;margin-top:30px;background-color:green;border:green;margin-bottom:20px;"> Submit </a>
+            </div>
+            -->
+            <div id="submit-button-div">
+            <button id="submit-button" class="submission-button">
+              SUBMIT
+            </button>
+            </div>
+
+
+            <!--
 						<form>
 							<div class="album-row">
 							<div style="width:50%;float:left;">
@@ -876,7 +1412,7 @@
 								Album name*: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
 							</div>
 						</div>
-						<div class="album-row">
+						<div class="album-row double-padded-bottom">
 							<div style="width: 50%;float:left;">
 								Genre*: <script type="text/javascript">
 									$(document).ready(function() {
@@ -891,6 +1427,20 @@
 							</div>
 							<div style="width: 50%;float:right;">
 								Date released*: <input type="text" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+							</div>
+							<div class="album-row">
+								<div style="width: 50%;float:left;">
+									Format*	: <select class="js-example-basic-single vueselect" style="width:20%;">
+										<option class='vueselect' value="CD">CD</option>
+										<option class='vueselect' value="LP">LP</option>
+										<option class='vueselect' value="7in">7"</option>
+										<option class='vueselect' value="CASS">CASSETE</option>
+										<option class='vueselect' value ="CART">CART</option>
+										<option class='vueselect' value="MP3">MP3</option>
+										<option class='vueselect' value="MD">MD</option>
+										<option value="??">Unknown</option>
+									</select>
+								</div>
 							</div>
 						</div>
 						<div class="album-row col1">
@@ -950,6 +1500,7 @@
 							*indicates a required field
 						</div>
 					</div>
+        -->
 
 				</div>
 			</div>

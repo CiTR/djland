@@ -41,6 +41,10 @@ Route::get('/social',function(){
 	return Social::all();
 });
 
+Route::get('/library/formats', function() {
+    return Response::json(DB::table('types_format')->select('name')->get());
+});
+
 Route::get('/nowplaying',function(){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 	//Since we aren't calling our security header, we need to ensure the timezone is set.

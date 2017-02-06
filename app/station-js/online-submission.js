@@ -1,10 +1,3 @@
-/* DJLand online submission form creator
- *
- * To implement, include this in your HTML:
- *     <div id="submit-field"></div>
- * Add this file as a <script>, and provide your own CSS.
- */
-
 var form, trackButton, albumArtButton, submitButton;
 var artistField, contactField, recordField, cityField, memberField;
 var albumField, genrePicker, dateField, canadaBox, vancouverBox;
@@ -84,6 +77,7 @@ function submitForm() {
   if (success) {
     var submission = document.getElementById("submit-button-div");
     submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+    createSubmission("MP3");
   } else {
     var alertString = "You are missing the following fields:";
     for (var i = 0; i < missing.length; i++) {
