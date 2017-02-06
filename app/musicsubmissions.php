@@ -105,7 +105,7 @@
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
 					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="newSubmissionCd">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -116,14 +116,13 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border reviewrow" name="1277"><td class="submission_row_element">DJ Shadow</td><td class="submission_row_element email">Endtroducing.....</td><td class="submission_row_element primary_phone">November 19th, 1996</td><td class="submission_row_element submission_type">Hip Hop</td></td><td class="submission_row_element membership_year">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
 					MP3s
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="newSubmissionMP3">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -134,14 +133,13 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border reviewrow" name="1276"><td class="submission_row_element">Led Zeppelin</td><td class="submission_row_element email">Led Zeppelin IV</td><td class="submission_row_element primary_phone">November 8th 1971</td><td class="submission_row_element submission_type">Classic Rock</td></td><td class="submission_row_element membership_year">June 10th, 2015</td><td><input class="staff_comment" id="comment1276" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_1"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
 					Other
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="newSubmissionOther">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -152,7 +150,6 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border reviewrow" name="1275"><td class="submission_row_element">Supermoon</td><td class="submission_row_element email">Playland</td><td class="submission_row_element primary_phone">May 20th 2016</td><td class="submission_row_element submission_type">Rock</td><td class="submission_row_element membership_year">May 21st 2016</td><td><input class="staff_comment" id="comment1275" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_2"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
@@ -345,7 +342,7 @@
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
 					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="reviewedSubmissionCd">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -356,7 +353,6 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr class="playitem border reviewedrow" name="1274"><td class="submission_row_element name">Graftician</td><td class="submission_row_element email">Wander/Weave</td><td class="submission_row_element primary_phone">July 22nd, 2016</td><td><input class="staff_comment" id="comment1274" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_3"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_3"></td><div class="check hidden">❏</div></tr>
 							<tr>
 								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
@@ -366,7 +362,7 @@
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
 					MP3s
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="reviewedSubmissionMP3">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -377,7 +373,6 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr class="playitem border reviewedrow" name="1273"><td class="submission_row_element name">Koban</td><td class="submission_row_element email">Abject Obsessions</td><td class="submission_row_element primary_phone">September 15th 2016</td><td><input class="staff_comment" id="comment1273" value=""></td><td>Andy Resto</td><td>Yes</td><td><input type="checkbox" class="delete_submission" id="delete_4"><div class="check hidden">❏</div></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
 							<tr>
 								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
@@ -387,7 +382,7 @@
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
 					Other
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="reviewedSubmissionOther">
 							<tr id="music_row_heading border" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -398,7 +393,6 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr class='playitem border reviewedrow'><td>Nothing here.</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 							<tr>
 								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
@@ -588,7 +582,7 @@
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="toTagSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -599,14 +593,13 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border tagrow" name="1273"><td class="submission_row_element name">EdiT</td><td class="submission_row_element email">Crying over Pros for no reason</td><td class="submission_row_element primary_phone">September 10th 2016</td><td class="submission_row_element submission_type">Electronic</td><td class="submission_row_element membership_year">September 19th 2002</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submisison_result" class="left overflow_auto height_cap side-padded" name="search">
 					MP3s
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="toTagSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -617,14 +610,13 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border tagrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					Other
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="toTagSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -635,7 +627,6 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class='playitem border'><td>Nothing here.</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 						</tbody>
 					</table>
 				</div>
@@ -863,7 +854,7 @@
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					CDs
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="taggedSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -871,18 +862,16 @@
 								<th>Genre</th>
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
-								<th>Assignee</th>
+								<th>Tagger</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border approverow" name="1273"><td class="submission_row_element name">EdiT</td><td class="submission_row_element email">Crying over Pros for no reason</td><td class="submission_row_element primary_phone">September 10th 2016</td><td class="submission_row_element submission_type">Electronic</td><td class="submission_row_element membership_year">September 19th 2002</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border approverow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					MP3s
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="taggedSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -890,18 +879,16 @@
 								<th>Genre</th>
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
-								<th>Assignee</th>
+								<th>Tagger</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border approverow" name="1273"><td class="submission_row_element name">EdiT</td><td class="submission_row_element email">Crying over Pros for no reason</td><td class="submission_row_element primary_phone">September 10th 2016</td><td class="submission_row_element submission_type">Electronic</td><td class="submission_row_element membership_year">September 19th 2002</td><td><input class="staff_comment" id="comment1273" value=""></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type="checkbox" class="delete_submission" id="delete_4"></td><div class="check hidden">❏</div></tr>
-							<tr class="playitem border approverow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
 						</tbody>
 					</table>
 				</div>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					Other
 					<table id="submission_table" name="search">
-						<tbody>
+						<tbody name="taggedSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
@@ -909,10 +896,9 @@
 								<th>Genre</th>
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
-								<th>Assignee</th>
+								<th>Tagger</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
-							<tr class="playitem border"><td>Nothing here.</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 						</tbody>
 					</table>
 				</div>
@@ -1201,7 +1187,7 @@
 
 						<div id="submission_result" class="right overflow_auto height_cap" name="search">
 							<table id="submission_table" name="search">
-								<tbody>
+								<tbody name="trashedSubmissions">
 									<tr id="headerrow" style="display: table-row;">
 										<th>Artist</th>
 										<th>Album</th>
@@ -1212,7 +1198,6 @@
 										<th>Approve /&nbsp</th>
 										<th>Discard</th>
 									</tr>
-									<tr class="submission_row" name="1277"><td class="submission_row_element name">Justin Beiber</td><td class="submission_row_element email">Another Terrible Album</td><td class="submission_row_element primary_phone">May 10th, 2016</td><td><input class="staff_comment" id="comment1277" value=""></td><td>Hugo Noriega</td><td>No</td><td><input type="checkbox" class="delete_submission" id="delete_0"><div class="check hidden">❏</div></td><td><input type="checkbox" checked class="delete_submission" id="delete_0"><div class="check hidden">❏</div></tr>
 									<tr>
 										<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 									</tr>
