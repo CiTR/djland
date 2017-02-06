@@ -115,3 +115,6 @@ ADD COLUMN `femcon` TINYINT(1) NULL AFTER `cancon`,
 ADD COLUMN `local` TINYINT(1) NULL AFTER `femcon`,
 ADD COLUMN `label` TINYTEXT NULL AFTER `local`,
 ADD COLUMN `review_comments` TINYTEXT NULL AFTER `label`;
+
+ALTER TABLE `dev.djland`.`submissions` 
+CHANGE COLUMN `reviewed` `reviewed` INT(10) NULL DEFAULT NULL ;
