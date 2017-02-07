@@ -426,7 +426,7 @@ img.emoji {
 				</select>
 			</div>
 			<div style="width: 50%;float:right;">
-				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="yyyy-mm-dd">
 			</div>
 		</div>
 		<div class="album-row">

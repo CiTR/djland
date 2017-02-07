@@ -54,7 +54,7 @@ function add_submission_handlers(){
     });
 	//Listener for viewing the review from clicking on their row
 	$(".reviewrow").click(function(e){
-		// $('#view_submissions').show();
+		$('#view_submissions').show();
 
     var idSubmission = $(this).attr('name');
     // console.log(idSubmission);
@@ -439,7 +439,48 @@ function getSubmissionData(id) {
 }
 
 function displayReviewBox(data) {
-  // stuff
+
+/*
+  var artistBox      = document.getElementById("artist-review-box");
+  var locationBox    = document.getElementById("location-review-box");
+  var albumBox       = document.getElementById("album-review-box");
+  var labelBox       = document.getElementById("label-review-box");
+  var genreBox       = document.getElementById("genre-review-box");
+  var tagBox         = document.getElementById("tag-review-box");
+  var releaseBox     = document.getElementById("releaseDate-review-box");
+  var submissionBox  = document.getElementById("submissionDate-review-box");
+  var creditBox      = document.getElementById("albumCredit-review-box");
+  var contactBox     = document.getElementById("contact-review-box");
+  var descriptionBox = document.getElementById("description-review-box");
+  var artBox         = document.getElementById("albumArt-review-box");
+*/
+
+var artist      = data['artist'];
+var location    = data['location'];
+var album       = data['title'];
+var label       = data['lable'];
+var genre       = data['genre'];
+var tags        = data['tags'];
+var releasedate = data['releasedate'];
+var submitted   = data['submitted'];
+var credit      = data['credit'];
+var email       = data['email'];
+var description = data['description'];
+var art_url     = data['art_url'];
+
+$("#artist-review-box").text(artist);
+$("#location-review-vox").text(location);
+$("#album-review-box").text(album);
+$("#label-review-box").text(label);
+$("#genre-review-box").text(genre);
+$("#tag-review-box").text(tags);
+$("#releaseDate-review-box").text(releasedate);
+$("#submissionDate-review-box").text(submitted);
+$("#albumCredit-review-box").text(credit);
+$("#contact-review-box").text(email);
+$("#description-review-box").text(description);
+$("#albumArt-review-box").attr("src", art_url);
+
 }
 
 //Submission AJAX
