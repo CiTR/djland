@@ -141,9 +141,13 @@ use Carbon\Carbon;
         Route::get('/search', function(){
             return;
         });
-        // TODO: Search past archived submissions
-        Route::get('/archived', function(){
-            return;
+        // TODO: Search past archived and rejected submissions
+        Route::get('/searchpast', function(){
+
+        });
+        //TODO: Search accepted digital submissions in a time range
+        Route::get('/getaccepted', function(){
+
         });
         //Post to this route when a user reviews a new submisison
         Route::put('/review', function(){
@@ -162,15 +166,11 @@ use Carbon\Carbon;
 
         });
         //TODO: Post to this route to reject a submission
-        Route::post('/reject', function(){
+        Route::put('/reject', function(){
 
         });
         //TODO: Post to this route to restore a rejected submission
-        Route::post('/restore', function(){
-
-        });
-        //TODO: Post to this route to find new digital submissions
-        Route::post('/getnew', function(){
+        Route::put('/restore', function(){
 
         });
     });
