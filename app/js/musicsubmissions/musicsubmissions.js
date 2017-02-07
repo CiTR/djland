@@ -451,6 +451,7 @@ window.addEventListener('load', function() {
   femArtistBox   = document.getElementById("female-artist");
   commentField   = document.getElementById("comments-box");
   albumViewer    = document.getElementById("album-viewer");
+  formatPicker   = document.getElementById("format-picker");
 
   submitButton.addEventListener('click', submitForm);
 
@@ -476,6 +477,9 @@ function submitForm() {
   var vancouver = vancouverBox.checked;
   var female    = femArtistBox.checked;
   var comments  = commentField.value;
+  var format    = formatPicker.value;
+
+  console.log("formatPicker value: " + format);
 
   if (artist == "") {
     success = false;
@@ -507,7 +511,7 @@ function submitForm() {
     var submission = document.getElementById("submit-button-div");
     submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
     */
-    createSubmission("CD");
+    createSubmission(format);
   } else {
     var alertString = "You are missing the following fields:";
     for (var i = 0; i < missing.length; i++) {

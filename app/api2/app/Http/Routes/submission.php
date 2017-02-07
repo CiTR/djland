@@ -146,9 +146,13 @@ use Carbon\Carbon;
         Route::get('/search', function(){
             return;
         });
-        // TODO: Search past archived submissions
-        Route::get('/archived', function(){
-            return;
+        // TODO: Search past archived and rejected submissions
+        Route::get('/searchpast', function(){
+
+        });
+        //TODO: Search accepted digital submissions in a time range
+        Route::get('/getaccepted', function(){
+
         });
         // TODO: Search past rejected submissions
         Route::get('/rejected', function(){

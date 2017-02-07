@@ -6,11 +6,46 @@
 
 function createSubmission(format) {
     //Hack, TODO: Reference the types_format DB table
+    /*
    if(format == "CD"){
        var format_id = 1;
    }else if(format == "MP3"){
        var format_id = 6;
    }
+   */
+
+   console.log("Passed format: " + format);
+
+   var format_id = 8;
+
+   switch (format) {
+     case "CD":
+      format_id = 1;
+      break;
+     case "LP":
+      format_id = 2;
+      break;
+     case "7\"":
+      format_id = 3;
+      break;
+     case "CASSETTE":
+      format_id = 4;
+      break;
+     case "CART":
+      format_id = 5;
+      break;
+     case "MP3":
+      format_id = 6;
+      break;
+     case "MD":
+      format_id = 7;
+      break;
+     default:
+      format_id = 8;
+   }
+
+   console.log("Format: " + format + "\nformat_id: " + format_id);
+
    var artist      = document.getElementById('artist-name').value;
    var email       = document.getElementById('contact-email').value;
    var label       = document.getElementById('record-label').value;
@@ -24,6 +59,10 @@ function createSubmission(format) {
    var cancon      = document.getElementById('canada-artist').checked;
    var local       = document.getElementById('vancouver-artist').checked;
    var description = document.getElementById('comments-box').value;
+
+   if (label == "") {
+     label = "Self-Released";
+   }
 
    var trackNo     = "1";
    //var songlist    = [];
