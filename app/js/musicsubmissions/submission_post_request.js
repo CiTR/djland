@@ -60,6 +60,10 @@ function createSubmission(format) {
    var local       = document.getElementById('vancouver-artist').checked;
    var description = document.getElementById('comments-box').value;
 
+   if (label == "") {
+     label = "Self-Released";
+   }
+
    var trackNo     = "1";
    //var songlist    = [];
    var songlist    = 10;
