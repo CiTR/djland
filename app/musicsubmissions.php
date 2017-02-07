@@ -25,7 +25,9 @@
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
+    <!--
   	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
+  -->
     <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
 
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -1272,6 +1274,18 @@
               <div style="width: 50%;float:right;">
                 &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="yyyy-mm-dd">
               </div>
+            </div>
+            <div style="width: 50%;float:left;">
+              &#9733; Format: <select name="Select the format" id="format-picker" style="width:95%;margin-bottom:30px;">
+                <option>CD</option>
+                <option>LP</option>
+                <option>7"</option>
+                <option>CASSETTE</option>
+                <option>CART</option>
+                <option>MP3</option>
+                <option>MD</option>
+                <option>Unknown</option>
+              </select>
             </div>
             <div class="album-row">
               <div class="fem-can-van">

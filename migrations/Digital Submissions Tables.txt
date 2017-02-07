@@ -120,3 +120,6 @@ ADD COLUMN `review_comments` TINYTEXT NULL AFTER `label`;
 
 ALTER TABLE `dev.djland`.`submissions`
 CHANGE COLUMN `reviewed` `reviewed` INT(10) NULL DEFAULT NULL ;
+
+ALTER TABLE `dev.djland`.`submissions` 
+ADD COLUMN `is_trashed` TINYINT(1) NULL AFTER `status`;

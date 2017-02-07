@@ -6,5 +6,5 @@ use InvalidArgumentException;
 class SubmissionsArchive extends Model
 {
     protected $table = 'submissions_archive';
-    protected $fillable = array( 'id','contact','catalog','artist','title','submitted' );
+    protected $fillable = array( 'id','contact','catalog','artist','title','submitted','format_id','cancon','femcon','local','label','review_comments' );
 }
