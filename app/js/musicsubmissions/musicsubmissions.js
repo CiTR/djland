@@ -288,6 +288,8 @@ function populateReviewedSubmissionsCd(submissions){
 			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='reviewedSubmissionCd']").append(markup);
 		}
+		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		$("tbody[name='reviewedSubmissionCd']").append(endrow);
 		add_submission_handlers();
 	}
 }
@@ -301,6 +303,8 @@ function populateReviewedSubmissionsMP3(submissions){
 			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='reviewedSubmissionMP3']").append(markup);
 		}
+		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		$("tbody[name='reviewedSubmissionMP3']").append(endrow);
 		add_submission_handlers();
 	}
 }
@@ -314,6 +318,8 @@ function populateReviewedSubmissionsOther(submissions){
 			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='reviewedSubmissionOther']").append(markup);
 		}
+		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		$("tbody[name='reviewedSubmissionOther']").append(endrow);
 		add_submission_handlers();
 	}
 }

@@ -356,9 +356,6 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr>
-								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -376,9 +373,6 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
-							<tr>
-								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -395,9 +389,6 @@
 								<th>Approved?</th>
 								<th>Approve</th>
 								<th>Discard</th>
-							</tr>
-							<tr>
-								<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -516,22 +507,9 @@
 
 						<div class="containerrow padded">
 							<div class="col3">Would you Approve this Album to go in our library?:</div>
-							<div class="col5 left"><select style="font-size:18px;" class="search_value" name="cars"><option value="volvo">Yes</option>  <option value="saab">No</option></select></div>
+							<div class="col5 left"><select style="font-size:18px;" class="search_value" name="cars"><option value="volvo">Yes</option></select></div>
 						</div>
-
-
-						<hr>
-
-						<div class="containerrow">
-							<div class="col1 text-center">
-								<button name="edit" class="member_submit">Submit</button>
-							</div>
-						</div>
-						<div class="containerrow">
-							<div class="col1 text-center">
-								*indicates a required field
-							</div>
-						</div>
+						<br>
 					</div>
 				</div>
 			</div>

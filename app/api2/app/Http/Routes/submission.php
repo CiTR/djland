@@ -27,27 +27,33 @@ use Carbon\Carbon;
             //    } else {
             //        return "Invalid genre specified";
             //    }
-                $id = Submissions::create([
-                    'artist' => Input::get('artist'),
-                    'title' => Input::get('title'),
-                    'genre' => $ingenre,
-                    'email' => Input::get('email'),
-                    'label' => Input::get('label'),
-                    'location' => Input::get('location'),
-                    'credit' => Input::get('credit'),
-                    'releasedate' => Input::get('releasedate'),
-                    'cancon' => Input::get('cancon'),
-                    'femcon' => Input::get('femcon'),
-                    'local' => Input::get('local'),
-                    'description' => Input::get('description'),
-                    'art_url' => Input::get('art_url'),
-                    'songlist' => Input::get('songlist'),
-                    'format_id' => Input::get('format_id'),
-                    'status' => 'unreviewed',
-                    'submitted' => Carbon::today()->toDateString()
-                ]);
-            return $id;
-
+            //Default to "Self released" if the label is not specified
+            if(Input::get('label') == null){
+                $label = "Self-released"
+            } else{
+                $label = Input::get('label');
+            }
+            $newsubmission = Submissions::create([
+                'artist' => Input::get('artist'),
+                'title' => Input::get('title'),
+                'genre' => $ingenre,
+                'email' => Input::get('email'),
+                'label' => $label,
+                'location' => Input::get('location'),
+                'credit' => Input::get('credit'),
+                'releasedate' => Input::get('releasedate'),
+                'cancon' => Input::get('cancon'),
+                'femcon' => Input::get('femcon'),
+                'local' => Input::get('local'),
+                'description' => Input::get('description'),
+                'art_url' => Input::get('art_url'),
+                'songlist' => Input::get('songlist'),
+                'format_id' => Input::get('format_id'),
+                'status' => 'unreviewed',
+                'submitted' => Carbon::today()->toDateString(),
+                'trashed' => 0
+            ]);
+            return $newsubmission;
         } catch(Exception $e){
             return $e->getMessage();
         }
@@ -56,88 +62,87 @@ use Carbon\Carbon;
         //Get list of submissions that are unreviewed
         Route::get('/bystatus/unreviewed/', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are unreviewed and are CD format
         Route::get('/bystatus/unreviewed/cd', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are unreviewed and are MP3 format
         Route::get('/bystatus/unreviewed/mp3', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are unreviewed and are any other format
         Route::get('/bystatus/unreviewed/other', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are reviewed but the submission is not approved
         Route::get('/bystatus/reviewed', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are reviewed but the submission is not approved and are cds
         Route::get('/bystatus/reviewed/cd', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are reviewed but the submission is not approved and are mp3s
         Route::get('/bystatus/reviewed/mp3', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that are reviewed but the submission is not approved and are any other format
         Route::get('/bystatus/reviewed/other', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that need to be tagged
         Route::get('/bystatus/tagged',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that need to be tagged and are cds
         Route::get('/bystatus/tagged/cd',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that need to be tagged and are mp3s
         Route::get('/bystatus/tagged/mp3',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of submissions that need to be tagged and are in any other format
         Route::get('/bystatus/tagged/other',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of reviewed submissions that are approved and need to be tagged
         Route::get('/bystatus/approved', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('trashed', '=', 0)->get() );
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are cds
         Route::get('/bystatus/approved/cd', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('trashed', '=', 0)->get() );
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are mp3s
         Route::get('/bystatus/approved/mp3', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('trashed', '=', 0)->get() );
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are in any other format
         Route::get('/bystatus/approved/other', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->get() );
+            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('trashed', '=', 0)->get() );
         });
         Route::get('/bystatus/trashed', function(){
-            $status = 'trashed';
-            return Response::json( Submissions::where('status','=',$status)->get() );
+            return Response::json( Submissions::where('trashed', '=', 1)->get() );
         });
-        //Generic search ending - specify what we're looking for with 'status'
+        //Generic search ending - specify what we're looking for with 'status', 'format' etc
         Route::get('/search', function(){
             return;
         });
@@ -145,32 +150,88 @@ use Carbon\Carbon;
         Route::get('/archived', function(){
             return;
         });
+        // TODO: Search past rejected submissions
+        Route::get('/rejected', function(){
+            return;
+        });
+        // TODO: Search past rejected & archived submissions (not sure if we'll use?)
+        Route::get('/rejectedandarchived', function(){
+            return;
+        });
         //Post to this route when a user reviews a new submisison
-        Route::put('/review', function(){
-
+        Route::put('/review', function($id,$review_comments,$approved){
+            try{
+                $submission = Submissions::find(Input::get()['id']);
+                if($submission -> status == "trashed") return "Trying to review a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
+                else if($submission -> status != "unreviewed") return "Trying to review a submission that is already been reviewed. Aborting. Submission id is: " . $submission -> id;
+                else {
+                    $submission -> status = "reviewed";
+                    $submission -> review_comments = Input::get()['review_comments']
+                    $approval = Input::get()['approved'];
+                    if($approval == 'yes' || $approval == 'Yes' || $approval == 1 ) $submission -> approved = 1;
+                    else $submission -> approved = 0;
+                    return $submission;
+                }
+            } catch (Exception $e){
+                return $e->getMessage();
+            }
         });
         //Post to this route when staff approve a review for a submisison
         Route::put('/approve', function(){
-
+            try{
+                if($submission -> status == "trashed") return "Trying to approve a review of a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
+                else if($submisison -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status != "reviewed") return "Trying to approve a review of a submission that is already been approved. Aborting. Submission id is: " . $submission -> id;
+                else{
+                    $submission = Submissions::find(Input::get()['id']);
+                    $submission -> status = "approved";
+                    return $submission;
+                }
+            } catch (Exception $e){
+                return $e->getMessage();
+            }
         });
         //Post to this route when a user has tagged a submission
         Route::put('/tag', function(){
-
+            try{
+                if($submission -> status == "trashed") return "Trying to tag a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
+                else if($submisison -> status == "unreviewed") return "Trying to tag a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "reviewed") return "Trying to tag a review of a submission that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
+                else if($submission -> status != "approved") return "Trying to tag a review of a submission that hs already been tagged. Aborting. Submission id is: " . $submission -> id;
+                else{
+                    $submission = Submissions::find(Input::get()['id']);
+                    $submission -> status = "tagged";
+                    //TODO: read in tag data
+                    return $submission;
+                }
+            } catch (Exception $e){
+                return $e->getMessage();
+            }
         });
         //Post to this route when staff approve tags and send submission to library
         Route::put('/tolibrary', function(){
-
+            try{
+                if($submission -> status == "trashed") return "Trying to send a submission to the library that is in the trash. Aborting. Submission id is: " . $submission -> id;
+                else if($submisison -> status == "unreviewed") return "Trying to send a submission to the library that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "reviewed") return "Trying to send a submission to the library that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
+                else if($submission -> status == "approved") return "Trying to send a submission to the library that has not been tagged. Aborting. Submission id is: " . $submission -> id;
+                else if($submission -> status != "tagged") return "Trying to send a submission to the library that has already been tagged and sent to library. Aborting. Submission id is: " . $submission -> id;
+                else{
+                    $submission = Submissions::find(Input::get()['id']);
+                    $submission -> status = "completed";
+                    //TODO: anything else necessary
+                    return $submission;
+                }
+            } catch (Exception $e){
+                return $e->getMessage();
+            }
         });
-        //TODO: Post to this route to reject a submission
-        Route::post('/reject', function(){
+        //TODO: Post to this route to reject a submission - keep all data for one month
+        Route::put('/reject', function(){
 
         });
         //TODO: Post to this route to restore a rejected submission
-        Route::post('/restore', function(){
-
-        });
-        //TODO: Post to this route to find new digital submissions
-        Route::post('/getnew', function(){
+        Route::put('/restore', function(){
 
         });
     });
