@@ -66,6 +66,8 @@ function add_submission_handlers(){
 	});
 	$(".reviewedrow").click(function(e){
 		$('#reviewed_submissions_view').show();
+    var idSubmission = $(this).attr('name');
+    getSubmissionData(idSubmission);
     });
 	$("#reviewed_submissions_closer").click(function(e){
 		$('#reviewed_submissions_view').hide();
@@ -433,53 +435,84 @@ function getSubmissionData(id) {
     async: true,
     success: function(data) {
       console.log(data);
-      displayReviewBox(data);
+      switch (data['status']) {
+        case "unreviewed":
+          displayReviewBox(data);
+          break;
+        case "reviewed":
+          displayReviewedBox(data);
+          break;
+        case "tagged":
+          // TODO
+          break;
+        case "trashed":
+          // TODO
+          break;
+        case "approved":
+          // TODO
+          break;
+      }
     }
   });
 }
 
 function displayReviewBox(data) {
 
-/*
-  var artistBox      = document.getElementById("artist-review-box");
-  var locationBox    = document.getElementById("location-review-box");
-  var albumBox       = document.getElementById("album-review-box");
-  var labelBox       = document.getElementById("label-review-box");
-  var genreBox       = document.getElementById("genre-review-box");
-  var tagBox         = document.getElementById("tag-review-box");
-  var releaseBox     = document.getElementById("releaseDate-review-box");
-  var submissionBox  = document.getElementById("submissionDate-review-box");
-  var creditBox      = document.getElementById("albumCredit-review-box");
-  var contactBox     = document.getElementById("contact-review-box");
-  var descriptionBox = document.getElementById("description-review-box");
-  var artBox         = document.getElementById("albumArt-review-box");
-*/
+  var artist      = data['artist'];
+  var location    = data['location'];
+  var album       = data['title'];
+  var label       = data['label'];
+  var genre       = data['genre'];
+  var tags        = data['tags'];
+  var releasedate = data['releasedate'];
+  var submitted   = data['submitted'];
+  var credit      = data['credit'];
+  var email       = data['email'];
+  var description = data['description'];
+  var art_url     = data['art_url'];
 
-var artist      = data['artist'];
-var location    = data['location'];
-var album       = data['title'];
-var label       = data['lable'];
-var genre       = data['genre'];
-var tags        = data['tags'];
-var releasedate = data['releasedate'];
-var submitted   = data['submitted'];
-var credit      = data['credit'];
-var email       = data['email'];
-var description = data['description'];
-var art_url     = data['art_url'];
+  $("#artist-review-box").text(artist);
+  $("#location-review-box").text(location);
+  $("#album-review-box").text(album);
+  $("#label-review-box").text(label);
+  $("#genre-review-box").text(genre);
+  $("#tag-review-box").text(tags);
+  $("#releaseDate-review-box").text(releasedate);
+  $("#submissionDate-review-box").text(submitted);
+  $("#albumCredit-review-box").text(credit);
+  $("#contact-review-box").text(email);
+  $("#description-review-box").text(description);
+  $("#albumArt-review-box").attr("src", art_url);
 
-$("#artist-review-box").text(artist);
-$("#location-review-vox").text(location);
-$("#album-review-box").text(album);
-$("#label-review-box").text(label);
-$("#genre-review-box").text(genre);
-$("#tag-review-box").text(tags);
-$("#releaseDate-review-box").text(releasedate);
-$("#submissionDate-review-box").text(submitted);
-$("#albumCredit-review-box").text(credit);
-$("#contact-review-box").text(email);
-$("#description-review-box").text(description);
-$("#albumArt-review-box").attr("src", art_url);
+}
+
+function displayReviewedBox(data) {
+
+  var artist      = data['artist'];
+  var location    = data['location'];
+  var album       = data['title'];
+  var label       = data['label'];
+  var genre       = data['genre'];
+  var tags        = data['tags'];
+  var releasedate = data['releasedate'];
+  var submitted   = data['submitted'];
+  var credit      = data['credit'];
+  var email       = data['email'];
+  var description = data['description'];
+  var art_url     = data['art_url'];
+
+  $("#artist-reviewed").text(artist);
+  $("#location-reviewed").text(location);
+  $("#album-reviewed").text(album);
+  $("#label-reviewed").text(label);
+  $("#genre-reviewed").text(genre);
+  $("#tag-reviewed").text(tags);
+  $("#release-reviewed").text(releasedate);
+  $("#submitted-reviewed").text(submitted);
+  $("#credit-reviewed").text(credit);
+  $("#contact-reviewed").text(email);
+  $("#description-reviewed").text(description);
+  $("#albumArt-reviewed").attr("src", art_url);
 
 }
 

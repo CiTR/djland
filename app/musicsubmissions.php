@@ -423,32 +423,32 @@
 					<div class="container" style="display: block;">
 						<div class="containerrow">
 							<div class="col5">Band Name: </div>
-							<div class="col5" id="username" name="username">Band Name Here</div>
+							<div class="col5" name="username" id="artist-reviewed">Band Name Here</div>
 							<div class="col5">From: </div>
-							<div class="col5" id="username" name="username">Vancouver, Canada</div>
+							<div class="col5" name="username" id="location-reviewed">Vancouver, Canada</div>
 						</div>
 
 						<div class="containerrow">
 							<div class="col5">Album: </div>
-							<div class="col5">Album Name Here</div>
+							<div class="col5" id="album-reviewed">Album Name Here</div>
 							<div class="col5">Label: </div>
-							<div class="col5">Mint Records</div>
+							<div class="col5" id="label-reviewed">Mint Records</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Genre: </div>
-							<div class="col5">Genre Here</div>
+							<div class="col5" id="genre-reviewed">Genre Here</div>
 							<div class="col5">Genre Tags: </div>
-							<div class="col5">Tag1, Tag2, Tag3</div>
+							<div class="col5" id="tag-reviewed">Tag1, Tag2, Tag3</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Release Date: </div>
-							<div class="col5">Month, Day Year</div>
+							<div class="col5" id="release-reviewed">Month, Day Year</div>
 							<div class="col5">Submission Date: </div>
-							<div class="col5">Month, Day Year: </div>
+							<div class="col5" id="submitted-reviewed">Month, Day Year: </div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Album Credit: </div>
-							<div class="col4">John Doe, Lucy Lu, Fred Smith</div>
+							<div class="col4" id="credit-reviewed">John Doe, Lucy Lu, Fred Smith</div>
 						</div>
 
 						<hr>
@@ -457,8 +457,8 @@
 							<div class="col1 text-left padded">Submitted Album Description: </div>
 						</div>
 						<div class="containerrow padded padded-left">
-							<div class="col2 text-left"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
-							<div class="col3 center"><img src="images/albumart.jpg"></img></div>
+							<div class="col2 text-left" id="description-reviewed"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
+							<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-reviewed"></img></div>
 						</div>
 
 						<hr>
