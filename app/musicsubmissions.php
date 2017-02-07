@@ -1272,7 +1272,7 @@
                 </select>
               </div>
               <div style="width: 50%;float:right;">
-                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="yyyy-mm-dd">
+                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
               </div>
             </div>
             <div style="width: 50%;float:left;">

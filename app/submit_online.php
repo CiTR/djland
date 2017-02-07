@@ -48,6 +48,16 @@ img.emoji {
 <link rel="stylesheet" href="http://citr.ca/wp-content/plugins/tablepress/css/default.min.css?ver=1.6.1">
 <script type='text/javascript' src='http://citr.ca/wp-includes/js/jquery/jquery.js?ver=1.11.2'></script>
 <script type='text/javascript' src='http://citr.ca/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+
+<!-- set the datepicker date format -->
+<script>
+  $(function() {
+      $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+  });
+</script>
 
 <!-- This site is using AdRotate v3.13.1 to display their advertisements - https://ajdg.solutions/products/adrotate-for-wordpress/ -->
 <!-- AdRotate CSS -->
@@ -426,7 +436,7 @@ img.emoji {
 				</select>
 			</div>
 			<div style="width: 50%;float:right;">
-				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="yyyy-mm-dd">
+				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
 			</div>
 		</div>
 		<div class="album-row">
