@@ -175,16 +175,18 @@ use Carbon\Carbon;
                     $approval = Input::get('approved');
                     if($approval == 'yes' || $approval == 'Yes' || $approval == 1 ) $submission -> approved = 1;
                     else $submission -> approved = 0;
-                    return $submission;
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from unreviewd to reviewed successful");
                 }
             } catch (Exception $e){
-                return $e->getMessage();
+                return $e->getMessage() ;
             }
         });
         //Post to this route when staff approve a review for a submisison
         //Requires: id (ie. submission id) , and other stuff tbd
         Route::put('/approve', function(){
             try{
+                $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to approve a review of a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
                 else if($submisison -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status != "reviewed") return "Trying to approve a review of a submission that is already been approved. Aborting. Submission id is: " . $submission -> id;
@@ -200,6 +202,7 @@ use Carbon\Carbon;
         //Post to this route when a user has tagged a submission
         Route::put('/tag', function(){
             try{
+                $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to tag a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
                 else if($submisison -> status == "unreviewed") return "Trying to tag a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status == "reviewed") return "Trying to tag a review of a submission that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
@@ -217,6 +220,7 @@ use Carbon\Carbon;
         //Post to this route when staff approve tags and send submission to library
         Route::put('/tolibrary', function(){
             try{
+                $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to send a submission to the library that is in the trash. Aborting. Submission id is: " . $submission -> id;
                 else if($submisison -> status == "unreviewed") return "Trying to send a submission to the library that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status == "reviewed") return "Trying to send a submission to the library that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
