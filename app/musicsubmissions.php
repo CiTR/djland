@@ -747,7 +747,7 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#subgenre-approved").select2();
 								});
 							</script>
 								<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
@@ -822,8 +822,9 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files for Approval</button>
+						<button id="approve-tags-button" name='edit' class='submissions_submit red'>Submit Files for Approval</button>
 					</div>
+          <p id="subgenre-tag-warning" class="hidden red">Please select a subgenre before submitting.</p>
 				</div>
 			</div>
 			<?php endif; ?>

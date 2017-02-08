@@ -52,6 +52,15 @@ function add_submission_handlers(){
 	},function(e){
 		$("#approved-extrainfo").hide();
 	});
+  $("#approve-tags-button").click(function(e){
+    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
+      $("#subgenre-tag-warning").show();
+    } else {
+      $("#subgenre-tag-warning").hide();
+      console.log($("#subgenre-approved").select2("val"));
+      // addTagToSubmission($("#subgenre-approved").select2("val"));
+    }
+  });
 	/*
 	 * Listeners for approving tags popup
 	 */
@@ -264,7 +273,7 @@ function populateNewSubmissionsCd(submissions){
 			var item = (submissions[number]);
 			var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['releasedate'] + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">"
 				+ item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
-				console.log(markup);
+				// console.log(markup);
 			$("tbody[name='newSubmissionCd']").append(markup);
 		}
 		add_submission_handlers();
@@ -590,7 +599,7 @@ function displayApprovedBox(data) {
 	var art_url     	= data['art_url'];
 	var submitted  		= data['submitted'];
 	var releasedate 	= data['releasedate'];
-	console.log(review_comments);
+	// console.log(review_comments);
 
 	//Un-editable fields
 	$("#release-approved").text("Album release date: " + releasedate);
