@@ -18,6 +18,7 @@ function createSubmission(format) {
 
    var format_id = 8;
 
+   //TODO: get this from the database
    switch (format) {
      case "CD":
       format_id = 1;

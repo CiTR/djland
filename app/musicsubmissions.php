@@ -527,8 +527,11 @@
 						<hr>
 
 						<div class="containerrow">
-							<div class="col1 text-center">
-								<button name="edit" class="member_submit">Submit</button>
+							<div class="col2 text-center">
+								<button name="edit">Approve Review</button>
+							</div>
+							<div class="col2 text-center">
+								<button name="edit">Trash Review</button>
 							</div>
 						</div>
 						<div class="containerrow">
@@ -644,12 +647,27 @@
 					<br />
 					<h3> Tag Album </h3>
 					<br />
+					<h4>Items with a * are required</h4>
+					<br />
+					<div class="side-padded">
+						<button id="approved-extrainfo-button">View More Submisison Info</button>
+					</div>
+					<div class="side-padded" style="display: none" id="approved-extrainfo">
+						<h5 id="submitted-approved"></h5>
+						<h5 id="release-approved"></h5>
+						<h5 id="contact-approved"></h5>
+						<div><img src="" id="albumArt-approved"></img></div>
+						Band Submitted descripton:
+						<textarea readonly="true" id="description-approved">Loading description ...</textarea>
+						Album Review Comments:
+						<textarea readonly="true" id="review_comments-approved">Loading comments ...</textarea>
+					</div>
 					<div class="double-padded-top">
 						<div id="titleBox">
 							<b> Catalog # </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="#catalog-approved" placeholder="Catalog # here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -662,16 +680,16 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:30%;">
-									<option class='vueselect' value="CD">CD</option>
-									<option class='vueselect' value="LP">LP</option>
-									<option class='vueselect' value="7in">7"</option>
-									<option class='vueselect' value="CASS">CASSETE</option>
-									<option class='vueselect' value ="CART">CART</option>
-									<option class='vueselect' value="MP3">MP3</option>
-									<option class='vueselect' value="MD">MD</option>
-									<option value="??">Unknown</option>
-								</select>
+							<select class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
+								<option class='vueselect' value="CD">CD</option>
+								<option class='vueselect' value="LP">LP</option>
+								<option class='vueselect' value="7in">7"</option>
+								<option class='vueselect' value="CASS">CASSETE</option>
+								<option class='vueselect' value ="CART">CART</option>
+								<option class='vueselect' value="MP3">MP3</option>
+								<option class='vueselect' value="MD">MD</option>
+								<option class='vueselect' value="??">Unknown</option>
+							</select>
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -679,7 +697,7 @@
 							<b> Album Title* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="album-approved" placeholder="Title here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -687,7 +705,7 @@
 							<b> Artist* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="artist-approved" placeholder="Artist here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -695,7 +713,7 @@
 							<b> Album Credit </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="credit-approved" placeholder="Album Credit here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -703,7 +721,7 @@
 							<b> Label </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="label-approved" placeholder="Label here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -716,7 +734,7 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="genre-approved" style="width:70%;">
 									<?php foreach($djland_primary_genres as $genre){
 										printf("<option value=\"$genre\">$genre</option>");
 									} ?>
@@ -727,13 +745,20 @@
 						<div id="titleBox">
 							<b> Subgenre </b>
 						</div>
+					</div>
+					<div class="">
+						<div id="titleBox">
+							<div id='tags-approved'>Loading specified subgenre tags by band ... </div>
+						</div>
+					</div>
+					<div class="titleBox">
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
 									<option value"none">No Subgenre</option>
 									<?php foreach($djland_subgenres as $genre => $subgenre_array){
 										printf("<optgroup label=\"$genre\">");
@@ -750,7 +775,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="cancon-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Cancon
@@ -758,7 +783,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="femcon-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Femcon
@@ -766,7 +791,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="local-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Is Local
@@ -776,7 +801,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="playlist-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Playlist
@@ -784,7 +809,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="compilation-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Compilation
