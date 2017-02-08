@@ -152,7 +152,8 @@ use Carbon\Carbon;
         });
         //TODO: Search accepted digital submissions in a time range
         Route::get('/getaccepted', function(){
-
+            $date = Input::get('date');
+            return Response::json( Archive::where('submitted','>',$date)->where('submitted','<',$date)->get() );
         });
         // TODO: Search past rejected submissions
         Route::get('/rejected', function(){
@@ -238,7 +239,7 @@ use Carbon\Carbon;
         });
         //TODO: Post to this route to reject a submission - keep all data for one month
         Route::put('/reject', function(){
-
+            
         });
         //TODO: Post to this route to restore a rejected submission
         Route::put('/restore', function(){
