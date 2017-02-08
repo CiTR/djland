@@ -173,32 +173,34 @@
 					<div class="container" style="display: block;">
 						<div class="containerrow">
 							<div class="col5">Band Name: </div>
-							<div class="col5" id="username" name="username">Band Name Here</div>
+							<div class="col5" id="artist-review-box">Band Name Here</div>
 							<div class="col5">From: </div>
-							<div class="col5" id="username" name="username">Vancouver, Canada</div>
+							<div class="col5" id="location-review-box">Vancouver, Canada</div>
 						</div>
 
 						<div class="containerrow">
 							<div class="col5">Album: </div>
-							<div class="col5">Album Name Here</div>
+							<div class="col5" id="album-review-box">Album Name Here</div>
 							<div class="col5">Label: </div>
-							<div class="col5">Mint Records</div>
+							<div class="col5" id="label-review-box">Mint Records</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Genre: </div>
-							<div class="col5">Genre Here</div>
+							<div class="col5" id="genre-review-box">Genre Here</div>
 							<div class="col5">Genre Tags: </div>
-							<div class="col5">Tag1, Tag2, Tag3</div>
+							<div class="col5" id="tag-review-box">Tag1, Tag2, Tag3</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Release Date: </div>
-							<div class="col5">Month, Day Year</div>
+							<div class="col5" id="releaseDate-review-box">Month, Day Year</div>
 							<div class="col5">Submission Date: </div>
-							<div class="col5">Month, Day Year: </div>
+							<div class="col5" id="submissionDate-review-box">Month, Day Year: </div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Album Credit: </div>
-							<div class="col4">John Doe, Lucy Lu, Fred Smith</div>
+							<div class="col4" id="albumCredit-review-box">John Doe, Lucy Lu, Fred Smith</div>
+              <div class="col5">Contact: </div>
+              <div class="col5" id="contact-review-box">citr@example.com</div>
 						</div>
 
 						<hr>
@@ -207,8 +209,8 @@
 							<div class="col1 text-left padded">Submitted Album Description: </div>
 						</div>
 						<div class="containerrow padded padded-left">
-							<div class="col2 text-left"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
-							<div class="col3 center"><img src="images/albumart.jpg"></img></div>
+							<div class="col2 text-left" id="description-review-box"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
+							<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-review-box"></img></div>
 						</div>
 
 						<hr>
@@ -412,32 +414,32 @@
 					<div class="container" style="display: block;">
 						<div class="containerrow">
 							<div class="col5">Band Name: </div>
-							<div class="col5" id="username" name="username">Band Name Here</div>
+							<div class="col5" name="username" id="artist-reviewed">Band Name Here</div>
 							<div class="col5">From: </div>
-							<div class="col5" id="username" name="username">Vancouver, Canada</div>
+							<div class="col5" name="username" id="location-reviewed">Vancouver, Canada</div>
 						</div>
 
 						<div class="containerrow">
 							<div class="col5">Album: </div>
-							<div class="col5">Album Name Here</div>
+							<div class="col5" id="album-reviewed">Album Name Here</div>
 							<div class="col5">Label: </div>
-							<div class="col5">Mint Records</div>
+							<div class="col5" id="label-reviewed">Mint Records</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Genre: </div>
-							<div class="col5">Genre Here</div>
+							<div class="col5" id="genre-reviewed">Genre Here</div>
 							<div class="col5">Genre Tags: </div>
-							<div class="col5">Tag1, Tag2, Tag3</div>
+							<div class="col5" id="tag-reviewed">Tag1, Tag2, Tag3</div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Release Date: </div>
-							<div class="col5">Month, Day Year</div>
+							<div class="col5" id="release-reviewed">Month, Day Year</div>
 							<div class="col5">Submission Date: </div>
-							<div class="col5">Month, Day Year: </div>
+							<div class="col5" id="submitted-reviewed">Month, Day Year: </div>
 						</div>
 						<div class="containerrow">
 							<div class="col5">Album Credit: </div>
-							<div class="col4">John Doe, Lucy Lu, Fred Smith</div>
+							<div class="col4" id="credit-reviewed">John Doe, Lucy Lu, Fred Smith</div>
 						</div>
 
 						<hr>
@@ -446,8 +448,8 @@
 							<div class="col1 text-left padded">Submitted Album Description: </div>
 						</div>
 						<div class="containerrow padded padded-left">
-							<div class="col2 text-left"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
-							<div class="col3 center"><img src="images/albumart.jpg"></img></div>
+							<div class="col2 text-left" id="description-reviewed"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
+							<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-reviewed"></img></div>
 						</div>
 
 						<hr>
@@ -510,6 +512,23 @@
 						<div class="containerrow padded">
 							<div class="col3">Would you Approve this Album to go in our library?:</div>
 							<div class="col5 left"><select style="font-size:18px;" class="search_value" name="cars"><option value="volvo">Yes</option></select></div>
+						</div>
+
+						<hr>
+
+						<div class="containerrow">
+							<div class="col2 text-center">
+								<button name="edit">Approve Review</button>
+							</div>
+							<div class="col2 text-center">
+								<button name="edit">Trash Review</button>
+							</div>
+						</div>
+						<div class="containerrow">
+							<div class="col1 text-center">
+								*indicates a required field
+							</div>
+>>>>>>> review-box
 						</div>
 						<br>
 					</div>
@@ -620,12 +639,27 @@
 					<br />
 					<h3> Tag Album </h3>
 					<br />
+					<h4>Items with a * are required</h4>
+					<br />
+					<div class="side-padded">
+						<button id="approved-extrainfo-button">View More Submisison Info</button>
+					</div>
+					<div class="side-padded" style="display: none" id="approved-extrainfo">
+						<h5 id="submitted-approved"></h5>
+						<h5 id="release-approved"></h5>
+						<h5 id="contact-approved"></h5>
+						<div><img src="" id="albumArt-approved"></img></div>
+						Band Submitted descripton:
+						<textarea style="height:100px" readonly="true" id="description-approved">Loading description ...</textarea>
+						Album Review Comments:
+						<textarea style="height:100px" readonly="true" id="review_comments-approved">Loading comments ...</textarea>
+					</div>
 					<div class="double-padded-top">
 						<div id="titleBox">
 							<b> Catalog # </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="catalog-approved" placeholder="Catalog # here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -638,16 +672,16 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:30%;">
-									<option class='vueselect' value="CD">CD</option>
-									<option class='vueselect' value="LP">LP</option>
-									<option class='vueselect' value="7in">7"</option>
-									<option class='vueselect' value="CASS">CASSETE</option>
-									<option class='vueselect' value ="CART">CART</option>
-									<option class='vueselect' value="MP3">MP3</option>
-									<option class='vueselect' value="MD">MD</option>
-									<option value="??">Unknown</option>
-								</select>
+							<select class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
+								<option class='vueselect' value="CD">CD</option>
+								<option class='vueselect' value="LP">LP</option>
+								<option class='vueselect' value="7in">7"</option>
+								<option class='vueselect' value="CASS">CASSETE</option>
+								<option class='vueselect' value ="CART">CART</option>
+								<option class='vueselect' value="MP3">MP3</option>
+								<option class='vueselect' value="MD">MD</option>
+								<option class='vueselect' value="??">Unknown</option>
+							</select>
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -655,7 +689,7 @@
 							<b> Album Title* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="album-approved" placeholder="Title here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -663,7 +697,7 @@
 							<b> Artist* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="artist-approved" placeholder="Artist here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -671,7 +705,7 @@
 							<b> Album Credit </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="credit-approved" placeholder="Album Credit here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -679,7 +713,7 @@
 							<b> Label </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="label-approved" placeholder="Label here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -692,7 +726,7 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="genre-approved" style="width:70%;">
 									<?php foreach($djland_primary_genres as $genre){
 										printf("<option value=\"$genre\">$genre</option>");
 									} ?>
@@ -703,13 +737,20 @@
 						<div id="titleBox">
 							<b> Subgenre </b>
 						</div>
+					</div>
+					<div class="">
+						<div id="titleBox">
+							<div id='tags-approved'>Loading specified subgenre tags by band ... </div>
+						</div>
+					</div>
+					<div class="titleBox">
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
 									<option value"none">No Subgenre</option>
 									<?php foreach($djland_subgenres as $genre => $subgenre_array){
 										printf("<optgroup label=\"$genre\">");
@@ -726,7 +767,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="cancon-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Cancon
@@ -734,7 +775,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="femcon-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Femcon
@@ -742,7 +783,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="local-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Is Local
@@ -752,7 +793,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="playlist-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Playlist
@@ -760,7 +801,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="compilation-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Compilation
@@ -768,7 +809,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" class="delete_submission" id="in_sam-approved"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								In SAM
@@ -892,12 +933,27 @@
 					<br />
 					<h3> Approve Tags </h3>
 					<br />
+					<h4>Items with a * are required</h4>
+					<br />
+					<div class="side-padded">
+						<button id="tagged-extrainfo-button">View More Submisison Info</button>
+					</div>
+					<div class="side-padded" style="display: none" id="tagged-extrainfo">
+						<h5 id="submitted-tagged"></h5>
+						<h5 id="release-tagged"></h5>
+						<h5 id="contact-tagged"></h5>
+						<div><img src="" id="albumArt-tagged"></img></div>
+						Band Submitted descripton:
+						<textarea style="height:100px" readonly="true" id="description-tagged">Loading description ...</textarea>
+						Album Review Comments:
+						<textarea style="height:100px" readonly="true" id="review_comments-tagged">Loading comments ...</textarea>
+					</div>
 					<div class="double-padded-top">
 						<div id="titleBox">
 							<b> Catalog # </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input type="text" id="catalog-tagged" placeholder="Catalog # here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -910,16 +966,16 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:30%;">
-									<option class='vueselect' value="CD">CD</option>
-									<option class='vueselect' value="LP">LP</option>
-									<option class='vueselect' value="7in">7"</option>
-									<option class='vueselect' value="CASS">CASSETE</option>
-									<option class='vueselect' value ="CART">CART</option>
-									<option class='vueselect' value="MP3">MP3</option>
-									<option class='vueselect' value="MD">MD</option>
-									<option value="??">Unknown</option>
-								</select>
+							<select class="js-example-basic-single vueselect" id="format-tagged" style="width:30%;">
+								<option class='vueselect' value="CD">CD</option>
+								<option class='vueselect' value="LP">LP</option>
+								<option class='vueselect' value="7in">7"</option>
+								<option class='vueselect' value="CASS">CASSETE</option>
+								<option class='vueselect' value ="CART">CART</option>
+								<option class='vueselect' value="MP3">MP3</option>
+								<option class='vueselect' value="MD">MD</option>
+								<option class='vueselect' value="??">Unknown</option>
+							</select>
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -927,7 +983,7 @@
 							<b> Album Title* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="album-tagged" placeholder="Title here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -935,7 +991,7 @@
 							<b> Artist* </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="artist-tagged" placeholder="Artist here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -943,7 +999,7 @@
 							<b> Album Credit </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="credit-tagged" placeholder="Album Credit here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -951,7 +1007,7 @@
 							<b> Label </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="editTitle" placeholder="Title here" />
+							<input id="label-tagged" placeholder="Label here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
@@ -964,7 +1020,7 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="genre-tagged" style="width:70%;">
 									<?php foreach($djland_primary_genres as $genre){
 										printf("<option value=\"$genre\">$genre</option>");
 									} ?>
@@ -975,13 +1031,20 @@
 						<div id="titleBox">
 							<b> Subgenre </b>
 						</div>
+					</div>
+					<div class="">
+						<div id="titleBox">
+							<div id='tags-tagged'>Loading specified subgenre tags by band ... </div>
+						</div>
+					</div>
+					<div class="titleBox">
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
 								$(".js-example-basic-single").select2();
 								});
 							</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
+								<select class="js-example-basic-single vueselect" id="subgenre-tagged" style="width:70%;">
 									<option value"none">No Subgenre</option>
 									<?php foreach($djland_subgenres as $genre => $subgenre_array){
 										printf("<optgroup label=\"$genre\">");
@@ -998,7 +1061,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="cancon-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Cancon
@@ -1006,7 +1069,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="femcon-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Femcon
@@ -1014,7 +1077,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="local-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Is Local
@@ -1024,7 +1087,7 @@
 					<div class="double-padded-top">
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="playlist-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Playlist
@@ -1032,7 +1095,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" id="compilation-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								Compilation
@@ -1040,7 +1103,7 @@
 						</div>
 						<div class="col3">
 							<div id="titleBox">
-								<input type="checkbox" class="delete_submission" id="delete_0"></td><div class="check hidden">❏</div>
+								<input type="checkbox" class="delete_submission" id="in_sam-tagged"></td><div class="check hidden">❏</div>
 							</div>
 							<div id="titleBox">
 								In SAM
@@ -1050,7 +1113,7 @@
 					<br />
 					<br />
 					<div class='col2 text-right padded-right'>
-						<button name='approvecancel' id='approvecancel'>Cancel</button>
+						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
 						<button name='edit' class='submissions_submit'>Add to Library</button>
@@ -1248,7 +1311,7 @@
                 </select>
               </div>
               <div style="width: 50%;float:right;">
-                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
+                &#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
               </div>
             </div>
             <div style="width: 50%;float:left;">

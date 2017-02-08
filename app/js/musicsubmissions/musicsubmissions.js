@@ -7,7 +7,6 @@ $(document).ready ( function() {
 		add_submission_handlers();
 	});
 	populateTables();
-	console.log(new Date().toISOString().slice(0, 10).replace('T', ' ') );
 });
 /********************
  ***** Handlers *****
@@ -24,7 +23,7 @@ function add_submission_handlers(){
 	$('#search').off('click','#save_comments').on('click','#save_comments',function(element){
 		saveComments();
 	});
-	//Listener for closing stuff with ESC
+	//Listener for closing stuff with ESC key
 	$(document).keyup(function(e) {
 	    if (e.keyCode == 27) { // escape key maps to keycode `27`
 	        $('#submissionspopup').hide();
@@ -33,9 +32,14 @@ function add_submission_handlers(){
 	    	$('#reviewed_submissions_view').hide();
 		}
 	});
+	/*
+	 * Listeners for tagging sidebar
+	 */
 	//Listener for viewing the tagging sidebar from clicking on their row
     $(".tagrow").click(function(e){
 		$('#submissionspopup').show();
+		var idSubmission = $(this).attr('name');
+		getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#submissionscloser").click(function(e){
 		$('#submissionspopup').hide();
@@ -43,8 +47,18 @@ function add_submission_handlers(){
 	$("#tagcancel").click(function(e){
 		$('#submissionspopup').hide();
     });
+	$("#approved-extrainfo-button").hover(function(e){
+		$("#approved-extrainfo").show();
+	},function(e){
+		$("#approved-extrainfo").hide();
+	});
+	/*
+	 * Listeners for approving tags popup
+	 */
 	$(".approverow").click(function(e){
 		$('#submissionsapprovalpopup').show();
+		var idSubmission = $(this).attr('name');
+		getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#submissionsapprovalcloser").click(function(e){
 		$('#submissionsapprovalpopup').hide();
@@ -52,20 +66,38 @@ function add_submission_handlers(){
 	$("#approvecancel").click(function(e){
 		$('#submissionsapprovalpopup').hide();
     });
+	$("#tagged-extrainfo-button").hover(function(e){
+		$("#tagged-extrainfo").show();
+	},function(e){
+		$("#tagged-extrainfo").hide();
+	});
+	/*
+	 * Listener for box to do a review
+	 */
 	//Listener for viewing the review from clicking on their row
 	$(".reviewrow").click(function(e){
 		$('#view_submissions').show();
+		//Tab your code properly @michaeladria. I'll fix it for you this time
+	    var idSubmission = $(this).attr('name');
+	    // console.log(idSubmission);
+	    getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#view_submissions_closer").click(function(e){
 		$('#view_submissions').hide();
 	});
+	/*
+	 * Listeners for tagging sidebar
+	 */
 	$(".reviewedrow").click(function(e){
 		$('#reviewed_submissions_view').show();
+	    var idSubmission = $(this).attr('name');
+	    getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#reviewed_submissions_closer").click(function(e){
 		$('#reviewed_submissions_view').hide();
 	});
-	//CHANGING TABS
+
+	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
 		$('.submission_action').attr('class','nodrop inactive-tab submission_action');
 		$(this).attr('class','nodrop active-tab submission_action');
@@ -77,29 +109,18 @@ function add_submission_handlers(){
 					search_value = $(this).val();
 				}
 			});
+			//I'm sure this line does nothing?
+			//TODO: determine if it does or not
 			displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
 		}
 		$('.submission#'+$(this).attr('name')).show();
 
 	});
-	//Listener for viewing an unreviewed submission from it's row
-	//TODO
-    $('#search').off('click','.member_row_element').on('click','.member_row_element',function(e){
-        $('.submission_action').attr('class','nodrop inactive-tab submission_action');
-		$(".submission_action[name='view']").attr('class','nodrop active-tab submission_action');
-		loadMember($(this.closest('tr')).attr('id').toString().replace('row',''));
-		$('.membership').hide();
-		$('.membership#view').show();
-    });
-	//Toggling red bar for showing members you are going to delete
-	//TODO
+	//Toggling red bar for showing submissions you are going to delete
+	//TODO - this is how the membership page did it
 	$('.membership').off('change','.delete_member').on('change','.delete_member',function(e) {
 		$(this.closest('tr')).toggleClass('delete');
-
 	});
-	//Listener for blue highlighting for the submisisons result tables
-	//TODO: Handler for blue highlighting on
-
 }
 
 function populateTables(){
@@ -199,7 +220,6 @@ function populateTables(){
 		dataType:'json',
 		async:true,
 		success:function(data){
-			//console.log(data);
 			populateTaggedSubmissionsCd(data);
 		}
 	});
@@ -426,7 +446,305 @@ function populateTrashedSubmissions(submissions){
 	}
 }
 
-//Submission AJAX
+// Getting data for a specific submission given the ID and call the right function to display it.
+function getSubmissionDataAndDisplay(id) {
+  $.ajax({
+    type: "GET",
+    url: "api2/public/submissions/" + id,
+    dataType: "json",
+    async: true,
+    success: function(data) {
+      //console.log(data);
+      switch (data['status']) {
+        case "unreviewed":
+          displayReviewBox(data);
+          break;
+        case "reviewed":
+          displayReviewedBox(data);
+          break;
+        case "approved":
+          displayApprovedBox(data);
+          break;
+		case "tagged":
+          displayTaggedBox(data);
+          break;
+		case "trashed":
+          // TODO
+         break;
+      }
+    }
+  });
+}
+
+function displayReviewBox(data) {
+
+  var artist      = data['artist'];
+  var location    = data['location'];
+  var album       = data['title'];
+  var label       = data['label'];
+  var genre       = data['genre'];
+  var tags        = data['tags'];
+  var releasedate = data['releasedate'];
+  var submitted   = data['submitted'];
+  var credit      = data['credit'];
+  var email       = data['email'];
+  var description = data['description'];
+  var art_url     = data['art_url'];
+
+  $("#artist-review-box").text(artist);
+  $("#location-review-box").text(location);
+  $("#album-review-box").text(album);
+  $("#label-review-box").text(label);
+  $("#genre-review-box").text(genre);
+  $("#tag-review-box").text(tags);
+  $("#releaseDate-review-box").text(releasedate);
+  $("#submissionDate-review-box").text(submitted);
+  $("#albumCredit-review-box").text(credit);
+  $("#contact-review-box").text(email);
+  $("#description-review-box").text(description);
+  $("#albumArt-review-box").attr("src", art_url);
+
+}
+
+function displayReviewedBox(data) {
+
+  var artist      = data['artist'];
+  var location    = data['location'];
+  var album       = data['title'];
+  var label       = data['label'];
+  var genre       = data['genre'];
+  var tags        = data['tags'];
+  var releasedate = data['releasedate'];
+  var submitted   = data['submitted'];
+  var credit      = data['credit'];
+  var email       = data['email'];
+  var description = data['description'];
+  var art_url     = data['art_url'];
+
+  $("#artist-reviewed").text(artist);
+  $("#location-reviewed").text(location);
+  $("#album-reviewed").text(album);
+  $("#label-reviewed").text(label);
+  $("#genre-reviewed").text(genre);
+  $("#tag-reviewed").text(tags);
+  $("#release-reviewed").text(releasedate);
+  $("#submitted-reviewed").text(submitted);
+  $("#credit-reviewed").text(credit);
+  $("#contact-reviewed").text(email);
+  $("#description-reviewed").text(description);
+  $("#albumArt-reviewed").attr("src", art_url);
+
+}
+
+function displayApprovedBox(data) {
+	//console.log(data);
+	var catalog		= data['catalog'];
+	if(catalog == null) catalog = "";
+	var format;
+	switch( data['format_id']){
+		case 1:
+			format = 'CD';
+			break;
+		case 2:
+			format = 'LP';
+			break;
+		case 3:
+			format = '7\"';
+			break;
+		case 4:
+			format = 'CASS';
+			break;
+		case 5:
+			format = 'CART';
+			break;
+		case 6:
+			format = 'MP3';
+			break;
+		case 7:
+			format = 'MD';
+			break;
+		case 8:
+			format = 'Unknown';
+			break;
+		default:
+			format = "Format Error";
+			console.log("Invalid format detected in tagging box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
+			break;
+	}
+	var album       	= data['title'];
+	var artist      	= data['artist'];
+	var credit      	= data['credit'];
+	var label       	= data['label'];
+	var genre       	= data['genre'];
+	var tags        	= data['tags'];
+	var location    	= data['location'];
+	var cancon			= data['cancon'];
+	var femcon			= data['femcon'];
+	var local			= data['local'];
+	var playlist		= data['playlist'];
+	var compilation		= data['compilation'];
+	var in_sam			= data['in_SAM'];
+	var email       	= data['email'];
+	var description 	= data['description'];
+	var review_comments = data['review_comments'];
+	var art_url     	= data['art_url'];
+	var submitted  		= data['submitted'];
+	var releasedate 	= data['releasedate'];
+	console.log(review_comments);
+
+	//Un-editable fields
+	$("#release-approved").text("Album release date: " + releasedate);
+    $("#submitted-approved").text("Date submitted: " + submitted);
+	$("#contact-approved").text("Band email: " + email);
+	if(description == null){
+		$("#description-approved").text("No description given.");
+	} else{
+		$("#description-approved").text(description);
+	}
+	if(review_comments == null){
+		$("#review_comments-approved").text("No review comments given.");
+	} else{
+		$("#review_comments-approved").text(review_comments);
+	}
+    $("#albumArt-approved").attr("src", art_url);
+	//Editable fields
+	$("#catalog-approved").val( String(catalog) );
+	$("#format-approved").prop('value', format).change();
+	$("#album-approved").val(album);
+	$("#artist-approved").val(artist);
+	$("#credit-approved").val(credit);
+	$("#label-approved").val(label);
+	$("#genre-approved").prop('value', genre).change();
+	if(tags != null){
+		$("#tags-approved").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
+	} else{
+		$("tags-approved").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
+	}
+	$("#location-approved").val(location);
+	if(cancon == 1){
+		$("#cancon-approved").prop('checked', true);
+	}
+	if(femcon == 1) {
+		$("#femcon-approved").prop('checked', true);
+	}
+	if(local == 1) {
+		$("#local-approved").prop('checked', true);
+	}
+	if(playlist == 1) {
+		$("#playlist-approved").prop('checked', true);
+	}
+	if(compilation == 1) {
+		$("#compilation-approved").prop('checked', true);
+	}
+	if(in_sam == 1) {
+		$("#in_sam-approved").prop('checked', true);
+	}
+}
+
+function displayTaggedBox(data) {
+	var catalog		= data['catalog'];
+	if(catalog == null) catalog = "";
+	var format;
+	switch( data['format_id']){
+		case 1:
+			format = 'CD';
+			break;
+		case 2:
+			format = 'LP';
+			break;
+		case 3:
+			format = '7\"';
+			break;
+		case 4:
+			format = 'CASS';
+			break;
+		case 5:
+			format = 'CART';
+			break;
+		case 6:
+			format = 'MP3';
+			break;
+		case 7:
+			format = 'MD';
+			break;
+		case 8:
+			format = 'Unknown';
+			break;
+		default:
+			format = "Format Error";
+			console.log("Invalid format detected in tagging box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
+			break;
+	}
+	var album       	= data['title'];
+	var artist      	= data['artist'];
+	var credit      	= data['credit'];
+	var label       	= data['label'];
+	var genre       	= data['genre'];
+	var tags        	= data['tags'];
+	var location    	= data['location'];
+	var cancon			= data['cancon'];
+	var femcon			= data['femcon'];
+	var local			= data['local'];
+	var playlist		= data['playlist'];
+	var compilation		= data['compilation'];
+	var in_sam			= data['in_SAM'];
+	var email       	= data['email'];
+	var description 	= data['description'];
+	var review_comments = data['review_comments'];
+	var art_url     	= data['art_url'];
+	var submitted  		= data['submitted'];
+	var releasedate 	= data['releasedate'];
+
+	//Un-editable fields
+	$("#release-tagged").text("Album release date: " + releasedate);
+    $("#submitted-tagged").text("Date submitted: " + submitted);
+	$("#contact-tagged").text("Band email: " + email);
+	if(description == null){
+		$("#description-tagged").text("No description given.");
+	} else{
+		$("#description-tagged").text(description);
+	}
+	if(review_comments == null){
+		$("#review_comments-tagged").text("No review comments given.");
+	} else{
+		$("#review_comments-tagged").text(review_comments);
+	}
+    $("#albumArt-tagged").attr("src", art_url);
+	//Editable fields
+	$("#catalog-tagged").val( String(catalog) );
+	$("#format-tagged").prop('value', format).change();
+	$("#album-tagged").val(album);
+	$("#artist-tagged").val(artist);
+	$("#credit-tagged").val(credit);
+	$("#label-tagged").val(label);
+	$("#genre-tagged").prop('value', genre).change();
+	if(tags != null){
+		$("#tags-tagged").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
+	} else{
+		$("tags-tagged").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
+	}
+	$("#location-tagged").val(location);
+	if(cancon == 1){
+		$("#cancon-tagged").prop('checked', true);
+	}
+	if(femcon == 1) {
+		$("#femcon-tagged").prop('checked', true);
+	}
+	if(local == 1) {
+		$("#local-tagged").prop('checked', true);
+	}
+	if(playlist == 1) {
+		$("#playlist-tagged").prop('checked', true);
+	}
+	if(compilation == 1) {
+		$("#compilation-tagged").prop('checked', true);
+	}
+	if(in_sam == 1) {
+		$("#in_sam-tagged").prop('checked', true);
+	}
+}
+
+//Manual Submission AJAX
 var form, trackButton, albumArtButton, submitButton;
 var artistField, contactField, recordField, cityField, memberField;
 var albumField, genrePicker, dateField, canadaBox, vancouverBox;
