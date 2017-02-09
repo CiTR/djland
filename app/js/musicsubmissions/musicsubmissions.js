@@ -54,6 +54,15 @@ function add_submission_handlers(){
 	},function(e){
 		$("#approved-extrainfo").hide();
 	});
+  $("#approve-tags-button").click(function(e){
+    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
+      $("#subgenre-tag-warning").show();
+    } else {
+      $("#subgenre-tag-warning").hide();
+      console.log($("#subgenre-approved").select2("val"));
+      // addTagToSubmission($("#subgenre-approved").select2("val"));
+    }
+  });
 	/*
 	 * Listeners for approving tags popup
 	 */
