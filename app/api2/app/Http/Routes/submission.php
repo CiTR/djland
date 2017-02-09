@@ -146,21 +146,17 @@ use Carbon\Carbon;
         Route::get('/search', function(){
             return;
         });
-        // TODO: Search past archived and rejected submissions
-        Route::get('/searchpast', function(){
-
-        });
-        //TODO: Search accepted digital submissions in a time range
+        // Search accepted digital submissions in a time range
         Route::get('/getaccepted', function(){
             $date = Input::get('date');
             return Response::json( Archive::where('submitted','>',$date)->where('submitted','<',$date)->get() );
         });
-        // TODO: Search past rejected submissions
-        Route::get('/rejected', function(){
+        // TODO: Search past submissions (rejected & archived) on admins page
+        Route::get('/getrejectedandarchived', function(){
             return;
         });
-        // TODO: Search past rejected & archived submissions (not sure if we'll use?)
-        Route::get('/rejectedandarchived', function(){
+        // TODO: Search past rejected submissions
+        Route::get('/rejected', function(){
             return;
         });
         //Post to this route when a user reviews a new submisison
@@ -237,13 +233,29 @@ use Carbon\Carbon;
                 return $e->getMessage();
             }
         });
-        //TODO: Post to this route to reject a submission - keep all data for one month
-        Route::put('/reject', function(){
-            
-        });
-        //TODO: Post to this route to restore a rejected submission
-        Route::put('/restore', function(){
+        // Post to this route to reject a submission
+        Route::put('/reject', function() {
+          try {
+              $submission = Submissions::find(Input::get('id'));
+              $submission -> is_trashed = 1;
+              $submission->save();
+              return Response::json("Update submission #" . $submission -> id . " to trashed");
 
+          } catch (Exception $e) {
+              return $e->getMessage() ;
+          }
+        });
+        // Post to this route to restore a rejected submission
+        Route::put('/restore', function() {
+          try {
+              $submission = Submissions::find(Input::get('id'));
+              $submission -> is_trashed = 0;
+              $submission->save();
+              return Response::json("Update submission #" . $submission -> id . " from trashed to restored");
+
+          } catch (Exception $e) {
+              return $e->getMessage() ;
+          }
         });
     });
 //});

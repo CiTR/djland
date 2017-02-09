@@ -461,6 +461,32 @@ function populateTrashedSubmissions(submissions){
 		add_submission_handlers();
 	}
 }
+// TODO: on admins page, search past accepted submissions by date
+function populateAcceptedSubmissions(submissions){
+	if(submissions[0] == null){
+		var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+		$("tbody[name='acceptedSubmissions']").append(markup);
+	} else{
+		for(var number in submissions) {
+			var item = (submissions[number]);
+			var markup = "";
+			$("tbody[name='acceptedSubmissions']").append(markup);
+		}
+	}
+}
+// TODO: on admins page, search past submissions (accepted and rejected)
+function populatePastSubmissions(submissions){
+	if(submissions[0] == null){
+		var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+		$("tbody[name='pastSubmissions']").append(markup);
+	} else{
+		for(var number in submissions) {
+			var item = (submissions[number]);
+			var markup = "";
+			$("tbody[name='pastSubmissions']").append(markup);
+		}
+	}
+}
 
 // Getting data for a specific submission given the ID and call the right function to display it.
 function getSubmissionDataAndDisplay(id) {
