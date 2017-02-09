@@ -1790,7 +1790,16 @@ table { border-collapse: collapse; }
 #submission_table tr td,submission_table tr th{
 	padding-right:5px;
 }
-#submission_table tbody>tr:hover{
+#submission_table tbody > .reviewrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .reviewedrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .tagrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .approverow:hover{
 	background-color: blue;
 }
 

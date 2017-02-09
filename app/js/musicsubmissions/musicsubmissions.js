@@ -26,10 +26,12 @@ function add_submission_handlers(){
 	//Listener for closing stuff with ESC key
 	$(document).keyup(function(e) {
 	    if (e.keyCode == 27) { // escape key maps to keycode `27`
-	        $('#submissionspopup').hide();
-			$('#submissionsapprovalpopup').hide();
-			$('#view_submissions').hide();
-	    	$('#reviewed_submissions_view').hide();
+	        $('#submissionspopup').fadeOut(175);
+			$('#submissionsapprovalpopup').hide(175);
+			$('#view_submissions').stop().fadeOut(175);
+			$("#view_submissions_row").fadeOut(175);
+	    	$('#reviewed_submissions_view').fadeOut(175);
+			$('#reviewed_submissions_view_row').fadeOut(175);
 		}
 	});
 	/*
@@ -37,15 +39,15 @@ function add_submission_handlers(){
 	 */
 	//Listener for viewing the tagging sidebar from clicking on their row
     $(".tagrow").click(function(e){
-		$('#submissionspopup').show();
+		$('#submissionspopup').fadeIn(225);
 		var idSubmission = $(this).attr('name');
 		getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#submissionscloser").click(function(e){
-		$('#submissionspopup').hide();
+		$('#submissionspopup').fadeOut(175);
     });
 	$("#tagcancel").click(function(e){
-		$('#submissionspopup').hide();
+		$('#submissionspopup').fadeOut(175);
     });
 	$("#approved-extrainfo-button").hover(function(e){
 		$("#approved-extrainfo").show();
@@ -56,15 +58,15 @@ function add_submission_handlers(){
 	 * Listeners for approving tags popup
 	 */
 	$(".approverow").click(function(e){
-		$('#submissionsapprovalpopup').show();
+		$('#submissionsapprovalpopup').fadeIn(225);
 		var idSubmission = $(this).attr('name');
 		getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#submissionsapprovalcloser").click(function(e){
-		$('#submissionsapprovalpopup').hide();
+		$('#submissionsapprovalpopup').fadeOut(175);
     });
 	$("#approvecancel").click(function(e){
-		$('#submissionsapprovalpopup').hide();
+		$('#submissionsapprovalpopup').fadeOut(175);
     });
 	$("#tagged-extrainfo-button").hover(function(e){
 		$("#tagged-extrainfo").show();
@@ -76,25 +78,30 @@ function add_submission_handlers(){
 	 */
 	//Listener for viewing the review from clicking on their row
 	$(".reviewrow").click(function(e){
-		$('#view_submissions').show();
 		//Tab your code properly @michaeladria. I'll fix it for you this time
 	    var idSubmission = $(this).attr('name');
+		$("#view_submissions_row").insertAfter($(this).closest('tr'));
+		$("#view_submissions_row").show();
+		$('#view_submissions').fadeIn(225);
 	    // console.log(idSubmission);
 	    getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#view_submissions_closer").click(function(e){
-		$('#view_submissions').hide();
+		$('#view_submissions').stop(true).fadeOut(175);
+		$("#view_submissions_row").fadeOut(175);
 	});
 	/*
-	 * Listeners for tagging sidebar
+	 * Listeners for approving a review
 	 */
 	$(".reviewedrow").click(function(e){
-		$('#reviewed_submissions_view').show();
-	    var idSubmission = $(this).attr('name');
+		var idSubmission = $(this).attr('name');
+		$('#reviewed_submissions_view_row').insertAfter($(this).closest('tr'));
+		$('#reviewed_submissions_view_row').show();
+		$('#reviewed_submissions_view').fadeIn(225);
 	    getSubmissionDataAndDisplay(idSubmission);
     });
 	$("#reviewed_submissions_closer").click(function(e){
-		$('#reviewed_submissions_view').hide();
+		$('#reviewed_submissions_view').fadeOut(175);
 	});
 
 	//CHANGING TABS Listener
@@ -264,7 +271,7 @@ function populateNewSubmissionsCd(submissions){
 			var item = (submissions[number]);
 			var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['releasedate'] + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">"
 				+ item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
-				console.log(markup);
+				//console.log(markup);
 			$("tbody[name='newSubmissionCd']").append(markup);
 		}
 		add_submission_handlers();
@@ -590,7 +597,7 @@ function displayApprovedBox(data) {
 	var art_url     	= data['art_url'];
 	var submitted  		= data['submitted'];
 	var releasedate 	= data['releasedate'];
-	console.log(review_comments);
+	//console.log(review_comments);
 
 	//Un-editable fields
 	$("#release-approved").text("Album release date: " + releasedate);
@@ -798,7 +805,7 @@ function submitForm() {
   var comments  = commentField.value;
   var format    = formatPicker.value;
 
-  console.log("formatPicker value: " + format);
+  //console.log("formatPicker value: " + format);
 
   if (artist == "") {
     success = false;
