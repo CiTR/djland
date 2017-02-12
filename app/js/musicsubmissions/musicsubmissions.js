@@ -27,7 +27,7 @@ function add_submission_handlers(){
 	$(document).keyup(function(e) {
 	    if (e.keyCode == 27) { // escape key maps to keycode `27`
 	        $('#submissionspopup').fadeOut(175);
-			$('#submissionsapprovalpopup').hide(175);
+			$('#submissionsapprovalpopup').fadeOut(175);
 			$('#view_submissions').stop().fadeOut(175);
 			$("#view_submissions_row").fadeOut(175);
 	    	$('#reviewed_submissions_view').fadeOut(175);
@@ -54,15 +54,15 @@ function add_submission_handlers(){
 	},function(e){
 		$("#approved-extrainfo").hide();
 	});
-  $("#approve-tags-button").click(function(e){
-    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
-      $("#subgenre-tag-warning").show();
-    } else {
-      $("#subgenre-tag-warning").hide();
-      console.log($("#subgenre-approved").select2("val"));
-      // addTagToSubmission($("#subgenre-approved").select2("val"));
-    }
-  });
+    $("#approve-tags-button").click(function(e){
+	    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
+	      $("#subgenre-tag-warning").show();
+	    } else {
+	      $("#subgenre-tag-warning").hide();
+	      console.log($("#subgenre-approved").select2("val"));
+	      // addTagToSubmission($("#subgenre-approved").select2("val"));
+    	}
+  	});
 	/*
 	 * Listeners for approving tags popup
 	 */
@@ -82,6 +82,9 @@ function add_submission_handlers(){
 	},function(e){
 		$("#tagged-extrainfo").hide();
 	});
+	$("#approve_submission_btn").click(function(e){
+		//TODO
+	});
 	/*
 	 * Listener for box to do a review
 	 */
@@ -99,6 +102,13 @@ function add_submission_handlers(){
 		$('#view_submissions').stop(true).fadeOut(175);
 		$("#view_submissions_row").fadeOut(175);
 	});
+	//Listener for submitting a review
+	$("#view_submissions_submit_btn").click(function(e){
+		var id = $("#id-review-box").attr('name');
+		var approvedStatus = $("#view_submissions_approved_status").val();
+		var review_comments = $("#view_submissions_comments").val();
+		submitReview(id, approvedStatus, review_comments);
+	});
 	/*
 	 * Listeners for approving a review
 	 */
@@ -111,6 +121,14 @@ function add_submission_handlers(){
     });
 	$("#reviewed_submissions_closer").click(function(e){
 		$('#reviewed_submissions_view').fadeOut(175);
+	});
+	$("#approve_review_btn").click(function(e){
+		console.log("Hello");
+		var id = $("#id-reviewed").attr('name')
+		approveReview(id);
+	});
+	$("#trash_review_btn").click(function(e){
+		//TODO
 	});
 
 	//CHANGING TABS Listener
@@ -493,20 +511,21 @@ function getSubmissionDataAndDisplay(id) {
 }
 
 function displayReviewBox(data) {
+  var id			= data['id'];
+  var artist      	= data['artist'];
+  var location    	= data['location'];
+  var album       	= data['title'];
+  var label       	= data['label'];
+  var genre       	= data['genre'];
+  var tags        	= data['tags'];
+  var releasedate 	= data['releasedate'];
+  var submitted   	= data['submitted'];
+  var credit      	= data['credit'];
+  var email       	= data['email'];
+  var description 	= data['description'];
+  var art_url		= data['art_url'];
 
-  var artist      = data['artist'];
-  var location    = data['location'];
-  var album       = data['title'];
-  var label       = data['label'];
-  var genre       = data['genre'];
-  var tags        = data['tags'];
-  var releasedate = data['releasedate'];
-  var submitted   = data['submitted'];
-  var credit      = data['credit'];
-  var email       = data['email'];
-  var description = data['description'];
-  var art_url     = data['art_url'];
-
+  $("#id-review-box").attr('name', id);
   $("#artist-review-box").text(artist);
   $("#location-review-box").text(location);
   $("#album-review-box").text(album);
@@ -519,24 +538,29 @@ function displayReviewBox(data) {
   $("#contact-review-box").text(email);
   $("#description-review-box").text(description);
   $("#albumArt-review-box").attr("src", art_url);
-
+  $("#comments-review-box").text("");
+  $("#approved_status-review-box").val(0).change();
 }
 
 function displayReviewedBox(data) {
 
-  var artist      = data['artist'];
-  var location    = data['location'];
-  var album       = data['title'];
-  var label       = data['label'];
-  var genre       = data['genre'];
-  var tags        = data['tags'];
-  var releasedate = data['releasedate'];
-  var submitted   = data['submitted'];
-  var credit      = data['credit'];
-  var email       = data['email'];
-  var description = data['description'];
-  var art_url     = data['art_url'];
+  var id 				= data['id'];
+  var artist      		= data['artist'];
+  var location   		= data['location'];
+  var album       		= data['title'];
+  var label       		= data['label'];
+  var genre       		= data['genre'];
+  var tags        		= data['tags'];
+  var releasedate 		= data['releasedate'];
+  var submitted   		= data['submitted'];
+  var credit      		= data['credit'];
+  var email       		= data['email'];
+  var description 		= data['description'];
+  var art_url     		= data['art_url'];
+  var review_comments 	= data['review_comments'];
+  var approved 			= data['approved'];
 
+  $("#id-reviewed").attr('name', id);
   $("#artist-reviewed").text(artist);
   $("#location-reviewed").text(location);
   $("#album-reviewed").text(album);
@@ -549,7 +573,8 @@ function displayReviewedBox(data) {
   $("#contact-reviewed").text(email);
   $("#description-reviewed").text(description);
   $("#albumArt-reviewed").attr("src", art_url);
-
+  $("#reviewed_comments").text(review_comments);
+  $("reviewed_approved_status").val(approved).change();
 }
 
 function displayApprovedBox(data) {
@@ -631,11 +656,11 @@ function displayApprovedBox(data) {
 	$("#credit-approved").val(credit);
 	$("#label-approved").val(label);
 	$("#genre-approved").prop('value', genre).change();
-	if(tags != null){
-		$("#tags-approved").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
-	} else{
-		$("tags-approved").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
-	}
+	//if(tags != null){
+	//	$("#tags-approved").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
+	//} else{
+	//	$("tags-approved").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
+	//}
 	$("#location-approved").val(location);
 	if(cancon == 1){
 		$("#cancon-approved").prop('checked', true);
@@ -734,11 +759,11 @@ function displayTaggedBox(data) {
 	$("#credit-tagged").val(credit);
 	$("#label-tagged").val(label);
 	$("#genre-tagged").prop('value', genre).change();
-	if(tags != null){
-		$("#tags-tagged").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
-	} else{
-		$("tags-tagged").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
-	}
+	//if(tags != null){
+	//	$("#tags-tagged").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
+	//} else{
+	//	$("tags-tagged").text("No subgenre tags were specified by the band. Specify a subgenre, if any are appropiate, below:");
+	//}
 	$("#location-tagged").val(location);
 	if(cancon == 1){
 		$("#cancon-tagged").prop('checked', true);
@@ -795,6 +820,66 @@ window.addEventListener('load', function() {
   trackButton.addEventListener('change', handleTracks, false);
 
 });
+
+function submitReview(id,appproved_status,review_comments){
+	//console.log("ID: " + id + " Status: " + appproved_status + " Comments: " + review_comments);
+	$.ajax({
+		url: "api2/public/submissions/review",
+		type:'PUT',
+		dataType:'json',
+		data: {
+			'id':id,
+			'approved':appproved_status,
+			'review_comments':review_comments
+		},
+		async:true,
+		success:function(data){
+			console.log(data);
+			alert("Review Submitted");
+			//TODO: Change the button and show a spinny thing
+		}//,
+		//commented out to avoid infinite loop
+		//fail:function(data){
+		//	console.log("Submitting Review Failed. Response data: " + data);
+		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		//}
+	});
+	console.log("Submitting review ... ");
+	$("#comments-review-box").text("");
+	$("#approved_status-review-box").val(0).change();
+	$("tr[name=id]").fadeOut(100);
+	$('#view_submissions').stop().fadeOut(175);
+	$("#view_submissions_row").fadeOut(175);
+}
+
+function approveReview(id){
+	console.log("Approving review ... ");
+	$.ajax({
+		url: "api2/public/submissions/approve",
+		type:'PUT',
+		dataType:'json',
+		data: {
+			'id':id
+		},
+		async:true,
+		success:function(data){
+			console.log(data);
+			alert("Review Approved");
+			//TODO: Change the button and show a spinny thing
+		}//,
+		//commented out to avoid infinite loop
+		//fail:function(data){
+		//	console.log("Submitting Review Failed. Response data: " + data);
+		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		//}
+	});
+
+	$("#reviewed_comments").text("");
+	$("#reviewed_approved_status").val(0).change();
+	$("tr[name=id]").fadeOut(100);
+	$('#reviewed_submissions_view').stop().fadeOut(175);
+	$("#reviewed_submissions_view_row").fadeOut(175);
+}
 
 function submitForm() {
   var missing = [];

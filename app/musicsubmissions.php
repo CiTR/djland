@@ -161,6 +161,7 @@
 				<!-- Begin Submission view" -->
 				<table><tr id='view_submissions_row' class='hidden submission'><td colspan="8">
 					<div id="view_submissions" class='hidden submission grey clearfix' style="width:98%;">
+						<div id="id-review-box" name="" class='hidden'></div>
 						<div class="col1">
 							<br>
 							<h3>Review Submission</h3>
@@ -268,12 +269,12 @@
 
 							<div class="containerrow padded">
 								<div class="col4">What did you think about the album as a whole?:</div>
-								<textarea id="comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
+								<textarea id="comments-review-box" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
 							</div>
 
 							<div class="containerrow padded">
 								<div class="col3">Would you Approve this Album to go in our library?:</div>
-								<div class="col5 left"><select style="font-size:18px;" class="search_value" name="cars"><option value="volvo">Yes</option>  <option value="saab">No</option></select></div>
+								<div class="col5 left"><select style="font-size:18px;" id="approved_status-review-box" class="search_value"><option value="1">Yes</option><option value="0">No</option></select></div>
 							</div>
 
 
@@ -281,7 +282,7 @@
 
 							<div class="containerrow">
 								<div class="col1 text-center">
-									<button name="edit" class="member_submit">Submit</button>
+									<button name="edit" class="member_submit" id="view_submissions_submit_btn">Submit</button>
 								</div>
 							</div>
 							<div class="containerrow">
@@ -405,6 +406,7 @@
 				<!-- Begin Reviewed Submission view" -->
 				<table><tr id='reviewed_submissions_view_row'><td colspan=8>
 					<div id='reviewed_submissions_view' class='hidden submission grey clearfix' style="width:98%;">
+						<div id='id-reviewed' class="hidden" name=""></div>
 						<div class="col1">
 							<br>
 							<h3>View Review</h3>
@@ -509,29 +511,28 @@
 
 							<div class="containerrow padded">
 								<div class="col4">What did you think about the album as a whole?:</div>
-								<textarea readonly="true" id="comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
+								<textarea readonly="true" id="reviewed_comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
 							</div>
 
 							<div class="containerrow padded">
 								<div class="col3">Would you Approve this Album to go in our library?:</div>
-								<div class="col5 left"><select style="font-size:18px;" class="search_value" name="cars"><option value="volvo">Yes</option></select></div>
+								<div class="col5 left"><select id="reviewed_approved_status" style="font-size:18px;" class="search_value" name="" disabled="true"><option value="1">Yes</option><option value='0'>No</option></select></div>
 							</div>
 
 							<hr>
 
 							<div class="containerrow">
 								<div class="col2 text-center">
-									<button name="edit">Approve Review</button>
+									<button id="approve-review-btn">Approve Review</button>
 								</div>
 								<div class="col2 text-center">
-									<button name="edit">Trash Review</button>
+									<button id="trash_review_btn">Trash Review</button>
 								</div>
 							</div>
 							<div class="containerrow">
 								<div class="col1 text-center">
 									*indicates a required field
 								</div>
-
 							</div>
 							<br>
 						</div>
@@ -743,15 +744,15 @@
 						</div>
 					</div>
 					<div class="">
-						<div id="titleBox">
+						<!-- <div id="titleBox">
 							<div id='tags-approved'>Loading specified subgenre tags by band ... </div>
-						</div>
+						</div> -->
 					</div>
 					<div class="titleBox">
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$("#subgenre-approved").select2();
+								$(".js-example-basic-single").select2();
 								});
 							</script>
 								<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
@@ -826,9 +827,8 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button id="approve-tags-button" name='edit' class='submissions_submit red'>Submit Files for Approval</button>
+						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files for Approval</button>
 					</div>
-          <p id="subgenre-tag-warning" class="hidden red">Please select a subgenre before submitting.</p>
 				</div>
 			</div>
 			<?php endif; ?>
@@ -1038,9 +1038,9 @@
 						</div>
 					</div>
 					<div class="">
-						<div id="titleBox">
+						<!-- <div id="titleBox">
 							<div id='tags-tagged'>Loading specified subgenre tags by band ... </div>
-						</div>
+						</div> -->
 					</div>
 					<div class="titleBox">
 						<div id="editTitleBox">
