@@ -414,7 +414,7 @@ img.emoji {
 		</div>
 		<div class="album-row">
 			<div style="width:50%;float:left;">
-				(For bands) Member names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
+				Member / Artist names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Aretha Franklin, Psy">
 			</div>
 			<div style="width:50%;float:right;">
 				&#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
@@ -436,7 +436,7 @@ img.emoji {
 				</select>
 			</div>
 			<div style="width: 50%;float:right;">
-				&#9733; Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
+				Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
 			</div>
 		</div>
 		<div class="album-row">
