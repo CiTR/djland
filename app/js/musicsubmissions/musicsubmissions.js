@@ -862,10 +862,12 @@ function submitForm() {
     success = false;
     missing.push("\n• Genre");
   }
+  /*
   if (date == "") {
     success = false;
     missing.push("\n• Date released");
   }
+  */
 
   if (success) {
     /*
