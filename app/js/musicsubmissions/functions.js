@@ -108,3 +108,29 @@ function createSubmission(format) {
      alert("Failure");
    });
  }
+ 
+ function namesFromMemberId(id){
+ 	var string = " ";
+ 	$.ajax({
+ 		type:"GET",
+ 		url: "api2/public/member/" + id + "/firstnamelastname",
+ 		dataType:'json',
+ 		async:true,
+ 		success:function(response){
+ 			var data = response[0];
+ 			var identifier = "[name=\'names"+id+"\']";
+ 			if(data != undefined){
+ 				string = data['firstname'] + " " + data['lastname'];
+ 				$(identifier).text(string);
+ 			} else {
+ 				$(identifier).text("Unknown");
+ 				$(identifier).css("color","C02F1D");
+ 			}
+ 		},
+ 		error:function(err){
+ 			//var json_response = err.responseJSON.msg;
+ 			console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
+ 			console.log(err);
+ 		}
+ 	});
+ }

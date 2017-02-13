@@ -24,11 +24,15 @@
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
+		<script type='text/javascript' src='./js/musicsubmissions/functions-ajax.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/handlers.js'></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
+
     <!--
   	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
   -->
-    <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
+
 
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>

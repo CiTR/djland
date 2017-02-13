@@ -25,7 +25,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-76@2x.png">
 	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-60@3x.png">
 	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
-  <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
+  <script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
 
 			<script type="text/javascript">
 			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.4"}};

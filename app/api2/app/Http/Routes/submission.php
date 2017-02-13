@@ -6,7 +6,7 @@ use App\Submissions_Rejected as Rejected;
 use Carbon\Carbon;
 
 //Apps inside middleware require login
-//Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
 //List all the submissions
     Route::get('/submissions', function(){
         return Response::json(Submissions::all());
@@ -19,6 +19,8 @@ use Carbon\Carbon;
     //the submission format (ie. CD, LP or MP3) defaults to MP3.
     Route::post('/submission', function(){
         try{
+            //TODO: track songlist properly (new table?)
+            $songlist = Input::get($songlist);
             //TODO: Maintain genre data integrity
             //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
             //foreach($primary_genres as $genre) {
@@ -41,17 +43,26 @@ use Carbon\Carbon;
                 'label' => $label,
                 'location' => Input::get('location'),
                 'credit' => Input::get('credit'),
+                //This date is allowed to be null here, don't have to check
                 'releasedate' => Input::get('releasedate'),
                 'cancon' => Input::get('cancon'),
                 'femcon' => Input::get('femcon'),
                 'local' => Input::get('local'),
+                'playlist' => 0,
+                'compilation' => 0,
+                'digitized' => 0,
                 'description' => Input::get('description'),
                 'art_url' => Input::get('art_url'),
                 'songlist' => Input::get('songlist'),
                 'format_id' => Input::get('format_id'),
                 'status' => 'unreviewed',
                 'submitted' => Carbon::today()->toDateString(),
-                'is_trashed' => 0
+                'is_trashed' => 0,
+                'staff_comment' => "",
+                'review_comments' => "",
+                //TODO: determine what we're doing with this column
+                'crtc' => "20",
+                'songlist' => $songlist_id
             ]);
             return $newsubmission;
         } catch(Exception $e){
@@ -172,6 +183,8 @@ use Carbon\Carbon;
                     $approval = Input::get('approved');
                     if($approval == 'yes' || $approval == 'Yes' || $approval == 1 ) $submission -> approved = 1;
                     else $submission -> approved = 0;
+                    //Save the member id based on who submitted
+                    $submission -> reviewed = $_SESSION['sv_id'];
                     $submission->save();
                     return Response::json("Update submission #" . $submission -> id . " from unreviewd to reviewed successful");
                 }
@@ -226,7 +239,7 @@ use Carbon\Carbon;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "completed";
-                    //TODO: anything else necessary
+                    //TODO: anything else necessary (is there anything? check if any tags have changed?)
                     return $submission;
                 }
             } catch (Exception $e){
@@ -258,4 +271,4 @@ use Carbon\Carbon;
           }
         });
     });
-//});
+});
