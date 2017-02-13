@@ -1288,6 +1288,18 @@
 					<div id="col1">
 						<button id="submitDates_Approved">Generate Listing</button>
 					</div>
+					<div id="submission_result" class="right overflow_auto height_cap" name="search">
+						<table id="submission_table" name="search">
+							<tbody name="pastAcceptedSubmissions">
+								<tr id="headerrow" style="display: table-row;">
+									<th>Artist</th>
+									<th>Album</th>
+									<th>Date of Submission</th>
+									<th>Contact Info</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
 					<br>
 					<br>

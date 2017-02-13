@@ -695,17 +695,17 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
     success: function(data) {
 			if(data[0] == null){
 				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
-				$("tbody[name='acceptedSubmissions']").append(markup);
+				$("tbody[name='pastAcceptedSubmissions']").append(markup);
 			} else{
 				for(var number in data) {
 					var item = (data[number]);
-					var markup = "";	// TODO: make it appear in a table
-					$("tbody[name='acceptedSubmissions']").append(markup);
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					$("tbody[name='pastAcceptedSubmissions']").append(markup);
 				}
 			}
     }
   });
-}
+
 // TODO: on admins page, search past submissions (accepted and rejected)
 function getAndPopulatePastSubmissions(){
 
