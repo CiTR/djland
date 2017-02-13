@@ -188,7 +188,7 @@ function add_submission_handlers(){
                 break;
             case "reviewed_submissions":
                 populateReviewedSubmissionsTable();
-                break;
+				break;
             case "tag":
                 populateApprovedSubmissionsTable();
                 break;
