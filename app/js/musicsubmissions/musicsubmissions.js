@@ -305,14 +305,14 @@ function getCheckedSubmissions(chkboxName) {
 		});
 	});
 	$("#undo_trash_submission").click(function(e){
-		var idSubmission = $(this).attr('name');	// TODO: make it actually get the right id
+		var submissionIDs = getCheckedSubmissions("restore_submission");
 
 		$.ajax({
 			url: "api2/public/submissions/restore",
 			type:'PUT',
 			dataType:'json',
 			data: {
-				'id':idSubmission
+				'id':submissionIDs
 			},
 			async:true,
 			success:function(data){
