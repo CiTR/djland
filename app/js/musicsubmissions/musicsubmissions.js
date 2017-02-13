@@ -388,10 +388,10 @@ window.addEventListener('load', function() {
   albumField     = document.getElementById("album-name");
   genrePicker    = document.getElementById("genre-picker");
   dateField      = document.getElementById("date-released");
-  canadaBox      = document.getElementById("canada-artist");
-  vancouverBox   = document.getElementById("vancouver-artist");
-  femArtistBox   = document.getElementById("female-artist");
-  commentField   = document.getElementById("comments-box");
+  canadaBox      = $("#canada-artist");
+  vancouverBox   = $("#vancouver-artist");
+  femArtistBox   = $("#female-artist");
+  commentField   = $("#comments-box");
   albumViewer    = document.getElementById("album-viewer");
   formatPicker   = document.getElementById("format-picker");
 
@@ -527,10 +527,13 @@ function submitForm() {
   var album     = albumField.value;
   var genre     = genrePicker.value;
   var date      = dateField.value;
-  var canada    = canadaBox.checked;
-  var vancouver = vancouverBox.checked;
-  var female    = femArtistBox.checked;
-  var comments  = commentField.value;
+  var canada;
+  if(canadaBox.attr('checked') == true) canada = 1;
+  else canada = 0;
+  var vancouver = vancouverBox.attr('checked');
+  var female    = femArtistBox.attr('checked');
+  var comments  = commentField.val();
+  console.log(comments);
   var format    = formatPicker.value;
 
   //console.log("formatPicker value: " + format);
