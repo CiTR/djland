@@ -1774,6 +1774,10 @@ table { border-collapse: collapse; }
 	padding-bottom: 5px;
 }
 
+.table-header {
+  clear: both;
+}
+
 .submission_result_row{
 	margin-left:auto;
 	margin-right:auto;

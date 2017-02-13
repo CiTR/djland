@@ -123,8 +123,8 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<h3>CDs</h3>
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -142,8 +142,8 @@
 				</div>
 			</div>
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<h3>MP3s</h3>
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -161,8 +161,8 @@
 				</div>
 			</div>
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<h3>Other</h3>
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -180,8 +180,8 @@
 				</div>
 			</div>
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3>Singles</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<h3>Singles</h3>
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionSingle">
 							<tr id="headerrow" style="display: table-row;">
@@ -388,8 +388,8 @@
 						</li>
 				</ul>
 
+        <h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<h3>CDs</h3>
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -407,8 +407,8 @@
 				</div>
 			</div>
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<h3>MP3s</h3>
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -426,8 +426,8 @@
 				</div>
 			</div>
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<h3>Other</h3>
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -448,8 +448,8 @@
 				</div>
 			</div>
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">Singles</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<h3>Singles</h3>
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionSingles">
 							<tr id="headerrow" style="display: table-row;">
@@ -651,8 +651,8 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>CDs</h3>
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -670,8 +670,8 @@
 				</div>
 			</div>
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap side-padded" name="search">
-					<h3>MP3s</h3>
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -689,8 +689,8 @@
 				</div>
 			</div>
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>Other</h3>
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -708,8 +708,8 @@
 				</div>
 			</div>
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Singles</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>Singles</h3>
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionSingles">
 							<tr id="headerrow" style="display: table-row;">
@@ -968,8 +968,8 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>CDs</h3>
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -987,8 +987,8 @@
 				</div>
 			</div>
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>MP3s</h3>
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -1006,8 +1006,8 @@
 				</div>
 			</div>
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>Other</h3>
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -1025,8 +1025,8 @@
 				</div>
 			</div>
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>Singles</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<h3>Singles</h3>
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionSingles">
 							<tr id="headerrow" style="display: table-row;">
