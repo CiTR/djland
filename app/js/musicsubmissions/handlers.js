@@ -49,8 +49,10 @@ function add_submission_handlers(){
 		var id = $("#id-review-box").attr('name');
 		var approvedStatus = $("#approved_status-review-box").val();
 		var review_comments = $("#comments-review-box").val();
-        console.log(review_comments)
 		submitReview(id, approvedStatus, review_comments);
+        console.log("Submitting review ... ");
+    	$('#view_submissions').stop().fadeOut(175);
+    	$("#view_submissions_row").fadeOut(175);
 	});
 	/*
 	 * Listeners for approving a review
@@ -72,6 +74,12 @@ function add_submission_handlers(){
 	$("#approve_review_btn").off('click').on('click',function(e){
 		var id = $("#id-reviewed").attr('name')
 		approveReview(id);
+        $("#reviewed_comments").text("");
+    	$("#reviewed_approved_status").val(0).change();
+    	$('#reviewed_submissions_view').fadeOut(175);
+    	$("#reviewed_submissions_view_row").fadeOut(175);
+    	var selector = "[name=\'" + id + "\']";
+    	$(selector).fadeOut(100);
 	});
 	$("#trash_review_btn").off('click').on('click',function(e){
 		//TODO
