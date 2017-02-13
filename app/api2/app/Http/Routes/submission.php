@@ -148,8 +148,9 @@ use Carbon\Carbon;
         });
         // Search accepted digital submissions in a time range
         Route::get('/getaccepted', function(){
-            $date = Input::get('date');
-            return Response::json( Archive::where('submitted','>',$date)->where('submitted','<',$date)->get() );
+            $date1 = Input::get('date1');
+            $date2 = Input::get('date2');
+            return Response::json( Archive::where('submitted','>=',$date1)->where('submitted','=<',$date2)->get() );
         });
         // TODO: Search past submissions (rejected & archived) on admins page
         Route::get('/getrejectedandarchived', function(){
@@ -233,8 +234,8 @@ use Carbon\Carbon;
                 return $e->getMessage();
             }
         });
-        // Post to this route to reject a submission
-        Route::put('/reject', function() {
+        // Post to this route to trash a submission
+        Route::put('/trash', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
               $submission -> is_trashed = 1;
@@ -245,7 +246,7 @@ use Carbon\Carbon;
               return $e->getMessage() ;
           }
         });
-        // Post to this route to restore a rejected submission
+        // Post to this route to restore a trashed submission
         Route::put('/restore', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
