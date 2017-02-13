@@ -42,6 +42,18 @@
 			$(function() {
 		    	$( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
 			});
+      $(function() {
+		    	$( "#past-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#past-to" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#new-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#new-to" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
 		</script>
 	</head>
 	<body class='wallpaper'>
@@ -1238,9 +1250,9 @@
 					<div class="col1">
 						Submission Date:
 						<label>Start Date </label>
-						<input type="text" class="datepicker" value="<?php $today ?>"/>
+						<input id="past-from" type="text" class="datepicker" value="<?php $today ?>" readonly/>
 						<label>End Date </label>
-						<input type="text" class="datepicker"  value="<?php $today ?>"/>
+						<input id="past-to" type="text" class="datepicker"  value="<?php $today ?>" readonly/>
 						<br>
 					</div>
 					<div class="col1">
@@ -1265,10 +1277,10 @@
 					</div>
 					<div id="col1">
 						<label for="from">Start Date: </label>
-						<input type="text" id="from" name="from" class="datepicker" value=<?php $today ?>>
+						<input type="text" id="new-from" name="from" class="datepicker" value="<?php $today ?>" readonly>
 
 						<label for="to">End Date: </label>
-						<input type="text" id="to" name="to" class="datepicker" value=<?php $today ?>>
+						<input type="text" id="new-to" name="to" class="datepicker" value="<?php $today ?>" readonly>
 						<br>
 					</div>
 					<div id="col1">
