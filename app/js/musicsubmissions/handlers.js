@@ -35,6 +35,10 @@ function add_submission_handlers(){
 		$('#view_submissions').fadeIn(225);
 	    // console.log(idSubmission);
 	    getSubmissionDataAndDisplay(idSubmission);
+		$(this)[0].scrollIntoView({
+    		behavior: "smooth", // or "auto" or "instant"
+    		//block: "start" // or "end"
+		});
     });
 	//Prevent a row from opening a submission when clicking textarea or textbox
 	$('.reviewrow input').off('click').on('click',function(e) {
@@ -50,9 +54,7 @@ function add_submission_handlers(){
 		var approvedStatus = $("#approved_status-review-box").val();
 		var review_comments = $("#comments-review-box").val();
 		submitReview(id, approvedStatus, review_comments);
-        console.log("Submitting review ... ");
-    	$('#view_submissions').stop().fadeOut(175);
-    	$("#view_submissions_row").fadeOut(175);
+        //console.log("Submitting review ... ");
 	});
 	/*
 	 * Listeners for approving a review
@@ -63,6 +65,10 @@ function add_submission_handlers(){
 		$('#reviewed_submissions_view_row').show();
 		$('#reviewed_submissions_view').fadeIn(225);
 	    getSubmissionDataAndDisplay(idSubmission);
+		$(this)[0].scrollIntoView({
+    		behavior: "smooth", // or "auto" or "instant"
+    		//block: "start" // or "end"
+		});
     });
 	//Prevent a row from opening a review when clicking textarea or checkbox
 	$('.reviewedrow input').off('click').on('click',function(e) {
@@ -74,12 +80,6 @@ function add_submission_handlers(){
 	$("#approve_review_btn").off('click').on('click',function(e){
 		var id = $("#id-reviewed").attr('name')
 		approveReview(id);
-        $("#reviewed_comments").text("");
-    	$("#reviewed_approved_status").val(0).change();
-    	$('#reviewed_submissions_view').fadeOut(175);
-    	$("#reviewed_submissions_view_row").fadeOut(175);
-    	var selector = "[name=\'" + id + "\']";
-    	$(selector).fadeOut(100);
 	});
 	$("#trash_review_btn").off('click').on('click',function(e){
 		//TODO
@@ -111,14 +111,17 @@ function add_submission_handlers(){
 	      $("#subgenre-tag-warning").show();
 	    } else {
 	      $("#subgenre-tag-warning").hide();
-	      console.log($("#subgenre-approved").select2("val"));
+	      //console.log($("#subgenre-approved").select2("val"));
 	      // addTagToSubmission($("#subgenre-approved").select2("val"));
     	}
   	});
 	//Listener for preventing catalog # from being anything but a number
 	$("#catalog-approved").off('keypress').on('keypress',function(e){
 		var chr = String.fromCharCode(e.which);
-    	if ("0123456789dig".indexOf(chr) < 0) return false;
+    	if ("0123456789dig".indexOf(chr) < 0){
+			e.preventDefault();
+			return false;
+		}
 	});
 	/*
 	 * Listeners for approving tags popup

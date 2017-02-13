@@ -198,12 +198,13 @@ Route::group(['middleware' => 'auth'], function(){
             try{
                 $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to approve a review of a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
-                else if($submisison -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status != "reviewed") return "Trying to approve a review of a submission that is already been approved. Aborting. Submission id is: " . $submission -> id;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "approved";
-                    return $submission;
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from reviewed to approved successful" );
                 }
             } catch (Exception $e){
                 return $e->getMessage();
@@ -221,6 +222,8 @@ Route::group(['middleware' => 'auth'], function(){
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "tagged";
                     //TODO: read in tag data
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful" );
                     return $submission;
                 }
             } catch (Exception $e){
@@ -240,6 +243,8 @@ Route::group(['middleware' => 'auth'], function(){
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "completed";
                     //TODO: anything else necessary (is there anything? check if any tags have changed?)
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful" );
                     return $submission;
                 }
             } catch (Exception $e){

@@ -124,7 +124,7 @@ function createSubmission(format) {
  				$(identifier).text(string);
  			} else {
  				$(identifier).text("Unknown");
- 				$(identifier).css("color","C02F1D");
+ 				$(identifier).css("color","navy");
  			}
  		},
  		error:function(err){

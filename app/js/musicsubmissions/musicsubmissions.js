@@ -154,6 +154,12 @@ function displayReviewedBox(data) {
     $("#description-reviewed").attr('style', '');
   }
 
+  if (review_comments == "" || review_comments == null) {
+    review_comments = "No review submitted";
+    $("#reviewed_comments").attr('style', 'color:red');
+  } else {
+    $("#reviewed_comments").attr('style', '');
+  }
   $("#id-reviewed").attr('name', id);
   $("#artist-reviewed").text(artist);
   $("#location-reviewed").text(location);
@@ -431,7 +437,7 @@ function submitReview(id,appproved_status,review_comments){
 		success:function(data){
 			$("#comments-review-box").val('');
 			$("#approved_status-review-box").val(0).change();
-			$('#view_submissions').stop().fadeOut(175);
+			$('#view_submissions').fadeOut(175);
 			$("#view_submissions_row").fadeOut(175);
 			var selector = "[name=\'" + id + "\']";
 			$(selector).fadeOut(100);
@@ -448,10 +454,11 @@ function submitReview(id,appproved_status,review_comments){
 
 function approveReview(id){
 	console.log("Approving review ... ");
+	console.log(id);
 	$.ajax({
 		url: "api2/public/submissions/approve",
 		type:'PUT',
-		dataType:'json',
+		dataType:'text json',
 		data: {
 			'id':id
 		},

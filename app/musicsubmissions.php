@@ -588,7 +588,7 @@
 
 							<div class="containerrow">
 								<div class="col2 text-center">
-									<button id="approve-review-btn">Approve Review</button>
+									<button id="approve_review_btn">Approve Review</button>
 								</div>
 								<div class="col2 text-center">
 									<button id="trash_review_btn">Trash Review</button>
