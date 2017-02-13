@@ -135,7 +135,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_new_cd">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -154,7 +154,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_new_mp3">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -192,7 +192,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_new_other">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -663,7 +663,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_accepted_cd">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -682,7 +682,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_accepted_mp3">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -701,7 +701,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_accepted_other">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -981,7 +981,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_tagged_cd">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1000,7 +1000,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_tagged_mp3">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1019,7 +1019,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="trash_submission_tagged_other">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1267,7 +1267,7 @@
 						Artist: <input id="artistname" placeholder="Artist" maxlength="15">
 					</div>
 					<div id="col1">
-						<button id="submitDates">View Past Submissions</button>
+						<button id="submitDates_Past">View Past Submissions</button>
 					</div>
 					<div class="col1">
 					<br>
@@ -1286,7 +1286,7 @@
 						<br>
 					</div>
 					<div id="col1">
-						<button id="submitDates">Generate Listing</button>
+						<button id="submitDates_Approved">Generate Listing</button>
 					</div>
 
 					<br>
@@ -1359,11 +1359,10 @@
 										<th>Staff Comments</th>
 										<th>Reviewed By</th>
 										<th>Approved?</th>
-										<th>Approve /&nbsp</th>
-										<th>Discard</th>
+										<th>Restore</th>
 									</tr>
 									<tr>
-										<td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td>
+										<td></td><td></td><td></td><td></td><td></td><td></td><td><button id="undo_trash_submission">Apply Restores</button></td>
 									</tr>
 								</tbody>
 							</table>
