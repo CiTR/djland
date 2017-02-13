@@ -24,7 +24,7 @@
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
-		<script type='text/javascript' src='./js/musicsubmissions/functions-ajax.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/populateTables.js'></script>
 		<script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
 		<script type='text/javascript' src='./js/musicsubmissions/handlers.js'></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
@@ -169,7 +169,7 @@
 			</div>
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<h3>Singes</h3>
+					<h3>Singles</h3>
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionSingle">
 							<tr id="headerrow" style="display: table-row;">

@@ -401,11 +401,12 @@ function submitReview(id,appproved_status,review_comments){
 		//}
 	});
 	console.log("Submitting review ... ");
-	$("#comments-review-box").text("");
+	$("#comments-review-box").val('');
 	$("#approved_status-review-box").val(0).change();
-	$("tr[name=id]").fadeOut(100);
 	$('#view_submissions').stop().fadeOut(175);
 	$("#view_submissions_row").fadeOut(175);
+	var selector = "[name=\'" + id + "\']";
+	$(selector).fadeOut(100);
 }
 
 function approveReview(id){

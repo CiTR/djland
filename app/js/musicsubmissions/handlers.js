@@ -7,7 +7,6 @@ function add_submission_handlers(){
 	$('#membership_table').off('keyup','.staff_comment').on('keyup','.staff_comment',function(element){
 		$(this).addClass('updated');
 	});
-
 	//Listener for saving comments
 	//TODO
 	$('#search').off('click','#save_comments').on('click','#save_comments',function(element){
@@ -48,8 +47,9 @@ function add_submission_handlers(){
 	//Listener for submitting a review
 	$("#view_submissions_submit_btn").off('click').on('click',function(e){
 		var id = $("#id-review-box").attr('name');
-		var approvedStatus = $("#view_submissions_approved_status").val();
-		var review_comments = $("#view_submissions_comments").val();
+		var approvedStatus = $("#approved_status-review-box").val();
+		var review_comments = $("#comments-review-box").val();
+        console.log(review_comments)
 		submitReview(id, approvedStatus, review_comments);
 	});
 	/*
