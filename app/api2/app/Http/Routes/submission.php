@@ -69,8 +69,12 @@ Route::group(['middleware' => 'auth'], function(){
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
         $submission = Submissions::find($id);
-        $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray()[0];
-        $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+        $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
+        if(count($name) != 0){
+            $name = $name[0];
+            $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+        }
+        else $submission -> reviewed = null;
         return $submission;
         //return Response::json($submission);
     });

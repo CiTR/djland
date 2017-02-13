@@ -181,36 +181,12 @@ function displayApprovedBox(data) {
 	//console.log(data);
 	var catalog		= data['catalog'];
 	if(catalog == null) catalog = "";
-	var format;
-	switch( data['format_id']){
-		case 1:
-			format = 'CD';
-			break;
-		case 2:
-			format = 'LP';
-			break;
-		case 3:
-			format = '7\"';
-			break;
-		case 4:
-			format = 'CASS';
-			break;
-		case 5:
-			format = 'CART';
-			break;
-		case 6:
-			format = 'MP3';
-			break;
-		case 7:
-			format = 'MD';
-			break;
-		case 8:
-			format = 'Unknown';
-			break;
-		default:
-			format = "Format Error";
-			console.log("Invalid format detected in tagging box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
-			break;
+	var format = data['format_id'];
+	//TODO: determine if it's a bad format based on db table
+	if(format > 8 || format < 1){
+		console.log("Invalid format detected in tagging box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
+		console.log("Setting format to \"Unknown\"");
+		var format = 8;
 	}
 	var album       	= data['title'];
 	var artist      	= data['artist'];
@@ -250,6 +226,7 @@ function displayApprovedBox(data) {
     $("#albumArt-approved").attr("src", art_url);
 	//Editable fields
 	$("#catalog-approved").val( String(catalog) );
+	//console.log(format);
 	$("#format-approved").prop('value', format).change();
 	$("#album-approved").val(album);
 	$("#artist-approved").val(artist);
@@ -285,36 +262,12 @@ function displayApprovedBox(data) {
 function displayTaggedBox(data) {
 	var catalog		= data['catalog'];
 	if(catalog == null) catalog = "";
-	var format;
-	switch( data['format_id']){
-		case 1:
-			format = 'CD';
-			break;
-		case 2:
-			format = 'LP';
-			break;
-		case 3:
-			format = '7\"';
-			break;
-		case 4:
-			format = 'CASS';
-			break;
-		case 5:
-			format = 'CART';
-			break;
-		case 6:
-			format = 'MP3';
-			break;
-		case 7:
-			format = 'MD';
-			break;
-		case 8:
-			format = 'Unknown';
-			break;
-		default:
-			format = "Format Error";
-			console.log("Invalid format detected in tagging box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
-			break;
+	var format = data['format_id'];
+	//TODO: determine if it's a bad format based on db table
+	if(format > 8 || format < 1){
+		console.log("Invalid format detected in tagged box. \n The submission id is " + data['id'] + " and the format id is " + data['format_id'] + " .");
+		console.log("Setting format to \"Unknown\"");
+		var format = 8;
 	}
 	var album       	= data['title'];
 	var artist      	= data['artist'];
@@ -493,14 +446,14 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
 		dataType:'json',
 		data: {
 			'id':id,
-      'tags':tag,
-      'catalog':catNo,
-      'format_id':format,
-      'title':album,
-      'artist':artist,
-      'credit':credit,
-      'label':label,
-      'genre':genre
+      		'tags':tag,
+      		'catalog':catNo,
+      		'format_id':format,
+      		'title':album,
+      		'artist':artist,
+      		'credit':credit,
+      		'label':label,
+      		'genre':genre
 		},
 		async:true,
 		success:function(data){

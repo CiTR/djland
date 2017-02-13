@@ -113,7 +113,8 @@ function add_submission_handlers(){
       var tag = $("#subgenre-approved").select2("val");
       var id = $('#submissionspopup').attr('name');
       var catNo = $('#catalog-approved').val();
-      var format = $('#format-approved').select2("val");
+      var format = $('#format-approved').val();
+	  console.log(format);
       var album = $('#album-approved').val();
       var artist = $('#artist-approved').val();
       var credit = $('#credit-approved').val();

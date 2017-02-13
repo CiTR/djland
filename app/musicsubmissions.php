@@ -765,15 +765,16 @@
 								$("#format-approved").select2();
 								});
 							</script>
+							<!-- TODO: get these formats + IDs from DB table -->
 							<select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
-								<option class='vueselect' value="CD">CD</option>
-								<option class='vueselect' value="LP">LP</option>
-								<option class='vueselect' value="7in">7"</option>
-								<option class='vueselect' value="CASS">CASSETE</option>
-								<option class='vueselect' value ="CART">CART</option>
-								<option class='vueselect' value="MP3">MP3</option>
-								<option class='vueselect' value="MD">MD</option>
-								<option class='vueselect' value="??">Unknown</option>
+								<option class='vueselect' value="1">CD</option>
+								<option class='vueselect' value="2">LP</option>
+								<option class='vueselect' value="3">7"</option>
+								<option class='vueselect' value="4">CASSETE</option>
+								<option class='vueselect' value ="5">CART</option>
+								<option class='vueselect' value="6">MP3</option>
+								<option class='vueselect' value="7">MD</option>
+								<option class='vueselect' value="8">Unknown</option>
 							</select>
 						</div>
 					</div>
@@ -1082,15 +1083,16 @@
 								$(".js-example-basic-single").select2();
 								});
 							</script>
+							<!-- TODO: get these formats + IDs from DB table -->
 							<select class="js-example-basic-single vueselect" id="format-tagged" style="width:30%;">
-								<option class='vueselect' value="CD">CD</option>
-								<option class='vueselect' value="LP">LP</option>
-								<option class='vueselect' value="7in">7"</option>
-								<option class='vueselect' value="CASS">CASSETE</option>
-								<option class='vueselect' value ="CART">CART</option>
-								<option class='vueselect' value="MP3">MP3</option>
-								<option class='vueselect' value="MD">MD</option>
-								<option class='vueselect' value="??">Unknown</option>
+								<option class='vueselect' value="1">CD</option>
+								<option class='vueselect' value="2">LP</option>
+								<option class='vueselect' value="3">7"</option>
+								<option class='vueselect' value="4">CASSETE</option>
+								<option class='vueselect' value ="5">CART</option>
+								<option class='vueselect' value="6">MP3</option>
+								<option class='vueselect' value="7">MD</option>
+								<option class='vueselect' value="8">Unknown</option>
 							</select>
 						</div>
 					</div>
