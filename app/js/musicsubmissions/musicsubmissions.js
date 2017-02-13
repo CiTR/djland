@@ -35,61 +35,10 @@ function add_submission_handlers(){
 		}
 	});
 	/*
-	 * Listeners for tagging sidebar
-	 */
-	//Listener for viewing the tagging sidebar from clicking on their row
-    $(".tagrow").click(function(e){
-		$('#submissionspopup').fadeIn(225);
-		var idSubmission = $(this).attr('name');
-		getSubmissionDataAndDisplay(idSubmission);
-    });
-	$("#submissionscloser").click(function(e){
-		$('#submissionspopup').fadeOut(175);
-    });
-	$("#tagcancel").click(function(e){
-		$('#submissionspopup').fadeOut(175);
-    });
-	$("#approved-extrainfo-button").hover(function(e){
-		$("#approved-extrainfo").show();
-	},function(e){
-		$("#approved-extrainfo").hide();
-	});
-    $("#approve-tags-button").click(function(e){
-	    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
-	      $("#subgenre-tag-warning").show();
-	    } else {
-	      $("#subgenre-tag-warning").hide();
-	      console.log($("#subgenre-approved").select2("val"));
-	      // addTagToSubmission($("#subgenre-approved").select2("val"));
-    	}
-  	});
-	/*
-	 * Listeners for approving tags popup
-	 */
-	$(".approverow").click(function(e){
-		$('#submissionsapprovalpopup').fadeIn(225);
-		var idSubmission = $(this).attr('name');
-		getSubmissionDataAndDisplay(idSubmission);
-    });
-	$("#submissionsapprovalcloser").click(function(e){
-		$('#submissionsapprovalpopup').fadeOut(175);
-    });
-	$("#approvecancel").click(function(e){
-		$('#submissionsapprovalpopup').fadeOut(175);
-    });
-	$("#tagged-extrainfo-button").hover(function(e){
-		$("#tagged-extrainfo").show();
-	},function(e){
-		$("#tagged-extrainfo").hide();
-	});
-	$("#approve_submission_btn").click(function(e){
-		//TODO
-	});
-	/*
 	 * Listener for box to do a review
 	 */
 	//Listener for viewing the review from clicking on their row
-	$(".reviewrow").click(function(e){
+	$("tr.reviewrow").off('click').on('click',function(e){
 		//Tab your code properly @michaeladria. I'll fix it for you this time
 	    var idSubmission = $(this).attr('name');
 		$("#view_submissions_row").insertAfter($(this).closest('tr'));
@@ -98,12 +47,16 @@ function add_submission_handlers(){
 	    // console.log(idSubmission);
 	    getSubmissionDataAndDisplay(idSubmission);
     });
-	$("#view_submissions_closer").click(function(e){
+	//Prevent a row from opening a submission when clicking textarea or textbox
+	$('.reviewrow input').off('click').on('click',function(e) {
+    	e.stopPropagation();
+	});
+	$("#view_submissions_closer").off('click').on('click',function(e){
 		$('#view_submissions').stop(true).fadeOut(175);
 		$("#view_submissions_row").fadeOut(175);
 	});
 	//Listener for submitting a review
-	$("#view_submissions_submit_btn").click(function(e){
+	$("#view_submissions_submit_btn").off('click').on('click',function(e){
 		var id = $("#id-review-box").attr('name');
 		var approvedStatus = $("#view_submissions_approved_status").val();
 		var review_comments = $("#view_submissions_comments").val();
@@ -112,23 +65,91 @@ function add_submission_handlers(){
 	/*
 	 * Listeners for approving a review
 	 */
-	$(".reviewedrow").click(function(e){
+	$("tr.reviewedrow").off('click').on('click',function(e){
 		var idSubmission = $(this).attr('name');
 		$('#reviewed_submissions_view_row').insertAfter($(this).closest('tr'));
 		$('#reviewed_submissions_view_row').show();
 		$('#reviewed_submissions_view').fadeIn(225);
 	    getSubmissionDataAndDisplay(idSubmission);
     });
-	$("#reviewed_submissions_closer").click(function(e){
+	//Prevent a row from opening a review when clicking textarea or checkbox
+	$('.reviewedrow input').off('click').on('click',function(e) {
+    	e.stopPropagation();
+	});
+	$("#reviewed_submissions_closer").off('click').on('click',function(e){
 		$('#reviewed_submissions_view').fadeOut(175);
 	});
-	$("#approve_review_btn").click(function(e){
-		console.log("Hello");
+	$("#approve_review_btn").off('click').on('click',function(e){
 		var id = $("#id-reviewed").attr('name')
 		approveReview(id);
 	});
-	$("#trash_review_btn").click(function(e){
+	$("#trash_review_btn").off('click').on('click',function(e){
 		//TODO
+	});
+	/*
+	 * Listeners for tagging sidebar
+	 */
+	//Listener for viewing the tagging sidebar from clicking on their row
+    $(".tagrow").off('click').on('click',function(e){
+		$('#submissionspopup').fadeIn(225);
+		var idSubmission = $(this).attr('name');
+		getSubmissionDataAndDisplay(idSubmission);
+    });
+	//Prevent clicking the checkboxes or textboxes from opening tag box
+	$('.tagrow input').off('click').on('click',function(e) {
+    	e.stopPropagation();
+	});
+	$("#submissionscloser").off('click').on('click',function(e){
+		$('#submissionspopup').fadeOut(175);
+    });
+	$("#tagcancel").off('click').on('click',function(e){
+		$('#submissionspopup').fadeOut(175);
+    });
+	$("#approved-extrainfo-button").off('click').on('click',function(e){
+		$("#approved-extrainfo").toggle();
+	});
+    $("#approve-tags-button").off('click').on('click',function(e){
+	    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
+	      $("#subgenre-tag-warning").show();
+	    } else {
+	      $("#subgenre-tag-warning").hide();
+	      console.log($("#subgenre-approved").select2("val"));
+	      // addTagToSubmission($("#subgenre-approved").select2("val"));
+    	}
+  	});
+	//Listener for preventing catalog # from being anything but a number
+	$("#catalog-approved").off('keypress').on('keypress',function(e){
+		var chr = String.fromCharCode(e.which);
+    	if ("0123456789dig".indexOf(chr) < 0) return false;
+	});
+	/*
+	 * Listeners for approving tags popup
+	 */
+	$("tr.approverow").off('click').on('click',function(e){
+		$('#submissionsapprovalpopup').fadeIn(225);
+		var idSubmission = $(this).attr('name');
+		getSubmissionDataAndDisplay(idSubmission);
+    });
+	//Prevent a row from opening a submission when clicking textarea or textbox
+	$('.approverow input').off('click').on('click',function(e) {
+    	e.stopPropagation();
+	});
+	$("#submissionsapprovalcloser").off('click').on('click',function(e){
+		$('#submissionsapprovalpopup').fadeOut(175);
+    });
+	$("#approvecancel").off('click').on('click',function(e){
+		$('#submissionsapprovalpopup').fadeOut(175);
+    });
+	$("#tagged-extrainfo-button").off('click').on('click',function(e){
+		$("#tagged-extrainfo").toggle();
+	});
+	$("#approve_submission_btn").off('click').on('click',function(e){
+		//TODO
+	});
+	//Listener for preventing catalog # from being anything but a number
+	$("#catalog-tagged").keypress(function(e){
+		var chr = String.fromCharCode(e.which);
+    	if ("0123456789dig".indexOf(chr) < 0) return false;
 	});
 
 	//CHANGING TABS Listener
@@ -340,7 +361,10 @@ function populateReviewedSubmissionsCd(submissions){
 	} else{
 		for(var number in submissions) {
 			var item = (submissions[number]);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td></tr>";
+			if(item['approved'] == 1) var approvalYesNo = "Yes";
+			else var approvalYesNo = "No";
+			namesFromMemberId(item['reviewed']);
+			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span name=\"names" + item['reviewed'] + "\"></span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td></tr>";
 			$("tbody[name='reviewedSubmissionCd']").append(markup);
 		}
 		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
@@ -355,7 +379,10 @@ function populateReviewedSubmissionsMP3(submissions){
 	} else{
 		for(var number in submissions) {
 			var item = (submissions[number]);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+			if(item['approved'] == 1) var approvalYesNo = "Yes";
+			else var approvalYesNo = "No";
+			namesFromMemberId(item['reviewed']);
+			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span name=\"names" + item['reviewed'] + "\"></span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td></tr>";
 			$("tbody[name='reviewedSubmissionMP3']").append(markup);
 		}
 		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
@@ -370,7 +397,10 @@ function populateReviewedSubmissionsOther(submissions){
 	} else{
 		for(var number in submissions) {
 			var item = (submissions[number]);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+			if(item['approved'] == 1) var approvalYesNo = "Yes";
+			else var approvalYesNo = "No";
+			namesFromMemberId(item['reviewed']);
+			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span name=\"names" + item['reviewed'] + "\"></span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td></tr>";
 			$("tbody[name='reviewedSubmissionOther']").append(markup);
 		}
 		var endrow = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
@@ -473,7 +503,10 @@ function populateTrashedSubmissions(submissions){
 	} else{
 		for(var number in submissions) {
 			var item = (submissions[number]);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + item['approved'] + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+			if(item['approved'] == 1) var approvalYesNo = "Yes";
+			else var approvalYesNo = "No";
+			var names = namesFromMemberId(item['reviewed']);
+			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='trashedSubmissions']").append(markup);
 		}
 		add_submission_handlers();
@@ -1068,4 +1101,30 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
+}
+
+function namesFromMemberId(id){
+	var string = " ";
+	$.ajax({
+		type:"GET",
+		url: "api2/public/member/" + id + "/firstnamelastname",
+		dataType:'json',
+		async:true,
+		success:function(response){
+			var data = response[0];
+			var identifier = "[name=\'names"+id+"\']";
+			if(data != undefined){
+				string = data['firstname'] + " " + data['lastname'];
+				$(identifier).text(string);
+			} else {
+				$(identifier).text("Unknown");
+				$(identifier).css("color","C02F1D");
+			}
+		},
+		error:function(err){
+			//var json_response = err.responseJSON.msg;
+			console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
+			console.log(err);
+		}
+	});
 }
