@@ -762,10 +762,10 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#format-approved").select2();
 								});
 							</script>
-							<select class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
+							<select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
 								<option class='vueselect' value="CD">CD</option>
 								<option class='vueselect' value="LP">LP</option>
 								<option class='vueselect' value="7in">7"</option>
@@ -915,7 +915,7 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files for Approval</button>
+						<button id="approve-tags-button" name='edit' class='submissions_submit red'>Submit Files for Approval</button>
 					</div>
 				</div>
 			</div>

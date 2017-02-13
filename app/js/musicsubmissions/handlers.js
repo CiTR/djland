@@ -91,6 +91,7 @@ function add_submission_handlers(){
     $(".tagrow").off('click').on('click',function(e){
 		$('#submissionspopup').fadeIn(225);
 		var idSubmission = $(this).attr('name');
+    $('#submissionspopup').attr('name', idSubmission);
 		getSubmissionDataAndDisplay(idSubmission);
     });
 	//Prevent clicking the checkboxes or textboxes from opening tag box
@@ -106,14 +107,20 @@ function add_submission_handlers(){
 	$("#approved-extrainfo-button").off('click').on('click',function(e){
 		$("#approved-extrainfo").toggle();
 	});
-    $("#approve-tags-button").off('click').on('click',function(e){
-	    if ($("#subgenre-approved").select2("val") == "No Subgenre") {
-	      $("#subgenre-tag-warning").show();
-	    } else {
-	      $("#subgenre-tag-warning").hide();
-	      //console.log($("#subgenre-approved").select2("val"));
-	      // addTagToSubmission($("#subgenre-approved").select2("val"));
-    	}
+    $("#approve-tags-button").off('click').on('click',function(e) {
+	    console.log($("#subgenre-approved").select2("val"));
+	    // addTagToSubmission($("#subgenre-approved").select2("val"));
+      var tag = $("#subgenre-approved").select2("val");
+      var id = $('#submissionspopup').attr('name');
+      var catNo = $('#catalog-approved').val();
+      var format = $('#format-approved').select2("val");
+      var album = $('#album-approved').val();
+      var artist = $('#artist-approved').val();
+      var credit = $('#credit-approved').val();
+      var label = $('#label-approved').val();
+      var genre = $('#genre-approved').select2("val");
+      // console.log(tag + id + catNo + format + album + artist + credit + label + genre);
+      tagReview(tag, id, catNo, format, album, artist, credit, label, genre);
   	});
 	//Listener for preventing catalog # from being anything but a number
 	$("#catalog-approved").off('keypress').on('keypress',function(e){
