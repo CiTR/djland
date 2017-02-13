@@ -24,7 +24,7 @@
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
-		<script type='text/javascript' src='./js/musicsubmissions/functions-ajax.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/populateTables.js'></script>
 		<script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
 		<script type='text/javascript' src='./js/musicsubmissions/handlers.js'></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
@@ -40,7 +40,7 @@
 		<!-- set the datepicker date format -->
 		<script>
 			$(function() {
-		    	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+		    	$( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
 			});
 		</script>
 	</head>
@@ -1415,7 +1415,7 @@
                 </select>
               </div>
               <div style="width: 50%;float:right;">
-                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
+                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker" readonly>
               </div>
             </div>
             <div style="width: 50%;float:left;">
