@@ -142,7 +142,7 @@ function getCheckedSubmissions(chkboxName) {
 			 var id = checkboxes[i].id.replace(/\D/g,'');
        checkedSubIDs.push(id);
      }
-  }
+	 }
   // Return the array if it is non-empty, or null
   return checkedSubIDs.length > 0 ? checkedSubIDs : null;
 }
@@ -706,6 +706,7 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
 			}
     }
   });
+}
 
 // TODO: on admins page, search past submissions (accepted and rejected)
 function getAndPopulatePastSubmissions(){
