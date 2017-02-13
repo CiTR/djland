@@ -10,7 +10,7 @@ use Carbon\Carbon;
 Route::post('/submission', function(){
     try{
         //TODO: track songlist properly (new table?)
-        $songlist = Input::get($songlist);
+        $songlist_id = 0;
         //TODO: Maintain genre data integrity
         //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
         //foreach($primary_genres as $genre) {
@@ -43,7 +43,7 @@ Route::post('/submission', function(){
             'digitized' => 0,
             'description' => Input::get('description'),
             'art_url' => Input::get('art_url'),
-            'songlist' => Input::get('songlist'),
+            'songlist' => $songlist_id,//Input::get('songlist'),
             'format_id' => Input::get('format_id'),
             'status' => 'unreviewed',
             'submitted' => Carbon::today()->toDateString(),
@@ -51,8 +51,7 @@ Route::post('/submission', function(){
             'staff_comment' => "",
             'review_comments' => "",
             //TODO: determine what we're doing with this column
-            'crtc' => "20",
-            'songlist' => $songlist_id
+            'crtc' => "20"
         ]);
         return $newsubmission;
     } catch(Exception $e){
