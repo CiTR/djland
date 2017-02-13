@@ -6,7 +6,7 @@ $(document).ready ( function() {
 	$.when(constants_request).then( function () {
 		add_submission_handlers();
 	});
-	populateTables();
+	populateNewSubmissionsTable();
 });
 /********************
  ***** Handlers *****
@@ -756,6 +756,25 @@ function displayReviewBox(data) {
   var description 	= data['description'];
   var art_url		= data['art_url'];
 
+  if (releasedate == "" || releasedate == null) {
+    releasedate = "No date submitted";
+    $("#releaseDate-review-box").attr('style', 'color:navy');
+  } else {
+    $("#releaseDate-review-box").attr('style', '');
+  }
+  if (credit == "" || credit == null) {
+    credit = "No members submitted";
+    $("#albumCredit-review-box").attr('style', 'color:navy');
+  } else {
+    $("#albumCredit-review-box").attr('style', '');
+  }
+  if (description == "" || description == null) {
+    description = "No description submitted";
+    $("#description-review-box").attr('style', 'color:navy');
+  } else {
+    $("#description-review-box").attr('style', '');
+  }
+
   $("#id-review-box").attr('name', id);
   $("#artist-review-box").text(artist);
   $("#location-review-box").text(location);
@@ -791,6 +810,31 @@ function displayReviewedBox(data) {
   var review_comments 	= data['review_comments'];
   var approved 			= data['approved'];
 
+  if (releasedate == "" || releasedate == null) {
+    releasedate = "No date submitted";
+    $("#release-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#release-reviewed").attr('style', '');
+  }
+  if (credit == "" || credit == null) {
+    credit = "No members submitted";
+    $("#credit-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#credit-reviewed").attr('style', '');
+  }
+  if (description == "" || description == null) {
+    description = "No description submitted";
+    $("#description-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#description-reviewed").attr('style', '');
+  }
+
+  if (review_comments == "" || review_comments == null) {
+    review_comments = "No review submitted";
+    $("#reviewed_comments").attr('style', 'color:red');
+  } else {
+    $("#reviewed_comments").attr('style', '');
+  }
   $("#id-reviewed").attr('name', id);
   $("#artist-reviewed").text(artist);
   $("#location-reviewed").text(location);
@@ -1054,6 +1098,7 @@ window.addEventListener('load', function() {
 
 function submitReview(id,appproved_status,review_comments){
 	//console.log("ID: " + id + " Status: " + appproved_status + " Comments: " + review_comments);
+	console.log("Submitting review ... ");
 	$.ajax({
 		url: "api2/public/submissions/review",
 		type:'PUT',
@@ -1065,7 +1110,12 @@ function submitReview(id,appproved_status,review_comments){
 		},
 		async:true,
 		success:function(data){
-			console.log(data);
+			$("#comments-review-box").val('');
+			$("#approved_status-review-box").val(0).change();
+			$('#view_submissions').fadeOut(175);
+			$("#view_submissions_row").fadeOut(175);
+			var selector = "[name=\'" + id + "\']";
+			$(selector).fadeOut(100);
 			alert("Review Submitted");
 			//TODO: Change the button and show a spinny thing
 		}//,
@@ -1075,27 +1125,28 @@ function submitReview(id,appproved_status,review_comments){
 		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
 		//}
 	});
-	console.log("Submitting review ... ");
-	$("#comments-review-box").text("");
-	$("#approved_status-review-box").val(0).change();
-	$("tr[name=id]").fadeOut(100);
-	$('#view_submissions').stop().fadeOut(175);
-	$("#view_submissions_row").fadeOut(175);
 }
 
 function approveReview(id){
 	console.log("Approving review ... ");
+	console.log(id);
 	$.ajax({
 		url: "api2/public/submissions/approve",
 		type:'PUT',
-		dataType:'json',
+		dataType:'text json',
 		data: {
 			'id':id
 		},
 		async:true,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			alert("Review Approved");
+			$("#reviewed_comments").val('');
+			$("#reviewed_approved_status").val(0).change();
+			$('#reviewed_submissions_view').fadeOut(175);
+			$("#reviewed_submissions_view_row").fadeOut(175);
+			var selector = "[name=\'" + id + "\']";
+			$(selector).fadeOut(100);
 			//TODO: Change the button and show a spinny thing
 		}//,
 		//commented out to avoid infinite loop
@@ -1104,12 +1155,69 @@ function approveReview(id){
 		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
 		//}
 	});
+}
 
-	$("#reviewed_comments").text("");
-	$("#reviewed_approved_status").val(0).change();
-	$("tr[name=id]").fadeOut(100);
-	$('#reviewed_submissions_view').stop().fadeOut(175);
-	$("#reviewed_submissions_view_row").fadeOut(175);
+function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
+{
+	console.log("Tagging review ... ");
+  console.log(id);
+  console.log(tag);
+	$.ajax({
+		url: "api2/public/submissions/tag",
+		type:'PUT',
+		dataType:'json',
+		data: {
+			'id':id,
+      'tags':tag,
+      'catalog':catNo,
+      'format_id':format,
+      'title':album,
+      'artist':artist,
+      'credit':credit,
+      'label':label,
+      'genre':genre
+		},
+		async:true,
+		success:function(data){
+			//console.log(data);
+			alert("Submission tagged");
+			$('#submissionspopup').fadeOut(175);
+			var selector = "[name=\'" + id + "\']";
+			$(selector).fadeOut(100);
+			//TODO: Change the button and show a spinny thing
+		},
+		//commented out to avoid infinite loop
+		fail:function(data){
+			console.log("Submitting Review Failed. Response data: " + data);
+			alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		}
+	});
+}
+
+function approveTags(id) {
+	console.log("Approving tags ... ");
+	$.ajax({
+		url: "api2/public/submissions/tolibrary",
+		type:'PUT',
+		dataType:'json',
+		data: {
+			'id':id
+		},
+		async:true,
+		success:function(data){
+			//console.log(data);
+			alert("Tags Approved");
+			$('#submissionsapprovalpopup').fadeOut(175);
+			var selector = "[name=\'" + id + "\']";
+			$(selector).fadeOut(100);
+			//TODO: Change the button and show a spinny thing
+		}//,
+		//commented out to avoid infinite loop
+		//fail:function(data){
+		//	console.log("Submitting Review Failed. Response data: " + data);
+		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		//}
+	});
 }
 
 function submitForm() {

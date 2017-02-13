@@ -56,10 +56,10 @@ function createSubmission(format) {
    var e           = document.getElementById('genre-picker');
    var genre       = e.options[e.selectedIndex].value;
    var releasedate = document.getElementById('date-released').value;
-   var femcon      = document.getElementById('female-artist').checked;
-   var cancon      = document.getElementById('canada-artist').checked;
-   var local       = document.getElementById('vancouver-artist').checked;
-   var description = document.getElementById('comments-box').value;
+   var femcon      = ($('#female-artist').prop('checked', true)) ? 1 : 0;
+   var cancon      = ($('#canada-artist').prop('checked', true)) ? 1 : 0;
+   var local       = ($('#vancouver-artist').prop('checked', true)) ? 1 : 0;
+   var description = $('#comments-box').val();
 
    if (label == "") {
      label = "Self-Released";
@@ -99,7 +99,7 @@ function createSubmission(format) {
      // dataType: "json",
    })
 
-   .done(function() {
+   .done(function(data) {
    var successBox = document.getElementById("submit-button-div");
    successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
    })
@@ -107,4 +107,30 @@ function createSubmission(format) {
    .fail(function() {
      alert("Failure");
    });
+ }
+
+ function namesFromMemberId(id){
+ 	var string = " ";
+ 	$.ajax({
+ 		type:"GET",
+ 		url: "api2/public/member/" + id + "/firstnamelastname",
+ 		dataType:'json',
+ 		async:true,
+ 		success:function(response){
+ 			var data = response[0];
+ 			var identifier = "[name=\'names"+id+"\']";
+ 			if(data != undefined){
+ 				string = data['firstname'] + " " + data['lastname'];
+ 				$(identifier).text(string);
+ 			} else {
+ 				$(identifier).text("Unknown");
+ 				$(identifier).css("color","navy");
+ 			}
+ 		},
+ 		error:function(err){
+ 			//var json_response = err.responseJSON.msg;
+ 			console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
+ 			console.log(err);
+ 		}
+ 	});
  }

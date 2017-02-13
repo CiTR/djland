@@ -24,11 +24,15 @@
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
+		<script type='text/javascript' src='./js/musicsubmissions/populateTables.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
+		<script type='text/javascript' src='./js/musicsubmissions/handlers.js'></script>
 		<script type="text/javascript" src="js/musicsubmissions/musicsubmissions.js"></script>
+
     <!--
   	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
   -->
-    <script type='text/javascript' src='./js/musicsubmissions/submission_post_request.js'></script>
+
 
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -36,7 +40,19 @@
 		<!-- set the datepicker date format -->
 		<script>
 			$(function() {
-		    	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+		    	$( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#past-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#past-to" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#new-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+			});
+      $(function() {
+		    	$( "#new-to" ).datepicker({ dateFormat: "yy-mm-dd" });
 			});
 		</script>
 	</head>
@@ -107,11 +123,11 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					CDs
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionCd">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -124,11 +140,13 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					MP3s
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionMP3">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -141,11 +159,32 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					Other
 					<table id="submission_table" name="search">
 						<tbody name="newSubmissionOther">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee  </th>
+								<th><button id="delete_button">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
+        <h3>Singles</h3>
+				<div id="submission_result" class="left overflow_auto height_cap" name="search">
+					<table id="submission_table" name="search">
+						<tbody name="newSubmissionSingle">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -297,7 +336,7 @@
 
 			<!-- Begin Tab 2 "reviewed submissions view" -->
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right'>
-				<ul id="submission_header" name="search" class="clean-list inline-list">
+				<ul id="submission_header" name="search" class="clean-list inline-list	">
 						<li id="search">Search By:
 							<select id="search_by">
 								<option value="name">Submission Date</option>
@@ -349,11 +388,11 @@
 						</li>
 				</ul>
 
+        <h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					CDs
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionCd">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -366,11 +405,13 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					MP3s
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionMP3">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -383,11 +424,35 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					Other
 					<table id="submission_table" name="search">
 						<tbody name="reviewedSubmissionOther">
-							<tr id="music_row_heading border" style="display: table-row;">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Submission</th>
+								<th>Staff Comments</th>
+								<th>Reviewed By</th>
+								<th>Approved?</th>
+								<th>Approve</th>
+								<th>Discard</th>
+							</tr>
+						</tbody>
+					</table>
+					<br />
+					<hr />
+					<br />
+				</div>
+			</div>
+			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
+        <h3 class="table-header">Singles</h3>
+				<div id="submission_result" class="right overflow_auto height_cap" name="search">
+					<table id="submission_table" name="search">
+						<tbody name="reviewedSubmissionSingles">
+							<tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -523,7 +588,7 @@
 
 							<div class="containerrow">
 								<div class="col2 text-center">
-									<button id="approve-review-btn">Approve Review</button>
+									<button id="approve_review_btn">Approve Review</button>
 								</div>
 								<div class="col2 text-center">
 									<button id="trash_review_btn">Trash Review</button>
@@ -586,8 +651,8 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					CDs
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -603,8 +668,10 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap side-padded" name="search">
-					MP3s
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -620,8 +687,10 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					Other
 					<table id="submission_table" name="search">
 						<tbody name="toTagSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -633,6 +702,25 @@
 								<th>Staff Comments</th>
 								<th>Assignee</th>
 								<th><button id="trash_submission_accepted_other">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
+        <h3 class="table-header">Singles</h3>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					<table id="submission_table" name="search">
+						<tbody name="toTagSubmissionSingles">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Assignee</th>
+								<th><button id="delete_button">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -674,10 +762,10 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#format-approved").select2();
 								});
 							</script>
-							<select class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
+							<select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
 								<option class='vueselect' value="CD">CD</option>
 								<option class='vueselect' value="LP">LP</option>
 								<option class='vueselect' value="7in">7"</option>
@@ -827,7 +915,7 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit red' disabled='true'>Submit Files for Approval</button>
+						<button id="approve-tags-button" name='edit' class='submissions_submit red'>Submit Files for Approval</button>
 					</div>
 				</div>
 			</div>
@@ -880,8 +968,8 @@
 						<button id="save_comments">Save Comments</button>
 					</li>
 				</ul>
+				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					CDs
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionCd">
 							<tr id="headerrow" style="display: table-row;">
@@ -897,8 +985,10 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					MP3s
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionMP3">
 							<tr id="headerrow" style="display: table-row;">
@@ -914,8 +1004,10 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					Other
 					<table id="submission_table" name="search">
 						<tbody name="taggedSubmissionOther">
 							<tr id="headerrow" style="display: table-row;">
@@ -927,6 +1019,25 @@
 								<th>Staff Comments</th>
 								<th>Tagger</th>
 								<th><button id="trash_submission_tagged_other">Delete</button></th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="approve" class="hidden submission grey clearfix double-padded-top">
+        <h3 class='table-header'>Singles</h3>
+				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
+					<table id="submission_table" name="search">
+						<tbody name="taggedSubmissionSingles">
+							<tr id="headerrow" style="display: table-row;">
+								<th>Artist</th>
+								<th>Album</th>
+								<th>Date of Release</th>
+								<th>Genre</th>
+								<th>Date Submitted</th>
+								<th>Staff Comments</th>
+								<th>Tagger</th>
+								<th><button id="delete_button">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1139,9 +1250,9 @@
 					<div class="col1">
 						Submission Date:
 						<label>Start Date </label>
-						<input type="text" class="datepicker" value="<?php $today ?>"/>
+						<input id="past-from" type="text" class="datepicker" value="<?php $today ?>" readonly/>
 						<label>End Date </label>
-						<input type="text" class="datepicker"  value="<?php $today ?>"/>
+						<input id="past-to" type="text" class="datepicker"  value="<?php $today ?>" readonly/>
 						<br>
 					</div>
 					<div class="col1">
@@ -1166,10 +1277,10 @@
 					</div>
 					<div id="col1">
 						<label for="from">Start Date: </label>
-						<input type="text" id="from" name="from" class="datepicker" value=<?php $today ?>>
+						<input type="text" id="new-from" name="from" class="datepicker" value="<?php $today ?>" readonly>
 
 						<label for="to">End Date: </label>
-						<input type="text" id="to" name="to" class="datepicker" value=<?php $today ?>>
+						<input type="text" id="new-to" name="to" class="datepicker" value="<?php $today ?>" readonly>
 						<br>
 					</div>
 					<div id="col1">
@@ -1315,7 +1426,7 @@
                 </select>
               </div>
               <div style="width: 50%;float:right;">
-                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
+                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker" readonly>
               </div>
             </div>
             <div style="width: 50%;float:left;">

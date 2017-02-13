@@ -5,8 +5,62 @@ use App\Submissions_Archive as Archive;
 use App\Submissions_Rejected as Rejected;
 use Carbon\Carbon;
 
+//Post to this route to put a new submission in the system - either from manual submissions page or from the station website
+//the submission format (ie. CD, LP or MP3) defaults to MP3.
+Route::post('/submission', function(){
+    try{
+        //TODO: track songlist properly (new table?)
+        $songlist_id = 0;
+        //TODO: Maintain genre data integrity
+        //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+        //foreach($primary_genres as $genre) {
+        //    if(Input::get('genre') == $genre){
+                $ingenre = Input::get('genre');
+        //    } else {
+        //        return "Invalid genre specified";
+        //    }
+        //Default to "Self released" if the label is not specified
+        if(Input::get('label') == null){
+            $label = "Self-released";
+        } else{
+            $label = Input::get('label');
+        }
+        $newsubmission = Submissions::create([
+            'artist' => Input::get('artist'),
+            'title' => Input::get('title'),
+            'genre' => $ingenre,
+            'email' => Input::get('email'),
+            'label' => $label,
+            'location' => Input::get('location'),
+            'credit' => Input::get('credit'),
+            //This date is allowed to be null here, don't have to check
+            'releasedate' => Input::get('releasedate'),
+            'cancon' => Input::get('cancon'),
+            'femcon' => Input::get('femcon'),
+            'local' => Input::get('local'),
+            'playlist' => 0,
+            'compilation' => 0,
+            'digitized' => 0,
+            'description' => Input::get('description'),
+            'art_url' => Input::get('art_url'),
+            'songlist' => $songlist_id,//Input::get('songlist'),
+            'format_id' => Input::get('format_id'),
+            'status' => 'unreviewed',
+            'submitted' => Carbon::today()->toDateString(),
+            'is_trashed' => 0,
+            'staff_comment' => "",
+            'review_comments' => "",
+            //TODO: determine what we're doing with this column
+            'crtc' => "20"
+        ]);
+        return $newsubmission;
+    } catch(Exception $e){
+        return $e->getMessage();
+    }
+});
+
 //Apps inside middleware require login
-//Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
 //List all the submissions
     Route::get('/submissions', function(){
         return Response::json(Submissions::all());
@@ -14,49 +68,6 @@ use Carbon\Carbon;
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
         return Response::json(Submissions::find($id));
-    });
-    //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
-    //the submission format (ie. CD, LP or MP3) defaults to MP3.
-    Route::post('/submission', function(){
-        try{
-            //TODO: Maintain genre data integrity
-            //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
-            //foreach($primary_genres as $genre) {
-            //    if(Input::get('genre') == $genre){
-                    $ingenre = Input::get('genre');
-            //    } else {
-            //        return "Invalid genre specified";
-            //    }
-            //Default to "Self released" if the label is not specified
-            if(Input::get('label') == null){
-                $label = "Self-released";
-            } else{
-                $label = Input::get('label');
-            }
-            $newsubmission = Submissions::create([
-                'artist' => Input::get('artist'),
-                'title' => Input::get('title'),
-                'genre' => $ingenre,
-                'email' => Input::get('email'),
-                'label' => $label,
-                'location' => Input::get('location'),
-                'credit' => Input::get('credit'),
-                'releasedate' => Input::get('releasedate'),
-                'cancon' => Input::get('cancon'),
-                'femcon' => Input::get('femcon'),
-                'local' => Input::get('local'),
-                'description' => Input::get('description'),
-                'art_url' => Input::get('art_url'),
-                'songlist' => Input::get('songlist'),
-                'format_id' => Input::get('format_id'),
-                'status' => 'unreviewed',
-                'submitted' => Carbon::today()->toDateString(),
-                'is_trashed' => 0
-            ]);
-            return $newsubmission;
-        } catch(Exception $e){
-            return $e->getMessage();
-        }
     });
     Route::group(['prefix'=>'submissions'],function(){
         //Get list of submissions that are unreviewed
@@ -173,6 +184,8 @@ use Carbon\Carbon;
                     $approval = Input::get('approved');
                     if($approval == 'yes' || $approval == 'Yes' || $approval == 1 ) $submission -> approved = 1;
                     else $submission -> approved = 0;
+                    //Save the member id based on who submitted
+                    $submission -> reviewed = $_SESSION['sv_id'];
                     $submission->save();
                     return Response::json("Update submission #" . $submission -> id . " from unreviewd to reviewed successful");
                 }
@@ -186,12 +199,13 @@ use Carbon\Carbon;
             try{
                 $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to approve a review of a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
-                else if($submisison -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "unreviewed") return "Trying to appprove a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status != "reviewed") return "Trying to approve a review of a submission that is already been approved. Aborting. Submission id is: " . $submission -> id;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "approved";
-                    return $submission;
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from reviewed to approved successful" );
                 }
             } catch (Exception $e){
                 return $e->getMessage();
@@ -202,13 +216,24 @@ use Carbon\Carbon;
             try{
                 $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to tag a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
-                else if($submisison -> status == "unreviewed") return "Trying to tag a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "unreviewed") return "Trying to tag a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status == "reviewed") return "Trying to tag a review of a submission that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
                 else if($submission -> status != "approved") return "Trying to tag a review of a submission that hs already been tagged. Aborting. Submission id is: " . $submission -> id;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "tagged";
-                    //TODO: read in tag data
+                    $newTag = Input::get('tags');
+                    $submission -> tags = $newTag;
+                    $submission -> catalog = Input::get('catalog');
+                    $submission -> format_id = Input::get('format_id');
+                    $submission -> title = Input::get('title');
+                    $submission -> artist = Input::get('artist');
+                    $submission -> credit = Input::get('credit');
+                    $submission -> label = Input::get('label');
+                    $submission -> genre = Input::get('genre');
+
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful" );
                     return $submission;
                 }
             } catch (Exception $e){
@@ -227,7 +252,9 @@ use Carbon\Carbon;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "completed";
-                    //TODO: anything else necessary
+                    //TODO: anything else necessary (is there anything? check if any tags have changed?)
+                    $submission->save();
+                    return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful" );
                     return $submission;
                 }
             } catch (Exception $e){
@@ -259,4 +286,4 @@ use Carbon\Carbon;
           }
         });
     });
-//});
+});

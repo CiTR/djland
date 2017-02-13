@@ -73,6 +73,10 @@ Route::group(['middleware' => 'auth'], function(){
 				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1 ) return Member::find($id)->delete() ? "true":"false";
 				else return "Nope";
 			});
+			//Returns the firstname and lastname given user id
+			Route::get('/firstnamelastname', function($id){
+				return Response::json(Member::select('firstname','lastname')->where('id','=',$id)->get());
+			});
 			//Returns if the user has staff privileges or not.
 			Route::get('/staff',function($id){
 				return Response::json(Member::find($id)->isStaff());
@@ -85,7 +89,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::post('/comments',function($id){
 				$member = Member::find($id);
 				$member -> comments = json_decode(Input::get()['comments']);
-				return Response:: json($member -> save());
+				return Response::json($member -> save());
 			});
 			//returns if a user is trained or not.
 			Route::get('training',function($id){
