@@ -155,7 +155,7 @@ function populateNewSubmissionsCd(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -177,7 +177,7 @@ function populateNewSubmissionsMP3(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -198,7 +198,7 @@ function populateNewSubmissionsOther(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -276,7 +276,7 @@ function populateToTagSubmissionsCd(submissions){
 			//<tr class="playitem border tagrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -297,7 +297,7 @@ function populateToTagSubmissionsMP3(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -318,7 +318,7 @@ function populateToTagSubmissionsOther(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -341,7 +341,7 @@ function populateTaggedSubmissionsCd(submissions){
 			//<tr class="playitem border tagrow" name="1272"><td class="submission_row_element name">Fuzzy P</td><td class="submission_row_element email">On A Lawn</td><td class="submission_row_element primary_phone">June 10th 2016</td><td class="submission_row_element submission_type">Indie Rock</td><td class="submission_row_element membership_year">June 26th 2016</td><td><input class="staff_comment" id="comment1272" value=""><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td></td><td><input type="checkbox" class="delete_submission" id="delete_5"></td><div class="check hidden">❏</div></tr>
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
       } else {
         releasedateValue = item['releasedate'];
       }
@@ -362,7 +362,7 @@ function populateTaggedSubmissionsMP3(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
         console.log("Releasedate replaced");
       } else {
         releasedateValue = item['releasedate'];
@@ -385,7 +385,7 @@ function populateTaggedSubmissionsOther(submissions){
 			var item = (submissions[number]);
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:red\">No date</span>";
+        releasedateValue = "<span style=\"color:navy\">No date</span>";
         console.log("Releasedate replaced");
       } else {
         releasedateValue = item['releasedate'];
