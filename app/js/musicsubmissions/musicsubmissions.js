@@ -139,7 +139,8 @@ function getCheckedSubmissions(chkboxName) {
 
   for (var i=0; i<checkboxes.length; i++) {
      if (checkboxes[i].checked) {
-        checkedSubIDs.push(checkboxes[i]);
+			 var id = checkboxes[i].id.replace(/\D/g,''));;
+       checkedSubIDs.push(id);
      }
   }
   // Return the array if it is non-empty, or null
