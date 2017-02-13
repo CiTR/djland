@@ -40,7 +40,7 @@
 		<!-- set the datepicker date format -->
 		<script>
 			$(function() {
-		    	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+		    	$( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
 			});
 		</script>
 	</head>
@@ -1415,7 +1415,7 @@
                 </select>
               </div>
               <div style="width: 50%;float:right;">
-                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker">
+                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker" readonly>
               </div>
             </div>
             <div style="width: 50%;float:left;">
