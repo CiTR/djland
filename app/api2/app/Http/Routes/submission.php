@@ -3,6 +3,7 @@
 use App\Submissions as Submissions;
 use App\Submissions_Archive as Archive;
 use App\Submissions_Rejected as Rejected;
+use App\Member as Member;
 use Carbon\Carbon;
 
 //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
@@ -67,7 +68,11 @@ Route::group(['middleware' => 'auth'], function(){
     });
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
-        return Response::json(Submissions::find($id));
+        $submission = Submissions::find($id);
+        $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray()[0];
+        $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+        return $submission;
+        //return Response::json($submission);
     });
     Route::group(['prefix'=>'submissions'],function(){
         //Get list of submissions that are unreviewed
@@ -98,17 +103,44 @@ Route::group(['middleware' => 'auth'], function(){
         //Get list of submissions that are reviewed but the submission is not approved and are cds
         Route::get('/bystatus/reviewed/cd', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            $submissions = Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get();
+            foreach($submissions as $submission){
+                $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
+                if(count($name) != 0){
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                }
+                else $submission -> reviewed = null;
+            }
+            return Response::json( $submissions );
         });
         //Get list of submissions that are reviewed but the submission is not approved and are mp3s
         Route::get('/bystatus/reviewed/mp3', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            $submissions = Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get();
+            foreach($submissions as $submission){
+                $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
+                if(count($name) != 0){
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                }
+                else $submission -> reviewed = null;
+            }
+            return Response::json( $submissions );
         });
         //Get list of submissions that are reviewed but the submission is not approved and are any other format
         Route::get('/bystatus/reviewed/other', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            $submissions = Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get();
+            foreach($submissions as $submission){
+                $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
+                if(count($name) != 0){
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                }
+                else $submission -> reviewed = null;
+            }
+            return Response::json( $submissions );
         });
         //Get list of submissions that need to be tagged
         Route::get('/bystatus/tagged',function(){

@@ -109,6 +109,7 @@ function createSubmission(format) {
    });
  }
 
+//Unused function
  function namesFromMemberId(id){
  	var string = " ";
  	$.ajax({

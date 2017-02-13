@@ -157,7 +157,10 @@ function add_submission_handlers(){
 	//Listener for preventing catalog # from being anything but a number
 	$("#catalog-tagged").keypress(function(e){
 		var chr = String.fromCharCode(e.which);
-    	if ("0123456789dig".indexOf(chr) < 0) return false;
+    	if ("0123456789dig".indexOf(chr) < 0){
+			e.preventDefault();
+			return false;
+		}
 	});
 
 	//CHANGING TABS Listener
