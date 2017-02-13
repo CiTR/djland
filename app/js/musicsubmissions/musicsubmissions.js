@@ -482,14 +482,25 @@ function approveReview(id){
 	});
 }
 
-function tagReview(id) {
+function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
+{
 	console.log("Tagging review ... ");
+  console.log(id);
+  console.log(tag);
 	$.ajax({
 		url: "api2/public/submissions/tag",
 		type:'PUT',
 		dataType:'json',
 		data: {
-			'id':id
+			'id':id,
+      'tags':tag,
+      'catalog':catNo,
+      'format_id':format,
+      'title':album,
+      'artist':artist,
+      'credit':credit,
+      'label':label,
+      'genre':genre
 		},
 		async:true,
 		success:function(data){
@@ -499,12 +510,12 @@ function tagReview(id) {
 			var selector = "[name=\'" + id + "\']";
 			$(selector).fadeOut(100);
 			//TODO: Change the button and show a spinny thing
-		}//,
+		},
 		//commented out to avoid infinite loop
-		//fail:function(data){
-		//	console.log("Submitting Review Failed. Response data: " + data);
-		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
-		//}
+		fail:function(data){
+			console.log("Submitting Review Failed. Response data: " + data);
+			alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		}
 	});
 }
 
