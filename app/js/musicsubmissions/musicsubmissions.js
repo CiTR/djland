@@ -81,6 +81,25 @@ function displayReviewBox(data) {
   var description 	= data['description'];
   var art_url		= data['art_url'];
 
+  if (releasedate == "" || releasedate == null) {
+    releasedate = "No date submitted";
+    $("#releaseDate-review-box").attr('style', 'color:navy');
+  } else {
+    $("#releaseDate-review-box").attr('style', '');
+  }
+  if (credit == "" || credit == null) {
+    credit = "No members submitted";
+    $("#albumCredit-review-box").attr('style', 'color:navy');
+  } else {
+    $("#albumCredit-review-box").attr('style', '');
+  }
+  if (description == "" || description == null) {
+    description = "No description submitted";
+    $("#description-review-box").attr('style', 'color:navy');
+  } else {
+    $("#description-review-box").attr('style', '');
+  }
+
   $("#id-review-box").attr('name', id);
   $("#artist-review-box").text(artist);
   $("#location-review-box").text(location);
@@ -115,6 +134,25 @@ function displayReviewedBox(data) {
   var art_url     		= data['art_url'];
   var review_comments 	= data['review_comments'];
   var approved 			= data['approved'];
+
+  if (releasedate == "" || releasedate == null) {
+    releasedate = "No date submitted";
+    $("#release-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#release-reviewed").attr('style', '');
+  }
+  if (credit == "" || credit == null) {
+    credit = "No members submitted";
+    $("#credit-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#credit-reviewed").attr('style', '');
+  }
+  if (description == "" || description == null) {
+    description = "No description submitted";
+    $("#description-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#description-reviewed").attr('style', '');
+  }
 
   $("#id-reviewed").attr('name', id);
   $("#artist-reviewed").text(artist);
