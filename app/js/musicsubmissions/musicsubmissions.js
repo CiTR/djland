@@ -84,14 +84,20 @@ function displayReviewBox(data) {
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
     $("#releaseDate-review-box").attr('style', 'color:navy');
+  } else {
+    $("#releaseDate-review-box").attr('style', '');
   }
   if (credit == "" || credit == null) {
     credit = "No members submitted";
     $("#albumCredit-review-box").attr('style', 'color:navy');
+  } else {
+    $("#albumCredit-review-box").attr('style', '');
   }
   if (description == "" || description == null) {
     description = "No description submitted";
     $("#description-review-box").attr('style', 'color:navy');
+  } else {
+    $("#description-review-box").attr('style', '');
   }
 
   $("#id-review-box").attr('name', id);
@@ -131,15 +137,21 @@ function displayReviewedBox(data) {
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
-    $("#releaseDate-review-box").attr('style', 'color:navy');
+    $("#release-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#release-reviewed").attr('style', '');
   }
   if (credit == "" || credit == null) {
     credit = "No members submitted";
-    $("#albumCredit-review-box").attr('style', 'color:navy');
+    $("#credit-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#credit-reviewed").attr('style', '');
   }
   if (description == "" || description == null) {
     description = "No description submitted";
-    $("#description-review-box").attr('style', 'color:navy');
+    $("#description-reviewed").attr('style', 'color:navy');
+  } else {
+    $("#description-reviewed").attr('style', '');
   }
 
   $("#id-reviewed").attr('name', id);
