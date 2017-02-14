@@ -156,8 +156,10 @@ function populateNewSubmissionsCd(submissions){
       var releasedateValue;
       if (item['releasedate'] == "" || item['releasedate'] == null) {
         releasedateValue = "<span style=\"color:navy\">No date</span>";
+        console.log("replaced with navy");
       } else {
         releasedateValue = item['releasedate'];
+        console.log('date fine');
       }
 
 			var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">"

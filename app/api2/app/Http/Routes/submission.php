@@ -281,14 +281,21 @@ Route::group(['middleware' => 'auth'], function(){
             try{
                 $submission = Submissions::find(Input::get('id'));
                 if($submission -> is_trashed == 1) return "Trying to send a submission to the library that is in the trash. Aborting. Submission id is: " . $submission -> id;
-                else if($submisison -> status == "unreviewed") return "Trying to send a submission to the library that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
+                else if($submission -> status == "unreviewed") return "Trying to send a submission to the library that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status == "reviewed") return "Trying to send a submission to the library that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
                 else if($submission -> status == "approved") return "Trying to send a submission to the library that has not been tagged. Aborting. Submission id is: " . $submission -> id;
                 else if($submission -> status != "tagged") return "Trying to send a submission to the library that has already been tagged and sent to library. Aborting. Submission id is: " . $submission -> id;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "completed";
-                    //TODO: anything else necessary (is there anything? check if any tags have changed?)
+                    $submission -> tags = Input::get('tags');
+                    $submission -> catalog = Input::get('catalog');
+                    $submission -> format_id = Input::get('format_id');
+                    $submission -> title = Input::get('title');
+                    $submission -> artist = Input::get('artist');
+                    $submission -> credit = Input::get('credit');
+                    $submission -> label = Input::get('label');
+                    $submission -> genre = Input::get('genre');
                     $submission->save();
                     return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful" );
                     return $submission;

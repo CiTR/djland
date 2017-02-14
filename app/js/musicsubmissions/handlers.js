@@ -108,21 +108,35 @@ function add_submission_handlers(){
 		$("#approved-extrainfo").toggle();
 	});
     $("#approve-tags-button").off('click').on('click',function(e) {
-	    console.log($("#subgenre-approved").select2("val"));
-	    // addTagToSubmission($("#subgenre-approved").select2("val"));
-      var tag = $("#subgenre-approved").select2("val");
-      var id = $('#submissionspopup').attr('name');
-      var catNo = $('#catalog-approved').val();
+
+      var tag    = $("#subgenre-approved").select2("val");
+      var id     = $('#submissionspopup').attr('name');
+      var catNo  = $('#catalog-approved').val();
       var format = $('#format-approved').val();
-	  console.log(format);
-      var album = $('#album-approved').val();
+      var album  = $('#album-approved').val();
       var artist = $('#artist-approved').val();
       var credit = $('#credit-approved').val();
-      var label = $('#label-approved').val();
-      var genre = $('#genre-approved').select2("val");
-      // console.log(tag + id + catNo + format + album + artist + credit + label + genre);
+      var label  = $('#label-approved').val();
+      var genre  = $('#genre-approved').select2("val");
+
       tagReview(tag, id, catNo, format, album, artist, credit, label, genre);
   	});
+
+    $("#approve-album-button").off('click').on('click', function(e) {
+
+      var id        = $("#submissionsapprovalpopup").attr('name');
+      var catalog   = $("#catalog-tagged").val();
+      var format_id = $("#format-tagged").select2("val");
+      var album     = $("#album-tagged").val();
+      var artist    = $("#artist-tagged").val();
+      var credit    = $("#credit-tagged").val();
+      var label     = $("#label-tagged").val();
+      var genre     = $("#genre-tagged").select2("val");
+      var tag       = $("#subgenre-tagged").select2("val");
+
+      approveTags(tag, id, catalog, format_id, album, artist, credit, label, genre);
+    });
+
 	//Listener for preventing catalog # from being anything but a number
 	$("#catalog-approved").off('keypress').on('keypress',function(e){
 		var chr = String.fromCharCode(e.which);
@@ -137,6 +151,7 @@ function add_submission_handlers(){
 	$("tr.approverow").off('click').on('click',function(e){
 		$('#submissionsapprovalpopup').fadeIn(225);
 		var idSubmission = $(this).attr('name');
+    $('#submissionsapprovalpopup').attr('name', idSubmission);
 		getSubmissionDataAndDisplay(idSubmission);
     });
 	//Prevent a row from opening a submission when clicking textarea or textbox
