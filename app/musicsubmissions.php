@@ -1080,7 +1080,7 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#format-tagged").select2();
 								});
 							</script>
 							<!-- TODO: get these formats + IDs from DB table -->
@@ -1135,7 +1135,7 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#genre-tagged").select2();
 								});
 							</script>
 								<select class="js-example-basic-single vueselect" id="genre-tagged" style="width:70%;">
@@ -1159,7 +1159,7 @@
 						<div id="editTitleBox">
 							<script type="text/javascript">
 								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
+								$("#subgenre-tagged").select2();
 								});
 							</script>
 								<select class="js-example-basic-single vueselect" id="subgenre-tagged" style="width:70%;">
@@ -1234,7 +1234,7 @@
 						<button name='tagcancel' id='submissionsapprovalcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit' id='add_to_library_btn'>Add to Library</button>
+						<button id="approve-album-button" name='edit' class='submissions_submit'>Add to Library</button>
 					</div>
 				</div>
 			</div>

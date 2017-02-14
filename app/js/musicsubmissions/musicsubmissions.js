@@ -645,14 +645,14 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
 		dataType:'json',
 		data: {
 			'id':id,
-      		'tags':tag,
-      		'catalog':catNo,
-      		'format_id':format,
-      		'title':album,
-      		'artist':artist,
-      		'credit':credit,
-      		'label':label,
-      		'genre':genre
+      'tags':tag,
+      'catalog':catNo,
+      'format_id':format,
+      'title':album,
+      'artist':artist,
+      'credit':credit,
+      'label':label,
+      'genre':genre
 		},
 		async:true,
 		success:function(data){
@@ -671,14 +671,22 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
 	});
 }
 
-function approveTags(id) {
+function approveTags(tag, id, catalog, format_id, album, artist, credit, label, genre) {
 	console.log("Approving tags ... ");
 	$.ajax({
 		url: "api2/public/submissions/tolibrary",
 		type:'PUT',
 		dataType:'json',
 		data: {
-			'id':id
+			'id':id,
+      'tags':tag,
+      'catalog':catalog,
+      'format_id':format_id,
+      'title':album,
+      'artist':artist,
+      'credit':credit,
+      'label':label,
+      'genre':genre
 		},
 		async:true,
 		success:function(data){
@@ -688,12 +696,12 @@ function approveTags(id) {
 			var selector = "[name=\'" + id + "\']";
 			$(selector).fadeOut(100);
 			//TODO: Change the button and show a spinny thing
-		}//,
+		},
 		//commented out to avoid infinite loop
-		//fail:function(data){
-		//	console.log("Submitting Review Failed. Response data: " + data);
-		//	alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
-		//}
+		fail:function(data){
+			console.log("Submitting Review Failed. Response data: " + data);
+			alert("Submitting Review Failed. Please try again later. \n (is your internet connection ok?)");
+		}
 	});
 }
 
