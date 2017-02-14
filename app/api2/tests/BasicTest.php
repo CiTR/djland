@@ -13,7 +13,7 @@ class BasicTest extends TestCase
      */
     public function testBasicFunctionality()
     {
-        $this->visit('/APIinfo')
+        $this->visit('/APIinfo')    
              ->see('Welcome to DJLand API V2.0');
     }
 }

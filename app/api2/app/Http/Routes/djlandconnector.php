@@ -14,11 +14,11 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 		//?= query string style for just one show with given ID
 		Route::get('/',function(){
 			$id= Input::get('ID');
-			return show($id);
+			return ashow($id);
 		});
 		//just one show with given ID
 		Route::get('/{id}',function($id=id){
-			return show($id);
+			return ashow($id);
 		});
 	});
 	Route::group(array('prefix'=>'shows'),function(){
@@ -48,12 +48,14 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 	});
 	Route::group(array('prefix'=>'playlists'),function(){
 		Route::get('/{limit}/{offset}',function($limit=limit, $offset=offset){
+			//TODO:Update this query
 			return Show::select('id','edit_date')->playsheets()->offset($offset)->limit($limit)->get();
 		});
 		//?= query string style
 		Route::get('/{limit}/{offset}',function(){
 			$limit=Input::get('LIMIT');
 			$offset=Input::get('OFFSET');
+			//TODO:Update this query
 			return Show::select('id','edit_date')->playsheets()->offset($offset)->limit($limit)->get();
 		});
 	});
@@ -76,9 +78,10 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 //************
 //Functions
 //************
-
+//TODO:Figure out why this file is uncluded twice
+/*
 //Just one show with a given show ID
-function show($id){
+function ashow($id){
 	//First we get the needed info from the shows table
 	if(!Show::find($id)) return null;
 	$data = Show::select('id as show_id',
@@ -114,4 +117,4 @@ function playlist($id){
 	$ret = array_merge($playsheet[0]->toArray(), $podcast[0]->toArray());
 	$ret['songs'] = Playsheet::find($id)->playitems;
 	return Response::json($ret);
-}
+}*/
