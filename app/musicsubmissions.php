@@ -1231,10 +1231,10 @@
 					<br />
 					<br />
 					<div class='col2 text-right padded-right'>
-						<button name='tagcancel' id='tagcancel'>Cancel</button>
+						<button name='tagcancel' id='submissionsapprovalcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button name='edit' class='submissions_submit'>Add to Library</button>
+						<button name='edit' class='submissions_submit' id='add_to_library_btn'>Add to Library</button>
 					</div>
 				</div>
 			</div>

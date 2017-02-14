@@ -146,13 +146,13 @@ function add_submission_handlers(){
 	$("#submissionsapprovalcloser").off('click').on('click',function(e){
 		$('#submissionsapprovalpopup').fadeOut(175);
     });
-	$("#approvecancel").off('click').on('click',function(e){
+	$("#submissionsapprovalcancel").off('click').on('click',function(e){
 		$('#submissionsapprovalpopup').fadeOut(175);
     });
 	$("#tagged-extrainfo-button").off('click').on('click',function(e){
 		$("#tagged-extrainfo").toggle();
 	});
-	$("#approve_submission_btn").off('click').on('click',function(e){
+	$("#add_to_library_btn").off('click').on('click',function(e){
 		//TODO
 	});
 	//Listener for preventing catalog # from being anything but a number
@@ -205,8 +205,33 @@ function add_submission_handlers(){
 
 	});
 	//Toggling red bar for showing submissions you are going to delete
-	//TODO - this is how the membership page did it
-	$('.membership').off('change','.delete_member').on('change','.delete_member',function(e) {
+	// and green bar for approving a review
+	// Adds delete/approve classes to the row - use for applying bulk approvals/rejections
+	$('.reviewrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+	$('.reviewedrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+		if($(this).prop('checked') == true) {
+			$(this.closest('tr')).addClass('delete');
+			$(this.closest('tr')).removeClass('approve');
+			$(this.closest('tr')).find('.approve_submission').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('delete');
+		}
+	});
+	$('.reviewedrow').off('change','.approve_submission').on('change','.approve_submission',function(e) {
+		if($(this).prop('checked') == true) {
+			$(this.closest('tr')).addClass('approve');
+			$(this.closest('tr')).removeClass('remove');
+			$(this.closest('tr')).find('.delete_submission').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('approve');
+		}
+	});
+	$('.tagrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+	$('.approverow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
 		$(this.closest('tr')).toggleClass('delete');
 	});
 }

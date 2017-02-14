@@ -1817,6 +1817,21 @@ table { border-collapse: collapse; }
 .submission_row.delete{
 	background-color:red;
 }
+.reviewrow.delete{
+	background-color:red;
+}
+.reviewedrow.delete{
+	background-color:red;
+}
+.reviewedrow.approve{
+	background-color:green;
+}
+.tagrow.delete{
+	background-color:red;
+}
+.approverow.delete{
+	background-color:red;
+}
 #submisison_year{
 	margin-left:auto;
 	margin-right:auto;
