@@ -10,7 +10,7 @@ CREATE TABLE `submissions` (
   `compilation` tinyint(1) DEFAULT NULL,
   `digitized` tinyint(1) DEFAULT NULL,
   `status` tinytext,
-  'is_trashed' tinyint(1) DEFAULT 0,
+  `is_trashed` tinyint(1) DEFAULT 0,
   `artist` tinytext,
   `title` tinytext,
   `label` tinytext,
