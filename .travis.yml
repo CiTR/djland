@@ -6,7 +6,11 @@ services:
   - mysql
 
 before_install:
+  #setup database
   - mysql -e 'CREATE DATABASE djland;'
+  - cat setup/database_structures/*.sql > setup.sql
+  - mysql -u root < setup.sql
+  #setup laravel api
   - cd app/api2
   - cp .env.travis .env
   - cp phpunit.xml.sample phpunit.xml
