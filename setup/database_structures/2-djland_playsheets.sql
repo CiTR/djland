@@ -18,7 +18,7 @@ CREATE TABLE `playsheets` (
   `star` tinyint(4) DEFAULT NULL,
   `crtc` int(11) DEFAULT NULL,
   `lang` text CHARACTER SET latin1,
-  `type` varchar(45) CHARACTER SET latin1z DEFAULT NULL,
+  `type` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
   `show_name` tinytext CHARACTER SET latin1,
   `socan` varchar(1) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`id`),
