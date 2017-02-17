@@ -3,17 +3,17 @@ language: php
 php:
   - 5.6
 
-before_script:
+before_install:
   - cd app/api2
   - mkdir bootstrap/cache
   - cp .env.travis .env
   - composer self-update
 
- install:
+install:
   - composer install --no-interaction
   - php artisan key:generate
 
-## Cache composer
+# Cache composer
 cache:
   directories:
     - $HOME/.composer/cache
