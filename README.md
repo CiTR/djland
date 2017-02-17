@@ -1,6 +1,6 @@
 # DJLAND
 
-![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)](https://travis-ci.org/CiTR/djland.svg?branch=master)
+![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)
 
 This branch consists of work done as part of a UBC Capstone Project, 2016/2017.
 
