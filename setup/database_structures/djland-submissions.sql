@@ -34,4 +34,3 @@ CREATE TABLE `submissions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
-SELECT * FROM `dev.djland`.types_format;
