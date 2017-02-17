@@ -6,6 +6,7 @@ php:
 before_install:
   - cd app/api2
   - cp .env.travis .env
+  - cp phpunit.xml.sample phpunit.xml
   - composer self-update
 
 install:
