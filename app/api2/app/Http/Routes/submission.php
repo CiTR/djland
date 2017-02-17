@@ -1,62 +1,90 @@
 <?php
 
 use App\Submissions as Submissions;
-use App\Submissions_Archive as Archive;
+use App\SubmissionsArchive as Archive;
 use App\Submissions_Rejected as Rejected;
 use App\Member as Member;
 use Carbon\Carbon;
+use Validator as Validator;
 
 //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
-    try{
-        //TODO: track songlist properly (new table?)
-        $songlist_id = 0;
-        //TODO: Maintain genre data integrity
-        //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
-        //foreach($primary_genres as $genre) {
-        //    if(Input::get('genre') == $genre){
-                $ingenre = Input::get('genre');
-        //    } else {
-        //        return "Invalid genre specified";
-        //    }
-        //Default to "Self released" if the label is not specified
-        if(Input::get('label') == null){
-            $label = "Self-released";
-        } else{
-            $label = Input::get('label');
+
+    $rules = array(
+            'artist' =>'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'title' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'genre' => 'required',
+            'email' => 'required|email',
+            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'credit' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'releasedate' => 'date_format:Y-m-d',
+            'cancon' => 'required|boolean',
+            'femcon' => 'required|boolean',
+            'local' => 'required|boolean',
+            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'art_url' => 'url',
+            'songlist' => 'integer',
+            //TODO: get from DB
+            'format_id' => 'in:1,2,3,4,5,6,7,8'
+        );
+        //validate incoming data
+    $validator = Validator::make(Input::all(),$rules);
+    
+    if(!$validator->fails()){
+        try{
+            //TODO: track songlist properly (new table?)
+            $songlist_id = 0;
+            //TODO: Maintain genre data integrity
+            //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+            //foreach($primary_genres as $genre) {
+            //    if(Input::get('genre') == $genre){
+                    $ingenre = Input::get('genre');
+            //    } else {
+            //        return "Invalid genre specified";
+            //    }
+            //Default to "Self released" if the label is not specified
+            if(Input::get('label') == null){
+                $label = "Self-released";
+            } else{
+                $label = Input::get('label');
+            }
+            $newsubmission = Submissions::create([
+                //TODO: Refuse if req'd parameters not included or are null
+                'artist' => Input::get('artist'),
+                'title' => Input::get('title'),
+                'genre' => $ingenre,
+                'email' => Input::get('email'),
+                'label' => $label,
+                'location' => Input::get('location'),
+                'credit' => Input::get('credit'),
+                //This date is allowed to be null here, don't have to check
+                'releasedate' => Input::get('releasedate'),
+                'cancon' => Input::get('cancon'),
+                'femcon' => Input::get('femcon'),
+                'local' => Input::get('local'),
+                'playlist' => 0,
+                'compilation' => 0,
+                'digitized' => 0,
+                'description' => Input::get('description'),
+                'art_url' => Input::get('art_url'),
+                'songlist' => $songlist_id,//Input::get('songlist'),
+                'format_id' => Input::get('format_id'),
+                'status' => 'unreviewed',
+                'submitted' => Carbon::today()->toDateString(),
+                'is_trashed' => 0,
+                'staff_comment' => "",
+                'review_comments' => "",
+                //TODO: determine what we're doing with this column
+                'crtc' => "20"
+            ]);
+            return $newsubmission;
+        } catch(Exception $e){
+            return $e->getMessage();
         }
-        $newsubmission = Submissions::create([
-            'artist' => Input::get('artist'),
-            'title' => Input::get('title'),
-            'genre' => $ingenre,
-            'email' => Input::get('email'),
-            'label' => $label,
-            'location' => Input::get('location'),
-            'credit' => Input::get('credit'),
-            //This date is allowed to be null here, don't have to check
-            'releasedate' => Input::get('releasedate'),
-            'cancon' => Input::get('cancon'),
-            'femcon' => Input::get('femcon'),
-            'local' => Input::get('local'),
-            'playlist' => 0,
-            'compilation' => 0,
-            'digitized' => 0,
-            'description' => Input::get('description'),
-            'art_url' => Input::get('art_url'),
-            'songlist' => $songlist_id,//Input::get('songlist'),
-            'format_id' => Input::get('format_id'),
-            'status' => 'unreviewed',
-            'submitted' => Carbon::today()->toDateString(),
-            'is_trashed' => 0,
-            'staff_comment' => "",
-            'review_comments' => "",
-            //TODO: determine what we're doing with this column
-            'crtc' => "20"
-        ]);
-        return $newsubmission;
-    } catch(Exception $e){
-        return $e->getMessage();
+    } else {
+        return response($validator->errors()->all(),422);
     }
 });
 

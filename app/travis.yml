@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 5.6
+
+before_script:
+  - cd app/api2
+  - mkdir bootstrap/cache
+  - cp .env.travis .env
+  - composer self-update
+
+ install:
+  - composer install --no-interaction
+  - php artisan key:generate
+
+## Cache composer
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+script:
+  - vendor/bin/phpunit
+
+notifications:
+  email:
+    - technicalmanager@citr.ca
