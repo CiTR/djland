@@ -1,4 +1,6 @@
-DJLAND
+# DJLAND
+
+![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)](https://travis-ci.org/CiTR/djland.svg?branch=master)
 
 This branch consists of work done as part of a UBC Capstone Project, 2016/2017.
 
@@ -47,4 +49,3 @@ The setup files are not currently up to date. They will be updated to reflect ch
 The data structures found in the setup folder are up to date however, so if you wish to set up your database, and ask for further steps feel free to do so :)
 
 Developed and maintained by CiTR - www.citr.ca
-
