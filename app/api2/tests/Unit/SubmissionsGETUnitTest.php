@@ -41,6 +41,8 @@ class SubmissionsGETUnitTest extends TestCase
                 //'/submissions/getaccepted'
                 ];
         foreach($routes as $route){
+            //Uncomment to see which of the above routes this test fails on
+            //echo $route;
             $response = $this->call('GET',$route);
             $this->assertEquals(200, $response->getStatusCode());
             $this->visit($route)
@@ -55,10 +57,11 @@ class SubmissionsGETUnitTest extends TestCase
     public function testGETRoutesGarbage()
     {
         $response = $this->call('GET', '/submissions/-1');
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(422, $response->getStatusCode());
         $response = $this->call('GET', '/submissions/100000000000000000');
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->seeJSON();
         $response = $this->call('GET', '/submissions/a');
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(422, $response->getStatusCode());
     }
 }

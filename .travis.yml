@@ -12,7 +12,7 @@ before_install:
   - mysql -u root djland < setup.sql
   #setup laravel api
   - cd app/api2
-  - cp .env.travis .env
+  - cp .env.sample .env
   - cp phpunit.xml.sample phpunit.xml
   - composer self-update
 

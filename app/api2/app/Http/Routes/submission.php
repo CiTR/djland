@@ -31,7 +31,7 @@ Route::post('/submission', function(){
         );
         //validate incoming data
     $validator = Validator::make(Input::all(),$rules);
-    
+
     if(!$validator->fails()){
         try{
             //TODO: track songlist properly (new table?)
@@ -92,45 +92,68 @@ Route::post('/submission', function(){
 Route::group(['middleware' => 'auth'], function(){
 //List all the submissions
     Route::get('/submissions', function(){
-        return Response::json(Submissions::all());
+        $result = Response::json(Submissions::all());
+        if(!$result->isEmpty()) return Response::json( $result );
+        else return Response::json();
     });
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
+        $data = ['id' => $id];
+        
+        $rules = array('id' => 'integer|min:1');
+        $validator = Validator::make($data,$rules);
+        if($validator->fails()) return( response("Error: id out of range (must be 1 or greater)",422));
+
         $submission = Submissions::find($id);
-        $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
-        if(count($name) != 0){
-            $name = $name[0];
-            $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+        if($submission == null ) return Response::json();
+        if($submission->isEmpty() ) return Response::json();
+        else{
+            $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
+            if(count($name) != 0){
+                $name = $name[0];
+                $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+            }
+            else $submission -> reviewed = null;
+
+            return Response::json($submission);
         }
-        else $submission -> reviewed = null;
-        return $submission;
-        //return Response::json($submission);
+
     });
     Route::group(['prefix'=>'submissions'],function(){
         //Get list of submissions that are unreviewed
         Route::get('/bystatus/unreviewed/', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            $result = Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get();
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that are unreviewed and are CD format
         Route::get('/bystatus/unreviewed/cd', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that are unreviewed and are MP3 format
         Route::get('/bystatus/unreviewed/mp3', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that are unreviewed and are any other format
         Route::get('/bystatus/unreviewed/other', function(){
             $status = 'unreviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that are reviewed but the submission is not approved
         Route::get('/bystatus/reviewed', function(){
             $status = 'reviewed';
-            return Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that are reviewed but the submission is not approved and are cds
         Route::get('/bystatus/reviewed/cd', function(){
@@ -144,7 +167,8 @@ Route::group(['middleware' => 'auth'], function(){
                 }
                 else $submission -> reviewed = null;
             }
-            return Response::json( $submissions );
+            if(!$submissions->isEmpty()) return Response::json( $submissions );
+            else return Response::json();
         });
         //Get list of submissions that are reviewed but the submission is not approved and are mp3s
         Route::get('/bystatus/reviewed/mp3', function(){
@@ -158,7 +182,8 @@ Route::group(['middleware' => 'auth'], function(){
                 }
                 else $submission -> reviewed = null;
             }
-            return Response::json( $submissions );
+            if(!$submissions->isEmpty()) return Response::json( $submissions );
+            else return Response::json();
         });
         //Get list of submissions that are reviewed but the submission is not approved and are any other format
         Route::get('/bystatus/reviewed/other', function(){
@@ -172,68 +197,89 @@ Route::group(['middleware' => 'auth'], function(){
                 }
                 else $submission -> reviewed = null;
             }
-            return Response::json( $submissions );
+            if(!$submissions->isEmpty()) return Response::json( $submissions );
+            else return Response::json();
         });
         //Get list of submissions that need to be tagged
         Route::get('/bystatus/tagged',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that need to be tagged and are cds
         Route::get('/bystatus/tagged/cd',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that need to be tagged and are mp3s
         Route::get('/bystatus/tagged/mp3',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of submissions that need to be tagged and are in any other format
         Route::get('/bystatus/tagged/other',function(){
             $status = 'tagged';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of reviewed submissions that are approved and need to be tagged
         Route::get('/bystatus/approved', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are cds
         Route::get('/bystatus/approved/cd', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',1)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are mp3s
         Route::get('/bystatus/approved/mp3', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Get list of reviewed submissions that are approved and need to be tagged and are in any other format
         Route::get('/bystatus/approved/other', function(){
             $status = 'approved';
-            return Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            $result = Response::json( Submissions::where('status','=',$status)->where('format_id','!=',1)->where('format_id','!=',6)->where('is_trashed', '=', 0)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         Route::get('/bystatus/trashed', function(){
-            return Response::json( Submissions::where('is_trashed', '=', 1)->get() );
+            $result = Response::json( Submissions::where('is_trashed', '=', 1)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Generic search ending - specify what we're looking for with 'status', 'format' etc
         Route::get('/search', function(){
-            return;
+            return Response::json();
         });
         // Search accepted digital submissions in a time range
         Route::get('/getaccepted', function(){
             $date1 = Input::get('date1');
             $date2 = Input::get('date2');
-            return Response::json( Archive::where('submitted','>=',$date1)->where('submitted','=<',$date2)->get() );
+            $result = Response::json( Archive::where('submitted','>=',$date1)->where('submitted','=<',$date2)->get() );
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         // TODO: Search past submissions (rejected & archived) on admins page
         Route::get('/getrejectedandarchived', function(){
-            return;
+            return Response::json();
         });
         // TODO: Search past rejected submissions
         Route::get('/rejected', function(){
-            return;
+            return Response::json();
         });
         //Post to this route when a user reviews a new submisison
         //Requires: id (ie. submission id), review_comments(text), and approved (0 or 1)
