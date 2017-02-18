@@ -99,21 +99,22 @@ Route::group(['middleware' => 'auth'], function(){
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
         $data = ['id' => $id];
-        
+
         $rules = array('id' => 'integer|min:1');
         $validator = Validator::make($data,$rules);
         if($validator->fails()) return( response("Error: id out of range (must be 1 or greater)",422));
 
         $submission = Submissions::find($id);
+        //var_dump($submission);
         if($submission == null ) return Response::json();
-        if($submission->isEmpty() ) return Response::json();
+        //if( $submission->isEmpty() ) return Response::json();
         else{
             $name = Member::select('firstname','lastname')->where('id','=', $submission->reviewed)->get()->toArray();
             if(count($name) != 0){
                 $name = $name[0];
-                $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                $submission->reviewed = $name['firstname'] . " " . $name['lastname'];
             }
-            else $submission -> reviewed = null;
+            else $submission->reviewed = null;
 
             return Response::json($submission);
         }
