@@ -12,13 +12,14 @@ use Validator as Validator;
 Route::post('/submission', function(){
 
     $rules = array(
+        //TODO: every field that is an input doesn't accept carriage returns
             'artist' =>'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'title' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'genre' => 'required',
             'email' => 'required|email',
             'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'credit' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'releasedate' => 'date_format:Y-m-d',
             'cancon' => 'required|boolean',
             'femcon' => 'required|boolean',
@@ -98,8 +99,8 @@ Route::group(['middleware' => 'auth'], function(){
     });
     //Get all of a submission's info based on the submission id
     Route::get('/submissions/{id}', function($id){
+        //check that it's a valid integer
         $data = ['id' => $id];
-
         $rules = array('id' => 'integer|min:1');
         $validator = Validator::make($data,$rules);
         if($validator->fails()) return( response("Error: id out of range (must be 1 or greater)",422));
@@ -118,7 +119,6 @@ Route::group(['middleware' => 'auth'], function(){
 
             return Response::json($submission);
         }
-
     });
     Route::group(['prefix'=>'submissions'],function(){
         //Get list of submissions that are unreviewed

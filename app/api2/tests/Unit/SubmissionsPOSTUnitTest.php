@@ -88,6 +88,8 @@ class SubmissionsPOSTUnitTest extends TestCase
         $this->assertEquals(422, $response->getStatusCode());
     }
 
+    // Try the entire text of Hamlet or something stupid in a text field
+    // Try mani non-ascii chars
     public function testPOSTRoutesWithIllegalFields(){
 
     }

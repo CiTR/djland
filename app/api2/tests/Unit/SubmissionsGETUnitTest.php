@@ -12,6 +12,7 @@ class SubmissionsGETUnitTest extends TestCase
     use DatabaseTransactions;
 
     /**
+    *
      * Tests to see if all the GET routes are resolving as expeceted
      *
      * @return void
@@ -50,7 +51,8 @@ class SubmissionsGETUnitTest extends TestCase
         }
     }
     /**
-     * Tests to see if GET routes with garbage parameters return 500 errors
+     * Tests to see if GET routes with garbage parameters
+     * return the expected response
      *
      * @return void
      */
