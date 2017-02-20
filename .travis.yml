@@ -26,6 +26,7 @@ cache:
     - $HOME/.composer/cache
 
 script:
+    #TODO: add coverage and QUnit to travis CI tests
   - vendor/bin/phpunit
 
 notifications:
