@@ -17,7 +17,7 @@ class SubmissionsGETUnitTest extends TestCase
      *
      * @return void
      */
-    public function testGETRoutesJSON()
+    public function testSubmissionsGETRoutesJSON()
     {
         $routes=['/submissions',
                 '/submissions/5',
@@ -56,7 +56,7 @@ class SubmissionsGETUnitTest extends TestCase
      *
      * @return void
      */
-    public function testGETRoutesGarbage()
+    public function testSubmissionsGETRoutesGarbage()
     {
         $response = $this->call('GET', '/submissions/-1');
         $this->assertEquals(422, $response->getStatusCode());
@@ -65,5 +65,74 @@ class SubmissionsGETUnitTest extends TestCase
         $this->seeJSON();
         $response = $this->call('GET', '/submissions/a');
         $this->assertEquals(422, $response->getStatusCode());
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueAllSubmissions(){
+        //TODO: fill database with something so that it's not empty
+        $response = $this->call('GET', 'submissions/')
+        $expectedKeyValue = array(
+            'id' => integer,
+            ''
+        );
+        foreach($response as $item){
+            foreach($expectedKeyValue as $key){
+                //Test that the key is as expected
+                assertEquals(keyOf($response[$item][$key]) == $key);
+                //Assert that the value of that key is of the expected data type
+                assertEquals(typeOf($response[$item[$key]) == typeOf($expectedKeyValue[$key]));
+            }
+        }
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByID(){
+        //TODO: fill database with something so that it's not empty
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByStatusUnreviewed(){
+        //TODO: fill database with something so that it's not empty
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByStatusReviewed(){
+        //TODO: fill database with something so that it's not empty
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByStatusApproved(){
+        //TODO: fill database with something so that it's not empty
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByStatusTagged(){
+        //TODO: fill database with something so that it's not empty
+    }
+    /**
+     * Tests to see if GET routes return the correct data fields
+     *
+     * @return void
+     */
+    public function testSubmissionsGETRoutesKeyValueByStatusCompleted(){
+        //TODO: fill database with something so that it's not empty
     }
 }

@@ -304,7 +304,7 @@ Route::group(['middleware' => 'auth'], function(){
                     return Response::json("Update submission #" . $submission -> id . " from unreviewd to reviewed successful");
                 }
             } catch (Exception $e){
-                return $e->getMessage() ;
+                return $e->getMessage();
             }
         });
         //Post to this route when staff approve a review for a submisison

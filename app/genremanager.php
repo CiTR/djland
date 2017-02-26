@@ -45,23 +45,14 @@
 						<thead>
 							<tr id="headerrow" style="display: table-row;">
 								<th>Name</th>
+								<th>CRTC Category</th>
 								<th>Created By</th>
 								<th>Modified By</th>
 								<th>Last Modified</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
 						</thead>
-						<tbody>
-							<?php foreach($djland_primary_genres as $genre){
-								printf("<tr class=\"playitem border genrerow\">
-								<td class=\"submission_row_element name\">$genre</td>
-								<td class=\"submission_row_element email\">Digital Library</td>
-								<td class=\"submission_row_element primary_phone\">Andy</td>
-								<td class=\"submission_row_element submission_type\">Nov 14th, 2016</td>
-								<td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete_0\"><div class=\"check hidden\">❏</div></td>
-								</tr>");
-							}
-							?>
+						<tbody id="genrelisting">
 						</tbody>
 					</table>
 				</div>
@@ -83,7 +74,6 @@
 							</tr>
 						</thead>
 						<tbody id=subgenrelisting>
-
 						</tbody>
 					</table>
 				</div>
@@ -91,16 +81,16 @@
 		</div>
 
 		<div id="genredialog" title="Edit Genre">
-  			<textarea id="genrebox">Genre Here</textarea>
+  			<textarea id="editgenrebox">Genre Here</textarea>
 		</div>
 		<div id="subgenredialog" title="Edit Subgenre">
-			<textarea id="subgenrebox">Subgenre Here</textarea>
+			<textarea id="editsubgenrebox">Subgenre Here</textarea>
 		</div>
 		<div id="addgenredialog" title="Add Genre">
-  			<textarea id="genrebox">Genre Here</textarea>
+  			<textarea id="addgenrebox">Genre Here</textarea>
 		</div>
 		<div id="addsubgenredialog" title="Add Subgenre">
-			<textarea id="subgenrebox">Subgenre Here</textarea>
+			<textarea id="addsubgenrebox">Subgenre Here</textarea>
 		</div>
 	</body>
 </html>
