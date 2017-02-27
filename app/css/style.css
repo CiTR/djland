@@ -1588,6 +1588,16 @@ table { border-collapse: collapse; }
 }
 
 /*----------------------------*/
+/*----Genre manager CSS ------*/
+/*----------------------------*/
+.genrerow.delete {
+	background-color: red;
+}
+.subgenrerow.delete {
+	background-color: red;
+}
+
+/*----------------------------*/
 /*----New Music Submission CSS RULES----*/
 /*----------------------------*/
 
@@ -1815,7 +1825,7 @@ table { border-collapse: collapse; }
 	background-color:blue;
 }
 .submission_row.delete{
-	background-color:red;
+	background-color:red;delete
 }
 .reviewrow.delete{
 	background-color:red;

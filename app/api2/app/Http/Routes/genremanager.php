@@ -4,7 +4,7 @@ use App\Genre as Genre;
 use App\Subgenre as Subgenre;
 use Validator as Validator;
 
-Route::group(['middleware' => 'auth'], function(){
+//Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix'=>'genres'], function(){
         //Get list of genres
         Route::get('/', function(){
@@ -34,42 +34,48 @@ Route::group(['middleware' => 'auth'], function(){
           * only staff can update the genre listings even if they
           * figured out how to API
           */
-        Route::group(['middleware' => 'staff'], function(){
+        //Route::group(['middleware' => 'staff'], function(){
             //Create a genre
             Route::post('/', function(){
-                $rules = array(
-                    'genre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
-                );
-                $validator = Validator::make(Input::all(), $rules);
-                if($validator->fails()) return response($validator->errors()->all(),422);
-                else{
-                    try{
-                        $genre = Genre::create([
-                            'genre' => Input::get('genre'),
-                            'default_crtc_category' => 20,
-                            'created_by' => $_SESSION['sv_id'],
-                            'updated_by' => $_SESSION['sv_id']
-                        ]);
-                        return Response::json($genre);
-                    } catch(Exception $e){
-                        return $e->getMessage();
+                try{
+                    $messages = array('genre.unique' => 'There is already this genre in the system! Please choose a unique genre name.');
+                    $rules = array(
+                        'genre' => 'required|unique:genres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+                        'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
+                    );
+                    $validator = Validator::make(Input::all(), $rules, $messages);
+                    if($validator->fails()) return response($validator->errors()->all(),422);
+                    else{
+
+                            $genre = Genre::create([
+                                'genre' => Input::get('genre'),
+                                'default_crtc_category' => Input::get('default_crtc_category'),
+                                'created_by' => $_SESSION['sv_id'],
+                                'updated_by' => $_SESSION['sv_id']
+                            ]);
+                            return Response::json($genre);
                     }
+                } catch(Exception $e){
+                    return $e->getMessage();
                 }
             });
             //Update a genre given it's id
             Route::put('/', function(){
+                //$messages = array('genre.unique' => 'There is already this genre in the system! Please choose a unique genre name.');
                 $rules = array(
                     'id' => 'required|integer|min:1',
-                    'genre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
+                    'genre' => 'required|unique:genres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+                    'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
                 );
-                $validator = Validator::make(Input::all(), $rules);
+                $validator = Validator::make(Input::all(), $rules);//, $messages);
+                dd($validator->errors());
                 if(!$validator->fails()) return response($validator->errors()->all(),422);
                 else {
                     try{
                         $genre = Genre::find(Input::get('id'));
                         $prev_genre = $genre->genre;
                         $genre->genre = Input::get('genre');
-                        $genre->modified_by = $_SESSION['sv_id'];
+                        $genre->updated_by = $_SESSION['sv_id'];
                         $genre->save();
                         return Response::json("Update genre " . $prev_genre . " to " . Input::get('genre'));
                     } catch(Exception $e){
@@ -94,7 +100,7 @@ Route::group(['middleware' => 'auth'], function(){
                     }
                 }
             });
-        });
+        //});
     });
 
     Route::group(['prefix'=>'subgenres'], function(){
@@ -132,8 +138,9 @@ Route::group(['middleware' => 'auth'], function(){
                 try{
                     $subgenre = Subgenre::create([
                         'subgenre' => Input::get('subgenre'),
+                        'parent_genre_id' => Input::get('parent_genre_id'),
                         'created_by' => $_SESSION['sv_id'],
-                        'upddated_by' => $_SESSION['sv_id']
+                        'updated_by' => $_SESSION['sv_id']
                     ]);
                     return Response::json($subgenre);
                 } catch(Exception $e){
@@ -180,4 +187,4 @@ Route::group(['middleware' => 'auth'], function(){
             }
         });
     });
-});
+//});

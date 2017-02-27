@@ -78,7 +78,7 @@ function add_submission_handlers(){
 		$('#reviewed_submissions_view').fadeOut(175);
 	});
 	$("#approve_review_btn").off('click').on('click',function(e){
-		var id = $("#id-reviewed").attr('name')
+		var id = $("#id-reviewed").attr('name');
 		approveReview(id);
 	});
 	$("#trash_review_btn").off('click').on('click',function(e){
@@ -226,7 +226,7 @@ function add_submission_handlers(){
 		$(this.closest('tr')).toggleClass('delete');
 	});
 	$('.reviewedrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
-		if($(this).prop('checked') == true) {
+		if($(this).prop('checked') === true) {
 			$(this.closest('tr')).addClass('delete');
 			$(this.closest('tr')).removeClass('approve');
 			$(this.closest('tr')).find('.approve_submission').prop('checked', false);
@@ -235,7 +235,7 @@ function add_submission_handlers(){
 		}
 	});
 	$('.reviewedrow').off('change','.approve_submission').on('change','.approve_submission',function(e) {
-		if($(this).prop('checked') == true) {
+		if($(this).prop('checked') === true) {
 			$(this.closest('tr')).addClass('approve');
 			$(this.closest('tr')).removeClass('remove');
 			$(this.closest('tr')).find('.delete_submission').prop('checked', false);

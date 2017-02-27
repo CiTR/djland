@@ -80,17 +80,33 @@
 			</div>
 		</div>
 
-		<div id="genredialog" title="Edit Genre">
-  			<textarea id="editgenrebox">Genre Here</textarea>
+		<div id="editgenredialog" title="Edit Genre">
+  			<input id="editgenrebox"></input>
+			CRTC Category:
+			<select id="editgenrecrtc">
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+			</select>
 		</div>
-		<div id="subgenredialog" title="Edit Subgenre">
-			<textarea id="editsubgenrebox">Subgenre Here</textarea>
+		<div id="editsubgenredialog" title="Edit Subgenre">
+			<input id="editsubgenrebox"></input>
 		</div>
 		<div id="addgenredialog" title="Add Genre">
-  			<textarea id="addgenrebox">Genre Here</textarea>
+  			<input id="addgenrebox" placeholder="Genre Here"></input>
+			CRTC Category:
+			<select id="addgenrecrtc">
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+			</select>
 		</div>
 		<div id="addsubgenredialog" title="Add Subgenre">
-			<textarea id="addsubgenrebox">Subgenre Here</textarea>
+			<input id="addsubgenrebox" placeholder="Subgenre Here"></input>
 		</div>
 	</body>
 </html>
