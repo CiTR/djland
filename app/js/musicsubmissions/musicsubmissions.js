@@ -194,11 +194,21 @@ $("#undo_trash_submission").click(function(e){
 /*
  * Listeners for submissions admin page - viewing past submissions
  */
-$("#submitDates_Approved").click(function(e){
-	var date1 = $("#from").val();
-	var date2 = $("#to").val();
-  getAndPopulateAcceptedSubmissions(date1, date2);
-});
+function SubmitDates_Approved(){
+	var date1 = $("#new-from").val();
+	var date2 = $("#new-to").val();
+
+	if(date1 == null || date2 == null) {
+		alert("Please enter a start date and an end date");
+	}
+	else if(date1 > date2) {
+		alert("Start date must be earlier than end date");
+	}
+	else {
+		getAndPopulateAcceptedSubmissions(date1, date2);
+	}
+}
+
 $("#submitDates_Past").click(function(e){
 	// TODO: get search variables
   getAndPopulatePastSubmissions();
@@ -208,25 +218,34 @@ $("#submitDates_Past").click(function(e){
 // on admins page, search past accepted submissions by date
 function getAndPopulateAcceptedSubmissions(date1, date2){
 	$.ajax({
-		url: "api2/public/submissions/getaccepted",
-		type:'GET',
-		dataType:'json',
+		url: "api2/public/submissions/bystatus/accepted",
+		type: 'GET',
+		dataType: 'json',
 		data: {
 			'date1':date1,
 			'date2':date2
 		},
+		async: true,
     success: function(data) {
+			//clear out any rows already in the table
+			$("tbody[name='pastAcceptedSubmissions']").empty();
+			var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+			$("tbody[name='pastAcceptedSubmissions']").append(header);
+
 			if(data[0] == null){
 				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 				$("tbody[name='pastAcceptedSubmissions']").append(markup);
 			} else{
 				for(var number in data) {
 					var item = (data[number]);
-					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + item['cancon'] + " </td><td class=\"submission_row_element\"> " + item['femcon'] + " </td><td class=\"submission_row_element\"> " + item['local'] + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
 					$("tbody[name='pastAcceptedSubmissions']").append(markup);
 				}
 			}
-    }
+    },
+		fail:function(data){
+			console.log("Getting archived submissions failed. Response data: " + data);
+		}
   });
 }
 

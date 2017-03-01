@@ -1286,7 +1286,7 @@
 						<br>
 					</div>
 					<div id="col1">
-						<button id="submitDates_Approved">Generate Listing</button>
+						<button id="submitDates_Approved" onclick="SubmitDates_Approved()">Generate Listing</button>
 					</div>
 					<div id="submission_result" class="right overflow_auto height_cap" name="search">
 						<table id="submission_table" name="search">
@@ -1295,6 +1295,9 @@
 									<th>Artist</th>
 									<th>Album</th>
 									<th>Date of Submission</th>
+									<th>Cancon</th>
+									<th>Femcon</th>
+									<th>Local</th>
 									<th>Contact Info</th>
 								</tr>
 							</tbody>
