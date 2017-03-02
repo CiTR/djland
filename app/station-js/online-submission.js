@@ -76,6 +76,13 @@ function submitForm() {
   }
   */
 
+  // Check that tracks have all the right things
+  var tracks = $("#submit-field").children();
+  if (tracks.length < 1) {
+    missing.push("\n• Music files to upload")
+    success = false;
+  }
+
   if (success) {
     /*
     var submission = document.getElementById("submit-button-div");
@@ -83,7 +90,7 @@ function submitForm() {
     */
     var i = createSubmission("MP3");
   } else {
-    var alertString = "You are missing the following fields:";
+    var alertString = "You are missing the following:";
     for (var i = 0; i < missing.length; i++) {
       alertString += missing[i];
     }

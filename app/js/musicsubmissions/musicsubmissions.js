@@ -752,14 +752,23 @@ function submitForm() {
   }
   */
 
+  // Check that tracks have all the right things
+  var tracks = $("#submit-field").children();
+  if (tracks.length < 1) {
+    missing.push("\n• Music files to upload")
+    success = false;
+  }
+
+/*
+  for (var i = 0; i < tracks.length; i++) {
+    console.log(tracks.item(i).children(".track-number-field"));
+  }
+  */
+
   if (success) {
-    /*
-    var submission = document.getElementById("submit-button-div");
-    submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-    */
     createSubmission(format);
   } else {
-    var alertString = "You are missing the following fields:";
+    var alertString = "You are missing the following:";
     for (var i = 0; i < missing.length; i++) {
       alertString += missing[i];
     }
@@ -826,7 +835,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track number field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "track-number-label");
-  childNode.appendChild(document.createTextNode("Track number:"));
+  childNode.appendChild(document.createTextNode("★ Track number:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
@@ -837,7 +846,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track name field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
-  childNode.appendChild(document.createTextNode("Track name:"));
+  childNode.appendChild(document.createTextNode("★ Track name:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
