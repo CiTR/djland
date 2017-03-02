@@ -386,7 +386,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::put('/trash', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
-              $submission -> is_trashed = 1;
+              $submission->is_trashed = 1;
               $submission->save();
               return Response::json("Update submission #" . $submission -> id . " to trashed");
 
@@ -398,7 +398,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::put('/restore', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
-              $submission -> is_trashed = 0;
+              $submission->is_trashed = 0;
               $submission->save();
               return Response::json("Update submission #" . $submission -> id . " from trashed to restored");
 
