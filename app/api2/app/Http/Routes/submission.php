@@ -270,15 +270,15 @@ Route::group(['middleware' => 'auth'], function(){
             return Response::json();
         });
         // Search accepted digital submissions in a time range
-        Route::get('/getaccepted', function(){
+        Route::get('/bystatus/accepted', function(){
             $date1 = Input::get('date1');
             $date2 = Input::get('date2');
-            $result = Response::json( Archive::where('submitted','>=',$date1)->where('submitted','=<',$date2)->get() );
+            $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->get();
             if(!$result->isEmpty()) return Response::json( $result );
             else return Response::json();
         });
         // TODO: Search past submissions (rejected & archived) on admins page
-        Route::get('/getrejectedandarchived', function(){
+        Route::get('/bystatus/rejectedandarchived', function(){
             return Response::json();
         });
         // TODO: Search past rejected submissions
