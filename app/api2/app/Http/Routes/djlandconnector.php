@@ -24,14 +24,14 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 	Route::group(array('prefix'=>'shows'),function(){
 		//Return list of shows in LIMIT/OFFSET format
 		Route::get('/{LIMIT}/{OFFSET}',function($limit=LIMIT,$offset=OFFSET){
-			return Show::select('id','edit_date')->offset($offset)->limit($limit)->get();
+			return Show::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 		//?= query string style for LIMIT/OFFSET format
 		Route::get('/', function(){
 			//Return list of shows in LIMIT/OFFSET FORMAT
 			$limit=Input::get('LIMIT');
 			$offset=Input::get('OFFSET');
-			return Show::select('id','edit_date')->offset($offset)->limit($limit)->get();
+			return Show::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 	});
 	//Returns a playlist given playlist ID
@@ -48,13 +48,13 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 	});
 	Route::group(array('prefix'=>'playlists'),function(){
 		Route::get('/{limit}/{offset}',function($limit=limit, $offset=offset){
-			return Show::select('id','edit_date')->playsheets()->offset($offset)->limit($limit)->get();
+			return Playsheet::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 		//?= query string style
-		Route::get('/{limit}/{offset}',function(){
+		Route::get('/',function(){
 			$limit=Input::get('LIMIT');
 			$offset=Input::get('OFFSET');
-			return Show::select('id','edit_date')->playsheets()->offset($offset)->limit($limit)->get();
+			return Playsheet::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 	});
 	Route::group(array('prefix'=>'schedule'),function(){
@@ -102,9 +102,9 @@ function show($id){
 		  'secondary_genre_tags as podcast_keywords',
 		  'image as podcast_image_url',
 		  'podcast_xml')->where('id','=',$id)->get();
-	//And all the social links for that show from the social table
-	$data['social_links'] = Social::select('social_name','social_url')->where('show_id','=',$id)->get();
-	return Response::json( $data );
+    //And all the social links for that show from the social table
+	$data[0]['social_links'] = Social::select('social_name as type' ,'social_url as url')->where('show_id','=',$id)->get();
+	return Response::json($data[0]);
 }
 //Get playlist given  playlist ID
 function playlist($id){
