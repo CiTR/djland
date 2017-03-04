@@ -4,10 +4,10 @@ require_once("headers/menu_header.php");
 
 $fundrive_amount = array(
 '30'=>'Friends of CiTR Card',
-'60'=>'Friends of CiTR card + CiTR growler',
-'101.9'=>'Friends of CiTR card + CiTR growler + CiTR notebook',
-'175'=>'Friends of CiTR card + growler + notebook + LP + tote bag',
-'250'=>'Friends of CiTR card + growler + notebook + LP + tote bag + framed discorder cover',
+'60'=>'Friends of CiTR card + Limited Edition CiTR Pin',
+'101.9'=>'Friends of CiTR card + Limited Edition CiTR Pin + Limited Edition Spoken Word Cassette',
+'175'=>'Friends of CiTR card + Limited Edition CiTR Pin + Limited Edition Spoken Word Cassette + CiTR and Discorder tote bag',
+'250'=>'Friends of CiTR card + Limited Edition CiTR Pin + Limited Edition Spoken Word Cassette + CiTR and Discorder tote bag + framed discorder cover',
 '500'=>'all the things + host a show on citr!',
 '1,000'=>'all the things + recognition on our donor wall in the new SUB',
 );
@@ -234,18 +234,18 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 				Thank you for donating to CiTR's Fundrive! We really appreciate it.
 			</div>
 			<div class='double-padded-top'>
-				This year our Fundrive Finale is on Friday, March 4 at the Hindenburg. The event is also a release party for the LP we're putting out with Mint Records. We hope to see you there! (more info at citr.ca)
+				This year our Fundrive Finale is on Friday, March 17 at the Polish Community Center 4015 Fraser Street. There will be very special performances by brand new bands, a free publication with entry, and the event will be live broadcast and live video streamed.
 			</div>
-			<div class='double-padded-top'>
+		<!--	<div class='double-padded-top'>
 				Would you like to buy the Pop Alliance Compilation LP for $15? <input type='checkbox' class='LP_yes' id='LP_yes'>
-				<div id="LP_Qty_Div" class="invisible">How many? </div><input id='LP_amount' class='big_text invisible' placeholder='Enter Quantity' onKeyPress="return numbersonly(this, event)">
-			</div>
+				<!-- <div id="LP_Qty_Div" class="invisible">How many? </div><input id='LP_amount' class='big_text invisible' placeholder='Enter Quantity' onKeyPress="return numbersonly(this, event)"> 
+			</div> -->
 
 			<div class='double-padded-top'>
 				If you chose swag, you can pick up your prizes between 9 am and 11 pm during the Fundrive, 11 - 5 pm weekdays after the drive and a few evenings and weekends that we'll send you by email. All prizes must be picked up by April 30!
 			</div>
 			<div class='double-padded-top'>
-				Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR Community!
+				Thank you again for donating to CiTR's Fundrive! Your donation makes a huge difference to the CiTR, UBC, and the Lower Mainland Community!
 			</div>
 	</div>
 	<hr>
