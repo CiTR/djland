@@ -12,7 +12,7 @@ $(document).ready ( function() {
  * Get submissions checked for deletion
  */
 function getCheckedSubmissions(chkboxName) {
-  var checkboxes = document.getElementsByName(chkboxName);
+  var checkboxes = document.getElementsByClassName(chkboxName);
   var checkedSubIDs = [];
 
   for (var i=0; i<checkboxes.length; i++) {
@@ -28,153 +28,294 @@ function getCheckedSubmissions(chkboxName) {
  * Listeners for listeners for trashing/untrashing a submission
  */
 // on New Submissions page
-$("#trash_submission_new_cd").click(function(e){
+function trash_submission_new_cd(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_new_cd");
+	for (var i=0; i<submissionIDs.length; i++) {
 		$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_new_mp3").click(function(e){
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateNewSubmissionsTable();
+}
+function trash_submission_new_mp3(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_new_mp3");
-	$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_new_other").click(function(e){
-	var submissionIDs = getCheckedSubmissions("delete_submission_new_other");
+	for (var i=0; i<submissionIDs.length; i++) {
 		$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateNewSubmissionsTable();
+}
+function trash_submission_new_other(){
+	var submissionIDs = getCheckedSubmissions("delete_submission_new_other");
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateNewSubmissionsTable();
+}
+
+function trash_submission_reviewed_cd(){
+	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_cd");
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateReviewedSubmissionsTable();
+}
+
+function trash_submission_reviewed_mp3(){
+	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_mp3");
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateReviewedSubmissionsTable();
+}
+
+function trash_submission_reviewed_other(){
+	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_other");
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateReviewedSubmissionsTable();
+}
+
 // on Tag Accepted page
-$("#trash_submission_accepted_cd").click(function(e){
+function trash_submission_accepted_cd(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_accepted_cd");
-	$.ajax({
-	url: "api2/public/submissions/trash",
-	type:'PUT',
-	dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_accepted_mp3").click(function(e){
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateApprovedSubmissionsTable();
+}
+
+function trash_submission_accepted_mp3(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_accepted_mp3");
-	$.ajax({
-	url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_accepted_other").click(function(e){
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateApprovedSubmissionsTable();
+}
+
+function trash_submission_accepted_other(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_accepted_other");
-	$.ajax({
-	url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateApprovedSubmissionsTable();
+}
 // on "Approve" page
-$("#trash_submission_tagged_cd").click(function(e){
+function trash_submission_tagged_cd(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_tagged_cd");
-	$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_tagged_mp3").click(function(e){
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateTaggedSubmissionsTable();
+}
+
+function trash_submission_tagged_mp3(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_tagged_mp3");
-	$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#trash_submission_tagged_other").click(function(e){
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateTaggedSubmissionsTable();
+}
+
+function trash_submission_tagged_other(){
 	var submissionIDs = getCheckedSubmissions("delete_submission_tagged_other");
-	$.ajax({
-		url: "api2/public/submissions/trash",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Trashed");
-		}
-	});
-});
-$("#undo_trash_submission").click(function(e){
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/trash",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+			},
+			fail:function(data){
+				console.log("Deleting the submission failed. Response data: " + data);
+				alert("Error: Submission was not deleted");
+			}
+		});
+	}
+	// update the tables
+	populateTaggedSubmissionsTable();
+}
+
+function undo_trash_submission(){
 	var submissionIDs = getCheckedSubmissions("restore_submission");
 	$.ajax({
 		url: "api2/public/submissions/restore",
@@ -189,16 +330,26 @@ $("#undo_trash_submission").click(function(e){
 			alert("Submission Restored");
 		}
 	});
-});
+}
 
 /*
  * Listeners for submissions admin page - viewing past submissions
  */
-$("#submitDates_Approved").click(function(e){
-	var date1 = $("#from").val();
-	var date2 = $("#to").val();
-  getAndPopulateAcceptedSubmissions(date1, date2);
-});
+function SubmitDates_Approved(){
+	var date1 = $("#new-from").val();
+	var date2 = $("#new-to").val();
+
+	if(date1 == null || date2 == null) {
+		alert("Please enter a start date and an end date");
+	}
+	else if(date1 > date2) {
+		alert("Start date must be earlier than end date");
+	}
+	else {
+		getAndPopulateAcceptedSubmissions(date1, date2);
+	}
+}
+
 $("#submitDates_Past").click(function(e){
 	// TODO: get search variables
   getAndPopulatePastSubmissions();
@@ -208,25 +359,53 @@ $("#submitDates_Past").click(function(e){
 // on admins page, search past accepted submissions by date
 function getAndPopulateAcceptedSubmissions(date1, date2){
 	$.ajax({
-		url: "api2/public/submissions/getaccepted",
-		type:'GET',
-		dataType:'json',
+		url: "api2/public/submissions/bystatus/accepted",
+		type: 'GET',
+		dataType: 'json',
 		data: {
 			'date1':date1,
 			'date2':date2
 		},
+		async: true,
     success: function(data) {
+			//clear out any rows already in the table
+			$("tbody[name='pastAcceptedSubmissions']").empty();
+			var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+			$("tbody[name='pastAcceptedSubmissions']").append(header);
+
 			if(data[0] == null){
 				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 				$("tbody[name='pastAcceptedSubmissions']").append(markup);
 			} else{
 				for(var number in data) {
 					var item = (data[number]);
-					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+
+					var cancon;
+					if(item['cancon'] == 1)
+						cancon = "yes";
+					else
+						cancon = "no";
+
+					var femcon;
+					if(item['femcon'] == 1)
+						femcon = "yes";
+					else
+						femcon = "no";
+
+					var local;
+					if(item['local'] == 1)
+						local = "yes";
+					else
+						local = "no";
+
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
 					$("tbody[name='pastAcceptedSubmissions']").append(markup);
 				}
 			}
-    }
+    },
+		fail:function(data){
+			console.log("Getting archived submissions failed. Response data: " + data);
+		}
   });
 }
 
@@ -752,14 +931,23 @@ function submitForm() {
   }
   */
 
+  // Check that tracks have all the right things
+  var tracks = $("#submit-field").children();
+  if (tracks.length < 1) {
+    missing.push("\n• Music files to upload")
+    success = false;
+  }
+
+/*
+  for (var i = 0; i < tracks.length; i++) {
+    console.log(tracks.item(i).children(".track-number-field"));
+  }
+  */
+
   if (success) {
-    /*
-    var submission = document.getElementById("submit-button-div");
-    submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-    */
     createSubmission(format);
   } else {
-    var alertString = "You are missing the following fields:";
+    var alertString = "You are missing the following:";
     for (var i = 0; i < missing.length; i++) {
       alertString += missing[i];
     }
@@ -826,7 +1014,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track number field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "track-number-label");
-  childNode.appendChild(document.createTextNode("Track number:"));
+  childNode.appendChild(document.createTextNode("★ Track number:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
@@ -837,7 +1025,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track name field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
-  childNode.appendChild(document.createTextNode("Track name:"));
+  childNode.appendChild(document.createTextNode("★ Track name:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");

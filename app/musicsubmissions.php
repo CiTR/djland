@@ -135,7 +135,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_cd">Delete</button></th>
+								<th><button id="trash_submission_new_cd" onclick="trash_submission_new_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -154,7 +154,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_mp3">Delete</button></th>
+								<th><button id="trash_submission_new_mp3" onclick="trash_submission_new_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -192,7 +192,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_other">Delete</button></th>
+								<th><button id="trash_submission_new_other" onclick="trash_submission_new_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -663,7 +663,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_cd">Delete</button></th>
+								<th><button id="trash_submission_accepted_cd" onclick="trash_submission_accepted_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -682,7 +682,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_mp3">Delete</button></th>
+								<th><button id="trash_submission_accepted_mp3" onclick="trash_submission_accepted_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -701,7 +701,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_other">Delete</button></th>
+								<th><button id="trash_submission_accepted_other" onclick="trash_submission_accepted_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -981,7 +981,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_cd">Delete</button></th>
+								<th><button id="trash_submission_tagged_cd" onclick="trash_submission_tagged_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1000,7 +1000,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_mp3">Delete</button></th>
+								<th><button id="trash_submission_tagged_mp3" onclick="trash_submission_tagged_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1019,7 +1019,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_other">Delete</button></th>
+								<th><button id="trash_submission_tagged_other" onclick="trash_submission_tagged_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1286,7 +1286,7 @@
 						<br>
 					</div>
 					<div id="col1">
-						<button id="submitDates_Approved">Generate Listing</button>
+						<button id="submitDates_Approved" onclick="SubmitDates_Approved()">Generate Listing</button>
 					</div>
 					<div id="submission_result" class="right overflow_auto height_cap" name="search">
 						<table id="submission_table" name="search">
@@ -1295,6 +1295,9 @@
 									<th>Artist</th>
 									<th>Album</th>
 									<th>Date of Submission</th>
+									<th>Cancon</th>
+									<th>Femcon</th>
+									<th>Local</th>
 									<th>Contact Info</th>
 								</tr>
 							</tbody>
@@ -1374,7 +1377,7 @@
 										<th>Restore</th>
 									</tr>
 									<tr>
-										<td></td><td></td><td></td><td></td><td></td><td></td><td><button id="undo_trash_submission">Apply Restores</button></td>
+										<td></td><td></td><td></td><td></td><td></td><td></td><td><button id="undo_trash_submission" onclick="undo_trash_submission()">Apply Restores</button></td>
 									</tr>
 								</tbody>
 							</table>

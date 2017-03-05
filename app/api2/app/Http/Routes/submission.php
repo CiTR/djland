@@ -270,15 +270,15 @@ Route::group(['middleware' => 'auth'], function(){
             return Response::json();
         });
         // Search accepted digital submissions in a time range
-        Route::get('/getaccepted', function(){
+        Route::get('/bystatus/accepted', function(){
             $date1 = Input::get('date1');
             $date2 = Input::get('date2');
-            $result = Response::json( Archive::where('submitted','>=',$date1)->where('submitted','=<',$date2)->get() );
+            $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->get();
             if(!$result->isEmpty()) return Response::json( $result );
             else return Response::json();
         });
         // TODO: Search past submissions (rejected & archived) on admins page
-        Route::get('/getrejectedandarchived', function(){
+        Route::get('/bystatus/rejectedandarchived', function(){
             return Response::json();
         });
         // TODO: Search past rejected submissions
@@ -386,7 +386,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::put('/trash', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
-              $submission -> is_trashed = 1;
+              $submission->is_trashed = 1;
               $submission->save();
               return Response::json("Update submission #" . $submission -> id . " to trashed");
 
@@ -398,7 +398,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::put('/restore', function() {
           try {
               $submission = Submissions::find(Input::get('id'));
-              $submission -> is_trashed = 0;
+              $submission->is_trashed = 0;
               $submission->save();
               return Response::json("Update submission #" . $submission -> id . " from trashed to restored");
 
