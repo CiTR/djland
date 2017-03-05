@@ -8,6 +8,8 @@ use App\Showtime as Showtime;
 use App\Social as Social;
 use App\Playsheet as Playsheet;
 use App\Podcast as Podcast;
+use App\SpecialBroadcast as SpecialBroadcast;
+use App\Playitem as Playitem;
 
 Route::group(array('prefix'=>'DJLandConnector'),function(){
 	Route::group(array('prefix'=>'show'),function(){
@@ -64,13 +66,11 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 			'shows.id as show_id', 'shows.active as active')->where('shows.active', '=', 1)->get();
 		});
 	});
-	//We currently have a perfectly fine endpoint at api2/public/specialbroadcasts
-	//If that ends up changing we'll use this enpoint to maintain compatibility with wordpress
-	/*Route::group(array('prefix'=>'specialevents'),function(){
+	Route::group(array('prefix'=>'specialevents'),function(){
 		Route::get('/',function(){
+			return SpecialBroadcast::orderBy('id','desc')->get();
 		});
 	});
-	*/
 });
 
 //************
@@ -112,6 +112,12 @@ function playlist($id){
 	$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get();
 	//For some reason ->merge() didn't work so we did this and it did
 	$ret = array_merge($playsheet[0]->toArray(), $podcast[0]->toArray());
-	$ret['songs'] = Playsheet::find($id)->playitems;
+	$ret['songs'] = Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', 'composer', 'id')->get();
+	//Playitem episode description should be null if it is ""
+	if($ret['episode_description'] == "") $ret['episode_description'] = null;
+    //Playitem songs->composer should be "" instead of null
+	foreach ($ret['songs'] as $key => $value) {
+        if(empty($ret['songs'][$key]['composer'])) $ret['songs'][$key]['composer'] = "";
+    }
 	return Response::json($ret);
 }
