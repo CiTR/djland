@@ -1,0 +1,43 @@
+/*------------------------*/
+/* Special Broadcast Page */
+/*------------------------*/
+#broadcasts{
+	padding-left:10px;
+	margin:0px;
+	max-width:1024px;
+	width:1024px;
+	overflow: hidden;
+}
+#broadcasts > li {
+	min-height:480px;
+}
+#broadcasts > li > .broadcast_info{
+	width:60%;
+	float:left;
+	position:relative;
+	display:inline-block;
+}
+#broadcasts > li > .broadcast_info > div > div > textarea, #broadcasts > li > .broadcast_info > div > div > select.show_select{
+	width:100%;
+}
+#broadcasts > li > .image_upload{
+	width:40%;
+	float:left;
+	position:relative;
+	display:inline-block;
+}
+.broadcast_image{
+	margin-top:20px;
+	max-width:100%;
+}
+.broadcast_image > img {
+	max-height:300px;
+	width:auto;
+	max-width:300px;
+}
+.broadcast_buttons{
+	position:absolute;
+	top:100px;
+	right:20px;
+	text-align:right;
+}

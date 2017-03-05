@@ -1,0 +1,384 @@
+/*
+*	Open Playsheet CSS
+*/
+table.open_playsheet > tbody > tr > td,table.open_playsheet > tbody > tr > th{
+	padding-left:15px;
+}
+table.open_playsheet > tbody > tr > td.edit_date{
+	font-size:.8em;
+}
+table.open_playsheet > tbody > tr > td.host{
+	max-width:200px;
+}
+
+/* Playsheet Angular CSS */
+
+.host{
+	max-width:400px;
+}
+.promotions > td {
+	font-size:.8em;
+}
+.promotion_name{
+	max-width:300px;
+}
+.hand:hover{
+	cursor: pointer; cursor: hand;
+}
+.lang {
+	width: 65px;
+	font-size: 0.8em;
+}
+.playitem{
+	width:100%;
+}
+tr.playitem.socan > td > input,tr.playitem.socan > td > button,tr.music_row_heading.socan > th > input{
+	max-width:105px;
+	font-size:0.75em;
+}
+tr.playitems.socan > td > input.lang{
+	width:60px;
+}
+.socantiming{
+	max-width:140px;
+}
+.music_row_heading {
+	height:30px;
+	background-color: none;
+}
+
+.music_row_heading input{
+	margin-left:5px;
+	background: none;
+	border-width: 0;
+}
+.tooltip-inner{
+	max-width:350px;
+}
+.dragzone {
+	cursor: default;
+}
+.socan select{
+	font-size:0.75em;
+}
+
+.socan_cue select{
+	width:46px;
+
+}
+
+table#ads{
+	width:450px;
+	display:inline;
+	margin-right:50px;
+	table-layout: auto;
+	position:relative;
+	top:0px;
+	cellspacing:0;
+	padding: 0;
+}
+
+
+#submitMsg{
+	position:relative;
+	top:50px;
+	background-color: rgba(10,10,10,0.85);
+	text-align: left;
+	margin-right: auto;
+	margin-left: auto;
+	width:400px;
+}
+
+#submit{
+	height:60px;
+	width:300px;
+}
+#autosave{
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:10;
+	/*	display:none;*/
+}
+
+.crtc_totals{
+	text-align:left;
+	background-color:black;
+	color: white;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+.crtc_totals > table.col1 > tbody {
+	width:100%;
+	display:table;
+}
+
+/*
+ * Playsheet tracklist_overlay
+ */
+.tracklist_overlay{
+	position:fixed;
+	overflow:auto;
+	top:40px;
+	left:10%;
+	width:80%;
+	background-color:lightsteelblue;
+	z-index:21;
+	padding:20px;
+	color:darkblue;
+	border-size:1px;
+	border-color:white;
+}
+.tracklist_overlay span{
+	margin-left:40px;
+}
+.tracklist_overlay a.logout{
+	background-color:steelblue;
+	padding:2px;
+}
+.tracklist_overlay a.logout:hover{
+	color:greenyellow;
+}
+.dark{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	opacity: 0.7;
+	background-color:black;
+}
+
+
+/*
+ * Playitem category buttons
+ */
+button.box {
+	display: inline-block;
+	height: 27px;
+	width: 27px;
+	border-width: 1px;
+	border-style: dotted;
+	cursor: default;
+	background-color: white;
+	background-size: 100%;
+	margin-bottom: 2px;
+}
+
+button.box.playlist:hover {
+	background-image: url('../images/tags/playlist.png');
+	opacity: 0.5;
+}
+
+button.box.cancon:hover {
+	background-image: url('../images/tags/can.png');
+	opacity: 0.5;
+}
+
+button.box.femcon:hover {
+	background-image: url('../images/tags/fe.png');
+	opacity: 0.5;
+}
+
+button.box.instrumental:hover {
+	background-image: url('../images/tags/inst.png');
+	opacity: 0.5;
+}
+
+button.box.hit:hover {
+	background-image: url('../images/tags/hit.png');
+	opacity: 0.5;
+}
+
+button.box.partial:hover {
+	background-image: url('../images/tags/part.png');
+	opacity: 0.5;
+}
+
+button.box.background:hover {
+	background-image: url('../images/tags/background.png');
+	opacity: 0.5;
+}
+
+button.box.theme:hover {
+	background-image: url('../images/tags/theme.png');
+	opacity: 0.5;
+}
+
+button.box.playlist.filled {
+	background-image: url('../images/tags/playlist.png');
+	opacity: 1;
+}
+
+button.box.cancon.filled {
+	background-image: url('../images/tags/can.png');
+	opacity: 1;
+}
+
+button.box.femcon.filled {
+	background-image: url('../images/tags/fe.png');
+	opacity: 1;
+}
+
+button.box.instrumental.filled {
+	background-image: url('../images/tags/inst.png');
+	opacity: 1;
+}
+
+button.box.hit.filled {
+	background-image: url('../images/tags/hit.png');
+	opacity: 1;
+}
+
+button.box.partial.filled {
+	background-image: url('../images/tags/part.png');
+	opacity: 1;
+}
+
+button.box.background.filled {
+	background-image: url('../images/tags/background.png');
+	opacity: 1;
+}
+
+button.box.theme.filled {
+	background-image: url('../images/tags/theme.png');
+	opacity: 1;
+}
+
+button.box {
+	background-color: transparent;
+	background-image: none;
+}
+button.socan, , .music_row_socan input, .music_row_socan button{
+	font-size:0.75em;
+	max-width:90px;
+}
+
+/*
+ * Playsheet SAM styling
+ */
+
+
+#sam_picker{
+	width:200px;
+}
+#sam_title {
+	color: black;
+	font-size: 1.2em;
+	position: fixed;
+	padding: 5px;
+	height: 40px;
+	background-color:beige;
+}
+
+#sam_title span {
+	border: black 1px solid;
+	cursor: default;
+	padding: 6px;
+	background-color: white;
+}
+
+#sam_title span:hover {
+	border: red 1px solid;
+	color: red;
+	background-color: lightred;
+}
+
+div#sam_picker {
+	position: fixed;
+	top: 60px;
+	right: 40px;
+	height: 80%;
+	overflow: scroll;
+	width: 400px;
+	background-color: beige;
+}
+
+#sam_range {
+	color: black;
+	text-align: right;
+}
+
+span.one_sam {
+	overflow: hidden;
+	display: inline-block;
+
+}
+
+div.floating {
+	position: fixed;
+	right: 0;
+	top: 150px;
+	width: auto;
+	z-index:20;
+}
+
+.sam_row {
+	color: black;
+	border-top: black 1px solid;
+}
+
+.blocker{
+	position:relative;
+	bottom:66px;
+	background-color:black;
+	color:red;
+	height:70px;
+}
+.sam_row button {
+
+	vertical-align: top;
+	cursor: default;
+}
+.current{
+	border-width: 3px;
+	border-style: solid;
+}
+
+
+#SamListouter, div#loadtimes{
+	color:black;
+	/*	display:block;*/
+	display:none;
+	background-color:beige;
+	border-width: medium;
+	border-style:solid;
+	border-color:#BBB;
+	height:80%;
+	width:400px;
+	position:fixed;
+	right:8%;
+	top:0;
+	overflow: auto;
+	z-index:20;
+}
+div#loadtimes *{
+	cursor: default;
+	text-align: left;
+}
+div.closeButton{
+	position:absolute;
+	top:0;
+	right:25px;
+	z-index:40;
+}
+button.closeButton{
+	position:fixed;
+	background-color: white;
+	color:red;
+}
+#SamListouter *{
+	color:black;
+	cursor:default;
+
+}
+div#loadtimes{
+	top:auto;
+	height:200px;
+	bottom:30px;
+}
+#sam-box{
+	display:none;
+}

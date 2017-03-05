@@ -1,0 +1,71 @@
+
+/*
+ * Library Styling
+ */
+ .library table{
+ 	/*width:1024px;*/
+ 	margin-left:auto;
+ 	margin-right:auto;
+ }
+.dotted-underline{
+
+	border-style: dotted;
+	border-color:gray;
+	border-width: 0 0 1px 0;
+}
+.lib-delete{
+	color:black;
+}
+.yesdelete{
+	color:red;
+	font-weight:bold;
+}
+.lib-delete, .yesdelete{
+	background-color: white;
+	margin-left: 30px;
+	cursor:default;
+	font-size: 0.75em;
+}
+.lib-delete:hover, .yesdelete:hover{
+	background-color: white;
+	font-weight: bold;
+	cursor:default;
+	font-size: 0.75em;
+}
+
+.editButton {
+	padding-right:10px;
+}
+
+.editButton:hover {
+	cursor:pointer;
+	color:lightgrey;
+}
+
+/*
+ * Duplicate Nuker Page
+ */
+
+#nukem{
+	background-color:yellow;
+	color:red;
+	font-weight: bold;
+	font-size: 1.5em;
+	padding:5px;
+	cursor: default;
+}
+#nukem:hover{
+	background-color: red;
+	color:yellow;
+}
+div.dupeSection{
+	background-color: rgba(100,100,100,0.8);
+	margin-bottom:15px;
+	width:500px;
+	padding:4px;
+
+}
+div.dupeSection span{
+	position:absolute;
+	left:110px;
+}

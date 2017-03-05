@@ -1,0 +1,178 @@
+/*
+ * Generic Styling
+ */
+
+.spaced > td{
+	min-width:100px;
+	margin: 10 10 10 10;
+}
+.padded{
+	padding-top:10px;
+}
+.padded-left{
+	margin-left:10px;
+}
+.padded-right{
+	padding-right: 10px;
+}
+.double-margin-right{
+	margin-right: 40px;
+}
+.double-padded-top{
+	padding-top:20px;
+}
+.double-padded-bottom{
+	padding-bottom:30px;
+}
+.side-padded{
+	padding-left:5px;
+	padding-right:5px;
+}
+
+.border{
+	border-style:solid;
+	border-width:1px;
+	border-color: white;
+}
+.rounded{
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+}
+.pad-top{
+	padding-top:2px;
+}
+
+.overflow_hidden{
+	overflow:hidden;
+}
+.overflow_show{
+	overflow:visible;
+}
+.overflow_auto{
+	overflow:auto;
+}
+.inline_block{
+	display:inline-block;
+}
+.text-center{
+	text-align: center;
+}
+
+.fill{
+	position:relative;
+	min-height:100px;
+	height:auto;
+	width:100%;
+	max-height:100%;
+	max-width: 100%;
+}
+
+.hidden{
+	display:none;
+}
+.clean-list{
+	list-style: none;
+}
+.inline-list > li {
+	display:inline-block;
+}
+.small{
+	width:100%;
+	height:auto;
+}
+.scroll.firefox{
+	max-height:480px;
+}
+.scroll{
+	overflow-y: scroll;
+	max-height:75%;
+}
+.vertical-center {
+	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 100vh; /* These two lines are counted as one :-)       */
+	display: flex;
+	align-items: center;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+.center{
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}
+.clearfix{
+	clear:both;
+}
+.clearfix:after {
+	content: " ";
+	display: block;
+	height: 0;
+	clear: both;
+}
+
+/*
+ * Multipurpose column classes
+ */
+
+.col1,.col2,.col3,.col4,.col5,.col6,.col7,.col8,.col15,.col20,.span5col6,.span3col4,.span3col5,.span4col5{
+	display:inline-block;
+	position:relative;
+	float:left;
+	height:auto;
+	overflow:visible;
+}
+
+.col1{
+	width:100%;
+}
+.col2{
+	width:50%;
+}
+.col3{
+	width:33%;
+}
+.col4{
+	width:25%;
+}
+.col5{
+	width:20%;
+}
+.col6{
+	width:16.66%;
+}
+.col7{
+	width:14.28%;
+}
+.col8{
+	width:12.5%;
+}
+.col15{
+	width:6.66%;
+}
+.col20{
+	width:5%;
+}
+.span2col3{
+	width:66%;
+}
+.span5col6{
+	width:83.33%;
+	float:right;
+}
+.span3col5{
+	width:60%;
+}
+.span3col4{
+	width:75%;
+}
+.span4col5{
+	width:80%;
+}
+.span9col10{
+	width:90%;
+}
