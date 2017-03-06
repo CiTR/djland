@@ -79,8 +79,14 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 
 //Just one show with a given show ID
 function show($id){
+	// Check that the id is for a valid show - this return message matches old API behavior
+	if(empty(Show::find($id))){
+		return array(
+	      'api_message' => '[NO RECORD FOUND]',
+	      'message'     => 'no show with this id:'.$id,
+	    );
+	}
 	//First we get the needed info from the shows table
-	if(!Show::find($id)) return null;
 	$data = Show::select('id as show_id',
 		  'name',
 		  'last_show',
@@ -108,6 +114,13 @@ function show($id){
 }
 //Get playlist given  playlist ID
 function playlist($id){
+	// Check that the id is for a valid playsheet - this return message matches old API behavior
+	if(empty(Playsheet::find($id)))  {
+		return array(
+	    	'api_message' => '[NO RECORD FOUND]',
+	    	'message'     => 'no playlist found with this ID: '.$id,
+	    );
+	}
 	$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get();
 	$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get();
 	//For some reason ->merge() didn't work so we did this and it did
