@@ -96,9 +96,7 @@
 			});
 			$.when(request).then((function(response){
 				console.log(response);
-                console.log(this.episodes);
-                console.log(podcast_id);
-				this.episodes.filter(function(object){
+                this.episodes.filter(function(object){
                     if(object.podcast.id == podcast_id) return object;
                 })[0].url = response.url;
 				$scope.$apply();

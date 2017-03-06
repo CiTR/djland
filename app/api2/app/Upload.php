@@ -157,7 +157,7 @@ class Upload extends Model{
 
 				//Get the podcast
 				$podcast = Podcast::find($this->relation_id);
-
+				var_dump($podcast->url);
 				//Strip unwanted chars from the show name and convert & to and
 				$stripped_show_name = str_replace(array('&',' '),array('and','-'),str_replace($strip,'',$podcast->show->name));
 
@@ -167,6 +167,11 @@ class Upload extends Model{
 				//check if file exists already. If so, we overwrite existing file
 				if($podcast->length && $podcast->length > 0 && $podcast->url != null){
 					$target_file_name = preg_replace('/(.+'.$this->add_slashes(str_replace('http://','',$url_base)).'\/)/','',$podcast->url);
+					//the testing enviroment may mean that even though it has a proper url, it still might not exist in our dev path
+					//so overwrite it anyway (it's dev, we don't really care too much about overwriting in the test audio base directory)
+					if($testing_environment){
+						$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time)).'.mp3';
+					}
 				}else{
 					$target_file_name = $stripped_show_name."-".date('F-d-H-i-s',strtotime($podcast->playsheet->start_time)).'.mp3';
 				}
