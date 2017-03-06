@@ -135,7 +135,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_cd">Delete</button></th>
+								<th><button id="trash_submission_new_cd" onclick="trash_submission_new_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -154,7 +154,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_mp3">Delete</button></th>
+								<th><button id="trash_submission_new_mp3" onclick="trash_submission_new_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -192,7 +192,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee  </th>
-								<th><button id="trash_submission_new_other">Delete</button></th>
+								<th><button id="trash_submission_new_other" onclick="trash_submission_new_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -262,7 +262,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 1: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -277,7 +277,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 2: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -292,7 +292,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 3: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -530,7 +530,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 1: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -545,7 +545,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 2: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -560,7 +560,7 @@
 							<div class="containerrow padded">
 								<div class="col1"></div>
 								<div class="col4">Track 3: Song Title Here</div>
-								<div class="col3"><audio controls><source src="horse.mp3" type="audio/mpeg"></audio></div>
+								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
 							</div>
 							<div class="containerrow padded">
 								<div class="col4">Submitted Description: </div>
@@ -663,7 +663,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_cd">Delete</button></th>
+								<th><button id="trash_submission_accepted_cd" onclick="trash_submission_accepted_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -682,7 +682,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_mp3">Delete</button></th>
+								<th><button id="trash_submission_accepted_mp3" onclick="trash_submission_accepted_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -701,7 +701,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Assignee</th>
-								<th><button id="trash_submission_accepted_other">Delete</button></th>
+								<th><button id="trash_submission_accepted_other" onclick="trash_submission_accepted_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -981,7 +981,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_cd">Delete</button></th>
+								<th><button id="trash_submission_tagged_cd" onclick="trash_submission_tagged_cd()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1000,7 +1000,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_mp3">Delete</button></th>
+								<th><button id="trash_submission_tagged_mp3" onclick="trash_submission_tagged_mp3()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1019,7 +1019,7 @@
 								<th>Date Submitted</th>
 								<th>Staff Comments</th>
 								<th>Tagger</th>
-								<th><button id="trash_submission_tagged_other">Delete</button></th>
+								<th><button id="trash_submission_tagged_other" onclick="trash_submission_tagged_other()">Delete</button></th>
 							</tr>
 						</tbody>
 					</table>
@@ -1377,7 +1377,7 @@
 										<th>Restore</th>
 									</tr>
 									<tr>
-										<td></td><td></td><td></td><td></td><td></td><td></td><td><button id="undo_trash_submission">Apply Restores</button></td>
+										<td></td><td></td><td></td><td></td><td></td><td></td><td><button id="undo_trash_submission" onclick="undo_trash_submission()">Apply Restores</button></td>
 									</tr>
 								</tbody>
 							</table>

@@ -1,6 +1,7 @@
 {
   "private": true,
   "devDependencies": {
+    "babel-runtime": "^5.8.38",
     "gulp": "^3.8.8"
   },
   "dependencies": {

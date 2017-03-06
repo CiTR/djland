@@ -1,0 +1,26 @@
+/*----------------------*/
+/* Friends of CiTR Page */
+/*----------------------*/
+#friends{
+	padding-left:10px;
+	margin:0px;
+	max-width:1024px;
+	width:1024px;
+	overflow: hidden;
+}
+#friends > li {
+	height:200px;
+}
+.friend_info{
+	width:550px;
+	float:left;
+	position:relative;
+}
+.friend_image{
+	margin-top:20px;
+}
+.friend_image > img {
+	max-height:100px;
+	width:auto;
+	max-width:220px;
+}
