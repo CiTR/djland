@@ -98,8 +98,10 @@
 				console.log(response);
                 this.episodes.filter(function(object){
                     if(object.podcast.id == podcast_id) return object;
-                })[0].url = response.url;
+                })[0].url = response.audio.url;
+                this.editing.podcast.url = response.audio.url;
 				$scope.$apply();
+                alert("Uploading audio successful!");
 			}).bind(this),function(error){
 				alert(error.responseText);
 			});
