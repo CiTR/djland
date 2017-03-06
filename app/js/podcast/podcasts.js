@@ -187,12 +187,34 @@
             this.editing.podcast.title = this.editing.playsheet.title;
             this.editing.podcast.subtitle = this.editing.playsheet.summary;
             this.editing.podcast.summary = this.editing.playsheet.summary;
+            this.savemessage = 'saving...';
+            call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
+                if(response.data = "true"){
+                    if(this_.editing.playsheet.status == '2'){
+                        alert("Successfully Saved");
+                    }else{
+                        alert("Successfully saved. Please submit this playsheet!");
+                    }
+                } else {
+                    console.log(response);
+                    alert("Not saved. Your error has been logged");
+                }
+            },function(error){
+                console.log(error);
+                alert("Failed to save podcast. Your error has been logged");
+            });
+        };
+        this.recreateAudio = function(){
+            var this_ = this;
+            this.editing.podcast.title = this.editing.playsheet.title;
+            this.editing.podcast.subtitle = this.editing.playsheet.summary;
+            this.editing.podcast.summary = this.editing.playsheet.summary;
             this.message = 'saving...';
             call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
                 if(response.data = "true"){
                     if(this_.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this_.editing.podcast.url != '' && this_.editing.podcast.url){
                         call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
-                        alert("Successfully Saved");
+                        alert("Successfully saved, audio generated from on-air recording!");
                         },function(error){
                             console.log(error);
                             alert("Failed to save podcast: Could not overwrite audio.");
@@ -200,7 +222,7 @@
                     }else if(this_.editing.podcast.url == '' || !this_.editing.podcast.url){
                         if(this_.editing.playsheet.status == '2'){
                             call.makePodcastAudio(this_.editing.podcast).then(function(response){
-                                alert("Successfully Saved");
+                                alert("Successfully saved, audio generated from on-air recording!");
                             },function(error){
                                 console.log(error);
                                 alert("Failed to save podcast: Could not write audio to directory" );
@@ -304,15 +326,14 @@
             restrict: 'A',
             link: function (scope, element, attrs) {
                 var raw = element[0];
-                console.log('loading directive');
+                //console.log('loading directive');
                 element.bind('scroll', function () {
-                    console.log('in scroll');
-                    console.log(raw.scrollTop + raw.offsetHeight);
-                    console.log(raw.scrollHeight);
+                    //console.log('in scroll');
+                    //console.log(raw.scrollTop + raw.offsetHeight);
+                    //console.log(raw.scrollHeight);
                     if (raw.scrollTop + raw.offsetHeight + raw.scrollHeight/5 >= raw.scrollHeight ) {
                         scope.$apply(attrs.scrolly);
                         //raw.scrollTop = (raw.scrollTop+raw.offsetHeight);
-                        console.log("Hit Bottom");
                     }
                 });
             }
