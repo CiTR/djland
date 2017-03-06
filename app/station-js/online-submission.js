@@ -49,51 +49,119 @@ function submitForm() {
   var female    = femArtistBox.checked;
   var comments  = commentField.value;
 
+  var alertString = "You are missing the following:";
+
   if (artist == "") {
     success = false;
-    missing.push("\n• Artist / Band name");
+    // missing.push("\n• Artist / Band name");
+    alertString += "\n• Artist / Band name";
   }
   if (email == "") {
     success = false;
-    missing.push("\n• Contact email");
+    // missing.push("\n• Contact email");
+    alertString += "\n• Contact email";
   }
   if (city == "") {
     success = false;
-    missing.push("\n• Home city");
+    // missing.push("\n• Home city");
+    alertString += "\n• Home city";
   }
   if (album == "") {
     success = false;
-    missing.push("\n• Album name");
+    // missing.push("\n• Album name");
+    alertString += "\n• Album name";
   }
   if (genre == "") {
     success = false;
-    missing.push("\n• Genre");
+    // missing.push("\n• Genre");
+    alertString += "\n• Genre";
   }
   /*
   if (date == "") {
     success = false;
     missing.push("\n• Date released");
+    alertString += "\n• Date released";
   }
   */
 
-  // Check that tracks have all the right things
+  // Check that files have been added
   var tracks = $("#submit-field").children();
   if (tracks.length < 1) {
-    missing.push("\n• Music files to upload")
+    // missing.push("\n• Music files to upload");
+    alertString += "\n• Music files to upload";
     success = false;
   }
 
+  // Checks that required track info has been added
+  var trackNumberCheck = [];
+  var missingTrackNumbers = 0;
+  var missingTrackNames = 0;
+  var trackNumError = false;
+
+  for (var i = 0; i < tracks.length; i++) {
+    // console.log($(tracks.get(i)).find(".track-number-field").val());
+    var trackNumberValue = $(tracks.get(i)).find(".track-number-field").val();
+    var trackName = $(tracks.get(i)).find(".input-track-field").val();
+
+    if (trackName == "") {
+      success = false;
+      missingTrackNames++;
+    }
+
+    if (trackNumberValue == "" ) {
+      success = false;
+      // missing.push("\n• Track numbers");
+      missingTrackNumbers++;
+    } else if ( isNaN(parseInt(trackNumberValue)) ) {
+      success = false;
+      trackNumError = true;
+    } else {
+      trackNumberCheck.push(trackNumberValue);
+    }
+  }
+
+  if (missingTrackNames == 1) {
+    alertString += "\n• 1 Track name";
+  } else if (missingTrackNames > 1) {
+    alertString += "\n• " + missingTrackNames + " track names";
+  }
+
+  if (missingTrackNumbers == 1) {
+    alertString += "\n• 1 Track number";
+  } else if (missingTrackNumbers > 1) {
+    alertString += "\n• " + missingTrackNumbers + " track numbers";
+  }
+
+  if (trackNumError) {
+    alertString += "\n\n Only numbers may be used in the track number field";
+  }
+
+  if (success) { // possibly add sorting algorithm here in case of large array
+    var duplicate = false;
+    for (var i = 0; i < trackNumberCheck.length; i++) {
+      if (duplicate == true) break;
+      for (var j = i + 1; j < trackNumberCheck.length; j++) {
+        if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
+          success = false;
+          // missing.push("\n Check for duplicate track numbers");
+          alertString = "There are duplicate track numbers — please correct"
+          duplicate = true;
+          break;
+        }
+      }
+    }
+  }
+
+
   if (success) {
-    /*
-    var submission = document.getElementById("submit-button-div");
-    submission.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-    */
-    var i = createSubmission("MP3");
+    createSubmission(format);
   } else {
+    /*
     var alertString = "You are missing the following:";
     for (var i = 0; i < missing.length; i++) {
       alertString += missing[i];
     }
+    */
     alert(alertString);
   }
 
@@ -157,7 +225,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track number field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "track-number-label");
-  childNode.appendChild(document.createTextNode("Track number:"));
+  childNode.appendChild(document.createTextNode("★ Track number:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
@@ -168,7 +236,7 @@ function addTrackForm(fileName, trackNo) {
   // Add the track name field
   childNode = document.createElement("p");
   childNode.setAttribute("class", "input-track-label");
-  childNode.appendChild(document.createTextNode("Track name:"));
+  childNode.appendChild(document.createTextNode("★ Track name:"));
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
