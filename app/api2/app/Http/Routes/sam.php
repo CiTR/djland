@@ -74,6 +74,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 
 	});
 	//Get tracks with a specific category (Accepts category ID # and category name)
+	//TODO: deal with a category being blank
 	Route::group(array('prefix'=>'categorylist'),function(){
 		Route::get('{cat_id}',function($cat_id = cat_id){
 			if(is_numeric($cat_id)){

@@ -10,6 +10,7 @@
         this.editing  = false;
         this.done = false;
         this.show_id = show_id;
+        //TODO: Get thsi from config constant
         this.MAX_PODCAST_DURATION_HOURS = 8;
         this.member_id = member_id;
         this.offset = 0;
@@ -95,7 +96,11 @@
 			});
 			$.when(request).then((function(response){
 				console.log(response);
-				this.episodes.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
+                console.log(this.episodes);
+                console.log(podcast_id);
+				this.episodes.filter(function(object){
+                    if(object.podcast.id == podcast_id) return object;
+                })[0].url = response.url;
 				$scope.$apply();
 			}).bind(this),function(error){
 				alert(error.responseText);
@@ -124,7 +129,7 @@
 			});
 		}
 		this.deleteImage = function(){
-			call.deleteEpisodeImage(this.editing.pdocast.id).then((function(){
+			call.deleteEpisodeImage(this.editing.podcast.id).then((function(){
 				this.editing.podcast.image = '';
 			}).bind(this));
 		}
