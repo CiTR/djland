@@ -4,6 +4,7 @@ var albumField, genrePicker, dateField, canadaBox, vancouverBox;
 var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
 var totalTracks = 0;
+var totalTrackSize = 0;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -33,136 +34,143 @@ window.addEventListener('load', function() {
 });
 
 function submitForm() {
-  var missing = [];
-  var success = true;
 
-  var artist    = artistField.value;
-  var email     = contactField.value;
-  var label     = recordField.value;
-  var city      = cityField.value;
-  var members   = memberField.value;
-  var album     = albumField.value;
-  var genre     = genrePicker.value;
-  var date      = dateField.value;
-  var canada    = canadaBox.checked;
-  var vancouver = vancouverBox.checked;
-  var female    = femArtistBox.checked;
-  var comments  = commentField.value;
+  if (totalTrackSize > 525000000) {
+    alert("Your submission is too big. For large submissions, please email us.");
+    console.log("Size: " + totalTrackSize);
+  } else {
 
-  var alertString = "You are missing the following:";
+    var missing = [];
+    var success = true;
 
-  if (artist == "") {
-    success = false;
-    // missing.push("\n• Artist / Band name");
-    alertString += "\n• Artist / Band name";
-  }
-  if (email == "") {
-    success = false;
-    // missing.push("\n• Contact email");
-    alertString += "\n• Contact email";
-  }
-  if (city == "") {
-    success = false;
-    // missing.push("\n• Home city");
-    alertString += "\n• Home city";
-  }
-  if (album == "") {
-    success = false;
-    // missing.push("\n• Album name");
-    alertString += "\n• Album name";
-  }
-  if (genre == "") {
-    success = false;
-    // missing.push("\n• Genre");
-    alertString += "\n• Genre";
-  }
-  /*
-  if (date == "") {
-    success = false;
-    missing.push("\n• Date released");
-    alertString += "\n• Date released";
-  }
-  */
+    var artist    = artistField.value;
+    var email     = contactField.value;
+    var label     = recordField.value;
+    var city      = cityField.value;
+    var members   = memberField.value;
+    var album     = albumField.value;
+    var genre     = genrePicker.value;
+    var date      = dateField.value;
+    var canada    = canadaBox.checked;
+    var vancouver = vancouverBox.checked;
+    var female    = femArtistBox.checked;
+    var comments  = commentField.value;
 
-  // Check that files have been added
-  var tracks = $("#submit-field").children();
-  if (tracks.length < 1) {
-    // missing.push("\n• Music files to upload");
-    alertString += "\n• Music files to upload";
-    success = false;
-  }
+    var alertString = "You are missing the following:";
 
-  // Checks that required track info has been added
-  var trackNumberCheck = [];
-  var missingTrackNumbers = 0;
-  var missingTrackNames = 0;
-  var trackNumError = false;
-
-  for (var i = 0; i < tracks.length; i++) {
-    // console.log($(tracks.get(i)).find(".track-number-field").val());
-    var trackNumberValue = $(tracks.get(i)).find(".track-number-field").val();
-    var trackName = $(tracks.get(i)).find(".input-track-field").val();
-
-    if (trackName == "") {
+    if (artist == "") {
       success = false;
-      missingTrackNames++;
+      // missing.push("\n• Artist / Band name");
+      alertString += "\n• Artist / Band name";
+    }
+    if (email == "") {
+      success = false;
+      // missing.push("\n• Contact email");
+      alertString += "\n• Contact email";
+    }
+    if (city == "") {
+      success = false;
+      // missing.push("\n• Home city");
+      alertString += "\n• Home city";
+    }
+    if (album == "") {
+      success = false;
+      // missing.push("\n• Album name");
+      alertString += "\n• Album name";
+    }
+    if (genre == "") {
+      success = false;
+      // missing.push("\n• Genre");
+      alertString += "\n• Genre";
+    }
+    /*
+    if (date == "") {
+      success = false;
+      missing.push("\n• Date released");
+      alertString += "\n• Date released";
+    }
+    */
+
+    // Check that files have been added
+    var tracks = $("#submit-field").children();
+    if (tracks.length < 1) {
+      // missing.push("\n• Music files to upload");
+      alertString += "\n• Music files to upload";
+      success = false;
     }
 
-    if (trackNumberValue == "" ) {
-      success = false;
-      // missing.push("\n• Track numbers");
-      missingTrackNumbers++;
-    } else if ( isNaN(parseInt(trackNumberValue)) ) {
-      success = false;
-      trackNumError = true;
-    } else {
-      trackNumberCheck.push(trackNumberValue);
+    // Checks that required track info has been added
+    var trackNumberCheck = [];
+    var missingTrackNumbers = 0;
+    var missingTrackNames = 0;
+    var trackNumError = false;
+
+    for (var i = 0; i < tracks.length; i++) {
+      // console.log($(tracks.get(i)).find(".track-number-field").val());
+      var trackNumberValue = $(tracks.get(i)).find(".track-number-field").val();
+      var trackName = $(tracks.get(i)).find(".input-track-field").val();
+
+      if (trackName == "") {
+        success = false;
+        missingTrackNames++;
+      }
+
+      if (trackNumberValue == "" ) {
+        success = false;
+        // missing.push("\n• Track numbers");
+        missingTrackNumbers++;
+      } else if ( isNaN(parseInt(trackNumberValue)) ) {
+        success = false;
+        trackNumError = true;
+      } else {
+        trackNumberCheck.push(trackNumberValue);
+      }
     }
-  }
 
-  if (missingTrackNames == 1) {
-    alertString += "\n• 1 Track name";
-  } else if (missingTrackNames > 1) {
-    alertString += "\n• " + missingTrackNames + " track names";
-  }
+    if (missingTrackNames == 1) {
+      alertString += "\n• 1 Track name";
+    } else if (missingTrackNames > 1) {
+      alertString += "\n• " + missingTrackNames + " track names";
+    }
 
-  if (missingTrackNumbers == 1) {
-    alertString += "\n• 1 Track number";
-  } else if (missingTrackNumbers > 1) {
-    alertString += "\n• " + missingTrackNumbers + " track numbers";
-  }
+    if (missingTrackNumbers == 1) {
+      alertString += "\n• 1 Track number";
+    } else if (missingTrackNumbers > 1) {
+      alertString += "\n• " + missingTrackNumbers + " track numbers";
+    }
 
-  if (trackNumError) {
-    alertString += "\n\n Only numbers may be used in the track number field";
-  }
+    if (trackNumError) {
+      alertString += "\n\n Only numbers may be used in the track number field";
+    }
 
-  if (success) { // possibly add sorting algorithm here in case of large array
-    var duplicate = false;
-    for (var i = 0; i < trackNumberCheck.length; i++) {
-      if (duplicate == true) break;
-      for (var j = i + 1; j < trackNumberCheck.length; j++) {
-        if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
-          success = false;
-          // missing.push("\n Check for duplicate track numbers");
-          alertString = "There are duplicate track numbers — please correct"
-          duplicate = true;
-          break;
+    if (success) { // possibly add sorting algorithm here in case of large array
+      var duplicate = false;
+      for (var i = 0; i < trackNumberCheck.length; i++) {
+        if (duplicate == true) break;
+        for (var j = i + 1; j < trackNumberCheck.length; j++) {
+          if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
+            success = false;
+            // missing.push("\n Check for duplicate track numbers");
+            alertString = "There are duplicate track numbers — please correct"
+            duplicate = true;
+            break;
+          }
         }
       }
     }
-  }
 
 
-  if (success) {
-    createSubmission(format);
-  } else {
-    /*
-    var alertString = "You are missing the following:";
-    for (var i = 0; i < missing.length; i++) {
-      alertString += missing[i];
+    if (success) {
+      createSubmission(format);
+    } else {
+      /*
+      var alertString = "You are missing the following:";
+      for (var i = 0; i < missing.length; i++) {
+        alertString += missing[i];
+      }
+      */
+      alert(alertString);
     }
-    */
-    alert(alertString);
   }
 
 }
@@ -171,7 +179,7 @@ function handleAlbum(evt) {
   var files = evt.target.files;
   cover = files[0];
 
-  if(cover.type.match('image.*')) {
+  if(cover.type.match('image.*') && cover.size < 5000000) {
     var reader = new FileReader();
 
     reader.onload = (function(theFile) {
@@ -186,26 +194,40 @@ function handleAlbum(evt) {
     })(cover);
 
     reader.readAsDataURL(cover);
-  } else alert("Please choose an image.");
+  } else if (cover.type.match('image.*')) {
+    alert("Please choose a smaller image.");
+  } else {
+    alert("Please choose an image.");
+  }
 }
 
 function handleTracks(evt) {
   var files = evt.target.files;
   var filesAdded = 0;
-  var warning = false;
+  var fileWarning = false;
+  var sizeWarning = false;
+
   // TODO: Needs to remove non-music files from files[]
   for (var i = 0, f; f = files[i]; i++) {
 
     if (!f.type.match('audio.*')) {
-      warning = true;
+      fileWarning = true;
+      continue;
+    }
+
+    if (f.size > 175000000) {
+      sizeWarning = true;
       continue;
     }
 
     var fileName = f.name;
     addTrackForm(fileName, (totalTracks + i + 1) );
     filesAdded++;
+
+    totalTrackSize += f.size;
   }
-  if (warning) alert("Please only upload audio files");
+  if (fileWarning) alert("Please only upload audio files");
+  if (sizeWarning) alert("Please keep file size below 175 megabytes.\nIf you want to submit large files, please email us.");
   totalTracks = totalTracks + filesAdded;
 }
 
