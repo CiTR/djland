@@ -234,11 +234,11 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 				Thank you for donating to CiTR's Fundrive! We really appreciate it.
 			</div>
 			<div class='double-padded-top'>
-				This year our Fundrive Finale is on Friday, March 17 at the Polish Community Center 4015 Fraser Street. There will be very special performances by brand new bands, a free publication with entry, and the event will be live broadcast and live video streamed.
+				This year our Fundrive Finale is on Friday, March 17 at the Polish Community Center 4015 Fraser Street. Doors open at 8:30PM. There will be very special performances by brand new bands, a free publication with entry, and the event will be live broadcast and live video streamed.
 			</div>
 		<!--	<div class='double-padded-top'>
 				Would you like to buy the Pop Alliance Compilation LP for $15? <input type='checkbox' class='LP_yes' id='LP_yes'>
-				<!-- <div id="LP_Qty_Div" class="invisible">How many? </div><input id='LP_amount' class='big_text invisible' placeholder='Enter Quantity' onKeyPress="return numbersonly(this, event)"> 
+				<!-- div id="LP_Qty_Div" class="invisible">How many? </div><input id='LP_amount' class='big_text invisible' placeholder='Enter Quantity' onKeyPress="return numbersonly(this, event)"> 
 			</div> -->
 
 			<div class='double-padded-top'>

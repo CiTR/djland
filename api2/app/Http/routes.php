@@ -884,6 +884,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			}else{
 				$categorylist = Categorylist::join('category','category.id','=','categorylist.categoryID')->where('category.name','LIKE',$cat_id)->get();
 			}
+			if($categorylist->isEmpty()) return Response::json();
 			foreach($categorylist as $item){
 				$song = Songlist::find($item->songID);
 				if($song['title'] == "" || $song['title'] == null){
