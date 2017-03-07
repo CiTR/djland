@@ -81,7 +81,9 @@ var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
 	<h3 id="total"></h3>
 	<hr>
 
-	<div class='col1'>Thank you for calling the CiTR Fundrive pledge line! My name is __________.</div>
+   	<div class='col1 text-center'><b>This is fundrive pledge #<span id='donationID'>?</span></b></div>
+
+	<div class='col1 double-padded-top'>Thank you for calling the CiTR Fundrive pledge line! My name is __________.</div>
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>How much would you like to donate?:</div>

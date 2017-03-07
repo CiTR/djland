@@ -2,9 +2,24 @@ $(document).ready ( function() {
 	var donor = {};
 	//Get from PHP setting via script tag
 	var id = id_in;
-	//console.log(id);
+
 	if(id != null){
 		load(id);
+	}else{
+		var load_request = $.ajax({
+				type:"POST",
+				url: "api2/public/fundrive/donor",
+				dataType: "json",
+				async: true
+			});
+		$.when(load_request).then(
+			function(response){
+				console.log(response);
+				id = response['id'];
+				load(id);
+			},function(error){
+				console.log(error);
+		});
 	}
 	getTotals();
 
@@ -33,8 +48,8 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
+				$('#donationID').html(response['id']);
 				//console.log(response);
-
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
 						var donation_amount = response[entry_index];
@@ -45,7 +60,6 @@ $(document).ready ( function() {
 								$('#amount_alt').prop('checked', true);
 								$('#amount_other').removeClass('invisible');
 								document.getElementById('amount_other').value = donation_amount;
-
 						}
 					}else if( entry_index == 'payment_method'){
 						$('.payment_method[value="'+response[entry_index]+'"]').prop('checked',true);
@@ -132,7 +146,8 @@ $(document).ready ( function() {
 	function save(){
 		get_form();
 
-		if(id==null){
+		//Should never encounter id being null
+		/*if(id==null){
 			var create_request = $.ajax({
 			type:"PUT",
 			url: "api2/public/fundrive/donor",
@@ -145,9 +160,9 @@ $(document).ready ( function() {
 					update(true);
 				}
 			);
-		}else{
+		}else{*/
 			update(false);
-		}
+		//}
 	}
 	function update(is_new){
 		var update_request = $.ajax({
@@ -280,11 +295,10 @@ $(document).ready ( function() {
 
 
 });
-window.setInterval(checkBlocking,1000);
-window.setInterval(checkEmail,1000);
+window.setInterval(checkBlocking,500);
+window.setInterval(checkEmail,500);
 
 function checkEmail(){
-
 	var email = get('email');
 	if(email.length == 0 || !$('#email').is(':focus')) return;
 	else{
@@ -304,6 +318,7 @@ function checkEmail(){
 		}
 	}
 }
+
 function numbersonly(myfield, e, dec){
 		var key;
 		var keychar;
@@ -362,92 +377,94 @@ function numbersonly(myfield, e, dec){
 			else  return false;
 		}
 
-
 function checkBlocking(){
-		var allOkay = true;
-		$('.required').each( function(){
-			if( !$.trim( $(this).val() )){
+	var allOkay = true;
+	$('.required').each( function(){
+		if( !$.trim( $(this).val() )){
+		allOkay=false;
+		}
+	});
+	if( !$('#email_check').hasClass('green')){
+		allOkay=false;
+	}
+	if($('input[name="mailing"]:checked').val() == '1'){
+		if($('#postage_paid').val().length == 0){
 			allOkay=false;
+		}
+	}
+	if (allOkay){
+	$('#donor_submit').attr('disabled',false);
+	$('#donor_submit').text("Submit");
+	$('#donor_submit').removeClass("red");
+	}else{
+		$('#donor_submit').attr('disabled',true);
+		$('#donor_submit').text("Form Not Complete");
+		$('#donor_submit').addClass("red");
+	}
+	//console.log(allOkay);
+}
+
+function get(target_id,target_class,target_name){
+	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
+	var tag = target.prop('tagName');
+	var result;
+	switch(tag){
+		case 'DIV':
+			result = target.text();
+			break;
+		case 'INPUT':
+			var type = target.attr('type');
+			switch(type){
+				case 'checkbox':
+					if(target.prop('checked')) result = 1;
+					else result = 0;
+					break;
+				default:
+					result = target.val();
+					break;
 			}
-		});
-		if( !$('#email_check').hasClass('green')){
-			allOkay=false;
-		}
-		if($('input[name="mailing"]:checked').val() == '1'){
-			if($('#postage_paid').val().length == 0){
-				allOkay=false;
+			break;
+		case 'SELECT':
+		case 'TEXTAREA':
+			result = target.val();
+			break;
+		default:
+			result = target.val();
+			break;
+	}
+	return result;
+}
+
+function set(value,target_id,target_class,target_name){
+	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
+	var tag = target.prop('tagName');
+	//console.log("Value:"+value+" Target:"+target.attr('id') + "," +target.attr('class') + "," +target.attr('name')+" Tag:"+tag);
+	switch(tag){
+		case 'DIV':
+			target.text(value);
+			break;
+		case 'SELECT':
+			target.val(value).change();
+			break;
+		case 'INPUT':
+			var type = target.attr('type');
+			switch(type){
+				case 'checkbox':
+					if(value == '1'){
+						target.prop('checked',true);
+					}else{
+						target.prop('checked',false);
+					}
+					break;
+				default:
+					target.val(value).change();
+					break;
 			}
-		}
-		if (allOkay){
-		$('#donor_submit').attr('disabled',false);
-		$('#donor_submit').text("Submit");
-		$('#donor_submit').removeClass("red");
-		}else{
-			$('#donor_submit').attr('disabled',true);
-			$('#donor_submit').text("Form Not Complete");
-			$('#donor_submit').addClass("red");
-		}
-		//console.log(allOkay);
+			break;
+		case 'TEXTAREA':
+		default:
+			target.val(value).change();
+			break;
 	}
-	function get(target_id,target_class,target_name){
-		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
-		var tag = target.prop('tagName');
-		var result;
-		switch(tag){
-			case 'DIV':
-				result = target.text();
-				break;
-			case 'INPUT':
-				var type = target.attr('type');
-				switch(type){
-					case 'checkbox':
-						if(target.prop('checked')) result = 1;
-						else result = 0;
-						break;
-					default:
-						result = target.val();
-						break;
-				}
-				break;
-			case 'SELECT':
-			case 'TEXTAREA':
-				result = target.val();
-				break;
-			default:
-				result = target.val();
-				break;
-		}
-		return result;
-	}
-	function set(value,target_id,target_class,target_name){
-		var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
-		var tag = target.prop('tagName');
-		//console.log("Value:"+value+" Target:"+target.attr('id') + "," +target.attr('class') + "," +target.attr('name')+" Tag:"+tag);
-		switch(tag){
-			case 'DIV':
-				target.text(value);
-				break;
-			case 'SELECT':
-				target.val(value).change();
-				break;
-			case 'INPUT':
-				var type = target.attr('type');
-				switch(type){
-					case 'checkbox':
-						if(value == '1'){
-							target.prop('checked',true);
-						}else{
-							target.prop('checked',false);
-						}
-						break;
-					default:
-						target.val(value).change();
-						break;
-				}
-				break;
-			case 'TEXTAREA':
-			default:
-				target.val(value).change();
-				break;
-		}
-	}
+}
+
