@@ -101,8 +101,26 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
 				</div>
                 <div class='double-padded-top'>
                     <div  class="row">
-                        <label for="fileToUpload" >Choose an Image file</label><br/>
-                        <input type="file" name='image_file' id='image_file'/>
+						<label for="fileToUpload">Either choose files, or drag files. Accepted image formats are .png, .jpg, and .gif. </br>We recommend a size of at least 1400pxx1400px for iTunes Podcasting Support</label><br/>
+                        <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+                    </div>
+                    <div  id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
+                    <div ng-show="files.length">
+                        <div ng-repeat="file in files.slice(0)">
+                            <span>{{file.webkitRelativePath || file.name}}</span>
+                            (<span ng-switch="file.size > 1024*1024">
+                            <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+                            <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+                            </span>)
+                        </div>
+                    <input type="button" ng-click="uploadFile()" value="Upload" />
+                    <div ng-show="progressVisible">
+                        <div class="percent">{{progress}}%</div>
+                            <div class="progress-bar">
+                                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+                            </div>
+                        </div>
+>>>>>>> dev:shows.php
                     </div>
 					<button type="button" ng-click='show.uploadImage()' >Upload</button>
                 </div>
@@ -139,7 +157,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
-			<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
+						<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
                         <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>
