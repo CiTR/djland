@@ -2,9 +2,24 @@ $(document).ready ( function() {
 	var donor = {};
 	//Get from PHP setting via script tag
 	var id = id_in;
-	//console.log(id);
+
 	if(id != null){
 		load(id);
+	}else{
+		var load_request = $.ajax({
+				type:"POST",
+				url: "api2/public/fundrive/donor",
+				dataType: "json",
+				async: true
+			});
+		$.when(load_request).then(
+			function(response){
+				console.log(response);
+				id = response['id'];
+				load(id);
+			},function(error){
+				console.log(error);
+		});
 	}
 	getTotals();
 
@@ -33,6 +48,7 @@ $(document).ready ( function() {
 				});
 		$.when( load_request).then(
 			function(response){
+				$('#donationID').html(response['id']);
 				//console.log(response);
 				for(var entry_index in response){
 					if( entry_index == 'donation_amount'){
@@ -130,7 +146,8 @@ $(document).ready ( function() {
 	function save(){
 		get_form();
 
-		if(id==null){
+		//Should never encounter id being null
+		/*if(id==null){
 			var create_request = $.ajax({
 			type:"PUT",
 			url: "api2/public/fundrive/donor",
@@ -143,9 +160,9 @@ $(document).ready ( function() {
 					update(true);
 				}
 			);
-		}else{
+		}else{*/
 			update(false);
-		}
+		//}
 	}
 	function update(is_new){
 		var update_request = $.ajax({
@@ -171,7 +188,6 @@ $(document).ready ( function() {
 		);
 	}
 	function get_form(){
-		donor.id = $('[name=donationID]').val();
 		donor.donation_amount = $('input[name="amount"]:checked').val();
 		if(donor.donation_amount == 'other') donor.donation_amount = get('amount_other');
 		if($('input[name="swag"]:checked').val() == 'swag'){
@@ -302,6 +318,7 @@ function checkEmail(){
 		}
 	}
 }
+
 function numbersonly(myfield, e, dec){
 		var key;
 		var keychar;
@@ -360,7 +377,6 @@ function numbersonly(myfield, e, dec){
 			else  return false;
 		}
 
-
 function checkBlocking(){
 	var allOkay = true;
 	$('.required').each( function(){
@@ -387,6 +403,7 @@ function checkBlocking(){
 	}
 	//console.log(allOkay);
 }
+
 function get(target_id,target_class,target_name){
 	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
 	var tag = target.prop('tagName');
@@ -417,6 +434,7 @@ function get(target_id,target_class,target_name){
 	}
 	return result;
 }
+
 function set(value,target_id,target_class,target_name){
 	var target =  $( (target_id != null ? '#'+ target_id : "" ) + (target_class != null ? "." + target_class : "") + (target_name != null ? "[name="+target_name+"]" : ""));
 	var tag = target.prop('tagName');

@@ -15,14 +15,15 @@ Route::group(array('prefix'=>'fundrive'),function(){
 			//Lock an ID - create a new Donor with an unsaved status
 			//We delete this if the form isn't saved
 			Route::post('/', function(){
-				$donor = new Donor;
-				$donor->status='unsaved';
-				$donor->save;
+				$donor = Donor::create([
+					'status' => 'unsaved'
+				]);
 				return Response::json($donor);
 			});
+			//get all active fundrive pledges
 			Route::get('/',function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
-				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::all();
+				if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::where('status', '=', 'saved')->get();
 				else return "Nope";
 			});
 			//Donor By ID
@@ -33,9 +34,14 @@ Route::group(array('prefix'=>'fundrive'),function(){
 					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
 					else return "Nope";
 				});
-				//Update a donor
+				//Update a donor - sets status to "saved" since it's being saved recently - this Route
+				//is called when a form is filled out.
 				Route::post('/',function($id){
-					return Response::json(Donor::find($id)->update( (array) Input::get()['donor']));
+					$donor = Donor::find($id);
+					$donor->status = 'saved';
+					$donor->save();
+					$donor->update( (array) Input::get()['donor']);
+					return Response::json($donor);
 				});
 				//Delete a donor
 				Route::delete('/',function($id){

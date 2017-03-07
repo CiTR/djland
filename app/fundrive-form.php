@@ -54,6 +54,9 @@ Sandwich Islands", "Spain", "Sri Lanka",
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | Fundrive Form</title>
+<script>
+	var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
+</script>
 <script src='js/jquery-1.11.3.min.js'></script>
 <script src='js/fundrive/donor.js'></script>
 <script src="js/library-js.js"></script>
@@ -70,18 +73,15 @@ $shows = array();
 $api_base = 'http://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 ?>
-<script>
-var id_in = <?php echo isset($_GET['id']) ? $_GET['id'] : 'null'; ?>;
-</script>
-
-
 
 <div class='wrapper donor_form side-padded big_text'>
 	<h1 class='double-padded-top'> Fundrive Donation Form </h1>
 	<h3 id="total"></h3>
 	<hr>
 
-	<div class='col1'>Thank you for calling the CiTR Fundrive pledge line! My name is __________.</div>
+	<div class='col1 text-center'><b>This is fundrive pledge #<span id='donationID'>?</span></b></div>
+
+	<div class='col1 double-padded-top'>Thank you for calling the CiTR Fundrive pledge line! My name is __________.</div>
 
 	<div class='col1 double-padded-top'>
 	    <div class='col1'>How much would you like to donate?:</div>
