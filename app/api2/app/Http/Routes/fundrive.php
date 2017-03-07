@@ -12,9 +12,13 @@ Route::group(array('prefix'=>'fundrive'),function(){
 	Route::group(array('middleware'=>'auth'),function(){
 		//Donor Subsection
 		Route::group(array('prefix'=>'donor'),function(){
-			//Create a new Donor
-			Route::put('/',function(){
-				return Donor::create();
+			//Lock an ID - create a new Donor with an unsaved status
+			//We delete this if the form isn't saved
+			Route::post('/', function(){
+				$donor = new Donor;
+				$donor->status='unsaved';
+				$donor->save;
+				return Response::json($donor);
 			});
 			Route::get('/',function(){
 				$permissions = Member::find($_SESSION['sv_id'])->user->permission;
@@ -45,7 +49,7 @@ Route::group(array('prefix'=>'fundrive'),function(){
 	// Fundrive amount raised total, Externally accessible
 	Route::get('/total',function(){
 		include_once($_SERVER['DOCUMENT_ROOT']."/headers/session_header.php");
-		$donation_list = Donor::select('donation_amount')->get();
+		$donation_list = Donor::select('donation_amount')->where('status', '=', 'saved')->get();
 		$total = 0;
 		foreach ($donation_list as $donation) {
 	 	//str_replace is to deal with commas, as donation_amount is a varchar in the db and some people will enter in values with commas
