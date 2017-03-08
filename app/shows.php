@@ -120,7 +120,6 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                                 <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
                             </div>
                         </div>
->>>>>>> dev:shows.php
                     </div>
 					<button type="button" ng-click='show.uploadImage()' >Upload</button>
                 </div>
