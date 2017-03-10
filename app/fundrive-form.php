@@ -255,7 +255,7 @@ $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 	</div>
 
 	<hr/>
-	<div class='col1 double-padded-top'> Has this person paid? <input type='checkbox' id='paid_status'> </div>
+	<div class='col1 double-padded-top'> Has this person paid? <input type='checkbox' id='paid_status'></div>
 	<div class='col1'>Has this person picked up the prize yet?<input type='checkbox' id='prize_picked_up'></div>
 
 	<div class='containerrow'>
