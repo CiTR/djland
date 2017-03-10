@@ -98,73 +98,97 @@ function trash_submission_new_other(){
 	populateNewSubmissionsTable();
 }
 
-function trash_submission_reviewed_cd(){
-	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_cd");
-	for (var i=0; i<submissionIDs.length; i++) {
-		$.ajax({
-			url: "api2/public/submissions/trash",
-			type:'PUT',
-			dataType:'json',
-			data: {
-				'id':submissionIDs[i]
-			},
-			async:true,
-			success:function(data){
-				console.log(data);
-			},
-			fail:function(data){
-				console.log("Deleting the submission failed. Response data: " + data);
-				alert("Error: Submission was not deleted");
-			}
-		});
+function approve_submission_reviewed_cd(){
+	var discardSubmissionIDs = getCheckedSubmissions("delete_submission_reviewed_cd");
+	var approveSubmissionIDs = getCheckedSubmissions("approve_submission_cd");
+	if (discardSubmissionIDs != null) {
+		for (var i=0; i<discardSubmissionIDs.length; i++) {
+			$.ajax({
+				url: "api2/public/submissions/trash",
+				type:'PUT',
+				dataType:'json',
+				data: {
+					'id':discardSubmissionIDs[i]
+				},
+				async:true,
+				success:function(data){
+					console.log(data);
+				},
+				fail:function(data){
+					console.log("Deleting the submission failed. Response data: " + data);
+					alert("Error: Submission was not deleted");
+				}
+			});
+		}
+	}
+	if (approveSubmissionIDs != null) {
+		for(var j=0; j<approveSubmissionIDs.length; j++) {
+			approveReview(approveSubmissionIDs[j]);
+		}
 	}
 	// update the tables
 	populateReviewedSubmissionsTable();
 }
 
-function trash_submission_reviewed_mp3(){
-	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_mp3");
-	for (var i=0; i<submissionIDs.length; i++) {
-		$.ajax({
-			url: "api2/public/submissions/trash",
-			type:'PUT',
-			dataType:'json',
-			data: {
-				'id':submissionIDs[i]
-			},
-			async:true,
-			success:function(data){
-				console.log(data);
-			},
-			fail:function(data){
-				console.log("Deleting the submission failed. Response data: " + data);
-				alert("Error: Submission was not deleted");
-			}
-		});
+function approve_submission_reviewed_mp3(){
+	var discardSubmissionIDs = getCheckedSubmissions("delete_submission_reviewed_mp3");
+	var approveSubmissionIDs = getCheckedSubmissions("approve_submission_mp3");
+	if (discardSubmissionIDs != null) {
+		for (var i=0; i<discardSubmissionIDs.length; i++) {
+			$.ajax({
+				url: "api2/public/submissions/trash",
+				type:'PUT',
+				dataType:'json',
+				data: {
+					'id':discardSubmissionIDs[i]
+				},
+				async:true,
+				success:function(data){
+					console.log(data);
+				},
+				fail:function(data){
+					console.log("Deleting the submission failed. Response data: " + data);
+					alert("Error: Submission was not deleted");
+				}
+			});
+		}
+	}
+	if (approveSubmissionIDs != null) {
+		for(var j=0; j<approveSubmissionIDs.length; j++) {
+			approveReview(approveSubmissionIDs[j]);
+		}
 	}
 	// update the tables
 	populateReviewedSubmissionsTable();
 }
 
-function trash_submission_reviewed_other(){
-	var submissionIDs = getCheckedSubmissions("delete_submission_reviewed_other");
-	for (var i=0; i<submissionIDs.length; i++) {
-		$.ajax({
-			url: "api2/public/submissions/trash",
-			type:'PUT',
-			dataType:'json',
-			data: {
-				'id':submissionIDs[i]
-			},
-			async:true,
-			success:function(data){
-				console.log(data);
-			},
-			fail:function(data){
-				console.log("Deleting the submission failed. Response data: " + data);
-				alert("Error: Submission was not deleted");
-			}
-		});
+function approve_submission_reviewed_other(){
+	var discardSubmissionIDs = getCheckedSubmissions("delete_submission_reviewed_other");
+	var approveSubmissionIDs = getCheckedSubmissions("approve_submission_other");
+	if (discardSubmissionIDs != null) {
+		for (var i=0; i<discardSubmissionIDs.length; i++) {
+			$.ajax({
+				url: "api2/public/submissions/trash",
+				type:'PUT',
+				dataType:'json',
+				data: {
+					'id':discardSubmissionIDs[i]
+				},
+				async:true,
+				success:function(data){
+					console.log(data);
+				},
+				fail:function(data){
+					console.log("Deleting the submission failed. Response data: " + data);
+					alert("Error: Submission was not deleted");
+				}
+			});
+		}
+	}
+	if (approveSubmissionIDs != null) {
+		for(var j=0; j<approveSubmissionIDs.length; j++) {
+			approveReview(approveSubmissionIDs[j]);
+		}
 	}
 	// update the tables
 	populateReviewedSubmissionsTable();
