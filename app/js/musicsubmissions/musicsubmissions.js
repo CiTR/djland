@@ -317,19 +317,26 @@ function trash_submission_tagged_other(){
 
 function undo_trash_submission(){
 	var submissionIDs = getCheckedSubmissions("restore_submission");
-	$.ajax({
-		url: "api2/public/submissions/restore",
-		type:'PUT',
-		dataType:'json',
-		data: {
-			'id':submissionIDs
-		},
-		async:true,
-		success:function(data){
-			console.log(data);
-			alert("Submission Restored");
-		}
-	});
+	for (var i=0; i<submissionIDs.length; i++) {
+		$.ajax({
+			url: "api2/public/submissions/restore",
+			type:'PUT',
+			dataType:'json',
+			data: {
+				'id':submissionIDs[i]
+			},
+			async:true,
+			success:function(data){
+				console.log(data);
+				alert("Submission Restored");
+			},
+			fail:function(data){
+				console.log("Restoring the submission failed. Response data: " + data);
+				alert("Error: Submission was not restored");
+			}
+		});
+	}
+	populateTrashedSubmissionsTable();
 }
 
 /*

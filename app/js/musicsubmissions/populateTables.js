@@ -134,7 +134,9 @@ function populateTaggedSubmissionsTable(){
 	});
 }
 function populateTrashedSubmissionsTable(){
-	$.ajax({
+  $(".trashedrow").remove();
+  $(".trashedrowNotFound").remove();
+  $.ajax({
 		type:"GET",
 		url: "api2/public/submissions/bystatus/trashed",
 		dataType:'json',
@@ -411,7 +413,7 @@ function populateTaggedSubmissionsOther(submissions){
 }
 function populateTrashedSubmissions(submissions){
 	if(submissions[0] == null){
-		var markup = "<tr class=\"playitem border reviewedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+		var markup = "<tr class=\"playitem border trashedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='trashedSubmissions']").append(markup);
 	} else{
 		for(var number in submissions) {
@@ -419,7 +421,7 @@ function populateTrashedSubmissions(submissions){
 			if(item['approved'] == 1) var approvalYesNo = "Yes";
 			else var approvalYesNo = "No";
 			var names = namesFromMemberId(item['reviewed']);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+			var markup = "<tr class=\"playitem border trashedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"restore_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='trashedSubmissions']").append(markup);
 		}
 		add_submission_handlers();
