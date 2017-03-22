@@ -134,7 +134,9 @@ function populateTaggedSubmissionsTable(){
 	});
 }
 function populateTrashedSubmissionsTable(){
-	$.ajax({
+  $(".trashedrow").remove();
+  $(".trashedrowNotFound").remove();
+  $.ajax({
 		type:"GET",
 		url: "api2/public/submissions/bystatus/trashed",
 		dataType:'json',
@@ -222,13 +224,13 @@ function populateReviewedSubmissionsCd(submissions){
 			if(item['approved'] == 1) var approvalYesNo = "Yes";
 			else var approvalYesNo = "No";
             if(item['reviewed'] != null){
-                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_cd\" id=\"delete" + item['id'] + "\"></td></tr>";
+                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_cd\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_cd\" id=\"delete" + item['id'] + "\"></td></tr>";
             } else {
-                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_cd\" id=\"delete" + item['id'] + "\"></td></tr>";
+                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_cd\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_cd\" id=\"delete" + item['id'] + "\"></td></tr>";
  			}
 			$("tbody[name='reviewedSubmissionCd']").append(markup);
 		}
-		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_cd()\">Apply Approvals</button></td></tr>"
 		$("tbody[name='reviewedSubmissionCd']").append(endrow);
 		add_submission_handlers();
 	}
@@ -243,13 +245,13 @@ function populateReviewedSubmissionsMP3(submissions){
 			if(item['approved'] == 1) var approvalYesNo = "Yes";
 			else var approvalYesNo = "No";
             if(item['reviewed'] != null){
-                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_mp3\" id=\"delete" + item['id'] + "\"></td></tr>";
+                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_mp3\" id=\"delete" + item['id'] + "\"></td></tr>";
  			} else {
-                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_mp3\" id=\"delete" + item['id'] + "\"></td></tr>";
+                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_mp3\" id=\"delete" + item['id'] + "\"></td></tr>";
  			}
 			$("tbody[name='reviewedSubmissionMP3']").append(markup);
 		}
-		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_mp3()\">Apply Approvals</button></td></tr>"
 		$("tbody[name='reviewedSubmissionMP3']").append(endrow);
 		add_submission_handlers();
 	}
@@ -264,13 +266,13 @@ function populateReviewedSubmissionsOther(submissions){
 			if(item['approved'] == 1) var approvalYesNo = "Yes";
 			else var approvalYesNo = "No";
             if(item['reviewed'] != null){
- 				var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_other\" id=\"delete" + item['id'] + "\"></td></tr>";
+ 				var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed'] + "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_other\" id=\"delete" + item['id'] + "\"></td></tr>";
  			} else {
-                var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_other\" id=\"delete" + item['id'] + "\"></td></tr>";
+        var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td><span style=\"color:navy\">Unknown</span></td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"approve_submission_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission_reviewed_other\" id=\"delete" + item['id'] + "\"></td></tr>";
  			}
 			$("tbody[name='reviewedSubmissionOther']").append(markup);
 		}
-		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button>Apply Approvals</button></td></tr>"
+		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_other()\">Apply Approvals</button></td></tr>"
 		$("tbody[name='reviewedSubmissionOther']").append(endrow);
 		add_submission_handlers();
 	}
@@ -411,7 +413,7 @@ function populateTaggedSubmissionsOther(submissions){
 }
 function populateTrashedSubmissions(submissions){
 	if(submissions[0] == null){
-		var markup = "<tr class=\"playitem border reviewedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+		var markup = "<tr class=\"playitem border trashedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='trashedSubmissions']").append(markup);
 	} else{
 		for(var number in submissions) {
@@ -419,7 +421,7 @@ function populateTrashedSubmissions(submissions){
 			if(item['approved'] == 1) var approvalYesNo = "Yes";
 			else var approvalYesNo = "No";
 			var names = namesFromMemberId(item['reviewed']);
-			var markup = "<tr class=\"playitem border reviewedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div><td><input type=\"checkbox\" class=\"delete_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+			var markup = "<tr class=\"playitem border trashedrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td></td><td>" + item['reviewed']+ "</td><td>" + approvalYesNo + "</td><td><input type=\"checkbox\" class=\"restore_submission\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
 			$("tbody[name='trashedSubmissions']").append(markup);
 		}
 		add_submission_handlers();
