@@ -18,4 +18,4 @@ CREATE TABLE `library` (
   `modified` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `text_desc` (`artist`,`title`,`label`,`genre`)
-) ENGINE=MyISAM AUTO_INCREMENT=57528 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57528 DEFAULT CHARSET=latin1;

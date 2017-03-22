@@ -1,0 +1,1 @@
+ALTER TABLE library ENGINE=InnoDB;
