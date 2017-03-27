@@ -191,7 +191,22 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 	foreach($dbarray as $i => $row) {
 
-		printf("<tr id='albumEntry'><td onClick='editLine(this)' class='editButton'>edit</td>");
+		$entry_catalog = $row["catalog"];
+		$entry_format = $row["format"];
+		$entry_artist = $row["artist"];
+		$entry_title = $row["title"];
+		$entry_label = $row["label"];
+		$entry_genre = $row["genre"];
+		$entry_added = $row["added"];
+		$entry_modified = $row["modified"];
+		$entry_cancon = $row["cancon"];
+		$entry_femcon = $row["femcon"];
+		$entry_local = $row["local"];
+		$entry_playlist = $row["playlist"];
+		$entry_compilation = $row["compilation"];
+		$entry_digitized = $row["digitized"];
+
+		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_modified\", \"$entry_added\", \"$entry_format\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\")' class='editButton'>edit</td>");
 		printf("<td><input type=checkbox name='entry'></td>");
 		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
 
