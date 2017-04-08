@@ -5,10 +5,15 @@ require_once("headers/menu_header.php");
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 <link rel=stylesheet href=css/style.css type=text/css>
+<link rel=stylesheet href=css/src/library.css type=text/css>
 <title>DJLAND | music library</title>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="js/library-js.js"></script>
+<script type='text/javascript' src='js/membership/functions.js'></script>
+<script type="text/javascript" src="js/membership/admin.js"></script>
+<script type="text/javascript" src="js/test.js"></script>
+<script type='text/javascript' src='./js/libraryedit/libraryedit.js'></script>
 
 <?php
 //<script src="js/jquery.form.js"></script>
@@ -40,21 +45,21 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 							<td align=left colspan="6" style='padding-left:10px;padding-bottom:20px'>Please enter the changes you would like to make to the record(s):</td>
 						</tr>
 						<tr>
-							<td align=left style='padding-left:10px'>Catalog #: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=ascatalog size=10></td>
+							<td align=left style='padding-left:10px'>Catalog #: </td><td align=left style='padding-left:5px'><INPUT TYPE=text id='ascatalog' size=10></td>
 							<td align=left style='padding-left:10px'>Format: </td><td align=left style='padding-left:5px'>
-								<select name=asformat><option value=0>All
+								<select id='asformat'><option value=0>
 									<?php
 										foreach($fformat_name as $var_key => $var_name) {
 											printf("<option value=%s>%s", $var_key, $var_name);
 										}
 									?>
 								</select></td>
-							<td align=left style='padding-left:10px'>Status: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asstatus size=2></td>
+							<td align=left style='padding-left:10px'>Status: </td><td align=left style='padding-left:5px'><INPUT TYPE=text id='asstatus' size=2></td>
 						</tr>
 						<tr>
-							<td align=left style='padding-left:10px'>Artist: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asartist></td>
-							<td align=left style='padding-left:10px'>Title: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=astitle></td>
-							<td align=left style='padding-left:10px'>Label: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=aslabel></td>
+							<td align=left style='padding-left:10px'>Artist: </td><td align=left style='padding-left:5px'><INPUT TYPE=text id='asartist'></td>
+							<td align=left style='padding-left:10px'>Title: </td><td align=left style='padding-left:5px'><INPUT TYPE=text id='astitle'></td>
+							<td align=left style='padding-left:10px'>Label: </td><td align=left style='padding-left:5px'><INPUT TYPE=text id='aslabel'></td>
 						</tr>
 						<tr>
 							<td align=left style='padding-left:10px'>Genre: </td>
@@ -64,7 +69,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 									$(".js-example-basic-single").select2();
 									});
 								</script>
-									<select class="js-example-basic-single vueselect" style="width:70%;">
+									<select class="js-example-basic-single vueselect" style="width:70%;" id='asgenre'><option value=0>
 										<?php foreach($djland_primary_genres as $genre){
 											printf("<option value=\"$genre\">$genre</option>");
 										} ?>
@@ -75,12 +80,12 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 						</tr>
 						<tr>
 							<td align=left style='padding-left:10px' colspan=6><br />
-									Cancon: <input type=checkbox name="ascancon">
-									Femcon: <input type=checkbox name="asfemcon">
-									Local: <input type=checkbox name="aslocal">
-									Playlist: <input type=checkbox name="asplaylist">
-									Compilation: <input type=checkbox name="ascompliation">
-									in SAM: <input type=checkbox name="asdigitized">
+									Cancon: <input type=checkbox id='ascancon'>
+									Femcon: <input type=checkbox id='asfemcon'>
+									Local: <input type=checkbox id='aslocal'>
+									Playlist: <input type=checkbox id='asplaylist'>
+									Compilation: <input type=checkbox id='ascompilation'>
+									in SAM: <input type=checkbox id='asdigitized'>
 							</td>
 						</tr>
 					</table>
@@ -90,7 +95,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 	<?php
 
 	printf("<br /><hr width=800px>");
-	printf("<center><br /><input type=submit VALUE='Apply Changes to Selected'></center><br />");
+	printf("<center><br /><input type=submit VALUE='Apply Changes to Selected' onClick='saveChanges()'></center><br />");
 
 	?>
 	<!--JAVASCRIPT HELPER CALLS-->
@@ -205,9 +210,10 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 		$entry_playlist = $row["playlist"];
 		$entry_compilation = $row["compilation"];
 		$entry_digitized = $row["digitized"];
+		$entry_id = $row["id"];
 
-		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_modified\", \"$entry_added\", \"$entry_format\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\")' class='editButton'>edit</td>");
-		printf("<td><input type=checkbox name='entry'></td>");
+		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_id\", \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_modified\", \"$entry_added\", \"$entry_format\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\")' class='editButton'>edit</td>");
+		printf("<td><input type=checkbox name='entry' id='\"$entry_id\"'></td>");
 		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
 
 		$title = "Catalog: " . htmlspecialchars($row["catalog"]);
@@ -314,7 +320,7 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level'] &&
 // ** SEARCH LIBRARY
 else if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 
-	printf("<br><table><tr><td><center><br><h1>Search to Edit Library</h1></center>");
+	printf("<br><table><tr><td><center><br><h1>Search to Edit Library</h1><br></center>");
 
 	printf("<CENTER><FORM METHOD=\"GET\" ACTION=\"%s\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']);
 	printf("<INPUT TYPE=hidden NAME=action VALUE=search>");
@@ -392,6 +398,23 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 		</tr>
 	</table>
 	</FORM></CENTER>
+	<table>
+		<tr><center>
+			<br />
+			<input type=submit VALUE="View Recent Edits" id="viewEdits" onClick="viewEdits()">
+			</center><br>
+		</tr>
+		<tr>
+			<table id="recentedits_table" name="search">
+				<tbody name="recentEdits">
+					<tr>
+						<center><input type=submit VALUE="Undo Selected Edits" id="undoEdits" onClick="undoEdits()" style="display:none;">
+						</center><br>
+					</tr>
+				</tbody>
+			</table>
+		</tr>
+	</table>
 	</td></tr></table>
 <?php
 

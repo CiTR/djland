@@ -52,32 +52,40 @@ function toggle(source) {
 	}
 }
 
-function editLine(source, artist, title, label, genre, catalog, modified, added, format, cancon, femcon, local, playlist, compilation, digitized) {
+function editLine(source, id, artist, title, label, genre, catalog, modified, added, format, cancon, femcon, local, playlist, compilation, digitized) {
 	var tr = source.parentNode;
 	var table = tr.parentNode;
 
 	if(tr.nextSibling.id != "editableLine") {
+		var entryID = id;
+		var artistID = "artist" + entryID;
+		var titleID = "title" + entryID;
+		var labelID = "label" + entryID;
+		var genreID = "genre" + entryID;
+		var catalogID = "catalog" + entryID;
+		var formatID = "format" + entryID;
+		var canconID = "cancon" + entryID;
+		var femconID = "femcon" + entryID;
+		var localID = "local" + entryID;
+		var playlistID = "playlist" + entryID;
+		var compilationID = "compilation" + entryID;
+		var digitizedID = "digitized" + entryID;
+
 		var newtr1 = document.createElement("tr");
 		newtr1.id = "editableLine";
-		newtr1.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Artist: <INPUT TYPE=text value='"+artist+"' size=29> Title: <INPUT TYPE=text value='"+title+"' size=35></td>";
+		newtr1.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Artist: <INPUT TYPE=text value='"+artist+"' id='"+artistID+"' size=29> Title: <INPUT TYPE=text value='"+title+"' id='"+titleID+"' size=35></td>";
 
 		var newtr2 = document.createElement("tr");
-		newtr2.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Label: <INPUT TYPE=text value='"+label+"' size=20> Genre: <INPUT TYPE=text value='"+genre+"' size=20> Catalog #: <INPUT TYPE=text value='"+catalog+"' size=10></td>";
+		newtr2.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Label: <INPUT TYPE=text value='"+label+"' id='"+labelID+"' size=20> Genre: <INPUT TYPE=text value='"+genre+"' id='"+genreID+"' size=20> Catalog #: <INPUT TYPE=text value='"+catalog+"' id='"+catalogID+"' size=10></td>";
 
 		var newtr3 = document.createElement("tr");
-		newtr3.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Modified: <INPUT TYPE=text value='"+modified+"' size=16>  Added: <INPUT TYPE=text value='"+added+"' size=20> Format: <INPUT TYPE=text value='"+format+"' size=7></td>";
+		newtr3.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Format: <INPUT TYPE=text value='"+format+"' id='"+formatID+"' size=7></td>";
 
 		var newtr4 = document.createElement("tr");
-		var canconID = "cancon" + artist + title;
-		var femconID = "femcon" + artist + title;
-		var localID = "local" + artist + title;
-		var playlistID = "playlist" + artist + title;
-		var compilationID = "compilation" + artist + title;
-		var digitizedID = "digitized" + artist + title;
 		newtr4.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Can: <input type=checkbox id='"+canconID+"'> Fem: <input type=checkbox id='"+femconID+"'> Loc: <input type=checkbox id='"+localID+"'> PL: <input type=checkbox id='"+playlistID+"'> Comp: <input type=checkbox id='"+compilationID+"'> SAM: <input type=checkbox id='"+digitizedID+"'></td>";
 
 		var newtr5 = document.createElement("tr");
-		newtr5.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td><input type=submit VALUE='Save Changes' onClick='save(this)'> <input type=submit VALUE='Cancel' onClick='cancel(this)'></td>";
+		newtr5.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td><input type=submit VALUE='Save Changes' id='saveEntryButton' onClick='saveEntry()' name='"+entryID+"'> <input type=submit VALUE='Cancel' onClick='cancel(this)'></td>";
 
 		table.insertBefore(newtr5, tr.nextSibling);
 		table.insertBefore(newtr4, newtr5);
@@ -103,10 +111,6 @@ function editLine(source, artist, title, label, genre, catalog, modified, added,
 		if(digitized == 1)
 			document.getElementById(digitizedID).checked = "true";
 	}
-}
-
-function save(source) {
-
 }
 
 function cancel(source) {
