@@ -7,7 +7,8 @@ use App\Member as Member;
 use Carbon\Carbon;
 use Validator as Validator;
 
-//Post to this route to put a new submission in the system - either from manual submissions page or from the station website
+//Post to this route to put a new submission in the system - either from manual
+//submissions page or from the station website.
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
 
@@ -119,7 +120,7 @@ Route::group(['middleware' => 'auth'], function(){
                 $submission->reviewed = $name['firstname'] . " " . $name['lastname'];
             }
             else $submission->reviewed = null;
-
+            $submission->songs = Submissions::find($id)->songs;
             return Response::json($submission);
         }
     });

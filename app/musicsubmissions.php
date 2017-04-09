@@ -243,9 +243,7 @@
 	              				<div class="col5">Contact: </div>
 	              				<div class="col5" id="contact-review-box">citr@example.com</div>
 							</div>
-
 							<hr>
-
 							<div class="containerrow padded-left">
 								<div class="col1 text-left padded">Submitted Album Description: </div>
 							</div>
@@ -253,72 +251,33 @@
 								<div class="col2 text-left" id="description-review-box"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
 								<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-review-box"></img></div>
 							</div>
-
 							<hr>
-
 							<div class="containerrow padded">
 								<div class="col3"><h3>Listen: </h3></div>
 							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 1: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 2: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 3: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
+                            <div id="tracks-review-box">
+                                <div class="containerrow padded">
+    								<div class="col1"></div>
+    								<div class="col4">Track 1: Song Title Here</div>
+    								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
+    							</div>
+    							<div class="containerrow padded">
+    								<div class="col6">Track Artist: </div>
+    								<div class="col6">Artist Here (defaults to Album artist) </div>
+    								<div class="col6">Track Credit: </div>
+    								<div class="col6">Names here (defaults to album credit)</div>
+    							</div>
+                            </div>
 							<hr>
-
 							<div class="containerrow padded">
 								<div class="col4">What did you think about the album as a whole?:</div>
 								<textarea id="comments-review-box" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
 							</div>
-
 							<div class="containerrow padded">
 								<div class="col3">Would you Approve this Album to go in our library?:</div>
 								<div class="col5 left"><select style="font-size:18px;" id="approved_status-review-box" class="search_value"><option value="1">Yes</option><option value="0">No</option></select></div>
 							</div>
-
-
 							<hr>
-
 							<div class="containerrow">
 								<div class="col1 text-center">
 									<button name="edit" class="member_submit" id="view_submissions_submit_btn">Submit</button>
@@ -511,9 +470,7 @@
 								<div class="col5">Album Credit: </div>
 								<div class="col4" id="credit-reviewed">John Doe, Lucy Lu, Fred Smith</div>
 							</div>
-
 							<hr>
-
 							<div class="containerrow padded-left">
 								<div class="col1 text-left padded">Submitted Album Description: </div>
 							</div>
@@ -521,71 +478,33 @@
 								<div class="col2 text-left" id="description-reviewed"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
 								<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-reviewed"></img></div>
 							</div>
-
 							<hr>
-
 							<div class="containerrow padded">
 								<div class="col3"><h3>Listen: </h3></div>
 							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 1: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 2: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col1"></div>
-								<div class="col4">Track 3: Song Title Here</div>
-								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col4">Submitted Description: </div>
-								<div class="col4">Short Desc. here</div>
-							</div>
-							<div class="containerrow padded">
-								<div class="col6">Track Artist: </div>
-								<div class="col6">Artist Here (defaults to Album artist) </div>
-								<div class="col6">Track Credit: </div>
-								<div class="col6">Names here (defaults to album credit)</div>
-							</div>
+                            <div id="tracks-reviewed-box">
+                                <div class="containerrow padded">
+    								<div class="col1"></div>
+    								<div class="col4">Track 1: Song Title Here</div>
+    								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
+    							</div>
+    							<div class="containerrow padded">
+    								<div class="col6">Track Artist: </div>
+    								<div class="col6">Artist Here (defaults to Album artist) </div>
+    								<div class="col6">Track Credit: </div>
+    								<div class="col6">Names here (defaults to album credit)</div>
+    							</div>
+                            </div>
 							<hr>
-
 							<div class="containerrow padded">
 								<div class="col4">What did you think about the album as a whole?:</div>
 								<textarea readonly="true" id="reviewed_comments" placeholder="What did you think about the album?" class="largeinput" rows="5"></textarea>
 							</div>
-
 							<div class="containerrow padded">
 								<div class="col3">Would you Approve this Album to go in our library?:</div>
 								<div class="col5 left"><select id="reviewed_approved_status" style="font-size:18px;" class="search_value" name="" disabled="true"><option value="1">Yes</option><option value='0'>No</option></select></div>
 							</div>
-
 							<hr>
-
 							<div class="containerrow">
 								<div class="col2 text-center">
 									<button id="approve_review_btn">Approve Review</button>

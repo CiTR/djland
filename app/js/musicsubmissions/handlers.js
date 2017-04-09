@@ -171,13 +171,14 @@ function add_submission_handlers(){
 		//TODO
 	});
 	//Listener for preventing catalog # from being anything but a number
-	$("#catalog-tagged").keypress(function(e){
+    //Removed for now - Andy didn't want it
+	/*$("#catalog-tagged").keypress(function(e){
 		var chr = String.fromCharCode(e.which);
     	if ("0123456789dig".indexOf(chr) < 0){
 			e.preventDefault();
 			return false;
 		}
-	});
+	});*/
 
 	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
