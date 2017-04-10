@@ -183,22 +183,22 @@ function add_submission_handlers(){
     //search listener
     $('#newSubmissionSearch').off('input').on('input',function(e){
         $('#newSubmissionCdTable').DataTable().search( this.value ).draw();
-        $('#newSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#newSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#newSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
     $('#reviewedSubmissionSearch').off('input').on('input',function(e){
         $('#reviewedSubmissionCdTable').DataTable().search( this.value ).draw();
-        $('#reviewedSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#reviewedSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#reviewedSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
     $('#toTagSubmissionSearch').off('input').on('input',function(e){
         $('#toTagSubmissionCdTable').DataTable().search( this.value ).draw();
-        $('#toTagSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#toTagSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#toTagSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
     $('#taggedSubmissionSearch').off('input').on('input',function(e){
         $('#taggedSubmissionCdTable').DataTable().search( this.value ).draw();
-        $('#taggedSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#taggedSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#taggedSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
 
