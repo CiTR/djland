@@ -5,6 +5,7 @@ var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
 var totalTracks = 0;
 var totalTrackSize = 0;
+var files;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -161,7 +162,32 @@ function submitForm() {
 
 
     if (success) {
-      createSubmission(format);
+
+      var input = $('#album-art-input-button').prop('files')[0];
+      // var input = $('#album-art-input-button')[0];
+      console.log(input);
+      if (input) {
+        // file = input.files[0];
+        /*
+        fr = new FileReader();
+        fr.onload = receivedText;
+        fr.readAsDataURL(input);
+        */
+
+        var data = new FormData();
+/*
+        $.each(files, function(key, value) {
+          data.append(key, value);
+        });
+*/
+        data.append('art', files[0], files[0].name);
+
+        createArtSubmission(data, "MP3");
+      } else {
+        createSubmission("MP3");
+      }
+
+      // createSubmission("MP3");
     } else {
       /*
       var alertString = "You are missing the following:";
@@ -175,8 +201,12 @@ function submitForm() {
 
 }
 
+function receivedText() {
+  createArtSubmission(fr.result, "MP3");
+}
+
 function handleAlbum(evt) {
-  var files = evt.target.files;
+  files = evt.target.files;
   cover = files[0];
 
   if(cover.type.match('image.*') && cover.size < 5000000) {
@@ -186,7 +216,7 @@ function handleAlbum(evt) {
       return function(e) {
         var span = document.createElement('span');
         span.setAttribute('id', 'thumb-span');
-        span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+        span.innerHTML = ['<img id="thumb-src" class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
         albumViewer.innerHTML = "";
         // document.getElementById("album-viewer").insertBefore(span, null);
         albumViewer.insertBefore(span, null);

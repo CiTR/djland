@@ -14,7 +14,7 @@ function createSubmission(format) {
    }
    */
 
-   console.log("Passed format: " + format);
+   // console.log("Passed format: " + format);
 
    var format_id = 8;
 
@@ -45,7 +45,7 @@ function createSubmission(format) {
       format_id = 8;
    }
 
-   console.log("Format: " + format + "\nformat_id: " + format_id);
+   // console.log("Format: " + format + "\nformat_id: " + format_id);
 
    var artist      = document.getElementById('artist-name').value;
    var email       = document.getElementById('contact-email').value;
@@ -108,6 +108,40 @@ function createSubmission(format) {
      alert("Failure");
    });
  }
+
+  function createArtSubmission(art, format) {
+
+    // console.log('art');
+    console.log("passed file: ");
+    console.log(art);
+
+    $.ajax({
+      url: "api2/public/art/",
+      type: "POST",
+      enctype: "multipart/form-data",
+      /*
+      data: {
+        art: art,
+      },
+      */
+      data: art,
+      cache: false,
+      dataType: 'json',
+      contentType: false,
+      processData: false,
+    })
+
+    .done(function(data) {
+      alert("album art successfully uploaded");
+      createSubmission(format);
+    })
+
+    .fail(function() {
+      // alert("album art failed to upload");
+      console.log("album art failed to upload");
+    });
+
+  }
 
 //Unused function
  function namesFromMemberId(id){
