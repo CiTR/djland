@@ -58,6 +58,29 @@
 	background-color: red;
 	color:yellow;
 }
+
+#headerrow{
+	background-color: #a4a4a4;
+}
+#recentedits_table {
+	width: 100%;
+}
+#recentedits_table tr td,submission_table tr th{
+	padding-right:10px;
+}
+#recentedits_table tbody > .reviewrow:hover{
+	background-color: blue;
+}
+#recentedits_table tbody > .reviewedrow:hover{
+	background-color: blue;
+}
+#recentedits_table tbody > .tagrow:hover{
+	background-color: blue;
+}
+#recentedits_table tbody > .approverow:hover{
+	background-color: blue;
+}
+
 div.dupeSection{
 	background-color: rgba(100,100,100,0.8);
 	margin-bottom:15px;

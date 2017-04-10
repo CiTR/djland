@@ -123,3 +123,43 @@ CHANGE COLUMN `reviewed` `reviewed` INT(10) NULL DEFAULT NULL ;
 
 ALTER TABLE `dev.djland`.`submissions` 
 ADD COLUMN `is_trashed` TINYINT(1) NULL AFTER `status`;
+
+
+CREATE TABLE `dev.djland`.`library_edits` (
+  `id` INT(11) NOT NULL,
+  `format_id` TINYINT(4) NULL,
+  `old_format_id` TINYINT(4) NULL,
+  `catalog` TINYTEXT NULL,
+  `old_catalog` TINYTEXT NULL,
+  `crtc` INT(8) NULL,
+  `old_crtc` INT(8) NULL,
+  `cancon` TINYINT(1) NULL,
+  `old_cancon` TINYINT(1) NULL,
+  `femcon` TINYINT(1) NULL,
+  `old_femcon` TINYINT(1) NULL,
+  `local` INT(1) NULL,
+  `old_local` INT(1) NULL,
+  `playlist` TINYINT(1) NULL,
+  `old_playlist` TINYINT(1) NULL,
+  `compilation` TINYINT(1) NULL,
+  `old_compilation` TINYINT(1) NULL,
+  `digitized` TINYINT(1) NULL,
+  `old_digitized` TINYINT(1) NULL,
+  `status` TINYTEXT NULL,
+  `old_status` TINYTEXT NULL,
+  `artist` TINYTEXT NULL,
+  `old_artist` TINYTEXT NULL,
+  `title` TINYTEXT NULL,
+  `old_title` TINYTEXT NULL,
+  `label` TINYTEXT NULL,
+  `old_label` TINYTEXT NULL,
+  `genre` TINYTEXT NULL,
+  `old_genre` TINYTEXT NULL,
+  `description` LONGTEXT NULL,
+  `old_description` LONGTEXT NULL,
+  `email` TINYTEXT NULL,
+  `old_email` TINYTEXT NULL,
+  `library_id` INT(11) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = latin1;

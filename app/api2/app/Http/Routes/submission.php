@@ -132,7 +132,7 @@ Route::group(['middleware' => 'auth'], function(){
                 $submission->reviewed = $name['firstname'] . " " . $name['lastname'];
             }
             else $submission->reviewed = null;
-
+            $submission->songs = Submissions::find($id)->songs;
             return Response::json($submission);
         }
     });

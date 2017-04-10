@@ -489,6 +489,8 @@ function displayReviewBox(data) {
   var email       	= data['email'];
   var description 	= data['description'];
   var art_url		= data['art_url'];
+  var songs         = data['songs']
+  console.log(songs)
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
@@ -524,6 +526,28 @@ function displayReviewBox(data) {
   $("#albumArt-review-box").attr("src", art_url);
   $("#comments-review-box").text("");
   $("#approved_status-review-box").val(0).change();
+  tracks = ""
+  for(index in songs){
+      song = songs[index]
+      console.log(song);
+      tracks = tracks +`
+
+      <div class="containerrow padded">
+          <div class="col1"></div>
+          <div class="col4">Track ` + song['track_num'] + `: ` + song['song_title'] + `</div>
+          <div class="col3"><audio controls><source src="` + song['file_location'] + `" type="audio/mpeg"></audio></div>
+      </div>
+      <div class="containerrow padded">
+          <div class="col6">Track Artist: </div>
+          <div class="col6">Artist Here (defaults to Album artist) </div>
+          <div class="col6">Track Credit: </div>
+          <div class="col6">Names here (defaults to album credit)</div>
+      </div>
+
+      `
+  }
+  console.log(tracks);
+  $("#tracks-review-box").html(tracks)
 }
 
 function displayReviewedBox(data) {
@@ -543,6 +567,7 @@ function displayReviewedBox(data) {
   var art_url     		= data['art_url'];
   var review_comments 	= data['review_comments'];
   var approved 			= data['approved'];
+  var songs             = data['songs']
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
@@ -584,6 +609,26 @@ function displayReviewedBox(data) {
   $("#albumArt-reviewed").attr("src", art_url);
   $("#reviewed_comments").text(review_comments);
   $("reviewed_approved_status").val(approved).change();
+  tracks = " "
+  for(song in songs){
+      tracks = tracks +`
+
+      <div class="containerrow padded">
+          <div class="col1"></div>
+          <div class="col4">Track ` + song['track_num'] + `: ` + song['song_title'] + `</div>
+          <div class="col3"><audio controls><source src="` + song['file_location'] + `" type="audio/mpeg"></audio></div>
+      </div>
+      <div class="containerrow padded">
+          <div class="col6">Track Artist: </div>
+          <div class="col6">Artist Here (defaults to Album artist) </div>
+          <div class="col6">Track Credit: </div>
+          <div class="col6">Names here (defaults to album credit)</div>
+      </div>
+
+      `
+  }
+  console.log(tracks)
+  $("#tracks-reviewed-box").html(tracks)
 }
 
 function displayApprovedBox(data) {
