@@ -180,23 +180,34 @@ function add_submission_handlers(){
 		}
 	});*/
 
+    //search listener
+    $('#newSubmissionSearch').off('input').on('input',function(e){
+        $('#newSubmissionCdTable').DataTable().search( this.value ).draw();
+        $('#newSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#newSubmissionOtherTable').DataTable().search( this.value ).draw();
+    });
+    $('#reviewedSubmissionSearch').off('input').on('input',function(e){
+        $('#reviewedSubmissionCdTable').DataTable().search( this.value ).draw();
+        $('#reviewedSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#reviewedSubmissionOtherTable').DataTable().search( this.value ).draw();
+    });
+    $('#toTagSubmissionSearch').off('input').on('input',function(e){
+        $('#toTagSubmissionCdTable').DataTable().search( this.value ).draw();
+        $('#toTagSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#toTagSubmissionOtherTable').DataTable().search( this.value ).draw();
+    });
+    $('#taggedSubmissionSearch').off('input').on('input',function(e){
+        $('#taggedSubmissionCdTable').DataTable().search( this.value ).draw();
+        $('#taggedSubmissionMP3able').DataTable().search( this.value ).draw();
+        $('#taggedSubmissionOtherTable').DataTable().search( this.value ).draw();
+    });
+
+
 	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
 		$('.submission_action').attr('class','nodrop inactive-tab submission_action');
 		$(this).attr('class','nodrop active-tab submission_action');
 		$('.submission').hide();
-        //Something to do with searching below - TODO
-		if($(this).attr('name') == 'search'){
-			var search_value;
-			$('.search_value').each(function(e){
-				if($(this).css('display') != 'none'){
-					search_value = $(this).val();
-				}
-			});
-			//I'm sure this line does nothing?
-			//TODO: determine if it does or not
-			displayMemberList( getVal('search_by'), search_value || "", getVal('paid_status'), $('.year_select[name="search"]').val(), getVal('order_by'));
-		}
 		$('.submission#'+$(this).attr('name')).show();
         switch( $(this).attr('name') ){
             case "new_submissions":

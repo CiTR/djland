@@ -80,28 +80,7 @@
 			<!-- Begin Tab 1 "new submissions search" -->
 			<div id="new_submissions" class="submission grey clearfix padded-right">
 				<ul id="submission_header" name="search" class="clean-list inline-list">
-					<li id="search">Search By:
-						<select id="search_by">
-							<option value="name">Submission Date</option>
-							<option value="interest">Date of Release</option>
-							<option value="member_type">Artist</option>
-							<option value="album">Album</option>
-							<option value="album">Genre</option>
-							<option value="Assigned to">Assignee</option>
-						</select>
-						<input class="search_value" name="name" placeholder="Text">
-						<select class="search_value hidden" name="interest">
-						<option value="arts">Arts</option><option value="ads_psa">Ads and PSAs</option><option value="digital_library">Digital Library</option><option value="dj">DJ101.9</option><option value="discorder">Illustrate for Discorder</option><option value="discorder_2">Writing for Discorder</option><option value="live_broadcast">Live Broadcasting</option><option value="music">Music</option><option value="news">News</option><option value="photography">Photography</option><option value="programming_committee">Programming Committee</option><option value="promotions_outreach">Promos and Outreach</option><option value="show_hosting">Show Hosting</option><option value="sports">Sports</option><option value="tabling">Tabling</option><option value="tech">Web and Tech</option><option value="womens_collective">Women's Collective</option><option value="indigenous_collective">Indigenous Collective</option><option value="accessibility_collective">Accessibility Collective</option><option value="other">Other						</option></select>
-						<select class="search_value hidden" name="member_type">
-						<option value="Student">UBC Student</option><option value="Community">Community Member</option><option value="Staff">Staff</option><option value="Lifetime">Lifetime</option>						</select>
-					</li>
-					<li>
-						<select id="paid_status">
-							<option value="both">Complete or Incomplete</option>
-							<option value="1">Only Complete</option>
-							<option value="0">Only Incomplete</option>
-						</select>
-					</li>
+					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="newSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
 					<li>
 						<select class="year_select" name="search">
 						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
@@ -117,11 +96,9 @@
 							<option value="Assignee">Assignee</option>
 						</select>
 					</li>
+
 					<li>
-						<button class="submisison_submit" name="search">Search</button>
-					</li>
-					<li>
-						<button id="save_comments">Save Comments</button>
+						<button class="right" id="save_comments">Save Comments</button>
 					</li>
 				</ul>
 				<h3 class="table-header">CDs</h3>
@@ -305,56 +282,27 @@
 
 			<!-- Begin Tab 2 "reviewed submissions view" -->
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right'>
-				<ul id="submission_header" name="search" class="clean-list inline-list	">
-						<li id="search">Search By:
-							<select id="search_by">
-								<option value="name">Submission Date</option>
-								<option value="interest">Date of Release</option>
-								<option value="member_type">Artist</option>
-								<option value="album">Album</option>
-								<option value="Assigned to">Reviewed By</option>
-							</select>
-							<input class="search_value" name="name" placeholder="Text">
-							<select class="search_value hidden" name="interest">
-								<option value="arts">Arts</option><option value="ads_psa">Ads and PSAs</option><option value="digital_library">Digital Library</option><option value="dj">DJ101.9</option><option value="discorder">Illustrate for Discorder</option><option value="discorder_2">Writing for Discorder</option><option value="live_broadcast">Live Broadcasting</option><option value="music">Music</option><option value="news">News</option><option value="photography">Photography</option><option value="programming_committee">Programming Committee</option><option value="promotions_outreach">Promos and Outreach</option><option value="show_hosting">Show Hosting</option><option value="sports">Sports</option><option value="tabling">Tabling</option><option value="tech">Web and Tech</option><option value="womens_collective">Women's Collective</option><option value="indigenous_collective">Indigenous Collective</option><option value="accessibility_collective">Accessibility Collective</option><option value="other">Other						</option></select>
-							<select class="search_value hidden" name="member_type">
-								<option value="Student">UBC Student</option><option value="Community">Community Member</option><option value="Staff">Staff</option><option value="Lifetime">Lifetime</option>						</select>
-						</li>
-						<li>
-							<select id="paid_status">
-								<option value="both">Complete or Incomplete</option>
-								<option value="1">Only Complete</option>
-								<option value="0">Only Incomplete</option>
-							</select>
-						</li>
-						<li>
-							<select class="year_select" name="search">
-								<option value="2016/2017">2016/2017</option>
-								<option value="2015/2016">2015/2016</option>
-								<option value="2014/2015">2014/2015</option>
-								<option value="2013/2014">2013/2014</option>
-								<option value="2011/2012">2011/2012</option>
-								<option value="all">All Years</option>
-							</select>
-						</li>
-						<li>
-							Order By
-							<select id="order_by">
-								<option value="created">Submission Date</option>
-								<option value="id">Date of Release</option>
-								<option value="lastname">Artist</option>
-								<option value="firstname">Album</option>
-								<option value="member_type">Genre</option>
-								<option value="approval">Approval</option>
-								<option value="Assignee">Reviewed By</option>
-							</select>
-						</li>
-						<li>
-							<button class="submission_submit" name="search">Search</button>
-						</li>
-						<li>
-							<button id="save_comments">Save Comments</button>
-						</li>
+                <ul id="submission_header" name="search" class="clean-list inline-list">
+					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="reviewedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
+					<li>
+						<select class="year_select" name="search">
+						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
+					</li>
+					<li>
+						Order By
+						<select id="order_by">
+							<option value="created">Submission Date</option>
+							<option value="id">Date of Release</option>
+							<option value="lastname">Artist</option>
+							<option value="firstname">Album</option>
+							<option value="member_type">Genre</option>
+							<option value="Assignee">Assignee</option>
+						</select>
+					</li>
+
+					<li>
+						<button class="right" id="save_comments">Save Comments</button>
+					</li>
 				</ul>
 
         <h3 class="table-header">CDs</h3>
@@ -544,50 +492,28 @@
 
 			<!--Begin Tab 3 "Tagging Interface" -->
 			<div id="tag" class="hidden submission grey clearfix padded-right">
-				<ul id="submission_header" name="search" class="clean-list inline-list	">
-					<li id="search">Search By:
-						<select id="search_by">
-							<option value="name">Submission Date</option>
-							<option value="interest">Date of Release</option>
-							<option value="member_type">Artist</option>
-							<option value="album">Album</option>
-							<option value="Assigned to">Assignee</option>
-						</select>
-						<input class="search_value" name="name" placeholder="Text">
-						<select class="search_value hidden" name="interest">
-						<option value="arts">Arts</option><option value="ads_psa">Ads and PSAs</option><option value="digital_library">Digital Library</option><option value="dj">DJ101.9</option><option value="discorder">Illustrate for Discorder</option><option value="discorder_2">Writing for Discorder</option><option value="live_broadcast">Live Broadcasting</option><option value="music">Music</option><option value="news">News</option><option value="photography">Photography</option><option value="programming_committee">Programming Committee</option><option value="promotions_outreach">Promos and Outreach</option><option value="show_hosting">Show Hosting</option><option value="sports">Sports</option><option value="tabling">Tabling</option><option value="tech">Web and Tech</option><option value="womens_collective">Women's Collective</option><option value="indigenous_collective">Indigenous Collective</option><option value="accessibility_collective">Accessibility Collective</option><option value="other">Other						</option></select>
-						<select class="search_value hidden" name="member_type">
-						<option value="Student">UBC Student</option><option value="Community">Community Member</option><option value="Staff">Staff</option><option value="Lifetime">Lifetime</option>						</select>
-					</li>
-					<li>
-						<select id="paid_status">
-							<option value="both">Complete or Incomplete</option>
-							<option value="1">Only Complete</option>
-							<option value="0">Only Incomplete</option>
-						</select>
-					</li>
-					<li>
-						<select class="year_select" name="search">
-						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
-					</li>
-					<li>
-						Order By
-						<select id="order_by">
-							<option value="created">Submission Date</option>
-							<option value="id">Date of Release</option>
-							<option value="lastname">Artist</option>
-							<option value="firstname">Album</option>
-							<option value="member_type">Genre</option>
-							<option value="Assignee">Assignee</option>
-						</select>
-					</li>
-					<li>
-						<button class="submisison_submit" name="search">Search</button>
-					</li>
-					<li>
-						<button id="save_comments">Save Comments</button>
-					</li>
-				</ul>
+                <ul id="submission_header" name="search" class="clean-list inline-list">
+                    <li><div class="dataTables_filter"><label>Search All: <input type="search" id="toTagSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
+                    <li>
+                        <select class="year_select" name="search">
+                        <option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
+                    </li>
+                    <li>
+                        Order By
+                        <select id="order_by">
+                            <option value="created">Submission Date</option>
+                            <option value="id">Date of Release</option>
+                            <option value="lastname">Artist</option>
+                            <option value="firstname">Album</option>
+                            <option value="member_type">Genre</option>
+                            <option value="Assignee">Assignee</option>
+                        </select>
+                    </li>
+
+                    <li>
+                        <button class="right" id="save_comments">Save Comments</button>
+                    </li>
+                </ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
 					<table class="submission_table cell-border" id="toTagSubmissionCdTable">
@@ -870,28 +796,8 @@
 			<!--- Begin Tab 4 "add to library" -->
 			<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
 			<div id="approve" class="hidden submission grey clearfix">
-				<ul id="submission_header" name="search" class="clean-list inline-list	">
-					<li id="search">Search By:
-						<select id="search_by">
-							<option value="name">Submission Date</option>
-							<option value="interest">Date of Release</option>
-							<option value="member_type">Artist</option>
-							<option value="album">Album</option>
-							<option value="Assigned to">Assignee</option>
-						</select>
-						<input class="search_value" name="name" placeholder="Text">
-						<select class="search_value hidden" name="interest">
-						<option value="arts">Arts</option><option value="ads_psa">Ads and PSAs</option><option value="digital_library">Digital Library</option><option value="dj">DJ101.9</option><option value="discorder">Illustrate for Discorder</option><option value="discorder_2">Writing for Discorder</option><option value="live_broadcast">Live Broadcasting</option><option value="music">Music</option><option value="news">News</option><option value="photography">Photography</option><option value="programming_committee">Programming Committee</option><option value="promotions_outreach">Promos and Outreach</option><option value="show_hosting">Show Hosting</option><option value="sports">Sports</option><option value="tabling">Tabling</option><option value="tech">Web and Tech</option><option value="womens_collective">Women's Collective</option><option value="indigenous_collective">Indigenous Collective</option><option value="accessibility_collective">Accessibility Collective</option><option value="other">Other						</option></select>
-						<select class="search_value hidden" name="member_type">
-						<option value="Student">UBC Student</option><option value="Community">Community Member</option><option value="Staff">Staff</option><option value="Lifetime">Lifetime</option>						</select>
-					</li>
-					<li>
-						<select id="paid_status">
-							<option value="both">Complete or Incomplete</option>
-							<option value="1">Only Complete</option>
-							<option value="0">Only Incomplete</option>
-						</select>
-					</li>
+                <ul id="submission_header" name="search" class="clean-list inline-list">
+					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="taggedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
 					<li>
 						<select class="year_select" name="search">
 						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
@@ -907,11 +813,9 @@
 							<option value="Assignee">Assignee</option>
 						</select>
 					</li>
+
 					<li>
-						<button class="submisison_submit" name="search">Search</button>
-					</li>
-					<li>
-						<button id="save_comments">Save Comments</button>
+						<button class="right" id="save_comments">Save Comments</button>
 					</li>
 				</ul>
 				<h3 class="table-header">CDs</h3>
