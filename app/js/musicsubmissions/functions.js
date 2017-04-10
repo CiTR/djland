@@ -4,17 +4,9 @@
  * Michael Adria, Capstone 2016/2017
  */
 
-function createSubmission(format) {
-    //Hack, TODO: Reference the types_format DB table
-    /*
-   if(format == "CD"){
-       var format_id = 1;
-   }else if(format == "MP3"){
-       var format_id = 6;
-   }
-   */
-
-   // console.log("Passed format: " + format);
+function createSubmission(data) {
+/*
+  console.log(art);
 
    var format_id = 8;
 
@@ -45,8 +37,6 @@ function createSubmission(format) {
       format_id = 8;
    }
 
-   // console.log("Format: " + format + "\nformat_id: " + format_id);
-
    var artist      = document.getElementById('artist-name').value;
    var email       = document.getElementById('contact-email').value;
    var label       = document.getElementById('record-label').value;
@@ -66,18 +56,12 @@ function createSubmission(format) {
    }
 
    var trackNo     = "1";
-   //var songlist    = [];
-   var songlist    = 10;
-   /* while (document.getElementById('track-' + trackNo) != null) {
-     e = document.getElementById('track-' + trackNo).childNodes[4].value;
-     songlist.push(e);
-     trackNo = (Number(trackNo) + 1).toString();
-    }*/
-   // var art_url  = TODO, below is temporary
-   var art_url     = "https://cdn.pastemagazine.com/www/system/images/photo_albums/best-album-covers-2012/large/photo_9459_0.jpg?1384968217";
 
+   var songlist    = 10;
+*/
    $.ajax({
      url: "api2/public/submission/",
+     /*
      data: {
        format_id: format_id,
        artist: artist,
@@ -93,9 +77,15 @@ function createSubmission(format) {
        local: local,
        description: description,
        songlist: songlist,
-       art_url: art_url,
+       art_url: art,
      },
+     */
+     data: data,
      type: "POST",
+     // async: false,
+     cache: false,
+     contentType: false,
+     processData: false,
      // dataType: "json",
    })
 
