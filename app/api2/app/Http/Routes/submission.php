@@ -72,10 +72,14 @@ Route::post('/submission', function(){
             }
 
             $albumArt = Input::file('art_url');
-            $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
-            $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
-            $location = $base_dir.'submissions/';
-            $path = $albumArt->move($location, $fileName);
+            if ($albumArt) {
+              $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
+              $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+              $location = $base_dir.'submissions/';
+              $path = $albumArt->move($location, $fileName);
+            } else {
+              $path = null;
+            }
 
             $newsubmission = Submissions::create([
                 //TODO: Refuse if req'd parameters not included or are null
