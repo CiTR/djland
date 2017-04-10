@@ -25,8 +25,8 @@ Route::post('/art', function() {
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
 
-  echo Input::file('art_url');
-  echo " ".File::extension(Input::file('art_url'))." ";
+  // echo Input::file('art_url');
+  // echo " ".File::extension(Input::file('art_url'))." ";
 
     $rules = array(
         //TODO: every field that is an input doesn't accept carriage returns
@@ -71,9 +71,11 @@ Route::post('/submission', function(){
                 $label = Input::get('label');
             }
 
+            $albumArt = Input::file('art_url');
+            $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
             $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
             $location = $base_dir.'submissions/';
-            $path = Input::file('art_url')->move($location);
+            $path = $albumArt->move($location, $fileName);
 
             $newsubmission = Submissions::create([
                 //TODO: Refuse if req'd parameters not included or are null
@@ -105,8 +107,9 @@ Route::post('/submission', function(){
                 //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
+            echo $path." ";
             return $newsubmission;
-            // return $path;
+
         } catch(Exception $e){
             return $e->getMessage();
         }
