@@ -1259,50 +1259,50 @@
 					<div class="entry-content-inner">
 
             <p>Items with a &#9733; are required.</p>
-            <form>
-              <div class="album-row">
-              <div style="width:50%;float:left;">
-                &#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
-              </div>
-              <div style="width:50%;float:right;">
-                &#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
-              </div>
-            </div>
-            <div class="album-row">
-              <div style="width:50%;float:left;">
-                Record label: <input type="text" id="record-label" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
-              </div>
-              <div style="width:50%;float:right;">
-                &#9733; Home city: <input type="text" id="home-city" style="width:100%;margin-bottom:30px;" placeholder="London, England">
-              </div>
-            </div>
-            <div class="album-row">
-              <div style="width:50%;float:left;">
-                Member / Artist names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Aretha Franklin, Psy">
-              </div>
-              <div style="width:50%;float:right;">
-                &#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
-              </div>
-            </div>
-            <div class="album-row">
-              <div style="width: 50%;float:left;">
-                &#9733; Genre: <select name="Pick a genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
-                  <!-- TODO: populate this with present genres from DB -->
-                  <option>Electronic</option>
-                  <option>Experimental</option>
-                  <option>Hip Hop / R&B / Soul</option>
-                  <option>International</option>
-                  <option>Jazz/Classical</option>
-                  <option>Punk / Hardcore / Metal</option>
-                  <option>Rock / Pop / Indie</option>
-                  <option>Roots / Blues / Folk</option>
-                  <option>Talk</option>
-                </select>
-              </div>
-              <div style="width: 50%;float:right;">
-                Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker" readonly>
-              </div>
-            </div>
+            <form action="/api2/public/submission" method="POST" enctype="multipart/form-data" id="data">
+        			<div class="album-row">
+        			<div style="width:50%;float:left;">
+        				&#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup" name='artist'>
+        			</div>
+        			<div style="width:50%;float:right;">
+        				&#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com" name='email'>
+        			</div>
+        		</div>
+        		<div class="album-row">
+        			<div style="width:50%;float:left;">
+        				Record label: <input type="text" id="record-label" style="width:95%;margin-bottom:30px" placeholder="Stardust Records" name='label'>
+        			</div>
+        			<div style="width:50%;float:right;">
+        				&#9733; Home city: <input type="text" id="home-city" style="width:100%;margin-bottom:30px;" placeholder="London, England" name='location'>
+        			</div>
+        		</div>
+        		<div class="album-row">
+        			<div style="width:50%;float:left;">
+        				Member / Artist names: <input type="text" id="member-names" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Aretha Franklin, Psy" name='credit'>
+        			</div>
+        			<div style="width:50%;float:right;">
+        				&#9733; Album name: <input type="text" id="album-name" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends" name='title'>
+        			</div>
+        		</div>
+        		<div class="album-row">
+        			<div style="width: 50%;float:left;">
+        				&#9733; Genre: <select name="genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
+        					<!-- TODO: populate this with present genres from DB -->
+        					<option>Electronic</option>
+        					<option>Experimental</option>
+        					<option>Hip Hop / R&amp;B / Soul</option>
+        					<option>International</option>
+        					<option>Jazz/Classical</option>
+        					<option>Punk / Hardcore / Metal</option>
+        					<option>Rock / Pop / Indie</option>
+        					<option>Roots / Blues / Folk</option>
+        					<option>Talk</option>
+        				</select>
+        			</div>
+        			<div style="width: 50%;float:right;">
+        				Date released: <input type="text" id="date-released" style = "width:100%;margin-bottom:30px;" class="datepicker" name='releasedate' readonly>
+        			</div>
+        		</div>
             <div style="width: 50%;float:left;">
               &#9733; Format: <select name="Select the format" id="format-picker" style="width:95%;margin-bottom:30px;">
                 <option>CD</option>
@@ -1315,10 +1315,10 @@
                 <option>Unknown</option>
               </select>
             </div>
-            <div class="album-row">
+        		<div class="album-row">
               <div class="fem-can-van">
                 <label>
-                  <input type="checkbox" id="female-artist" style="margin-right:20px" />
+                  <input type="checkbox" id="female-artist" style="margin-right:20px" name='femcon' />
                   FemCon: Self-identifying female in 2 of the 4 MPWR categories
                   <span class="tooltip-target">?</span>
                   <span class="tooltip-box">
@@ -1337,9 +1337,9 @@
                   </span>
                 </label>
               </div>
-              <div>
-                <label>
-                  <input type="checkbox" id="canada-artist" style="margin-right:20px;" />
+        			<div>
+        				<label>
+                  <input type="checkbox" id="canada-artist" style="margin-right:20px;" name='cancon' />
                   CanCon: You fullfill at least 2 of the 4 MAPL categories
                   <span class="tooltip-target">?</span>
                   <span class="tooltip-box">
@@ -1357,77 +1357,81 @@
                     </p>
                   </span>
                 </label>
-              </div>
-              <div>
-                <label>
-                  <input type="checkbox" id="vancouver-artist" style="margin-right:20px" />
+        			</div>
+        			<div>
+        				<label>
+                  <input type="checkbox" id="vancouver-artist" style="margin-right:20px" name='local' />
                   Local: You / your band is located in the Greater Vancouver Area
                   <!--
                   <span class="tooltip-target">?</span>
                   -->
                   <span class="tooltip-box">You / your band is located in the Greater Vancouver Area</span>
                 </label>
-              </div>
-            </div>
-            <br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs."></textarea>
+        			</div>
+        		</div>
+        		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs." name='description'></textarea>
+
+          	<p>We accept .jpg or .png files of at least 500 by 500 pixels.</p>
             <!--
-              <div class="button-container">
-                <a id="album-art-button" class="btn btn-primary" style="width:100%;text-align:center"> Add album art (optional)</a>
-              </div>
-            -->
-              <!--
-            -->
-            </form>
+          	<input type="file" id="album-art-input-button" style="display:none" name='art_url' />
+          	<button type="button" id="album-art-button" class="submission-button">
+          		Add Album Art (Optional)
+          	</button>
+          	<output id="album-viewer"></output>
 
-            <!--
-            <button id="album-art-button" class="submission-button">
-            Add Album Art (Optional)
+          	<script type="text/javascipt">
+          		$('#album-art-button').click(function(event){
+                event.preventDefault();
+                $('#album-art-input-button').trigger('click');
+              });
+          	</script>
+          -->
+
+            <input type="file" id="album-art-input-button" style="display:none"  name="art_url" />
+            <button type="button" id="album-art-button" class="submission-button">
+              Add Ablum Art (Optional)
             </button>
-            -->
 
-            <p>We accept .jpg or .png files of at least 500 by 500 pixels.</p>
-            <input type="file" id="album-art-input-button" style="display:none" />
-            <button id="album-art-button" class="submission-button">
-            Add Album Art (Optional)
-            </button>
-            <output id="album-viewer"></output>
+          	<output id="album-viewer"></output>
 
-            <script>
-            $('#album-art-button').click(function(){ $('#album-art-input-button').trigger('click');});
+            <script type="text/javascript">
+              $('#album-art-button').click(function(event){
+                event.preventDefault();
+                $('#album-art-input-button').trigger('click');
+              });
             </script>
 
-            <!--
-            <p>Note: We accept .jpeg or .png files of at least size 300 by 300 pixels.</p>
-            -->
-            <p>Please submit a minimum of four 320kbps MP3 files.</p>
+        		<p>Please submit a minimum of four 320kbps MP3 files.</p>
 
-            <div id="submit-field"></div>
+        		<div id="submit-field"></div>
+
+        		<input type="file" id="new-track-button-input" style="display:none"  name="songlist" multiple/>
+        		<button type="button" id="new-track-button" class="submission-button">
+        			Add files
+        		</button>
+
+        		<script type="text/javascript">
+        			$('#new-track-button').click(function(event){
+                event.preventDefault();
+                $('#new-track-button-input').trigger('click');
+              });
+        		</script>
+
+          	<div id="submit-button-div">
+          		<button id="submit-button" class="submission-button" type="submit">
+          			SUBMIT
+          		</button>
+
+              <script type="text/javascript">
+                $('#submit-button').click(function(event) {
+                  event.preventDefault();
+                  // submitForm();
+                });
+              </script>
 
 
-            <input type="file" id="new-track-button-input" style="display:none" multiple/>
-            <button id="new-track-button" class="submission-button">
-              Add files
-            </button>
-
-            <script>
-              $('#new-track-button').click(function(){ $('#new-track-button-input').trigger('click');});
-            </script>
-
-            <!--
-            <div id="new-track-button" class="button-container">
-              <a href="" class="btn btn-primary" style="width:100%;text-align:center"> Add another file </a>
             </div>
-            -->
-            <!--
-            <div id="submit-button" class="button-container" style="color:green">
-              <a href="" class="btn btn-primary" style="width:100%;text-align:center;margin-top:30px;background-color:green;border:green;margin-bottom:20px;"> Submit </a>
-            </div>
-            -->
-            <div id="submit-button-div">
-            <button id="submit-button" class="submission-button">
-              SUBMIT
-            </button>
-            </div>
+          </form>
 
 
             <!--

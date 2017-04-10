@@ -7,19 +7,6 @@ use App\Member as Member;
 use Carbon\Carbon;
 use Validator as Validator;
 
-// Post album art here while adding a new submission
-
-
-Route::post('/art', function() {
-  $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
-  $location = $base_dir.'submissions/';
-  $path = Input::file('art')->move($location);
-  return $path;
-});
-
-
-
-// mp3s x audio_base
 
 //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
@@ -111,7 +98,6 @@ Route::post('/submission', function(){
                 //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
-            echo $path." ";
             return $newsubmission;
 
         } catch(Exception $e){

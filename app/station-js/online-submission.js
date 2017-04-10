@@ -36,11 +36,8 @@ window.addEventListener('load', function() {
 
 function submitForm() {
 
-  console.log('submitForm');
-
   if (totalTrackSize > 525000000) {
     alert("Your submission is too big. For large submissions, please email us.");
-    console.log("Size: " + totalTrackSize);
   } else {
 
     var missing = [];
@@ -87,13 +84,6 @@ function submitForm() {
       // missing.push("\n• Genre");
       alertString += "\n• Genre";
     }
-    /*
-    if (date == "") {
-      success = false;
-      missing.push("\n• Date released");
-      alertString += "\n• Date released";
-    }
-    */
 
     // Check that files have been added
     var tracks = $("#submit-field").children();
@@ -166,74 +156,28 @@ function submitForm() {
     if (success) {
 
       var input = $('#album-art-input-button').prop('files')[0];
-      // var input = $('#album-art-input-button')[0];
-      // console.log(input);
 
-      if (input) {
-        // file = input.files[0];
-        /*
-        fr = new FileReader();
-        fr.onload = receivedText;
-        fr.readAsDataURL(input);
-        */
+      var data = new FormData();
 
-        var data = new FormData();
+      data.append('format_id', format);
+      data.append('artist', artist);
+      data.append('email', email);
+      data.append('label', label);
+      data.append('location', location);
+      data.append('credit', credit);
+      data.append('title', title);
+      data.append('genre', genre);
+      data.append('releasedate', releasedate);
+      data.append('femcon', femcon);
+      data.append('cancon', cancon);
+      data.append('local', local);
+      data.append('description', description);
+      data.append('songlist', 10);
+      data.append('art_url', input);
 
-        data.append('format_id', '6');
-        data.append('artist', artist);
-        data.append('email', email);
-        data.append('label', label);
-        data.append('location', location);
-        data.append('credit', credit);
-        data.append('title', title);
-        data.append('genre', genre);
-        data.append('releasedate', releasedate);
-        data.append('femcon', femcon);
-        data.append('cancon', cancon);
-        data.append('local', local);
-        data.append('description', description);
-        data.append('songlist', 10);
-        data.append('art_url', input);
+      createSubmission(data);
 
-        // createArtSubmission(files[0], "MP3");
-/*
-        for (var value of data.values()) {
-          console.log(value);
-        }
-*/
-        createSubmission(data);
-      } else {
-        var data = new FormData();
-
-        data.append('format_id', 6);
-        data.append('artist', artist);
-        data.append('email', email);
-        data.append('label', label);
-        data.append('location', location);
-        data.append('credit', credit);
-        data.append('title', title);
-        data.append('genre', genre);
-        data.append('releasedate', releasedate);
-        data.append('femcon', femcon);
-        data.append('cancon', cancon);
-        data.append('local', local);
-        data.append('description', description);
-        data.append('songlist', songlist);
-        data.append('art_url', input);
-
-        console.log(data);
-
-        createSubmission(data);
-      }
-
-      // createSubmission("MP3");
     } else {
-      /*
-      var alertString = "You are missing the following:";
-      for (var i = 0; i < missing.length; i++) {
-        alertString += missing[i];
-      }
-      */
       alert(alertString);
     }
   }
@@ -353,127 +297,3 @@ function addTrackForm(fileName, trackNo) {
 
   form.appendChild(divNode);
 }
-
-/*
-function fillForm() {
-
-  // ----- Create the album form. ----- //
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "artist-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Album artist:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "email-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Contact email:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "record-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Record label:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "location-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Location:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "credit-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Album credit:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  newNode = document.createElement("div");
-  newNode.setAttribute("id", "name-input-album");
-  var newChildNode = document.createElement("p");
-  newChildNode.setAttribute("class", "input-album-label");
-  newChildNode.appendChild(document.createTextNode("Album name:"));
-  newNode.appendChild(newChildNode);
-
-  newChildNode = document.createElement("input");
-  newChildNode.setAttribute("class", "input-album-field");
-  newNode.appendChild(newChildNode);
-  form.appendChild(newNode);
-
-  // ----- ----- ----- ----- ----- ----- //
-
-  // Create the 'Add Album Art' button.
-  albumArtButton = document.createElement("button");
-  albumArtButton.setAttribute("id", "album-art-button");
-  albumArtButton.appendChild(document.createTextNode("Add Album Art"));
-  form.appendChild(albumArtButton);
-  albumArtButton.addEventListener('click', function() {
-    // TODO: Make this prompt user for image file.
-  });
-
-    // Instructions for adding tracks.
-    var newNode = document.createElement("p");
-    newNode.appendChild(document.createTextNode("Please submit a minimum of four 320kbps MP3 files."));
-    form.appendChild(newNode);
-
-    */
-
-    /*
-    // Create the 'Add Track' button.
-    trackButton = document.createElement("button");
-    trackButton.setAttribute("id", "new-track-button");
-    trackButton.setAttribute("class", "submission-button");
-    trackButton.appendChild(document.createTextNode("Add Track"));
-    form.appendChild(trackButton);
-    trackButton.addEventListener('click', function() {
-      // TODO: Prompt user for file.
-      addTrackForm();
-    });
-    */
-
-
-    /*
-  // Create the 'Submit' button.
-  submitButton = document.createElement("button");
-  submitButton.setAttribute("id", "submit-button");
-  submitButton.appendChild(document.createTextNode("Submit"));
-  form.appendChild(submitButton);
-  submitButton.addEventListener('click', function() {
-    // TODO: Verify information entered and send to DJLand.
-  });
-
-
-
-}
-*/
