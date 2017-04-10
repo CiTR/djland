@@ -7,10 +7,26 @@ use App\Member as Member;
 use Carbon\Carbon;
 use Validator as Validator;
 
-//Post to this route to put a new submission in the system - either from manual
-//submissions page or from the station website.
+// Post album art here while adding a new submission
+
+
+Route::post('/art', function() {
+  $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+  $location = $base_dir.'submissions/';
+  $path = Input::file('art')->move($location);
+  return $path;
+});
+
+
+
+// mp3s x audio_base
+
+//Post to this route to put a new submission in the system - either from manual submissions page or from the station website
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
+
+  // echo Input::file('art_url');
+  // echo " ".File::extension(Input::file('art_url'))." ";
 
     $rules = array(
         //TODO: every field that is an input doesn't accept carriage returns
@@ -28,7 +44,7 @@ Route::post('/submission', function(){
             //Descrription can have a carraige return
             'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \
             ]+$/u',
-            'art_url' => 'url',
+            'art_url' => 'image',
             'songlist' => 'integer',
             //TODO: get from DB
             'format_id' => 'in:1,2,3,4,5,6,7,8'
@@ -54,6 +70,17 @@ Route::post('/submission', function(){
             } else{
                 $label = Input::get('label');
             }
+
+            $albumArt = Input::file('art_url');
+            if ($albumArt) {
+              $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
+              $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+              $location = $base_dir.'submissions/';
+              $path = $albumArt->move($location, $fileName);
+            } else {
+              $path = null;
+            }
+
             $newsubmission = Submissions::create([
                 //TODO: Refuse if req'd parameters not included or are null
                 'artist' => Input::get('artist'),
@@ -72,7 +99,8 @@ Route::post('/submission', function(){
                 'compilation' => 0,
                 'digitized' => 0,
                 'description' => Input::get('description'),
-                'art_url' => Input::get('art_url'),
+                // 'art_url' => Input::get('art_url'),
+                'art_url' => $path,
                 'songlist' => $songlist_id,//Input::get('songlist'),
                 'format_id' => Input::get('format_id'),
                 'status' => 'unreviewed',
@@ -83,7 +111,9 @@ Route::post('/submission', function(){
                 //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
+            echo $path." ";
             return $newsubmission;
+
         } catch(Exception $e){
             return $e->getMessage();
         }
