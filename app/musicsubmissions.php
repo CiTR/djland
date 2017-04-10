@@ -10,10 +10,10 @@
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
-
+        <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<link rel=stylesheet href='css/style.css' type='text/css'>
-	<link rel="stylesheet" href="./station-js/trackform.css" />
+	    <link rel="stylesheet" href="./station-js/trackform.css" />
 
 		<title>DJLAND | Music Submissions</title>
 
@@ -34,6 +34,7 @@
   -->
 
 
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
@@ -125,18 +126,20 @@
 				</ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
+					<table class="submission_table cell-border" id="newSubmissionCdTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
+                                <th>Artist</th>
+                                <th>Album</th>
+                                <th>Date of Release</th>
+                                <th>Genre</th>
+                                <th>Date Submitted</th>
+                                <th>Staff Comments</th>
+                                <th>Assignee  </th>
+                                <th><button id="trash_submission_new_cd" onclick="trash_submission_new_cd()">Delete</button></th>
+                            </tr>
+                        </thead>
 						<tbody name="newSubmissionCd">
-							<tr id="headerrow" style="display: table-row;">
-								<th>Artist</th>
-								<th>Album</th>
-								<th>Date of Release</th>
-								<th>Genre</th>
-								<th>Date Submitted</th>
-								<th>Staff Comments</th>
-								<th>Assignee  </th>
-								<th><button id="trash_submission_new_cd" onclick="trash_submission_new_cd()">Delete</button></th>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -144,18 +147,21 @@
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
         <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
+					<table class="submission_table cell-border" id="newSubmissionMP3Table">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
+                                <tr id="headerrow" style="display: table-row;">
+    								<th>Artist</th>
+    								<th>Album</th>
+    								<th>Date of Release</th>
+    								<th>Genre</th>
+    								<th>Date Submitted</th>
+    								<th>Staff Comments</th>
+    								<th>Assignee  </th>
+    								<th><button id="trash_submission_new_mp3" onclick="trash_submission_new_mp3()">Delete</button></th>
+    							</tr>
+                        </thead>
 						<tbody name="newSubmissionMP3">
-							<tr id="headerrow" style="display: table-row;">
-								<th>Artist</th>
-								<th>Album</th>
-								<th>Date of Release</th>
-								<th>Genre</th>
-								<th>Date Submitted</th>
-								<th>Staff Comments</th>
-								<th>Assignee  </th>
-								<th><button id="trash_submission_new_mp3" onclick="trash_submission_new_mp3()">Delete</button></th>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -163,9 +169,9 @@
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
         <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="newSubmissionOther">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="newSubmissionOtherTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -175,6 +181,8 @@
 								<th>Assignee  </th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="newSubmissionOther">
 						</tbody>
 					</table>
 				</div>
@@ -182,9 +190,9 @@
 			<div id="new_submissions" class="submission grey clearfix padded-right double-padded-top">
         <h3>Singles</h3>
 				<div id="submission_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="newSubmissionSingle">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="newSubmissionSingleTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -194,6 +202,8 @@
 								<th>Assignee  </th>
 								<th><button id="trash_submission_new_other" onclick="trash_submission_new_other()">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="newSubmissionSingle">
 						</tbody>
 					</table>
 				</div>
@@ -349,9 +359,9 @@
 
         <h3 class="table-header">CDs</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="reviewedSubmissionCd">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="reviewedSubmissionCdTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -361,6 +371,8 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
+                        </thead>
+						<tbody name="reviewedSubmissionCd">
 						</tbody>
 					</table>
 				</div>
@@ -368,9 +380,9 @@
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
         <h3 class="table-header">MP3s</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="reviewedSubmissionMP3">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="reviewedSubmissionMP3Table">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -380,6 +392,8 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
+                        </thead>
+						<tbody name="reviewedSubmissionMP3">
 						</tbody>
 					</table>
 				</div>
@@ -387,9 +401,9 @@
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
         <h3 class="table-header">Other</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="reviewedSubmissionOther">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="reviewedSubmissionOtherTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -399,6 +413,8 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
+                        </thead>
+						<tbody name="reviewedSubmissionOther">
 						</tbody>
 					</table>
 					<br />
@@ -409,9 +425,9 @@
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right double-padded-top'>
         <h3 class="table-header">Singles</h3>
 				<div id="submission_result" class="right overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="reviewedSubmissionSingles">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="reviewedSubmissionSinglesTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Submission</th>
@@ -421,6 +437,8 @@
 								<th>Approve</th>
 								<th>Discard</th>
 							</tr>
+                        </thead>
+						<tbody name="reviewedSubmissionSingles">
 						</tbody>
 					</table>
 					<br />
@@ -572,9 +590,9 @@
 				</ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="toTagSubmissionCd">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="toTagSubmissionCdTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -584,6 +602,8 @@
 								<th>Assignee</th>
 								<th><button id="trash_submission_accepted_cd" onclick="trash_submission_accepted_cd()">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="toTagSubmissionCd">
 						</tbody>
 					</table>
 				</div>
@@ -591,9 +611,9 @@
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
         <h3 class="table-header">MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="toTagSubmissionMP3">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="toTagSubmissionMP3Table">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -603,6 +623,8 @@
 								<th>Assignee</th>
 								<th><button id="trash_submission_accepted_mp3" onclick="trash_submission_accepted_mp3()">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="toTagSubmissionMP3">
 						</tbody>
 					</table>
 				</div>
@@ -610,9 +632,9 @@
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
         <h3 class="table-header">Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="toTagSubmissionOther">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="toTagSubmissionOtherTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -622,6 +644,8 @@
 								<th>Assignee</th>
 								<th><button id="trash_submission_accepted_other" onclick="trash_submission_accepted_other()">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="toTagSubmissionOther">
 						</tbody>
 					</table>
 				</div>
@@ -629,9 +653,9 @@
 			<div id="tag" class="hidden submission grey clearfix padded-right double-padded-top">
         <h3 class="table-header">Singles</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="toTagSubmissionSingles">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="toTagSubmissionSinglesTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -641,6 +665,8 @@
 								<th>Assignee</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="toTagSubmissionSingles">
 						</tbody>
 					</table>
 				</div>
@@ -890,9 +916,9 @@
 				</ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="taggedSubmissionCd">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="taggedSubmissionCdTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -902,6 +928,8 @@
 								<th>Tagger</th>
 								<th><button id="trash_submission_tagged_cd" onclick="trash_submission_tagged_cd()">Delete</button></th>
 							</tr>
+                        </thead>
+						<tbody name="taggedSubmissionCd">
 						</tbody>
 					</table>
 				</div>
@@ -909,9 +937,9 @@
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
         <h3 class='table-header'>MP3s</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="taggedSubmissionMP3">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="taggedSubmissionMP3Table">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -921,6 +949,8 @@
 								<th>Tagger</th>
 								<th><button id="trash_submission_tagged_mp3" onclick="trash_submission_tagged_mp3()">Delete</button></th>
 							</tr>
+                        </thead>
+                        <tbody name="taggedSubmissionMP3">
 						</tbody>
 					</table>
 				</div>
@@ -928,9 +958,9 @@
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
         <h3 class='table-header'>Other</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="taggedSubmissionOther">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="taggedSubmissionOtherTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -940,6 +970,8 @@
 								<th>Tagger</th>
 								<th><button id="trash_submission_tagged_other" onclick="trash_submission_tagged_other()">Delete</button></th>
 							</tr>
+                        </thead>
+                        <tbody name="taggedSubmissionOther">
 						</tbody>
 					</table>
 				</div>
@@ -947,9 +979,9 @@
 			<div id="approve" class="hidden submission grey clearfix double-padded-top">
         <h3 class='table-header'>Singles</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
-					<table id="submission_table" name="search">
-						<tbody name="taggedSubmissionSingles">
-							<tr id="headerrow" style="display: table-row;">
+					<table class="submission_table cell-border" id="taggedSubmissionSinglesTable">
+                        <thead>
+                            <tr id="headerrow" style="display: table-row;">
 								<th>Artist</th>
 								<th>Album</th>
 								<th>Date of Release</th>
@@ -959,6 +991,8 @@
 								<th>Tagger</th>
 								<th><button id="delete_button">Delete</button></th>
 							</tr>
+                        </thead>
+                        <tbody name="taggedSubmissionSingles">
 						</tbody>
 					</table>
 				</div>
@@ -1208,7 +1242,7 @@
 						<button id="submitDates_Approved" onclick="SubmitDates_Approved()">Generate Listing</button>
 					</div>
 					<div id="submission_result" class="right overflow_auto height_cap" name="search">
-						<table id="submission_table" name="search">
+						<table class="submission_table" name="search">
 							<tbody name="pastAcceptedSubmissions">
 								<tr id="headerrow" style="display: table-row;">
 									<th>Artist</th>
@@ -1284,7 +1318,7 @@
 						</ul>
 
 						<div id="submission_result" class="right overflow_auto height_cap" name="search">
-							<table id="submission_table" name="search">
+							<table class="submission_table" name="search">
 								<tbody name="trashedSubmissions">
 									<tr id="headerrow" style="display: table-row;">
 										<th>Artist</th>

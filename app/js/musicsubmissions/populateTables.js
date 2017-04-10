@@ -1,7 +1,7 @@
 function populateNewSubmissionsTable(){
     $(".reviewrow").remove();
     $(".reviewrowNotFound").remove();
-	$.ajax({
+    $.ajax({
 		type:"GET",
 		url: "api2/public/submissions/bystatus/unreviewed/cd",
 		dataType:'json',
@@ -35,7 +35,7 @@ function populateNewSubmissionsTable(){
 function populateReviewedSubmissionsTable(){
     $(".reviewedrow").remove();
     $(".reviewedrowNotFound").remove();
-	$.ajax({
+    $.ajax({
 		type:"GET",
 		url: "api2/public/submissions/bystatus/reviewed/cd",
 		dataType:'json',
@@ -149,29 +149,38 @@ function populateTrashedSubmissionsTable(){
 }
 //
 function populateNewSubmissionsCd(submissions){
+    $("#newSubmissionCdTable").DataTable().clear();
+    $("#newSubmissionCdTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here ...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='newSubmissionCd']").append(markup);
 	} else{
 		for(var number in submissions) {
 			var item = (submissions[number]);
-      var releasedateValue;
-      if (item['releasedate'] == "" || item['releasedate'] == null) {
-        releasedateValue = "<span style=\"color:navy\">No date</span>";
-        console.log("replaced with navy");
-      } else {
-        releasedateValue = item['releasedate'];
-        console.log('date fine');
-      }
+            var releasedateValue;
+            if (item['releasedate'] == "" || item['releasedate'] == null) {
+                releasedateValue = "<span style=\"color:navy\">No date</span>";
+                console.log("replaced with navy");
+            } else {
+                releasedateValue = item['releasedate'];
+                console.log('date fine');
+            }
 			var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">"
 				+ item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"\"></td><td><select><option></option><option>Andy Resto</option><option>Hugo Noriega</option><option>Emily Stryker</option></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_cd\" id=\"delete" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
 				//console.log(markup);
 			$("tbody[name='newSubmissionCd']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#newSubmissionCdTable"))){
+            $("#newSubmissionCdTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateNewSubmissionsMP3(submissions){
+    $("#newSubmissionMP3Table").DataTable().clear();
+    $("#newSubmissionMP3Table").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here ...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='newSubmissionMP3']").append(markup);
@@ -190,9 +199,16 @@ function populateNewSubmissionsMP3(submissions){
 			$("tbody[name='newSubmissionMP3']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#newSubmissionMP3Table"))){
+            $("#newSubmissionMP3Table").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateNewSubmissionsOther(submissions){
+    $("#newSubmissionOtherTable").DataTable().clear();
+    $("#newSubmissionOtherTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here ...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='newSubmissionOther']").append(markup);
@@ -211,10 +227,17 @@ function populateNewSubmissionsOther(submissions){
 			$("tbody[name='newSubmissionOther']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#newSubmissionOtherTable"))){
+            $("#newSubmissionOtherTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 //
 function populateReviewedSubmissionsCd(submissions){
+    $("#reviewedSubmissionCdTable").DataTable().clear();
+    $("#reviewedSubmissionCdTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='reviewedSubmissionCd']").append(markup);
@@ -231,11 +254,17 @@ function populateReviewedSubmissionsCd(submissions){
 			$("tbody[name='reviewedSubmissionCd']").append(markup);
 		}
 		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_cd()\">Apply Approvals</button></td></tr>"
-		$("tbody[name='reviewedSubmissionCd']").append(endrow);
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#reviewedSubmissionCdTable"))){
+            $("#reviewedSubmissionCdTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateReviewedSubmissionsMP3(submissions){
+    $("#reviewedSubmissionMP3Table").DataTable().clear();
+    $("#reviewedSubmissionMP3Table").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='reviewedSubmissionMP3']").append(markup);
@@ -252,11 +281,17 @@ function populateReviewedSubmissionsMP3(submissions){
 			$("tbody[name='reviewedSubmissionMP3']").append(markup);
 		}
 		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_mp3()\">Apply Approvals</button></td></tr>"
-		$("tbody[name='reviewedSubmissionMP3']").append(endrow);
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#reviewedSubmissionMP3Table"))){
+            $("#reviewedSubmissionMP3Table").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateReviewedSubmissionsOther(submissions){
+    $("#reviewedSubmissionOtherTable").DataTable().clear();
+    $("#reviewedSubmissionOtherTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border reviewedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='reviewedSubmissionOther']").append(markup);
@@ -273,12 +308,18 @@ function populateReviewedSubmissionsOther(submissions){
 			$("tbody[name='reviewedSubmissionOther']").append(markup);
 		}
 		var endrow = "<tr class=\'reviewedrowNotFound\'><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick=\"approve_submission_reviewed_other()\">Apply Approvals</button></td></tr>"
-		$("tbody[name='reviewedSubmissionOther']").append(endrow);
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#reviewedSubmissionOtherTable"))){
+            $("#reviewedSubmissionOtherTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 //
 function populateToTagSubmissionsCd(submissions){
+    $("#toTagSubmissionCdTable").DataTable().clear();
+    $("#toTagSubmissionCdTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border tagrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='toTagSubmissionCd']").append(markup);
@@ -298,9 +339,16 @@ function populateToTagSubmissionsCd(submissions){
 			$("tbody[name='toTagSubmissionCd']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#toTagSubmissionCdTable"))){
+            $("#toTagSubmissionCdTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateToTagSubmissionsMP3(submissions){
+    $("#toTagSubmissionMP3Table").DataTable().clear();
+    $("#toTagSubmissionMP3Table").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border tagrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='toTagSubmissionMP3']").append(markup);
@@ -319,9 +367,16 @@ function populateToTagSubmissionsMP3(submissions){
 			$("tbody[name='toTagSubmissionMP3']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#toTagSubmissionMP3Table"))){
+            $("#toTagSubmissionMP3Table").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateToTagSubmissionsOther(submissions){
+    $("#toTagSubmissionOtherTable").DataTable().clear();
+    $("#toTagSubmissionOtherTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border tagrowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='toTagSubmissionOther']").append(markup);
@@ -340,10 +395,17 @@ function populateToTagSubmissionsOther(submissions){
 			$("tbody[name='toTagSubmissionOther']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#toTagSubmissionOtherTable"))){
+            $("#toTagSubmissionOtherTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 //
 function populateTaggedSubmissionsCd(submissions){
+    $("#taggedSubmissionCdTable").DataTable().clear();
+    $("#taggedSubmissionCdTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border approverowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='taggedSubmissionCd']").append(markup);
@@ -363,9 +425,16 @@ function populateTaggedSubmissionsCd(submissions){
 			$("tbody[name='taggedSubmissionCd']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#taggedSubmissionCdTable"))){
+            $("#taggedSubmissionCdTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateTaggedSubmissionsMP3(submissions){
+    $("#taggedSubmissionMP3Table").DataTable().clear();
+    $("#taggedSubmissionMP3Table").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border approverowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='taggedSubmissionMP3']").append(markup);
@@ -386,9 +455,16 @@ function populateTaggedSubmissionsMP3(submissions){
 			$("tbody[name='taggedSubmissionMP3']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#taggedSubmissionMP3Table"))){
+            $("#taggedSubmissionMP3Table").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateTaggedSubmissionsOther(submissions){
+    $("#taggedSubmissionOtherTable").DataTable().clear();
+    $("#taggedSubmissionOtherTable").DataTable().destroy();
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border approverowNotFound\"><td></td><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td></tr>";
 		$("tbody[name='taggedSubmissionOther']").append(markup);
@@ -409,6 +485,11 @@ function populateTaggedSubmissionsOther(submissions){
 			$("tbody[name='taggedSubmissionOther']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#taggedSubmissionOtherTable"))){
+            $("#taggedSubmissionOtherTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
 function populateTrashedSubmissions(submissions){
