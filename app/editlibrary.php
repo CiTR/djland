@@ -75,8 +75,6 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 										} ?>
 									</select>
 							</td>
-							<td align=left style='padding-left:10px'>Added: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asadded></td>
-							<td align=left style='padding-left:10px'>Modified: </td><td align=left style='padding-left:5px'><INPUT TYPE=text NAME=asmodified></td>
 						</tr>
 						<tr>
 							<td align=left style='padding-left:10px' colspan=6><br />
@@ -198,12 +196,11 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 		$entry_catalog = $row["catalog"];
 		$entry_format = $row["format"];
+		$entry_status = $row["status"];
 		$entry_artist = $row["artist"];
 		$entry_title = $row["title"];
 		$entry_label = $row["label"];
 		$entry_genre = $row["genre"];
-		$entry_added = $row["added"];
-		$entry_modified = $row["modified"];
 		$entry_cancon = $row["cancon"];
 		$entry_femcon = $row["femcon"];
 		$entry_local = $row["local"];
@@ -212,7 +209,12 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 		$entry_digitized = $row["digitized"];
 		$entry_id = $row["id"];
 
-		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_id\", \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_modified\", \"$entry_added\", \"$entry_format\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\")' class='editButton'>edit</td>");
+		$genreVals = "";
+		foreach($djland_primary_genres as $var_genre) {
+			$genreVals .= "*" . $var_genre;
+		}
+
+		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_id\", \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_format\", \"$entry_status\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\", \"$genreVals\")' class='editButton'>edit</td>");
 		printf("<td><input type=checkbox name='entry' id='\"$entry_id\"'></td>");
 		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
 

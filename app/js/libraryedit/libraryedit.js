@@ -18,7 +18,7 @@ function getCheckedEntries(chkboxName) {
 // Handlers
 function viewEdits() {
   $("tbody[name='recentEdits']").empty();
-  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Label</th><th>Genre</th><th>Catalog</th><th>Format</th><th>Cancon</th><th>Femcon</th><th>Playlist</th><th>Local</th><th>Digitized</th></tr>";
+  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Changes</th><th>Undo?</th></tr>";
   $("tbody[name='recentEdits']").append(header);
   $("#undoEdits").show();
 
@@ -27,34 +27,51 @@ function viewEdits() {
 }
 
 function undoEdits() {
-  // get checked entries
+  var undoIDs = getCheckedEntries("undo_edits");
 
-  // get their id in the library database
+  for(var number in undoIDs){
+    var id = undoIDs[number];
 
-  // write old info back to library
+    // get the entry from the library edits database table
+    $.ajax({
+  		type:"GET",
+  		url: "api2/public/recenteditentry",
+  		dataType:'json',
+      data: {
+        'id':id
+      },
+  		async:true,
+  		success:function(data){
+        // write back to update library with "old" values
+  			update_entry(data['library_id'], data['old_title'], data['old_artist'], data['old_label'], data['old_genre'], data['old_catalog'], data['old_format_id'], data['old_status'], data['old_cancon'], data['old_femcon'], data['old_playlist'], data['old_local'], data['old_compilation'], data['old_digitized']);
+  		}
+  	});
+  }
 
-  // write new entry to library edits table
+  // refresh page
 }
 
-function saveEntry() {
+function saveEntry(source) {
 
   // read in new values
-  var entryID = $("#saveEntryButton").attr('name');
+  var entryID = source.name;
   var title   = $("#title" + entryID).val();
   var artist  = $("#artist" + entryID).val();
   var label   = $("#label" + entryID).val();
-  var genre   = $("#genre" + entryID).val();
+  var genreDropdown   = document.getElementById("genre" + entryID);
+  var genre = genreDropdown.options[genreDropdown.selectedIndex].text;
   var catalog = $("#catalog" + entryID).val();
   var format_id  = $("#format" + entryID).val();
-  var cancon  = $("#cancon" + entryID).val();
-  var femcon  = $("#femcon" + entryID).val();
-  var playlist = $("#playlist" + entryID).val();
-  var local   = $("#local" + entryID).val();
-  var compilation = $("#compilation" + entryID).val();
-  var digitized = $("#digitized" + entryID).val();
+  var status  = $("#status" + entryID).val();
+  var cancon  = ($("#cancon" + entryID).is(":checked") == true) ? 1 : 0;
+  var femcon  = ($("#femcon" + entryID).is(":checked") == true) ? 1 : 0;
+  var playlist = ($("#playlist" + entryID).is(":checked") == true) ? 1 : 0;
+  var local   = ($("#local" + entryID).is(":checked") == true) ? 1 : 0;
+  var compilation = ($("#compilation" + entryID).is(":checked") == true) ? 1 : 0;
+  var digitized = ($("#digitized" + entryID).is(":checked") == true) ? 1 : 0;
 
   // call function to write changes to database
-  update_entry(entryID, title, artist, label, genre, catalog, format_id, cancon, femcon, playlist, local, compilation, digitized);
+  update_entry(entryID, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized);
 
   // refresh search page
 }
@@ -70,23 +87,24 @@ function saveChanges() {
   var genre   = $("#asgenre").val();
   var catalog = $("#ascatalog").val();
   var format_id  = $("#asformat").val();
-  var cancon  = $("#ascancon").val();
-  var femcon  = $("#asfemcon").val();
-  var playlist = $("#asplaylist").val();
-  var local   = $("#aslocal").val();
-  var compilation = $("#ascompilation").val();
-  var digitized = $("#asdigitized").val();
+  var status  = $("#status" + entryID).val();
+  var cancon  = ($("#ascancon").is(":checked") == true) ? 1 : 0;
+  var femcon  = ($("#asfemcon").is(":checked") == true) ? 1 : 0;
+  var playlist = ($("#asplaylist").is(":checked") == true) ? 1 : 0;
+  var local   = ($("#aslocal").is(":checked") == true) ? 1 : 0;
+  var compilation = ($("#ascompilation").is(":checked") == true) ? 1 : 0;
+  var digitized = ($("#asdigitized").is(":checked") == true) ? 1 : 0;
 
   // call update function for each entry
   for(var number in checkedIDs){
     var id = checkedIDs[number];
-    update_entry(id, title, artist, label, genre, catalog, format_id, cancon, femcon, playlist, local, compilation, digitized);
+    update_entry(id, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized);
   }
 
   // refresh search page
 }
 
-function update_entry(entryID, title, artist, label, genre, catalog, format_id, cancon, femcon, playlist, local, compilation, digitized){
+function update_entry(entryID, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized){
   // write new entry to library edits database
   $.ajax({
     url: "api2/public/libraryedits",
@@ -100,6 +118,7 @@ function update_entry(entryID, title, artist, label, genre, catalog, format_id, 
       'genre':genre,
       'catalog':catalog,
       'format_id':format_id,
+      'status':status,
       'cancon':cancon,
       'femcon':femcon,
       'playlist':playlist,
@@ -124,6 +143,7 @@ function update_entry(entryID, title, artist, label, genre, catalog, format_id, 
           'genre':genre,
           'catalog':catalog,
           'format_id':format_id,
+          'status':status,
           'cancon':cancon,
           'femcon':femcon,
           'playlist':playlist,
@@ -169,9 +189,72 @@ function populateLibraryEditsTable(){
   	} else{
   		for(var number in edits) {
   			var item = (edits[number]);
-  			var markup = "<tr class=\"playitem border editsrow\" name=\"" + item['id'] + "\"><td class=\"edits_row_element\"> " + item['artist'] + " </td><td class=\"edits_row_element\">" + item['title'] + "</td><td class=\"edits_row_element\">" + item['label'] + "</td><td class=\"edits_row_element\">" + item['genre'] + "</td><td class=\"edits_row_element\">"
-  				+ item['catalog'] + "</td><td><input class=\"edits_row_element\"> " + item['format_id'] + " </td><td><input class=\"edits_row_element\"> " + item['cancon'] + " </td><td><input class=\"edits_row_element\"> " + item['femcon'] + " </td><td><input class=\"edits_row_element\"> " + item['playlist'] + " </td><td><input class=\"edits_row_element\"> "
-          + item['local'] + " </td><td><input class=\"edits_row_element\"> " + item['compilation'] + " </td><td><input class=\"edits_row_element\"> " + item['digitized'] + " </td><td><input type=\"checkbox\" class=\"undo_edits\" id=\"undo" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
+        var changes = "";
+        if(item['artist']!= item['old_artist']) {
+            changes += "| " + item['old_artist'] + " -> " + item['artist'] + " | ";
+        }
+        if(item['title']!= item['old_title']) {
+            changes += "| " + item['old_title'] + " -> " + item['title'] + " | ";
+        }
+        if(item['label']!= item['old_label']) {
+            changes += "| " + item['old_label'] + " -> " + item['label'] + " | ";
+        }
+        if(item['genre']!= item['old_genre']) {
+            changes += "| " + item['old_genre'] + " -> " + item['genre'] + " | ";
+        }
+        if(item['catalog']!= item['old_catalog']) {
+            changes += "| " + item['old_catalog'] + " -> " + item['catalog'] + " | ";
+        }
+        if(item['format_id']!= item['old_format_id']) {
+            changes += "| format " + item['old_format_id'] + " -> format " + item['format_id'] + " | ";
+        }
+        if(item['status']!= item['old_status']) {
+            changes += "| " + item['old_status'] + " -> " + item['status'] + " | ";
+        }
+        if(item['cancon']!= item['old_cancon']) {
+          if(item['cancon'] == 1) {
+            changes += "| not cancon -> cancon | ";
+          } else {
+            changes += "| cancon -> not cancon | ";
+          }
+        }
+        if(item['femcon']!= item['old_femcon']) {
+          if(item['femcon'] == 1) {
+            changes += "| not femcon -> femcon | ";
+          } else {
+            changes += "| femcon -> not femcon | ";
+          }
+        }
+        if(item['playlist']!= item['old_playlist']) {
+          if(item['playlist'] == 1) {
+            changes += "| not playlist -> playlist | ";
+          } else {
+            changes += "| playlist -> not playlist | ";
+          }
+        }
+        if(item['local']!= item['old_local']) {
+          if(item['local'] == 1) {
+            changes += "| not local -> local | ";
+          } else {
+            changes += "| local -> not local | ";
+          }
+        }
+        if(item['compilation']!= item['old_compilation']) {
+          if(item['compilation'] == 1) {
+            changes += "| not compilation -> compilation | ";
+          } else {
+            changes += "| compilation -> not compilation | ";
+          }
+        }
+        if(item['digitized']!= item['old_digitized']) {
+          if(item['digitized'] == 1) {
+            changes += "| not digitized -> digitized | ";
+          } else {
+            changes += "| digitized -> not digitized | ";
+          }
+        }
+  			var markup = "<tr class=\"playitem border editsrow\" name=\"" + item['id'] + "\"><td class=\"edits_row_element\"> " + item['artist'] + " </td><td class=\"edits_row_element\">" + item['title'] + "</td><td class=\"edits_row_element\">" + changes + "</td><td><input type=\"checkbox\" name=\"undo_edits\" id=\"undo"
+         + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
   			$("tbody[name='recentEdits']").append(markup);
   		}
   	}
