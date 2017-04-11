@@ -201,8 +201,7 @@ function add_submission_handlers(){
         $('#taggedSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#taggedSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
-
-
+    
 	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
 		$('.submission_action').attr('class','nodrop inactive-tab submission_action');

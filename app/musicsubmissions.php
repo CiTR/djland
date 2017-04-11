@@ -38,24 +38,6 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
-		<!-- set the datepicker date format -->
-		<script>
-			$(function() {
-		    	$( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
-			});
-      $(function() {
-		    	$( "#past-from" ).datepicker({ dateFormat: "yy-mm-dd" });
-			});
-      $(function() {
-		    	$( "#past-to" ).datepicker({ dateFormat: "yy-mm-dd" });
-			});
-      $(function() {
-		    	$( "#new-from" ).datepicker({ dateFormat: "yy-mm-dd" });
-			});
-      $(function() {
-		    	$( "#new-to" ).datepicker({ dateFormat: "yy-mm-dd" });
-			});
-		</script>
 	</head>
 	<body class='wallpaper'>
 		<?php
@@ -80,14 +62,9 @@
 			<!-- Begin Tab 1 "new submissions search" -->
 			<div id="new_submissions" class="submission grey clearfix padded-right">
 				<ul id="submission_header" name="search" class="clean-list inline-list">
-					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="newSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
-					<li>
-						<select class="year_select" name="search">
-						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
-					</li>
-					<li>
-						Order By
-						<select id="order_by">
+					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="newSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
+					<li> From: <input id="new-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="new-submissions-to" type="text" class="datepicker" readonly=""/></li>
+					<li><span>&nbsp;Order By: </span><select id="order_by">
 							<option value="created">Submission Date</option>
 							<option value="id">Date of Release</option>
 							<option value="lastname">Artist</option>
@@ -96,7 +73,6 @@
 							<option value="Assignee">Assignee</option>
 						</select>
 					</li>
-
 					<li>
 						<button class="right" id="save_comments">Save Comments</button>
 					</li>
@@ -283,14 +259,9 @@
 			<!-- Begin Tab 2 "reviewed submissions view" -->
 			<div id="reviewed_submissions" class='hidden submission grey clearfix padded-right'>
                 <ul id="submission_header" name="search" class="clean-list inline-list">
-					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="reviewedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
-					<li>
-						<select class="year_select" name="search">
-						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
-					</li>
-					<li>
-						Order By
-						<select id="order_by">
+                    <li><div class="dataTables_filter"><label>Search All: <input type="search" id="reviewedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
+					<li> From: <input id="reviewed-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="reviewed-submissions-to" type="text" class="datepicker" readonly=""/></li>
+					<li><span>&nbsp;Order By: </span><select id="order_by">
 							<option value="created">Submission Date</option>
 							<option value="id">Date of Release</option>
 							<option value="lastname">Artist</option>
@@ -299,7 +270,6 @@
 							<option value="Assignee">Assignee</option>
 						</select>
 					</li>
-
 					<li>
 						<button class="right" id="save_comments">Save Comments</button>
 					</li>
@@ -437,10 +407,7 @@
 								<div class="col4" id="credit-reviewed">John Doe, Lucy Lu, Fred Smith</div>
 							</div>
 							<hr>
-							<div class="containerrow padded-left">
-								<div class="col1 text-left padded">Submitted Album Description: </div>
-							</div>
-							<div class="containerrow padded padded-left">
+							<div class="cont</li>tainerrow padded padded-left">
 								<div class="col2 text-left" id="description-reviewed"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
 								<div class="col3 center"><img src="images/albumart.jpg" id="albumArt-reviewed"></img></div>
 							</div>
@@ -493,26 +460,20 @@
 			<!--Begin Tab 3 "Tagging Interface" -->
 			<div id="tag" class="hidden submission grey clearfix padded-right">
                 <ul id="submission_header" name="search" class="clean-list inline-list">
-                    <li><div class="dataTables_filter"><label>Search All: <input type="search" id="toTagSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
-                    <li>
-                        <select class="year_select" name="search">
-                        <option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
-                    </li>
-                    <li>
-                        Order By
-                        <select id="order_by">
-                            <option value="created">Submission Date</option>
-                            <option value="id">Date of Release</option>
-                            <option value="lastname">Artist</option>
-                            <option value="firstname">Album</option>
-                            <option value="member_type">Genre</option>
-                            <option value="Assignee">Assignee</option>
-                        </select>
-                    </li>
-
-                    <li>
-                        <button class="right" id="save_comments">Save Comments</button>
-                    </li>
+                    <li><div class="dataTables_filter"><label>Search All: <input type="search" id="toTagSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
+					<li> From: <input id="toTag-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="toTag-submissions-to" type="text" class="datepicker" readonly=""/></li>
+					<li><span>&nbsp;Order By: </span><select id="order_by">
+							<option value="created">Submission Date</option>
+							<option value="id">Date of Release</option>
+							<option value="lastname">Artist</option>
+							<option value="firstname">Album</option>
+							<option value="member_type">Genre</option>
+							<option value="Assignee">Assignee</option>
+						</select>
+					</li>
+					<li>
+						<button class="right" id="save_comments">Save Comments</button>
+					</li>
                 </ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
@@ -797,26 +758,20 @@
 			<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
 			<div id="approve" class="hidden submission grey clearfix">
                 <ul id="submission_header" name="search" class="clean-list inline-list">
-					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="taggedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>                  </li>
-					<li>
-						<select class="year_select" name="search">
-						<option value="2016/2017">2016/2017</option><option value="2015/2016">2015/2016</option><option value="2014/2015">2014/2015</option><option value="2013/2014">2013/2014</option><option value="2011/2012">2011/2012</option><option value="all">All Years</option></select>
-					</li>
-					<li>
-						Order By
-						<select id="order_by">
-							<option value="created">Submission Date</option>
-							<option value="id">Date of Release</option>
-							<option value="lastname">Artist</option>
-							<option value="firstname">Album</option>
-							<option value="member_type">Genre</option>
-							<option value="Assignee">Assignee</option>
-						</select>
-					</li>
-
-					<li>
-						<button class="right" id="save_comments">Save Comments</button>
-					</li>
+                    <li><div class="dataTables_filter"><label>Search All: <input type="search" id="taggedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
+                    <li> From: <input id="tagged-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="tagged-submissions-to" type="text" class="datepicker" readonly=""/></li>
+                    <li><span>&nbsp;Order By: </span><select id="order_by">
+                            <option value="created">Submission Date</option>
+                            <option value="id">Date of Release</option>
+                            <option value="lastname">Artist</option>
+                            <option value="firstname">Album</option>
+                            <option value="member_type">Genre</option>
+                            <option value="Assignee">Assignee</option>
+                        </select>
+                    </li>
+                    <li>
+                        <button class="right" id="save_comments">Save Comments</button>
+                    </li>
 				</ul>
 				<h3 class="table-header">CDs</h3>
 				<div id="submisison_result" class="left overflow_auto height_cap padded side-padded" name="search">
