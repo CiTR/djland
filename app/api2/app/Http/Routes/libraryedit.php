@@ -30,31 +30,31 @@ Route::post('/libraryedits', function(){
           }
 
         $newedits = Edits::create([
-            'format_id' => Input::get('format_id'),
+            'format_id' => Input::get('format_id') == null ? $old_entry->format_id : Input::get('format_id'),
             'old_format_id' => $old_entry->format_id,
-            'catalog' => Input::get('catalog'),
+            'catalog' => Input::get('catalog') == null ? $old_entry->catalog : Input::get('catalog'),
             'old_catalog' => $old_entry->catalog,
-            'cancon' => Input::get('cancon'),
+            'cancon' => Input::get('cancon') == null ? $old_entry->cancon : Input::get('cancon'),
             'old_cancon' => $old_entry->cancon,
-            'femcon' => Input::get('femcon'),
+            'femcon' => Input::get('femcon') == null ? $old_entry->femcon : Input::get('femcon'),
             'old_femcon' => $old_entry->femcon,
-            'local' => Input::get('local'),
+            'local' => Input::get('local') == null ? $old_entry->local : Input::get('local'),
             'old_local' => $old_entry->local,
-            'playlist' => Input::get('playlist'),
+            'playlist' => Input::get('playlist') == null ? $old_entry->playlist : Input::get('playlist'),
             'old_playlist' => $old_entry->playlist,
-            'compilation' => Input::get('compilation'),
+            'compilation' => Input::get('compilation') == null ? $old_entry->compilation : Input::get('compilation'),
             'old_compilation' => $old_entry->compilation,
-            'digitized' => Input::get('digitized'),
+            'digitized' => Input::get('digitized') == null ? $old_entry->digitized : Input::get('digitized'),
             'old_digitized' => $old_entry->digitized,
-            'status' => Input::get('status'),
+            'status' => Input::get('status') == null ? $old_entry->status : Input::get('status'),
             'old_status' => $old_entry->status,
-            'artist' => Input::get('artist'),
+            'artist' => Input::get('artist') == null ? $old_entry->artist : Input::get('artist'),
             'old_artist' => $old_entry->artist,
-            'title' => Input::get('title'),
+            'title' => Input::get('title') == null ? $old_entry->title : Input::get('title'),
             'old_title' => $old_entry->title,
-            'label' => Input::get('label'),
+            'label' => Input::get('label') == null ? $old_entry->label : Input::get('label'),
             'old_label' => $old_entry->label,
-            'genre' => Input::get('genre'),
+            'genre' => Input::get('genre') == null ? $old_entry->genre : Input::get('genre'),
             'old_genre' => $old_entry->genre,
             'library_id' => Input::get('libraryID')
         ]);
@@ -125,6 +125,5 @@ Route::get('/recentedits', function(){
 // Get an entry in the library edits table
 Route::get('/recenteditentry', function(){
     $result = Edits::find(Input::get('id'));
-    if(!$result->isEmpty()) return Response::json( $result );
-    else return Response::json();
+    return Response::json( $result );
 });

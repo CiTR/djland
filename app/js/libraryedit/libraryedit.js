@@ -26,29 +26,22 @@ function viewEdits() {
   populateLibraryEditsTable();
 }
 
-function undoEdits() {
-  var undoIDs = getCheckedEntries("undo_edits");
-
-  for(var number in undoIDs){
-    var id = undoIDs[number];
-
-    // get the entry from the library edits database table
-    $.ajax({
-  		type:"GET",
-  		url: "api2/public/recenteditentry",
-  		dataType:'json',
-      data: {
-        'id':id
-      },
-  		async:true,
-  		success:function(data){
-        // write back to update library with "old" values
-  			update_entry(data['library_id'], data['old_title'], data['old_artist'], data['old_label'], data['old_genre'], data['old_catalog'], data['old_format_id'], data['old_status'], data['old_cancon'], data['old_femcon'], data['old_playlist'], data['old_local'], data['old_compilation'], data['old_digitized']);
-  		}
-  	});
-  }
-
-  // refresh page
+function undoEdits(source) {
+  var id = source.name;
+  $.ajax({
+    type:"GET",
+    url: "api2/public/recenteditentry",
+    dataType:'json',
+    data: {
+      'id':id
+    },
+    async:true,
+    success:function(data){
+      // write back to update library with "old" values
+      update_entry(data['library_id'], data['old_title'], data['old_artist'], data['old_label'], data['old_genre'], data['old_catalog'], data['old_format_id'], data['old_status'], data['old_cancon'], data['old_femcon'], data['old_playlist'], data['old_local'], data['old_compilation'], data['old_digitized']);
+      window.location.reload(true);
+    }
+  });
 }
 
 function saveEntry(source) {
@@ -62,6 +55,7 @@ function saveEntry(source) {
   var genre = genreDropdown.options[genreDropdown.selectedIndex].text;
   var catalog = $("#catalog" + entryID).val();
   var format_id  = $("#format" + entryID).val();
+  if(format_id == 0) format_id = null;
   var status  = $("#status" + entryID).val();
   var cancon  = ($("#cancon" + entryID).is(":checked") == true) ? 1 : 0;
   var femcon  = ($("#femcon" + entryID).is(":checked") == true) ? 1 : 0;
@@ -72,8 +66,6 @@ function saveEntry(source) {
 
   // call function to write changes to database
   update_entry(entryID, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized);
-
-  // refresh search page
 }
 
 function saveChanges() {
@@ -87,21 +79,20 @@ function saveChanges() {
   var genre   = $("#asgenre").val();
   var catalog = $("#ascatalog").val();
   var format_id  = $("#asformat").val();
-  var status  = $("#status" + entryID).val();
-  var cancon  = ($("#ascancon").is(":checked") == true) ? 1 : 0;
-  var femcon  = ($("#asfemcon").is(":checked") == true) ? 1 : 0;
-  var playlist = ($("#asplaylist").is(":checked") == true) ? 1 : 0;
-  var local   = ($("#aslocal").is(":checked") == true) ? 1 : 0;
-  var compilation = ($("#ascompilation").is(":checked") == true) ? 1 : 0;
-  var digitized = ($("#asdigitized").is(":checked") == true) ? 1 : 0;
+  if(format_id == 0) format_id = null;
+  var status  = $("#asstatus").val();
+  var cancon  = null;
+  var femcon  = null;
+  var playlist = null;
+  var local   = null;
+  var compilation = null;
+  var digitized = null;
 
   // call update function for each entry
   for(var number in checkedIDs){
     var id = checkedIDs[number];
     update_entry(id, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized);
   }
-
-  // refresh search page
 }
 
 function update_entry(entryID, title, artist, label, genre, catalog, format_id, status, cancon, femcon, playlist, local, compilation, digitized){
@@ -154,6 +145,7 @@ function update_entry(entryID, title, artist, label, genre, catalog, format_id, 
         async:true,
         success:function(data){
           console.log(data);
+          window.location.reload(true);
         },
         fail:function(data){
           console.log("Updating library entry failed. Response data: " + data);
@@ -253,8 +245,8 @@ function populateLibraryEditsTable(){
             changes += "| digitized -> not digitized | ";
           }
         }
-  			var markup = "<tr class=\"playitem border editsrow\" name=\"" + item['id'] + "\"><td class=\"edits_row_element\"> " + item['artist'] + " </td><td class=\"edits_row_element\">" + item['title'] + "</td><td class=\"edits_row_element\">" + changes + "</td><td><input type=\"checkbox\" name=\"undo_edits\" id=\"undo"
-         + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
+  			var markup = "<tr class=\"playitem border editsrow\" name=\"" + item['id'] + "\"><td class=\"edits_row_element\"> " + item['artist'] + " </td><td class=\"edits_row_element\">" + item['title'] + "</td><td class=\"edits_row_element\">" + changes + "</td><td><input type=submit VALUE=\"Undo\" onClick=\"undoEdits(this)\" name=\""
+        + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
   			$("tbody[name='recentEdits']").append(markup);
   		}
   	}
