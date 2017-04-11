@@ -68,7 +68,7 @@ Route::post('/submission', function(){
               $location = $base_dir.'submissions/';
               */
               // HARD CODED FOR DEMO.
-              $location = "dev.djland.citr.ca/uploads/submissions/"
+              $location = "dev.djland.citr.ca/uploads/submissions/";
               $path = $albumArt->move($location, $fileName);
               // FOR THE SAKE OF DEMO:
               // $path = 'uploads/submissions/'.$fileName;
@@ -152,7 +152,7 @@ Route::post('/song/{id}', function($id) {
     $location = $base_dir.'submissions/'.$id.'/';
     */
     // HARD CODED FOR DEMO
-    $location = 'dev.djland.citr.ca/uploads/submissions/'.$id.'/'
+    $location = 'dev.djland.citr.ca/uploads/submissions/'.$id.'/';
     $path = $file->move($location, $filename);
 
     // echo $path;
