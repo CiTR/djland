@@ -76,16 +76,6 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 									</select>
 							</td>
 						</tr>
-						<tr>
-							<td align=left style='padding-left:10px' colspan=6><br />
-									Cancon: <input type=checkbox id='ascancon'>
-									Femcon: <input type=checkbox id='asfemcon'>
-									Local: <input type=checkbox id='aslocal'>
-									Playlist: <input type=checkbox id='asplaylist'>
-									Compilation: <input type=checkbox id='ascompilation'>
-									in SAM: <input type=checkbox id='asdigitized'>
-							</td>
-						</tr>
 					</table>
 				</td>
 			</tr>
@@ -409,10 +399,6 @@ else if(permission_level() >= $djland_permission_levels['volunteer']['level']) {
 		<tr>
 			<table id="recentedits_table" name="search">
 				<tbody name="recentEdits">
-					<tr>
-						<center><input type=submit VALUE="Undo Selected Edits" id="undoEdits" onClick="undoEdits()" style="display:none;">
-						</center><br>
-					</tr>
 				</tbody>
 			</table>
 		</tr>
