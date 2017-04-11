@@ -63,8 +63,12 @@ Route::post('/submission', function(){
             $albumArt = Input::file('art_url');
             if ($albumArt) {
               $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
+              /*
               $base_dir = $_SERVER['SERVER_NAME']."/uploads/";
               $location = $base_dir.'submissions/';
+              */
+              // HARD CODED FOR DEMO.
+              $location = "dev.djland.citr.ca/uploads/submissions/"
               $path = $albumArt->move($location, $fileName);
               // FOR THE SAKE OF DEMO:
               // $path = 'uploads/submissions/'.$fileName;
@@ -143,9 +147,12 @@ Route::post('/song/{id}', function($id) {
     $file = Input::file('file');
 
     $submission = Submissions::find($id);
-
+/*
     $base_dir = $_SERVER['SERVER_NAME']."/uploads/";
     $location = $base_dir.'submissions/'.$id.'/';
+    */
+    // HARD CODED FOR DEMO
+    $location = 'dev.djland.citr.ca/uploads/submissions/'.$id.'/'
     $path = $file->move($location, $filename);
 
     // echo $path;
