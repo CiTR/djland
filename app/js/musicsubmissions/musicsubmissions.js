@@ -775,7 +775,7 @@ function getSubmissionDataAndDisplay(id) {
 }
 
 function displayReviewBox(data) {
-  var id			= data['id'];
+  var id			      = data['id'];
   var artist      	= data['artist'];
   var location    	= data['location'];
   var album       	= data['title'];
@@ -787,7 +787,7 @@ function displayReviewBox(data) {
   var credit      	= data['credit'];
   var email       	= data['email'];
   var description 	= data['description'];
-  var art_url		= data['art_url'];
+  var art_url		    = data['art_url'];
   var songs         = data['songs']
   console.log(songs)
 
@@ -1268,21 +1268,48 @@ function submitForm() {
     var missing = [];
     var success = true;
 
-    var artist    = artistField.value;
-    var email     = contactField.value;
-    var label     = recordField.value;
-    var city      = cityField.value;
-    var members   = memberField.value;
-    var album     = albumField.value;
-    var genre     = genrePicker.value;
-    var date      = dateField.value;
-    var canada    = canadaBox.checked;
-    var vancouver = vancouverBox.checked;
-    var female    = femArtistBox.checked;
-    var comments  = commentField.value;
-    var format    = formatPicker.value;
+    var artist      = artistField.value;
+    var email       = contactField.value;
+    var label       = recordField.value;
+    var location    = cityField.value;
+    var credit      = memberField.value;
+    var title       = albumField.value;
+    var e           = document.getElementById('genre-picker');
+    var genre       = e.options[e.selectedIndex].value;
+    var releasedate = dateField.value;
+    var cancon      = ($('#female-artist').prop('checked', true)) ? 1 : 0;
+    var local       = ($('#canada-artist').prop('checked', true)) ? 1 : 0;
+    var femcon      = ($('#vancouver-artist').prop('checked', true)) ? 1 : 0;
+    var description = $('#comments-box').val();
+    var f           = document.getElementById('format-picker');
+    var ff          = f.options[f.selectedIndex].value;
+    var format      = 6;
 
-    //console.log("formatPicker value: " + format);
+    switch (ff) {
+      case "CD":
+        format = 1;
+        break;
+      case "LP":
+        format = 2;
+        break;
+      case "7\"":
+        format = 3;
+        break;
+      case "CASSETTE":
+        format = 4;
+        break;
+      case "CART":
+        format = 5;
+        break;
+      case "MP3":
+        format = 6;
+        break;
+      case "MD":
+        format = 7;
+        break;
+      default:
+        format = 8;
+    }
 
     var alertString = "You are missing the following:";
 
@@ -1296,12 +1323,12 @@ function submitForm() {
       // missing.push("\n• Contact email");
       alertString += "\n• Contact email";
     }
-    if (city == "") {
+    if (location == "") {
       success = false;
       // missing.push("\n• Home city");
       alertString += "\n• Home city";
     }
-    if (album == "") {
+    if (title == "") {
       success = false;
       // missing.push("\n• Album name");
       alertString += "\n• Album name";
@@ -1311,13 +1338,6 @@ function submitForm() {
       // missing.push("\n• Genre");
       alertString += "\n• Genre";
     }
-    /*
-    if (date == "") {
-      success = false;
-      missing.push("\n• Date released");
-      alertString += "\n• Date released";
-    }
-    */
 
     // Check that files have been added
     var tracks = $("#submit-field").children();
@@ -1389,14 +1409,30 @@ function submitForm() {
 
 
     if (success) {
-      createSubmission(format);
+
+      var input = $('#album-art-input-button').prop('files')[0];
+
+      var data = new FormData();
+
+      data.append('format_id', format);
+      data.append('artist', artist);
+      data.append('email', email);
+      data.append('label', label);
+      data.append('location', location);
+      data.append('credit', credit);
+      data.append('title', title);
+      data.append('genre', genre);
+      data.append('releasedate', releasedate);
+      data.append('femcon', femcon);
+      data.append('cancon', cancon);
+      data.append('local', local);
+      data.append('description', description);
+      data.append('songlist', 10);
+      data.append('art_url', input);
+
+      createSubmission(data);
+
     } else {
-      /*
-      var alertString = "You are missing the following:";
-      for (var i = 0; i < missing.length; i++) {
-        alertString += missing[i];
-      }
-      */
       alert(alertString);
     }
   }

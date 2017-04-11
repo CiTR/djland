@@ -52,11 +52,11 @@ function toggle(source) {
 	}
 }
 
-function editLine(source, id, artist, title, label, genre, catalog, modified, added, format, cancon, femcon, local, playlist, compilation, digitized) {
+function editLine(source, id, artist, title, label, genre, catalog, format, status, cancon, femcon, local, playlist, compilation, digitized, genreVals) {
 	var tr = source.parentNode;
 	var table = tr.parentNode;
 
-	if(tr.nextSibling.id != "editableLine") {
+	if(tr.nextSibling == null || tr.nextSibling.id != "editableLine") {
 		var entryID = id;
 		var artistID = "artist" + entryID;
 		var titleID = "title" + entryID;
@@ -64,6 +64,7 @@ function editLine(source, id, artist, title, label, genre, catalog, modified, ad
 		var genreID = "genre" + entryID;
 		var catalogID = "catalog" + entryID;
 		var formatID = "format" + entryID;
+		var statusID = "status" + entryID;
 		var canconID = "cancon" + entryID;
 		var femconID = "femcon" + entryID;
 		var localID = "local" + entryID;
@@ -76,16 +77,16 @@ function editLine(source, id, artist, title, label, genre, catalog, modified, ad
 		newtr1.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Artist: <INPUT TYPE=text value='"+artist+"' id='"+artistID+"' size=29> Title: <INPUT TYPE=text value='"+title+"' id='"+titleID+"' size=35></td>";
 
 		var newtr2 = document.createElement("tr");
-		newtr2.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Label: <INPUT TYPE=text value='"+label+"' id='"+labelID+"' size=20> Genre: <INPUT TYPE=text value='"+genre+"' id='"+genreID+"' size=20> Catalog #: <INPUT TYPE=text value='"+catalog+"' id='"+catalogID+"' size=10></td>";
+		newtr2.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Label: <INPUT TYPE=text value='"+label+"' id='"+labelID+"' size=20> Genre: <select id='"+genreID+"'><option value=0></select> Catalog #: <INPUT TYPE=text value='"+catalog+"' id='"+catalogID+"' size=10></td>";
 
 		var newtr3 = document.createElement("tr");
-		newtr3.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Format: <INPUT TYPE=text value='"+format+"' id='"+formatID+"' size=7></td>";
+		newtr3.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Format: <select id='"+formatID+"'><option value=0></select> Status: <INPUT TYPE=text value='"+status+"' id='"+statusID+"' size=7></td>";
 
 		var newtr4 = document.createElement("tr");
 		newtr4.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td>Can: <input type=checkbox id='"+canconID+"'> Fem: <input type=checkbox id='"+femconID+"'> Loc: <input type=checkbox id='"+localID+"'> PL: <input type=checkbox id='"+playlistID+"'> Comp: <input type=checkbox id='"+compilationID+"'> SAM: <input type=checkbox id='"+digitizedID+"'></td>";
 
 		var newtr5 = document.createElement("tr");
-		newtr5.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td><input type=submit VALUE='Save Changes' id='saveEntryButton' onClick='saveEntry()' name='"+entryID+"'> <input type=submit VALUE='Cancel' onClick='cancel(this)'></td>";
+		newtr5.innerHTML = "<td> </td><td> </td><td> </td><td> </td><td><input type=submit VALUE='Save Changes' id='saveEntryButton' onClick='saveEntry(this)' name='"+entryID+"'> <input type=submit VALUE='Cancel' onClick='cancel(this)'></td>";
 
 		table.insertBefore(newtr5, tr.nextSibling);
 		table.insertBefore(newtr4, newtr5);
@@ -110,7 +111,85 @@ function editLine(source, id, artist, title, label, genre, catalog, modified, ad
 
 		if(digitized == 1)
 			document.getElementById(digitizedID).checked = "true";
+
+		var opt1 = document.createElement('option');
+    opt1.value = 1;
+    opt1.innerHTML = "CD";
+		document.getElementById(formatID).appendChild(opt1);
+
+		var opt2 = document.createElement('option');
+    opt2.value = 2;
+    opt2.innerHTML = "LP";
+		document.getElementById(formatID).appendChild(opt2);
+
+		var opt3 = document.createElement('option');
+    opt3.value = 3;
+    opt3.innerHTML = '7"';
+		document.getElementById(formatID).appendChild(opt3);
+
+		var opt4 = document.createElement('option');
+    opt4.value = 4;
+    opt4.innerHTML = "CASS";
+		document.getElementById(formatID).appendChild(opt4);
+
+		var opt5 = document.createElement('option');
+    opt5.value = 5;
+    opt5.innerHTML = "CART";
+		document.getElementById(formatID).appendChild(opt5);
+
+		var opt6 = document.createElement('option');
+    opt6.value = 6;
+    opt6.innerHTML = "MP3";
+		document.getElementById(formatID).appendChild(opt6);
+
+		var opt7 = document.createElement('option');
+    opt7.value = 7;
+    opt7.innerHTML = "MD";
+		document.getElementById(formatID).appendChild(opt7);
+
+		var opt8 = document.createElement('option');
+    opt8.value = 8;
+    opt8.innerHTML = "??";
+		document.getElementById(formatID).appendChild(opt8);
+
+		var fm = document.getElementById(formatID);
+		for (var i = 0; i < fm.options.length; i++) {
+	    if (fm.options[i].text === format) {
+	        fm.selectedIndex = i;
+	        break;
+	    }
+		}
+
+		var x = 0;
+		do {
+			var start_pos = 0;
+			var end_pos = genreVals.indexOf('*',start_pos + 1);
+			var newGenre = genreVals.substring(start_pos,end_pos);
+			genreVals = genreVals.replace(newGenre, "");
+			newGenre = newGenre.replace("*", "");
+			if(newGenre) {
+				var g = document.createElement('option');
+		    g.value = x;
+		    g.innerHTML = newGenre;
+				document.getElementById(genreID).appendChild(g);
+			}
+			x++;
+		} while(newGenre && genreVals.length > 0 && x < 100 );
+
+		genreVals = genreVals.replace("*", "");
+		var g1 = document.createElement('option');
+		g1.value = x;
+		g1.innerHTML = genreVals;
+		document.getElementById(genreID).appendChild(g1);
 	}
+
+	var gr = document.getElementById(genreID);
+	for (var i = 0; i < gr.options.length; i++) {
+    if (gr.options[i].text === genre) {
+        gr.selectedIndex = i;
+        break;
+    }
+}
 }
 
 function cancel(source) {
