@@ -276,7 +276,7 @@
 }
 
 table.dataTable tbody tr{
-    background-color: inherit;
+    background-color: grey;
 }
 
 .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter,

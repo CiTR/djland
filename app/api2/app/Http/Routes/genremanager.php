@@ -4,7 +4,7 @@ use App\Genre as Genre;
 use App\Subgenre as Subgenre;
 use Validator as Validator;
 
-//Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix'=>'genres'], function(){
         //Get list of genres
         Route::get('/', function(){
@@ -34,7 +34,7 @@ use Validator as Validator;
           * only staff can update the genre listings even if they
           * figured out how to API
           */
-        //Route::group(['middleware' => 'staff'], function(){
+        Route::group(['middleware' => 'staff'], function(){
             //Create a genre
             Route::post('/', function(){
                 try{
@@ -100,7 +100,7 @@ use Validator as Validator;
                     }
                 }
             });
-        //});
+        });
     });
 
     Route::group(['prefix'=>'subgenres'], function(){
@@ -187,4 +187,4 @@ use Validator as Validator;
             }
         });
     });
-//});
+});

@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Validator as Validator;
 
 //Post to this route to write to the library edits table
-//Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
     Route::group(array('prefix'=>'library'), function(){
         Route::get('/',function(){
             //only return ids because the table is too big
@@ -186,12 +186,11 @@ use Validator as Validator;
                         //TODO: file_location
                         'file_location' => ""
                     ]);
-                    $i++;
                 }
-                return "Success!";
+                return response("Success!",200);
             }else{
                 return response("Unable to create library record. Please try again", 500);
             }
         });
     });
-//});
+});

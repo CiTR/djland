@@ -1,4 +1,4 @@
-SELECT * FROM `dev.djland`.library_songs;CREATE TABLE `library_songs` (
+CREATE TABLE `library_songs` (
   `song_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `library_id` int(11) DEFAULT NULL,
   `artist` varchar(255) DEFAULT NULL,
@@ -22,4 +22,4 @@ SELECT * FROM `dev.djland`.library_songs;CREATE TABLE `library_songs` (
   PRIMARY KEY (`song_id`),
   KEY `fk_library_songs_1_idx` (`library_id`),
   CONSTRAINT `fk_library_songs_1` FOREIGN KEY (`library_id`) REFERENCES `library` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

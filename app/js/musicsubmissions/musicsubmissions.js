@@ -1256,7 +1256,7 @@ function approveTags(tag, submission_id, catalog, format_id, album_title, artist
 		},
 		async:true,
 		success:function(data){
-			//console.log(data);
+			console.log(data);
             $.ajax({
         		url: "/api2/public/library/fromsubmissions",
         		type:'POST',
@@ -1278,22 +1278,8 @@ function approveTags(tag, submission_id, catalog, format_id, album_title, artist
         		},
                 async:true,
         		success:function(data){
+                    deleteSubmission(submission_id);
                     console.log(data);
-                    $.ajax({
-                		url: "/api2/public/submissions/" + submission_id,
-                		type:'DELETE',
-                		dataType:'json',
-                		data: {
-                			'id':submission_id,
-                		},
-                        async:true,
-                		success:function(data){
-                            console.log(data);
-                        },
-                        fail:function(data){
-                			console.log("Submitting to Library failed. Response data: " + data);
-                	    }
-                    });
                 },
                 fail:function(data){
         			console.log("Submitting to Library failed. Response data: " + data);
@@ -1605,4 +1591,23 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
+}
+
+//Delete from database - "hard" delete
+function deleteSubmission(id){
+    $.ajax({
+        url: "/api2/public/submissions/" + submission_id,
+        type:'DELETE',
+        dataType:'json',
+        data: {
+            'id':submission_id,
+        },
+        async:true,
+        success:function(data){
+            console.log("Submission #" + submission_id + " deleted successfully.");
+        },
+        fail:function(data){
+            console.log("Deleting submission id " + submission_id + " failed: " + data);
+        }
+    });
 }

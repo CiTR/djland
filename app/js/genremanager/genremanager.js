@@ -160,8 +160,8 @@ function updateGenreListing(genres) {
             var tempstring = "<tr name=\"genre" + genre.id + "\" class=\"playitem border genrerow\">" +
                 "<td class=\"submission_row_element\">" + genre.genre + "</td>" +
                 "<td class=\"submission_row_element\">" + genre.default_crtc_category + "</td>" +
-                "<td class=\"submission_row_element\">" + genre.created_by + "</td>" +
-                "<td class=\"submission_row_element\">" + genre.updated_by + "</td>" +
+                "<td class=\"submission_row_element\" name='names" + genre.created_by + "'>" + namesFromMemberId(genre.created_by) + "</td>" +
+                "<td class=\"submission_row_element\" name='names" + genre.updated_by + "'>" + namesFromMemberId(genre.updated_by) + "</td>" +
                 "<td class=\"submission_row_element\">" + genre.updated_at + "</td>" +
                 "<td><input type=\"checkbox\" class=\"delete_genre\" id=\"delete_" + genre.id + "\"><div class=\"check hidden\">❏</div></td>" +
                 "</tr>";
@@ -179,17 +179,19 @@ function updateGenreListing(genres) {
  * @return {void}
  */
 function updateSubGenreListing(subgenres) {
-    console.log(subgenres);
+    //console.log(subgenres);
     var newstring = "";
     if (subgenres.length === 0) {
         newstring = "<tr class=\"playitem\"><td colspan=4>No subgenres for this genre yet!</td></tr>";
     } else {
         for (var item in subgenres) {
             var subgenre = subgenres[item];
+            console.log(subgenre.created_by);
+            console.log(namesFromMemberId(subgenre.created_by));
             var tempstring = "<tr name =\"subgenre" + subgenre.id + "\" class=\"playitem border subgenrerow\">" +
                 "<td class=\"submission_row_element name\">" + subgenre.subgenre +
-                "</td><td class=\"submission_row_element\">" + subgenre.created_by + "</td>" +
-                "<td class=\"submission_row_element\">" + subgenre.updated_by + "</td>" +
+                "</td><td class=\"submission_row_element\" name='names" + subgenre.created_by + "'>" + namesFromMemberId(subgenre.created_by) + "</td>" +
+                "<td class=\"submission_row_element\" name='names" + subgenre.updated_by + "'>" + namesFromMemberId(subgenre.updated_by) + "</td>" +
                 "<td class=\"submission_row_element\">" + subgenre.updated_at + "</td>" +
                 "<td><input type=\"checkbox\" class=\"delete_subgenre\" id=\"delete_" + subgenre.id + "\"><div class=\"check hidden\">❏</div></td></tr>";
             newstring = newstring + tempstring;
@@ -396,4 +398,31 @@ function displayErrorList(err) {
         alert(err.responseJSON[i]);
     }
     console.log(err);
+}
+
+function namesFromMemberId(id){
+    console.log(id);
+   var string = "";
+   $.ajax({
+       type:"GET",
+       url: "api2/public/member/" + id + "/firstnamelastname",
+       dataType:'json',
+       async:true,
+       success:function(response){
+           var data = response[0];
+           var identifier = "[name=\'names"+id+"\']";
+           if(data != undefined){
+               string = data['firstname'] + " " + data['lastname'];
+               $(identifier).text(string);
+           } else {
+               $(identifier).text("Unknown");
+               $(identifier).css("color","navy");
+           }
+        },
+        error:function(err){
+           //var json_response = err.responseJSON.msg;
+           console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
+           console.log(err);
+       }
+   });
 }
