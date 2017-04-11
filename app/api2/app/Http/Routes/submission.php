@@ -71,7 +71,7 @@ Route::post('/submission', function(){
               $location = "dev.djland.citr.ca/uploads/submissions/";
               $path = $albumArt->move($location, $fileName);
               // FOR THE SAKE OF DEMO:
-              // $path = 'uploads/submissions/'.$fileName;
+              $path = 'dev.djland.citr.ca/uploads/submissions/'.$fileName;
               // DELETE THE ABOVE THE LINE AFTER THE DEMO
             } else {
               $path = null;
@@ -157,7 +157,7 @@ Route::post('/song/{id}', function($id) {
 
     // echo $path;
 
-    // $path = "uploads/submissions/".$id.'/'.$filename;
+    $path = "dev.djland.citr.ca/uploads/submissions/".$id.'/'.$filename;
     // DELETE THE ABOVE AFTER THE DEMO
 
     $newsong = Songs::create([
