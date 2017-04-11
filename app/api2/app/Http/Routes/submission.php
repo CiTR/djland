@@ -64,12 +64,11 @@ Route::post('/submission', function(){
             if ($albumArt) {
               $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
 
-              $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
-              $location = $base_dir.'submissions/';
+              $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/submissions/";
 
               // HARD CODED FOR DEMO.
-              $location = "dev.djland.citr.ca/uploads/submissions/";
-              $path = $albumArt->move($location, $fileName);
+              $_location = "dev.djland.citr.ca/uploads/submissions/" + $fileName;
+              $albumArt->move($base_dir, $fileName);
               // FOR THE SAKE OF DEMO:
               $path = '/uploads/submissions/'.$fileName;
               // DELETE THE ABOVE THE LINE AFTER THE DEMO
@@ -96,7 +95,7 @@ Route::post('/submission', function(){
                 'digitized' => 0,
                 'description' => Input::get('description'),
                 // 'art_url' => Input::get('art_url'),
-                'art_url' => $path,
+                'art_url' => $_location,
                 'songlist' => $songlist_id,//Input::get('songlist'),
                 'format_id' => Input::get('format_id'),
                 'status' => 'unreviewed',
