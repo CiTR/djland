@@ -5,6 +5,7 @@ use App\SubmissionsArchive as Archive;
 use App\Submissions_Rejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
+use App\SubmissionsSongs as Songs;
 use Carbon\Carbon;
 use Validator as Validator;
 
@@ -18,20 +19,19 @@ Route::post('/submission', function(){
 
     $rules = array(
         //TODO: every field that is an input doesn't accept carriage returns
-            'artist' =>'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'title' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'artist' =>'required',
+            'title' => 'required',
             'genre' => 'required',
             'email' => 'required|email',
-            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'releasedate' => 'date_format:Y-m-d',
             'cancon' => 'required|boolean',
             'femcon' => 'required|boolean',
             'local' => 'required|boolean',
             //Descrription can have a carraige return
-            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \
-            ]+$/u',
+//            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \]+$/u',
             'art_url' => 'image',
             'songlist' => 'integer',
             //TODO: get from DB
@@ -67,7 +67,7 @@ Route::post('/submission', function(){
               $location = $base_dir.'submissions/';
               $path = $albumArt->move($location, $fileName);
               // FOR THE SAKE OF DEMO:
-              $path = 'uploads/submissions/'.$fileName;
+              // $path = 'uploads/submissions/'.$fileName;
               // DELETE THE ABOVE THE LINE AFTER THE DEMO
             } else {
               $path = null;
@@ -115,7 +115,6 @@ Route::post('/submission', function(){
 
 Route::post('/song/{id}', function($id) {
 
-  echo Input::get('name');
   $idData = ['id' => $id];
   $idRules = array('id' => 'integer|min:1');
   $idValidator = Validator::make($idData, $idRules);
@@ -125,21 +124,55 @@ Route::post('/song/{id}', function($id) {
 
   $rules = array(
     'number' => 'required|int',
-    'name' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    'name' => 'required',
     'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
     'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'file' => 'file',
+    // 'file' => 'file',
     'filename' => 'required'
   );
 
   $validator = Validator::make(Input::all(), $rules);
 
   if(!$validator->fails()) {
-    // TODO cool stuff
-    return(Input::all());
+
+    $number = Input::get('number');
+    $name = Input::get('name');
+    $composer = Input::get('composer');
+    $performer = Input::get('performer');
+    $filename = Input::get('filename');
+    $file = Input::file('file');
+
+    $submission = Submissions::find($id);
+
+    $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+    $location = $base_dir.'submissions/'.$id.'/';
+    $path = $file->move($location, $filename);
+
+    // echo $path;
+
+    // $path = "uploads/submissions/".$id.'/'.$filename;
+    // DELETE THE ABOVE AFTER THE DEMO
+
+    $newsong = Songs::create([
+      'submission_id' => $id,
+      'artist' => $performer,
+      'album-artist' => $submission->artist,
+      'album-title' => $submission->title,
+      'song_title' => $name,
+      'credit' => $submission->credit,
+      'track_num' => $number,
+      'tracks_total' => 20,
+      'genre' => $submission->genre,
+      'composer' => $composer,
+      'file_location' => $path,
+    ]);
+
+    return $newsong->id;
+
   } else {
     return(response($validator->errors()->all(), 422));
   }
+
 
 });
 
