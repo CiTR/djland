@@ -13,13 +13,27 @@ Route::post('/libraryedits', function(){
         // get the old values that are currently in the library
         $old_entry = Library::find(Input::get('libraryID'));
 
+        if( Input::get('format_id') == $old_entry->format_id
+          && Input::get('catalog') == $old_entry->catalog
+          && Input::get('cancon') == $old_entry->cancon
+          && Input::get('femcon') == $old_entry->femcon
+          && Input::get('local') == $old_entry->local
+          && Input::get('playlist') == $old_entry->playlist
+          && Input::get('compilation') == $old_entry->compilation
+          && Input::get('digitized') == $old_entry->digitized
+          && Input::get('status') == $old_entry->status
+          && Input::get('artist') == $old_entry->artist
+          && Input::get('title') == $old_entry->title
+          && Input::get('label') == $old_entry->label
+          && Input::get('genre') == $old_entry->genre) {
+            return "No changes made";
+          }
+
         $newedits = Edits::create([
             'format_id' => Input::get('format_id'),
             'old_format_id' => $old_entry->format_id,
             'catalog' => Input::get('catalog'),
             'old_catalog' => $old_entry->catalog,
-            'crtc' => null,
-            'old_crtc' => null,
             'cancon' => Input::get('cancon'),
             'old_cancon' => $old_entry->cancon,
             'femcon' => Input::get('femcon'),
@@ -32,8 +46,8 @@ Route::post('/libraryedits', function(){
             'old_compilation' => $old_entry->compilation,
             'digitized' => Input::get('digitized'),
             'old_digitized' => $old_entry->digitized,
-            'status' => null,
-            'old_status' => null,
+            'status' => Input::get('status'),
+            'old_status' => $old_entry->status,
             'artist' => Input::get('artist'),
             'old_artist' => $old_entry->artist,
             'title' => Input::get('title'),
@@ -42,10 +56,6 @@ Route::post('/libraryedits', function(){
             'old_label' => $old_entry->label,
             'genre' => Input::get('genre'),
             'old_genre' => $old_entry->genre,
-            'description' => null,
-            'old_description' => null,
-            'email' => null,
-            'old_email' => null,
             'library_id' => Input::get('libraryID')
         ]);
         return $newedits;
@@ -59,18 +69,45 @@ Route::put('/updateentry', function(){
     try{
         $entry = Library::find(Input::get('libraryID'));
 
-        $entry -> title   = Input::get('title');
-        $entry -> artist  = Input::get('artist');
-        $entry -> label   = Input::get('label');
-        $entry -> genre   = Input::get('genre');
-        $entry -> catalog = Input::get('catalog');
-        $entry -> format_id  = Input::get('format_id');
-        $entry -> cancon  = Input::get('cancon');
-        $entry -> femcon  = Input::get('femcon');
-        $entry -> playlist = Input::get('playlist');
-        $entry -> local   = Input::get('local');
-        $entry -> compilation = Input::get('compilation');
-        $entry -> digitized = Input::get('digitized');
+        if(Input::get('title') != null) {
+            $entry -> title = Input::get('title');
+        }
+        if(Input::get('artist') != null) {
+            $entry -> artist = Input::get('artist');
+        }
+        if(Input::get('label') != null) {
+            $entry -> label = Input::get('label');
+        }
+        if(Input::get('genre') != null) {
+            $entry -> genre = Input::get('genre');
+        }
+        if(Input::get('catalog') != null) {
+            $entry -> catalog = Input::get('catalog');
+        }
+        if(Input::get('format_id') != null) {
+            $entry -> format_id = Input::get('format_id');
+        }
+        if(Input::get('status') != null) {
+            $entry -> status = Input::get('status');
+        }
+        if(Input::get('cancon') != null) {
+            $entry -> cancon = Input::get('cancon');
+        }
+        if(Input::get('femcon') != null) {
+            $entry -> femcon = Input::get('femcon');
+        }
+        if(Input::get('playlist') != null) {
+            $entry -> playlist = Input::get('playlist');
+        }
+        if(Input::get('local') != null) {
+            $entry -> local = Input::get('local');
+        }
+        if(Input::get('compilation') != null) {
+            $entry -> compilation = Input::get('compilation');
+        }
+        if(Input::get('digitized') != null) {
+            $entry -> digitized = Input::get('digitized');
+        }
 
         $entry ->save();
 

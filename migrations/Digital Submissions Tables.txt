@@ -163,3 +163,23 @@ CREATE TABLE `dev.djland`.`library_edits` (
   PRIMARY KEY (`id`))
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = latin1;
+
+ALTER TABLE `dev.djland`.`library_edits` 
+ADD COLUMN `updated_at` DATE NULL AFTER `library_id`,
+ADD COLUMN `created_at` DATE NULL AFTER `updated_at`;
+
+ALTER TABLE `dev.djland`.`library` 
+ADD COLUMN `updated_at` DATE NULL AFTER `email`,
+ADD COLUMN `created_at` DATE NULL AFTER `updated_at`;
+
+ALTER TABLE `dev.djland`.`library_edits` 
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC);
+
+ALTER TABLE `dev.djland`.`library_edits` 
+DROP COLUMN `old_email`,
+DROP COLUMN `email`,
+DROP COLUMN `old_description`,
+DROP COLUMN `description`,
+DROP COLUMN `old_crtc`,
+DROP COLUMN `crtc`;

@@ -3,6 +3,305 @@ window.myNameSpace = window.myNameSpace || { };
 
 //PAGE CREATION
 $(document).ready ( function() {
+    //set the datepicker date format
+    $(function() {
+        $( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
+    });
+    $(function() {
+        $( "#past-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+    });
+    $(function() {
+        $( "#past-to" ).datepicker({ dateFormat: "yy-mm-dd" });
+    });
+    $(function() {
+        $( "#new-from" ).datepicker({ dateFormat: "yy-mm-dd" });
+    });
+    $(function() {
+        $( "#new-to" ).datepicker({ dateFormat: "yy-mm-dd" });
+    });
+    var newSubmissionsMinDateFilter ='';
+    $( "#new-submissions-from" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            newSubmissionsMinDateFilter = new Date($(this).val()).getTime();
+            $("#newSubmissionCdTable").DataTable().draw();
+            $("#newSubmissionMP3Table").DataTable().draw();
+            $("#newSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var newSubmissionsMaxDateFilter;
+    $( "#new-submissions-to" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            var newSubmissionsMaxDateFilter = new Date($(this).val()).getTime();
+            $("#newSubmissionCdTable").DataTable().draw();
+            $("#newSubmissionMP3Table").DataTable().draw();
+            $("#newSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var reviewedSubmissionsMinDateFilter ='';
+    $( "#reviewed-submissions-from" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            reviewedSubmissionsMinDateFilter = new Date($(this).val()).getTime();
+            $("#reviewedSubmissionCdTable").DataTable().draw();
+            $("#reviewedSubmissionMP3Table").DataTable().draw();
+            $("#reviewedSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var reviewedSubmissionsMaxDateFilter;
+    $( "#reviewed-submissions-to" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            var reviewedSubmissionsMaxDateFilter = new Date($(this).val()).getTime();
+            $("#reviewedSubmissionCdTable").DataTable().draw();
+            $("#reviewedSubmissionMP3Table").DataTable().draw();
+            $("#reviewedSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var toTagSubmissionsMinDateFilter ='';
+    $( "#toTag-submissions-from" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            toTagSubmissionsMinDateFilter = new Date($(this).val()).getTime();
+            $("#toTagSubmissionCdTable").DataTable().draw();
+            $("#toTagSubmissionMP3Table").DataTable().draw();
+            $("#toTagSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var toTagSubmissionsMaxDateFilter;
+    $( "#toTag-submissions-to" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            var toTagSubmissionsMaxDateFilter = new Date($(this).val()).getTime();
+            $("#toTagSubmissionCdTable").DataTable().draw();
+            $("#toTagSubmissionMP3Table").DataTable().draw();
+            $("#toTagSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var taggedSubmissionsMinDateFilter ='';
+    $( "#tagged-submissions-from" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            taggedSubmissionsMinDateFilter = new Date($(this).val()).getTime();
+            $("#taggedSubmissionCdTable").DataTable().draw();
+            $("#taggedSubmissionMP3Table").DataTable().draw();
+            $("#taggedSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    var taggedSubmissionsMaxDateFilter;
+    $( "#tagged-submissions-to" ).datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst) {
+            var taggedSubmissionsMaxDateFilter = new Date($(this).val()).getTime();
+            $("#taggedSubmissionCdTable").DataTable().draw();
+            $("#taggedSubmissionMP3Table").DataTable().draw();
+            $("#taggedSubmissionOtherTable").DataTable().draw();
+        }
+    });
+    //Date filtering listener
+    $.fn.dataTableExt.afnFiltering.push(
+        function(oSettings, aData, iDataIndex) {
+            if (oSettings.sTableId == "newSubmissionCdTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (newSubmissionsMinDateFilter && !isNaN(newSubmissionsMinDateFilter)) {
+                    if (aData._date < newSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (newSubmissionsMaxDateFilter && !isNaN(newSubmissionsMaxDateFilter)) {
+                    if (aData._date > newSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "newSubmissionMP3Table") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (newSubmissionsMinDateFilter && !isNaN(newSubmissionsMinDateFilter)) {
+                    console.log(newSubmissionsMinDateFilter);
+                    if (aData._date < newSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (newSubmissionsMaxDateFilter && !isNaN(newSubmissionsMaxDateFilter)) {
+                    if (aData._date > newSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "newSubmissionOtherTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (newSubmissionsMinDateFilter && !isNaN(newSubmissionsMinDateFilter)) {
+                    if (aData._date < newSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (newSubmissionsMaxDateFilter && !isNaN(newSubmissionsMaxDateFilter)) {
+                    if (aData._date > newSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "reviewedSubmissionCdTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (reviewedSubmissionsMinDateFilter && !isNaN(reviewedSubmissionsMinDateFilter)) {
+                    if (aData._date < reviewedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (reviewedSubmissionsMaxDateFilter && !isNaN(reviewedSubmissionsMaxDateFilter)) {
+                    if (aData._date > reviewedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "reviewedSubmissionMP3Table") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (reviewedSubmissionsMinDateFilter && !isNaN(reviewedSubmissionsMinDateFilter)) {
+                    console.log(reviewedSubmissionsMinDateFilter);
+                    if (aData._date < reviewedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (reviewedSubmissionsMaxDateFilter && !isNaN(reviewedSubmissionsMaxDateFilter)) {
+                    if (aData._date > reviewedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "reviewedSubmissionOtherTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (reviewedSubmissionsMinDateFilter && !isNaN(reviewedSubmissionsMinDateFilter)) {
+                    if (aData._date < reviewedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (reviewedSubmissionsMaxDateFilter && !isNaN(reviewedSubmissionsMaxDateFilter)) {
+                    if (aData._date > reviewedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "toTagSubmissionCdTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (toTagSubmissionsMinDateFilter && !isNaN(toTagSubmissionsMinDateFilter)) {
+                    if (aData._date < toTagSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (toTagSubmissionsMaxDateFilter && !isNaN(toTagSubmissionsMaxDateFilter)) {
+                    if (aData._date > toTagSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "toTagSubmissionMP3Table") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (toTagSubmissionsMinDateFilter && !isNaN(toTagSubmissionsMinDateFilter)) {
+                    console.log(toTagSubmissionsMinDateFilter);
+                    if (aData._date < toTagSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (toTagSubmissionsMaxDateFilter && !isNaN(toTagSubmissionsMaxDateFilter)) {
+                    if (aData._date > toTagSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "toTagSubmissionOtherTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (toTagSubmissionsMinDateFilter && !isNaN(toTagSubmissionsMinDateFilter)) {
+                    if (aData._date < toTagSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (toTagSubmissionsMaxDateFilter && !isNaN(toTagSubmissionsMaxDateFilter)) {
+                    if (aData._date > toTagSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "taggedSubmissionCdTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (taggedSubmissionsMinDateFilter && !isNaN(taggedSubmissionsMinDateFilter)) {
+                    if (aData._date < taggedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (taggedSubmissionsMaxDateFilter && !isNaN(taggedSubmissionsMaxDateFilter)) {
+                    if (aData._date > taggedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "taggedSubmissionMP3Table") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (taggedSubmissionsMinDateFilter && !isNaN(taggedSubmissionsMinDateFilter)) {
+                    console.log(taggedSubmissionsMinDateFilter);
+                    if (aData._date < taggedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (taggedSubmissionsMaxDateFilter && !isNaN(taggedSubmissionsMaxDateFilter)) {
+                    if (aData._date > taggedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (oSettings.sTableId == "taggedSubmissionOtherTable") {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[4]).getTime();
+                }
+                if (taggedSubmissionsMinDateFilter && !isNaN(taggedSubmissionsMinDateFilter)) {
+                    if (aData._date < taggedSubmissionsMinDateFilter) {
+                        return false;
+                    }
+                }
+                if (taggedSubmissionsMaxDateFilter && !isNaN(taggedSubmissionsMaxDateFilter)) {
+                    if (aData._date > taggedSubmissionsMaxDateFilter) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            //Display info by default
+            return true;
+        }
+    );
 	$.when(constants_request).then( function () {
 		add_submission_handlers();
 	});
