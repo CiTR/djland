@@ -201,7 +201,7 @@ function add_submission_handlers(){
         $('#taggedSubmissionMP3Table').DataTable().search( this.value ).draw();
         $('#taggedSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
-    
+
 	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
 		$('.submission_action').attr('class','nodrop inactive-tab submission_action');
@@ -233,31 +233,85 @@ function add_submission_handlers(){
 	//Toggling red bar for showing submissions you are going to delete
 	// and green bar for approving a review
 	// Adds delete/approve classes to the row - use for applying bulk approvals/rejections
-	$('.reviewrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+	$('.reviewrow').off('change','.delete_submission_new_cd').on('change','.delete_submission_new_cd',function(e) {
 		$(this.closest('tr')).toggleClass('delete');
 	});
-	$('.reviewedrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+    $('.reviewrow').off('change','.delete_submission_new_mp3').on('change','.delete_submission_new_mp3',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+    $('.reviewrow').off('change','.delete_submission_new_other').on('change','.delete_submission_new_other',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+	$('.reviewedrow').off('change','.delete_submission_reviewed_cd').on('change','.delete_submission_reviewed_cd',function(e) {
 		if($(this).prop('checked') === true) {
 			$(this.closest('tr')).addClass('delete');
 			$(this.closest('tr')).removeClass('approve');
-			$(this.closest('tr')).find('.approve_submission').prop('checked', false);
+			$(this.closest('tr')).find('.approve_submission_cd').prop('checked', false);
 		} else {
 			$(this.closest('tr')).removeClass('delete');
 		}
 	});
-	$('.reviewedrow').off('change','.approve_submission').on('change','.approve_submission',function(e) {
+	$('.reviewedrow').off('change','.approve_submission_cd').on('change','.approve_submission_cd',function(e) {
 		if($(this).prop('checked') === true) {
 			$(this.closest('tr')).addClass('approve');
 			$(this.closest('tr')).removeClass('remove');
-			$(this.closest('tr')).find('.delete_submission').prop('checked', false);
+			$(this.closest('tr')).find('.delete_submission_reviewed_cd').prop('checked', false);
 		} else {
 			$(this.closest('tr')).removeClass('approve');
 		}
 	});
-	$('.tagrow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+    $('.reviewedrow').off('change','.delete_submission_reviewed_mp3').on('change','.delete_submission_reviewed_mp3',function(e) {
+		if($(this).prop('checked') === true) {
+			$(this.closest('tr')).addClass('delete');
+			$(this.closest('tr')).removeClass('approve');
+			$(this.closest('tr')).find('.approve_submission_mp3').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('delete');
+		}
+	});
+	$('.reviewedrow').off('change','.approve_submission_mp3').on('change','.approve_submission_mp3',function(e) {
+		if($(this).prop('checked') === true) {
+			$(this.closest('tr')).addClass('approve');
+			$(this.closest('tr')).removeClass('remove');
+			$(this.closest('tr')).find('.delete_submission_reviewed_mp3').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('approve');
+		}
+	});
+    $('.reviewedrow').off('change','.delete_submission_reviewed_other').on('change','.delete_submission_reviewed_other',function(e) {
+		if($(this).prop('checked') === true) {
+			$(this.closest('tr')).addClass('delete');
+			$(this.closest('tr')).removeClass('approve');
+			$(this.closest('tr')).find('.approve_submission_other').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('delete');
+		}
+	});
+	$('.reviewedrow').off('change','.approve_submission_other').on('change','.approve_submission_other',function(e) {
+		if($(this).prop('checked') === true) {
+			$(this.closest('tr')).addClass('approve');
+			$(this.closest('tr')).removeClass('remove');
+			$(this.closest('tr')).find('.delete_submission_reviewed_other').prop('checked', false);
+		} else {
+			$(this.closest('tr')).removeClass('approve');
+		}
+	});
+    $('.tagrow').off('change','.delete_submission_accepted_cd').on('change','.delete_submission_accepted_cd',function(e) {
 		$(this.closest('tr')).toggleClass('delete');
 	});
-	$('.approverow').off('change','.delete_submission').on('change','.delete_submission',function(e) {
+    $('.tagrow').off('change','.delete_submission_accepted_mp3').on('change','.delete_submission_accepted_mp3',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+    $('.tagrow').off('change','.delete_submission_accepted_other').on('change','.delete_submission_accepted_other',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+    $('.approverow').off('change','.delete_submission_tagged_cd').on('change','.delete_submission_tagged_cd',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+    $('.approverow').off('change','.delete_submission_tagged_mp3').on('change','.delete_submission_tagged_mp3',function(e) {
+		$(this.closest('tr')).toggleClass('delete');
+	});
+    $('.approverow').off('change','.delete_submission_tagged_other').on('change','.delete_submission_tagged_other',function(e) {
 		$(this.closest('tr')).toggleClass('delete');
 	});
 }

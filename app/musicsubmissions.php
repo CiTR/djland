@@ -748,7 +748,7 @@
 						<button name='tagcancel' id='tagcancel'>Cancel</button>
 					</div>
 					<div class='padded-left'>
-						<button id="approve-tags-button" name='edit' class='submissions_submit red'>Submit Files for Approval</button>
+						<button id="approve-tags-button" name='edit' class='submissions_submit'>Submit Files for Approval</button>
 					</div>
 				</div>
 			</div>
