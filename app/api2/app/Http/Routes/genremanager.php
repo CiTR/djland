@@ -18,9 +18,9 @@ Route::group(['middleware' => 'auth'], function(){
                 'id' => 'required|integer|min:1'
             );
             $data = ['id' => $id];
-            $validator = Validator::make($data, $rules);
-            if($validator->fails()) return response($validator->errors()->all(),422);
-            else {
+            //$validator = Validator::make($data, $rules);
+            //if($validator->fails()) return response($validator->errors()->all(),422);
+            //else {
                 try{
                     $subgenres = Subgenre::where('parent_genre_id', '=', $id)->get();
                     if($subgenres!=null) return $subgenres;
@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth'], function(){
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
-            }
+            //}
         });
         /** Use staff middleware for POST, PUT and DELETE routes so that
           * only staff can update the genre listings even if they
@@ -67,10 +67,10 @@ Route::group(['middleware' => 'auth'], function(){
                     'genre' => 'required|unique:genres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
                     'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
                 );
-                $validator = Validator::make(Input::all(), $rules);//, $messages);
-                dd($validator->errors());
-                if(!$validator->fails()) return response($validator->errors()->all(),422);
-                else {
+                //$validator = Validator::make(Input::all(), $rules);//, $messages);
+                //dd($validator->errors());
+                //if(!$validator->fails()) return response($validator->errors()->all(),422);
+                //else {
                     try{
                         $genre = Genre::find(Input::get('id'));
                         $prev_genre = $genre->genre;
@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function(){
                     } catch(Exception $e){
                         return $e->getMessage();
                     }
-                }
+                //}
             });
             //Delete a genre given it's id
             Route::delete('/', function(){
