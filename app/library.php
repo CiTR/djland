@@ -225,9 +225,12 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		$id = 0;
 	}
 
+    //Yes I'm doing this, sue me I have a deadline...
+    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id =$id");
+
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
-		printf("<br />");
+	printf("<br />");
 	printf("<div><center><br /><h1>Library Record</h1><br /></center></div>");
 
 	printf("<div style='width:1050px;margin:auto'>");
@@ -235,7 +238,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		printf("<br /><h2>Album Information</h2><br />");
 		printf("<hr width=80%%><br />");
 	if(mysqli_num_rows($sresult)) {
-			printf("<table align=center border=0>");
+			printf("<table id=\"libraryRecordResult\" name=\"libraryRecord\"" . $id . " align=center border=0>");
 			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
 			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
 			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
@@ -260,23 +263,33 @@ printf("</div>");
 	printf("<div id='wrapper' style='width:500px;float:right'>");
 		printf("<br /><h2>Preview Songs</h2><br />");
 		printf("<hr width=80%%><br />");
-			if(mysqli_num_rows($sresult)) {
-					printf("<table align=center border=0>");
-					printf("<tr><td align=right>Keep the Family Close:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>9:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>U with Me?:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Feel No Ways:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Hype:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Weston Road Flows:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Redemption:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>With You:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Faithful (ft. Pimp C & dvsn):</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("<tr><td align=right>Still Here:</td><td align=left style='padding:10px'><audio source='audio/mallard_duck_quacking.mp3' controls></audio></td></tr>");
-					printf("</table><br>");
+			if(mysqli_num_rows($songs)) {
+                    $tn_flag = 0;
+					printf("<table id=\"librarySongs\" align=center border=0>");
+                    for($i = 0; $i < mysqli_num_rows($songs); $i++){
+                        if(mysqli_result_dep($songs,0,"track_num") == 0 ){
+                            printf("NOTE: Track numbers are not availible for one or more songs in this album.\nDefaulting to order as they appear in the system.\n\nThey may not be correct!");
+                            $tn_flag = 1;
+                            break;
+                        }
+                    }
+					for($i = 0; $i < mysqli_num_rows($songs); $i++){
+                        if($tn_flag == 1){
+                            $tn = $i + 1;
+                        }else{
+                            $tn = mysqli_result_dep($songs,$i,"track_num");
+                        }
+                        printf("<tr><td align=right>".$tn.":&nbsp</td><td align=left>".mysqli_result_dep($songs,$i,"song_title")."</td><td align=left style='padding:10px'><audio controls><source src='".mysqli_result_dep($songs,$i,"file_location")."' type='audio/mpeg'>Your browser does not support the audio tag.</audio></tr>");
+                    }
+                    printf("</table><br>");
 			}
-			else {
-				printf("<br>No Such Record...<br><br>");
+			elseif(mysqli_num_rows($songs) == 0) {
+                printf("<div class='text-center center vertical-center'>No Songs Associated with this record...</div>");
 			}
+            else{
+                printf("<div class='text-center center vertical-center'>No such record...</div>");
+            }
+
 	printf("</div>");
 	printf("</div>");
 
