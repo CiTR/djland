@@ -154,9 +154,9 @@ Route::group(['middleware' => 'auth'], function(){
                 'id' => 'required|integer',
                 'subgenre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
             );
-            $validator = Validator::make(Input::all(), $rules);
-            if(!$validator->fails()) return response($validator->errors()->all(),422);
-            else {
+            //$validator = Validator::make(Input::all(), $rules);
+            //if(!$validator->fails()) return response($validator->errors()->all(),422);
+            //else {
                 try{
                     $subgenre = Subgenre::find(Input::get('id'));
                     $prev_subgenre = $subgenre->subgenre;
@@ -167,7 +167,7 @@ Route::group(['middleware' => 'auth'], function(){
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
-            }
+            //}
         });
         //Delete a subgenre given an id
         Route::delete('/', function(){
