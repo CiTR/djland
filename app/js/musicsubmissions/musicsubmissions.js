@@ -775,7 +775,7 @@ function getSubmissionDataAndDisplay(id) {
 }
 
 function displayReviewBox(data) {
-  var id			      = data['id'];
+  var id			= data['id'];
   var artist      	= data['artist'];
   var location    	= data['location'];
   var album       	= data['title'];
@@ -787,9 +787,8 @@ function displayReviewBox(data) {
   var credit      	= data['credit'];
   var email       	= data['email'];
   var description 	= data['description'];
-  var art_url		    = data['art_url'];
+  var art_url		= data['art_url'];
   var songs         = data['songs']
-  console.log(songs)
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
@@ -827,8 +826,7 @@ function displayReviewBox(data) {
   $("#approved_status-review-box").val(0).change();
   tracks = ""
   for(index in songs){
-      song = songs[index]
-      console.log(song);
+      song = songs[index];
       tracks = tracks +`
 
       <div class="containerrow padded">
@@ -845,7 +843,6 @@ function displayReviewBox(data) {
 
       `
   }
-  console.log(tracks);
   $("#tracks-review-box").html(tracks)
 }
 
@@ -908,8 +905,10 @@ function displayReviewedBox(data) {
   $("#albumArt-reviewed").attr("src", art_url);
   $("#reviewed_comments").text(review_comments);
   $("reviewed_approved_status").val(approved).change();
-  tracks = " "
-  for(song in songs){
+  tracks = ""
+  for(index in songs){
+      song = songs[index]
+
       tracks = tracks +`
 
       <div class="containerrow padded">
@@ -926,7 +925,7 @@ function displayReviewedBox(data) {
 
       `
   }
-  console.log(tracks)
+
   $("#tracks-reviewed-box").html(tracks)
 }
 
