@@ -184,7 +184,7 @@ Route::group(['middleware' => 'auth'], function(){
                         'year' => $submission_song['year'],
                         'length' => $submission_song['length'],
                         //TODO: file_location actually moves
-                        'file_location' => $submission_song['file_location'];
+                        'file_location' => $submission_song['file_location']
                     ]);
                 }
                 return response("Success!",200);
