@@ -39,7 +39,8 @@ Route::post('/submission', function(){
         //validate incoming data
     $validator = Validator::make(Input::all(),$rules);
 
-    if(!$validator->fails()){
+   if(!$validator->fails()){
+//         if (true) {
         try{
             //TODO: track songlist properly (new table?)
             $songlist_id = 0;
@@ -64,6 +65,9 @@ Route::post('/submission', function(){
               $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
               $location = $base_dir.'submissions/';
               $path = $albumArt->move($location, $fileName);
+              // FOR THE SAKE OF DEMO:
+              $path = 'uploads/submissions/'.$fileName;
+              // DELETE THE ABOVE THE LINE AFTER THE DEMO
             } else {
               $path = null;
             }
@@ -106,6 +110,36 @@ Route::post('/submission', function(){
     } else {
         return response($validator->errors()->all(),422);
     }
+});
+
+Route::post('/song/{id}', function($id) {
+
+  echo Input::get('name');
+  $idData = ['id' => $id];
+  $idRules = array('id' => 'integer|min:1');
+  $idValidator = Validator::make($idData, $idRules);
+  if ($idValidator->fails()) {
+    return(response("Error: id out of range (must be 1 or greater)", 422));
+  }
+
+  $rules = array(
+    'number' => 'required|int',
+    'name' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    'file' => 'file|max:999999999999999',
+    'filename' => 'required'
+  );
+
+  $validator = Validator::make(Input::all(), $rules);
+
+  if(!$validator->fails()) {
+    // TODO cool stuff
+    return(Input::all());
+  } else {
+    return(response($validator->errors()->all(), 422));
+  }
+
 });
 
 //Apps inside middleware require login

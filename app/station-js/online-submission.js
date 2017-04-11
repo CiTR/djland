@@ -98,11 +98,25 @@ function submitForm() {
     var missingTrackNumbers = 0;
     var missingTrackNames = 0;
     var trackNumError = false;
+    var songListObj = {};
 
     for (var i = 0; i < tracks.length; i++) {
-      // console.log($(tracks.get(i)).find(".track-number-field").val());
-      var trackNumberValue = $(tracks.get(i)).find(".track-number-field").val();
-      var trackName = $(tracks.get(i)).find(".input-track-field").val();
+
+      var thisTrack = $(tracks.get(i));
+
+      var trackNumberValue = thisTrack.find(".track-number-field").val();
+      var trackName      = thisTrack.find(".input-track-field-name").val();
+      var trackComposer  = thisTrack.find(".input-track-field-composer").val();
+      var trackPerformer = thisTrack.find(".input-track-field-performer").val();
+
+      var trackObj = {
+        number    : Number(trackNumberValue),
+        name      : trackName,
+        composer  : trackComposer,
+        performer : trackPerformer,
+      }
+
+      songListObj['track' + i] = trackObj;
 
       if (trackName == "") {
         success = false;
@@ -155,11 +169,13 @@ function submitForm() {
 
     if (success) {
 
+      console.log(songListObj);
+
       var input = $('#album-art-input-button').prop('files')[0];
 
       var data = new FormData();
 
-      data.append('format_id', format);
+      data.append('format_id', '6');
       data.append('artist', artist);
       data.append('email', email);
       data.append('label', label);
@@ -174,7 +190,17 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
       data.append('art_url', input);
-
+/*
+      for (var i = 0; i < tracks.length; i++) {
+        var x = $(tracks.get(i));
+        var t = 'track' + i;
+        data.append(t + '[number]', x.find(".track-number-field").val());
+        data.append(t + '[name]', x.find(".input-track-field-name").val());
+        data.append(t + '[composer]', x.find(".input-track-field-composer").val());
+        data.append(t + '[performer]', x.find(".input-track-field-performer").val());
+        data.append(t + '[file]', $('#new-track-button-input').prop('files')[i]);
+      }
+*/
       createSubmission(data);
 
     } else {
@@ -249,7 +275,6 @@ function addTrackForm(fileName, trackNo) {
   // Add the file name
   var childNode = document.createElement("p");
   childNode.setAttribute("class", "track-file-name");
-  // TODO: use name of file given.
   childNode.appendChild(document.createTextNode("File name: " + fileName));
   divNode.appendChild(childNode);
 
@@ -271,7 +296,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-name");
   divNode.appendChild(childNode);
 
   // Add the composer field
@@ -281,7 +306,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-composer");
   divNode.appendChild(childNode);
 
   // Add the performer field
@@ -291,7 +316,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-performer");
   childNode.setAttribute("value", artistField.value);
   divNode.appendChild(childNode);
 

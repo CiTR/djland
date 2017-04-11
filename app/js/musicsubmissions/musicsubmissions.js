@@ -476,7 +476,7 @@ function getSubmissionDataAndDisplay(id) {
 }
 
 function displayReviewBox(data) {
-  var id			= data['id'];
+  var id			      = data['id'];
   var artist      	= data['artist'];
   var location    	= data['location'];
   var album       	= data['title'];
@@ -488,7 +488,7 @@ function displayReviewBox(data) {
   var credit      	= data['credit'];
   var email       	= data['email'];
   var description 	= data['description'];
-  var art_url		= data['art_url'];
+  var art_url		    = data['art_url'];
   var songs         = data['songs']
   console.log(songs)
 
