@@ -4,6 +4,7 @@ use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
 use App\Submissions_Rejected as Rejected;
 use App\Member as Member;
+use App\SubmissionsSongs as Songs;
 use Carbon\Carbon;
 use Validator as Validator;
 
@@ -65,7 +66,7 @@ Route::post('/submission', function(){
               $location = $base_dir.'submissions/';
               $path = $albumArt->move($location, $fileName);
               // FOR THE SAKE OF DEMO:
-              $path = 'uploads/submissions/'.$fileName;
+              // $path = 'uploads/submissions/'.$fileName;
               // DELETE THE ABOVE THE LINE AFTER THE DEMO
             } else {
               $path = null;
@@ -123,9 +124,9 @@ Route::post('/song/{id}', function($id) {
   $rules = array(
     'number' => 'required|int',
     'name' => 'required',
-//    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-//    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-//    'file' => 'file',
+    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    // 'file' => 'file',
     'filename' => 'required'
   );
 
@@ -138,15 +139,39 @@ Route::post('/song/{id}', function($id) {
     $composer = Input::get('composer');
     $performer = Input::get('performer');
     $filename = Input::get('filename');
-    $file = Input::get('file');
+    $file = Input::file('file');
 
     $submission = Submissions::find($id);
-    echo $submission;
 
-    return(Input::all());
+    $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+    $location = $base_dir.'submissions/'.$id.'/';
+    $path = $file->move($location, $filename);
+
+    // echo $path;
+
+    // $path = "uploads/submissions/".$id.'/'.$filename;
+    // DELETE THE ABOVE AFTER THE DEMO
+
+    $newsong = Songs::create([
+      'submission_id' => $id,
+      'artist' => $performer,
+      'album-artist' => $submission->artist,
+      'album-title' => $submission->title,
+      'song_title' => $name,
+      'credit' => $submission->credit,
+      'track_num' => $number,
+      'tracks_total' => 20,
+      'genre' => $submission->genre,
+      'composer' => $composer,
+      'file_location' => $path,
+    ]);
+
+    return $newsong->id;
+
   } else {
     return(response($validator->errors()->all(), 422));
   }
+
 
 });
 
