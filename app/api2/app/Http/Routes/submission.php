@@ -17,20 +17,19 @@ Route::post('/submission', function(){
 
     $rules = array(
         //TODO: every field that is an input doesn't accept carriage returns
-            'artist' =>'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'title' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'artist' =>'required',
+            'title' => 'required',
             'genre' => 'required',
             'email' => 'required|email',
-            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
             'releasedate' => 'date_format:Y-m-d',
             'cancon' => 'required|boolean',
             'femcon' => 'required|boolean',
             'local' => 'required|boolean',
             //Descrription can have a carraige return
-            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \
-            ]+$/u',
+//            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \]+$/u',
             'art_url' => 'image',
             'songlist' => 'integer',
             //TODO: get from DB
@@ -114,7 +113,6 @@ Route::post('/submission', function(){
 
 Route::post('/song/{id}', function($id) {
 
-  echo Input::get('name');
   $idData = ['id' => $id];
   $idRules = array('id' => 'integer|min:1');
   $idValidator = Validator::make($idData, $idRules);
@@ -124,17 +122,27 @@ Route::post('/song/{id}', function($id) {
 
   $rules = array(
     'number' => 'required|int',
-    'name' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'file' => 'file',
+    'name' => 'required',
+//    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+//    'file' => 'file',
     'filename' => 'required'
   );
 
   $validator = Validator::make(Input::all(), $rules);
 
   if(!$validator->fails()) {
-    // TODO cool stuff
+
+    $number = Input::get('number');
+    $name = Input::get('name');
+    $composer = Input::get('composer');
+    $performer = Input::get('performer');
+    $filename = Input::get('filename');
+    $file = Input::get('file');
+
+    $submission = Submissions::find($id);
+    echo $submission;
+
     return(Input::all());
   } else {
     return(response($validator->errors()->all(), 422));
