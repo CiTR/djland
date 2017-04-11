@@ -39,7 +39,6 @@ function undoEdits(source) {
     success:function(data){
       // write back to update library with "old" values
       update_entry(data['library_id'], data['old_title'], data['old_artist'], data['old_label'], data['old_genre'], data['old_catalog'], data['old_format_id'], data['old_status'], data['old_cancon'], data['old_femcon'], data['old_playlist'], data['old_local'], data['old_compilation'], data['old_digitized']);
-      window.location.reload(true);
     }
   });
 }
