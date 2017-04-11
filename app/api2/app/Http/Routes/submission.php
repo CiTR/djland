@@ -95,7 +95,7 @@ Route::post('/submission', function(){
                 'digitized' => 0,
                 'description' => Input::get('description'),
                 // 'art_url' => Input::get('art_url'),
-                'art_url' => $_location,
+                'art_url' => $path,
                 'songlist' => $songlist_id,//Input::get('songlist'),
                 'format_id' => Input::get('format_id'),
                 'status' => 'unreviewed',
