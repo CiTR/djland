@@ -6,29 +6,64 @@
 
 function createSubmission(data) {
 
-   $.ajax({
-     url: "api2/public/submission/",
-     data: data,
-     type: "POST",
-     // async: false,
-     cache: false,
-     contentType: false,
-     processData: false,
-     // dataType: "json",
-   })
+  $.ajax({
+    url: "api2/public/submission/",
+    data: data,
+    type: "POST",
+    // async: false,
+    cache: false,
+    contentType: false,
+    processData: false,
+    // dataType: "json",
+  })
 
-   .done(function(data) {
-   var successBox = document.getElementById("submit-button-div");
-   successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-   console.log(data);
-   })
+  .done(function(data) {
+  var successBox = document.getElementById("submit-button-div");
+  successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+  console.log(data);
 
-   .fail(function(data) {
+  var tracks = $("#submit-field").children();
+
+  for (var i = 0; i < tracks.length; i++) {
+    var trackFile = $('#new-track-button-input').prop('files')[i];
+    var x = $(tracks.get(i));
+    var a = new FormData();
+    a.append('number', x.find(".track-number-field").val());
+    a.append('name', x.find(".input-track-field-name").val());
+    a.append('composer', x.find(".input-track-field-composer").val());
+    a.append('performer', x.find(".input-track-field-performer").val());
+    a.append('file', trackFile);
+    a.append('filename', trackFile.name);
+
+    createTrackSubmission(a, data);
+  }
+  return data;
+  })
+
+  .fail(function(data) {
     // var response = $.parseJSON(data);
     // console.log(response);
-     alert("Failure");
-   });
- }
+    alert("Failure");
+  });
+}
+
+function createTrackSubmission(data, id) {
+
+  $.ajax({
+    url: "api2/public/song/" + id,
+    data: data,
+    type: "POST",
+    cache: false,
+    contentType: false,
+    processData: false,
+  })
+  .done(function(data) {
+    console.log("Track " + id + " POSTed.");
+  })
+  .fail(function(data) {
+    alert("Failure on track " + id + ".");
+  });
+}
 
 //Unused function
  function namesFromMemberId(id){

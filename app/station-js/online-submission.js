@@ -190,18 +190,8 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
       data.append('art_url', input);
-/*
-      for (var i = 0; i < tracks.length; i++) {
-        var x = $(tracks.get(i));
-        var t = 'track' + i;
-        data.append(t + '[number]', x.find(".track-number-field").val());
-        data.append(t + '[name]', x.find(".input-track-field-name").val());
-        data.append(t + '[composer]', x.find(".input-track-field-composer").val());
-        data.append(t + '[performer]', x.find(".input-track-field-performer").val());
-        data.append(t + '[file]', $('#new-track-button-input').prop('files')[i]);
-      }
-*/
-      createSubmission(data);
+
+      var arturl = createSubmission(data);
 
     } else {
       alert(alertString);

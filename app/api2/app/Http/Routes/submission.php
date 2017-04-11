@@ -102,7 +102,7 @@ Route::post('/submission', function(){
                 //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
-            return $newsubmission;
+            return $newsubmission->id;
 
         } catch(Exception $e){
             return $e->getMessage();
@@ -127,7 +127,7 @@ Route::post('/song/{id}', function($id) {
     'name' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
     'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
     'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'file' => 'file|max:999999999999999',
+    'file' => 'file',
     'filename' => 'required'
   );
 
