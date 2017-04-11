@@ -28,8 +28,7 @@ function add_submission_handlers(){
 	 */
 	//Listener for viewing the review from clicking on their row
 	$("tr.reviewrow").off('click').on('click',function(e){
-		//Tab your code properly @michaeladria. I'll fix it for you this time
-	    var idSubmission = $(this).attr('name');
+		 var idSubmission = $(this).attr('name');
 		$("#view_submissions_row").insertAfter($(this).closest('tr'));
 		$("#view_submissions_row").show();
 		$('#view_submissions').fadeIn(225);
@@ -109,32 +108,43 @@ function add_submission_handlers(){
 	});
     $("#approve-tags-button").off('click').on('click',function(e) {
 
-      var tag    = $("#subgenre-approved").select2("val");
-      var id     = $('#submissionspopup').attr('name');
-      var catNo  = $('#catalog-approved').val();
-      var format = $('#format-approved').val();
-      var album  = $('#album-approved').val();
-      var artist = $('#artist-approved').val();
-      var credit = $('#credit-approved').val();
-      var label  = $('#label-approved').val();
-      var genre  = $('#genre-approved').select2("val");
+      var tag           = $("#subgenre-approved").select2("val");
+      var id            = $('#submissionspopup').attr('name');
+      var catNo         = $('#catalog-approved').val();
+      var format        = $('#format-approved').val();
+      var album         = $('#album-approved').val();
+      var artist        = $('#artist-approved').val();
+      var credit        = $('#credit-approved').val();
+      var label         = $('#label-approved').val();
+      var genre         = $('#genre-approved').select2("val");
+      var cancon        = +$("#cancon-approved").is(':checked');
+      var femcon        = +$("#femcon-approved").is(':checked');
+      var local         = +$("#local-approved").is(':checked');
+      var compilation   = +$("#compilation-approved").is(':checked');
+      var in_sam        = +$("#in_sam-approved").is(':checked');
+      var playlist      = +$("#playlist-approved").is(':checked');
 
-      tagReview(tag, id, catNo, format, album, artist, credit, label, genre);
+      tagReview(tag, id, catNo, format, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam,playlist);
   	});
 
     $("#approve-album-button").off('click').on('click', function(e) {
 
-      var id        = $("#submissionsapprovalpopup").attr('name');
-      var catalog   = $("#catalog-tagged").val();
-      var format_id = $("#format-tagged").select2("val");
-      var album     = $("#album-tagged").val();
-      var artist    = $("#artist-tagged").val();
-      var credit    = $("#credit-tagged").val();
-      var label     = $("#label-tagged").val();
-      var genre     = $("#genre-tagged").select2("val");
-      var tag       = $("#subgenre-tagged").select2("val");
-
-      approveTags(tag, id, catalog, format_id, album, artist, credit, label, genre);
+      var submission_id = $("#submissionsapprovalpopup").attr('name');
+      var catalog       = $("#catalog-tagged").val();
+      var format_id     = $("#format-tagged").select2("val");
+      var album         = $("#album-tagged").val();
+      var artist        = $("#artist-tagged").val();
+      var credit        = $("#credit-tagged").val();
+      var label         = $("#label-tagged").val();
+      var genre         = $("#genre-tagged").select2("val");
+      var tag           = $("#subgenre-tagged").select2("val");
+      var cancon        = +$("#cancon-tagged").is(':checked');
+      var femcon        = +$("#femcon-tagged").is(':checked');
+      var local         = +$("#local-tagged").is(':checked');
+      var compilation   = +$("#compilation-tagged").is(':checked');
+      var in_sam        = +$("#in_sam-tagged").is(':checked');
+      var playlist      = +$("#playlist-tagged").is(':checked');
+      approveTags(tag, submission_id, catalog, format_id, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam, playlist);
     });
 
 	//Listener for preventing catalog # from being anything but a number
@@ -166,9 +176,6 @@ function add_submission_handlers(){
     });
 	$("#tagged-extrainfo-button").off('click').on('click',function(e){
 		$("#tagged-extrainfo").toggle();
-	});
-	$("#add_to_library_btn").off('click').on('click',function(e){
-		//TODO
 	});
 	//Listener for preventing catalog # from being anything but a number
     //Removed for now - Andy didn't want it

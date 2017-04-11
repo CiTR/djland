@@ -165,10 +165,8 @@ use Validator as Validator;
                 'crtc' => Input::get('crtc')
             ]);
             if($lib['id'] > 0){
-                $return_array;
-                $i = 0;
                 foreach(SubmissionsSongs::where('submission_id', '=', $submission_id)->get() as $submission_song){
-                    $return_array[$i] = LibrarySongs::create([
+                    LibrarySongs::create([
                         'library_id' => $lib['id'],
                         'artist' => $submission_song['artist'],
                         'album_artist' => $submission_song['album_artist'],
@@ -190,7 +188,7 @@ use Validator as Validator;
                     ]);
                     $i++;
                 }
-                return $return_array;
+                return "Success!";
             }else{
                 return response("Unable to create library record. Please try again", 500);
             }

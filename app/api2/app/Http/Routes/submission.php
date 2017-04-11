@@ -3,6 +3,7 @@
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
 use App\Submissions_Rejected as Rejected;
+use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
 use Carbon\Carbon;
 use Validator as Validator;
@@ -456,6 +457,15 @@ Route::group(['middleware' => 'auth'], function(){
           } catch (Exception $e) {
               return $e->getMessage() ;
           }
+        });
+        Route::delete('/{id}', function($id){
+            try{
+                SubmissionsSongs::where('submission_id', '=', $id)->delete();
+                Submissions::find($id)->delete();
+                return "Successfully deleted submission and songs with submission id: " . $id;
+            } catch (Exception $e) {
+                 return $e->getMessage() ;
+            }
         });
     });
 });

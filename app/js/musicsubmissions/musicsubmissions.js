@@ -1065,6 +1065,7 @@ function displayTaggedBox(data) {
 	$("#credit-tagged").val(credit);
 	$("#label-tagged").val(label);
 	$("#genre-tagged").prop('value', genre).change();
+    $("#subgenre-tagged").val(tags).trigger('change');
 	//if(tags != null){
 	//	$("#tags-tagged").html("The following subgenre tags were specified by the band: <b>" + tags + "</b>. Specify an appropiate subgenre below:");
 	//} else{
@@ -1189,25 +1190,29 @@ function approveReview(id){
 	});
 }
 
-function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
+function tagReview(tag, id, catNo, format, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam,playlist)
 {
 	console.log("Tagging review ... ");
-  console.log(id);
-  console.log(tag);
 	$.ajax({
 		url: "api2/public/submissions/tag",
 		type:'PUT',
 		dataType:'json',
 		data: {
 			'id':id,
-      'tags':tag,
-      'catalog':catNo,
-      'format_id':format,
-      'title':album,
-      'artist':artist,
-      'credit':credit,
-      'label':label,
-      'genre':genre
+            'tags':tag,
+            'catalog':catNo,
+            'format_id':format,
+            'title':album,
+            'artist':artist,
+            'credit':credit,
+            'label':label,
+            'genre':genre,
+            'cancon':cancon,
+            'femcon':femcon,
+            'local':local,
+            'compilation':compilation,
+            'in_sam':in_sam,
+            'playlist':playlist
 		},
 		async:true,
 		success:function(data){
@@ -1226,29 +1231,78 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre)
 	});
 }
 
-function approveTags(tag, id, catalog, format_id, album, artist, credit, label, genre) {
+function approveTags(tag, submission_id, catalog, format_id, album_title, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam,playlist) {
 	console.log("Approving tags ... ");
 	$.ajax({
 		url: "api2/public/submissions/tolibrary",
 		type:'PUT',
 		dataType:'json',
 		data: {
-			'id':id,
-      'tags':tag,
-      'catalog':catalog,
-      'format_id':format_id,
-      'title':album,
-      'artist':artist,
-      'credit':credit,
-      'label':label,
-      'genre':genre
+			'id':submission_id,
+            'tags':tag,
+            'catalog':catalog,
+            'format_id':format_id,
+            'title':album_title,
+            'artist':artist,
+            'credit':credit,
+            'label':label,
+            'genre':genre,
+            'cancon':cancon,
+            'femcon':femcon,
+            'local':local,
+            'compilation':compilation,
+            'in_sam':in_sam,
+            'playlist':playlist
 		},
 		async:true,
 		success:function(data){
 			//console.log(data);
+            $.ajax({
+        		url: "/api2/public/library/fromsubmissions",
+        		type:'POST',
+        		dataType:'json',
+        		data: {
+        			'submission_id':submission_id,
+                    'catalog':catalog,
+                    'format':format_id,
+                    'album_title':album_title,
+                    'artist':artist,
+                    'label':label,
+                    'genre':genre,
+                    'cancon':cancon,
+                    'femcon':femcon,
+                    'local':local,
+                    'compilation':compilation,
+                    'in_sam':in_sam,
+                    'playlist':playlist
+        		},
+                async:true,
+        		success:function(data){
+                    console.log(data);
+                    $.ajax({
+                		url: "/api2/public/submissions/" + submission_id,
+                		type:'DELETE',
+                		dataType:'json',
+                		data: {
+                			'id':submission_id,
+                		},
+                        async:true,
+                		success:function(data){
+                            console.log(data);
+                        },
+                        fail:function(data){
+                			console.log("Submitting to Library failed. Response data: " + data);
+                	    }
+                    });
+                },
+                fail:function(data){
+        			console.log("Submitting to Library failed. Response data: " + data);
+        			alert("Submitting to Library failed. Please try again later. \n (is your internet connection ok?)");
+        		}
+            });
 			alert("Tags Approved");
 			$('#submissionsapprovalpopup').fadeOut(175);
-			var selector = "[name=\'" + id + "\']";
+			var selector = "[name=\'" + submission_id + "\']";
 			$(selector).fadeOut(100);
 			//TODO: Change the button and show a spinny thing
 		},
