@@ -64,13 +64,13 @@
 				<ul id="submission_header" name="search" class="clean-list inline-list">
 					<li><div class="dataTables_filter"><label>Search All: <input type="search" id="newSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
 					<li> From: <input id="new-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="new-submissions-to" type="text" class="datepicker" readonly=""/></li>
-					<li><span>&nbsp;Order By: </span><select id="order_by">
-							<option value="created">Submission Date</option>
-							<option value="id">Date of Release</option>
-							<option value="lastname">Artist</option>
-							<option value="firstname">Album</option>
-							<option value="member_type">Genre</option>
-							<option value="Assignee">Assignee</option>
+					<li><span>&nbsp;Order By: </span><select id="new_submissions_order_by">
+                            <option value="artist">Artist</option>
+                            <option value="album">Album</option>
+                            <option value="releaseDate">Date of Release</option>
+                            <option value="genre">Genre</option>
+                            <option value="submissionDate">Submission Date</option>
+							<option value="assignee">Assignee</option>
 						</select>
 					</li>
 					<li>
@@ -261,13 +261,12 @@
                 <ul id="submission_header" name="search" class="clean-list inline-list">
                     <li><div class="dataTables_filter"><label>Search All: <input type="search" id="reviewedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
 					<li> From: <input id="reviewed-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="reviewed-submissions-to" type="text" class="datepicker" readonly=""/></li>
-					<li><span>&nbsp;Order By: </span><select id="order_by">
-							<option value="created">Submission Date</option>
-							<option value="id">Date of Release</option>
-							<option value="lastname">Artist</option>
-							<option value="firstname">Album</option>
-							<option value="member_type">Genre</option>
-							<option value="Assignee">Assignee</option>
+                    <li><span>&nbsp;Order By: </span><select id="reviewed_submissions_order_by">
+							<option value="artist">Artist</option>
+							<option value="album">Album</option>
+							<option value="submissionDate">Submission Date</option>
+							<option value="reviewedBy">Reviewed By</option>
+                            <option value="approvalStatus">Approval Status</option>
 						</select>
 					</li>
 					<li>
@@ -462,13 +461,13 @@
                 <ul id="submission_header" name="search" class="clean-list inline-list">
                     <li><div class="dataTables_filter"><label>Search All: <input type="search" id="toTagSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
 					<li> From: <input id="toTag-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="toTag-submissions-to" type="text" class="datepicker" readonly=""/></li>
-					<li><span>&nbsp;Order By: </span><select id="order_by">
-							<option value="created">Submission Date</option>
-							<option value="id">Date of Release</option>
-							<option value="lastname">Artist</option>
-							<option value="firstname">Album</option>
-							<option value="member_type">Genre</option>
-							<option value="Assignee">Assignee</option>
+                    <li><span>&nbsp;Order By: </span><select id="toTag_submissions_order_by">
+                            <option value="artist">Artist</option>
+                            <option value="album">Album</option>
+                            <option value="releaseDate">Date of Release</option>
+                            <option value="genre">Genre</option>
+                            <option value="submissionDate">Submission Date</option>
+							<option value="assignee">Assignee</option>
 						</select>
 					</li>
 					<li>
@@ -760,15 +759,15 @@
                 <ul id="submission_header" name="search" class="clean-list inline-list">
                     <li><div class="dataTables_filter"><label>Search All: <input type="search" id="taggedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
                     <li> From: <input id="tagged-submissions-from" type="text" class="datepicker" readonly=""/> To: <input id="tagged-submissions-to" type="text" class="datepicker" readonly=""/></li>
-                    <li><span>&nbsp;Order By: </span><select id="order_by">
-                            <option value="created">Submission Date</option>
-                            <option value="id">Date of Release</option>
-                            <option value="lastname">Artist</option>
-                            <option value="firstname">Album</option>
-                            <option value="member_type">Genre</option>
-                            <option value="Assignee">Assignee</option>
-                        </select>
-                    </li>
+                    <li><span>&nbsp;Order By: </span><select id="tagged_submissions_order_by">
+                            <option value="artist">Artist</option>
+                            <option value="album">Album</option>
+                            <option value="releaseDate">Date of Release</option>
+                            <option value="genre">Genre</option>
+                            <option value="submissionDate">Submission Date</option>
+							<option value="assignee">Tagged By</option>
+						</select>
+					</li>
                     <li>
                         <button class="right" id="save_comments">Save Comments</button>
                     </li>

@@ -209,6 +209,113 @@ function add_submission_handlers(){
         $('#taggedSubmissionOtherTable').DataTable().search( this.value ).draw();
     });
 
+    //Order by listeners
+    $('#new_submissions_order_by').off('change').on('change', function(){
+        switch(this.value){
+            case 'submissionDate':
+                sortNum=4;
+                break;
+            case 'releaseDate':
+                sortNum=2;
+                break;
+            case 'artist':
+                sortNum=0;
+                break;
+            case 'album':
+                sortNum = 1;
+                break;
+            case 'genre':
+                sortNum = 3;
+                break;
+            case 'assignee':
+                sortNum = 6;
+                break;
+            default:
+                sortNum = -1;
+        }
+        $('#newSubmissionCdTable').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#newSubmissionMP3Table').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#newSubmissionOtherTable').DataTable().column(sortNum+':visible').order('asc').draw();
+    });
+    $('#reviewed_submissions_order_by').off('change').on('change', function(){
+        console.log(this.value);
+        switch(this.value){
+            case 'artist':
+                sortNum=0;
+                break;
+            case 'album':
+                sortNum = 1;
+                break;
+            case 'submissionDate':
+                sortNum=2;
+                break;
+            case 'reviewedBy':
+                sortNum = 4;
+                break;
+            case 'approvalStatus':
+                sortNum = 5;
+                break;
+            default:
+                sortNum = 0;
+        }
+        $('#reviewedSubmissionCdTable').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#reviewedSubmissionMP3Table').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#reviewedSubmissionOtherTable').DataTable().column(sortNum+':visible').order('asc').draw();
+    });
+    $('#toTag_submissions_order_by').off('change').on('change', function(){
+        switch(this.value){
+            case 'submissionDate':
+                sortNum=4;
+                break;
+            case 'releaseDate':
+                sortNum=2;
+                break;
+            case 'artist':
+                sortNum=0;
+                break;
+            case 'album':
+                sortNum = 1;
+                break;
+            case 'genre':
+                sortNum = 3;
+                break;
+            case 'assignee':
+                sortNum = 6;
+                break;
+            default:
+                sortNum = -1;
+        }
+        $('#toTagSubmissionCdTable').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#toTagSubmissionMP3Table').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#toTagSubmissionOtherTable').DataTable().column(sortNum+':visible').order('asc').draw();
+    });
+    $('#tagged_submissions_order_by').off('change').on('change', function(){
+        switch(this.value){
+            case 'submissionDate':
+                sortNum=4;
+                break;
+            case 'releaseDate':
+                sortNum=2;
+                break;
+            case 'artist':
+                sortNum=0;
+                break;
+            case 'album':
+                sortNum = 1;
+                break;
+            case 'genre':
+                sortNum = 3;
+                break;
+            case 'assignee':
+                sortNum = 6;
+                break;
+            default:
+                sortNum = -1;
+        }
+        $('#taggedSubmissionCdTable').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#taggedSubmissionMP3Table').DataTable().column(sortNum+':visible').order('asc').draw();
+        $('#taggedSubmissionOtherTable').DataTable().column(sortNum+':visible').order('asc').draw();
+    });
 	//CHANGING TABS Listener
 	$('#tab-nav').off('click','.submission_action').on('click','.submission_action', function(e){
 		$('.submission_action').attr('class','nodrop inactive-tab submission_action');
