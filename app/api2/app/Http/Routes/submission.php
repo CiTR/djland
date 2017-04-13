@@ -66,12 +66,10 @@ Route::post('/submission', function(){
 
               $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/submissions/";
 
-              // HARD CODED FOR DEMO.
-              $_location = "dev.djland.citr.ca/uploads/submissions/" + $fileName;
               $albumArt->move($base_dir, $fileName);
-              // FOR THE SAKE OF DEMO:
+
               $path = '/uploads/submissions/'.$fileName;
-              // DELETE THE ABOVE THE LINE AFTER THE DEMO
+              
             } else {
               $path = null;
             }
@@ -150,14 +148,9 @@ Route::post('/song/{id}', function($id) {
     $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
     $location = $base_dir.'submissions/'.$id.'/';
 
-    // HARD CODED FOR DEMO
-    // $location = 'dev.djland.citr.ca/uploads/submissions/'.$id.'/';
-    $path = $file->move($location, $filename);
-
-    // echo $path;
+    $file->move($location, $filename);
 
     $path = "/uploads/submissions/".$id.'/'.$filename;
-    // DELETE THE ABOVE AFTER THE DEMO
 
     $newsong = Songs::create([
       'submission_id' => $id,
