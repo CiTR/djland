@@ -1343,7 +1343,7 @@
 
             <input type="file" id="album-art-input-button" style="display:none"  name="art_url" />
             <button type="button" id="album-art-button" class="submission-button">
-              Add Ablum Art (Optional)
+              Add Album Art (Optional)
             </button>
 
           	<output id="album-viewer"></output>

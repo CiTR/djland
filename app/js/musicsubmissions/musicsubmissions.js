@@ -775,7 +775,7 @@ function getSubmissionDataAndDisplay(id) {
 }
 
 function displayReviewBox(data) {
-  var id			= data['id'];
+  var id			      = data['id'];
   var artist      	= data['artist'];
   var location    	= data['location'];
   var album       	= data['title'];
@@ -787,7 +787,7 @@ function displayReviewBox(data) {
   var credit      	= data['credit'];
   var email       	= data['email'];
   var description 	= data['description'];
-  var art_url		= data['art_url'];
+  var art_url		    = data['art_url'];
   var songs         = data['songs']
 
   if (releasedate == "" || releasedate == null) {
@@ -1393,9 +1393,11 @@ function submitForm() {
     var trackNumError = false;
 
     for (var i = 0; i < tracks.length; i++) {
-      // console.log($(tracks.get(i)).find(".track-number-field").val());
-      var trackNumberValue = $(tracks.get(i)).find(".track-number-field").val();
-      var trackName = $(tracks.get(i)).find(".input-track-field").val();
+
+      var thisTrack = $(tracks.get(i));
+
+      var trackNumberValue = thisTrack.find(".track-number-field").val();
+      var trackName        = thisTrack.find(".input-track-field").val();
 
       if (trackName == "") {
         success = false;
@@ -1404,7 +1406,6 @@ function submitForm() {
 
       if (trackNumberValue == "" ) {
         success = false;
-        // missing.push("\n• Track numbers");
         missingTrackNumbers++;
       } else if ( isNaN(parseInt(trackNumberValue)) ) {
         success = false;
@@ -1449,8 +1450,6 @@ function submitForm() {
 
     if (success) {
 
-      var input = $('#album-art-input-button').prop('files')[0];
-
       var data = new FormData();
 
       data.append('format_id', format);
@@ -1467,7 +1466,9 @@ function submitForm() {
       data.append('local', local);
       data.append('description', description);
       data.append('songlist', 10);
-      data.append('art_url', input);
+
+      var input = $('#album-art-input-button').prop('files')[0];
+      if (input) data.append('art_url', input);
 
       createSubmission(data);
 
