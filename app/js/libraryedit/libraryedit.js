@@ -51,7 +51,12 @@ function saveEntry(source) {
   var artist  = $("#artist" + entryID).val();
   var label   = $("#label" + entryID).val();
   var genreDropdown   = document.getElementById("genre" + entryID);
-  var genre = genreDropdown.options[genreDropdown.selectedIndex].text;
+  var genre;
+  if(genreDropdown.selectedIndex == 0) {
+    genre = null;
+  } else {
+    genre = genreDropdown.options[genreDropdown.selectedIndex].text;
+  }
   var catalog = $("#catalog" + entryID).val();
   var format_id  = $("#format" + entryID).val();
   if(format_id == 0) format_id = null;

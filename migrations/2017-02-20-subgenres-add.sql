@@ -1,5 +1,5 @@
 CREATE TABLE `subgenres` (
-  `id` int(11) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `subgenre` varchar(255) NOT NULL,
   `parent_genre_id` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
