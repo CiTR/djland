@@ -69,7 +69,7 @@ Route::post('/submission', function(){
               $albumArt->move($base_dir, $fileName);
 
               $path = '/uploads/submissions/'.$fileName;
-              
+
             } else {
               $path = null;
             }
@@ -160,7 +160,7 @@ Route::post('/song/{id}', function($id) {
       'song_title' => $name,
       'credit' => $submission->credit,
       'track_num' => $number,
-      'tracks_total' => 20,
+      'tracks_total' => 10,
       'genre' => $submission->genre,
       'composer' => $composer,
       'file_location' => $path,
