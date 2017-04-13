@@ -20,7 +20,6 @@ function createSubmission(data) {
   .done(function(data) {
   var successBox = document.getElementById("submit-button-div");
   successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-  console.log(data);
 
   var tracks = $("#submit-field").children();
 
