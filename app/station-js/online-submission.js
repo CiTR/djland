@@ -169,10 +169,6 @@ function submitForm() {
 
     if (success) {
 
-      console.log(songListObj);
-
-      var input = $('#album-art-input-button').prop('files')[0];
-
       var data = new FormData();
 
       data.append('format_id', '6');
@@ -189,7 +185,9 @@ function submitForm() {
       data.append('local', local);
       data.append('description', description);
       data.append('songlist', 10);
-      data.append('art_url', input);
+
+      var input = $('#album-art-input-button').prop('files')[0];
+      if (input) data.append('art_url', input);
 
       var arturl = createSubmission(data);
 
