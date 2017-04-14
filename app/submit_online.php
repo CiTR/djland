@@ -185,7 +185,7 @@ img.emoji {
   	</script>
   -->
 
-    <input type="file" id="album-art-input-button" style="display:none"  name="art_url" />
+    <input type="file" id="album-art-input-button" style="display:none"  name="art_url" accept="image/*"/>
     <button type="button" id="album-art-button" class="submission-button">
       Add Album Art (Optional)
     </button>
@@ -203,7 +203,7 @@ img.emoji {
 
 		<div id="submit-field"></div>
 
-		<input type="file" id="new-track-button-input" style="display:none"  name="songlist" multiple/>
+		<input type="file" id="new-track-button-input" style="display:none"  name="songlist" accept=".m4a,audio/*" multiple/>
 		<button type="button" id="new-track-button" class="submission-button">
 			Add files
 		</button>

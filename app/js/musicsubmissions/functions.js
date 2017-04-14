@@ -4,7 +4,8 @@
  * Michael Adria, Capstone 2016/2017
  */
 
-function createSubmission(data) {
+function createSubmission(data, songs) {
+  var tracks = $("#submit-field").children();
 
   $.ajax({
     url: "api2/public/submission/",
@@ -24,7 +25,8 @@ function createSubmission(data) {
   var tracks = $("#submit-field").children();
 
   for (var i = 0; i < tracks.length; i++) {
-    var trackFile = $('#new-track-button-input').prop('files')[i];
+    // var trackFile = $('#new-track-button-input').prop('files')[i];
+    var trackFile = songs[i];
     var x = $(tracks.get(i));
     var a = new FormData();
     a.append('number', x.find(".track-number-field").val());
@@ -34,7 +36,7 @@ function createSubmission(data) {
     a.append('file', trackFile);
     a.append('filename', trackFile.name);
 
-    createTrackSubmission(a, data);
+    createTrackSubmission(a, data, trackFile.name);
   }
   return data;
   })
@@ -46,7 +48,7 @@ function createSubmission(data) {
   });
 }
 
-function createTrackSubmission(data, id) {
+function createTrackSubmission(data, id, filename) {
 
   $.ajax({
     url: "api2/public/song/" + id,
@@ -57,10 +59,10 @@ function createTrackSubmission(data, id) {
     processData: false,
   })
   .done(function(data) {
-    console.log("Track " + id + " POSTed.");
+    console.log("File '" + filename + "' sent.");
   })
   .fail(function(data) {
-    alert("Failure on track " + id + ".");
+    alert("Failed to send file: " + filename);
   });
 }
 
