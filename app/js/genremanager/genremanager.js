@@ -42,9 +42,12 @@ function add_genremanager_listeners() {
     });
     $(".genrerow").off('dblclick').on('dblclick', function(e) {
         var toedit = $(this).closest("tr").find("td:eq(0)").text();
+        var toeditcrtc = $(this).closest("tr").find("td:eq(1)").text();
         $("#editgenrebox").val(toedit);
+        $("#editgenrecrtc").val(toeditcrtc);
         activegenreid = $(this).attr('name');
         activegenreid = activegenreid.replace(/^\D+/g, ''); // replace all leading non-digits with nothing
+
 		$("#editgenredialog").dialog("open");
         getSubGenres(activegenreid);
     });
@@ -68,6 +71,21 @@ function add_genremanager_listeners() {
         } else {
             $(this.closest('tr')).removeClass('delete');
         }
+    });
+    //Handlers for deleting
+    $('#genres_delete_button').off('click').on('click', function(){
+        //Traverse table and find genrerows with the delete class. Delete each row
+        alert("Are you sure you want to delete this genre and all of it's subgenres?");
+        var rows = $('#genres_table tr').filter('.delete');
+        console.log(rows);
+        $(rows).hide();
+        deleteGenres(rows);
+    });
+    $('#subgenres_delete_button').off('click').on('click', function(){
+        //Traverse table and find subgenrerows with the delete class. Delete each row
+        var rows = $('#subgenres_table tr').filter('.delete');
+        $(rows).hide();
+        deleteSubgenres(rows);
     });
 }
 
@@ -178,16 +196,15 @@ function updateGenreListing(genres) {
  * @param  {String} genres JSON list of subgenres
  * @return {void}
  */
-function updateSubGenreListing(subgenres) {
-    //console.log(subgenres);
+function updateSubGenreListing(subgenres,parent_genre="") {
+    var string = "Subgenres for the " + parent_genre + " Genre";
+    $("#subgenretitle").text(string);
     var newstring = "";
     if (subgenres.length === 0) {
         newstring = "<tr class=\"playitem\"><td colspan=4>No subgenres for this genre yet!</td></tr>";
     } else {
         for (var item in subgenres) {
             var subgenre = subgenres[item];
-            console.log(subgenre.created_by);
-            console.log(namesFromMemberId(subgenre.created_by));
             var tempstring = "<tr name =\"subgenre" + subgenre.id + "\" class=\"playitem border subgenrerow\">" +
                 "<td class=\"submission_row_element name\">" + subgenre.subgenre +
                 "</td><td class=\"submission_row_element\" name='names" + subgenre.created_by + "'>" + namesFromMemberId(subgenre.created_by) + "</td>" +
@@ -215,7 +232,6 @@ function initialGet() {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             updateGenreListing(data);
             activegenreid = (data['0'].id);
             getSubGenres(data['0'].id);
@@ -236,7 +252,6 @@ function getGenres() {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             updateGenreListing(data);
         }
     });
@@ -251,16 +266,38 @@ function getGenres() {
  * @return {void}
  */
 function getSubGenres(genreid) {
-    $.ajax({
-        type: "GET",
-        url: "api2/public/genres/subgenres/" + genreid,
-        dataType: 'json',
-        async: true,
-        success: function(data) {
-            //console.log(data);
-            updateSubGenreListing(data);
-        }
-    });
+    //Can call without specifying the genreid - defaults to first valid genres
+    if(genreid === undefined){
+        $.ajax({
+            type: "GET",
+            url: "api2/public/genres",
+            dataType: 'json',
+            async: true,
+            success: function(data) {
+                genreid = data[0]['id'];
+                $.ajax({
+                    type: "GET",
+                    url: "api2/public/genres/subgenres/" + genreid,
+                    dataType: 'json',
+                    async: true,
+                    success: function(data) {
+                        updateSubGenreListing(data,parent_genre);
+                    }
+                });
+            }
+        });
+    }
+    else{
+        $.ajax({
+            type: "GET",
+            url: "api2/public/genres/subgenres/" + genreid,
+            dataType: 'json',
+            async: true,
+            success: function(data) {
+                updateSubGenreListing(data);
+            }
+        });
+    }
 }
 
 /**
@@ -273,7 +310,6 @@ function getSubGenres(genreid) {
  * @return {void}
  */
 function addGenre(genre, default_crtc_category, dialogbox) {
-    //console.log(genre);
     $.ajax({
         type: "POST",
         url: "api2/public/genres",
@@ -284,14 +320,14 @@ function addGenre(genre, default_crtc_category, dialogbox) {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             $(dialogbox).dialog("close");
             $('#addgenrecrtc').val("10").change();
             $("#addgenrebox").val("");
-
+            //reload genres table
             getGenres();
         },
         error: function(err) {
+            console.log("Error adding genre");
 			console.log(err);
             displayErrorList(err);
         }
@@ -307,7 +343,6 @@ function addGenre(genre, default_crtc_category, dialogbox) {
  * @return {void}
  */
 function addSubgenre(subgenre, parent_genre_id, dialogbox) {
-    console.log(subgenre, parent_genre_id);
     $.ajax({
         type: "POST",
         url: "api2/public/subgenres",
@@ -318,10 +353,13 @@ function addSubgenre(subgenre, parent_genre_id, dialogbox) {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             $(dialogbox).dialog("close");
             $("#addsubgenrebox").val("");
             getSubGenres(parent_genre_id);
+        }, error: function(err){
+            console.log("Error adding subgenre");
+            console.log(err);
+            displayErrorList(err);
         }
     });
 }
@@ -337,7 +375,6 @@ function addSubgenre(subgenre, parent_genre_id, dialogbox) {
  * @return {void}
  */
 function updateGenre(id, newgenre, default_crtc_category, dialogbox) {
-	console.log(id,newgenre,default_crtc_category, dialogbox);
     $.ajax({
         type: "PUT",
         url: "api2/public/genres",
@@ -349,11 +386,14 @@ function updateGenre(id, newgenre, default_crtc_category, dialogbox) {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             $(dialogbox).dialog("close");
 			$('#editgenrecrtc').val("10").change();
             $("#editgenrebox").val("");
             getGenres();
+        },error: function(err) {
+            console.log("Error updating genre");
+            console.log(err);
+            displayErrorList(err);
         }
     });
 }
@@ -381,11 +421,90 @@ function updateSubgenre(id, newsubgenre, parent_genre_id, dialogbox) {
         dataType: 'json',
         async: true,
         success: function(data) {
-            //console.log(data);
             $(dialogbox).dialog("close");
             getSubGenres(parent_genre_id);
+        },error: function(err) {
+            console.log("Error updating subgenre");
+            console.log(err);
+            displayErrorList(err);
         }
     });
+}
+
+/**
+ * Delete genres via the DJLand API
+ * @callback                getGenres() and getSubGenres() - to trigger table repopulation
+ * @param  {Object} rows	Jquery object of DOM rows containing genres to delte
+ * @return {void}
+ */
+function deleteGenres(rows){
+    var index;
+    for(index in rows){
+        row = rows[index];
+        id = $(row).attr('name');
+        if(id === undefined){
+            return;
+        }
+        id = id.replace(/[^0-9\.]+/g, "")
+        $.ajax({
+            type: "DELETE",
+            url: "api2/public/genres",
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            async: true,
+            success: function(data) {
+                console.log("Genre " + id + "has been deleted successfully.");
+                getGenres();
+                getSubGenres()
+            },fail: function(err) {
+                console.log("Error deleting Genre " + id + ":");
+                console.log(err);
+            },error: function(err) {
+                console.log("Error deleting Subgenre " + id + ":");
+                console.log(err);
+            }
+        });
+    }
+}
+
+/**
+ * Delete a subgenres via the DJLand API
+ * @callback                getGenres() and getSubGenres() - to trigger table repopulation
+ * @param  {Object} rows	Jquery object of DOM rows containing subgenres to delete
+ * @param {integer} parent_genre_id the parent genre id of the subgenre rows to delete
+ * @return {void}
+ */
+function deleteSubgenres(rows, parent_genre_id){
+    var index;
+    for(index in rows){
+        row = rows[index];
+        id = $(row).attr('name');
+        if(id === undefined){
+            return;
+        }
+        id = id.replace(/[^0-9\.]+/g, "");
+        $.ajax({
+            type: "DELETE",
+            url: "api2/public/subgenres",
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            async: true,
+            success: function(data) {
+                console.log("Subgenre " + id + "has been deleted successfully.");
+                getSubGenres(parent_genre_id);
+            },fail: function(err) {
+                console.log("Error deleting Subgenre " + id + ":");
+                console.log(err);
+            },error: function(err) {
+                console.log("Error deleting Subgenre " + id + ":");
+                console.log(err);
+            }
+        });
+    }
 }
 
 /**
@@ -400,8 +519,13 @@ function displayErrorList(err) {
     console.log(err);
 }
 
+/**
+ * get the DJLand Member Name from their ID via the DJLand APi
+ * sets the dom element called 'names{id}' to the member's firstname and lastname
+ * @param {integer} id	DJLand Member id
+ * @return void
+ */
 function namesFromMemberId(id){
-    console.log(id);
    var string = "";
    $.ajax({
        type:"GET",

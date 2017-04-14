@@ -17,10 +17,10 @@ Route::group(['middleware' => 'auth'], function(){
             $rules = array(
                 'id' => 'required|integer|min:1'
             );
-            $data = ['id' => $id];
-            //$validator = Validator::make($data, $rules);
-            //if($validator->fails()) return response($validator->errors()->all(),422);
-            //else {
+            $data = array('id' => $id);
+            $validator = Validator::make($data, $rules);
+            if($validator->fails()) return response($validator->errors()->all(),422);
+            else {
                 try{
                     $subgenres = Subgenre::where('parent_genre_id', '=', $id)->get();
                     if($subgenres!=null) return $subgenres;
@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth'], function(){
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
-            //}
+            }
         });
         /** Use staff middleware for POST, PUT and DELETE routes so that
           * only staff can update the genre listings even if they
@@ -46,7 +46,6 @@ Route::group(['middleware' => 'auth'], function(){
                     $validator = Validator::make(Input::all(), $rules, $messages);
                     if($validator->fails()) return response($validator->errors()->all(),422);
                     else{
-
                             $genre = Genre::create([
                                 'genre' => Input::get('genre'),
                                 'default_crtc_category' => Input::get('default_crtc_category'),
@@ -61,27 +60,35 @@ Route::group(['middleware' => 'auth'], function(){
             });
             //Update a genre given it's id
             Route::put('/', function(){
-                //$messages = array('genre.unique' => 'There is already this genre in the system! Please choose a unique genre name.');
-                $rules = array(
-                    'id' => 'required|integer|min:1',
-                    'genre' => 'required|unique:genres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-                    'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
-                );
-                //$validator = Validator::make(Input::all(), $rules);//, $messages);
-                //dd($validator->errors());
-                //if(!$validator->fails()) return response($validator->errors()->all(),422);
-                //else {
+                $messages = array('genre.unique' => 'There is already this genre in the system! Please choose a unique genre name.');
+                if(Input::get('genre') == Genre::find(Input::get('id'))['genre']){
+                    $rules = array(
+                        'id' => 'required|integer|min:1',
+                        'genre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+                        'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
+                    );
+                } else {
+                    $rules = array(
+                        'id' => 'required|integer|min:1',
+                        'genre' => 'required|unique:genres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+                        'default_crtc_category' => 'required|integer|in:10,20,30,40,50'
+                    );
+                }
+                $validator = Validator::make(Input::all(), $rules, $messages);
+                if($validator->fails()) return response($validator->errors()->all(),422);
+                else {
                     try{
                         $genre = Genre::find(Input::get('id'));
                         $prev_genre = $genre->genre;
                         $genre->genre = Input::get('genre');
+                        $genre->default_crtc_category = Input::get('default_crtc_category');
                         $genre->updated_by = $_SESSION['sv_id'];
                         $genre->save();
                         return Response::json("Update genre " . $prev_genre . " to " . Input::get('genre'));
                     } catch(Exception $e){
                         return $e->getMessage();
                     }
-                //}
+                }
             });
             //Delete a genre given it's id
             Route::delete('/', function(){
@@ -89,12 +96,12 @@ Route::group(['middleware' => 'auth'], function(){
                     'id' => 'required|integer|min:1'
                 );
                 $validator = Validator::make(Input::all(), $rules);
-                if(!$validator->fails()) return response($validator->errors()->all(),422);
+                if($validator->fails()) return response($validator->errors()->all(),422);
                 else {
                     try{
                         $genre = Genre::find(Input::get('id'));
                         Genre::destroy(Input::get('id'));
-                        return Response::json('The Genre \"' . $genre->genre .'\" has been successfully deleted.');
+                        return Response::json('The Genre \'' . $genre->genre .'\' has been successfully deleted.');
                     } catch(Exception $e){
                         return $e->getMessage();
                     }
@@ -127,12 +134,12 @@ Route::group(['middleware' => 'auth'], function(){
         });
         //Create a subgenre
         Route::post('/', function(){
-            //
+            $messages = array('subgenre.unique' => 'There is already this subgenre in the system! Please choose a unique genre name.');
             $rules = array(
                 'parent_genre_id' => 'required|integer|min:1',
-                'subgenre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
+                'subgenre' => 'required|unique:subgenres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
             );
-            $validator = Validator::make(Input::all(), $rules);
+            $validator = Validator::make(Input::all(), $rules, $messages);
             if($validator->fails()) return response($validator->errors()->all(),422);
             else{
                 try{
@@ -150,13 +157,21 @@ Route::group(['middleware' => 'auth'], function(){
         });
         //Update a subgenre given an id
         Route::put('/', function(){
-            $rules = array(
-                'id' => 'required|integer',
-                'subgenre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
-            );
-            //$validator = Validator::make(Input::all(), $rules);
-            //if(!$validator->fails()) return response($validator->errors()->all(),422);
-            //else {
+            $messages = array('subgenre.unique' => 'There is already this subgenre in the system! Please choose a unique genre name.');
+            if(Input::get('subgenre') == Subgenre::find(Input::get('id'))['subgenre']){
+                $rules = array(
+                    'id' => 'required|integer',
+                    'subgenre' => 'required|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
+                );
+            } else {
+                $rules = array(
+                    'id' => 'required|integer',
+                    'subgenre' => 'required|unique:subgenres|regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u'
+                );
+            }
+            $validator = Validator::make(Input::all(), $rules, $messages);
+            if($validator->fails()) return response($validator->errors()->all(),422);
+            else {
                 try{
                     $subgenre = Subgenre::find(Input::get('id'));
                     $prev_subgenre = $subgenre->subgenre;
@@ -167,20 +182,20 @@ Route::group(['middleware' => 'auth'], function(){
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
-            //}
+            }
         });
         //Delete a subgenre given an id
         Route::delete('/', function(){
             $rules = array(
                 'id' => 'required|integer'
             );
-            $validator = Validator::make(Input::all(), $rules);
-            if(!$validator->fails()) return response($validator->errors()->all(),422);
+            $validator = Validator::make(['id' => Input::get('id')], $rules);
+            if($validator->fails()) return response($validator->errors()->all(),422);
             else {
                 try{
                     $subgenre = Subgenre::find(Input::get('id'));
                     Subgenre::destroy(Input::get('id'));
-                    return Response::json('The Subgenre \"' . $subgenre->subgenre .'\" has been successfully deleted.');
+                    return Response::json('The Subgenre \'' . $subgenre->subgenre .'\' has been successfully deleted.');
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
