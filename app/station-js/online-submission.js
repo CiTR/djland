@@ -6,6 +6,7 @@ var composerField, performerField, albumViewer;
 var totalTracks = 0;
 var totalTrackSize = 0;
 var files;
+var songFiles = [];
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -176,7 +177,7 @@ function submitForm() {
       var input = $('#album-art-input-button').prop('files')[0];
       if (input) data.append('art_url', input);
 
-      var arturl = createSubmission(data);
+      var arturl = createSubmission(data, songFiles);
 
     } else {
       alert(alertString);
@@ -212,13 +213,12 @@ function handleAlbum(evt) {
 }
 
 function handleTracks(evt) {
-  var files = evt.target.files;
+  var newFiles = evt.target.files;
   var filesAdded = 0;
   var fileWarning = false;
   var sizeWarning = false;
 
-  // TODO: Needs to remove non-music files from files[]
-  for (var i = 0, f; f = files[i]; i++) {
+  for (var i = 0, f; f = newFiles[i]; i++) {
 
     if (!f.type.match('audio.*')) {
       fileWarning = true;
@@ -232,6 +232,7 @@ function handleTracks(evt) {
 
     var fileName = f.name;
     addTrackForm(fileName, (totalTracks + i + 1) );
+    songFiles[totalTracks + i] = f;
     filesAdded++;
 
     totalTrackSize += f.size;
