@@ -44,7 +44,7 @@ function createSubmission(data, songs) {
   .fail(function(data) {
     // var response = $.parseJSON(data);
     // console.log(response);
-    alert("Failure");
+    alert("Submissions failed. Please make sure your email is entered correctly.");
   });
 }
 
