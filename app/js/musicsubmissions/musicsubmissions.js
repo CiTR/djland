@@ -1712,7 +1712,22 @@ function addTrackForm(fileName, trackNo) {
   childNode.setAttribute("value", defaultPerformer.value);
   divNode.appendChild(childNode);
 
+  // Add the Include checkbox
+  childNode = document.createElement("label");
+  childNode.setAttribute("style", "clear:left;");
+  var grandChildNode = document.createElement("input");
+  grandChildNode.setAttribute("id", "include-" + trackNo);
+  grandChildNode.setAttribute("type", "checkbox");
+  grandChildNode.setAttribute("class", "inlude-track");
+  grandChildNode.setAttribute("style", "margin-right:20px;margin-left:5%;");
+  childNode.append(grandChildNode);
+  var deselectMsg = "Include (de-select this to remove track from submission)";
+  childNode.append(document.createTextNode(deselectMsg));
+  divNode.appendChild(childNode);
+
   form.appendChild(divNode);
+
+  $("#include-" + trackNo).prop('checked', true);
 }
 
 //Delete from database - "hard" delete
