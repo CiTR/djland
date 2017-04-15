@@ -1277,6 +1277,14 @@
               </select>
             </div>
         		<div class="album-row">
+        			<div style="width:50%;float:left;">
+        				Default composer(s): <input type="text" id="default-composer" style="width:95%;margin-bottom:30px" placeholder="Default for tracks" name='default-composer'>
+        			</div>
+        			<div style="width:50%;float:right;">
+        				Default performer(s): <input type="text" id="default-performer" style="width:100%;margin-bottom:30px;" placeholder="Default for tracks" name='default-performer'>
+        			</div>
+        		</div>
+        		<div class="album-row">
               <div class="fem-can-van">
                 <label>
                   <input type="checkbox" id="female-artist" style="margin-right:20px" name='femcon' />
@@ -1333,20 +1341,6 @@
         		<br>Comments: <textarea rows="4" id="comments-box" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself, your album, or things to think about as we listen to your songs." name='description'></textarea>
 
           	<p>We accept .jpg or .png files of at least 500 by 500 pixels.</p>
-            <!--
-          	<input type="file" id="album-art-input-button" style="display:none" name='art_url' />
-          	<button type="button" id="album-art-button" class="submission-button">
-          		Add Album Art (Optional)
-          	</button>
-          	<output id="album-viewer"></output>
-
-          	<script type="text/javascipt">
-          		$('#album-art-button').click(function(event){
-                event.preventDefault();
-                $('#album-art-input-button').trigger('click');
-              });
-          	</script>
-          -->
 
             <input type="file" id="album-art-input-button" style="display:none"  name="art_url" accept="image/*"/>
             <button type="button" id="album-art-button" class="submission-button">

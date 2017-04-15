@@ -114,6 +114,14 @@ img.emoji {
 			</div>
 		</div>
 		<div class="album-row">
+			<div style="width:50%;float:left;">
+				Default composer(s): <input type="text" id="default-composer" style="width:95%;margin-bottom:30px" placeholder="Default for tracks" name='default-composer'>
+			</div>
+			<div style="width:50%;float:right;">
+				Default performer(s): <input type="text" id="default-performer" style="width:100%;margin-bottom:30px;" placeholder="Default for tracks" name='default-performer'>
+			</div>
+		</div>
+		<div class="album-row">
       <div class="fem-can-van">
         <label>
           <input type="checkbox" id="female-artist" style="margin-right:20px" name='femcon' />

@@ -395,7 +395,7 @@ Route::group(['middleware' => 'auth'], function(){
                   $result = Archive::where('title', '=', $album)->get();
                 }
             } else if ($artist != null) {
-                 = Archive::where('artist', '=', $artist)->get();
+                $result = Archive::where('artist', '=', $artist)->get();
             }
 
             if(!$result->isEmpty()) return Response::json( $result );
@@ -430,7 +430,7 @@ Route::group(['middleware' => 'auth'], function(){
                   $result = Rejected::where('title', '=', $album)->get();
                 }
             } else if ($artist != null) {
-                 = Rejected::where('artist', '=', $artist)->get();
+                $result = Rejected::where('artist', '=', $artist)->get();
             }
 
             if(!$result->isEmpty()) return Response::json( $result );

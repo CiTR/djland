@@ -954,9 +954,9 @@ function displayReviewBox(data) {
 
 function displayReviewedBox(data) {
 
-  var id 				= data['id'];
+  var id 				      = data['id'];
   var artist      		= data['artist'];
-  var location   		= data['location'];
+  var location   		  = data['location'];
   var album       		= data['title'];
   var label       		= data['label'];
   var genre       		= data['genre'];
@@ -967,9 +967,9 @@ function displayReviewedBox(data) {
   var email       		= data['email'];
   var description 		= data['description'];
   var art_url     		= data['art_url'];
-  var review_comments 	= data['review_comments'];
-  var approved 			= data['approved'];
-  var songs             = data['songs']
+  var review_comments = data['review_comments'];
+  var approved 			  = data['approved'];
+  var songs           = data['songs']
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
