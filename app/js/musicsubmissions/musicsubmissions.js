@@ -3,6 +3,14 @@ window.myNameSpace = window.myNameSpace || { };
 
 //PAGE CREATION
 $(document).ready ( function() {
+    // Set lightbox options
+    lightbox.option({
+      'fadeDuration': 200,
+      'imageFadeDuration': 200,
+      'resizeDuration': 200,
+      'wrapAround': true,
+      'disableScrolling': true
+    });
     //set the datepicker date format
     $(function() {
         $( "#date-released" ).datepicker({ dateFormat: "yy-mm-dd" });
@@ -822,6 +830,7 @@ function displayReviewBox(data) {
   $("#contact-review-box").text(email);
   $("#description-review-box").text(description);
   $("#albumArt-review-box").attr("src", art_url);
+  $("#albumArt-review-box-a").attr('href', art_url);
   $("#comments-review-box").text("");
   $("#approved_status-review-box").val(0).change();
   tracks = ""
@@ -903,6 +912,7 @@ function displayReviewedBox(data) {
   $("#contact-reviewed").text(email);
   $("#description-reviewed").text(description);
   $("#albumArt-reviewed").attr("src", art_url);
+  $("#albumArt-reviewed-a").attr("href", art_url);
   $("#reviewed_comments").text(review_comments);
   $("reviewed_approved_status").val(approved).change();
   tracks = ""
@@ -976,6 +986,7 @@ function displayApprovedBox(data) {
 		$("#review_comments-approved").text(review_comments);
 	}
     $("#albumArt-approved").attr("src", art_url);
+    $("#albumArt-approved-a").attr("href", art_url);
 	//Editable fields
 	$("#catalog-approved").val( String(catalog) );
 	//console.log(format);
@@ -1056,6 +1067,7 @@ function displayTaggedBox(data) {
 		$("#review_comments-tagged").text(review_comments);
 	}
     $("#albumArt-tagged").attr("src", art_url);
+    $("#albumArt-tagged-a").attr("href", art_url);
 	//Editable fields
 	$("#catalog-tagged").val( String(catalog) );
 	$("#format-tagged").prop('value', format).change();

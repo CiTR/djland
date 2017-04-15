@@ -15,7 +15,7 @@ class Submissions extends Model
 
     public function songs(){
         //Order by track number so loops that display songs do so in order
-        return $this->hasMany('App\SubmissionsSongs','submission_id')->orderBy('track_num','desc');
+        return $this->hasMany('App\SubmissionsSongs','submission_id')->orderBy('track_num','asc');
     }
 
 }
