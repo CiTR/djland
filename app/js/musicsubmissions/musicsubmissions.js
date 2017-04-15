@@ -1099,6 +1099,9 @@ var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
 var totalTracks = 0;
 var totalTrackSize = 0;
+var files;
+var songFiles = [];
+var albumFile;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -1438,7 +1441,6 @@ function submitForm() {
         for (var j = i + 1; j < trackNumberCheck.length; j++) {
           if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
             success = false;
-            // missing.push("\n Check for duplicate track numbers");
             alertString = "There are duplicate track numbers — please correct"
             duplicate = true;
             break;
@@ -1467,10 +1469,10 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
 
-      var input = $('#album-art-input-button').prop('files')[0];
-      if (input) data.append('art_url', input);
+      // var input = $('#album-art-input-button').prop('files')[0];
+      if (cover) data.append('art_url', cover);
 
-      createSubmission(data);
+      createSubmission(data, songFiles);
 
     } else {
       alert(alertString);
@@ -1492,13 +1494,13 @@ function handleAlbum(evt) {
         span.setAttribute('id', 'thumb-span');
         span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
         albumViewer.innerHTML = "";
-        // document.getElementById("album-viewer").insertBefore(span, null);
         albumViewer.insertBefore(span, null);
       };
     })(cover);
 
     reader.readAsDataURL(cover);
   } else if (cover.type.match('image.*')) {
+    cover = null;
     alert("Please choose a smaller image.");
   } else {
     alert("Please choose an image.");
@@ -1506,16 +1508,15 @@ function handleAlbum(evt) {
 }
 
 function handleTracks(evt) {
-  var files = evt.target.files;
+  var newFiles = evt.target.files;
   var filesAdded = 0;
   var fileWarning = false;
   var sizeWarning = false;
 
-  // TODO: Needs to remove non-music files from files[]
-  for (var i = 0, f; f = files[i]; i++) {
+  for (var i = 0, f; f = newFiles[i]; i++) {
 
     if (!f.type.match('audio.*')) {
-      warning = true;
+      fileWarning = true;
       continue;
     }
 
@@ -1526,6 +1527,7 @@ function handleTracks(evt) {
 
     var fileName = f.name;
     addTrackForm(fileName, (totalTracks + i + 1) );
+    songFiles[totalTracks + i] = f;
     filesAdded++;
 
     totalTrackSize += f.size;
@@ -1544,7 +1546,6 @@ function addTrackForm(fileName, trackNo) {
   // Add the file name
   var childNode = document.createElement("p");
   childNode.setAttribute("class", "track-file-name");
-  // TODO: use name of file given.
   childNode.appendChild(document.createTextNode("File name: " + fileName));
   divNode.appendChild(childNode);
 
@@ -1566,7 +1567,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-name");
   divNode.appendChild(childNode);
 
   // Add the composer field
@@ -1576,7 +1577,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-composer");
   divNode.appendChild(childNode);
 
   // Add the performer field
@@ -1586,7 +1587,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-performer");
   childNode.setAttribute("value", artistField.value);
   divNode.appendChild(childNode);
 

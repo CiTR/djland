@@ -147,7 +147,6 @@ function submitForm() {
         for (var j = i + 1; j < trackNumberCheck.length; j++) {
           if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
             success = false;
-            // missing.push("\n Check for duplicate track numbers");
             alertString = "There are duplicate track numbers — please correct"
             duplicate = true;
             break;
@@ -176,7 +175,7 @@ function submitForm() {
       data.append('songlist', 10);
 
       // var input = $('#album-art-input-button').prop('files')[0];
-      if (cover) data.append('art_url', input);
+      if (cover) data.append('art_url', cover);
 
       var arturl = createSubmission(data, songFiles);
 
@@ -200,7 +199,6 @@ function handleAlbum(evt) {
         span.setAttribute('id', 'thumb-span');
         span.innerHTML = ['<img id="thumb-src" class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
         albumViewer.innerHTML = "";
-        // document.getElementById("album-viewer").insertBefore(span, null);
         albumViewer.insertBefore(span, null);
       };
     })(cover);
