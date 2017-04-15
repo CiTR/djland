@@ -13,7 +13,6 @@ use App\Member as Member;
 use App\Permission as Permission;
 use App\SpecialBroadcast as SpecialBroadcast;
 
-
 //SAM CLASSES
 use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
@@ -41,10 +40,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 Route::get('/social',function(){
 	return Social::all();
-});
-
-Route::get('/library/formats', function() {
-    return Response::json(DB::table('types_format')->select('name')->get());
 });
 
 Route::get('/nowplaying',function(){
