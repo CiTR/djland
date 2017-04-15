@@ -104,6 +104,10 @@ Route::post('/submission', function(){
                 //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
+            $msg = "Hi, ".Input::get('artist')."! We've received your music submission.\n\nSincerely, CiTR";
+            $msg = wordwrap($msg, 70, "\r\n");
+            $header = "From: no-reply@citr.ca"
+            mail(Input::get('email'), "Confirmation from CiTR", $msg, $header);
             return $newsubmission->id;
 
         } catch(Exception $e){
