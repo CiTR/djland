@@ -31,6 +31,13 @@
   margin-left:5%;
   margin-bottom: 15px;
 }
+.apply-to-all {
+  margin-left: 2%;
+  width: 20%;
+  border: none;
+  background: white;
+  color: green;
+}
 
 .submission-button {
   text-transform: uppercase;

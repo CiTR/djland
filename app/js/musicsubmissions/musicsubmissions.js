@@ -963,9 +963,9 @@ function displayReviewBox(data) {
 
 function displayReviewedBox(data) {
 
-  var id 				= data['id'];
+  var id 				      = data['id'];
   var artist      		= data['artist'];
-  var location   		= data['location'];
+  var location   		  = data['location'];
   var album       		= data['title'];
   var label       		= data['label'];
   var genre       		= data['genre'];
@@ -976,9 +976,9 @@ function displayReviewedBox(data) {
   var email       		= data['email'];
   var description 		= data['description'];
   var art_url     		= data['art_url'];
-  var review_comments 	= data['review_comments'];
-  var approved 			= data['approved'];
-  var songs             = data['songs']
+  var review_comments = data['review_comments'];
+  var approved 			  = data['approved'];
+  var songs           = data['songs']
 
   if (releasedate == "" || releasedate == null) {
     releasedate = "No date submitted";
@@ -1701,6 +1701,8 @@ function addTrackForm(fileName, trackNo) {
 
   childNode = document.createElement("input");
   childNode.setAttribute("class", "input-track-field input-track-field-composer");
+  var defaultComposer = document.getElementById("default-composer");
+  childNode.setAttribute("value", defaultComposer.value);
   divNode.appendChild(childNode);
 
   // Add the performer field
@@ -1711,10 +1713,26 @@ function addTrackForm(fileName, trackNo) {
 
   childNode = document.createElement("input");
   childNode.setAttribute("class", "input-track-field input-track-field-performer");
-  childNode.setAttribute("value", artistField.value);
+  var defaultPerformer = document.getElementById("default-performer");
+  childNode.setAttribute("value", defaultPerformer.value);
+  divNode.appendChild(childNode);
+
+  // Add the Include checkbox
+  childNode = document.createElement("label");
+  childNode.setAttribute("style", "clear:left;");
+  var grandChildNode = document.createElement("input");
+  grandChildNode.setAttribute("id", "include-" + trackNo);
+  grandChildNode.setAttribute("type", "checkbox");
+  grandChildNode.setAttribute("class", "inlude-track");
+  grandChildNode.setAttribute("style", "margin-right:20px;margin-left:5%;");
+  childNode.append(grandChildNode);
+  var deselectMsg = "Include (de-select this to remove track from submission)";
+  childNode.append(document.createTextNode(deselectMsg));
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
+
+  $("#include-" + trackNo).prop('checked', true);
 }
 
 //Delete from database - "hard" delete
