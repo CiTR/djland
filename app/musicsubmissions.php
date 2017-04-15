@@ -1075,21 +1075,28 @@
 						<br>
 					</div>
 					<div class="col1">
-						Album: 	<input id="adname" placeholder="Album" maxlength="15">
+						Album: 	<input id="past-album" placeholder="Album" maxlength="15">
 					</div>
 					<div class="col1">
-						Song: <input id="songname	" placeholder="Song" maxlength="15">
-					</div>
-					<div class="col1">
-						Artist: <input id="artistname" placeholder="Artist" maxlength="15">
+						Artist: <input id="past-artist" placeholder="Artist" maxlength="15">
 					</div>
 					<div id="col1">
-						<button id="submitDates_Past">View Past Submissions</button>
+						<button id="submitDates_Past" onclick="SubmitDates_Past()">View Past Submissions</button>
 					</div>
-					<div class="col1">
-					<br>
-					<hr>
-					<br>
+					<div id="submission_result" class="right overflow_auto height_cap" name="search">
+						<table class="submission_table" name="search">
+							<tbody name="pastAcceptedAndRejectedSubmissions">
+								<tr id="headerrow" style="display: table-row;">
+									<th>Artist</th>
+									<th>Album</th>
+									<th>Date of Submission</th>
+									<th>Cancon</th>
+									<th>Femcon</th>
+									<th>Local</th>
+									<th>Contact Info</th>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 					<div class="col1">
 						<h5>Generate New Digital Submissions Listings</h5>

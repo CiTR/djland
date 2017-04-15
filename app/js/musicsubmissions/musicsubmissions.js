@@ -688,10 +688,22 @@ function SubmitDates_Approved(){
 	}
 }
 
-$("#submitDates_Past").click(function(e){
-	// TODO: get search variables
-  getAndPopulatePastSubmissions();
-});
+function SubmitDates_Past(){
+  var date1 = $("#past-from").val();
+	var date2 = $("#past-to").val();
+  var artist = $("#past-artist").val();
+  var album = $("#past-album").val();
+
+  if(date1 == null || date2 == null) {
+		alert("Please enter a start date and an end date");
+	}
+	else if(date1 > date2) {
+		alert("Start date must be earlier than end date");
+	}
+	else {
+    getAndPopulatePastSubmissions(date1, date2, album, artist);
+  }
+}
 
 
 // on admins page, search past accepted submissions by date
@@ -747,9 +759,103 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
   });
 }
 
-// TODO: on admins page, search past submissions (accepted and rejected)
-function getAndPopulatePastSubmissions(){
+// on admins page, search past submissions (accepted and rejected)
+function getAndPopulatePastSubmissions(date1, date2, album, artist){
+  $.ajax({
+		url: "api2/public/submissions/bystatus/archived",
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			'date1':date1,
+			'date2':date2,
+      'album':album,
+      'artist':artist
+		},
+		async: true,
+    success: function(data) {
+			//clear out any rows already in the table
+			$("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
+			var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+			$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
 
+			if(data[0] != null){
+				for(var number in data) {
+					var item = (data[number]);
+
+					var cancon;
+					if(item['cancon'] == 1)
+						cancon = "yes";
+					else
+						cancon = "no";
+
+					var femcon;
+					if(item['femcon'] == 1)
+						femcon = "yes";
+					else
+						femcon = "no";
+
+					var local;
+					if(item['local'] == 1)
+						local = "yes";
+					else
+						local = "no";
+
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+				}
+			}
+    },
+		fail:function(data){
+			console.log("Getting past archived submissions failed. Response data: " + data);
+		}
+  });
+
+  $.ajax({
+		url: "api2/public/submissions/bystatus/rejected",
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			'date1':date1,
+			'date2':date2,
+      'album':album,
+      'artist':artist
+		},
+		async: true,
+    success: function(data) {
+			if(data[0] == null){
+				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+				$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+			} else{
+				for(var number in data) {
+					var item = (data[number]);
+
+					var cancon;
+					if(item['cancon'] == 1)
+						cancon = "yes";
+					else
+						cancon = "no";
+
+					var femcon;
+					if(item['femcon'] == 1)
+						femcon = "yes";
+					else
+						femcon = "no";
+
+					var local;
+					if(item['local'] == 1)
+						local = "yes";
+					else
+						local = "no";
+
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+				}
+			}
+    },
+		fail:function(data){
+			console.log("Getting past rejected submissions failed. Response data: " + data);
+		}
+  });
 }
 
 // Getting data for a specific submission given the ID and call the right function to display it.
@@ -1111,6 +1217,9 @@ var femArtistBox, commentField, cover, trackNumber, nameField;
 var composerField, performerField, albumViewer;
 var totalTracks = 0;
 var totalTrackSize = 0;
+var files;
+var songFiles = [];
+var albumFile;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -1450,7 +1559,6 @@ function submitForm() {
         for (var j = i + 1; j < trackNumberCheck.length; j++) {
           if (parseInt(trackNumberCheck[i]) == parseInt(trackNumberCheck[j])) {
             success = false;
-            // missing.push("\n Check for duplicate track numbers");
             alertString = "There are duplicate track numbers — please correct"
             duplicate = true;
             break;
@@ -1479,10 +1587,10 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
 
-      var input = $('#album-art-input-button').prop('files')[0];
-      if (input) data.append('art_url', input);
+      // var input = $('#album-art-input-button').prop('files')[0];
+      if (cover) data.append('art_url', cover);
 
-      createSubmission(data);
+      createSubmission(data, songFiles);
 
     } else {
       alert(alertString);
@@ -1504,13 +1612,13 @@ function handleAlbum(evt) {
         span.setAttribute('id', 'thumb-span');
         span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
         albumViewer.innerHTML = "";
-        // document.getElementById("album-viewer").insertBefore(span, null);
         albumViewer.insertBefore(span, null);
       };
     })(cover);
 
     reader.readAsDataURL(cover);
   } else if (cover.type.match('image.*')) {
+    cover = null;
     alert("Please choose a smaller image.");
   } else {
     alert("Please choose an image.");
@@ -1518,16 +1626,15 @@ function handleAlbum(evt) {
 }
 
 function handleTracks(evt) {
-  var files = evt.target.files;
+  var newFiles = evt.target.files;
   var filesAdded = 0;
   var fileWarning = false;
   var sizeWarning = false;
 
-  // TODO: Needs to remove non-music files from files[]
-  for (var i = 0, f; f = files[i]; i++) {
+  for (var i = 0, f; f = newFiles[i]; i++) {
 
     if (!f.type.match('audio.*')) {
-      warning = true;
+      fileWarning = true;
       continue;
     }
 
@@ -1538,6 +1645,7 @@ function handleTracks(evt) {
 
     var fileName = f.name;
     addTrackForm(fileName, (totalTracks + i + 1) );
+    songFiles[totalTracks + i] = f;
     filesAdded++;
 
     totalTrackSize += f.size;
@@ -1556,7 +1664,6 @@ function addTrackForm(fileName, trackNo) {
   // Add the file name
   var childNode = document.createElement("p");
   childNode.setAttribute("class", "track-file-name");
-  // TODO: use name of file given.
   childNode.appendChild(document.createTextNode("File name: " + fileName));
   divNode.appendChild(childNode);
 
@@ -1578,7 +1685,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-name");
   divNode.appendChild(childNode);
 
   // Add the composer field
@@ -1588,7 +1695,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-composer");
   divNode.appendChild(childNode);
 
   // Add the performer field
@@ -1598,7 +1705,7 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   childNode = document.createElement("input");
-  childNode.setAttribute("class", "input-track-field");
+  childNode.setAttribute("class", "input-track-field input-track-field-performer");
   childNode.setAttribute("value", artistField.value);
   divNode.appendChild(childNode);
 
