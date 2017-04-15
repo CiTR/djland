@@ -41,7 +41,7 @@
 				<br />
 				<br />
 				<div id="submisison_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
+					<table class="submission_table" id='genres_table' name="">
 						<thead>
 							<tr id="headerrow" style="display: table-row;">
 								<th>Name</th>
@@ -49,7 +49,7 @@
 								<th>Created By</th>
 								<th>Modified By</th>
 								<th>Last Modified</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="genres_delete_button">Delete</button></th>
 							</tr>
 						</thead>
 						<tbody id="genrelisting">
@@ -63,14 +63,14 @@
 				<br />
 				<br />
 				<div id="submisison_result" class="left overflow_auto height_cap" name="search">
-					<table id="submission_table" name="search">
+					<table class="submission_table" id='subgenres_table' name="">
 						<thead>
 							<tr id="headerrow" style="display: table-row;">
 								<th>Name</th>
 								<th>Created By</th>
 								<th>Modified By</th>
 								<th>Last Modified</th>
-								<th><button id="delete_button">Delete</button></th>
+								<th><button id="subgenres_delete_button">Delete</button></th>
 							</tr>
 						</thead>
 						<tbody id=subgenrelisting>
