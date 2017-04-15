@@ -7,6 +7,7 @@ var totalTracks = 0;
 var totalTrackSize = 0;
 var files;
 var songFiles = [];
+var albumFile;
 
 window.addEventListener('load', function() {
   form           = document.getElementById("submit-field");
@@ -174,8 +175,8 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
 
-      var input = $('#album-art-input-button').prop('files')[0];
-      if (input) data.append('art_url', input);
+      // var input = $('#album-art-input-button').prop('files')[0];
+      if (cover) data.append('art_url', input);
 
       var arturl = createSubmission(data, songFiles);
 
@@ -206,6 +207,7 @@ function handleAlbum(evt) {
 
     reader.readAsDataURL(cover);
   } else if (cover.type.match('image.*')) {
+    cover = null;
     alert("Please choose a smaller image.");
   } else {
     alert("Please choose an image.");
