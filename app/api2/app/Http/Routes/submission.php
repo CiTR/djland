@@ -365,13 +365,76 @@ Route::group(['middleware' => 'auth'], function(){
             if(!$result->isEmpty()) return Response::json( $result );
             else return Response::json();
         });
-        // TODO: Search past submissions (rejected & archived) on admins page
-        Route::get('/bystatus/rejectedandarchived', function(){
-            return Response::json();
+        // Search past submissions (archived) on admins page
+        Route::get('/bystatus/archived', function(){
+            $date1 = Input::get('date1');
+            $date2 = Input::get('date2');
+            $album = Input::get('album');
+            $artist = Input::get('artist');
+
+            if($date1 != null && $date2 != null) {
+                if($album != null) {
+                    if($artist != null) {
+                      $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('title', '=', $album)->where('artist', '=', $artist)->get();
+                      // search rejected
+                    } else {
+                      $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('title', '=', $album)->get();
+                    }
+                } else {
+                  if($artist != null) {
+                    $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('artist', '=', $artist)->get();
+                    // search rejected
+                  } else {
+                    $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->get();
+                  }
+                }
+            } else if ($album != null) {
+                if ($artist != null) {
+                  $result = Archive::where('artist', '=', $artist)->where('title', '=', $album)->get();
+                } else {
+                  $result = Archive::where('title', '=', $album)->get();
+                }
+            } else if ($artist != null) {
+                 = Archive::where('artist', '=', $artist)->get();
+            }
+
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
-        // TODO: Search past rejected submissions
-        Route::get('/rejected', function(){
-            return Response::json();
+        // Search past submissions (rejected) on admins page
+        Route::get('/bystatus/rejected', function(){
+            $date1 = Input::get('date1');
+            $date2 = Input::get('date2');
+            $album = Input::get('album');
+            $artist = Input::get('artist');
+
+            if($date1 != null && $date2 != null) {
+                if($album != null) {
+                    if($artist != null) {
+                      $result = Rejected::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('title', '=', $album)->where('artist', '=', $artist)->get();
+                    } else {
+                      $result = Rejected::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('title', '=', $album)->get();
+                    }
+                } else {
+                  if($artist != null) {
+                    $result = Rejected::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->where('artist', '=', $artist)->get();
+                    // search rejected
+                  } else {
+                    $result = Rejected::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->get();
+                  }
+                }
+            } else if ($album != null) {
+                if ($artist != null) {
+                  $result = Rejected::where('artist', '=', $artist)->where('title', '=', $album)->get();
+                } else {
+                  $result = Rejected::where('title', '=', $album)->get();
+                }
+            } else if ($artist != null) {
+                 = Rejected::where('artist', '=', $artist)->get();
+            }
+
+            if(!$result->isEmpty()) return Response::json( $result );
+            else return Response::json();
         });
         //Post to this route when a user reviews a new submisison
         //Requires: id (ie. submission id), review_comments(text), and approved (0 or 1)

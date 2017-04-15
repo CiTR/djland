@@ -680,10 +680,22 @@ function SubmitDates_Approved(){
 	}
 }
 
-$("#submitDates_Past").click(function(e){
-	// TODO: get search variables
-  getAndPopulatePastSubmissions();
-});
+function SubmitDates_Past(){
+  var date1 = $("#past-from").val();
+	var date2 = $("#past-to").val();
+  var artist = $("#past-artist").val();
+  var album = $("#past-album").val();
+
+  if(date1 == null || date2 == null) {
+		alert("Please enter a start date and an end date");
+	}
+	else if(date1 > date2) {
+		alert("Start date must be earlier than end date");
+	}
+	else {
+    getAndPopulatePastSubmissions(date1, date2, album, artist);
+  }
+}
 
 
 // on admins page, search past accepted submissions by date
@@ -739,9 +751,103 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
   });
 }
 
-// TODO: on admins page, search past submissions (accepted and rejected)
-function getAndPopulatePastSubmissions(){
+// on admins page, search past submissions (accepted and rejected)
+function getAndPopulatePastSubmissions(date1, date2, album, artist){
+  $.ajax({
+		url: "api2/public/submissions/bystatus/archived",
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			'date1':date1,
+			'date2':date2,
+      'album':album,
+      'artist':artist
+		},
+		async: true,
+    success: function(data) {
+			//clear out any rows already in the table
+			$("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
+			var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+			$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
 
+			if(data[0] != null){
+				for(var number in data) {
+					var item = (data[number]);
+
+					var cancon;
+					if(item['cancon'] == 1)
+						cancon = "yes";
+					else
+						cancon = "no";
+
+					var femcon;
+					if(item['femcon'] == 1)
+						femcon = "yes";
+					else
+						femcon = "no";
+
+					var local;
+					if(item['local'] == 1)
+						local = "yes";
+					else
+						local = "no";
+
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+				}
+			}
+    },
+		fail:function(data){
+			console.log("Getting past archived submissions failed. Response data: " + data);
+		}
+  });
+
+  $.ajax({
+		url: "api2/public/submissions/bystatus/rejected",
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			'date1':date1,
+			'date2':date2,
+      'album':album,
+      'artist':artist
+		},
+		async: true,
+    success: function(data) {
+			if(data[0] == null){
+				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
+				$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+			} else{
+				for(var number in data) {
+					var item = (data[number]);
+
+					var cancon;
+					if(item['cancon'] == 1)
+						cancon = "yes";
+					else
+						cancon = "no";
+
+					var femcon;
+					if(item['femcon'] == 1)
+						femcon = "yes";
+					else
+						femcon = "no";
+
+					var local;
+					if(item['local'] == 1)
+						local = "yes";
+					else
+						local = "no";
+
+					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
+				}
+			}
+    },
+		fail:function(data){
+			console.log("Getting past rejected submissions failed. Response data: " + data);
+		}
+  });
 }
 
 // Getting data for a specific submission given the ID and call the right function to display it.
