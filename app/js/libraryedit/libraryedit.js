@@ -50,7 +50,7 @@ function saveEntry(source) {
   var title   = $("#title" + entryID).val();
   var artist  = $("#artist" + entryID).val();
   var label   = $("#label" + entryID).val();
-  var genreDropdown   = document.getElementById("genre" + entryID);
+  var genreDropdown = document.getElementById("genre" + entryID);
   var genre;
   if(genreDropdown.selectedIndex == 0) {
     genre = null;

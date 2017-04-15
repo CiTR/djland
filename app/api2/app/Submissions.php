@@ -14,7 +14,8 @@ class Submissions extends Model
     'art_url','review_comments','staff_comment','created_at','updated_at' );
 
     public function songs(){
-        return $this->hasMany('App\SubmissionsSongs','submission_id');
+        //Order by track number so loops that display songs do so in order
+        return $this->hasMany('App\SubmissionsSongs','submission_id')->orderBy('track_num','desc');
     }
 
 }
