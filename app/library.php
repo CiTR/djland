@@ -259,7 +259,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 			printf("<td align=right>in SAM:<br><br> </td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
             if( mysqli_result_dep($sresult,0,"art_url") != null ){
                 printf("<tr><td></td><td align=right>Album Art (click to enlarge): &nbsp</td><td><a href=\"".mysqli_result_dep($sresult,0,"art_url")."\" data-lightbox=\"image\"><img height=100px width=100px src=\"".mysqli_result_dep($sresult,0,"art_url")."\"></img></a></td><td></td></tr>");
-            }elseif(permission_level() >= $djland_permission_levels['volunter_leader']['level']){
+            }elseif(permission_level() >= $djland_permission_levels['volunteer_leader']['level']){
                 printf("<tr><td colspan=4>No album art for this album.</td></tr><tr><td colspan=4>Upload Art Here:<br><br></td></tr>");
                 printf("<tr><td colspan=4><label for='libraryArtUpload' class='button'></label><input type='file' id='libraryArtUpload' class='show-for-sr'>&nbsp<button id='libraryArtUploadBtn'>Upload</button></td></tr>");
             }else{
