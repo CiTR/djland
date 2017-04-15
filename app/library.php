@@ -4,11 +4,14 @@ require_once("headers/menu_header.php");
 ?>
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+<link rel="stylesheet" href="css/lightbox.min.css" >
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | music library</title>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/library-js.js"></script>
+<script type='text/javascript' src="js/lightbox.min.js"></script>
+
 
 <?php
 //<script src="js/jquery.form.js"></script>
@@ -226,7 +229,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 	}
 
     //Yes I'm doing this, sue me I have a deadline...
-    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id =$id");
+    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id =$id order by 'track_num' asc");
 
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
@@ -239,22 +242,30 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		printf("<hr width=80%%><br />");
 	if(mysqli_num_rows($sresult)) {
 			printf("<table id=\"libraryRecordResult\" name=\"libraryRecord\"" . $id . " align=center border=0>");
-			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
-			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
-			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
-			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
-			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
-			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
-			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
-			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
-			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
-			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
-			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-			printf("<tr><td>Local: %s</td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-			printf("<td>Playlist: %s</td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-			printf("<tr><td>Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
-			printf("<tr><td>in SAM: %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
-			printf("</table><br>");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td><td> </td><td> </td><tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"format"));
+			printf("<td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td><td> </td> <td> </td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			printf("<tr><td align=right>Added:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"added"));
+			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			printf("<tr ><td align=right>Cancon: </td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+            printf("<td align=right>Playlist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+            printf("<tr><td align=right>Femcon: </td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+            printf("<td align=right>Compilation: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+            printf("<tr><td align=right>Local:<br><br> </td><td align=left> %s<br><br></td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<td align=right>in SAM:<br><br> </td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+            if( mysqli_result_dep($sresult,0,"art_url") != null ){
+                printf("<tr><td></td><td align=right>Album Art (click to enlarge): &nbsp</td><td><a href=\"".mysqli_result_dep($sresult,0,"art_url")."\" data-lightbox=\"image\"><img height=100px width=100px src=\"".mysqli_result_dep($sresult,0,"art_url")."\"></img></a></td><td></td></tr>");
+            }elseif(permission_level() >= $djland_permission_levels['volunteer_leader']['level']){
+                printf("<tr><td colspan=4>No album art for this album.</td></tr><tr><td colspan=4>Upload Art Here:<br><br></td></tr>");
+                printf("<tr><td colspan=4><label for='libraryArtUpload' class='button'></label><input type='file' id='libraryArtUpload' class='show-for-sr'>&nbsp<button id='libraryArtUploadBtn'>Upload</button></td></tr>");
+            }else{
+                printf("<tr><td></td><td align=left>No album art for this album. Contact the music department to get this changed!</td><td></td><td></td></tr>");
+            }
+            printf("</table><br>");
 	}
 	else {
 		printf("<br>No Such Record...<br><br>");
