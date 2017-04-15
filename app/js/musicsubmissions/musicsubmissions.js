@@ -1696,6 +1696,8 @@ function addTrackForm(fileName, trackNo) {
 
   childNode = document.createElement("input");
   childNode.setAttribute("class", "input-track-field input-track-field-composer");
+  var defaultComposer = document.getElementById("default-composer");
+  childNode.setAttribute("value", defaultComposer.value);
   divNode.appendChild(childNode);
 
   // Add the performer field
@@ -1706,7 +1708,8 @@ function addTrackForm(fileName, trackNo) {
 
   childNode = document.createElement("input");
   childNode.setAttribute("class", "input-track-field input-track-field-performer");
-  childNode.setAttribute("value", artistField.value);
+  var defaultPerformer = document.getElementById("default-performer");
+  childNode.setAttribute("value", defaultPerformer.value);
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
