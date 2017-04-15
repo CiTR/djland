@@ -75,7 +75,7 @@ img.emoji {
 				&#9733; Artist / Band name: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup" name='artist'>
 			</div>
 			<div style="width:50%;float:right;">
-				&#9733; Contact email: <input type="text" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com" name='email'>
+				&#9733; Contact email: <input type="email" id="contact-email" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com" name='email'>
 			</div>
 		</div>
 		<div class="album-row">
