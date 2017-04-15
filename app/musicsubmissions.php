@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<link rel=stylesheet href='css/style.css' type='text/css'>
 	    <link rel="stylesheet" href="./station-js/trackform.css" />
-        <link rel="stylesheet" href="css/lightbox.css" >
+        <link rel="stylesheet" href="css/lightbox.min.css" >
 
 		<title>DJLAND | Music Submissions</title>
 
@@ -23,7 +23,7 @@
 	    <script type='text/javascript' src='js/constants.js'/></script>
 
 
-        <script type='text/javascript' src="js/lightbox.js"></script>
+        <script type='text/javascript' src="js/lightbox.min.js"></script>
 
         <script type='text/javascript' src='js/membership/functions.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
