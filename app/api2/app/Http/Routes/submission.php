@@ -2,7 +2,7 @@
 
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
-use App\SubmissionsRejected as Rejected;
+use App\Submissions_Rejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
 use App\TypesFormat as TypesFormat;
@@ -571,9 +571,9 @@ Route::group(['middleware' => 'auth'], function(){
                     'local' => 'required|boolean',
                     'description' => 'required',
                     'catalog' => 'required',
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', '),
                     'submitted' => 'required|date:Y-m-d',
                     'review_comments' => 'required',
-                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
                 );
             //validate incoming data
             $validator = Validator::make(Input::all(),$rules);
@@ -581,19 +581,18 @@ Route::group(['middleware' => 'auth'], function(){
                 try{
                     $archive = Archive::create([
                         //TODO: Refuse if req'd parameters not included or are null
-                        'artist' => $newInput.artist,
-                        'title' => $newInput.title,
-                        'contact' => $newInput.contact,
-                        'label' => $newInput.label,
+                        'artist' => $newInput['artist'],
+                        'title' => $newInput['title'],
+                        'contact' => $newInput['contact'],
+                        'label' => $newInput['label'],
                         'cancon' => Input::get('cancon'),
                         'femcon' => Input::get('femcon'),
                         'local' => Input::get('local'),
-                        'description' => $newInput.description,
-                        'catalog' => $newInput.catalog,
+                        'description' => $newInput['description'],
+                        'catalog' => $newInput['catalog'],
                         'format_id' => Input::get('format_id'),
                         'submitted' => Input::get('submitted'),
-                        'review_comments' => $newInput.review_comments,
-
+                        'review_comments' => $newInput['review_comments'],
                     ]);
                     return $archive->id;
                 } catch(Exception $e){
@@ -624,31 +623,29 @@ Route::group(['middleware' => 'auth'], function(){
                     'local' => 'required|boolean',
                     'description' => 'required',
                     'catalog' => 'required',
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', '),
                     'submitted' => 'required|date:Y-m-d',
                     'review_comments' => 'required',
-                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
                 );
             //validate incoming data
             $validator = Validator::make(Input::all(),$rules);
             if(!$validator->fails()){
                 try{
-                    $reject = Rejected::create([
-                        //TODO: Refuse if req'd parameters not included or are null
-                        'artist' => $newInput.artist,
-                        'title' => $newInput.title,
-                        'contact' => $newInput.contact,
-                        'label' => $newInput.label,
+                    $rejected = Rejected::create([
+                        'artist' => $newInput['artist'],
+                        'title' => $newInput['title'],
+                        'contact' => $newInput['contact'],
+                        'label' => $newInput['label'],
                         'cancon' => Input::get('cancon'),
                         'femcon' => Input::get('femcon'),
                         'local' => Input::get('local'),
-                        'description' => $newInput.description,
-                        'catalog' => $newInput.catalog,
+                        'description' => $newInput['description'],
+                        'catalog' => $newInput['catalog'],
                         'format_id' => Input::get('format_id'),
                         'submitted' => Input::get('submitted'),
-                        'review_comments' => $newInput.review_comments,
-
+                        'review_comments' => $newInput['review_comments'],
                     ]);
-                    return $reject->id;
+                    return $archive->id;
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
