@@ -124,7 +124,8 @@ function add_submission_handlers(){
       var in_sam        = +$("#in_sam-approved").is(':checked');
       var playlist      = +$("#playlist-approved").is(':checked');
 
-      tagReview(tag, id, catNo, format, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam,playlist);
+      tagReview(tag, id, catNo, format, album, artist, credit, label, genre,
+                cancon, femcon, local, compilation, in_sam,playlist);
   	});
 
     $("#approve-album-button").off('click').on('click', function(e) {
@@ -144,7 +145,10 @@ function add_submission_handlers(){
       var compilation   = +$("#compilation-tagged").is(':checked');
       var in_sam        = +$("#in_sam-tagged").is(':checked');
       var playlist      = +$("#playlist-tagged").is(':checked');
-      approveTags(tag, submission_id, catalog, format_id, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam, playlist);
+      var art_url       = $('#albumArt-tagged').attr('src');
+      approveTags(tag, submission_id, catalog, format_id, album, artist, credit,
+                  label, genre, cancon, femcon, local, compilation, in_sam,
+                  playlist, art_url);
     });
 
 	//Listener for preventing catalog # from being anything but a number
