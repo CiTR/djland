@@ -1608,6 +1608,43 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-top: 200px;
   width: 300px;
 }
+
+/*----------------------------*/
+
+/*----DataTable CSS ------*/
+
+/*----------------------------*/
+
+table.dataTable tbody tr {
+  background-color: grey;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper
+.dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+  color: #ffffff;
+}
+
+table.dataTable.cell-border {
+  border-bottom: 1px solid #ddd;
+}
+
+/*----------------------------*/
+
+/*------- Set Socan CSS ------*/
+
+/*----------------------------*/
+
+#socanTable.dataTable tbody tr {
+  background-color: transparent;
+}
+
+#socanTable.dataTable tbody tr:hover {
+  background-color: blue;
+}
 /*
 *	Open Playsheet CSS
 */
@@ -2608,21 +2645,4 @@ submission_table tr th {
   -moz-box-shadow: inset 0px 0px 1px #BEBEBE;
   -webkit-box-shadow: inset 0px 0px 1px #BEBEBE;
   box-shadow: inset 0px 0px 1px #BEBEBE;
-}
-
-table.dataTable tbody tr {
-  background-color: grey;
-}
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper
-.dataTables_processing,
-.dataTables_wrapper .dataTables_paginate {
-  color: #ffffff;
-}
-
-table.dataTable.cell-border {
-  border-bottom: 1px solid #ddd;
 }
