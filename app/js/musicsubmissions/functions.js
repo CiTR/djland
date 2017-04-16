@@ -28,16 +28,18 @@ function createSubmission(data, songs) {
     // var trackFile = $('#new-track-button-input').prop('files')[i];
     var trackFile = songs[i];
     var x = $(tracks.get(i));
-    var a = new FormData();
-    a.append('number', x.find(".track-number-field").val());
-    a.append('name', x.find(".input-track-field-name").val());
-    a.append('composer', x.find(".input-track-field-composer").val());
-    a.append('performer', x.find(".input-track-field-performer").val());
-    a.append('file', trackFile);
-    a.append('filename', trackFile.name);
-    console.log(x.find(".input-track-field-name").val());
+    if (x.find(".include-track").is(":checked")) {
+      var a = new FormData();
+      a.append('number', x.find(".track-number-field").val());
+      a.append('name', x.find(".input-track-field-name").val());
+      a.append('composer', x.find(".input-track-field-composer").val());
+      a.append('performer', x.find(".input-track-field-performer").val());
+      a.append('file', trackFile);
+      a.append('filename', trackFile.name);
+      console.log(x.find(".input-track-field-name").val());
 
-    createTrackSubmission(a, data, trackFile.name);
+      createTrackSubmission(a, data, trackFile.name);
+    }
   }
   return data;
   })

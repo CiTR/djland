@@ -1475,34 +1475,28 @@ function submitForm() {
 
     if (artist == "") {
       success = false;
-      // missing.push("\n• Artist / Band name");
       alertString += "\n• Artist / Band name";
     }
     if (email == "") {
       success = false;
-      // missing.push("\n• Contact email");
       alertString += "\n• Contact email";
     }
     if (location == "") {
       success = false;
-      // missing.push("\n• Home city");
       alertString += "\n• Home city";
     }
     if (title == "") {
       success = false;
-      // missing.push("\n• Album name");
       alertString += "\n• Album name";
     }
     if (genre == "") {
       success = false;
-      // missing.push("\n• Genre");
       alertString += "\n• Genre";
     }
 
     // Check that files have been added
     var tracks = $("#submit-field").children();
     if (tracks.length < 1) {
-      // missing.push("\n• Music files to upload");
       alertString += "\n• Music files to upload";
       success = false;
     }
@@ -1512,6 +1506,7 @@ function submitForm() {
     var missingTrackNumbers = 0;
     var missingTrackNames = 0;
     var trackNumError = false;
+    var totalTracksChecked = 0;
 
     for (var i = 0; i < tracks.length; i++) {
 
@@ -1519,11 +1514,14 @@ function submitForm() {
 
       var trackNumberValue = thisTrack.find(".track-number-field").val();
       var trackName        = thisTrack.find(".input-track-field").val();
+      var checked          = thisTrack.find(".include-track").is(":checked");
 
       if (trackName == "") {
         success = false;
         missingTrackNames++;
       }
+
+      if (checked) totalTracksChecked++;
 
       if (trackNumberValue == "" ) {
         success = false;
@@ -1552,6 +1550,12 @@ function submitForm() {
       alertString += "\n\n Only numbers may be used in the track number field";
     }
 
+    if ((totalTracksChecked < 1) && (tracks.length > 0)) {
+      console.log(totalTracksChecked);
+      success = false;
+      alertString += "\nPlease add your files to the upload by clicking the checkboxes.";
+    }
+
     if (success) { // possibly add sorting algorithm here in case of large array
       var duplicate = false;
       for (var i = 0; i < trackNumberCheck.length; i++) {
@@ -1566,6 +1570,8 @@ function submitForm() {
         }
       }
     }
+
+    console.log("before success");
 
 
     if (success) {
@@ -1587,12 +1593,12 @@ function submitForm() {
       data.append('description', description);
       data.append('songlist', 10);
 
-      // var input = $('#album-art-input-button').prop('files')[0];
       if (cover) data.append('art_url', cover);
 
       createSubmission(data, songFiles);
 
     } else {
+      console.log(alertString);
       alert(alertString);
     }
   }
@@ -1713,16 +1719,16 @@ function addTrackForm(fileName, trackNo) {
   divNode.appendChild(childNode);
 
   // Add the Include checkbox
+  childNode = document.createElement("input");
+  childNode.setAttribute("id", "include-" + trackNo);
+  childNode.setAttribute("type", "checkbox");
+  childNode.setAttribute("class", "include-track");
+  childNode.setAttribute("style", "margin-right:15px;margin-left:5%;");
+  divNode.appendChild(childNode);
+
   childNode = document.createElement("label");
-  childNode.setAttribute("style", "clear:left;");
-  var grandChildNode = document.createElement("input");
-  grandChildNode.setAttribute("id", "include-" + trackNo);
-  grandChildNode.setAttribute("type", "checkbox");
-  grandChildNode.setAttribute("class", "inlude-track");
-  grandChildNode.setAttribute("style", "margin-right:20px;margin-left:5%;");
-  childNode.append(grandChildNode);
-  var deselectMsg = "Include (de-select this to remove track from submission)";
-  childNode.append(document.createTextNode(deselectMsg));
+  childNode.setAttribute("for", "include-" + trackNo);
+  childNode.appendChild(document.createTextNode("Include (de-select to remove track from submission)"));
   divNode.appendChild(childNode);
 
   form.appendChild(divNode);
