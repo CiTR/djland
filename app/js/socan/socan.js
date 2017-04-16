@@ -1,6 +1,13 @@
 $(function() {
+	if(!($.fn.dataTable.isDataTable("#socanTable"))){
+		$("#socanTable").DataTable({
+			stateSave:true
+		});
+	}
+	
 	$( "#from" ).datepicker({
-		defaultDate: "+0d",
+		dateFormat: "yy-mm-dd",
+
 		changeMonth: true,
 		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
@@ -8,7 +15,7 @@ $(function() {
 		}
 	});
 	$( "#to" ).datepicker({
-		defaultDate: "+0d",
+		dateFormat: "yy-mm-dd",
 		changeMonth: true,
 		numberOfMonths: 1,
 		onClose: function( selectedDate ) {
@@ -17,13 +24,14 @@ $(function() {
 	});
 
 	$('.deletePeriod').click(function (){
+		//strip the string to get numeric ID
 		var id = $(this).attr("id").replace('socanDelete','');
 
 		console.log(id);
 		var text = $.ajax({
-			type: "POST", // HTTP method POST or GET
-			url: "form-handlers/socan_delete.php", //Where to make Ajax calls
-			data:{id:id},
+			type: "DELETE",
+			url: "api2/public/socan/"+id, //Where to make Ajax calls
+			data:{idSocan:id},
 			beforeSend: function(data) {
 				$('#loadStatus2').html('<img src="./images/loading.gif" alt="Loading..."/>');
 			},
@@ -41,24 +49,13 @@ $(function() {
 				alert(thrownError);
 			}
 		});
-	});	
-
-
-
-
-
+	});
 
 	$('#createPeriod').click(function(){
-		var id;
-		var datefrom = $('#from').val();
-		var dateto = $('#to').val();
-		console.log(datefrom);
-		console.log(dateto);
-
 		var text = $.ajax({
-		type: "POST",
-		url: "form-handlers/socan-handler.php",
-		data: {datePicked:'true',from:datefrom,to:dateto},
+		type: "PUT",
+		url: "api2/public/socan/",
+		data: {"socanStart":$('#from').val(), "socanEnd":$('#to').val()},
 		//	data: 'hello',
 		beforeSend: function() {
 			$('#loadStatus').html('<img src="./images/loading.gif" alt="Loading..."/>');
@@ -67,16 +64,21 @@ $(function() {
 			// when either error or success has occurred
 			$('#loadStatus').html('done');
 		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) { 
-			alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-
-		},   
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Status: " + textStatus); alert("Error: " + errorThrown);
+		},
 		success: function(text){
+			$("#socanTable").DataTable().clear();
+		    $("#socanTable").DataTable().destroy();
 			$('#loadStatus').html('Success!');// ALSO CHECK FOR NUM LOADED
-			//$('#socanTable').append( $('#rowtemplate').cloneNode(true) );
+			$('#socanTable').append( "<tr id='row'"+text.idSocan+"><td>"+text.idSocan+"</td><td>"+text.socanStart+"</td><td>"+text.socanEnd+"</td><td><button id='socanDeletetemplate' class='deletePeriod'>Delete this period</button></td></tr>");
+			if(!($.fn.dataTable.isDataTable("#socanTable"))){
+	            $("#socanTable").DataTable({
+	                stateSave:true
+	            });
+	        }
 			$('#result').html(text);
-
-			}  
-		});	
+			}
+		});
 	});
 });

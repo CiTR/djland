@@ -55,7 +55,7 @@ div.ui-datepicker{
    /* Now your own custom styles */
    height: 10px;
    width: 10px;
-   background-image: url('../images/x.png');   
+   background-image: url('../images/x.png');
  }
 /*
  * License Styling
@@ -133,4 +133,30 @@ div.ui-datepicker{
 	margin-right: auto;
 	margin-top: 200px;
 	width:300px;
+}
+
+/*----------------------------*/
+/*----DataTable CSS ------*/
+/*----------------------------*/
+table.dataTable tbody tr{
+    background-color: grey;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info, .dataTables_wrapper
+.dataTables_processing, .dataTables_wrapper .dataTables_paginate{
+    color: #ffffff;
+}
+
+table.dataTable.cell-border{
+    border-bottom: 1px solid #ddd
+}
+
+/*----------------------------*/
+/*------- Set Socan CSS ------*/
+/*----------------------------*/
+#socanTable.dataTable tbody tr{
+    background-color: transparent;
+}
+#socanTable.dataTable tbody tr:hover{
+    background-color: blue;
 }

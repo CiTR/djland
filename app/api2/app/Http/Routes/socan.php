@@ -8,9 +8,9 @@ Route::group(array('prefix'=>'socan'),function(){
 		return Socan::all();
 	});
 	Route::put('/',function(){
-		return Socan::create((array) Input::get()['socan']);
+		return Socan::create((array) Input::get());
 	});
-	Route::group(array('prefix'=>'{id}'),function($id = id){
+	Route::group(array('prefix'=>'/{id}'),function($id = id){
 		Route::post('/',function($id){
 			return Response::json(Socan::find($id)->update((array) Input::get()['socan']));
 		});

@@ -1,0 +1,7 @@
+dupe nuker not working, but non-essential
+0000-00-00 is no longer a valid sql date
+No friends of citr image upload found
+Ad scheduler goes in endless loop if it can't find a SAM category
+Ad scheduler and SAM integration is very tightly coupled - one shouldn't be enabled without the other the way the code is written
+Same with SAM Ad History - should be disabled if SAM integration is off
+Socan Period needs to move to API - some functions still depend on socan handler

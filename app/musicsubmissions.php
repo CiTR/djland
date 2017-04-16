@@ -10,7 +10,7 @@
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<meta charset="utf-8">
-        <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="css/jquery.dataTables.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<link rel=stylesheet href='css/style.css' type='text/css'>
 	    <link rel="stylesheet" href="./station-js/trackform.css" />
@@ -38,7 +38,7 @@
   -->
 
 
-        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+        <script src="js/jquery.dataTables.min.js"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
