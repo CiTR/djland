@@ -8,7 +8,9 @@ class Library extends Model
     protected $table = 'library';
     const CREATED_AT = 'added';
     const UPDATED_AT = 'modified';
-    protected $fillable = array( 'id','format_id','catalog','crtc','cancon','femcon','local','playlist','compilation','digitized','status','artist','title','label','genre','added','modified','description','email','art_url');
+    protected $fillable = array( 'id','format_id','catalog','crtc','cancon',
+    'femcon','local','playlist','compilation','digitized','status','artist',
+    'title','label','genre','added','modified','description','email','art_url');
 
     public function songs(){
         return $this->hasMany('App\LibrarySongs','library_id');

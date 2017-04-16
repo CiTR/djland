@@ -2,57 +2,57 @@
 
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
-use App\Submissions_Rejected as Rejected;
+use App\SubmissionsRejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
-use App\SubmissionsSongs as Songs;
+use App\TypesFormat as TypesFormat;
+use App\Genre as Genre;
 use Carbon\Carbon;
+use HTMLPurifier as Purifier;
 use Validator as Validator;
 
 
 //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
-
-  // echo Input::file('art_url');
-  // echo " ".File::extension(Input::file('art_url'))." ";
-
+    $purifier = new Purifier;
+    //prevent XSS
+    foreach(Input::all() as $key=>$value){
+        $newInput[$key] = $purifier->purify($value);
+    }
+    $formatsValid = "";
+    $formats = TypesFormat::select('id')->get();
+    foreach( $formats as $i ){
+        $formatsValid .= $i['id'] . ',';
+    }
+    //Check that genre is valid
+    if(Genre::where('genre','like',Input::get('genre'))->get()->count() == 0){
+        return response("Invalid genre specified, you must use a Genre defined in the Genre Manager",422);
+    } else {
+        $ingenre = Input::get('genre');
+    }
     $rules = array(
-        //TODO: every field that is an input doesn't accept carriage returns
             'artist' =>'required',
             'title' => 'required',
             'genre' => 'required',
             'email' => 'required|email',
-//            'label' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-//            'location' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-//            'credit' => 'regex:/^[\pL\-\_\,\.\(\)\/\\\~\!\@\#\$\&\*\ ]+$/u',
+            'label' => '',
+            'location' => '',
+            'credit' => '',
             'releasedate' => 'date_format:Y-m-d',
             'cancon' => 'required|boolean',
             'femcon' => 'required|boolean',
             'local' => 'required|boolean',
             //Descrription can have a carraige return
-//            'description' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ \]+$/u',
+            'description' => '',
             'art_url' => 'image',
-            'songlist' => 'integer',
-            //TODO: get from DB
-            'format_id' => 'in:1,2,3,4,5,6,7,8'
+            'format_id' => 'required|in:'.rtrim($formatsValid,', ')
         );
-        //validate incoming data
+    //validate incoming data
     $validator = Validator::make(Input::all(),$rules);
 
-   if(!$validator->fails()){
-//         if (true) {
+    if(!$validator->fails()){
         try{
-            //TODO: track songlist properly (new table?)
-            $songlist_id = 0;
-            //TODO: Maintain genre data integrity
-            //require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
-            //foreach($primary_genres as $genre) {
-            //    if(Input::get('genre') == $genre){
-                    $ingenre = Input::get('genre');
-            //    } else {
-            //        return "Invalid genre specified";
-            //    }
             //Default to "Self released" if the label is not specified
             if(Input::get('label') == null){
                 $label = "Self-released";
@@ -94,7 +94,6 @@ Route::post('/submission', function(){
                 'description' => Input::get('description'),
                 // 'art_url' => Input::get('art_url'),
                 'art_url' => $path,
-                'songlist' => $songlist_id,//Input::get('songlist'),
                 'format_id' => Input::get('format_id'),
                 'status' => 'unreviewed',
                 'submitted' => Carbon::today()->toDateString(),
@@ -156,7 +155,7 @@ Route::post('/song/{id}', function($id) {
 
     $path = "/uploads/submissions/".$id.'/'.$filename;
 
-    $newsong = Songs::create([
+    $newsong = SubmissionsSongs::create([
       'submission_id' => $id,
       'artist' => $performer,
       'album-artist' => $submission->artist,
