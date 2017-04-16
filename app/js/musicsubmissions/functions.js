@@ -19,34 +19,33 @@ function createSubmission(data, songs) {
   })
 
   .done(function(data) {
-  var successBox = document.getElementById("submit-button-div");
-  successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
+    var successBox = document.getElementById("submit-button-div");
+    successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
 
-  var tracks = $("#submit-field").children();
+    var tracks = $("#submit-field").children();
 
-  for (var i = 0; i < tracks.length; i++) {
-    // var trackFile = $('#new-track-button-input').prop('files')[i];
-    var trackFile = songs[i];
-    var x = $(tracks.get(i));
-    if (x.find(".include-track").is(":checked")) {
-      var a = new FormData();
-      a.append('number', x.find(".track-number-field").val());
-      a.append('name', x.find(".input-track-field-name").val());
-      a.append('composer', x.find(".input-track-field-composer").val());
-      a.append('performer', x.find(".input-track-field-performer").val());
-      a.append('file', trackFile);
-      a.append('filename', trackFile.name);
-      console.log(x.find(".input-track-field-name").val());
+    for (var i = 0; i < tracks.length; i++) {
 
-      createTrackSubmission(a, data, trackFile.name);
+      var trackFile = songs[i];
+      var x = $(tracks.get(i));
+      if (x.find(".include-track").is(":checked")) {
+        var a = new FormData();
+        a.append('number', x.find(".track-number-field").val());
+        a.append('name', x.find(".input-track-field-name").val());
+        a.append('composer', x.find(".input-track-field-composer").val());
+        a.append('performer', x.find(".input-track-field-performer").val());
+        a.append('file', trackFile);
+        a.append('filename', trackFile.name);
+        console.log(data);
+        console.log(x.find(".input-track-field-name").val());
+
+        createTrackSubmission(a, data, trackFile.name);
+      }
     }
-  }
-  return data;
+    return data;
   })
 
   .fail(function(data) {
-    // var response = $.parseJSON(data);
-    // console.log(response);
     alert("Submissions failed. Please make sure your email is entered correctly.");
   });
 }

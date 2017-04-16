@@ -50,7 +50,7 @@ Route::post('/submission', function(){
             if(Input::get('label') == null){
                 $label = "Self-released";
             } else{
-                $label = $newInput.label;
+                $label = Input::get('label');
             }
 
             $albumArt = Input::file('art_url');
