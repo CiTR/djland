@@ -229,7 +229,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 	}
 
     //Yes I'm doing this, sue me I have a deadline...
-    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id =$id order by 'track_num' asc");
+    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id=$id order by 'track_num' asc");
 
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
@@ -293,6 +293,10 @@ printf("</div>");
                         if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3"))
                         {
                             //Restrict audio to 30s
+                            //First make a file in the system temp Directory
+                            //This isn't necessary if the file we're slicing down to 30s
+                            //is on the local machine. But if it's somewhere
+                            //at a URL this is needed
                             $file = tempnam(sys_get_temp_dir(), 'libraryPreview');
                             //copy the source to the temporary Directory
                             // 128kbps mp3 is 16KBps , so,theoretically:
@@ -300,15 +304,17 @@ printf("</div>");
                             // 30s mp3 @ 192kbps is 720KB
                             // 30s mp3 @ 320kbps is 1.200MB
                             // So we set the file to look through 1300000KB (account for headers etc)
-                            file_put_contents($file.'.mp3',file_get_contents($_SERVER['DOCUMENT_ROOT'].mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1300000));
+                            file_put_contents($file.'.mp3',file_get_contents($_SERVER['DOCUMENT_ROOT'].mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1600000));
                             //Ffmpeg slice 'er up. 30 second length. Save to known location.
+                            //MAKE SURE YOU HAVE FFMPEG INSTALLED
                             $dest = $_SERVER['DOCUMENT_ROOT'] . "/uploads/previews";
                             exec("ffmpeg -t 30 -i " . $file . ".mp3" . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3");
                             ///Delete the full length file from the temporary directory:
-                            //fclose($file.".mp3");
-                            //have to unlink both the file and the empty file
+                            //have to unlink both the file and the empty file created
+                            //by tempnam
                             unlink($file);
                             unlink($file.".mp3");
+                            //TODO:Find a better spot than just uploads/ for these files
                         }
                         $src = "http://" . $_SERVER['SERVER_NAME'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3";
                         printf("<tr><td align=right>".$tn.":&nbsp</td><td align=left>".mysqli_result_dep($songs,$i,"song_title")."</td><td align=left style='padding:10px'><audio controls><source src='". $src . "' type='audio/mpeg'>Your browser does not support the audio tag.</audio></tr>");
