@@ -290,7 +290,28 @@ printf("</div>");
                         }else{
                             $tn = mysqli_result_dep($songs,$i,"track_num");
                         }
-                        printf("<tr><td align=right>".$tn.":&nbsp</td><td align=left>".mysqli_result_dep($songs,$i,"song_title")."</td><td align=left style='padding:10px'><audio controls><source src='".mysqli_result_dep($songs,$i,"file_location")."' type='audio/mpeg'>Your browser does not support the audio tag.</audio></tr>");
+                        if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3"))
+                        {
+                            //Restrict audio to 30s
+                            $file = tempnam(sys_get_temp_dir(), 'libraryPreview');
+                            //copy the source to the temporary Directory
+                            // 128kbps mp3 is 16KBps , so:
+                            // 30s mp3 @ 128kbps is 480KB,
+                            // 30s mp3 @ 192kbps is 720KB
+                            // 30s mp3 @ 320kbps is 1.200MB
+                            // So we set the file to look through 1200050KB (account for headers etc)
+                            file_put_contents($file.'.mp3',file_get_contents(mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1200050));
+                            //Ffmpeg slice 'er up. 30 second length. Save to known location.
+                            $dest = $_SERVER['DOCUMENT_ROOT'] . "/uploads/previews";
+                            exec("ffmpeg -t 30 -i " . $file . ".mp3" . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3");
+                            ///Delete the full length file from the temporary directory:
+                            fclose($file.".mp3");
+                            //have to unlink both the file and the empty file
+                            unlink($file);
+                            unlink($file.".mp3");
+                        }
+                        $src = "http://" . $_SERVER['SERVER_NAME'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3";
+                        printf("<tr><td align=right>".$tn.":&nbsp</td><td align=left>".mysqli_result_dep($songs,$i,"song_title")."</td><td align=left style='padding:10px'><audio controls><source src='". $src . "' type='audio/mpeg'>Your browser does not support the audio tag.</audio></tr>");
                     }
                     printf("</table><br>");
 			}
