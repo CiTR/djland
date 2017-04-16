@@ -761,6 +761,11 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
 
 // on admins page, search past submissions (accepted and rejected)
 function getAndPopulatePastSubmissions(date1, date2, album, artist){
+  //clear out any rows already in the table
+  $("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
+  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+  $("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
+
   $.ajax({
 		url: "api2/public/submissions/bystatus/archived",
 		type: 'GET',
@@ -773,10 +778,6 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 		},
 		async: true,
     success: function(data) {
-			//clear out any rows already in the table
-			$("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
-			var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
-			$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
 
 			if(data[0] != null){
 				for(var number in data) {
@@ -822,10 +823,7 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 		},
 		async: true,
     success: function(data) {
-			if(data[0] == null){
-				var markup = "<tr class=\"playitem border\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
-				$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
-			} else{
+			if(data[0] != null){
 				for(var number in data) {
 					var item = (data[number]);
 
