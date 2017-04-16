@@ -114,21 +114,24 @@ function submitForm() {
       var trackName        = thisTrack.find(".input-track-field-name").val();
       var checked          = thisTrack.find(".include-track").is(":checked");
 
-      if (trackName == "") {
-        success = false;
-        missingTrackNames++;
-      }
+      if (checked) {
 
-      if (checked) totalTracksChecked++;
+        if (trackName == "") {
+          success = false;
+          missingTrackNames++;
+        }
 
-      if (trackNumberValue == "" ) {
-        success = false;
-        missingTrackNumbers++;
-      } else if ( isNaN(parseInt(trackNumberValue)) ) {
-        success = false;
-        trackNumError = true;
-      } else {
-        trackNumberCheck.push(trackNumberValue);
+        totalTracksChecked++;
+
+        if (trackNumberValue == "" ) {
+          success = false;
+          missingTrackNumbers++;
+        } else if ( isNaN(parseInt(trackNumberValue)) ) {
+          success = false;
+          trackNumError = true;
+        } else {
+          trackNumberCheck.push(trackNumberValue);
+        }
       }
     }
 
