@@ -949,9 +949,9 @@ function displayReviewBox(data) {
       </div>
       <div class="containerrow padded">
           <div class="col6">Track Artist: </div>
-          <div class="col6">Artist Here (defaults to Album artist) </div>
+          <div class="col6">` + song['artist'] + `</div>
           <div class="col6">Track Credit: </div>
-          <div class="col6">Names here (defaults to album credit)</div>
+          <div class="col6">` + song['credit'] + `</div>
       </div>
 
       `
