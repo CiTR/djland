@@ -2,7 +2,7 @@
 
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
-use App\SubmissionsRejected as Rejected;
+use App\Submissions_Rejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
 use App\TypesFormat as TypesFormat;
@@ -50,7 +50,7 @@ Route::post('/submission', function(){
             if(Input::get('label') == null){
                 $label = "Self-released";
             } else{
-                $label = $newInput.label;
+                $label = Input::get('label');
             }
 
             $albumArt = Input::file('art_url');
