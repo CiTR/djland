@@ -571,7 +571,7 @@ Route::group(['middleware' => 'auth'], function(){
                     'local' => 'required|boolean',
                     'description' => 'required',
                     'catalog' => 'required',
-                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', '),
                     'submitted' => 'required|date:Y-m-d',
                     'review_comments' => 'required',
                 );
@@ -623,7 +623,7 @@ Route::group(['middleware' => 'auth'], function(){
                     'local' => 'required|boolean',
                     'description' => 'required',
                     'catalog' => 'required',
-                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', '),
                     'submitted' => 'required|date:Y-m-d',
                     'review_comments' => 'required',
                 );

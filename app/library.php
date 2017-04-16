@@ -300,7 +300,7 @@ printf("</div>");
                             // 30s mp3 @ 192kbps is 720KB
                             // 30s mp3 @ 320kbps is 1.200MB
                             // So we set the file to look through 1200050KB (account for headers etc)
-                            file_put_contents($file.'.mp3',$SERVER_['DOCUMENT_ROOT'].file_get_contents(mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1200050));
+                            file_put_contents($file.'.mp3',$_SERVER['DOCUMENT_ROOT'].file_get_contents(mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1200050));
                             //Ffmpeg slice 'er up. 30 second length. Save to known location.
                             $dest = $_SERVER['DOCUMENT_ROOT'] . "/uploads/previews";
                             exec("ffmpeg -t 30 -i " . $file . ".mp3" . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3");
