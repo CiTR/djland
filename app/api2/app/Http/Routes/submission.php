@@ -57,7 +57,7 @@ Route::post('/submission', function(){
             if(Input::get('label') == null){
                 $label = "Self-released";
             } else{
-                $label = Input::get('label');
+                $label = $newInput.label;
             }
 
             $albumArt = Input::file('art_url');
@@ -76,22 +76,22 @@ Route::post('/submission', function(){
 
             $newsubmission = Submissions::create([
                 //TODO: Refuse if req'd parameters not included or are null
-                'artist' => Input::get('artist'),
-                'title' => Input::get('title'),
+                'artist' => $newInput.artist,
+                'title' => $newInput.title,
                 'genre' => $ingenre,
-                'email' => Input::get('email'),
+                'email' => $newInput.email,
                 'label' => $label,
-                'location' => Input::get('location'),
-                'credit' => Input::get('credit'),
+                'location' => $newInput.location,
+                'credit' => $newInput.credit,
                 //This date is allowed to be null here, don't have to check
-                'releasedate' => Input::get('releasedate'),
+                'releasedate' => $newInput.releasedate,
                 'cancon' => Input::get('cancon'),
                 'femcon' => Input::get('femcon'),
                 'local' => Input::get('local'),
                 'playlist' => 0,
                 'compilation' => 0,
                 'digitized' => 0,
-                'description' => Input::get('description'),
+                'description' => $newInput.description,
                 // 'art_url' => Input::get('art_url'),
                 'art_url' => $path,
                 'format_id' => Input::get('format_id'),
@@ -100,9 +100,9 @@ Route::post('/submission', function(){
                 'is_trashed' => 0,
                 'staff_comment' => "",
                 'review_comments' => "",
-                //TODO: determine what we're doing with this column
                 'crtc' => "20"
             ]);
+            //TODO proper view and email template
             $msg = "Hi, ".Input::get('artist')."! We've received your music submission.\n\nSincerely, CiTR";
             $msg = wordwrap($msg, 70, "\r\n");
             $header = "From: no-reply@citr.ca";
@@ -117,6 +117,7 @@ Route::post('/submission', function(){
     }
 });
 
+//TODO better route naming for this route - suggest /submission/song/{id}
 Route::post('/song/{id}', function($id) {
 
   $idData = ['id' => $id];
@@ -163,6 +164,7 @@ Route::post('/song/{id}', function($id) {
       'song_title' => $name,
       'credit' => $submission->credit,
       'track_num' => $number,
+      //TODO: make this actually correspond to the total number of tracks
       'tracks_total' => 10,
       'genre' => $submission->genre,
       'composer' => $composer,
