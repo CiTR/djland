@@ -15,11 +15,9 @@ use Validator as Validator;
 //Post to this route to put a new submission in the system - either from manual submissions page or from the station website
 //the submission format (ie. CD, LP or MP3) defaults to MP3.
 Route::post('/submission', function(){
+    //For preventing XSS
     $purifier = new Purifier;
-    //prevent XSS
-    foreach(Input::all() as $key=>$value){
-        $newInput[$key] = $purifier->purify($value);
-    }
+
     $formatsValid = "";
     $formats = TypesFormat::select('id')->get();
     foreach( $formats as $i ){
@@ -36,15 +34,10 @@ Route::post('/submission', function(){
             'title' => 'required',
             'genre' => 'required',
             'email' => 'required|email',
-            'label' => '',
-            'location' => '',
-            'credit' => '',
             'releasedate' => 'date_format:Y-m-d',
             'cancon' => 'required|boolean',
             'femcon' => 'required|boolean',
             'local' => 'required|boolean',
-            //Descrription can have a carraige return
-            'description' => '',
             'art_url' => 'image',
             'format_id' => 'required|in:'.rtrim($formatsValid,', ')
         );
@@ -52,7 +45,7 @@ Route::post('/submission', function(){
     $validator = Validator::make(Input::all(),$rules);
 
     if(!$validator->fails()){
-        try{
+        //try{
             //Default to "Self released" if the label is not specified
             if(Input::get('label') == null){
                 $label = "Self-released";
@@ -76,22 +69,22 @@ Route::post('/submission', function(){
 
             $newsubmission = Submissions::create([
                 //TODO: Refuse if req'd parameters not included or are null
-                'artist' => $newInput.artist,
-                'title' => $newInput.title,
+                'artist' => $purifier->purify(Input::get('artist')),
+                'title' => $purifier->purify(Input::get('title')),
                 'genre' => $ingenre,
-                'email' => $newInput.email,
+                'email' => Input::get('email'),
                 'label' => $label,
-                'location' => $newInput.location,
-                'credit' => $newInput.credit,
+                'location' => $purifier->purify(Input::get('location')),
+                'credit' => $purifier->purify(Input::get('credit')),
                 //This date is allowed to be null here, don't have to check
-                'releasedate' => $newInput.releasedate,
+                'releasedate' => Input::get('releasedate'),
                 'cancon' => Input::get('cancon'),
                 'femcon' => Input::get('femcon'),
                 'local' => Input::get('local'),
                 'playlist' => 0,
                 'compilation' => 0,
                 'digitized' => 0,
-                'description' => $newInput.description,
+                'description' => $purifier->purify(Input::get('description')),
                 // 'art_url' => Input::get('art_url'),
                 'art_url' => $path,
                 'format_id' => Input::get('format_id'),
@@ -108,10 +101,9 @@ Route::post('/submission', function(){
             $header = "From: no-reply@citr.ca";
             mail(Input::get('email'), "Confirmation from CiTR", $msg, $header);
             return $newsubmission->id;
-
-        } catch(Exception $e){
-            return $e->getMessage();
-        }
+        //} catch(Exception $e){
+        //    return $e->getMessage();
+        //}
     } else {
         return response($validator->errors()->all(),422);
     }
@@ -484,7 +476,7 @@ Route::group(['middleware' => 'auth'], function(){
                 if($submission -> is_trashed == 1) return "Trying to tag a submission that is in the trash. Aborting. Submission id is: " . $submission -> id;
                 else if($submission -> status == "unreviewed") return "Trying to tag a review of a submission that hasn't been reviewed yet. Aborting. Submission id is: " . $submssion -> id;
                 else if($submission -> status == "reviewed") return "Trying to tag a review of a submission that hasn't been approved yet. Aborting. Submission id is: " . $submission -> id;
-                else if($submission -> status != "approved") return "Trying to tag a review of a submission that hs already been tagged. Aborting. Submission id is: " . $submission -> id;
+                else if($submission -> status != "approved") return "Trying to tag a review of a submission that has already been tagged. Aborting. Submission id is: " . $submission -> id;
                 else{
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "tagged";
@@ -557,6 +549,112 @@ Route::group(['middleware' => 'auth'], function(){
           } catch (Exception $e) {
               return $e->getMessage() ;
           }
+        });
+        Route::post('/archive', function(){
+            $purifier = new Purifier;
+            //prevent XSS
+            foreach(Input::all() as $key=>$value){
+                $newInput[$key] = $purifier->purify($value);
+            }
+            $formatsValid = "";
+            $formats = TypesFormat::select('id')->get();
+            foreach( $formats as $i ){
+                $formatsValid .= $i['id'] . ',';
+            }
+            $rules = array(
+                    'artist' =>'required',
+                    'title' => 'required',
+                    'contact' => 'required|email',
+                    'label' => 'required',
+                    'cancon' => 'required|boolean',
+                    'femcon' => 'required|boolean',
+                    'local' => 'required|boolean',
+                    'description' => 'required',
+                    'catalog' => 'required',
+                    'submitted' => 'required|date:Y-m-d',
+                    'review_comments' => 'required',
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
+                );
+            //validate incoming data
+            $validator = Validator::make(Input::all(),$rules);
+            if(!$validator->fails()){
+                try{
+                    $archive = Archive::create([
+                        //TODO: Refuse if req'd parameters not included or are null
+                        'artist' => $newInput.artist,
+                        'title' => $newInput.title,
+                        'contact' => $newInput.contact,
+                        'label' => $newInput.label,
+                        'cancon' => Input::get('cancon'),
+                        'femcon' => Input::get('femcon'),
+                        'local' => Input::get('local'),
+                        'description' => $newInput.description,
+                        'catalog' => $newInput.catalog,
+                        'format_id' => Input::get('format_id'),
+                        'submitted' => Input::get('submitted'),
+                        'review_comments' => $newInput.review_comments,
+
+                    ]);
+                    return $archive->id;
+                } catch(Exception $e){
+                    return $e->getMessage();
+                }
+            } else {
+                return response($validator->errors()->all(),422);
+            }
+        });
+        Route::post('/rejected', function(){
+            $purifier = new Purifier;
+            //prevent XSS
+            foreach(Input::all() as $key=>$value){
+                $newInput[$key] = $purifier->purify($value);
+            }
+            $formatsValid = "";
+            $formats = TypesFormat::select('id')->get();
+            foreach( $formats as $i ){
+                $formatsValid .= $i['id'] . ',';
+            }
+            $rules = array(
+                    'artist' =>'required',
+                    'title' => 'required',
+                    'contact' => 'required|email',
+                    'label' => 'required',
+                    'cancon' => 'required|boolean',
+                    'femcon' => 'required|boolean',
+                    'local' => 'required|boolean',
+                    'description' => 'required',
+                    'catalog' => 'required',
+                    'submitted' => 'required|date:Y-m-d',
+                    'review_comments' => 'required',
+                    'format_id' => 'required|in:'.rtrim($formatsValid,', ')
+                );
+            //validate incoming data
+            $validator = Validator::make(Input::all(),$rules);
+            if(!$validator->fails()){
+                try{
+                    $reject = Rejected::create([
+                        //TODO: Refuse if req'd parameters not included or are null
+                        'artist' => $newInput.artist,
+                        'title' => $newInput.title,
+                        'contact' => $newInput.contact,
+                        'label' => $newInput.label,
+                        'cancon' => Input::get('cancon'),
+                        'femcon' => Input::get('femcon'),
+                        'local' => Input::get('local'),
+                        'description' => $newInput.description,
+                        'catalog' => $newInput.catalog,
+                        'format_id' => Input::get('format_id'),
+                        'submitted' => Input::get('submitted'),
+                        'review_comments' => $newInput.review_comments,
+
+                    ]);
+                    return $reject->id;
+                } catch(Exception $e){
+                    return $e->getMessage();
+                }
+            } else {
+                return response($validator->errors()->all(),422);
+            }
         });
         Route::delete('/{id}', function($id){
             try{
