@@ -1426,10 +1426,12 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
 function submitForm() {
 
   $("#submit-button").text("Wait...");
+  $("#submit-button").prop("disable", true);
 
   if (totalTrackSize > 525000000) {
     alert("Your submission is too big. For large submissions, please email us.");
     $("#submit-button").text("Submit");
+    $("#submit-button").prop("disable", false);
   } else {
     var missing = [];
     var success = true;
@@ -1603,11 +1605,10 @@ function submitForm() {
 
       createSubmission(data, songFiles);
 
-      $("#submit-button").text("Submit");
-
     } else {
       console.log(alertString);
       $("#submit-button").text("Submit");
+      $("#submit-button").prop("disable", false);
       alert(alertString);
     }
   }

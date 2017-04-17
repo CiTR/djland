@@ -39,10 +39,13 @@ window.addEventListener('load', function() {
 function submitForm() {
 
   $("#submit-button").text("Wait...");
+  $("#submit-button").prop("disable", true);
 
   if (totalTrackSize > 525000000) {
     alert("Your submission is too big. For large submissions, please email us.");
     $("#submit-button").text("Submit");
+    $("#submit-button").prop("disable", false);
+
   } else {
 
     var missing = [];
@@ -61,10 +64,6 @@ function submitForm() {
     var local       = +$("#vancouver-artist").is(":checked");
     var femcon      = +$("#female-artist").is(":checked");
     var description = $('#comments-box').val();
-
-    console.log(femcon);
-    console.log(cancon);
-    console.log(local);
 
     var alertString = "You are missing the following:";
 
@@ -196,11 +195,11 @@ function submitForm() {
       if (cover) data.append('art_url', cover);
 
       var arturl = createSubmission(data, songFiles);
-      $("#submit-button").text("Submit");
 
     } else {
       alert(alertString);
       $("#submit-button").text("Submit");
+      $("#submit-button").prop("disable", false);
     }
   }
 
