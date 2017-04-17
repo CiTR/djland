@@ -365,19 +365,20 @@ Route::group(['middleware' => 'auth'], function(){
         });
         // Search accepted digital submissions in a time range
         Route::get('/bystatus/accepted', function(){
-            $date1 = Input::get('date1');
-            $date2 = Input::get('date2');
-            $result = Archive::where('submitted', '>=', $date1)->where('submitted', '<=', $date2)->get();
-            if(!$result->isEmpty()) return Response::json( $result );
-            else return Response::json();
+            $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
+            $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
+            $result = Archive::where('updated_at', '>=', $date1)->where('updated_at', '<=', $date2)->get();
+            if(count($result) == 0) return Response::json();
+            elseif($result->isEmpty()) return Response::json();
+            else return Response::json($result);
         });
         // Search past submissions (archived) on admins page
         Route::get('/bystatus/archived', function(){
-            $date1 = Input::get('date1');
-            $date2 = Input::get('date2');
+            $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
+            $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
             $album = Input::get('album');
             $artist = Input::get('artist');
-
+            $result = array();
             if($date1 != null && $date2 != null) {
                 if($album != null) {
                     if($artist != null) {
@@ -402,10 +403,14 @@ Route::group(['middleware' => 'auth'], function(){
                 }
             } else if ($artist != null) {
                 $result = Archive::where('artist', '=', $artist)->get();
+            } else{
+                $result = Archive::all();
             }
 
-            if(!$result->isEmpty()) return Response::json( $result );
-            else return Response::json();
+
+            if(count($result) == 0) return Response::json();
+            elseif($result->isEmpty()) return Response::json();
+            else return Response::json($result);
         });
         // Search past submissions (rejected) on admins page
         Route::get('/bystatus/rejected', function(){
@@ -413,7 +418,7 @@ Route::group(['middleware' => 'auth'], function(){
             $date2 = Input::get('date2');
             $album = Input::get('album');
             $artist = Input::get('artist');
-
+            $result = array();
             if($date1 != null && $date2 != null) {
                 if($album != null) {
                     if($artist != null) {
@@ -437,10 +442,13 @@ Route::group(['middleware' => 'auth'], function(){
                 }
             } else if ($artist != null) {
                 $result = Rejected::where('artist', '=', $artist)->get();
+            } else {
+                $result = Rejected::all();
             }
 
-            if(!$result->isEmpty()) return Response::json( $result );
-            else return Response::json();
+            if(count($result) == 0) return Response::json();
+            if($result->isEmpty()) return Response::json();
+            else return Response::json($result);
         });
         //Post to this route when a user reviews a new submisison
         //Requires: id (ie. submission id), review_comments(text), and approved (0 or 1)
