@@ -69,6 +69,32 @@ function createTrackSubmission(data, id, filename) {
   });
 }
 
+function confirmDialog(message){
+  $('<div></div>').appendTo('body')
+  .html('<div><h6>'+message+'?</h6></div>')
+  .dialog({
+    modal: true,
+    title: 'SAM Scan',
+    zIndex: 10000,
+    autoOpen: true,
+    width: 'auto',
+    resizable: false,
+    buttons: {
+      Yes: function () {
+        $('body').append('<h1>Confirm Dialog Result: <i>Yes</i></h1>');
+        $(this).dialog("close");
+      },
+      No: function () {
+        $('body').append('<h1>Confirm Dialog Result: <i>No</i></h1>');
+        $(this).dialog("close");
+      }
+    },
+    close: function (event, ui) {
+      $(this).remove();
+    }
+  });
+}
+
 //Unused function
  function namesFromMemberId(id){
  	var string = " ";

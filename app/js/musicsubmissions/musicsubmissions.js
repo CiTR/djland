@@ -1353,8 +1353,11 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
                     artist, credit, label, genre, cancon, femcon, local,
                     compilation, in_sam, playlist, art_url)
 {
-    console.log(art_url);
+  console.log(art_url);
 	console.log("Approving tags ... ");
+
+  confirmDialog('Do you want to add this submission to SAM Scan');
+
 	$.ajax({
 		url: "api2/public/submissions/tolibrary",
 		type:'PUT',
