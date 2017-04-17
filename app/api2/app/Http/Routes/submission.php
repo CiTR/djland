@@ -68,7 +68,6 @@ Route::post('/submission', function(){
             }
 
             $newsubmission = Submissions::create([
-                //TODO: Refuse if req'd parameters not included or are null
                 'artist' => $purifier->purify(Input::get('artist')),
                 'title' => $purifier->purify(Input::get('title')),
                 'genre' => $ingenre,
@@ -111,15 +110,10 @@ Route::post('/submission', function(){
 
 //TODO better route naming for this route - suggest /submission/song/{id}
 Route::post('/song/{id}', function($id) {
-
-  $idData = ['id' => $id];
-  $idRules = array('id' => 'integer|min:1');
-  $idValidator = Validator::make($idData, $idRules);
-  if ($idValidator->fails()) {
-    return(response("Error: id out of range (must be 1 or greater)", 422));
-  }
+   $purifier = new Purifier;
 
   $rules = array(
+    'id' => 'required|integer|min:1',
     'number' => 'required|int',
     'name' => 'required',
     // 'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
@@ -133,9 +127,9 @@ Route::post('/song/{id}', function($id) {
   if(!$validator->fails()) {
 
     $number = Input::get('number');
-    $name = Input::get('name');
-    $composer = Input::get('composer');
-    $performer = Input::get('performer');
+    $name = $purifier->purify(Input::get('name'));
+    $composer = $purifier->purify(Input::get('composer'));
+    $performer = $purifier->purify(Input::get('performer'));
     $filename = Input::get('filename');
     $file = Input::file('file');
 
@@ -147,6 +141,7 @@ Route::post('/song/{id}', function($id) {
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
     // Change extension to .mp3 if it isn't already
+    //Warning: hax inside.
     if ($ext != 'mp3') {
       // Remove extension from filename
       $filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -156,7 +151,7 @@ Route::post('/song/{id}', function($id) {
       // Make the directory
       exec('mkdir '.$location);
       // Convert to .mp3 and move with ffmpeg (make sure you have it installed)
-      $bash = "ffmpeg -i ".$tempFile.".".$ext." -vn -ab 320k ".$location."'".$filename."'".".mp3 && php -r \"unlink('".$tempFile.".".$ext."');\" &";
+      $bash = "(ffmpeg -i ".$tempFile.".".$ext." -vn -ab 320k ".$location."'".$filename."'".".mp3 ; php -r \"unlink('".$tempFile.".".$ext."');\" ) &";
       exec($bash);
       // Delete temp files
       unlink($tempFile);
