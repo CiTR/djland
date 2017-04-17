@@ -145,29 +145,22 @@ Route::post('/song/{id}', function($id) {
     $location = $base_dir.'submissions/'.$id.'/';
 
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    // echo 'extension: '.$ext.' - ';
 
     // Change extension to .mp3 if it isn't already
     if ($ext != 'mp3') {
       // Remove extension from filename
       $filename = pathinfo($filename, PATHINFO_FILENAME);
-      // echo '$filename: '.$filename.' - ';
       // Move to temporary directory
       $tempFile = tempnam(sys_get_temp_dir(), 'conversion');
-      // echo '$tempFile: '.$tempFile.' - ';
       file_put_contents($tempFile.'.'.$ext, file_get_contents($file));
-      // echo 'file_put_contents - ';
       // Make the directory
       exec('mkdir '.$location);
       // Convert to .mp3 and move with ffmpeg (make sure you have it installed)
       $bash = 'ffmpeg -i '.$tempFile.'.'.$ext.' -vn -ab 320k '.$location.'"'.$filename.'"'.'.mp3';
-      echo 'bash: '.$bash.' | ';
-      $x = exec($bash);
-      echo 'result: '.$x.' | ';
+      exec($bash);
       // Delete temp files
       unlink($tempFile);
       unlink($tempFile.'.'.$ext);
-      // echo 'files unlinked - ';
     } else $file->move($location, $filename);
 
     $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
