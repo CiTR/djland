@@ -113,7 +113,6 @@ Route::post('/song/{id}', function($id) {
    $purifier = new Purifier;
 
   $rules = array(
-    'id' => 'required|integer|min:1',
     'number' => 'required|int',
     'name' => 'required',
     // 'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
