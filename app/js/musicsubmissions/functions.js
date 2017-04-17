@@ -74,7 +74,7 @@ function confirmDialog(message){
   .html('<div><h6>'+message+'?</h6></div>')
   .dialog({
     modal: true,
-    title: 'SAM Scan',
+    title: 'Currently does not do anything',
     zIndex: 10000,
     autoOpen: true,
     width: 'auto',
