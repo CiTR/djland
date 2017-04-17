@@ -122,8 +122,8 @@ Route::post('/song/{id}', function($id) {
   $rules = array(
     'number' => 'required|int',
     'name' => 'required',
-    'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
-    'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    // 'composer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
+    // 'performer' => 'regex:/^[\pL\-\_\/\\\~\!\@\#\$\&\*\ ]+$/u',
     // 'file' => 'file',
     'filename' => 'required'
   );
@@ -144,9 +144,26 @@ Route::post('/song/{id}', function($id) {
     $base_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
     $location = $base_dir.'submissions/'.$id.'/';
 
-    $file->move($location, $filename);
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-    $path = "/uploads/submissions/".$id.'/'.$filename;
+    // Change extension to .mp3 if it isn't already
+    if ($ext != 'mp3') {
+      // Remove extension from filename
+      $filename = pathinfo($filename, PATHINFO_FILENAME);
+      // Move to temporary directory
+      $tempFile = tempnam(sys_get_temp_dir(), 'conversion');
+      file_put_contents($tempFile.'.'.$ext, file_get_contents($file));
+      // Make the directory
+      exec('mkdir '.$location);
+      // Convert to .mp3 and move with ffmpeg (make sure you have it installed)
+      $bash = "ffmpeg -i ".$tempFile.".".$ext." -vn -ab 320k ".$location."'".$filename."'".".mp3 && php -r \'unlink(".$tempFile.".".$ext."):\' &";
+      exec($bash);
+      // Delete temp files
+      unlink($tempFile);
+      // unlink($tempFile.'.'.$ext);
+    } else $file->move($location, $filename);
+
+    $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
 
     $newsong = SubmissionsSongs::create([
       'submission_id' => $id,
