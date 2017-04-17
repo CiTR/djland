@@ -156,11 +156,11 @@ Route::post('/song/{id}', function($id) {
       // Make the directory
       exec('mkdir '.$location);
       // Convert to .mp3 and move with ffmpeg (make sure you have it installed)
-      $bash = 'ffmpeg -i '.$tempFile.'.'.$ext.' -vn -ab 320k '.$location.'"'.$filename.'"'.'.mp3';
+      $bash = "ffmpeg -i ".$tempFile.".".$ext." -vn -ab 320k ".$location."'".$filename."'".".mp3 && php -r \'unlink(".$tempFile.".".$ext.")\' &";
       exec($bash);
       // Delete temp files
       unlink($tempFile);
-      unlink($tempFile.'.'.$ext);
+      // unlink($tempFile.'.'.$ext);
     } else $file->move($location, $filename);
 
     $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
