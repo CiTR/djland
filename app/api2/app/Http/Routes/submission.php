@@ -162,9 +162,11 @@ Route::post('/song/{id}', function($id) {
       unlink($tempFile);
       // unlink($tempFile.'.'.$ext);
     } else $file->move($location, $filename);
-
-    $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
-
+    if ($ext != 'mp3') {
+        $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
+    } else {
+        $path = "/uploads/submissions/".$id.'/'.$filename;
+    }
     $newsong = SubmissionsSongs::create([
       'submission_id' => $id,
       'artist' => $performer,
