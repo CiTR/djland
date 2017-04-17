@@ -1248,7 +1248,7 @@ window.addEventListener('load', function() {
 });
 
 function submitReview(id,appproved_status,review_comments){
-	//console.log("ID: " + id + " Status: " + appproved_status + " Comments: " + review_comments);
+
 	console.log("Submitting review ... ");
 	$.ajax({
 		url: "api2/public/submissions/review",
@@ -1425,8 +1425,11 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
 
 function submitForm() {
 
+  $("#submit-button").text("Wait...");
+
   if (totalTrackSize > 525000000) {
     alert("Your submission is too big. For large submissions, please email us.");
+    $("#submit-button").text("Submit");
   } else {
     var missing = [];
     var success = true;
@@ -1577,9 +1580,6 @@ function submitForm() {
       }
     }
 
-    console.log("before success");
-
-
     if (success) {
 
       var data = new FormData();
@@ -1603,8 +1603,11 @@ function submitForm() {
 
       createSubmission(data, songFiles);
 
+      $("#submit-button").text("Submit");
+
     } else {
       console.log(alertString);
+      $("#submit-button").text("Submit");
       alert(alertString);
     }
   }

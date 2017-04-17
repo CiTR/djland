@@ -38,8 +38,11 @@ window.addEventListener('load', function() {
 
 function submitForm() {
 
+  $("#submit-button").text("Wait...");
+
   if (totalTrackSize > 525000000) {
     alert("Your submission is too big. For large submissions, please email us.");
+    $("#submit-button").text("Submit");
   } else {
 
     var missing = [];
@@ -193,9 +196,11 @@ function submitForm() {
       if (cover) data.append('art_url', cover);
 
       var arturl = createSubmission(data, songFiles);
+      $("#submit-button").text("Submit");
 
     } else {
       alert(alertString);
+      $("#submit-button").text("Submit");
     }
   }
 
