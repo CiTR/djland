@@ -601,16 +601,13 @@
 								$("#format-approved").select2();
 								});
 							</script>
-							<!-- TODO: get these formats + IDs from DB table -->
-							<select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
-								<option class='vueselect' value="1">CD</option>
-								<option class='vueselect' value="2">LP</option>
-								<option class='vueselect' value="3">7"</option>
-								<option class='vueselect' value="4">CASSETE</option>
-								<option class='vueselect' value ="5">CART</option>
-								<option class='vueselect' value="6">MP3</option>
-								<option class='vueselect' value="7">MD</option>
-								<option class='vueselect' value="8">Unknown</option>
+
+                            <select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
+                            <?php $formats = mysqli_query($db['link'],"SELECT * from types_format;");
+							    for($i = 0; $i < mysqli_num_rows($formats); $i++){
+								    echo("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
+                                }
+							?>
 							</select>
 						</div>
 					</div>
@@ -900,16 +897,14 @@
 								$("#format-tagged").select2();
 								});
 							</script>
-							<!-- TODO: get these formats + IDs from DB table -->
+
 							<select class="js-example-basic-single vueselect" id="format-tagged" style="width:30%;">
-								<option class='vueselect' value="1">CD</option>
-								<option class='vueselect' value="2">LP</option>
-								<option class='vueselect' value="3">7"</option>
-								<option class='vueselect' value="4">CASSETE</option>
-								<option class='vueselect' value ="5">CART</option>
-								<option class='vueselect' value="6">MP3</option>
-								<option class='vueselect' value="7">MD</option>
-								<option class='vueselect' value="8">Unknown</option>
+                                <?php
+                                    $formats = mysqli_query($db['link'],"SELECT * from types_format;");
+    							    for($i = 0; $i < mysqli_num_rows($formats); $i++){
+    								    echo("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
+                                    }
+                                ?>
 							</select>
 						</div>
 					</div>
@@ -1254,16 +1249,12 @@
         		<div class="album-row">
         			<div style="width: 50%;float:left;">
         				&#9733; Genre: <select name="genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
-        					<!-- TODO: populate this with present genres from DB -->
-        					<option>Electronic</option>
-        					<option>Experimental</option>
-        					<option>Hip Hop / R&amp;B / Soul</option>
-        					<option>International</option>
-        					<option>Jazz/Classical</option>
-        					<option>Punk / Hardcore / Metal</option>
-        					<option>Rock / Pop / Indie</option>
-        					<option>Roots / Blues / Folk</option>
-        					<option>Talk</option>
+                            <?php
+                                $genres= mysqli_query($db['link'],"SELECT * from genres;");
+                                for($i = 0; $i < mysqli_num_rows($genres); $i++){
+                                    echo("<option>".mysqli_result_dep($genres,$i,'genre')."</option>");
+                                }
+                            ?>
         				</select>
         			</div>
         			<div style="width: 50%;float:right;">
@@ -1272,14 +1263,12 @@
         		</div>
             <div style="width: 50%;float:left;">
               &#9733; Format: <select name="Select the format" id="format-picker" style="width:95%;margin-bottom:30px;">
-                <option>CD</option>
-                <option>LP</option>
-                <option>7"</option>
-                <option>CASSETTE</option>
-                <option>CART</option>
-                <option>MP3</option>
-                <option>MD</option>
-                <option>Unknown</option>
+                  <?php
+                      $formats= mysqli_query($db['link'],"SELECT * from types_format;");
+                      for($i = 0; $i < mysqli_num_rows($formats); $i++){
+                          echo("<option>".mysqli_result_dep($formats,$i,'name')."</option>");
+                      }
+                    ?>
               </select>
             </div>
         		<div class="album-row">
