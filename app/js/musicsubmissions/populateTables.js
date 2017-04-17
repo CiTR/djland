@@ -493,6 +493,8 @@ function populateTaggedSubmissionsOther(submissions){
 	}
 }
 function populateTrashedSubmissions(submissions){
+    $("#trashedSubmissionsTable").DataTable().clear();
+    $("#trashedSubmissionsTable").DataTable().destroy()
 	if(submissions[0] == null){
 		var markup = "<tr class=\"playitem border trashedrowNotFound\"><td></td><td></td><td></td><td>Nothing here...</td><td></td><td></td><td></td><td></td></tr>";
 		$("tbody[name='trashedSubmissions']").append(markup);
@@ -506,5 +508,10 @@ function populateTrashedSubmissions(submissions){
 			$("tbody[name='trashedSubmissions']").append(markup);
 		}
 		add_submission_handlers();
+        if(!($.fn.dataTable.isDataTable("#trashedSubmissionsTable"))){
+            $("#trashedSubmissionsTable").DataTable({
+                stateSave:true
+            });
+        }
 	}
 }
