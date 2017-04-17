@@ -36,8 +36,6 @@ function createSubmission(data, songs) {
         a.append('performer', x.find(".input-track-field-performer").val());
         a.append('file', trackFile);
         a.append('filename', trackFile.name);
-        console.log(data);
-        console.log(x.find(".input-track-field-name").val());
 
         createTrackSubmission(a, data, trackFile.name);
       }
@@ -47,6 +45,9 @@ function createSubmission(data, songs) {
 
   .fail(function(data) {
     alert("Submissions failed. Please make sure your email is entered correctly.");
+
+    $("#submit-button").text("Submit");
+
   });
 }
 
