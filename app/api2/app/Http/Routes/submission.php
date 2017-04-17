@@ -170,7 +170,7 @@ Route::post('/song/{id}', function($id) {
       // echo 'files unlinked - ';
     } else $file->move($location, $filename);
 
-    $path = "/uploads/submissions/".$id.'/'.$filename;
+    $path = "/uploads/submissions/".$id.'/'.$filename.".mp3";
 
     $newsong = SubmissionsSongs::create([
       'submission_id' => $id,
