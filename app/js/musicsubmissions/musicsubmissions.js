@@ -310,6 +310,7 @@ $(document).ready ( function() {
             return true;
         }
     );
+    $("#pastAcceptedAndRejectedSubmissionsTable").DataTable();
 	$.when(constants_request).then( function () {
 		add_submission_handlers();
 	});
@@ -763,9 +764,6 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
 function getAndPopulatePastSubmissions(date1, date2, album, artist){
   //clear out any rows already in the table
   $("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
-  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
-  $("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
-
   $.ajax({
 		url: "api2/public/submissions/bystatus/archived",
 		type: 'GET',
@@ -773,12 +771,13 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 		data: {
 			'date1':date1,
 			'date2':date2,
-      'album':album,
-      'artist':artist
+            'album':album,
+            'artist':artist
 		},
 		async: true,
-    success: function(data) {
-
+        success: function(data) {
+            $("#pastAcceptedAndRejectedSubmissionsTable").DataTable().clear();
+            $("#pastAcceptedAndRejectedSubmissionsTable").DataTable().destroy();
 			if(data[0] != null){
 				for(var number in data) {
 					var item = (data[number]);
@@ -805,7 +804,12 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
 				}
 			}
-    },
+            if(!($.fn.dataTable.isDataTable("#pastAcceptedAndRejectedSubmissionsTable"))){
+                $("#pastAcceptedAndRejectedSubmissionsTable").DataTable({
+                    stateSave:true
+                });
+            }
+        },
 		fail:function(data){
 			console.log("Getting past archived submissions failed. Response data: " + data);
 		}

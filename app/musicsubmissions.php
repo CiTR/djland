@@ -1079,8 +1079,8 @@
 						<button id="submitDates_Past" onclick="SubmitDates_Past()">View Past Submissions</button>
 					</div>
 					<div id="submission_result" class="right overflow_auto height_cap" name="search">
-						<table class="submission_table" name="search">
-							<tbody name="pastAcceptedAndRejectedSubmissions">
+						<table id="pastAcceptedAndRejectedSubmissionsTable" class="submission_table" name="search">
+							<thead>
 								<tr id="headerrow" style="display: table-row;">
 									<th>Artist</th>
 									<th>Album</th>
@@ -1090,6 +1090,8 @@
 									<th>Local</th>
 									<th>Contact Info</th>
 								</tr>
+                            </thead>
+                            <tbody name="pastAcceptedAndRejectedSubmissions">
 							</tbody>
 						</table>
 					</div>

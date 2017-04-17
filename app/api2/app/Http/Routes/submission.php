@@ -365,8 +365,8 @@ Route::group(['middleware' => 'auth'], function(){
         });
         // Search accepted digital submissions in a time range
         Route::get('/bystatus/accepted', function(){
-            $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
-            $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
+            if(Input::get('date1')) $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
+            if(Input::get('date2')) $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
             $result = Archive::where('updated_at', '>=', $date1)->where('updated_at', '<=', $date2)->get();
             if(count($result) == 0) return Response::json();
             elseif($result->isEmpty()) return Response::json();
@@ -374,8 +374,16 @@ Route::group(['middleware' => 'auth'], function(){
         });
         // Search past submissions (archived) on admins page
         Route::get('/bystatus/archived', function(){
-            $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
-            $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
+            if(Input::get('date1')) {
+                $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
+            }else {
+                $date1 = null;
+            }
+            if(Input::get('date2')) {
+                $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
+            } else {
+                $date2 = null;
+            }
             $album = Input::get('album');
             $artist = Input::get('artist');
             $result = array();
@@ -414,8 +422,16 @@ Route::group(['middleware' => 'auth'], function(){
         });
         // Search past submissions (rejected) on admins page
         Route::get('/bystatus/rejected', function(){
-            $date1 = Input::get('date1');
-            $date2 = Input::get('date2');
+            if(Input::get('date1')) {
+                $date1 = Carbon::createFromFormat('Y-m-d',Input::get('date1'));
+            }else {
+                $date1 = null;
+            }
+            if(Input::get('date2')) {
+                $date2 = Carbon::createFromFormat('Y-m-d',Input::get('date2'));
+            } else {
+                $date2 = null;
+            }
             $album = Input::get('album');
             $artist = Input::get('artist');
             $result = array();

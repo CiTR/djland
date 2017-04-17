@@ -82,7 +82,7 @@ function add_submission_handlers(){
 	});
 	$("#trash_review_btn").off('click').on('click',function(e){
 		var id = $("#id-reviewed").attr('name');
-    trashReview(id);
+        trashReview(id);
 	});
 	/*
 	 * Listeners for tagging sidebar
