@@ -186,7 +186,7 @@ Route::post('/song/{id}', function($id) {
 });
 
 //Apps inside middleware require login
-//Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function(){
 //List all the submissions
     Route::get('/submissions', function(){
         $result = Submissions::all();
@@ -606,7 +606,7 @@ Route::post('/song/{id}', function($id) {
                         'catalog' => $newInput['catalog'],
                         'format_id' => Input::get('format_id'),
                         'submitted' => Input::get('submitted'),
-                        'review_comments' => $newInput['review_comments'],
+                        'review_comments' => $newInput['review_comments']
                     ]);
                     return $archive->id;
                 } catch(Exception $e){
@@ -661,7 +661,7 @@ Route::post('/song/{id}', function($id) {
                         'submitted' => Input::get('submitted'),
                         'review_comments' => $newInput['review_comments'],
                     ]);
-                    return $archive->id;
+                    return $rejected->id;
                 } catch(Exception $e){
                     return $e->getMessage();
                 }
@@ -679,4 +679,4 @@ Route::post('/song/{id}', function($id) {
             }
         });
     });
-//});
+});
