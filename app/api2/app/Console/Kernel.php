@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         //Task to delete submissions in the trash over a month old
         //Using Cabon magic from http://carbon.nesbot.com/docs/#Difference
         $schedule->call(function () {
-                     Submissions::where('deleted','=',1)->where('updated_at','<',Carbon::now()->subMonth())->delete();
+                     Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now()->subMonth())->delete();
                  })->dailyAt('04:00');
     }
 }
