@@ -1311,6 +1311,27 @@ function approveReview(id){
 	});
 }
 
+function trashReview(id) {
+  $.ajax({
+    url: "api2/public/submissions/trash",
+    type: 'PUT',
+    dataType: 'text json',
+    data: {
+      'id': id
+    },
+    async: true,
+    success: function(data) {
+			alert("Submission trashed");
+			$("#reviewed_comments").val('');
+			$("#reviewed_approved_status").val(0).change();
+			$('#reviewed_submissions_view').fadeOut(175);
+			$("#reviewed_submissions_view_row").fadeOut(175);
+			var selector = "[name=\'" + id + "\']";
+			$(selector).fadeOut(100);
+    }
+  });
+}
+
 function tagReview(tag, id, catNo, format, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam,playlist)
 {
 	console.log("Tagging review ... ");
