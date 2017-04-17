@@ -160,7 +160,7 @@ Route::post('/song/{id}', function($id) {
       // Make the directory
       exec('mkdir '.$location);
       // Convert to .mp3 and move with ffmpeg (make sure you have it installed)
-      $bash = 'ffmpeg -i '.$tempFile.'.'.$ext.' -vn -ab 320k '.$location.$filename.'.mp3';
+      $bash = 'ffmpeg -i '.$tempFile.'.'.$ext.' -vn -ab 320k '.$location.'"'.$filename.'"'.'.mp3';
       echo 'bash: '.$bash.' | ';
       $x = exec($bash);
       echo 'result: '.$x.' | ';
