@@ -1425,7 +1425,7 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
 
 function submitForm() {
 
-  $("#submit-button").text("Wait...");
+  $("#submit-button").text("Please Wait...");
   $("#submit-button").prop("disable", true);
 
   if (totalTrackSize > 525000000) {

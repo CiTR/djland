@@ -207,7 +207,7 @@ img.emoji {
       });
     </script>
 
-		<p>Please submit a minimum of four 320kbps MP3 files.</p>
+		<p>Please submit a recommended minimum of four 320kbps MP3 files. Files that aren't in the MP3 format will be converted, which may take extra time.</p>
 
 		<div id="submit-field"></div>
 

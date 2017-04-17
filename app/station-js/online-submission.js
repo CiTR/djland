@@ -38,7 +38,7 @@ window.addEventListener('load', function() {
 
 function submitForm() {
 
-  $("#submit-button").text("Wait...");
+  $("#submit-button").text("Please Wait...");
   $("#submit-button").prop("disable", true);
 
   if (totalTrackSize > 525000000) {
