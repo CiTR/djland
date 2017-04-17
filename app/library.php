@@ -229,7 +229,7 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 	}
 
     //Yes I'm doing this, sue me I have a deadline...
-    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id=$id order by 'track_num' asc");
+    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id=".$id." order by track_num asc");
 
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
@@ -290,6 +290,7 @@ printf("</div>");
                         }else{
                             $tn = mysqli_result_dep($songs,$i,"track_num");
                         }
+                        //songs are cached somewhere
                         if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3"))
                         {
                             //Restrict audio to 30s

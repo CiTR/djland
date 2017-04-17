@@ -13,6 +13,7 @@ class Library extends Model
     'title','label','genre','added','modified','description','email','art_url');
 
     public function songs(){
-        return $this->hasMany('App\LibrarySongs','library_id');
+        //Order by track number so loops that display songs do so in order
+        return $this->hasMany('App\LibrarySongs','library_id')->orderBy('track_num','asc');
     }
 }
