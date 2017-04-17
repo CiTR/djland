@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Submissions as Submissions;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +26,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        //Example task
+        //$schedule->command('inspire')
+        //         ->hourly();
+        //Task to delete submissions in the trash over a month old
+        //Using Cabon magic from http://carbon.nesbot.com/docs/#Difference
+        $schedule->call(function () {
+                     Submissions::where('deleted','=',1)->where(Carbon::createFromDate('date_submitted')->diffInDays(Carbon::today()),'>',31)->delete();
+                 })->dailyAt('04:00');
     }
 }

@@ -2,7 +2,7 @@
 
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
-use App\Submissions_Rejected as Rejected;
+use App\SubmissionsRejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
 use App\TypesFormat as TypesFormat;
@@ -45,7 +45,7 @@ Route::post('/submission', function(){
     $validator = Validator::make(Input::all(),$rules);
 
     if(!$validator->fails()){
-        //try{
+        try{
             //Default to "Self released" if the label is not specified
             if(Input::get('label') == null){
                 $label = "Self-released";
@@ -100,9 +100,9 @@ Route::post('/submission', function(){
             $header = "From: no-reply@citr.ca";
             mail(Input::get('email'), "Confirmation from CiTR", $msg, $header);
             return $newsubmission->id;
-        //} catch(Exception $e){
-        //    return $e->getMessage();
-        //}
+        } catch(Exception $e){
+            return $e->getMessage();
+        }
     } else {
         return response($validator->errors()->all(),422);
     }
@@ -186,7 +186,7 @@ Route::post('/song/{id}', function($id) {
 });
 
 //Apps inside middleware require login
-Route::group(['middleware' => 'auth'], function(){
+//Route::group(['middleware' => 'auth'], function(){
 //List all the submissions
     Route::get('/submissions', function(){
         $result = Submissions::all();
@@ -565,8 +565,9 @@ Route::group(['middleware' => 'auth'], function(){
         });
         Route::post('/archive', function(){
             $purifier = new Purifier;
+            $newInput = Input::all();
             //prevent XSS
-            foreach(Input::all() as $key=>$value){
+            foreach($newInput as $key=>$value){
                 $newInput[$key] = $purifier->purify($value);
             }
             $formatsValid = "";
@@ -617,8 +618,9 @@ Route::group(['middleware' => 'auth'], function(){
         });
         Route::post('/rejected', function(){
             $purifier = new Purifier;
+            $newInput = Input::all();
             //prevent XSS
-            foreach(Input::all() as $key=>$value){
+            foreach($newInput as $key=>$value){
                 $newInput[$key] = $purifier->purify($value);
             }
             $formatsValid = "";
@@ -641,6 +643,7 @@ Route::group(['middleware' => 'auth'], function(){
                     'review_comments' => 'required',
                 );
             //validate incoming data
+            //Do this with Input::all() since it only needs to check things the purifier wouldn't catch
             $validator = Validator::make(Input::all(),$rules);
             if(!$validator->fails()){
                 try{
@@ -676,4 +679,4 @@ Route::group(['middleware' => 'auth'], function(){
             }
         });
     });
-});
+//});

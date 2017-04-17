@@ -4,6 +4,8 @@ CREATE TABLE `submissions_rejected` (
   `artist` tinytext,
   `title` tinytext,
   `submitted` date DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
