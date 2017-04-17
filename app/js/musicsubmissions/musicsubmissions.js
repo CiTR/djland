@@ -763,7 +763,7 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
 function getAndPopulatePastSubmissions(date1, date2, album, artist){
   //clear out any rows already in the table
   $("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
-  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th></tr>";
+  var header = "<tr id=\"headerrow\" style=\"display: table-row;\"><th>Artist</th><th>Album</th><th>Date of Submission</th><th>Cancon</th><th>Femcon</th><th>Local</th><th>Contact Info</th><th>Accepted?</th></tr>";
   $("tbody[name='pastAcceptedAndRejectedSubmissions']").append(header);
 
   $.ajax({
