@@ -81,7 +81,8 @@ function add_submission_handlers(){
 		approveReview(id);
 	});
 	$("#trash_review_btn").off('click').on('click',function(e){
-		//TODO
+		var id = $("#id-reviewed").attr('name');
+    trashReview(id);
 	});
 	/*
 	 * Listeners for tagging sidebar
