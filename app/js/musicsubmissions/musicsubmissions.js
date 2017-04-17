@@ -695,7 +695,7 @@ function SubmitDates_Past(){
   var artist = $("#past-artist").val();
   var album = $("#past-album").val();
 
-  if(date1 == null || date2 == null) {
+  if(date1 == null || date2 == null || date1 == '' || date2 == '') {
 		alert("Please enter a start date and an end date");
 	}
 	else if(date1 > date2) {
@@ -764,6 +764,7 @@ function getAndPopulateAcceptedSubmissions(date1, date2){
 function getAndPopulatePastSubmissions(date1, date2, album, artist){
   //clear out any rows already in the table
   $("tbody[name='pastAcceptedAndRejectedSubmissions']").empty();
+
   $.ajax({
 		url: "api2/public/submissions/bystatus/archived",
 		type: 'GET',
@@ -800,7 +801,20 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 					else
 						local = "no";
 
-					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					var markup = "<tr class=\"playitem border\" name=\"";
+          markup += item['id'] + "\"  align=\"center\">";
+          markup += "<td class=\"submission_row_element\"> ";
+          markup += item['artist'];
+          markup += " </td><td class=\"submission_row_element\">"
+          markup += item['title'];
+          markup += "</td><td class=\"submission_row_element\">";
+          markup += item['submitted'];
+          markup += "</td><td class=\"submission_row_element\"> ";
+          markup += cancon + " </td><td class=\"submission_row_element\"> ";
+          markup += femcon + " </td><td class=\"submission_row_element\"> ";
+          markup += local + " </td><td class=\"submission_row_element\">";
+          markup += item['contact'];
+          markup += "</td><td class=\"submission_row_element\">Yes</td></tr>";
 					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
 				}
 			}
@@ -849,7 +863,19 @@ function getAndPopulatePastSubmissions(date1, date2, album, artist){
 					else
 						local = "no";
 
-					var markup = "<tr class=\"playitem border\" name=\"" + item['id'] + "\"  align=\"center\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + item['submitted'] + "</td><td class=\"submission_row_element\"> " + cancon + " </td><td class=\"submission_row_element\"> " + femcon + " </td><td class=\"submission_row_element\"> " + local + " </td><td class=\"submission_row_element\">" + item['contact'] + "</td></tr>";
+					var markup = "<tr class=\"playitem border\" name=\"";
+          markup += item['id'];
+          markup += "\" align=\"center\"><td class=\"submission_row_element\">";
+          markup += item['artist'];
+          markup += " </td><td class=\"submission_row_element\">";
+          markup += item['title'];
+          markup += "</td><td class=\"submission_row_element\">";
+          markup += item['submitted'];
+          markup += "</td><td class=\"submission_row_element\"> ";
+          markup += cancon + " </td><td class=\"submission_row_element\"> ";
+          markup += femcon + " </td><td class=\"submission_row_element\"> ";
+          markup += local + " </td><td class=\"submission_row_element\">";
+          markup += item['contact'] + "</td><td class=\"submission_row_element\">No</td></tr>";
 					$("tbody[name='pastAcceptedAndRejectedSubmissions']").append(markup);
 				}
 			}
