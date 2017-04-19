@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
-        \App\Console\Commands\ClearRejectedSubmisisons::class,
+        \App\Console\Commands\ClearRejectedSubmissions::class,
     ];
 
     /**
