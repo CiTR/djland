@@ -10,6 +10,9 @@ Socan Period needs to move to API - some functions still depend on socan handler
 CAPSTONE
 =====================================
 
+format not showing up on tag
+audio keeps playing when you close
+album art big on review after submitting review
 submit to library actually moves files from submissions upload
 editing lib moves files
 upload mp3 and images for library pages
