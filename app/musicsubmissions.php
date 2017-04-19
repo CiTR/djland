@@ -929,7 +929,7 @@
 							<b> Album Credit </b>
 						</div>
 						<div id="editTitleBox">
-							<input id="credit-tagged" placeholder="Album Credit here" />
+							<input id="credit-tagged" placeholder="Album Cre  dit here" />
 						</div>
 					</div>
 					<div class="double-padded-top">
