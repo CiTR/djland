@@ -236,7 +236,7 @@
                                 <div class="containerrow padded">
     								<div class="col1"></div>
     								<div class="col4">Track 1: Song Title Here</div>
-    								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
+    								<div class="col3"><audio class="submissions_audio review_audio" controls><source src="" type="audio/mpeg"></audio></div>
     							</div>
     							<div class="containerrow padded">
     								<div class="col6">Track Artist: </div>
@@ -432,7 +432,7 @@
                                 <div class="containerrow padded">
     								<div class="col1"></div>
     								<div class="col4">Track 1: Song Title Here</div>
-    								<div class="col3"><audio controls><source src="" type="audio/mpeg"></audio></div>
+    								<div class="col3"><audio class="submissions_audio reviewed_audio" controls><source src="" type="audio/mpeg"></audio></div>
     							</div>
     							<div class="containerrow padded">
     								<div class="col6">Track Artist: </div>

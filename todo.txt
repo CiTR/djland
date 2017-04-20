@@ -10,8 +10,9 @@ Socan Period needs to move to API - some functions still depend on socan handler
 CAPSTONE
 =====================================
 
-format not showing up on tag
-audio keeps playing when you close
+If you aren't logged in, return "please log in" for most submissions routes
+(DONE) format not showing up on tag
+(DONE) audio keeps playing when you close
 album art big on review after submitting review
 submit to library actually moves files from submissions upload
 editing lib moves files
@@ -34,12 +35,12 @@ shift select for bulk editing
 check that navigating away while shit is uploading is warned and how well it still works
 (DONE) submissions admin tools need to show if it was trashed or not
 (DONE) trashed submissions cleanup goes by submission date now, need to go by last updated
-Searching past submissions shouldn't require date
+Searching past submissions shouldn't require date?
 STAFF COMMENTS DON'T SAVE
 ASSIGNEES DON'T SAVE
 assignee needs to load from member data - sellect2 that up
 Sort by assignee
-Member id to name in deleted submissions
+(DONE) Member id to name in deleted submissions
 Singles tables
 Tagging:alter song name, credit, track number, performer?
 Keep genres and subgenres as id number throughout lib and submissions.

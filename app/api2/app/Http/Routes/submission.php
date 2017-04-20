@@ -410,9 +410,18 @@ Route::group(['middleware' => 'auth'], function () {
             }
         });
         Route::get('/bystatus/trashed', function () {
-            $result = Submissions::where('is_trashed', '=', 1)->get();
-            if (!$result->isEmpty()) {
-                return Response::json($result);
+            $submissions = Submissions::where('is_trashed', '=', 1)->get();
+            if (!$submissions->isEmpty()) {
+                foreach ($submissions as $submission) {
+                    $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
+                    if (count($name) != 0) {
+                        $name = $name[0];
+                        $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                    } else {
+                        $submission -> reviewed = null;
+                    }
+                }
+                return Response::json($submissions);
             } else {
                 return Response::json();
             }

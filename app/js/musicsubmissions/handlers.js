@@ -33,7 +33,11 @@ function add_submission_handlers() {
         e.stopPropagation();
     });
     $("#view_submissions_closer").off('click').on('click', function (e) {
-        $('#view_submissions').stop(true).fadeOut(175);
+        //pause audio - this won't work with class selectors for whatever reason
+        $('audio').each(function (i, e) {
+            this.pause();
+        });
+        $('#view_submissions').fadeOut(175);
         $("#view_submissions_row").fadeOut(175);
     });
     //Listener for submitting a review
@@ -63,6 +67,10 @@ function add_submission_handlers() {
         e.stopPropagation();
     });
     $("#reviewed_submissions_closer").off('click').on('click', function (e) {
+        //pause audio - this won't wok with class selectors for whatever reason.
+        $('audio').each(function (i, e) {
+            this.pause();
+        });
         $('#reviewed_submissions_view').fadeOut(175);
     });
     $("#approve_review_btn").off('click').on('click', function (e) {

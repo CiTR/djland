@@ -3,6 +3,15 @@ window.myNameSpace = window.myNameSpace || {};
 
 //PAGE CREATION
 $(document).ready(function () {
+
+    //So that you can only play one audio thing at once
+    $('audio').on("play", function (me) {
+        $('audio').each(function (i, e) {
+            if (e !== me.currentTarget) {
+                this.pause();
+            }
+        });
+    });
     // Set lightbox options
     lightbox.option({
         'fadeDuration': 200,

@@ -177,6 +177,9 @@ function populateNewSubmissionsCd(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#newSubmissionCdTable"))) {
             $("#newSubmissionCdTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -206,6 +209,9 @@ function populateNewSubmissionsMP3(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#newSubmissionMP3Table"))) {
             $("#newSubmissionMP3Table").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -235,6 +241,9 @@ function populateNewSubmissionsOther(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#newSubmissionOtherTable"))) {
             $("#newSubmissionOtherTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -263,6 +272,9 @@ function populateReviewedSubmissionsCd(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#reviewedSubmissionCdTable"))) {
             $("#reviewedSubmissionCdTable").DataTable({
+                "order": [
+                    [2, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -291,6 +303,9 @@ function populateReviewedSubmissionsMP3(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#reviewedSubmissionMP3Table"))) {
             $("#reviewedSubmissionMP3Table").DataTable({
+                "order": [
+                    [2, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -319,6 +334,9 @@ function populateReviewedSubmissionsOther(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#reviewedSubmissionOtherTable"))) {
             $("#reviewedSubmissionOtherTable").DataTable({
+                "order": [
+                    [2, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -349,6 +367,9 @@ function populateToTagSubmissionsCd(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#toTagSubmissionCdTable"))) {
             $("#toTagSubmissionCdTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -378,6 +399,9 @@ function populateToTagSubmissionsMP3(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#toTagSubmissionMP3Table"))) {
             $("#toTagSubmissionMP3Table").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -407,6 +431,9 @@ function populateToTagSubmissionsOther(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#toTagSubmissionOtherTable"))) {
             $("#toTagSubmissionOtherTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -437,6 +464,9 @@ function populateTaggedSubmissionsCd(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#taggedSubmissionCdTable"))) {
             $("#taggedSubmissionCdTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -468,6 +498,9 @@ function populateTaggedSubmissionsMP3(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#taggedSubmissionMP3Table"))) {
             $("#taggedSubmissionMP3Table").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
@@ -499,6 +532,9 @@ function populateTaggedSubmissionsOther(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#taggedSubmissionOtherTable"))) {
             $("#taggedSubmissionOtherTable").DataTable({
+                "order": [
+                    [4, "desc"]
+                ],
                 stateSave: true
             });
         }
