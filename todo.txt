@@ -41,6 +41,10 @@ assignee needs to load from member data - sellect2 that up
 Sort by assignee
 Member id to name in deleted submissions
 Singles tables
+Tagging:alter song name, credit, track number, performer?
+Keep genres and subgenres as id number throughout lib and submissions.
+    Setup trigger for deletion: warning when you delete a genre/subgenre for how many
+    tracks will go untagged.
 ===========
 
 CORNER CASES:

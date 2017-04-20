@@ -601,8 +601,7 @@ Route::group(['middleware' => 'auth'], function () {
                 } else {
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> status = "tagged";
-                    $newTag = Input::get('tags');
-                    $submission -> tags = $newTag;
+                    $submission -> tags = Input::get('tags');
                     $submission -> catalog = Input::get('catalog');
                     $submission -> format_id = Input::get('format_id');
                     $submission -> title = Input::get('title');
@@ -610,7 +609,12 @@ Route::group(['middleware' => 'auth'], function () {
                     $submission -> credit = Input::get('credit');
                     $submission -> label = Input::get('label');
                     $submission -> genre = Input::get('genre');
-
+                    $submission -> cancon = Input::get('cancon');
+                    $submission -> femcon = Input::get('femcon');
+                    $submission -> local = Input::get('local');
+                    $submission -> digitized = Input::get('in_sam');
+                    $submission -> playlist = Input::get('playlist');
+                    $submission -> compilation = Input::get('compilation');
                     $submission->save();
                     return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful");
                     return $submission;
@@ -644,6 +648,12 @@ Route::group(['middleware' => 'auth'], function () {
                     $submission -> credit = Input::get('credit');
                     $submission -> label = Input::get('label');
                     $submission -> genre = Input::get('genre');
+                    $submission -> cancon = Input::get('cancon');
+                    $submission -> femcon = Input::get('femcon');
+                    $submission -> local = Input::get('local');
+                    $submission -> digitized = Input::get('in_sam');
+                    $submission -> playlist = Input::get('playlist');
+                    $submission -> compilation = Input::get('compilation');
                     $submission->save();
                     return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful");
                     return $submission;

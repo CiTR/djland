@@ -1386,7 +1386,8 @@ function trashReview(id) {
     });
 }
 
-function tagReview(tag, id, catNo, format, album, artist, credit, label, genre, cancon, femcon, local, compilation, in_sam, playlist) {
+function tagReview(tag, id, catNo, format, album, artist, credit, label, genre,
+    cancon, femcon, local, compilation, in_sam, playlist) {
     console.log("Tagging review ... ");
     $.ajax({
         url: "api2/public/submissions/tag",
@@ -1397,7 +1398,7 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre, 
             'tags': tag,
             'catalog': catNo,
             'format_id': format,
-            'title': album,
+            'album': title,
             'artist': artist,
             'credit': credit,
             'label': label,

@@ -113,6 +113,7 @@ function add_submission_handlers() {
         var compilation = +$("#compilation-approved").is(':checked');
         var in_sam = +$("#in_sam-approved").is(':checked');
         var playlist = +$("#playlist-approved").is(':checked');
+        console.log(cancon, femcon, local, compilation, in_sam, playlist);
 
         tagReview(tag, id, catNo, format, album, artist, credit, label, genre,
             cancon, femcon, local, compilation, in_sam, playlist);
