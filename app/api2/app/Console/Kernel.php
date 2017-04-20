@@ -5,8 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Submissions as Submissions;
-use Carbon\Carbon;
-use Log;
 
 class Kernel extends ConsoleKernel
 {

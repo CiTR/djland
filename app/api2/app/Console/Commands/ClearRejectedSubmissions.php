@@ -3,7 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use Carbon\Carbon;
+use Log;
 
 class ClearRejectedSubmissions extends Command
 {
@@ -28,7 +29,7 @@ class ClearRejectedSubmissions extends Command
      */
     public function handle()
     {
-        $submissions = Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now())->get();
+        $submissions = Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now()->subMonth())->get();
         foreach($submission as $submissons){
             try{
                 $rejected = Rejected::create([
@@ -50,7 +51,7 @@ class ClearRejectedSubmissions extends Command
                 Log::notice($rejected);
             } catch(Exepction $e){
                 Log::notice("Error moving rejected submission from the submission table to the rejected table. Error:");
-                Log::notice($e->getMessage());    
+                Log::notice($e->getMessage());
             }
         }
         //And then delete
