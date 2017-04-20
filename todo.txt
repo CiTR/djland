@@ -45,6 +45,7 @@ Tagging:alter song name, credit, track number, performer?
 Keep genres and subgenres as id number throughout lib and submissions.
     Setup trigger for deletion: warning when you delete a genre/subgenre for how many
     tracks will go untagged.
+Library search by subgenre. Display subgenre. Make sure the subgenre gets written to lib
 ===========
 
 CORNER CASES:

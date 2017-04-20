@@ -938,7 +938,7 @@
 							<select class="vueselect" id="genre-tagged" style="width:70%;">
                                     <?php
                                         for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
-                                            printf("<option class='' value='".mysqli_result_dep($genres, $i, 'genre')."'>".mysqli_result_dep($genres, $i, 'genres')."</option>");
+                                            printf("<option class='' value='".mysqli_result_dep($genres, $i, 'genre')."'>".mysqli_result_dep($genres, $i, 'genre')."</option>");
                                         }
                                     ?>
 								</select>
@@ -962,7 +962,7 @@
                                         for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
                                             printf("<optgroup label='".mysqli_result_dep($genres, $i, 'genre')."'>");
                                             for ($j = 0; $j < mysqli_num_rows($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')]); $j++) {
-                                                printf("<option class='' value='".
+                                                printf("<option value='".
                                                 mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
                                                 "'>".mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
                                                 "</option>");
