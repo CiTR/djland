@@ -47,6 +47,12 @@ Keep genres and subgenres as id number throughout lib and submissions.
     Setup trigger for deletion: warning when you delete a genre/subgenre for how many
     tracks will go untagged.
 Library search by subgenre. Display subgenre. Make sure the subgenre gets written to lib
+
+When you close a row in datatables, make it completely dissapear - call draw() on the table or something
+Dropdowns - prevent bubble up on datatables when you click to select something
+All names on assignee/tagger - make a select2
+Green background on restore in deleted table
+The deleted table generally looks bad
 ===========
 
 CORNER CASES:

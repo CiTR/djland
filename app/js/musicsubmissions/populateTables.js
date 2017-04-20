@@ -180,6 +180,23 @@ function populateNewSubmissionsCd(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -211,6 +228,23 @@ function populateNewSubmissionsMP3(submissions) {
             $("#newSubmissionMP3Table").DataTable({
                 "order": [
                     [4, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
                 ],
                 stateSave: true
             });
@@ -244,6 +278,23 @@ function populateNewSubmissionsOther(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -274,6 +325,23 @@ function populateReviewedSubmissionsCd(submissions) {
             $("#reviewedSubmissionCdTable").DataTable({
                 "order": [
                     [2, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-checkbox"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
                 ],
                 stateSave: true
             });
@@ -306,6 +374,23 @@ function populateReviewedSubmissionsMP3(submissions) {
                 "order": [
                     [2, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-checkbox"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -336,6 +421,23 @@ function populateReviewedSubmissionsOther(submissions) {
             $("#reviewedSubmissionOtherTable").DataTable({
                 "order": [
                     [2, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-checkbox"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
                 ],
                 stateSave: true
             });
@@ -370,6 +472,23 @@ function populateToTagSubmissionsCd(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -401,6 +520,23 @@ function populateToTagSubmissionsMP3(submissions) {
             $("#toTagSubmissionMP3Table").DataTable({
                 "order": [
                     [4, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
                 ],
                 stateSave: true
             });
@@ -434,6 +570,23 @@ function populateToTagSubmissionsOther(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -466,6 +619,23 @@ function populateTaggedSubmissionsCd(submissions) {
             $("#taggedSubmissionCdTable").DataTable({
                 "order": [
                     [4, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
                 ],
                 stateSave: true
             });
@@ -501,6 +671,23 @@ function populateTaggedSubmissionsMP3(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -535,6 +722,23 @@ function populateTaggedSubmissionsOther(submissions) {
                 "order": [
                     [4, "desc"]
                 ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    {
+                        "orderDataType": "dom-select"
+                    },
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
@@ -559,6 +763,23 @@ function populateTrashedSubmissions(submissions) {
         add_submission_handlers();
         if (!($.fn.dataTable.isDataTable("#trashedSubmissionsTable"))) {
             $("#trashedSubmissionsTable").DataTable({
+                "order": [
+                    [2, "desc"]
+                ],
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    },
+                    null,
+                    null,
+                    {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ],
                 stateSave: true
             });
         }
