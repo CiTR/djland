@@ -30,23 +30,28 @@ class ClearRejectedSubmissions extends Command
     {
         $submissions = Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now())->get();
         foreach($submission as $submissons){
-            $rejected = Rejected::create([
-                'artist' => $submission['artist'],
-                'title' => $submission['title'],
-                'contact' => $submission['contact'],
-                'label' => $submission['label'],
-                'cancon' => $submission('cancon'),
-                'femcon' => $submission('femcon'),
-                'local' => $submission('local'),
-                'description' => $submission['description'],
-                'catalog' => $submission['catalog'],
-                'format_id' => $submission('format_id'),
-                'submitted' => $submission('submitted'),
-                'review_comments' => $submission['review_comments'],
-            ]);
-            //Log that we deleted things
-            Log::notice("Moved rejected submisson from the submission table to the rejected table. Created:");
-            Log::notice($rejected);
+            try{
+                $rejected = Rejected::create([
+                    'artist' => $submission['artist'],
+                    'title' => $submission['title'],
+                    'contact' => $submission['contact'],
+                    'label' => $submission['label'],
+                    'cancon' => $submission('cancon'),
+                    'femcon' => $submission('femcon'),
+                    'local' => $submission('local'),
+                    'description' => $submission['description'],
+                    'catalog' => $submission['catalog'],
+                    'format_id' => $submission('format_id'),
+                    'submitted' => $submission('submitted'),
+                    'review_comments' => $submission['review_comments'],
+                ]);
+                //Log that we deleted things
+                Log::notice("Moved rejected submisson from the submission table to the rejected table. Created:");
+                Log::notice($rejected);
+            } catch(Exepction $e){
+                Log::notice("Error moving rejected submission from the submission table to the rejected table. Error:");
+                Log::notice($e->getMessage());    
+            }
         }
         //And then delete
         Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now()->subMonth())->delete();

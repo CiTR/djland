@@ -18,7 +18,7 @@ editing lib moves files
 upload mp3 and images for library pages
 submit to library moves to Archive table
 (DONE) deletion after 1month job from deleted status
-1 month old deletes move to rejected table
+(DONE) 1 month old deletes move to rejected table
 (DONE) rejected button deletes so that you can undo
 samscan
 djland scan
@@ -40,7 +40,7 @@ ASSIGNEES DON'T SAVE
 assignee needs to load from member data - sellect2 that up
 Sort by assignee
 Member id to name in deleted submissions
-
+Singles tables
 ===========
 
 CORNER CASES:

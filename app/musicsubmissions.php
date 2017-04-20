@@ -37,7 +37,6 @@
   	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
   -->
 
-
         <script src="js/jquery.dataTables.min.js"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -605,7 +604,7 @@
                             <select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
                             <?php $formats = mysqli_query($db['link'],"SELECT * from types_format;");
 							    for($i = 0; $i < mysqli_num_rows($formats); $i++){
-								    echo("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
+								    printf("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
                                 }
 							?>
 							</select>
