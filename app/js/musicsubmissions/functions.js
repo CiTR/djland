@@ -5,119 +5,119 @@
  */
 
 function createSubmission(data, songs) {
-  var tracks = $("#submit-field").children();
-
-  $.ajax({
-    url: "api2/public/submission/",
-    data: data,
-    type: "POST",
-    // async: false,
-    cache: false,
-    contentType: false,
-    processData: false,
-    // dataType: "json",
-  })
-
-  .done(function(data) {
-    var successBox = document.getElementById("submit-button-div");
-    successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
-
     var tracks = $("#submit-field").children();
 
-    for (var i = 0; i < tracks.length; i++) {
+    $.ajax({
+            url: "api2/public/submission/",
+            data: data,
+            type: "POST",
+            // async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            // dataType: "json",
+        })
 
-      var trackFile = songs[i];
-      var x = $(tracks.get(i));
-      if (x.find(".include-track").is(":checked")) {
-        var a = new FormData();
-        a.append('number', x.find(".track-number-field").val());
-        a.append('name', x.find(".input-track-field-name").val());
-        a.append('composer', x.find(".input-track-field-composer").val());
-        a.append('performer', x.find(".input-track-field-performer").val());
-        a.append('file', trackFile);
-        a.append('filename', trackFile.name);
+        .done(function (data) {
+            var successBox = document.getElementById("submit-button-div");
+            successBox.innerHTML = "<p style='text-align:center;margin-bottom:50px;'>Thanks for submitting! A confirmation email will be sent to you shortly.</p>";
 
-        createTrackSubmission(a, data, trackFile.name);
-      }
-    }
-    return data;
-  })
+            var tracks = $("#submit-field").children();
 
-  .fail(function(data) {
-    alert("Submissions failed. Please make sure your email is entered correctly.");
+            for (var i = 0; i < tracks.length; i++) {
 
-    $("#submit-button").text("Submit");
+                var trackFile = songs[i];
+                var x = $(tracks.get(i));
+                if (x.find(".include-track").is(":checked")) {
+                    var a = new FormData();
+                    a.append('number', x.find(".track-number-field").val());
+                    a.append('name', x.find(".input-track-field-name").val());
+                    a.append('composer', x.find(".input-track-field-composer").val());
+                    a.append('performer', x.find(".input-track-field-performer").val());
+                    a.append('file', trackFile);
+                    a.append('filename', trackFile.name);
 
-  });
+                    createTrackSubmission(a, data, trackFile.name);
+                }
+            }
+            return data;
+        })
+
+        .fail(function (data) {
+            alert("Submissions failed. Please make sure your email is entered correctly.");
+
+            $("#submit-button").text("Submit");
+
+        });
 }
 
 function createTrackSubmission(data, id, filename) {
 
-  $.ajax({
-    url: "api2/public/song/" + id,
-    data: data,
-    type: "POST",
-    cache: false,
-    contentType: false,
-    processData: false,
-  })
-  .done(function(data) {
-    console.log("File '" + filename + "' sent.");
-  })
-  .fail(function(data) {
-    alert("Failed to send file: " + filename);
-  });
+    $.ajax({
+            url: "api2/public/song/" + id,
+            data: data,
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+        .done(function (data) {
+            console.log("File '" + filename + "' sent.");
+        })
+        .fail(function (data) {
+            alert("Failed to send file: " + filename);
+        });
 }
 
-function confirmDialog(message){
-  $('<div></div>').appendTo('body')
-  .html('<div><h6>'+message+'?</h6></div>')
-  .dialog({
-    modal: true,
-    title: 'Currently does not do anything',
-    zIndex: 10000,
-    autoOpen: true,
-    width: 'auto',
-    resizable: false,
-    buttons: {
-      Yes: function () {
-        $('body').append('<h1>Confirm Dialog Result: <i>Yes</i></h1>');
-        $(this).dialog("close");
-      },
-      No: function () {
-        $('body').append('<h1>Confirm Dialog Result: <i>No</i></h1>');
-        $(this).dialog("close");
-      }
-    },
-    close: function (event, ui) {
-      $(this).remove();
-    }
-  });
+function confirmDialog(message) {
+    $('<div></div>').appendTo('body')
+        .html('<div><h6>' + message + '?</h6></div>')
+        .dialog({
+            modal: true,
+            title: 'Currently does not do anything',
+            zIndex: 10000,
+            autoOpen: true,
+            width: 'auto',
+            resizable: false,
+            buttons: {
+                Yes: function () {
+                    $('body').append('<h1>Confirm Dialog Result: <i>Yes</i></h1>');
+                    $(this).dialog("close");
+                },
+                No: function () {
+                    $('body').append('<h1>Confirm Dialog Result: <i>No</i></h1>');
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) {
+                $(this).remove();
+            }
+        });
 }
 
 //Unused function
- function namesFromMemberId(id){
- 	var string = " ";
- 	$.ajax({
- 		type:"GET",
- 		url: "api2/public/member/" + id + "/firstnamelastname",
- 		dataType:'json',
- 		async:true,
- 		success:function(response){
- 			var data = response[0];
- 			var identifier = "[name=\'names"+id+"\']";
- 			if(data != undefined){
- 				string = data['firstname'] + " " + data['lastname'];
- 				$(identifier).text(string);
- 			} else {
- 				$(identifier).text("Unknown");
- 				$(identifier).css("color","navy");
- 			}
- 		},
- 		error:function(err){
- 			//var json_response = err.responseJSON.msg;
- 			console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
- 			console.log(err);
- 		}
- 	});
- }
+function namesFromMemberId(id) {
+    var string = " ";
+    $.ajax({
+        type: "GET",
+        url: "api2/public/member/" + id + "/firstnamelastname",
+        dataType: 'json',
+        async: true,
+        success: function (response) {
+            var data = response[0];
+            var identifier = "[name=\'names" + id + "\']";
+            if (data != undefined) {
+                string = data['firstname'] + " " + data['lastname'];
+                $(identifier).text(string);
+            } else {
+                $(identifier).text("Unknown");
+                $(identifier).css("color", "navy");
+            }
+        },
+        error: function (err) {
+            //var json_response = err.responseJSON.msg;
+            console.log("Bad format for AJAX Request with Member ID: " + id + ", the server said:");
+            console.log(err);
+        }
+    });
+}

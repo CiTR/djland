@@ -29,9 +29,9 @@ class ClearRejectedSubmissions extends Command
      */
     public function handle()
     {
-        $submissions = Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now()->subMonth())->get();
-        foreach($submission as $submissons){
-            try{
+        $submissions = Submissions::where('is_trashed', '=', 1)->where('updated_at', '<', Carbon::now()->subMonth())->get();
+        foreach ($submission as $submissons) {
+            try {
                 $rejected = Rejected::create([
                     'artist' => $submission['artist'],
                     'title' => $submission['title'],
@@ -49,12 +49,12 @@ class ClearRejectedSubmissions extends Command
                 //Log that we deleted things
                 Log::notice("Moved rejected submisson from the submission table to the rejected table. Created:");
                 Log::notice($rejected);
-            } catch(Exepction $e){
+            } catch (Exepction $e) {
                 Log::notice("Error moving rejected submission from the submission table to the rejected table. Error:");
                 Log::notice($e->getMessage());
             }
         }
         //And then delete
-        Submissions::where('is_trashed','=',1)->where('updated_at','<',Carbon::now()->subMonth())->delete();
+        Submissions::where('is_trashed', '=', 1)->where('updated_at', '<', Carbon::now()->subMonth())->delete();
     }
 }

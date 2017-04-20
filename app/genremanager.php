@@ -1,10 +1,10 @@
 <?php
-	require_once("headers/security_header.php");
-	require_once("headers/menu_header.php");
+    require_once("headers/security_header.php");
+    require_once("headers/menu_header.php");
 
-	if( permission_level() < $djland_permission_levels['volunteer_leader']['level']){
-		header("Location: main.php");
-	}
+    if (permission_level() < $djland_permission_levels['volunteer_leader']['level']) {
+        header("Location: main.php");
+    }
 ?>
 <html>
 	<head>

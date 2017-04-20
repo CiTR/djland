@@ -1,19 +1,18 @@
 <?php
 
-use App\Library_Edit as Edits;
+use App\LibraryEdit as Edits;
 use App\Library as Library;
 use App\Member as Member;
 use Carbon\Carbon;
 use Validator as Validator;
 
 //Post to this route to write to the library edits table
-Route::post('/libraryedits', function(){
-
-    try{
+Route::post('/libraryedits', function () {
+    try {
         // get the old values that are currently in the library
         $old_entry = Library::find(Input::get('libraryID'));
 
-        if( Input::get('format_id') == $old_entry->format_id
+        if (Input::get('format_id') == $old_entry->format_id
           && Input::get('catalog') == $old_entry->catalog
           && Input::get('cancon') == $old_entry->cancon
           && Input::get('femcon') == $old_entry->femcon
@@ -27,7 +26,7 @@ Route::post('/libraryedits', function(){
           && Input::get('label') == $old_entry->label
           && Input::get('genre') == $old_entry->genre) {
             return "No changes made";
-          }
+        }
 
         $newedits = Edits::create([
             'format_id' => Input::get('format_id') == null ? $old_entry->format_id : Input::get('format_id'),
@@ -59,71 +58,74 @@ Route::post('/libraryedits', function(){
             'library_id' => Input::get('libraryID')
         ]);
         return $newedits;
-    } catch(Exception $e){
+    } catch (Exception $e) {
         return $e->getMessage();
     }
 });
 
 //Post to this route to update a library entry
-Route::put('/updateentry', function(){
-    try{
+Route::put('/updateentry', function () {
+    try {
         $entry = Library::find(Input::get('libraryID'));
 
-        if(Input::get('title') != null) {
+        if (Input::get('title') != null) {
             $entry -> title = Input::get('title');
         }
-        if(Input::get('artist') != null) {
+        if (Input::get('artist') != null) {
             $entry -> artist = Input::get('artist');
         }
-        if(Input::get('label') != null) {
+        if (Input::get('label') != null) {
             $entry -> label = Input::get('label');
         }
-        if(Input::get('genre') != null) {
+        if (Input::get('genre') != null) {
             $entry -> genre = Input::get('genre');
         }
-        if(Input::get('catalog') != null) {
+        if (Input::get('catalog') != null) {
             $entry -> catalog = Input::get('catalog');
         }
-        if(Input::get('format_id') != null) {
+        if (Input::get('format_id') != null) {
             $entry -> format_id = Input::get('format_id');
         }
-        if(Input::get('status') != null) {
+        if (Input::get('status') != null) {
             $entry -> status = Input::get('status');
         }
-        if(Input::get('cancon') != null) {
+        if (Input::get('cancon') != null) {
             $entry -> cancon = Input::get('cancon');
         }
-        if(Input::get('femcon') != null) {
+        if (Input::get('femcon') != null) {
             $entry -> femcon = Input::get('femcon');
         }
-        if(Input::get('playlist') != null) {
+        if (Input::get('playlist') != null) {
             $entry -> playlist = Input::get('playlist');
         }
-        if(Input::get('local') != null) {
+        if (Input::get('local') != null) {
             $entry -> local = Input::get('local');
         }
-        if(Input::get('compilation') != null) {
+        if (Input::get('compilation') != null) {
             $entry -> compilation = Input::get('compilation');
         }
-        if(Input::get('digitized') != null) {
+        if (Input::get('digitized') != null) {
             $entry -> digitized = Input::get('digitized');
         }
 
         $entry ->save();
 
         return Response::json("Updated library entry #" . $entry -> id);
-    } catch (Exception $e){
+    } catch (Exception $e) {
         return $e->getMessage();
     }
 });
 // Get recent entries in the library edits table
-Route::get('/recentedits', function(){
+Route::get('/recentedits', function () {
     $result = Edits::orderBy('id', 'desc')->take(30)->get();
-    if(!$result->isEmpty()) return Response::json( $result );
-    else return Response::json();
+    if (!$result->isEmpty()) {
+        return Response::json($result);
+    } else {
+        return Response::json();
+    }
 });
 // Get an entry in the library edits table
-Route::get('/recenteditentry', function(){
+Route::get('/recenteditentry', function () {
     $result = Edits::find(Input::get('id'));
-    return Response::json( $result );
+    return Response::json($result);
 });

@@ -1,5 +1,6 @@
 <?php
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -13,9 +14,9 @@ class Submissions extends Model
     'reviewed','approved','description','location','email','songlist','credit',
     'art_url','review_comments','staff_comment','created_at','updated_at' );
 
-    public function songs(){
+    public function songs()
+    {
         //Order by track number so loops that display songs do so in order
-        return $this->hasMany('App\SubmissionsSongs','submission_id')->orderBy('track_num','asc');
+        return $this->hasMany('App\SubmissionsSongs', 'submission_id')->orderBy('track_num', 'asc');
     }
-
 }

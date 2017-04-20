@@ -1,10 +1,21 @@
 <?php
-	require_once("headers/security_header.php");
-	require_once("headers/menu_header.php");
+    require_once("headers/security_header.php");
+    require_once("headers/menu_header.php");
 
-	if( permission_level() < $djland_permission_levels['volunteer_leader']['level']){
-		header("Location: main.php");
-	}
+    if (permission_level() < $djland_permission_levels['volunteer_leader']['level']) {
+        header("Location: main.php");
+    }
+    //Get formats from db
+    $formats = mysqli_query($db['link'], "SELECT * from types_format");
+    //Get genres and subgenres from db
+    $genres = mysqli_query($db['link'], "SELECT * from genres order by genre");
+    $subgenres = mysqli_query($db['link'], "SELECT * from subgenres order by parent_genre_id,subgenre");
+    //Sort subgenres by parent genre
+    for ($i=0; $i < mysqli_num_rows($genres); $i++) {
+        $subgenres_genre[mysqli_result_dep($genres, $i, 'genre')] = mysqli_query(
+            $db['link'], "SELECT * from subgenres where parent_genre_id=".
+            mysqli_result_dep($genres, $i, 'id')." order by subgenre");
+    }
 ?>
 <html>
 	<head>
@@ -49,18 +60,18 @@
 
         <div class='submissioncontainer' >
 			<ul id ='tab-nav'>
-				<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
+				<?php if (permission_level() >= $djland_permission_levels['volunteer']['level']) : ?>
 					<li class="tab nodrop active-tab submission_action" name="new_submissions">New Submissions</li>
 					<li class="tab nodrop inactive-tab submission_action" name="reviewed_submissions">Reviewed Submissions</li></li>
 					<li class="tab nodrop inactive-tab submission_action" name="tag">Tag Accepted Submissions</li></li>
 				<?php endif;
-				if(permission_level() >= $djland_permission_levels['staff']['level']) : ?>
+                if (permission_level() >= $djland_permission_levels['staff']['level']) : ?>
 				<li class="tab nodrop inactive-tab submission_action" name="approve">Approve</li>
 				<li class="tab nodrop inactive-tab submission_action" name="admin">Submission Admin</li>
 				<li class="tab nodrop inactive-tab submission_action" name="manual_submission">Manual Submission</li>
 				<?php endif; ?>
 			</ul>
-			<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']): ?>
+			<?php if (permission_level() >= $djland_permission_levels['volunteer']['level']): ?>
 
 			<!-- Begin Tab 1 "new submissions search" -->
 			<div id="new_submissions" class="submission grey clearfix padded-right">
@@ -595,18 +606,11 @@
 							<b> Format* </b>
 						</div>
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$("#format-approved").select2();
-								});
-							</script>
-
-                            <select id="format-approved" class="js-example-basic-single vueselect" id="format-approved" style="width:30%;">
-                            <?php $formats = mysqli_query($db['link'],"SELECT * from types_format;");
-							    for($i = 0; $i < mysqli_num_rows($formats); $i++){
-								    printf("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
-                                }
-							?>
+							<select id="format-approved" class="vueselect" id="format-approved" style="width:30%;">
+                                <?php for ($i = 0; $i < mysqli_num_rows($formats); $i++) {
+                    printf("<option value='".mysqli_result_dep($formats, $i, 'id')."'>".mysqli_result_dep($formats, $i, 'name')."</option>");
+                }
+                                ?>
 							</select>
 						</div>
 					</div>
@@ -647,15 +651,12 @@
 							<b> Genre* </b>
 						</div>
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
-								});
-							</script>
-								<select class="js-example-basic-single vueselect" id="genre-approved" style="width:70%;">
-									<?php foreach($djland_primary_genres as $genre){
-										printf("<option value=\"$genre\">$genre</option>");
-									} ?>
+							<select class="vueselect" id="genre-approved" style="width:70%;">
+                                    <?php
+                                        for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
+                                            printf("<option value='".mysqli_result_dep($genres, $i, 'genre')."'>".mysqli_result_dep($genres, $i, 'genre')."</option>");
+                                        }
+                                    ?>
 								</select>
 						</div>
 					</div>
@@ -671,22 +672,20 @@
 					</div>
 					<div class="titleBox">
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$(".js-example-basic-single").select2();
-								});
-							</script>
-								<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
+							<select class="js-example-basic-single vueselect" id="subgenre-approved" style="width:70%;">
 									<option value"none">No Subgenre</option>
-									<?php foreach($djland_subgenres as $genre => $subgenre_array){
-										printf("<optgroup label=\"$genre\">");
-										if(is_array($subgenre_array)){
-											foreach($subgenre_array as $subgenre){
-												printf("<option value=\"$subgenre\">$subgenre</option>");
-											}
-										}
-										printf("</optgroup>");
-									} ?>
+                                    <?php
+                                        for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
+                                            printf("<optgroup label='".mysqli_result_dep($genres, $i, 'genre')."'>");
+                                            for ($j = 0; $j < mysqli_num_rows($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')]); $j++) {
+                                                printf("<option value='".
+                                                mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
+                                                "'>".mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
+                                                "</option>");
+                                            }
+                                            printf("</optgroup>");
+                                        }
+                                    ?>
 								</select>
 						</div>
 					</div>
@@ -755,7 +754,7 @@
 			<?php endif; ?>
 
 			<!--- Begin Tab 4 "add to library" -->
-			<?php if(permission_level() >= $djland_permission_levels['staff']['level']): ?>
+			<?php if (permission_level() >= $djland_permission_levels['staff']['level']): ?>
 			<div id="approve" class="hidden submission grey clearfix">
                 <ul id="submission_header" name="search" class="clean-list inline-list">
                     <li><div class="dataTables_filter"><label>Search All: <input type="search" id="taggedSubmissionSearch" class="" placeholder="" aria-controls=""></label></div></li>
@@ -891,17 +890,9 @@
 							<b> Format* </b>
 						</div>
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$("#format-tagged").select2();
-								});
-							</script>
-
-							<select class="js-example-basic-single vueselect" id="format-tagged" style="width:30%;">
-                                <?php
-                                    $formats = mysqli_query($db['link'],"SELECT * from types_format;");
-    							    for($i = 0; $i < mysqli_num_rows($formats); $i++){
-    								    echo("<option class='vueselect' value=".mysqli_result_dep('$formats',$i,'id').">".mysqli_result_dep('$formats',$i,'name')."</option>");
+							<select class="vueselect" id="format-tagged" style="width:30%;">
+                                <?php for ($i = 0; $i < mysqli_num_rows($formats); $i++) {
+                                        printf("<option value='".mysqli_result_dep($formats, $i, 'id')."'>".mysqli_result_dep($formats, $i, 'name')."</option>");
                                     }
                                 ?>
 							</select>
@@ -944,15 +935,12 @@
 							<b> Genre* </b>
 						</div>
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$("#genre-tagged").select2();
-								});
-							</script>
-								<select class="js-example-basic-single vueselect" id="genre-tagged" style="width:70%;">
-									<?php foreach($djland_primary_genres as $genre){
-										printf("<option value=\"$genre\">$genre</option>");
-									} ?>
+							<select class="vueselect" id="genre-tagged" style="width:70%;">
+                                    <?php
+                                        for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
+                                            printf("<option class='' value='".mysqli_result_dep($genres, $i, 'genre')."'>".mysqli_result_dep($genres, $i, 'genres')."</option>");
+                                        }
+                                    ?>
 								</select>
 						</div>
 					</div>
@@ -968,22 +956,20 @@
 					</div>
 					<div class="titleBox">
 						<div id="editTitleBox">
-							<script type="text/javascript">
-								$(document).ready(function() {
-								$("#subgenre-tagged").select2();
-								});
-							</script>
-								<select class="js-example-basic-single vueselect" id="subgenre-tagged" style="width:70%;">
+							<select class="js-example-basic-single vueselect" id="subgenre-tagged" style="width:70%;">
 									<option value"none">No Subgenre</option>
-									<?php foreach($djland_subgenres as $genre => $subgenre_array){
-										printf("<optgroup label=\"$genre\">");
-										if(is_array($subgenre_array)){
-											foreach($subgenre_array as $subgenre){
-												printf("<option value=\"$subgenre\">$subgenre</option>");
-											}
-										}
-										printf("</optgroup>");
-									} ?>
+                                    <?php
+                                        for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
+                                            printf("<optgroup label='".mysqli_result_dep($genres, $i, 'genre')."'>");
+                                            for ($j = 0; $j < mysqli_num_rows($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')]); $j++) {
+                                                printf("<option class='' value='".
+                                                mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
+                                                "'>".mysqli_result_dep($subgenres_genre[mysqli_result_dep($genres, $i, 'genre')], $j, 'subgenre').
+                                                "</option>");
+                                            }
+                                            printf("</optgroup>");
+                                        }
+                                    ?>
 								</select>
 						</div>
 					</div>
@@ -1158,8 +1144,8 @@
 			<?php endif; ?>
 
 			<!-- Begin Tav 6: Manual Submission Tab -->
-			<?php if(permission_level() >= $djland_permission_levels['volunteer']['level']):
-			?>
+			<?php if (permission_level() >= $djland_permission_levels['volunteer']['level']):
+            ?>
 			<div id='manual_submission' class='hidden submission grey clearfix'>
 				<div style="padding:10px">
 					<div class="row">
@@ -1201,9 +1187,9 @@
         			<div style="width: 50%;float:left;">
         				&#9733; Genre: <select name="genre" id="genre-picker" style="width:95%;margin-bottom:30px;">
                             <?php
-                                $genres= mysqli_query($db['link'],"SELECT * from genres;");
-                                for($i = 0; $i < mysqli_num_rows($genres); $i++){
-                                    echo("<option>".mysqli_result_dep($genres,$i,'genre')."</option>");
+                                $genres= mysqli_query($db['link'], "SELECT * from genres;");
+                                for ($i = 0; $i < mysqli_num_rows($genres); $i++) {
+                                    echo("<option>".mysqli_result_dep($genres, $i, 'genre')."</option>");
                                 }
                             ?>
         				</select>
@@ -1215,9 +1201,9 @@
             <div style="width: 50%;float:left;">
               &#9733; Format: <select name="Select the format" id="format-picker" style="width:95%;margin-bottom:30px;">
                   <?php
-                      $formats= mysqli_query($db['link'],"SELECT * from types_format;");
-                      for($i = 0; $i < mysqli_num_rows($formats); $i++){
-                          echo("<option>".mysqli_result_dep($formats,$i,'name')."</option>");
+                      $formats= mysqli_query($db['link'], "SELECT * from types_format;");
+                      for ($i = 0; $i < mysqli_num_rows($formats); $i++) {
+                          echo("<option>".mysqli_result_dep($formats, $i, 'name')."</option>");
                       }
                     ?>
               </select>
@@ -1335,121 +1321,7 @@
           </form>
 
 
-            <!--
-						<form>
-							<div class="album-row">
-							<div style="width:50%;float:left;">
-								Artist / Band name*: <input id="artist-name" type="text" style="width:95%;margin-bottom:30px" placeholder="The Ultimate Supergroup">
-							</div>
-							<div style="width:50%;float:right;">
-								Contact email*: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="ultimate@example.com">
-							</div>
-						</div>
-						<div class="album-row">
-							<div style="width:50%;float:left;">
-								Record label: <input type="text" style="width:95%;margin-bottom:30px" placeholder="Stardust Records">
-							</div>
-							<div style="width:50%;float:right;">
-								Home city: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="London, England">
-							</div>
-						</div>
-						<div class="album-row">
-							<div style="width:50%;float:left;">
-								(For bands) Member names: <input type="text" style="width:95%;margin-bottom:30px" placeholder="David Bowie, Paul McCartney, Neil Peart">
-							</div>
-							<div style="width:50%;float:right;">
-								Album name*: <input type="text" style="width:100%;margin-bottom:30px;" placeholder="Ziggy and Friends">
-							</div>
-						</div>
-						<div class="album-row double-padded-bottom">
-							<div style="width: 50%;float:left;">
-								Genre*: <script type="text/javascript">
-									$(document).ready(function() {
-									$(".js-example-basic-single").select2();
-									});
-								</script>
-								<select class="js-example-basic-single vueselect" style="width:70%;">
-									<?php foreach($djland_primary_genres as $genre){
-										printf("<option value=\"$genre\">$genre</option>");
-									} ?>
-								</select>
-							</div>
-							<div style="width: 50%;float:right;">
-								Date released*: <input type="text" style = "width:100%;margin-bottom:30px;" placeholder="June 3, 1993">
-							</div>
-							<div class="album-row">
-								<div style="width: 50%;float:left;">
-									Format*	: <select class="js-example-basic-single vueselect" style="width:20%;">
-										<option class='vueselect' value="CD">CD</option>
-										<option class='vueselect' value="LP">LP</option>
-										<option class='vueselect' value="7in">7"</option>
-										<option class='vueselect' value="CASS">CASSETE</option>
-										<option class='vueselect' value ="CART">CART</option>
-										<option class='vueselect' value="MP3">MP3</option>
-										<option class='vueselect' value="MD">MD</option>
-										<option value="??">Unknown</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="album-row col1">
-							<div class='col3'>
-								<input type="checkbox" style="margin-right:20px;" />Canadian artist/band
-							</div>
-							<div class='col3'>
-								<input type="checkbox" style="margin-right:20px"/>Vancouver, BC artist/band
-							</div>
-							<div class='col3'>
-								<input type="checkbox" style="margin-right:20px"/>Female artist/band
-							</div>
-						</div>
-						<div class='col1 padded'>
-							<br>Comments: <textarea rows="4" style="width:100%;margin-bottom:20px;" placeholder="Please tell us about yourself."></textarea>
-						</div>
-					</form>
 
-					<div class="col1 text-center">
-						<p>Add album art (optional):</p>
-						<input type="file" id="album-art-input-button" style="display:none" />
-						<button id="album-art-button" class="submission-button">
-							Add Album Art (Optional)
-						</button>
-						<output id="album-viewer"></output>
-
-						<script>
-							$('#album-art-button').click(function(){ $('#album-art-input-button').trigger('click');});
-						</script>
-
-							<p>Note: We accept .jpeg or .png files of at least size 300 by 300 pixels.</p>
-							<p>Please submit a minimum of four 320kbps MP3 files.</p>
-
-							<div id="submit-field"></div>
-
-							<input type="file" id="new-track-button-input" style="display:none" multiple/>
-							<button id="new-track-button" class="submission-button">
-								Add files
-							</button>
-
-							<script>
-								$('#new-track-button').click(function(){ $('#new-track-button-input').trigger('click');});
-							</script>
-
-					</div>
-
-					<div class="containerrow double-padded-top">
-						<div class="col1 text-center">
-							<hr />
-							<div class='padded'>
-								<button name="edit" class="member_submit">Submit</button>
-							</div>
-						</div>
-					</div>
-					<div class="containerrow">
-						<div class="col1 text-center">
-							*indicates a required field
-						</div>
-					</div>
-        -->
 
 				</div>
 			</div>

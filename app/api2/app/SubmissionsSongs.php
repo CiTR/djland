@@ -1,5 +1,6 @@
 <?php
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -12,7 +13,8 @@ class SubmissionsSongs extends Model
     'tracks_total', 'genre', 's/t', 'v/a', 'compilation','composer', 'crtc',
     'year', 'length', 'file_location', 'updated_at', 'created_at');
 
-    public function submission(){
+    public function submission()
+    {
         return $this->belongsTo('App\Submissions');
     }
 }

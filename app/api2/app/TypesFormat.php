@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Model;
 
