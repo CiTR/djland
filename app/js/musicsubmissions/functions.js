@@ -121,3 +121,56 @@ function namesFromMemberId(id) {
         }
     });
 }
+
+function getMemberListForSelects() {
+    $.ajax({
+        type: "GET",
+        url: "api2/public/member/",
+        dataType: 'json',
+        async: true,
+        success: function (response) {
+            var ret = "<option></option>";
+            response.forEach(function (member) {
+                ret = ret + "<option value='" + member['id'] + "'>" + member['firstname'] + " " + member['lastname'] + "</option>";
+            });
+            $(".memberList").append(ret);
+            $(".memberList").select2({
+                placeholder: "Select Member"
+            });
+            $('.select2').on('click', function (e) {
+                e.stopPropagation();
+            });
+            $('.select2').on('keydown', function (e) {
+                e.stopImmediatePropagation();
+            });
+        },
+        error: function (err) {
+            console.log("Unable to grab list of members for selects. The server said:");
+            console.log(err);
+        }
+    });
+}
+
+function saveComment(id, comment) {
+    console.log(id + " " + comment);
+    id = id.replace(/\D/g, '');
+    $.trim(id);
+
+    $.ajax({
+        type: "PUT",
+        url: "api2/public/submissions/comment",
+        dataType: 'json',
+        data: {
+            id: id,
+            comment: comment
+        },
+        async: true,
+        success: function (response) {
+            console.log("Comment for submission id: " + id + " success saved.")
+        },
+        error: function (err) {
+            console.log("Unable to save comment for submission id: " + id + ". The server said:");
+            console.log(err);
+        }
+    });
+}

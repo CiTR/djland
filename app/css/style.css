@@ -2343,6 +2343,12 @@ table {
   color: #333;
 }
 
+/*fix long items in select2-container*/
+
+.select2-container--default {
+  width: 150px !important;
+}
+
 .submissioncontainer {
   width: 1040px;
   margin-left: auto;
@@ -2645,4 +2651,8 @@ submission_table tr th {
   -moz-box-shadow: inset 0px 0px 1px #BEBEBE;
   -webkit-box-shadow: inset 0px 0px 1px #BEBEBE;
   box-shadow: inset 0px 0px 1px #BEBEBE;
+}
+
+.staff_comment {
+  width: 100%;
 }

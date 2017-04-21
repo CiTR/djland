@@ -2,15 +2,10 @@
  ***** Handlers *****
  ********************/
 function add_submission_handlers() {
-    //Listener for adding 'updated' to allow only updated comments to be submitted for saving
-    //TODO
-    $('#membership_table').off('keyup', '.staff_comment').on('keyup', '.staff_comment', function (element) {
-        $(this).addClass('updated');
-    });
     //Listener for saving comments
     //TODO
-    $('#search').off('click', '#save_comments').on('click', '#save_comments', function (element) {
-        saveComments();
+    $('.staff_comment').off('change').on('change', function (element) {
+        saveComment($(this).attr('id'), $(this).val());
     });
     /*
      * Listener for box to do a review
@@ -150,14 +145,15 @@ function add_submission_handlers() {
             playlist, art_url);
     });
 
+    //DISABLED BECAUSE ANDY SAID SO
     //Listener for preventing catalog # from being anything but a number
-    $("#catalog-approved").off('keypress').on('keypress', function (e) {
-        var chr = String.fromCharCode(e.which);
-        if ("0123456789dig".indexOf(chr) < 0) {
-            e.preventDefault();
-            return false;
-        }
-    });
+    //$("#catalog-approved").off('keypress').on('keypress', function (e) {
+    //    var chr = String.fromCharCode(e.which);
+    //    if ("0123456789dig".indexOf(chr) < 0) {
+    //        e.preventDefault();
+    //        return false;
+    //    }
+    //});
     /*
      * Listeners for approving tags popup
      */
@@ -430,13 +426,5 @@ function add_submission_handlers() {
     });
     $('.approverow').off('change', '.delete_submission_tagged_other').on('change', '.delete_submission_tagged_other', function (e) {
         $(this.closest('tr')).toggleClass('delete');
-    });
-
-
-    $('.vueselect').on("select2:unselect", function (e) {
-        if (!e.params.originalEvent) {
-            return
-        }
-        e.params.originalEvent.stopPropagation();
     });
 }

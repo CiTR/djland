@@ -334,6 +334,11 @@ $(document).ready(function () {
     $(".vueselect").select2();
 
     $("body").keydown(function (e) {
+        //Stop bubbling up if it's a select2 box
+        if (e.target.nodeName == "SPAN" || e.target.nodeName == "INPUT") {
+            e.stopPropagation;
+            return;
+        }
         //check if a select dropdown is open, if not close the things
         if (e.keyCode == 27) { // escape key maps to keycode `27`
             $('#submissionspopup').fadeOut(175);

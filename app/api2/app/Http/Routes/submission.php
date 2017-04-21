@@ -547,6 +547,26 @@ Route::group(['middleware' => 'auth'], function () {
                 return Response::json($result);
             }
         });
+        Route::put('/comment', function () {
+            $rules = array(
+                'id' => 'required|numeric',
+                'comment' => 'required'
+            );
+            $validator = Validator::make(Input::all(), $rules);
+            if (!$validator->fails()) {
+                try {
+                    $purifier = new Purifier;
+                    $submission = Submissions::find(Input::get('id'));
+                    $submission -> staff_comment = $purifier->purify(Input::get('comment'));
+                    $submission->save();
+                    return $submission;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            } else {
+                return(response($validator->errors()->all(), 422));
+            }
+        });
         //Post to this route when a user reviews a new submisison
         //Requires: id (ie. submission id), review_comments(text), and approved (0 or 1)
         Route::put('/review', function () {

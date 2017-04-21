@@ -12,6 +12,10 @@
 .select2-choice {
 	color: #333;
 }
+/*fix long items in select2-container*/
+.select2-container--default {
+  width: 150px !important;
+}
 
 .submissioncontainer {
 	width: 1040px;
@@ -191,6 +195,7 @@
 }
 #submission_table {
 	width: 100%;
+
 }
 #submission_table tr td,submission_table tr th{
 	padding-right:5px;
@@ -273,4 +278,8 @@
 	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
 	-webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
 	box-shadow:inset 0px 0px 1px #BEBEBE;
+}
+
+.staff_comment{
+    width:100%;
 }
