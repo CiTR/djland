@@ -1765,23 +1765,22 @@ function handleAlbum(evt) {
         var reader = new FileReader();
 
         reader.onload = (function (theFile) {
-                return function (e) {
-                    var span = document.createElement('span');
-                    span.setAttribute('id', 'thumb-span');
-                    span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
-                    albumViewer.innerHTML = "";
-                    albumViewer.insertBefore(span, null);
-                };
+            return function (e) {
+                var span = document.createElement('span');
+                span.setAttribute('id', 'thumb-span');
+                span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                albumViewer.innerHTML = "";
+                albumViewer.insertBefore(span, null);
             };
         })(cover);
 
-    reader.readAsDataURL(cover);
-} else if (cover.type.match('image.*')) {
-    cover = null;
-    alert("Please choose a smaller image.");
-} else {
-    alert("Please choose an image.");
-}
+        reader.readAsDataURL(cover);
+    } else if (cover.type.match('image.*')) {
+        cover = null;
+        alert("Please choose a smaller image.");
+    } else {
+        alert("Please choose an image.");
+    }
 }
 
 function handleTracks(evt) {
@@ -2123,6 +2122,13 @@ function handleTracks(evt) {
     for (var i = 0, f; f = newFiles[i]; i++) {
 
         if (!f.type.match('audio.*')) {
+            fileWarning = true;
+            continue;
+        }
+
+        if (f.size > 175000000) {
+            sizeWarning = true;
+            continue;
             fileWarning = true;
             continue;
         }
