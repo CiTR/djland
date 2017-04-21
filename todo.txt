@@ -5,6 +5,8 @@ Ad scheduler goes in endless loop if it can't find a SAM category
 Ad scheduler and SAM integration is very tightly coupled - one shouldn't be enabled without the other the way the code is written
 Same with SAM Ad History - should be disabled if SAM integration is off
 Socan Period needs to move to API - some functions still depend on socan handler
+Track artist and composer needs to do something if null/none
+Fix listener that pauses a song when you hit play on another
 
 =====================================
 CAPSTONE
