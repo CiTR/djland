@@ -547,6 +547,7 @@ Route::group(['middleware' => 'auth'], function () {
                 return Response::json($result);
             }
         });
+        //Update staff comment in submission
         Route::put('/comment', function () {
             $rules = array(
                 'id' => 'required|numeric',
@@ -558,6 +559,27 @@ Route::group(['middleware' => 'auth'], function () {
                     $purifier = new Purifier;
                     $submission = Submissions::find(Input::get('id'));
                     $submission -> staff_comment = $purifier->purify(Input::get('comment'));
+                    $submission->save();
+                    return $submission;
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
+            } else {
+                return(response($validator->errors()->all(), 422));
+            }
+        });
+        //Update assignee in a submission
+        Route::put('/assignee', function () {
+            $rules = array(
+                'id' => 'required|numeric',
+                'assignee' => 'required'
+            );
+            $validator = Validator::make(Input::all(), $rules);
+            if (!$validator->fails()) {
+                try {
+                    $purifier = new Purifier;
+                    $submission = Submissions::find(Input::get('id'));
+                    $submission -> assignee = $purifier->purify(Input::get('assignee'));
                     $submission->save();
                     return $submission;
                 } catch (Exception $e) {

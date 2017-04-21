@@ -137,6 +137,16 @@ function getMemberListForSelects() {
             $(".memberList").select2({
                 placeholder: "Select Member"
             });
+            //Set the select2 value
+            $(".memberList").each(function () {
+                var value = $(this).attr('value');
+                //Only change if the value is There
+                //Or otherwise it will trigger the change handler on the select
+                if ($.isNumeric(value)) {
+                    console.log(value);
+                    $(this).prop('value', value).change();
+                }
+            })
             $('.select2').on('click', function (e) {
                 e.stopPropagation();
             });
@@ -166,10 +176,34 @@ function saveComment(id, comment) {
         },
         async: true,
         success: function (response) {
-            console.log("Comment for submission id: " + id + " success saved.")
+            console.log("Comment for submission id: " + id + " successfully saved.")
         },
         error: function (err) {
             console.log("Unable to save comment for submission id: " + id + ". The server said:");
+            console.log(err);
+        }
+    });
+}
+
+function saveAssignee(id, assignee) {
+    console.log(id + " " + assignee);
+    id = id.replace(/\D/g, '');
+    $.trim(id);
+
+    $.ajax({
+        type: "PUT",
+        url: "api2/public/submissions/assignee",
+        dataType: 'json',
+        data: {
+            id: id,
+            assignee: assignee
+        },
+        async: true,
+        success: function (response) {
+            console.log("Assignee for submission id: " + id + " successfully saved.")
+        },
+        error: function (err) {
+            console.log("Unable to save assignee for submission id: " + id + ". The server said:");
             console.log(err);
         }
     });

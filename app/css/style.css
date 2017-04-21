@@ -2618,6 +2618,10 @@ submission_table tr th {
   background-color: green;
 }
 
+.trashedrow.approve {
+  background-color: green;
+}
+
 .tagrow.delete {
   background-color: red;
 }

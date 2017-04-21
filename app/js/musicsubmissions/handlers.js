@@ -3,10 +3,12 @@
  ********************/
 function add_submission_handlers() {
     //Listener for saving comments
-    //TODO
     $('.staff_comment').off('change').on('change', function (element) {
         saveComment($(this).attr('id'), $(this).val());
     });
+    $('.memberList').off('change').on('change', function (element) {
+        saveAssignee($(this).attr('id'), $(this).val());
+    })
     /*
      * Listener for box to do a review
      */
@@ -237,7 +239,6 @@ function add_submission_handlers() {
         $('#newSubmissionOtherTable').DataTable().column(sortNum + ':visible').order('asc').draw();
     });
     $('#reviewed_submissions_order_by').off('change').on('change', function () {
-        console.log(this.value);
         switch (this.value) {
         case 'artist':
             sortNum = 0;
@@ -426,5 +427,8 @@ function add_submission_handlers() {
     });
     $('.approverow').off('change', '.delete_submission_tagged_other').on('change', '.delete_submission_tagged_other', function (e) {
         $(this.closest('tr')).toggleClass('delete');
+    });
+    $('.restore_submission').off('change').on('change', function (e) {
+        $(this.closest('tr')).toggleClass('approve');
     });
 }

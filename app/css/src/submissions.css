@@ -251,6 +251,9 @@
 .reviewedrow.approve{
 	background-color:green;
 }
+.trashedrow.approve{
+    background-color: green;
+}
 .tagrow.delete{
 	background-color:red;
 }

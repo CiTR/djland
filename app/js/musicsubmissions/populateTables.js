@@ -72,9 +72,6 @@ function populateReviewedSubmissionsTable() {
 }
 
 function populateApprovedSubmissionsTable() {
-    //Grab list of members to display in selects
-    memberList = getMemberListForSelects();
-
     $(".tagrow").remove();
     $(".tagrowNotFound").remove();
     $.ajax({
@@ -179,7 +176,7 @@ function populateNewSubmissionsCd(submissions) {
                 console.log('date fine');
             }
             var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class='memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_cd\" id=\"delete" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class='memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_cd\" id=\"delete" + item['id'] + "\"><div class=\"check hidden\">❏</div></td></tr>";
             //console.log(markup);
             $("tbody[name='newSubmissionCd']").append(markup);
         }
@@ -229,7 +226,7 @@ function populateNewSubmissionsMP3(submissions) {
             }
 
             var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class='memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class='memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
             $("tbody[name='newSubmissionMP3']").append(markup);
         }
         add_submission_handlers();
@@ -278,7 +275,7 @@ function populateNewSubmissionsOther(submissions) {
             }
 
             var markup = "<tr class=\"playitem border reviewrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class'memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class'memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_new_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
             $("tbody[name='newSubmissionOther']").append(markup);
         }
         add_submission_handlers();
@@ -472,7 +469,7 @@ function populateToTagSubmissionsCd(submissions) {
             }
 
             var markup = "<tr class=\"playitem border tagrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class='memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_cd\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class='memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_cd\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
             $("tbody[name='toTagSubmissionCd']").append(markup);
         }
         add_submission_handlers();
@@ -521,7 +518,7 @@ function populateToTagSubmissionsMP3(submissions) {
             }
 
             var markup = "<tr class=\"playitem border tagrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class='memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class='memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_mp3\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
             $("tbody[name='toTagSubmissionMP3']").append(markup);
         }
         add_submission_handlers();
@@ -570,7 +567,7 @@ function populateToTagSubmissionsOther(submissions) {
             }
 
             var markup = "<tr class=\"playitem border tagrow\" name=\"" + item['id'] + "\"><td class=\"submission_row_element\"> " + item['artist'] + " </td><td class=\"submission_row_element\">" + item['title'] + "</td><td class=\"submission_row_element\">" + releasedateValue + "</td><td class=\"submission_row_element\">" + item['genre'] + "</td><td class=\"submission_row_element\">" +
-                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select class='memberList'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
+                item['submitted'] + "</td><td><input class=\"staff_comment\" id=\"comment" + item['id'] + "\" value=\"" + item['staff_comment'] + "\"></td><td><select id='assignee" + item['id'] + "' class='memberList' value='" + item['assignee'] + "'></select></td><td><input type=\"checkbox\" class=\"delete_submission_accepted_other\" id=\"delete" + item['id'] + "\"></td><div class=\"check hidden\">❏</div></tr>";
             $("tbody[name='toTagSubmissionOther']").append(markup);
         }
         add_submission_handlers();
