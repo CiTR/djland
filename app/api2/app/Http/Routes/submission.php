@@ -706,7 +706,7 @@ Route::group(['middleware' => 'auth'], function () {
                     $submission -> playlist = Input::get('playlist');
                     $submission -> compilation = Input::get('compilation');
                     $submission->save();
-                    return Response::json("Update submission #" . $submission -> id . " from approved to tagged successful");
+                    return Response::json("Update submission #" . $submission -> id . " from tagged to completed successful");
                     return $submission;
                 }
             } catch (Exception $e) {
@@ -766,7 +766,6 @@ Route::group(['middleware' => 'auth'], function () {
             if (!$validator->fails()) {
                 try {
                     $archive = Archive::create([
-                        //TODO: Refuse if req'd parameters not included or are null
                         'artist' => $newInput['artist'],
                         'title' => $newInput['title'],
                         'contact' => $newInput['contact'],

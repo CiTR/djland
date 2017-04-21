@@ -17,7 +17,7 @@ album art big on review after submitting review
 submit to library actually moves files from submissions upload
 editing lib moves files
 upload mp3 and images for library pages
-submit to library moves to Archive table
+(DONE) submit to library moves to Archive table
 (DONE) deletion after 1month job from deleted status
 (DONE) 1 month old deletes move to rejected table
 (DONE) rejected button deletes so that you can undo

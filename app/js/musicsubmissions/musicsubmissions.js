@@ -1481,10 +1481,10 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre,
 function approveTags(tag, submission_id, catalog, format_id, album_title,
     artist, credit, label, genre, cancon, femcon, local,
     compilation, in_sam, playlist, art_url) {
-    console.log(art_url);
+    //console.log(art_url);
     console.log("Approving tags ... ");
 
-    confirmDialog('Do you want to add this submission to SAM Scan');
+    confirmDialog('Do you want to add this submission to SAM Scan?');
 
     $.ajax({
         url: "api2/public/submissions/tolibrary",
@@ -1516,19 +1516,6 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
                 dataType: 'json',
                 data: {
                     'submission_id': submission_id,
-                    'catalog': catalog,
-                    'format': format_id,
-                    'album_title': album_title,
-                    'artist': artist,
-                    'label': label,
-                    'genre': genre,
-                    'cancon': cancon,
-                    'femcon': femcon,
-                    'local': local,
-                    'compilation': compilation,
-                    'in_sam': in_sam,
-                    'playlist': playlist,
-                    'art_url': art_url
                 },
                 async: true,
                 success: function (data) {
