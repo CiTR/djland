@@ -663,7 +663,7 @@ Route::group(['middleware' => 'auth'], function () {
                     $submission -> cancon = Input::get('cancon');
                     $submission -> femcon = Input::get('femcon');
                     $submission -> local = Input::get('local');
-                    $submission -> digitized = Input::get('in_sam');
+                    $submission -> digitized = Input::get('digitized');
                     $submission -> playlist = Input::get('playlist');
                     $submission -> compilation = Input::get('compilation');
                     $submission->save();
@@ -702,7 +702,7 @@ Route::group(['middleware' => 'auth'], function () {
                     $submission -> cancon = Input::get('cancon');
                     $submission -> femcon = Input::get('femcon');
                     $submission -> local = Input::get('local');
-                    $submission -> digitized = Input::get('in_sam');
+                    $submission -> digitized = Input::get('digitized');
                     $submission -> playlist = Input::get('playlist');
                     $submission -> compilation = Input::get('compilation');
                     $submission->save();
