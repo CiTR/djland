@@ -23,7 +23,7 @@ submit to library moves to Archive table
 (DONE) rejected button deletes so that you can undo
 samscan
 djland scan
-select2 on db
+(DONE) select2 on db
 testing
 delete button on submit online instead of checkbox
 (DONE) Datatables for search past submissions & deleted submissions
@@ -36,10 +36,10 @@ check that navigating away while shit is uploading is warned and how well it sti
 (DONE) submissions admin tools need to show if it was trashed or not
 (DONE) trashed submissions cleanup goes by submission date now, need to go by last updated
 Searching past submissions shouldn't require date?
-STAFF COMMENTS DON'T SAVE
-ASSIGNEES DON'T SAVE
-assignee needs to load from member data - sellect2 that up
-Sort by assignee
+(DONE) STAFF COMMENTS DON'T SAVE
+(DONE) ASSIGNEES DON'T SAVE
+(DONE) assignee needs to load from member data - sellect2 that up
+(DONE) Sort by assignee
 (DONE) Member id to name in deleted submissions
 Singles tables
 Tagging:alter song name, credit, track number, performer?
@@ -48,12 +48,12 @@ Keep genres and subgenres as id number throughout lib and submissions.
     tracks will go untagged.
 Library search by subgenre. Display subgenre. Make sure the subgenre gets written to lib
 
-When you close a row in datatables, make it completely dissapear - call draw() on the table or something
-Dropdowns - prevent bubble up on datatables when you click to select something
-All names on assignee/tagger - make a select2
-Green background on restore in deleted table
+(DONE) When you close a row in datatables, make it completely dissapear - call draw() on the table or something
+(DONE) Dropdowns - prevent bubble up on datatables when you click to select something
+(DONE) All names on assignee/tagger - make a select2
+(DONE) Green background on restore in deleted table
 The deleted table generally looks bad
-stop bubble up of esc on select2
+(DONE) stop bubble up of esc on select2
 
 ===========
 
