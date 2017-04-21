@@ -1174,7 +1174,7 @@ function displayApprovedBox(data) {
     var local = data['local'];
     var playlist = data['playlist'];
     var compilation = data['compilation'];
-    var in_sam = data['in_SAM'];
+    var in_sam = data['digitized'];
     var email = data['email'];
     var description = data['description'];
     var review_comments = data['review_comments'];
@@ -1256,7 +1256,7 @@ function displayTaggedBox(data) {
     var local = data['local'];
     var playlist = data['playlist'];
     var compilation = data['compilation'];
-    var in_sam = data['in_SAM'];
+    var in_sam = data['digitized'];
     var email = data['email'];
     var description = data['description'];
     var review_comments = data['review_comments'];
@@ -1458,7 +1458,7 @@ function tagReview(tag, id, catNo, format, album, artist, credit, label, genre,
             'femcon': femcon,
             'local': local,
             'compilation': compilation,
-            'in_sam': in_sam,
+            'digitized': in_sam,
             'playlist': playlist
         },
         async: true,
@@ -1504,7 +1504,7 @@ function approveTags(tag, submission_id, catalog, format_id, album_title,
             'femcon': femcon,
             'local': local,
             'compilation': compilation,
-            'in_sam': in_sam,
+            'digitized': in_sam,
             'playlist': playlist
         },
         async: true,

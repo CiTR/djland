@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
                     'cancon' => $submission->cancon,
                     'femcon' => $submission->femcon,
                     'local' => $submission->local,
+                    'playlist' => $submission->playlist,
                     'compilation' => $submission->compilation,
                     'digitized' => $submission->digitized,
                     'crtc' => $submission->crtc,
