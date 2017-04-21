@@ -1216,21 +1216,33 @@ function displayApprovedBox(data) {
     $("#location-approved").val(location);
     if (cancon == 1) {
         $("#cancon-approved").prop('checked', true);
+    } else {
+        $("#cancon-approved").prop('checked', false);
     }
     if (femcon == 1) {
         $("#femcon-approved").prop('checked', true);
+    } else {
+        $("#femcon-approved").prop('checked', false);
     }
     if (local == 1) {
         $("#local-approved").prop('checked', true);
+    } else {
+        $("#local-approved").prop('checked', false);
     }
     if (playlist == 1) {
         $("#playlist-approved").prop('checked', true);
+    } else {
+        $("#playlist-approved").prop('checked', false);
     }
     if (compilation == 1) {
         $("#compilation-approved").prop('checked', true);
+    } else {
+        $("#compilation-approved").prop('checked', false);
     }
     if (in_sam == 1) {
         $("#in_sam-approved").prop('checked', true);
+    } else {
+        $("#in_sam-approved").prop('checked', false);
     }
 }
 
@@ -1297,21 +1309,33 @@ function displayTaggedBox(data) {
     $("#location-tagged").val(location);
     if (cancon == 1) {
         $("#cancon-tagged").prop('checked', true);
+    } else {
+        $("#cancon-tagged").prop('checked', false);
     }
     if (femcon == 1) {
         $("#femcon-tagged").prop('checked', true);
+    } else {
+        $("#femcon-tagged").prop('checked', false);
     }
     if (local == 1) {
         $("#local-tagged").prop('checked', true);
+    } else {
+        $("#local-tagged").prop('checked', false);
     }
     if (playlist == 1) {
         $("#playlist-tagged").prop('checked', true);
+    } else {
+        $("#playlist-tagged").prop('checked', false);
     }
     if (compilation == 1) {
         $("#compilation-tagged").prop('checked', true);
+    } else {
+        $("#compilation-tagged").prop('checked', false);
     }
     if (in_sam == 1) {
         $("#in_sam-tagged").prop('checked', true);
+    } else {
+        $("#in_sam-tagged").prop('checked', false);
     }
 }
 
@@ -1741,22 +1765,23 @@ function handleAlbum(evt) {
         var reader = new FileReader();
 
         reader.onload = (function (theFile) {
-            return function (e) {
-                var span = document.createElement('span');
-                span.setAttribute('id', 'thumb-span');
-                span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
-                albumViewer.innerHTML = "";
-                albumViewer.insertBefore(span, null);
+                return function (e) {
+                    var span = document.createElement('span');
+                    span.setAttribute('id', 'thumb-span');
+                    span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                    albumViewer.innerHTML = "";
+                    albumViewer.insertBefore(span, null);
+                };
             };
         })(cover);
 
-        reader.readAsDataURL(cover);
-    } else if (cover.type.match('image.*')) {
-        cover = null;
-        alert("Please choose a smaller image.");
-    } else {
-        alert("Please choose an image.");
-    }
+    reader.readAsDataURL(cover);
+} else if (cover.type.match('image.*')) {
+    cover = null;
+    alert("Please choose a smaller image.");
+} else {
+    alert("Please choose an image.");
+}
 }
 
 function handleTracks(evt) {
@@ -1765,7 +1790,7 @@ function handleTracks(evt) {
     var fileWarning = false;
     var sizeWarning = false;
 
-    for (var i = 0, f; f = newFiles[i]; i++) {
+    for (var i = 0, f; f = n 0, f; f = newFiles[i]; i++) {
 
         if (!f.type.match('audio.*')) {
             fileWarning = true;
