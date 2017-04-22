@@ -33,8 +33,8 @@
 
         if(isset($_GET['scan']) && $_GET['scan'] == "true"){ ?>
         <div class='submissioncontainer' >
-            <h2> DJLand Scan Results </h2>
-            <div class="submission grey clearfix padded-right">
+            <h2 class=double-padded-bottom> DJLand Scan Results</h2>
+            <div class="submission grey clearfix side-padded padded">
                 <table id=DJLandScanTable class="submission_table cell-border">
                     <thead>
                         <tr id="headerrow" style="display: table-row;">
@@ -52,6 +52,22 @@
 
                     </tbody>
                 </table>
+                <table id=DJLandScanResultsTable class="submission_table cell-border hidden">
+                    <thead>
+                        <tr id="headerrow" style="display: table-row;">
+                            <th>File Source</th>
+                            <th>Action</th>
+                            <th>New ID</th>
+                            <th>Destination</th>
+                        </tr>
+                    </thead>
+                    <tbody id=DJLandScanResults>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class='side-padded right'>
+                <button id="submitScan">Apply Actions</button>
             </div>
         </div>
 
