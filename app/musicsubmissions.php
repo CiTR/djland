@@ -1097,18 +1097,7 @@
 					</div>
 					<div id="submission_result" class="right overflow_auto height_cap" name="search">
 						<table id="pastAcceptedSubmissions" class="submission_table" name="search">
-                            <thead>
-                                <tr id="headerrow" style="display: table-row;">
-                                    <th>Artist</th>
-                                    <th>Album</th>
-                                    <th>Date of Submission</th>
-                                    <th>Cancon</th>
-                                    <th>Femcon</th>
-                                    <th>Local</th>
-                                    <th>Contact Info</th>
-                                </tr>
-                            </thead>
-                            <tbody name="pastAcceptedSubmissions">
+              <tbody name="pastAcceptedSubmissions">
 							</tbody>
 						</table>
 					</div>
