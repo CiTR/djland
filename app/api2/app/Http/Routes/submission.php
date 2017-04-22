@@ -2,7 +2,7 @@
 
 use App\Submissions as Submissions;
 use App\SubmissionsArchive as Archive;
-use App\SubmissionsRejected as Rejected;
+use App\Submissions_Rejected as Rejected;
 use App\SubmissionsSongs as SubmissionsSongs;
 use App\Member as Member;
 use App\TypesFormat as TypesFormat;
