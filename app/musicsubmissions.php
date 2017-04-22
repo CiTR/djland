@@ -226,7 +226,7 @@
 							</div>
 							<div class="containerrow padded padded-left">
 								<div class="col2 text-left" id="description-review-box"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
-								<div class="col3 center"><a id="albumArt-review-box-a" href="images/albumart.jpg" data-lightbox="image-1"><img src="images/albumart.jpg" id="albumArt-review-box"></img></a></div>
+								<div class="col3 center"><a id="albumArt-review-box-a" href="images/albumart.jpg" data-lightbox="image-1"><img src="images/albumart.jpg" id="albumArt-review-box" style="max-width:100%;max-height:100%;width:275px;height:275px"></img></a></div>
 							</div>
 							<hr>
 							<div class="containerrow padded">
@@ -422,7 +422,7 @@
 							<hr>
 							<div class="containerrow padded padded-left">
 								<div class="col2 text-left" id="description-reviewed"><textarea rows=20 cols=65 readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mi dui. Donec enim risus, vestibulum sed faucibus ac, condimentum vitae ligula. Pellentesque consectetur, purus sed fermentum tempor, velit elit congue sem, eu feugiat ipsum tortor eu risus. In hendrerit tristique ultricies. Proin faucibus ipsum diam, sed molestie lacus molestie vitae. Donec a euismod dolor, et maximus nisl. Cras sagittis ligula ut massa ornare vestibulum tristique vitae mauris. In metus orci, blandit a sodales at, auctor in leo. Nulla non facilisis orci, ac imperdiet leo. Duis eu purus sit amet felis convallis suscipit id a lacus. </textarea></div>
-								<div class="col3 center"><a id="albumArt-reviewed-a" href="images/albumart.jpg" data-lightbox="image-2"><img src="images/albumart.jpg" id="albumArt-reviewed" class="review-artwork"></img></a></div>
+								<div class="col3 center"><a id="albumArt-reviewed-a" href="images/albumart.jpg" data-lightbox="image-2"><img src="images/albumart.jpg" id="albumArt-reviewed" class="review-artwork" style="max-width:100%;max-height:100%;width:275px;height:275px"></img></a></div>
 							</div>
 							<hr>
 							<div class="containerrow padded">
@@ -587,7 +587,7 @@
 						<h5 id="release-approved"></h5>
 						<h5 id="contact-approved"></h5>
 						<div>
-                            <a id="albumArt-approved-a" href="images/albumart.jpg" data-lightbox="image-3"><img src="" id="albumArt-approved" class="review-artwork"></img></a></div>
+                            <a id="albumArt-approved-a" href="images/albumart.jpg" data-lightbox="image-3"><img src="" id="albumArt-approved" class="review-artwork" style="max-width:100%;max-height:100%;width:275px;height:275px"></img></a></div>
 						Band Submitted descripton:
 						<textarea style="height:100px" readonly="true" id="description-approved">Loading description ...</textarea>
 						Album Review Comments:
@@ -871,7 +871,7 @@
 						<h5 id="release-tagged"></h5>
 						<h5 id="contact-tagged"></h5>
 						<div>
-                            <a id="albumArt-tagged-a" href="images/albumart.jpg" data-lightbox="image-4"><img src="" id="albumArt-tagged" class="review-artwork"></img></a></div>
+                            <a id="albumArt-tagged-a" href="images/albumart.jpg" data-lightbox="image-4"><img src="" id="albumArt-tagged" class="review-artwork" style="max-width:100%;max-height:100%;width:275px;height:275px"></img></a></div>
 						Band Submitted descripton:
 						<textarea style="height:100px" readonly="true" id="description-tagged">Loading description ...</textarea>
 						Album Review Comments:
