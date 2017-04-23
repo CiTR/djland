@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+#TODO:  simplify payload of data from generating scan results (will require
+#       rewrite for front end)
+
 ###########################
 ## Example Library usage ##
 ###########################
@@ -221,10 +224,9 @@ def main():
                     else:
                         dest_filename = fakeMoveLibrary(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
-                    #Write to DB
-                    #DB will assign song ID so we're good
-                    sql = "INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
+                    #DB will assign song ID
+                    sql = {"command":"INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
 
                     catalogQuery = "SELECT catalog from library where id=%s"
                     catalogResult = executeSQL(catalogQuery,[data[0]])
@@ -255,10 +257,9 @@ def main():
                         else:
                             dest_filename = fakeMoveLibrary(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
-                        #Write to DB
-                        #DB will assign song ID so we're good
-                        sql = "INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
+                        #DB will assign song ID
+                        sql = {"command":"INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
 
                         catalogQuery = "SELECT catalog from library where id=%s"
                         catalogResult = executeSQL(catalogQuery,[data[0]])
@@ -298,10 +299,9 @@ def main():
                     else:
                         dest_filename = fakeMoveSubmissions(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
-                    #Write to DB
-                    #DB will assign song ID so we're good
-                    sql = "INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
+                    #DB will assign song ID
+                    sql = {"command":"INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
 
                     addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
@@ -330,10 +330,9 @@ def main():
                         else:
                             dest_filename = fakeMoveSubmissions(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
-                        #Write to DB
-                        #DB will assign song ID so we're good
-                        sql = "INSERT INTO submissions_songs (submissions_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
+                        #DB will assign song ID
+                        sql = {"command":"INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
 
                         addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
@@ -848,7 +847,7 @@ def writeLog(instring):
         if(checkIfFile(working_directory + "/" + log_file)):
             log = open( os.path.normpath( working_directory + "/" + log_file), 'a' )
         else:
-            print("Creating Log File ...")
+            #print("Creating Log File ...")
             ensure_dir(os.path.normpath(working_directory))
             log = open( os.path.normpath( working_directory + "/" + log_file), 'w+' )
     except FileNotFoundError:
