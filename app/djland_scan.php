@@ -30,12 +30,12 @@
 	<body class='wallpaper'>
 		<?php
         print_menu();
-
-        if(isset($_GET['scan']) && $_GET['scan'] == "true"){ ?>
+        ?>
         <div class='submissioncontainer' >
-            <h2 class=double-padded-bottom> DJLand Scan Results</h2>
-            <div class="submission grey clearfix side-padded padded">
-                <table id=DJLandScanTable class="submission_table cell-border">
+            <h2 id="scanTitle" class='double-padded-bottom hidden'> DJLand Scan Results</h2>
+            <h2 id="scanTitle2" class='double-padded-bottom hidden'> DJLand Import Results</h2>
+            <div id="DJLandScan" class="submission grey clearfix side-padded padded hidden">
+                <table id=DJLandScanTable class="submission_table cell-border hidden">
                     <thead>
                         <tr id="headerrow" style="display: table-row;">
                             <th>File Source</th>
@@ -67,30 +67,23 @@
                 </table>
             </div>
             <div class='side-padded right'>
-                <button id="submitScan">Apply Actions</button>
+                <button id="submitScan" class='hidden'>Apply Actions</button>
+            </div>
+
+            <h2 id="startScan">
+                <a>Click here to import new Library items into DJLand</a>
+            </h2>
+
+            <div id='loading' class='hidden'>
+                <h3>Please wait, the scan may take a while ...</h3>
+                <br>
+                <center><img src='images/loading0.gif'></img></center>
+            </div>
+            <div id='loading2' class='hidden'>
+                <h3>Please wait, the import may take a while ...</h3>
+                <br>
+                <center><img src='images/loading0.gif'></img></center>
             </div>
         </div>
-
-        <?php } else { ?>
-        <h2>
-            <a href="djland_scan.php?scan=true">Click here to import new Library items into DJLand</a>
-        </h2>
-
-        <pre>
-
-
-             .--.             .---.
-            /:.  '.         .' ..  '._.---.
-           /:::-.  \.-"""-;` .-:::.     .::\
-          /::'|   \/  _ _  \'   `\:'   ::::|
-      __.'    |   /  (o|o)  \     `'.   ':/
-     /    .:. /   |   ___   |        '---'
-    |    ::::'   /:  (._.) .:\
-    \    .='    |:'        :::|
-     `""`       \     .-.   ':/
-           arf!  '---`|I|`---'
-          citr!       '-'
-        </pre>
-        <?php } ?>
     </body>
 </html>

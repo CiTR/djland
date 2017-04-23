@@ -8,6 +8,7 @@ Socan Period needs to move to API - some functions still depend on socan handler
 Track artist and composer needs to do something if null/none
 Fix listener that pauses a song when you hit play on another
 (Fixed?) In sam button still not carrying over on dev server
+changed 'reviewed' column in submissions table to 'reviewed_by'
 
 =====================================
 CAPSTONE
