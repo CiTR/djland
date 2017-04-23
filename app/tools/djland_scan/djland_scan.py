@@ -228,7 +228,7 @@ def main():
 
                     catalogQuery = "SELECT catalog from library where id=%s"
                     catalogResult = executeSQL(catalogQuery,[data[0]])
-                    addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0]), sql, dest_filename)
+                    addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
                 elif(data is not None and len(data) > 1):
                     #Multiple albums with that name, try and match by artist
@@ -262,7 +262,8 @@ def main():
 
                         catalogQuery = "SELECT catalog from library where id=%s"
                         catalogResult = executeSQL(catalogQuery,[data[0]])
-                        addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0]), sql, dest_filename)
+                        addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+
                     elif(data is not None and len(data) > 1):
                         #TODO: djland scan can choose from matches
                         writeLog( "Too many matches found in library for " + xstr(song_title))
@@ -302,7 +303,8 @@ def main():
                     sql = "INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
                     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
 
-                    addActionToEntity(currentScanEntity, "Add to Submissions under ID #" +xstr(data[0]), sql, dest_filename)
+                    addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+
                 elif(data is not None and len(data) > 1):
                     #Multiple albums with that name, try and match by artist
                     writeLog("Multiple albums found in submissions for " + album_title)
@@ -333,7 +335,8 @@ def main():
                         sql = "INSERT INTO submissions_songs (submissions_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
                         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());"
 
-                        addActionToEntity(currentScanEntity, "Add to Submissions under ID #" +xstr(data[0]), sql, dest_filename)
+                        addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+
                     elif(data is not None and len(data) > 1):
                         #found many matches again
                         #no match, move to the "potential problems folder" and log, with potential matches using fuzzy finder
@@ -375,16 +378,18 @@ def main():
 
     #Do a move action specified after getting intial scan results
     else:
-        pass
+        toDo = json.dump(sys.argv[2])
+
 
 def createScanEntity(source,artist,album,song,genre,year):
     return {"source":source, "artist":artist, "album":album, "song":song, "genre":genre, "year":year, "actionsList": {}}
 
-def addActionToEntity(entity, actionText, sql, destFilename):
+def addActionToEntity(entity, actionText, sql, sourceFilename, destFilename):
     uniqId = autoIncrement()
     entity["actionsList"][uniqId] = {
             "actionText":actionText,
             "sql":sql,
+            "sourceFilename":sourceFilename,
             "destFilename":destFilename
         }
 

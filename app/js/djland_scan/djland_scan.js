@@ -1,20 +1,23 @@
 $(document).ready(function () {
+    //Hold the results of the scan here
+    var scanData;
+
     $('#startScan').on('click', function () {
         $('#startScan').hide();
         $('#loading').show();
-        //$('#loading').addClass('center');
         $.ajax({
             type: "GET",
             url: "api2/public/djlandscan/generatescanresults",
             dataType: 'json',
             async: true,
             success: function (response) {
+                scanData = response
                 console.log(response);
                 for (var key in response) {
                     item = response[key];
                     var actionsList = "<select>";
-                    for (var action in item.actionsList) {
-                        actionsList += "<option>" + item.actionsList[action] + "</option>";
+                    for (var id in item.actionsList) {
+                        actionsList += "<option value='" + item.actionsList[id] + "'>" + item.actionsList[id].actionText + "</option>";
                     }
                     actionsList += "</select>";
 
@@ -25,7 +28,6 @@ $(document).ready(function () {
                         "</td><td>" + item.song +
                         "</td><td>" + item.genre +
                         "</td><td>" + item.year +
-                        "</td><td>" + item.matchedString +
                         "</td><td>" + actionsList + "</td></tr>");
                     $('#loading').hide();
                     $('#DJLandScan').show();
@@ -36,6 +38,12 @@ $(document).ready(function () {
                 }
             },
             error: function (err) {
+                $('#loading').hide();
+                $('#DJLandScan').show();
+                $('#scanTitle').show();
+                $('#DJLandScanTable').show();
+                $('#submitScan').show();
+                $("#DJLandScanTable").DataTable();
                 console.log("There was a problem fetching scan results from the server. The server said:");
                 console.log(err);
                 alert('There was a problem fetching scan results from the server. Please try again later.');
@@ -43,9 +51,29 @@ $(document).ready(function () {
             timeout: 300000 //5 minutes
         });
     });
+
     $('#submitScan').on('click', function () {
-        //TODO: function to actuallly get the data from the existing table
-        var actions = "test";
+        //Build actions list to send back to server
+        var actions = [];
+        var selectedList = [];
+        //Get list of user selected actions
+        //Assumes page doesn't have any other selects (shouldn't be a problem?)
+        $('select').each(function () {
+            selectedList.push($(this).val())
+        });
+        for (var selection in selectedList) {
+            for (var key in scanData) {
+                item = scanData[key];
+                for (var i in item.actionsList) {
+                    //Add action to actions aray
+                    if (selection == i) {
+                        actions.push(item.actionsList[i]);
+                    }
+                }
+            }
+        }
+        console.log("Actions List");
+        console.log(actions);
 
         $('#DJLandScanTable').DataTable().destroy();
         $('#submitScan').hide(100);
@@ -84,6 +112,11 @@ $(document).ready(function () {
                 }
             },
             error: function (err) {
+                $("#DJLandScanResultsTable").DataTable();
+                $("#loading2").hide();
+                $('#DJLandScan').show();
+                $("#scanTitle2").show();
+                $("#DJLandScanResultsTable").show();
                 console.log("There was a problem fetching scan results from the server. The server said:");
                 console.log(err);
                 alert('There was a problem fetching scan results from the server. Please try again later.');
