@@ -8,7 +8,9 @@ Route::group(['middleware' => 'auth'], function () {
         //Get a list of potential scan actions
         Route::get('/generatescanresults', function () {
             try {
-                $process = new Process("/usr/bin/python3 /home/scott/git/djland/app/tools/djland_scan/djland_scan.py");
+                //Python3 must be installed and in PATH for this to work
+                // TODO: Convert DJLand scan to all php
+                $process = new Process("python3 " . realpath($_SERVER['DOCUMENT_ROOT'] . "/tools/djland_scan/djland_scan.py"));
                 $process->run();
 
                 // executes after the command finishes
@@ -19,41 +21,6 @@ Route::group(['middleware' => 'auth'], function () {
             } catch (Exception $e) {
                 return $e->getMessage();
             }
-
-
-           /*$testret = array(
-               array(
-                   'source' => "/home/filenameone",
-                   'artist' => "test artist one",
-                   'album' => "tests album one",
-                   'song' => "test song one",
-                   'genre' => "Rock",
-                   'year' => '1994',
-                   'matchedString' => 'Library #12345',
-                   'actionsList' => array('Move to submissions', 'Move to Library', 'Move to manual processing folder')
-               ),
-               array(
-                   'source' => "/home/filenametwo",
-                   'artist' => "test artist two",
-                   'album' => "tests album two",
-                   'song' => "test song two",
-                   'genre' => "Rock",
-                   'year' => '1994',
-                   'matchedString' => 'Library #1234556',
-                   'actionsList' => array('Move to submissions', 'Move to Library', 'Move to manual processing folder')
-               ),
-               array(
-                   'source' => "/home/filename",
-                   'artist' => "test artist three",
-                   'album' => "tests album three",
-                   'song' => "test song three",
-                   'genre' => "Rock",
-                   'year' => '1994',
-                   'matchedString' => 'Library #12345',
-                   'actionsList' => array('Move to submissions', 'Move to Library', 'Move to manual processing folder')
-               ),
-           );
-           return Response::json($testret);*/
         });
         Route::post('/doimport', function () {
             /*$actions = Input::get('actions');

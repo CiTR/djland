@@ -44,7 +44,6 @@
                             <th>Song</th>
                             <th>Genre</th>
                             <th>Year</th>
-                            <th>Matched with</th>
                             <th>Action To Take</th>
                         </tr>
                     </thead>
@@ -77,12 +76,12 @@
             <div id='loading' class='hidden'>
                 <h3>Please wait, the scan may take a while ...</h3>
                 <br>
-                <center><img src='images/loading0.gif'></img></center>
+                <center><img src='images/loading.gif'></img></center>
             </div>
             <div id='loading2' class='hidden'>
                 <h3>Please wait, the import may take a while ...</h3>
                 <br>
-                <center><img src='images/loading0.gif'></img></center>
+                <center><img src='images/loading.gif'></img></center>
             </div>
         </div>
     </body>
