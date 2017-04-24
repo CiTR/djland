@@ -343,6 +343,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/bystatus/tagged/cd', function () {
             $status = 'tagged';
             $result = Submissions::where('status', '=', $status)->where('format_id', '=', 1)->where('is_trashed', '=', 0)->get();
+            foreach ($result as $submission) {
+                $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
+                if (count($name) != 0) {
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                } else {
+                    $submission -> reviewed = null;
+                }
+            }
             if (!$result->isEmpty()) {
                 return Response::json($result);
             } else {
@@ -353,6 +362,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/bystatus/tagged/mp3', function () {
             $status = 'tagged';
             $result = Submissions::where('status', '=', $status)->where('format_id', '=', 6)->where('is_trashed', '=', 0)->get();
+            foreach ($result as $submission) {
+                $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
+                if (count($name) != 0) {
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                } else {
+                    $submission -> reviewed = null;
+                }
+            }
             if (!$result->isEmpty()) {
                 return Response::json($result);
             } else {
@@ -363,6 +381,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/bystatus/tagged/other', function () {
             $status = 'tagged';
             $result = Submissions::where('status', '=', $status)->where('format_id', '!=', 1)->where('format_id', '!=', 6)->where('is_trashed', '=', 0)->get();
+            foreach ($result as $submission) {
+                $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
+                if (count($name) != 0) {
+                    $name = $name[0];
+                    $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
+                } else {
+                    $submission -> reviewed = null;
+                }
+            }
             if (!$result->isEmpty()) {
                 return Response::json($result);
             } else {
