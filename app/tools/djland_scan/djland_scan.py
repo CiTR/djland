@@ -244,8 +244,17 @@ def main():
                         addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
                     elif(data is not None and len(data) > 1):
-                        #TODO: djland scan can choose from matches
-                        writeLog( "Too many matches found in library for " + xstr(song_title))
+
+                        for item in data:
+                            this_id = item
+                            #DB will assign song ID
+                            sql = {"table":"library","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
+
+                            catalogQuery = "SELECT catalog from library where id=%s"
+                            catalogResult = executeSQL(catalogQuery,[data[0]])
+                            addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+
+                        writeLog( "Many matches found in library for " + xstr(song_title))
                         writeLog( "Trying to look in submissions table for unique match ")
                     else:
                         #no match, try submissions next
@@ -279,8 +288,7 @@ def main():
 
                     #DB will assign song ID
                     sql = {"table":"submissions","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
-
-                    addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+                    addActionToEntity(currentScanEntity, "Add to submissions under ID #" + xstr(this_id), sql, os.path.normpath(path + "/" + f), dest_filename)
 
                 elif(data is not None and len(data) > 1):
                     #Multiple albums with that name, try and match by artist
@@ -309,42 +317,34 @@ def main():
 
                         #DB will assign song ID
                         sql = {"table":"submissions","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
-
-                        addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
+                        addActionToEntity(currentScanEntity, "Add to submissions under ID #" + xstr(this_id), sql, os.path.normpath(path + "/" + f), dest_filename)
 
                     elif(data is not None and len(data) > 1):
                         #found many matches again
+                        for item in data:
+                            this_id = item
+                            #DB will assign song ID
+                            sql = {"table":"submissions","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
+                            addActionToEntity(currentScanEntity, "Add to submissions under ID #" + xstr(this_id), sql, os.path.normpath(path + "/" + f), dest_filename)
+
                         #no match, move to the "potential problems folder" and log, with potential matches using fuzzy finder
                         writeLog( "Too many Matches found in submissions in for " + xstr(song_title))
 
-                        #move to error folder
-                        if not albumartist:
-                            fakeMoveError(path,f,artist,uppercaseArtist,album_title,track_num,song_title)
-                        else:
-                            fakeMoveError(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
                     else:
                         #No matches found - title is matching multiple but can't find an artist name
                         #move into "inconclusive" folder
                         #no match, move to the "potential problems folder" and log, with potential matches using fuzzy finder
                         writeLog( "No match found in submissions for " + song_title)
-                        writeLog( "Adding to error list")
-
-                        #move to error folder
-                        if not albumartist:
-                            fakeMoveError(path,f,artist,uppercaseArtist,album_title,track_num,song_title)
-                        else:
-                            fakeMoveError(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
                 else:
                     #no match, move to the "potential problems folder" and log, with potential matches using fuzzy finder
                     writeLog( "No match found in submissions for " + song_title)
-                    writeLog( "Adding to error list")
 
-                    #move to error folder
-                    if not albumartist:
-                        fakeMoveError(path,f,artist,uppercaseArtist,album_title,track_num,song_title)
-                    else:
-                        fakeMoveError(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
+
+                #add manual option
+                sql = {"table":"manual","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
+                dest_filename=fakeMoveError(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
+                addActionToEntity(currentScanEntity, "Move to manual processing folder", sql, os.path.normpath(path + "/" + f), dest_filename)
 
                 scanEntityArray.append(currentScanEntity)
 
