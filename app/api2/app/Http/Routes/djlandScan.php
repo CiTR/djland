@@ -1,9 +1,11 @@
 <?php
 
+use App\SubmissionsSongs;
+use App\LibrarySongs;
 use Symfony\Component\Process\Process as Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-Route::group(['middleware' => 'auth'], function () {
+//Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' =>'/djlandscan'], function () {
         //Get a list of potential scan actions
         Route::get('/generatescanresults', function () {
@@ -23,48 +25,70 @@ Route::group(['middleware' => 'auth'], function () {
             }
         });
         Route::post('/doimport', function () {
-            /*$actions = Input::get('actions');
+            $actions = Input::get('actions');
             //Keep track of what happened in order to return a report to the user
             $actionsTaken = array();
             //Using a python script to do the moving, could do this just with php
-            foreach($actions as $key => $action){
-                $process = new Process("/usr/bin/python3 djlandScan.py --action" + $action);
-                //could run this async but don't want to spawn a thousand processes
-                $process->run();
-                //If we want to do async, use this:
-                //$process->start();
 
-                //Executes after the command finishes
-                if (!$process->isSuccessful()) {
-                    throw new ProcessFailedException($process);
+            foreach ($actions as $action) {
+                //Step one: add to sql table
+                $sqlStatus = false;
+                try {
+                    if ($action['table'] == "submissions") {
+                        $sqlId = SubmissionsSongs::create([
+                            'submission_id' => $action['vars'][0],
+                            'artist' => $action['vars'][1],
+                            'album_artist' => $action['vars'][2],
+                            'album_title' => $action['vars'][3],
+                            'song_title' => $action['vars'][4],
+                            'track_num' => $action['vars'][5],
+                            'genre' => $action['vars'][6],
+                            'compilation' => $action['vars'][7],
+                            'crtc' => $action['vars'][8],
+                            'year' => $action['vars'][9],
+                            'length' => $action['vars'][10],
+                            'file_location' => $action['vars'][11]
+                        ]);
+                        $sqlStatus = true;
+                    } elseif ($action['table'] == "library") {
+                        $sqlId = LibrarySongs::create([
+                            'submission_id' => $action['vars'][0],
+                            'artist' => $action['vars'][1],
+                            'album_artist' => $action['vars'][2],
+                            'album_title' => $action['vars'][3],
+                            'song_title' => $action['vars'][4],
+                            'track_num' => $action['vars'][5],
+                            'genre' => $action['vars'][6],
+                            'compilation' => $action['vars'][7],
+                            'crtc' => $action['vars'][8],
+                            'year' => $action['vars'][9],
+                            'length' => $action['vars'][10],
+                            'file_location' => $action['vars'][11]
+                        ]);
+                        $sqlStatus = true;
+                    } elseif ($action['table'] == 'manual') {
+                        //Don't create sql entries
+                        $sqlStatus = true;
+                    }
+                } catch (Exception $e) {
+                    $sqlStatus = false;
                 }
-                //Push result onto the array of actions taken
-                $actionsTaken[] = $process->getOutput();
+
+                $fileStatus = false;
+                if ($sqlStatus) {
+                    //Step two: move file if a sql entry is made
+                    $fileStatus = rename($action['sourceFilename'], $action['destFilename']);
+                }
+
+                if ($fileStatus && $sqlStatus) {
+                    $actionsTaken[] = "The file " . $action['sourceFilename'] . " was moved to " . $action['destFilename'] . " and successfully added to the " . $action['table'] . " database";
+                } elseif (!$fileStatus && $sqlStatus) {
+                    $actionsTaken[] = "There was a problem moving the file from " . $action['sourceFilename'] . " to " . $action['destFilename'] . " but was successfully added to the " . $action['table'] . " database";
+                } else {
+                    $actionsTaken[] = "There was a problem adding the file " . $action['sourceFilename'] . " to the " . $action['table'] . " database and the filename was not moved";
+                }
             }
-            //Return report of things that happened
-            return $actionsTaken;
-            */
-            $testret = array(
-                array(
-                    'source' => "/home/filenameone",
-                    'action' => "Move to library",
-                    'newID' => "Catalog  # 1231234",
-                    'destination' => "L:/somewhere",
-                ),
-                array(
-                    'source' => "/home/filenametwo",
-                    'action' => "Move to library",
-                    'newID' => "Catalog  # 123122",
-                    'destination' => "L:/somewhere",
-                ),
-                array(
-                    'source' => "/home/filenamethree",
-                    'action' => "Move to library",
-                    'newID' => "Catalog  # 123",
-                    'destination' => "L:/somewhere",
-                ),
-            );
-            return Response::json($testret);
+            return Response::json($actionsTaken);
         });
     });
-});
+//});
