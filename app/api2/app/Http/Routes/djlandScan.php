@@ -30,65 +30,79 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
             $actionsTaken = array();
             //Using a python script to do the moving, could do this just with php
 
-            foreach ($actions as $action) {
-                //Step one: add to sql table
-                $sqlStatus = false;
-                try {
-                    if ($action['table'] == "submissions") {
-                        $sqlId = SubmissionsSongs::create([
-                            'submission_id' => $action['vars'][0],
-                            'artist' => $action['vars'][1],
-                            'album_artist' => $action['vars'][2],
-                            'album_title' => $action['vars'][3],
-                            'song_title' => $action['vars'][4],
-                            'track_num' => $action['vars'][5],
-                            'genre' => $action['vars'][6],
-                            'compilation' => $action['vars'][7],
-                            'crtc' => $action['vars'][8],
-                            'year' => $action['vars'][9],
-                            'length' => $action['vars'][10],
-                            'file_location' => $action['vars'][11]
-                        ]);
-                        $sqlStatus = true;
-                    } elseif ($action['table'] == "library") {
-                        $sqlId = LibrarySongs::create([
-                            'submission_id' => $action['vars'][0],
-                            'artist' => $action['vars'][1],
-                            'album_artist' => $action['vars'][2],
-                            'album_title' => $action['vars'][3],
-                            'song_title' => $action['vars'][4],
-                            'track_num' => $action['vars'][5],
-                            'genre' => $action['vars'][6],
-                            'compilation' => $action['vars'][7],
-                            'crtc' => $action['vars'][8],
-                            'year' => $action['vars'][9],
-                            'length' => $action['vars'][10],
-                            'file_location' => $action['vars'][11]
-                        ]);
-                        $sqlStatus = true;
-                    } elseif ($action['table'] == 'manual') {
-                        //Don't create sql entries
-                        $sqlStatus = true;
-                    }
-                } catch (Exception $e) {
+            if (is_array($actions) || is_object($actions)) {
+                foreach ($actions as $key => $action) {
+                    //Step one: add to sql table
                     $sqlStatus = false;
-                }
+                    try {
+                        if ($action['sql']['table'] == "submissions") {
+                            $sqlId = SubmissionsSongs::create([
+                                'submission_id' => $action['sql']['vals']['this_id'],
+                                'artist' => $action['sql']['vals']['artist'],
+                                'album_artist' => $action['sql']['vals']['albumartist'],
+                                'album_title' => $action['sql']['vals']['album_title'],
+                                'song_title' => $action['sql']['vals']['song_title'],
+                                'track_num' => $action['sql']['vals']['track_num'],
+                                'genre' => $action['sql']['vals']['genre'],
+                                'compilation' => $action['sql']['vals']['compilation'],
+                                'crtc' => $action['sql']['vals']['category'],
+                                'year' => $action['sql']['vals']['year'],
+                                'length' => $action['sql']['vals']['length'],
+                                'file_location' => $action['sql']['vals']['dest_filename']
+                            ]);
+                            $sqlStatus = true;
+                        } elseif ($action['sql']['table'] == "library") {
+                            $sqlId = LibrarySongs::create([
+                                'submission_id' => $action['sql']['vals']['this_id'],
+                                'artist' => $action['sql']['vals']['artist'],
+                                'album_artist' => $action['sql']['vals']['albumartist'],
+                                'album_title' => $action['sql']['vals']['album_title'],
+                                'song_title' => $action['sql']['vals']['song_title'],
+                                'track_num' => $action['sql']['vals']['track_num'],
+                                'genre' => $action['sql']['vals']['genre'],
+                                'compilation' => $action['sql']['vals']['compilation'],
+                                'crtc' => $action['sql']['vals']['category'],
+                                'year' => $action['sql']['vals']['year'],
+                                'length' => $action['sql']['vals']['length'],
+                                'file_location' => $action['sql']['vals']['dest_filename']
+                            ]);
+                            $sqlStatus = true;
+                        } elseif ($action['sql']['table'] == "manual") {
+                            //Don't create sql entries
+                            $sqlStatus = true;
+                        }
+                    } catch (Exception $e) {
+                        $sqlStatus = false;
+                        //return $e->getMessage();
+                    }
 
-                $fileStatus = false;
-                if ($sqlStatus) {
-                    //Step two: move file if a sql entry is made
-                    $fileStatus = rename($action['sourceFilename'], $action['destFilename']);
-                }
+                    $fileStatus = false;
+                    if ($sqlStatus) {
+                        try {
+                            //Step two: move file if a sql entry is made
+                            makedirs(dirname($action['destFilename']));
+                            $fileStatus = rename($action['sourceFilename'], $action['destFilename']);
+                        } catch (Exception $e) {
+                            $filestatus=false;
+                        }
+                    }
 
-                if ($fileStatus && $sqlStatus) {
-                    $actionsTaken[] = "The file " . $action['sourceFilename'] . " was moved to " . $action['destFilename'] . " and successfully added to the " . $action['table'] . " database";
-                } elseif (!$fileStatus && $sqlStatus) {
-                    $actionsTaken[] = "There was a problem moving the file from " . $action['sourceFilename'] . " to " . $action['destFilename'] . " but was successfully added to the " . $action['table'] . " database";
-                } else {
-                    $actionsTaken[] = "There was a problem adding the file " . $action['sourceFilename'] . " to the " . $action['table'] . " database and the filename was not moved";
+                    if ($fileStatus && $sqlStatus) {
+                        $actionsTaken[] = "The file " . $action['sourceFilename'] . " was moved to " . $action['destFilename'] . " and successfully added to the " . $action['sql']['table'] . " database";
+                    } elseif (!$fileStatus && $sqlStatus) {
+                        $actionsTaken[] = "There was a problem moving the file from " . $action['sourceFilename'] . " to " . $action['destFilename'] . " but was successfully added to the " . $action['sql']['table'] . " database";
+                    } else {
+                        $actionsTaken[] = "There was a problem adding the file " . $action['sourceFilename'] . " to the " . $action['sql']['table'] . " database and the filename was not moved";
+                    }
                 }
             }
             return Response::json($actionsTaken);
         });
     });
 //});
+
+//Could be impoved by checking if the parent directory is writable
+function makedirs($dirpath, $mode=0777)
+{
+    return is_dir($dirpath) || mkdir($dirpath, $mode, true);
+}

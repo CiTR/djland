@@ -82,8 +82,9 @@ db_username = config.db_username
 db_password = config.db_password
 db_schema = config.db_schema
 
-libary_basedir = config.libary_basedir
+incoming_basedir = config.incoming_basedir
 library_destination = config.library_destination
+submissions_destination = config.submissions_destination
 working_directory = config.working_directory
 log_file = config.log_file
 errorfiles = config.errorfile
@@ -105,26 +106,6 @@ submissions_title_artist = []
 
 scanEntityArray = []
 
-#scanEntity (
-#    artist:
-#    album:
-#    song:
-#    source:
-#    genre:
-#    year:
-#    actions: array(
-#                actionID: array(
-#                    actionText: "Match with Library Catalog#_____ | Match with Submission ID ______ | Move to manual processing folder":
-#                    dest filename:
-#                    table: submissions | library
-#                    table id: number
-#                    catalogID: null or libCatalogID
-#                    sql: SQL_Command
-#                ),
-#                .....
-#            )
-#)
-
 def main():
     global doImport
     global dryRun
@@ -144,13 +125,13 @@ def main():
 
     #cache the library and submissions tables because it takes so long to retrieve
     sql = "SELECT id,title FROM library"
-    library_title = executeSQL(sql)
+    library_title = executeSQL(sql,None,False)
     sql = "SELECT id,title,artist FROM library"
-    library_title_artist = executeSQL(sql)
+    library_title_artist = executeSQL(sql,None,False)
     sql = "SELECT id,title FROM submissions"
-    submissions_title = executeSQL(sql)
+    submissions_title = executeSQL(sql,None,False)
     sql = "SELECT id,title,artist FROM submissions"
-    submissions_title_artist = executeSQL(sql)
+    submissions_title_artist = executeSQL(sql,None,False)
 
     if doImport:
         writeLog("----------------------------------------------------------------")
@@ -163,7 +144,7 @@ def main():
 
     #Traverse all the files in the input directory and generate potential actions
     if not doImport:
-        for path, dirs, files in os.walk(libary_basedir):
+        for path, dirs, files in os.walk(incoming_basedir):
             #fuzzy searching for which allbum the songs belongs to is tedious.
             #therefore keep track of the id for each set where common (ie. by folder)
             this_id=0 #reset to zero here and override below for each directory
@@ -225,9 +206,7 @@ def main():
                         dest_filename = fakeMoveLibrary(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
                     #DB will assign song ID
-                    sql = {"command":"INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
-
+                    sql = {"table":"library","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
                     catalogQuery = "SELECT catalog from library where id=%s"
                     catalogResult = executeSQL(catalogQuery,[data[0]])
                     addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
@@ -258,8 +237,7 @@ def main():
                             dest_filename = fakeMoveLibrary(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
                         #DB will assign song ID
-                        sql = {"command":"INSERT INTO library_songs (library_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
+                        sql = {"table":"library","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
 
                         catalogQuery = "SELECT catalog from library where id=%s"
                         catalogResult = executeSQL(catalogQuery,[data[0]])
@@ -300,8 +278,7 @@ def main():
                         dest_filename = fakeMoveSubmissions(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
                     #DB will assign song ID
-                    sql = {"command":"INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
+                    sql = {"table":"submissions","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
 
                     addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
@@ -331,8 +308,7 @@ def main():
                             dest_filename = fakeMoveSubmissions(path,f,albumartist,formatForDoubleFilePath(albumartist),album_title,track_num,song_title)
 
                         #DB will assign song ID
-                        sql = {"command":"INSERT INTO submissions_songs (submission_id, artist, album_artist, album_title, song_title, track_num, genre, compilation, crtc, year, length, file_location, updated_at, created_at) " + \
-                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW());","vals":[this_id,artist, albumartist, album_title, song_title, track_num, genre, compilation, category, year, length, dest_filename]}
+                        sql = {"table":"submissions","vals":{"this_id":this_id,"artist":artist, "albumartist":albumartist, "album_title":album_title, "song_title":song_title, "track_num":track_num, "genre":genre, "compilation":compilation, "category":category, "year":year, "length":length, "dest_filename":dest_filename}}
 
                         addActionToEntity(currentScanEntity, "Add to Library under Catalog #" + xstr(catalogResult[0][0]), sql, os.path.normpath(path + "/" + f), dest_filename)
 
@@ -414,7 +390,7 @@ Example2:
     sql = "SELECT * FROM library where title like %s or title like %s";
     data = executeSQL(sql, [album_title, "A Midnights Summer Breeze"])
 """""
-def executeSQL(sqlquery, params=None):
+def executeSQL(sqlquery, params=None, log=True):
     if params is None:
         try:
             writeLog("Executing the following SQL Query: " + sqlquery);
@@ -426,8 +402,9 @@ def executeSQL(sqlquery, params=None):
             db.commit()
             db.close()
 
-            writeLog("Query Returned: ")
-            writeLog(data);
+            if log:
+                writeLog("Query Returned: ")
+                writeLog(data);
             return data
 
         except my.DataError as e:
@@ -461,6 +438,7 @@ def executeSQL(sqlquery, params=None):
         writeLog(sqlquery)
         writeLog("With the following parameters: ")
         writeLog(tuple(params))
+
         if(not isinstance(params,list)):
             print("Please pass arguments as an array, ie. [param1, param2, param3, ...]")
             return False;
@@ -475,8 +453,9 @@ def executeSQL(sqlquery, params=None):
             db.commit()
             db.close()
 
-            writeLog("Query Returned: ")
-            writeLog(data);
+            if log:
+                writeLog("Query Returned: ")
+                writeLog(data);
             return data
 
         except my.DataError as e:
