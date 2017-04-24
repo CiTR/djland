@@ -377,7 +377,8 @@ def main():
 
     #Do a move action specified after getting intial scan results
     else:
-        toDo = json.dump(sys.argv[2])
+        pass
+        #print(json.dumps(sys.stdin.readline()))
 
 
 def createScanEntity(source,artist,album,song,genre,year):
