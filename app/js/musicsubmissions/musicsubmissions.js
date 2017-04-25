@@ -1628,8 +1628,11 @@ function submitForm() {
             alertString += "\n• Artist / Band name";
         }
         if (email == "") {
+          /*
             success = false;
             alertString += "\n• Contact email";
+            */
+            email = "NO_EMAIL@citr.ca";
         }
         if (location == "") {
             success = false;
@@ -1645,11 +1648,11 @@ function submitForm() {
         }
 
         // Check that files have been added
-        var tracks = $("#submit-field").children();
+        var tracks = $("#submit-field").children(); /*
         if (tracks.length < 1) {
             alertString += "\n• Music files to upload";
             success = false;
-        }
+        } */
 
         // Checks that required track info has been added
         var trackNumberCheck = [];
