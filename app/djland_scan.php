@@ -54,10 +54,7 @@
                 <table id=DJLandScanResultsTable class="submission_table cell-border hidden">
                     <thead>
                         <tr id="headerrow" style="display: table-row;">
-                            <th>File Source</th>
-                            <th>Action</th>
-                            <th>New ID</th>
-                            <th>Destination</th>
+                            <th>Actions Taken</th>
                         </tr>
                     </thead>
                     <tbody id=DJLandScanResults>

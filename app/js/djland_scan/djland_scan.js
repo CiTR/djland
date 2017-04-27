@@ -11,8 +11,11 @@ $(document).ready(function () {
             dataType: 'json',
             async: true,
             success: function (response) {
-                scanData = response
-                console.log(response);
+                scanData = response;
+                //console.log(response);
+                if(response.length === 0){
+                    alert("No files found to process!");
+                }
                 for (var key in response) {
                     item = response[key];
                     var actionsList = "<select>";
@@ -29,13 +32,13 @@ $(document).ready(function () {
                         "</td><td>" + item.genre +
                         "</td><td>" + item.year +
                         "</td><td>" + actionsList + "</td></tr>");
-                    $('#loading').hide();
-                    $('#DJLandScan').show();
-                    $('#scanTitle').show();
-                    $('#DJLandScanTable').show();
-                    $('#submitScan').show();
-                    $("#DJLandScanTable").DataTable();
                 }
+                $('#loading').hide();
+                $('#DJLandScan').show();
+                $('#scanTitle').show();
+                $('#DJLandScanTable').show();
+                $('#submitScan').show();
+                $("#DJLandScanTable").DataTable();
             },
             error: function (err) {
                 $('#loading').hide();
@@ -72,8 +75,6 @@ $(document).ready(function () {
                 }
             }
         }
-        console.log("Actions List");
-        console.log(actions);
 
         $('#DJLandScanTable').DataTable().destroy();
         $('#submitScan').hide(100);
@@ -91,25 +92,22 @@ $(document).ready(function () {
                 actions: actions
             },
             success: function (response) {
-                console.log(response);
+                //console.log(response);
 
                 //DISPLAY RESPONSE
                 for (var key in response) {
                     item = response[key];
                     //newID is the submisssion ID or library catalog number it was inserted under
                     $('#DJLandScanResultsTable > tbody:last-child').append(
-                        "<tr><td>" + item.source +
-                        "</td><td>" + item.action +
-                        "</td><td>" + item.newID +
-                        "</td><td>" + item.destination +
+                        "<tr><td>" + item +
                         "</td></tr>"
                     );
-                    $("#DJLandScanResultsTable").DataTable();
-                    $("#loading2").hide();
-                    $('#DJLandScan').show();
-                    $("#scanTitle2").show();
-                    $("#DJLandScanResultsTable").show();
                 }
+                $("#DJLandScanResultsTable").DataTable();
+                $("#loading2").hide();
+                $('#DJLandScan').show();
+                $("#scanTitle2").show();
+                $("#DJLandScanResultsTable").show();
             },
             error: function (err) {
                 $("#DJLandScanResultsTable").DataTable();

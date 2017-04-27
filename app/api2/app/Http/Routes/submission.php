@@ -52,6 +52,12 @@ Route::post('/submission', function () {
                 $label = Input::get('label');
             }
 
+            if (Input::get('email') == "NO_EMAIL@citr.ca") {
+              $email = "No contact email";
+            } else {
+              $email = Input::get('email');
+            }
+
             $albumArt = Input::file('art_url');
             if ($albumArt) {
                 $fileName = uniqid().".".$albumArt->getClientOriginalExtension();
@@ -69,7 +75,7 @@ Route::post('/submission', function () {
                 'artist' => $purifier->purify(Input::get('artist')),
                 'title' => $purifier->purify(Input::get('title')),
                 'genre' => $ingenre,
-                'email' => Input::get('email'),
+                'email' => $email,
                 'label' => $label,
                 'location' => $purifier->purify(Input::get('location')),
                 'credit' => $purifier->purify(Input::get('credit')),
