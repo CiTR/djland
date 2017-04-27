@@ -55,6 +55,8 @@ Route::group(['middleware' => 'auth'], function(){
 				Route::get('/',function($id){
 					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
+					//fundrive user
+					if($_SESSION['sv_id'] == 1022) return Donor::find($id);
 					else return "Nope";
 				});
 				//Update a donor - sets status to "saved" since it's being saved recently - this Route
@@ -895,10 +897,12 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			if($categorylist->isEmpty()) return Response::json();
 			foreach($categorylist as $item){
 				$song = Songlist::find($item->songID);
-				if($song['title'] == "" || $song['title'] == null){
-					$song['title'] = $song['artist'];
+				if(count($song)){
+					if($song['title'] == "" || $song['title'] == null){
+						$song['title'] = $song['artist'];
+					}
+					$songs[] = $song;
 				}
-				$songs[] = $song;
 			}
 			return Response::json($songs);
 		});

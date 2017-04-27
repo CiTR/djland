@@ -86,6 +86,7 @@ $(document).ready ( function() {
 							set(donor_recognition_name,"pseudonym");
 						}
 					}else if( entry_index == "paid"){
+						console.log(response[entry_index]);
 						if( response[entry_index] == "0") {
 							$("#paid_status").prop("checked",false);
 						}else {
@@ -99,9 +100,9 @@ $(document).ready ( function() {
 						}
 					}else if( entry_index == "swag"){
 						if( response[entry_index] == "0") {
-							$("#swag").prop("checked",false);
+							$("#swag").prop('checked',false).change();
 						}else {
-							$("#swag").prop("checked", true);
+							$("#swag").prop('checked', true).change();
 						}
 					}else if( entry_index == "tax_receipt"){
 						if( response[entry_index] == "0") {
@@ -115,7 +116,7 @@ $(document).ready ( function() {
 						}else {
 							$("#citr_update_yes").prop("checked",true);
 						}
-					}else if(entry_index == "LP_yes"){
+					}/*else if(entry_index == "LP_yes"){
 						if(response[entry_index] == "0"){
 							$("#LP_yes").prop("checked",false);
 						}
@@ -125,7 +126,7 @@ $(document).ready ( function() {
 							$('#LP_Qty_Div').removeClass('invisible');
 							document.getElementById('LP_amount').value = response.LP_amount;
 						}
-					}else if(entry_index == "recv_updates_alumni"){
+					}*/else if(entry_index == "recv_updates_alumni"){
 						if(response[entry_index] == "0") {
 							$("#alumni_update_yes").prop("checked",false);
 						}
@@ -274,15 +275,15 @@ $(document).ready ( function() {
 			$('#pseudonym').addClass('invisible');
 		}
 	});
-	$('.LP_yes').change(function(){
-		if($(this).is(':checked')){
-			$('#LP_Qty_Div').removeClass('invisible');
-			$('#LP_amount').removeClass('invisible');
-		}else{
+	/*$('.LP_yes').change(function(){
+	 	if($(this).is(':checked')){
+	 		$('#LP_Qty_Div').removeClass('invisible');
+	 		$('#LP_amount').removeClass('invisible');
+	 	}else{
 			$('#LP_Qty_Div').addClass('invisible');
 			$('#LP_amount').addClass('invisible');
 		}
-	});
+	});*/
 	$('#email').on('keyup',function(){
 		checkEmail();
 	});
