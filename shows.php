@@ -2,9 +2,9 @@
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
 
-if( permission_level() < $djland_permission_levels['dj']['level']){
-	    header("Location: main.php");
-	}
+if (permission_level() < $djland_permission_levels['dj']['level']) {
+    header("Location: main.php");
+}
 ?>
     <html>
     <head>
@@ -142,7 +142,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                     <input ng-model='show.info.lang_default'>
                     <h4 class='text-left double-padded-top'>Default CRTC Category</h4>
                     <select ng-model='show.info.crtc_default'>
-                        <option value='20'>20</option><option value='30'>30</option>
+                        <option value='10'>10</option><option value='20'>20</option><option value='30'>30</option>
                     </select>
                     <h4 class='text-left double-padded-top'>Show Requirements</h4>
 
