@@ -32,4 +32,4 @@ CREATE TABLE `playitems` (
   KEY `playitem_playsheet_id_idx` (`playsheet_id`),
   KEY `playitem_show_id_idx` (`show_id`),
   CONSTRAINT `playitem_playsheet_id` FOREIGN KEY (`playsheet_id`) REFERENCES `playsheets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1829559 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1829559 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -4,4 +4,4 @@ CREATE TABLE `socan` (
   `socanEnd` date DEFAULT NULL,
   PRIMARY KEY (`idSocan`),
   UNIQUE KEY `idSocan_UNIQUE` (`idSocan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table for socan';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

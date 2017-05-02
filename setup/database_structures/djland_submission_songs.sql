@@ -22,4 +22,4 @@ CREATE TABLE `submission_songs` (
   PRIMARY KEY (`song_id`),
   KEY `fk_submission_songs_1_idx` (`submission_id`),
   CONSTRAINT `fk_submission_songs_1` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

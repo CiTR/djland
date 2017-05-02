@@ -27,4 +27,4 @@ CREATE TABLE `playsheets` (
   KEY `recent` (`id`,`edit_date`,`status`),
   KEY `playsheet_show_id_idx` (`show_id`),
   CONSTRAINT `playsheet_show_id` FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=144031 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=144031 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

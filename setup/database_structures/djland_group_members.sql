@@ -10,4 +10,4 @@ CREATE TABLE `group_members` (
   `member` varchar(1) DEFAULT '0',
   PRIMARY KEY (`user_id`),
   KEY `userid_idx` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;;
