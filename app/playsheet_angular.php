@@ -1,9 +1,9 @@
 <html ng-app='djland.editPlaysheet'>
 	<?php
-	include_once("headers/session_header.php");
-	require_once("headers/security_header.php");
-	require_once("headers/menu_header.php");
-	?>
+    include_once("headers/session_header.php");
+    require_once("headers/security_header.php");
+    require_once("headers/menu_header.php");
+    ?>
 	<head>
 		<link rel='stylesheet' href='css/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
@@ -25,15 +25,25 @@
 	<script type='text/javascript' src='js/utils.js'></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<script type='text/javascript'>
-		var playsheet_id = "<?php if(isset($_GET['id'])){echo $_GET['id']; }else{ echo '-1';} ?>";
+		var playsheet_id = "<?php if (isset($_GET['id'])) {
+        echo $_GET['id'];
+    } else {
+        echo '-1';
+    } ?>";
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 		var username = "<?php echo $_SESSION['sv_username']; ?>";
 		</script>
 
 		<?php print_menu(); ?>
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
-		<div id='socan' class='hidden'><?php if(isset($_GET['socan'])) echo $_GET['socan']; elseif(isset($_POST['socan'])) echo $_POST['socan']; ?></div>
-		<div id='playsheet_id' class='hidden'><?php if(isset($_POST['ps_id'])){echo $_POST['ps_id'];}?></div>
+		<div id='socan' class='hidden'><?php if (isset($_GET['socan'])) {
+        echo $_GET['socan'];
+    } elseif (isset($_POST['socan'])) {
+        echo $_POST['socan'];
+    } ?></div>
+		<div id='playsheet_id' class='hidden'><?php if (isset($_POST['ps_id'])) {
+        echo $_POST['ps_id'];
+    }?></div>
 
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
 		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan==true }">
@@ -66,7 +76,7 @@
 					</div>
 					<div class='col1'>
 						CRTC Category:
-						<button class="crtc" ng-model="playsheet.info.crtc" ng-click="playsheet.info.crtc == 30? playsheet.info.crtc = 20 : playsheet.info.crtc = 30;">{{playsheet.info.crtc}}</button>
+						<button class="crtc" ng-model="playsheet.info.crtc" ng-click="playsheet.changeCRTC()">{{playsheet.info.crtc}}</button>
 					</div>
 					<!-- <<h4 class='text-left'>Show Data</h4> -->
 
