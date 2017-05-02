@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS `djland_options` (
   `UPDATED_AT` datetime NOT NULL,
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-INSERT INTO `djland_options` (index,djland_option,value) VALUES (1,'membership_cutoff','2014/2015');
+INSERT INTO `djland`.`djland_options` (`index`, `djland_option`, `value`, `CREATED_AT`, `UPDATED_AT`) VALUES ('1', 'membership_cutoff', '2016/2017', NOW(), NOW());');

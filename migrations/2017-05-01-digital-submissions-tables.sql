@@ -1,6 +1,6 @@
 ALTER TABLE `library`
 ADD COLUMN `description` LONGTEXT NULL AFTER `modified`,
-ADD COLUMN `email` TINYTEXT NULL AFTER `description`;
+ADD COLUMN `email` TINYTEXT NULL AFTER `description`,
 ADD COLUMN `art_url` varchar(255) DEFAULT NULL AFTER `email`;
 
 CREATE TABLE `library_songs` (
