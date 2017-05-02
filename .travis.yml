@@ -1,0 +1,34 @@
+language: php
+
+php:
+  - 5.6
+services:
+  - mysql
+
+before_install:
+  #setup database
+  - mysql -e 'CREATE DATABASE djland;'
+  - cat setup/database_structures/*.sql > setup.sql
+  - mysql -u root djland < setup.sql
+  #setup laravel api
+  - cd app/api2
+  - cp .env.sample .env
+  - cp phpunit.xml.sample phpunit.xml
+  - composer self-update
+
+install:
+  - composer install --no-interaction
+  - php artisan key:generate
+
+# Cache composer
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+script:
+    #TODO: add coverage and QUnit to travis CI tests
+  - vendor/bin/phpunit
+
+notifications:
+  email:
+    - technicalmanager@citr.ca

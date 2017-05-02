@@ -10,7 +10,7 @@
         this.editing  = false;
         this.done = false;
         this.show_id = show_id;
-        //TODO: Get thsi from config constant
+        //TODO: Get this from config constant
         this.MAX_PODCAST_DURATION_HOURS = 8;
         this.member_id = member_id;
         this.offset = 0;

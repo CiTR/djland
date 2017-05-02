@@ -157,6 +157,7 @@ class Upload extends Model{
 
 				//Get the podcast
 				$podcast = Podcast::find($this->relation_id);
+
 				//Strip unwanted chars from the show name and convert & to and
 				$stripped_show_name = str_replace(array('&',' '),array('and','-'),str_replace($strip,'',$podcast->show->name));
 

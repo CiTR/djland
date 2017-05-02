@@ -1,0 +1,32 @@
+/*----------------------------*/
+/*----------CRTC Report ------*/
+/*----------------------------*/
+
+.crtc_report{
+	width:1600px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.crtc_report * {
+	text-align:center;
+}
+.crtc_report > tbody > tr > th {
+	background-color: rgba(255,255,255,.10);
+}
+
+.report_tag{
+	-ms-transform: rotateZ(-40deg); /* IE 9 */
+	-webkit-transform: rotateZ(-40deg); /* Chrome, Safari, Opera */
+	transform: rotateZ(-40deg);
+	margin-bottom:10px;
+}
+.report_playitem{
+	max-width:200px;
+}
+.report_table{
+	margin-left:auto;
+	margin-right:auto;
+}
+.report_table > tbody > tr > td{
+	padding: 0px 0px 0px 10px;
+}

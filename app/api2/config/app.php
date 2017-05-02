@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'log' => 'single',
+    'log' => 'daily',
 
     /*
     |--------------------------------------------------------------------------
@@ -143,6 +143,13 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /*
+         * Other Service Providers
+         */
+        Way\Generators\GeneratorsServiceProvider::class,
+	\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+
 
     ],
 

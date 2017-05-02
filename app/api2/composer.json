@@ -7,9 +7,12 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "twitter/bootstrap": "3.3.*"
+        "twitter/bootstrap": "3.3.*",
+        "ezyang/htmlpurifier": "^4.9"
     },
     "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "xethron/migrations-generator": "^2.0"
     },
     "autoload": {
         "classmap": [

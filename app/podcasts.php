@@ -167,36 +167,39 @@ if(!isset($_GET['id'])){
 			            <button ng-click="list.stop_sound()">stop playback</button>
 			            <div id='elapsed' ng-show='list.playing'></div>
                     </div>
-					<br />
-					<div class='col1 double-padded-top'>
-						<button ng-click="list.save(list.editing.podcast);" >Save Episode Details</button>
-					</div>
-					<span id="message">{{savemessage}}</span>
-					<br />
+
 					<div class='col1 double-padded-top'>
 						<h4 class='text-left'>Episode Image</h4>
 						<div class='image-container'>
 							<img class='thumb' src='{{list.editing.podcast.image}}'/>
 							<button type='button' class='image-delete' ng-click='list.deleteImage(image.id)'>X</button>
 						</div>
+
 						<input type="file" name='image_file' id='image_file'/>
 						<button type="button" ng-click='list.uploadImage()' >Upload</button>
-						<h4 class='text-left double-padded-top'>Episode Image Link</h4>
+						<h4 class='text-left'>Episode Image Link</h4>
 	                    <input class='col1' ng-model="list.editing.podcast.image" readonly/>
 					</div>
-					<div class='col1 '>
+
+
+
+					<div class='col1 double-padded-top'>
 						<h4 class='text-left double-padded-top'>Upload Audio File</h4>
 						<input type="file" name='audio_file' id='audio_file'/>
 						<button type="button" ng-click='list.uploadAudio(list.editing.podcast.id)' >Upload</button>
-						<h4 class='text-left double-padded-top'>Audio File Link</h4>
+						<h4 class='text-left'>Audio File Link</h4>
 	                    <input class='col1' ng-model="list.editing.podcast.url" readonly/>
 					</div>
+
 					<br/>
-					<!--<div ng-show="list.admin" class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active"/></div>
-                    <span id="message">{{message}}</span>-->
-					<div class='col1 double-padded-top'>
-						<button ng-click="list.recreateAudio(list.editing.podcast);" >Generate Podcast Audio</button>
-					</div>
+					<div ng-show="list.admin" class='col1'>Make this podcast inactive<input type='checkbox' ng-model="list.editing.podcast.active"/></div>
+                    <span id="message">{{message}}</span>
+					<br/>
+					<br/>
+                    <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
+
+
+                    <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
                 </div>
             </div>
         </div>

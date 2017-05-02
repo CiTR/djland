@@ -1,4 +1,5 @@
 <?php
+
 use App\Friends as Friends;
 use App\Member as Member;
 use App\Permission as Permission;

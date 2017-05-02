@@ -1,8 +1,8 @@
 <?php
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
-if( permission_level() < $djland_permission_levels['dj']['level']){
-	header("Location: main.php");
+if (permission_level() < $djland_permission_levels['dj']['level']) {
+    header("Location: main.php");
 }
 ?>
     <html>
@@ -97,6 +97,7 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
 						<input class='image-select' ng-click='show.info.image = image.url' type='checkbox' value='{{image.id}}' ng-checked='image.url == show.info.image' />
 						<img class='thumb' src='{{image.url}}'/>
 						<button type='button' class='image-delete' ng-click='show.deleteImage(image.id)'>X</button>
+<<<<<<< HEAD:app/shows.php
 					</div>
 				</div>
                 <div class='double-padded-top'>
@@ -149,14 +150,14 @@ if( permission_level() < $djland_permission_levels['dj']['level']){
                     <input ng-model='show.info.lang_default'>
                     <h4 class='text-left double-padded-top'>Default CRTC Category</h4>
                     <select ng-model='show.info.crtc_default'>
-                        <option value='20'>20</option><option value='30'>30</option>
+                        <option value='10'>10</option><option value='20'>20</option><option value='30'>30</option>
                     </select>
                     <h4 class='text-left double-padded-top'>Show Requirements</h4>
 
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
-						<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
+			<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
                         <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>

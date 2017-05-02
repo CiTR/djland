@@ -1,0 +1,126 @@
+/*
+ * Podcasts Page CSS
+ */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+div#main {
+	width:50%;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+}
+#mainleft {
+	font-size:1em;
+	line-height:1.3em;
+	position:relative;
+}
+#mainleft input, #mainleft textarea{
+	width:75%;
+	margin: 5px;
+	padding:5px;
+}
+#mainleft label{
+	font-size:0.95em;
+	text-align:right;
+	display:inline-block;
+	width:100px;
+}
+
+#mainleft input{
+	font-size: 1em;
+}
+
+#mainleft textarea{
+
+	font-size:0.77em;
+	vertical-align: top;
+}
+.playsheet_block, .spokenword_block, .podcast_block,.save_block {
+	max-width: 1000px;
+	width:100%;
+	min-height:200px;
+	position:relative;
+	margin-left: auto;
+	margin-right:auto;
+	display:block;
+	float:left;
+
+}
+
+.podcast_block_inner{
+	margin-left:auto;
+	margin-right:auto;
+	width:50%;
+	display:block;
+	position:relative;
+}
+#popup{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:700px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+
+#closer{
+	position:fixed;
+	top:30px;
+	right:700px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#closer:hover{
+	color:red;
+}
+
+.title{
+	font-size:1.2em;
+}
+
+.subtitle{
+	font-size:0.9em;
+	font-style: italic;
+}
+.podcast_date{
+	margin-left:-20px;
+	font-color:lightgrey;
+	font-size:0.8em;
+}
+
+.podcast_list_entry{
+	padding-left: 35px;
+}
+.tiny{
+	font-size:0.7em;
+	width:100%;
+	background-color:black;
+	overflow-wrap: break-word;
+}
+
+.lit{
+	background-color:darkblue;
+}
+button{
+	color:black;
+}
+#mainleft a{
+	background-color:steelblue;
+	padding:2px;
+}
+#mainleft  a:hover{
+	color:greenyellow;
+}
+#message{
+	font-size:2em;
+}
+
+#sf-resetcontent {
+	height:300px;
+	max-height:75%;
+	overflow:auto;
+}

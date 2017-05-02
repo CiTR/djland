@@ -29,4 +29,4 @@ CREATE TABLE `fundrive_donors` (
   `LP_amount` varchar(5) NOT NULL,
   `status` varchar(45) DEFAULT 'unsaved',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

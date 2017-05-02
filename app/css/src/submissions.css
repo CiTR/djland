@@ -1,0 +1,288 @@
+/*----------------------------*/
+/*----New Music Submission CSS RULES----*/
+/*----------------------------*/
+
+.select2-container--default, .select2-selection--single, .select2-selection__placeholder {
+  color: #333;
+}
+
+.select2-container--default, .select2-selection--single, .select2-selection__rendered {
+    color: #333;
+}
+.select2-choice {
+	color: #333;
+}
+/*fix long items in select2-container*/
+.select2-container--default {
+  width: 150px !important;
+}
+
+.submissioncontainer {
+	width: 1040px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.submission_row_element{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom:3px;
+}
+
+#submissionspopup{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:400px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+#submissionscloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionscloser:hover{
+	color:red;
+}
+#submissionsapprovalpopup{
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:400px;
+	height:100%;
+	background-color: #88d2ba;
+	overflow:scroll;
+	z-index:20;
+}
+#submissionscloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionscloser:hover{
+	color:red;
+}
+#submissionsapprovalcloser{
+	position:fixed;
+	top:30px;
+	right:400px;
+	background-color:lightsteelblue;
+	color:black;
+	cursor:default;
+	font-size:2em;
+	line-height: 2em;
+}
+#submissionsapprovalcloser:hover{
+	color:red;
+}
+
+#albumArt-review-box {
+  width: 100%;
+}
+
+#titleBox{
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-bottom:10px;
+	width: 40%;
+	display:inline;
+}
+#editTitleBox{
+	padding-left: 10px;
+	padding-top: 20px;
+	padding-bottom: 40px;
+	width: 40%;
+	display:inline;
+	margin-right: 100%;
+}
+
+#container{
+	height:auto;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.containerrow{
+	text-align:right;
+	display:inline-block;
+	width:100%;
+	overflow:visible;
+	margin-bottom:2px;
+}
+#print_broadcastly{
+	position:absolute;
+	right:0px;
+	top:80px;
+}
+.print_wrapper{
+	max-width:800px;
+}
+.submission{
+	width:1024px;
+	margin-left: 0;
+	margin-right: auto;
+	margin-top: -2px;
+	z-index: 3;
+	margin-bottom: 15px;
+}
+
+.submission ul{
+	background-color:inherit;
+}
+
+#submission_header{
+	list-style: none;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:0px;
+	padding-top:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+#submission_header li,#search_header li{
+	float:left;
+	position:relative;
+	margin-right:2px;
+	border:none;
+}
+#search_container{
+	width:auto;
+	display:inline-block;
+}
+#submission_result{
+	float:left;
+	width:100%;
+	background:inherit;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	margin-bottom:10px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+
+.table-header {
+  clear: both;
+}
+
+.submission_result_row{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+	text-align:left;
+	overflow:hidden;
+}
+#headerrow{
+	background-color: #a4a4a4;
+}
+#submission_table {
+	width: 100%;
+
+}
+#submission_table tr td,submission_table tr th{
+	padding-right:5px;
+}
+#submission_table tbody > .reviewrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .reviewedrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .tagrow:hover{
+	background-color: blue;
+}
+#submission_table tbody > .approverow:hover{
+	background-color: blue;
+}
+
+.submission_table {
+	width: 100%;
+}
+.submission_table tr td,submission_table tr th{
+	padding-right:5px;
+}
+.submission_table tbody > .reviewrow:hover{
+	background-color: blue;
+}
+.submission_table tbody > .reviewedrow:hover{
+	background-color: blue;
+}
+.submission_table tbody > .tagrow:hover{
+	background-color: blue;
+}
+.submission_table tbody > .approverow:hover{
+	background-color: blue;
+}
+
+.report_row:hover>div{
+	background-color:blue;
+}
+.submission_row:hover{
+	cursor: pointer; cursor: hand;
+	background-color:blue;
+}
+.submission_row.delete{
+	background-color:red;
+}
+.reviewrow.delete{
+	background-color:red;
+}
+.reviewedrow.delete{
+	background-color:red;
+}
+.reviewedrow.approve{
+	background-color:green;
+}
+.trashedrow.approve{
+    background-color: green;
+}
+.tagrow.delete{
+	background-color:red;
+}
+.approverow.delete{
+	background-color:red;
+}
+#submisison_year{
+	margin-left:auto;
+	margin-right:auto;
+}
+.submission_year_row td{
+	padding-left:10px;
+	padding-right:10px;
+}
+#submission_header > li > select{
+	max-width:150px;
+}
+.memlabel{
+	padding-left:15px;
+}
+#submit_user{
+	height:30px;
+	width:150px;
+	color:black;
+	-moz-box-shadow:inset 0px 0px 1px #BEBEBE;
+	-webkit-box-shadow:inset 0px 0px 1px #BEBEBE;
+	box-shadow:inset 0px 0px 1px #BEBEBE;
+}
+
+.staff_comment{
+    width:100%;
+}

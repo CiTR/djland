@@ -4,11 +4,14 @@ require_once("headers/menu_header.php");
 ?>
 
 <html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+<link rel="stylesheet" href="css/lightbox.min.css" >
 <link rel=stylesheet href=css/style.css type=text/css>
 <title>DJLAND | music library</title>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/library-js.js"></script>
+<script type='text/javascript' src="js/lightbox.min.js"></script>
+
 
 <?php
 //<script src="js/jquery.form.js"></script>
@@ -225,33 +228,109 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 		$id = 0;
 	}
 
+    //Yes I'm doing this, sue me I have a deadline...
+    $songs =  mysqli_query($db['link'],"SELECT * from library_songs where library_id=".$id." order by track_num asc");
+
 	$sresult = mysqli_query($db['link'],"SELECT *,types_format.name AS format FROM library, types_format WHERE library.id='$id' AND types_format.id = library.format_id");
 
-	printf("<br><table><tr><td>");
-	printf("<center><br><h1>Library Record</h1></center>");
+	printf("<br />");
+	printf("<div><center><br /><h1>Library Record</h1><br /></center></div>");
+
+	printf("<div style='width:1050px;margin:auto'>");
+	printf("<div id='wrapper' style='width:500px;float:left'>");
+		printf("<br /><h2>Album Information</h2><br />");
+		printf("<hr width=80%%><br />");
 	if(mysqli_num_rows($sresult)) {
-			printf("<table align=center border=0>");
-			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"catalog"));
-			printf("<tr><td align=right>Format:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"format"));
-			printf("<tr><td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
-			printf("<tr><td align=right>Artist:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"artist"));
-			printf("<tr><td align=right>Title:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"title"));
-			printf("<tr><td align=right>Label:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"label"));
-			printf("<tr><td align=right>Genre:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"genre"));
-			printf("<tr><td align=right>Added:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"added"));
-			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"modified"));
-			printf("<tr align=right><td>Cancon: %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
-			printf("<td>Femcon: %s</td></tr>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
-			printf("<tr><td>Local: %s</td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
-			printf("<td>Playlist: %s</td>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
-			printf("<tr><td>Compilation: %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
-			printf("<tr><td>in SAM: %s</td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
-			printf("</table><br>");
+			printf("<table id=\"libraryRecordResult\" name=\"libraryRecord\"" . $id . " align=center border=0>");
+			printf("<tr><td align=right>Catalog:</td><td align=left> %s</td><td> </td><td> </td><tr>", mysqli_result_dep($sresult,0,"catalog"));
+			printf("<tr><td align=right>Format:</td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"format"));
+			printf("<td align=right>Status:</td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"status"));
+			printf("<tr><td align=right>Artist:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"artist"));
+			printf("<tr><td align=right>Title:</td><td align=left> %s</td><td> </td> <td> </td></tr>", mysqli_result_dep($sresult,0,"title"));
+			printf("<tr><td align=right>Label:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"label"));
+			printf("<tr><td align=right>Genre:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"genre"));
+			printf("<tr><td align=right>Added:</td><td align=left> %s</td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"added"));
+			printf("<tr><td align=right>Modified:<br><br></td><td align=left> %s<br><br></td><td> </td><td> </td></tr>", mysqli_result_dep($sresult,0,"modified"));
+			printf("<tr ><td align=right>Cancon: </td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"cancon") ? "Yes" : "No");
+            printf("<td align=right>Playlist: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"playlist") ? "Yes" : "No");
+            printf("<tr><td align=right>Femcon: </td><td align=left> %s</td>", mysqli_result_dep($sresult,0,"femcon") ? "Yes" : "No");
+            printf("<td align=right>Compilation: </td><td align=left> %s</td></tr>", mysqli_result_dep($sresult,0,"compilation") ? "Yes" : "No");
+            printf("<tr><td align=right>Local:<br><br> </td><td align=left> %s<br><br></td>", mysqli_result_dep($sresult,0,"local") ? "Yes" : "No");
+			printf("<td align=right>in SAM:<br><br> </td><td align=left> %s<br><br></td></tr>", mysqli_result_dep($sresult,0,"digitized") ? "Yes" : "No");
+            if( mysqli_result_dep($sresult,0,"art_url") != null ){
+                printf("<tr><td></td><td align=right>Album Art (click to enlarge): &nbsp</td><td><a href=\"".mysqli_result_dep($sresult,0,"art_url")."\" data-lightbox=\"image\"><img height=100px width=100px src=\"".mysqli_result_dep($sresult,0,"art_url")."\"></img></a></td><td></td></tr>");
+            }elseif(permission_level() >= $djland_permission_levels['volunteer_leader']['level']){
+                printf("<tr><td colspan=4>No album art for this album.</td></tr><tr><td colspan=4>Upload Art Here:<br><br></td></tr>");
+                printf("<tr><td colspan=4><label for='libraryArtUpload' class='button'></label><input type='file' id='libraryArtUpload' class='show-for-sr'>&nbsp<button id='libraryArtUploadBtn'>Upload</button></td></tr>");
+            }else{
+                printf("<tr><td></td><td align=left>No album art for this album. Contact the music department to get this changed!</td><td></td><td></td></tr>");
+            }
+            printf("</table><br>");
 	}
 	else {
 		printf("<br>No Such Record...<br><br>");
 	}
-	?></td></tr></table><?php
+printf("</div>");
+	printf("<div id='wrapper' style='width:500px;float:right'>");
+		printf("<br /><h2>Preview Songs</h2><br />");
+		printf("<hr width=80%%><br />");
+			if(mysqli_num_rows($songs)) {
+                    $tn_flag = 0;
+					printf("<table id=\"librarySongs\" align=center border=0>");
+                    for($i = 0; $i < mysqli_num_rows($songs); $i++){
+                        if(mysqli_result_dep($songs,0,"track_num") == 0 ){
+                            printf("NOTE: Track numbers are not availible for one or more songs in this album.\nDefaulting to order as they appear in the system.\n\nThey may not be correct!");
+                            $tn_flag = 1;
+                            break;
+                        }
+                    }
+					for($i = 0; $i < mysqli_num_rows($songs); $i++){
+                        if($tn_flag == 1){
+                            $tn = $i + 1;
+                        }else{
+                            $tn = mysqli_result_dep($songs,$i,"track_num");
+                        }
+                        //songs are cached somewhere
+                        if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3"))
+                        {
+                            //Restrict audio to 30s
+                            //First make a file in the system temp Directory
+                            //This isn't necessary if the file we're slicing down to 30s
+                            //is on the local machine. But if it's somewhere
+                            //at a URL this is needed
+                            $file = tempnam(sys_get_temp_dir(), 'libraryPreview');
+                            //copy the source to the temporary Directory
+                            // 128kbps mp3 is 16KBps , so,theoretically:
+                            // 30s mp3 @ 128kbps is 480KB,
+                            // 30s mp3 @ 192kbps is 720KB
+                            // 30s mp3 @ 320kbps is 1.200MB
+                            // So we set the file to look through 1300000KB (account for headers etc)
+                            file_put_contents($file.'.mp3',file_get_contents($_SERVER['DOCUMENT_ROOT'].mysqli_result_dep($songs,$i,"file_location"),NULL,NULL,0,1600000));
+                            //Ffmpeg slice 'er up. 30 second length. Save to known location.
+                            //MAKE SURE YOU HAVE FFMPEG INSTALLED
+                            $dest = $_SERVER['DOCUMENT_ROOT'] . "/uploads/previews";
+                            exec("ffmpeg -t 30 -i " . $file . ".mp3" . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3");
+                            ///Delete the full length file from the temporary directory:
+                            //have to unlink both the file and the empty file created
+                            //by tempnam
+                            unlink($file);
+                            unlink($file.".mp3");
+                            //TODO:Find a better spot than just uploads/ for these files
+                        }
+                        $src = "http://" . $_SERVER['SERVER_NAME'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs,$i,"song_id") . ".mp3";
+                        printf("<tr><td align=right>".$tn.":&nbsp</td><td align=left>".mysqli_result_dep($songs,$i,"song_title")."</td><td align=left style='padding:10px'><audio controls><source src='". $src . "' type='audio/mpeg'>Your browser does not support the audio tag.</audio></tr>");
+                    }
+                    printf("</table><br>");
+			}
+			elseif(mysqli_num_rows($songs) == 0) {
+                printf("<div class='text-center center vertical-center'>No Songs Associated with this record...</div>");
+			}
+            else{
+                printf("<div class='text-center center vertical-center'>No such record...</div>");
+            }
+
+	printf("</div>");
+	printf("</div>");
 
 }
 else if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit' || $_GET['action'] == 'submit')) {

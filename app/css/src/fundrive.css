@@ -1,0 +1,31 @@
+/*
+ * Donor Form CSS
+ */
+.donor_form{
+	background-color:#707070;
+}
+
+.donor_form *{
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color:white;
+}
+.heavy_text{
+	font-size:1.0em;
+	line-height:1.2
+}
+
+.donor_form_wrapper > div > select,.donor_form_wrapper > div > div > textarea  {
+	background-color: #BBB;
+	color:black;
+}
+#donor_submit{
+	font-size:2.0em;
+	color: black;
+}
+
+/*----------------------*/
+/*    Fundrive          */
+/*----------------------*/
+.open_fundrive{
+	width:100%;
+}

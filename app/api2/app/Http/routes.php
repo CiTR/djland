@@ -19,7 +19,9 @@ use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
 use App\Historylist as Historylist;
 
-
+Route::get('/APIinfo',function(){
+    return "Welcome to DJLand API V2.0";
+});
 
 
 //Anything inside the auth middleware requires an active session (user to be logged in)

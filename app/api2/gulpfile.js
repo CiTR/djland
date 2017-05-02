@@ -11,6 +11,13 @@ var elixir = require('laravel-elixir');
  |
  */
 
+// SaSS example
+/** elixir(function(mix) {
+  *     mix.sass('app.scss');
+  * });
+  */
+
+//TODO: the css file outputs at it's old location for now, move to a dist/ style directory later
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.styles('./../css/src/*.css', './../css/style.css');
 });
