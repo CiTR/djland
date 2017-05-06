@@ -14,7 +14,7 @@ require_once('headers/db_header.php');
 require_once("headers/password.php");
 $message = '';
 if( isset($_POST['action']) && $_POST['action'] == "signup"){
-	header("Location: membership_add.php");
+	header("Location: membership_signup.php");
 }
 else if(is_logged_in() && isset($_GET['action']) && $_GET['action'] == "logout") {
 	logout();

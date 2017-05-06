@@ -8,35 +8,40 @@ use App\Permission as Permission;
 //Helpers
 use App\Show as Show;
 
-Route::group(['middleware' => 'auth'], function(){
 
-	// Old Member Creation Routes
-	//TODO:: Move these into rest format.
-	Route::post('/member',function(){
-		$member = Member::create( (array) json_decode(Input::get()['member']));
-		return $member->id;
-	});
-	Route::post('/user',function(){
-		$user = json_decode(Input::get()['user']);
-		$user->password = password_hash($user->password,PASSWORD_DEFAULT);
-		$user->status = 'enabled';
-		$user->login_fails = '0';
-		$user = User::create((array) $user);
-		$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
-		Permission::create($permissions);
-		return $user->id;
-	});
-	Route::post('/member/{id}/year',function($id = id){
-		$member = Member::find($id);
-		$membership_year = json_decode(Input::get()['year']);
-		$membership_year->member_id = $id;
-		return MembershipYear::create((array) $membership_year) ? "true" : "false";
-	});
+// Old Member Creation Routes
+//TODO:: Move these into rest format.
+//MUST BE OUTSIDE MIDDLEWARE TO FUNCTION FOR MEMBERSHIP SIGNUP
+Route::post('/member',function(){
+	$member = Member::create( (array) json_decode(Input::get()['member']));
+	return $member->id;
+});
+Route::post('/user',function(){
+	$user = json_decode(Input::get()['user']);
+	$user->password = password_hash($user->password,PASSWORD_DEFAULT);
+	$user->status = 'enabled';
+	$user->login_fails = '0';
+	$user = User::create((array) $user);
+	$permissions = array('user_id'=> $user->id,'administrator'=>"0",'dj'=> "0",'member'=> "1",'staff'=> "0",'volunteer'=> "0",'workstudy'=> "0");
+	Permission::create($permissions);
+	return $user->id;
+});
+Route::post('/member/{id}/year',function($id = id){
+	$member = Member::find($id);
+	$membership_year = json_decode(Input::get()['year']);
+	$membership_year->member_id = $id;
+	return MembershipYear::create((array) $membership_year) ? "true" : "false";
+});
+
+Route::group(['middleware' => 'auth'], function(){
 
 	//Member Routes
 	Route::group(array('prefix'=>'member'), function(){
 		Route::get('/',function(){
 			return  DB::table('membership')->select('id','firstname','lastname')->get();
+		});
+		Route::get('/list',function(){
+			return Member::select('id','firstname','lastname')->get();
 		});
 		// Searching Membership
 		Route::get('/search',function(){

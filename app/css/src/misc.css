@@ -160,3 +160,11 @@ table.dataTable.cell-border{
 #socanTable.dataTable tbody tr:hover{
     background-color: blue;
 }
+
+/*-----------------------------*/
+/*--- Member Resources CSS ----*/
+/*-----------------------------*/
+.member_resources_edit{
+	width: 100%;
+	height: 400px;
+}

@@ -16,6 +16,7 @@ php_errors.log
 images/shows
 images/friends
 images/specialbroadcasts
+images/podcast_photos
 
 #Ignore Windows Crap
 Thumbs.db

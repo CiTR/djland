@@ -20,6 +20,7 @@
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
         this.info.socan = $('#socan').text() == 'true' ? true : false;
+	console.log("Socan: " + this.info.socan); 
     	  this.tags = tags;
     	  this.help = help;
         this.complete = false;
@@ -497,6 +498,7 @@
             $timeout( (function(){this.checkIfComplete();}).bind(this),100);
         }
         this.checkIfComplete = function(){
+	    console.log(this.info.socan);
             var playsheet_okay = 'true';
             this.missing = "You have empty values";
             if(this.info.start > this.info.end){

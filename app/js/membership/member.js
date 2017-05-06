@@ -308,12 +308,13 @@ Member.prototype = {
 				$.when(this.createUser()).then(
 					(function(response){
 					$.when(this.createMembershipYear()).then(
-						function(response){
+						(function(response){
 						alert("Successfully Submitted");
 						window.location.href = 'index.php';
-						})
-					})
-				).bind(this);
+						}).bind(this)
+					);
+					}).bind(this)
+				);
 			}).bind(this)
 		);
 	},

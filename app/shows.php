@@ -90,20 +90,19 @@ if (permission_level() < $djland_permission_levels['dj']['level']) {
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input readonly class='fullinput' id='show_image' ng-model='show.info.image'>
+                <input readonly class='fullinput' id='upload_image' ng-model='show.info.image'>
 				Select an existing image, or upload a new one.
 				<div class='col1'>
 					<div class='image-container' ng-repeat='image in show.images | orderBy:image.id'>
 						<input class='image-select' ng-click='show.info.image = image.url' type='checkbox' value='{{image.id}}' ng-checked='image.url == show.info.image' />
 						<img class='thumb' src='{{image.url}}'/>
 						<button type='button' class='image-delete' ng-click='show.deleteImage(image.id)'>X</button>
-<<<<<<< HEAD:app/shows.php
 					</div>
 				</div>
                 <div class='double-padded-top'>
                     <div  class="row">
-						<label for="fileToUpload">Either choose files, or drag files. Accepted image formats are .png, .jpg, and .gif. </br>We recommend a size of at least 1400pxx1400px for iTunes Podcasting Support</label><br/>
-                        <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+						<label for="image_file">Either choose files, or drag files. Accepted image formats are .png, .jpg, and .gif. </br>We recommend a size of at least 1400pxx1400px for iTunes Podcasting Support</label><br/>
+                        <input type="file" ng-model-instant id="image_file" multiple onchange="angular.element(this).scope().setFiles(this)" />
                     </div>
                     <div  id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
                     <div ng-show="files.length">

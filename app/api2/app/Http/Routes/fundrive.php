@@ -33,6 +33,8 @@ Route::group(array('prefix'=>'fundrive'),function(){
 				Route::get('/',function($id){
 					$permissions = Member::find($_SESSION['sv_id'])->user->permission;
 					if($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff']==1 ) return Donor::find($id);
+					//fundrive user
+					if($_SESSION['sv_id'] == 1022) return Donor::find($id);
 					else return "Nope";
 				});
 				//Update a donor - sets status to "saved" since it's being saved recently - this Route

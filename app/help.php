@@ -1,7 +1,6 @@
 <?php
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
-require_once("headers/socan_header.php");
 $SOCAN_FLAG;
 
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
@@ -16,8 +15,6 @@ print("</head>");
 
 //Data Setup
 print_menu();
-//Commented out as we can do this through the API
-//$SOCAN_FLAG=socanCheck($db['link']);
 $socan_check_uri = "http://djland/api2/public/socan/check";
 $SOCAN_FLAG=$socan_check_uri;
 
@@ -134,13 +131,7 @@ for($i=0;$i<$numObjects;$i++){
     }
 }
 
-print("<p style='position:relative; bottom:10px; text-align:center;'>
-If you would like to see something added to this page, contact
-<a href='mailto: " + $station_info['tech_email'] + ">
-</a>
-</p>
-");
-
+print("<p style='position:relative; bottom:10px; text-align:center;'> If you would like to see something added to this page, contact <a href='mailto:".$station_info."' >".$station_info['tech_email']."</a></p>");
 print("</div>");
 print("</body>");
 
