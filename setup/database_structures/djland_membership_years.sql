@@ -28,4 +28,4 @@ CREATE TABLE `membership_years` (
   PRIMARY KEY (`id`,`member_id`,`membership_year`),
   KEY `member_id_idx` (`member_id`),
   CONSTRAINT `id` FOREIGN KEY (`member_id`) REFERENCES `membership` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=880 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=880 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

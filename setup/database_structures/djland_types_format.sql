@@ -4,4 +4,4 @@ CREATE TABLE `types_format` (
   `sort` int(11) DEFAULT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

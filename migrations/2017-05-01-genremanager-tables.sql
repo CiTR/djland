@@ -1,4 +1,38 @@
-insert into subgenres (id, subgenre, parent_genre_id, created_by, updated_by, created_at, updated_at) VALUES 
+CREATE TABLE `genres` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `genre` varchar(255) NOT NULL,
+  `default_crtc_category` int(11) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO genres (id, genre, default_crtc_category, created_by, updated_by, created_at, updated_at) VALUES
+(1,"Electronic",20,1,1,NOW(),NOW()),
+(2,"Experimental",30,1,1,NOW(),NOW()),
+(3,"Hip Hop / R&B / Soul",20,1,1,NOW(),NOW()),
+(4,"International",30,1,1,NOW(),NOW()),
+(5,"Jazz / Classical",30,1,1,NOW(),NOW()),
+(6,"Punk / Hardcore / Metal",20,1,1,NOW(),NOW()),
+(7,"Rock / Pop / Indie",20,1,1,NOW(),NOW()),
+(8,"Roots / Blues / Folk",30,1,1,NOW(),NOW()),
+(9,"Talk",10,1,1,NOW(),NOW());
+
+CREATE TABLE `subgenres` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subgenre` varchar(255) NOT NULL,
+  `parent_genre_id` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO subgenres (id, subgenre, parent_genre_id, created_by, updated_by, created_at, updated_at) VALUES
 (1,"Ambient",1,1,1,NOW(),NOW()),
 (2,"Bass",1,1,1,NOW(),NOW()),
 (3,"Chiptune",1,1,1,NOW(),NOW()),
