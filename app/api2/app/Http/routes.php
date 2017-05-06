@@ -33,8 +33,17 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 		Route::post('/',function(){
 			$resource = Option::where('djland_option','=','member_resources')->first();
-			$resource -> value = Input::get()['resources'];
-			return Response::json($resource->save());
+			//If there is no resources entry, make one
+			if (!$resource) {
+             		   $resource = Option::create(array(
+			           'djland_option' => 'member_resources',
+			           'value' => Input::get()['resources']
+                		));
+		           return $resource;
+            		} else {
+		                $resource -> value = Input::get()['resources'];
+                		return Response::json($resource->save());
+            		}
 		});
 	});
 });

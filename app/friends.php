@@ -17,10 +17,10 @@
 					<hr/>
 					<h3 class='text-left'>{{friend.name}}</h3>
 
-					<div class='col1'><input ng-model='friend.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
+					<div class='col1'>Name<input ng-model='friend.name' placeholder='name'><button type='button' ng-click='friends.delete($index)'>Delete This Friend</button></div>
 					<div class='friend_info'>
 						<div class='col1 double-padded-top'>
-							<div class='col2'>Name<input class='padded-left' ng-model='friend.address' placeholder='address'></div>
+							<div class='col2'>Address<input class='padded-left' ng-model='friend.address' placeholder='address'></div>
 							<div class='col2'>Website<input class='padded-left' ng-model='friend.website' placeholder='website'></div>
 						</div>
 						<div class='col1 double-padded-top'>

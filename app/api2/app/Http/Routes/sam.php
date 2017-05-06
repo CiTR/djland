@@ -85,10 +85,12 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			if($categorylist->isEmpty()) return Response::json();
 			foreach($categorylist as $item){
 				$song = Songlist::find($item->songID);
-				if($song['title'] == "" || $song['title'] == null){
-					$song['title'] = $song['artist'];
-				}
-				$songs[] = $song;
+				if(count($song)){
+					if($song['title'] == "" || $song['title'] == null){
+						$song['title'] = $song['artist'];
+					}
+					$songs[] = $song;
+  				}
 			}
 			return Response::json($songs);
 		});

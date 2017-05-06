@@ -112,7 +112,7 @@ class Podcast extends Model
 				$this->length = $num_bytes;
 				$this->iso_date = $iso_date;
 				$this->save();
-				$response['audio'] = array('url' => $target_url	);
+				$response['audio'] = array('url' => $target_url, 'size' => $num_bytes, 'archive_url' => $archive_url);
 				//Update XML to reflect new podcast creation
 				$response['xml'] = $this->show->make_show_xml();
 			}

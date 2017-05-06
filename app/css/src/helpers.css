@@ -28,7 +28,10 @@
 	padding-left:5px;
 	padding-right:5px;
 }
-
+.double-side-padded{
+	padding-left:10px;
+	padding-right:10px;
+}
 .border{
 	border-style:solid;
 	border-width:1px;

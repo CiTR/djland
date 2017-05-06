@@ -62,7 +62,11 @@ Route::group(array('prefix'=>'podcast'),function(){
 				}
 			});
 			Route::delete('/', function($id) {
-				Upload::where('relation_id',$id)->andWhere('type','episode_image')->delete();
+				Upload::where('relation_id',$id)->where('category','episode_image')->delete();
+				$podcast = Podcast::find($id);
+				$podcast-> image = "";
+				$podcast->save();
+				return $podcast;
 			});
 		});
 	});

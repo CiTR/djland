@@ -26,27 +26,30 @@
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<script type='text/javascript'>
 		var playsheet_id = "<?php if (isset($_GET['id'])) {
-        echo $_GET['id'];
-    } else {
-        echo '-1';
-    } ?>";
+        		echo $_GET['id'];
+    		} else {
+        		echo '-1';
+    		} ?>";
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 		var username = "<?php echo $_SESSION['sv_username']; ?>";
 		</script>
 
 		<?php print_menu(); ?>
 		<div class='text-center' ng-show='playsheet.loading'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
-		<div id='socan' class='hidden'><?php if (isset($_GET['socan'])) {
-        echo $_GET['socan'];
-    } elseif (isset($_POST['socan'])) {
-        echo $_POST['socan'];
-    } ?></div>
-		<div id='playsheet_id' class='hidden'><?php if (isset($_POST['ps_id'])) {
-        echo $_POST['ps_id'];
-    }?></div>
-
+		<div id='socan' class='hidden'>
+			<?php if (isset($_GET['socan'])) {
+        			echo $_GET['socan'];
+			} elseif (isset($_POST['socan'])) {
+				echo $_POST['socan'];
+    			} ?>
+		</div>
+		<div id='playsheet_id' class='hidden'>
+			<?php if (isset($_POST['ps_id'])) {
+			        echo $_POST['ps_id'];
+			}?>
+		</div>
 		<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
-		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{socan: playsheet.info.socan==true }">
+		<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{'socan': playsheet.info.socan }">
 			 <div class='col1 side-padded'>
 		      	<div class='col2 padded'>
 

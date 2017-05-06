@@ -684,6 +684,11 @@ option {
   padding-right: 5px;
 }
 
+.double-side-padded {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .border {
   border-style: solid;
   border-width: 1px;
@@ -1414,7 +1419,7 @@ button#submit_user.red {
   position: relative;
   list-style: none;
   width: 1024px;
-  margin-left: 0;
+  margin-left: auto;
   margin-right: auto;
   min-height: 28px;
   height: auto;
@@ -1644,6 +1649,17 @@ table.dataTable.cell-border {
 
 #socanTable.dataTable tbody tr:hover {
   background-color: blue;
+}
+
+/*-----------------------------*/
+
+/*--- Member Resources CSS ----*/
+
+/*-----------------------------*/
+
+.member_resources_edit {
+  width: 100%;
+  height: 400px;
 }
 /*
 *	Open Playsheet CSS

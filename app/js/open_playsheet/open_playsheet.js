@@ -67,7 +67,7 @@
 						(function(playsheets){
 							console.log('getting show playsheets');
 							if(playsheets.data.length > 0){
-								if(this_.offset == 0) this.playsheets = playsheets.data;
+								if(this.offset == 0) this.playsheets = playsheets.data;
 								else{
 									for(var playsheet in playsheets.data){
 										this.playsheets.push(playsheets.data[playsheet]);
