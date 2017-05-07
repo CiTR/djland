@@ -2,8 +2,6 @@
 
 ![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=capstone)
 
-This branch consists of work done as part of a UBC Capstone Project, 2016/2017.
-
 A free and open source web application built for community radio.
 
 Optionally, DJLAND can also integrate with SAM Broadcaster (http://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
