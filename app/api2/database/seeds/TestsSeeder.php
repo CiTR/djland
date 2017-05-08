@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class DatabaseSeeder extends Seeder
+class TestsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //
-
+        //Call the standard setup seed
+        $this->call(SetupSeeder::class);
+        //Then add in more data to assist testing
+        //TODO
         Model::reguard();
     }
 }
