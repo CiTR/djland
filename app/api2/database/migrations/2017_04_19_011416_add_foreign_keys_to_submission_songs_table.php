@@ -14,6 +14,8 @@ class AddForeignKeysToSubmissionSongsTable extends Migration {
 	{
 		Schema::table('submission_songs', function(Blueprint $table)
 		{
+			//TODO: check cascade behavior with rest of code to see if no action
+			// is what we want
 			$table->foreign('submission_id', 'fk_submission_songs_1')->references('id')->on('submissions')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}

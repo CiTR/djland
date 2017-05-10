@@ -25,6 +25,7 @@ class CreateMembershipTable extends Migration {
 			$table->string('member_type', 9)->comment('student, community, alumni, lifetime');
 			$table->string('is_new', 1)->default('0');
 			$table->string('alumni', 1)->default('0');
+			//TODO:make this date default dynamic - defaults to year the system was installed
 			$table->string('since', 9)->default('2014/2015');
 			$table->string('faculty', 22)->nullable();
 			$table->string('schoolyear', 2)->nullable();
@@ -45,8 +46,8 @@ class CreateMembershipTable extends Migration {
 			$table->string('programming_training', 1)->nullable()->default('0');
 			$table->string('production_training', 1)->nullable()->default('0');
 			$table->string('spoken_word_training', 1)->nullable()->default('0');
-			$table->dateTime('create_date');
-			$table->dateTime('edit_date')->default('0000-00-00 00:00:00');
+			$table->dateTime('create_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+			$table->dateTime('edit_date')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
 	}
 

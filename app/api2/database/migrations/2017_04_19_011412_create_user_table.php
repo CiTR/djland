@@ -19,11 +19,12 @@ class CreateUserTable extends Migration {
 			$table->string('username', 100)->unique('username_UNIQUE');
 			$table->string('password', 100);
 			$table->string('status', 20)->default('enabled');
+			$table->integer('login_fails')->nullable();
+			$table->string('edit_name', 30)->nullable();
 			$table->dateTime('create_date')->nullable();
 			$table->timestamp('edit_date')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->string('edit_name', 30)->nullable();
-			$table->integer('login_fails')->nullable();
 			$table->primary(['id','member_id']);
+			$table->foriegn('member_id', 'fk_member_id')->references('id')->on('membership')->onDelete('cascasde')->onUpdate('cascade');
 		});
 	}
 

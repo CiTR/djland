@@ -12,6 +12,8 @@ class CreateMembershipStatusTable extends Migration {
 	 */
 	public function up()
 	{
+		//TODO: This table currently isn't being used but would be nice to have
+		//because normalization is a good thing
 		Schema::create('membership_status', function(Blueprint $table)
 		{
 			$table->integer('id', true);

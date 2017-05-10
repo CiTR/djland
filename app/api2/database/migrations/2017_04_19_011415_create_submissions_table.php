@@ -15,7 +15,7 @@ class CreateSubmissionsTable extends Migration {
 		Schema::create('submissions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->boolean('format_id')->nullable();
+			$table->tinyInteger('format_id')->nullable();
 			$table->text('catalog')->nullable();
 			$table->integer('crtc')->nullable();
 			$table->boolean('cancon')->nullable();
@@ -25,6 +25,7 @@ class CreateSubmissionsTable extends Migration {
 			$table->boolean('compilation')->nullable();
 			$table->boolean('digitized')->nullable();
 			$table->text('status')->nullable();
+			$table->boolean('is_trashed')->nullable()->default(0);
 			$table->text('artist')->nullable();
 			$table->text('title')->nullable();
 			$table->text('label')->nullable();
@@ -32,19 +33,20 @@ class CreateSubmissionsTable extends Migration {
 			$table->text('tags')->nullable();
 			$table->date('submitted')->nullable();
 			$table->date('releasedate')->nullable();
+			//TODO: forgien key for assignee + reviewed in both model and Schema
+			// levels - on delete/update no action of course
 			$table->integer('assignee')->unsigned()->nullable();
 			$table->integer('reviewed')->nullable();
 			$table->boolean('approved')->nullable();
 			$table->text('description')->nullable();
 			$table->text('location')->nullable();
 			$table->text('email')->nullable();
-			$table->bigInteger('songlist')->unsigned();
 			$table->text('credit')->nullable();
 			$table->text('art_url')->nullable();
-			$table->text('review_comments', 16777215)->nullable();
-			$table->string('staff_comment', 45)->nullable();
+			$table->mediumText('review_comments')->nullable();
+			$table->string('staff_comment', 255)->nullable();
 			$table->timestamps();
-			$table->boolean('is_trashed')->nullable()->default(0);
+
 		});
 	}
 

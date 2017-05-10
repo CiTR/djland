@@ -14,6 +14,7 @@ class CreateMemberShowTable extends Migration {
 	{
 		Schema::create('member_show', function(Blueprint $table)
 		{
+			//TODO: check if this table needs foreign keys (it's a pivot table)
 			$table->increments('id');
 			$table->integer('member_id');
 			$table->integer('show_id');

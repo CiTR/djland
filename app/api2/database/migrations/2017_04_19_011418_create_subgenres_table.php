@@ -20,6 +20,7 @@ class CreateSubgenresTable extends Migration {
 			$table->integer('created_by');
 			$table->integer('updated_by');
 			$table->timestamps();
+			$table->foreign('parent_genre_id','fk_parent_genre_id')->references('id')->on('genre')->onDelete('no action')->onUpdate('cascade');
 		});
 	}
 

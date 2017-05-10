@@ -12,6 +12,7 @@ class CreateMemberResourcesTable extends Migration {
 	 */
 	public function up()
 	{
+		//TODO: determine if this table has any use
 		Schema::create('member_resources', function(Blueprint $table)
 		{
 			$table->integer('index')->primary();

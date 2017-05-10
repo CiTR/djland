@@ -16,7 +16,7 @@ class CreateGenresTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('genre');
-			$table->integer('default_crtc_category')->nullable();
+			$table->integer('default_crtc_category')->default(20);
 			$table->integer('created_by');
 			$table->integer('updated_by');
 			$table->timestamps();

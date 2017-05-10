@@ -20,7 +20,7 @@ class CreateSubmissionsArchiveTable extends Migration {
 			$table->text('artist')->nullable();
 			$table->text('title')->nullable();
 			$table->date('submitted')->nullable();
-			$table->boolean('format_id')->nullable();
+			$table->tinyInteger('format_id')->nullable();
 			$table->boolean('cancon')->nullable();
 			$table->boolean('femcon')->nullable();
 			$table->boolean('local')->nullable();

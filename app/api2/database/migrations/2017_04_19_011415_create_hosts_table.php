@@ -14,6 +14,7 @@ class CreateHostsTable extends Migration {
 	{
 		Schema::create('hosts', function(Blueprint $table)
 		{
+			//TODO: foreign key this
 			$table->increments('id');
 			$table->text('name')->nullable();
 		});

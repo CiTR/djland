@@ -15,6 +15,7 @@ class CreateFundriveDonorsTable extends Migration {
 		Schema::create('fundrive_donors', function(Blueprint $table)
 		{
 			$table->integer('id', true);
+			$table->string('status', 45)->nullable()->default('unsaved');
 			$table->string('donation_amount', 10)->nullable();
 			$table->string('swag', 1)->nullable();
 			$table->string('tax_receipt', 1)->nullable();
@@ -36,13 +37,12 @@ class CreateFundriveDonorsTable extends Migration {
 			$table->string('recv_updates_alumni', 1)->nullable();
 			$table->string('donor_recognition_name', 45)->nullable();
 			$table->string('LP_yes', 1)->nullable();
+			$table->string('LP_amount', 5)->nullable();
 			$table->text('notes', 65535)->nullable();
 			$table->string('paid', 1)->nullable();
 			$table->string('prize_picked_up', 1)->nullable();
 			$table->dateTime('UPDATED_AT')->nullable();
-			$table->dateTime('CREATED_AT')->nullable();
-			$table->string('LP_amount', 5);
-			$table->string('status', 45)->nullable()->default('unsaved');
+			$table->dateTime('CREATED_AT')->nullable();		
 		});
 	}
 

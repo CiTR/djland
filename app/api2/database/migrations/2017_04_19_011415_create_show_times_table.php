@@ -21,6 +21,7 @@ class CreateShowTimesTable extends Migration {
 			$table->integer('end_day');
 			$table->time('end_time');
 			$table->integer('alternating')->default(0);
+			$table->primary(['show_id','start_day','start_time','end_day','end_time','alternating']);
 		});
 	}
 

@@ -12,6 +12,8 @@ class CreateUserBackupTable extends Migration {
 	 */
 	public function up()
 	{
+		//TODO: can we delete this table? It seems to have been left around
+		//From a change in the past 
 		Schema::create('user_backup', function(Blueprint $table)
 		{
 			$table->integer('userid')->unsigned()->default(0);

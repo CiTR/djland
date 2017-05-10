@@ -41,6 +41,7 @@ class CreateMembershipYearsTable extends Migration {
 			$table->string('indigenous_collective', 16)->nullable()->default('0');
 			$table->string('accessibility_collective', 16)->nullable()->default('0');
 			$table->primary(['id','member_id','membership_year']);
+			$table->foreign('member_id','fk_member_id')->references('id')->on('membership')->onDelete('cascade')->onUpdate('cascade');
 		});
 	}
 

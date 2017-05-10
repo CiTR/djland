@@ -29,11 +29,11 @@ class CreateLibraryTable extends Migration {
 			$table->text('title')->nullable();
 			$table->text('label')->nullable();
 			$table->text('genre')->nullable();
-			$table->date('added')->nullable();
-			$table->date('modified')->nullable();
 			$table->text('description')->nullable();
 			$table->text('email')->nullable();
 			$table->string('art_url')->nullable();
+			$table->date('added')->nullable();
+			$table->date('modified')->nullable();
 		});
 	}
 

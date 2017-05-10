@@ -14,6 +14,7 @@ class CreateSocialTable extends Migration {
 	{
 		Schema::create('social', function(Blueprint $table)
 		{
+			//TODO: does this need foreign keys (show_id)
 			$table->increments('id');
 			$table->integer('show_id');
 			$table->string('social_name', 100);

@@ -31,7 +31,7 @@ class CreateSubmissionSongsTable extends Migration {
 			$table->boolean('crtc')->nullable();
 			$table->date('year')->nullable();
 			$table->integer('length')->unsigned()->nullable();
-			$table->text('file_location', 16777215)->nullable();
+			$table->mediumText('file_location')->nullable();
 			$table->timestamps();
 		});
 	}

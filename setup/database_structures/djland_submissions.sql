@@ -24,7 +24,6 @@ CREATE TABLE `submissions` (
   `description` longtext,
   `location` tinytext,
   `email` tinytext,
-  `songlist` bigint(20) unsigned NOT NULL,
   `credit` tinytext,
   `art_url` tinytext,
   `review_comments` mediumtext,
