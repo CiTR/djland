@@ -51,7 +51,6 @@ class Podcast extends Model
 	    $iso_date = date('D, d M Y H:i:s O',$start);
 
 	    //Archiver URL to download from
-
 	    $archive_url = $url['archive_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars

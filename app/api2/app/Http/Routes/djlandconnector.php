@@ -114,23 +114,26 @@ function show($id){
 }
 //Get playlist given  playlist ID
 function playlist($id){
-	// Check that the id is for a valid playsheet - this return message matches old API behavior
-	if(empty(Playsheet::find($id)))  {
-		return array(
-	    	'api_message' => '[NO RECORD FOUND]',
-	    	'message'     => 'no playlist found with this ID: '.$id,
-	    );
-	}
-	$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get();
-	$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get();
-	//For some reason ->merge() didn't work so we did this and it did
-	$ret = array_merge($playsheet[0]->toArray(), $podcast[0]->toArray());
-	$ret['songs'] = Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', 'composer', 'id')->get();
-	//Playitem episode description should be null if it is ""
-	if($ret['episode_description'] == "") $ret['episode_description'] = null;
+    // Check that the id is for a valid playsheet - this return message matches old API behavior
+    if(empty(Playsheet::find($id)))  {
+        return array(
+            'api_message' => '[NO RECORD FOUND]',
+            'message'     => 'no playlist found with this ID: '.$id,
+        );
+    }
+    $playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', '    type as playlist_type', 'host as host_name')->where('id','=',$id)->get()->toArray();
+    $podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_titl    e', 'url as episode_audio')->where('playsheet_id','=',$id)->get()->toArray();
+    //For some reason ->merge() didn't work so we did this and it did
+    $ret = array_merge($playsheet, $podcast);
+    $ret = collect($ret[0]);
+    $ret['songs'] = Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', '    composer', 'id')->get();
+    //Playitem episode description should be null if it is ""
+    if($podcast) {
+        if($ret['episode_description'] == "") $ret['episode_description'] = null;
+    }
     //Playitem songs->composer should be "" instead of null
-	foreach ($ret['songs'] as $key => $value) {
+    foreach ($ret['songs'] as $key => $value) {
         if(empty($ret['songs'][$key]['composer'])) $ret['songs'][$key]['composer'] = "";
     }
-	return Response::json($ret);
+    return Response::json($ret);
 }

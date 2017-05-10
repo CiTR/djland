@@ -167,6 +167,8 @@ class Upload extends Model{
 				//check if file exists already. If so, we overwrite existing file
 				if($podcast->length && $podcast->length > 0 && $podcast->url != null){
 					$target_file_name = preg_replace('/(.+'.$this->add_slashes(str_replace('http://','',$url_base)).'\/)/','',$podcast->url);
+                    //Remove the 2017/ 2017/ etc before the file name (the preg_replace above will return 2017/<FILENAME> and not <FILENAME> as we need)
+                    $target_file_name = basename($target_file_name);
 					//the testing enviroment may mean that even though it has a proper url, it still might not exist in our dev path
 					//so overwrite it anyway (it's dev, we don't really care too much about overwriting in the test audio base directory)
 					if($testing_environment){

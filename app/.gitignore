@@ -4,6 +4,8 @@ log.html
 #Ignore Test directories
 test-audio
 test-xml
+audio
+xml
 
 #Ignore Any generated static pages.
 JSONDATA

@@ -270,7 +270,7 @@ class Show extends Model
                 $num_bytes += fwrite($target_file, $xml[$i]."\n");
                 if($xml[$i] == '</item>' || strpos($xml[$i],'</generator>') > 0) fwrite($target_file, "\n");
             }
-             $response['reponse'] = array(
+             $response['response'] = array(
                 'filename' => $file_name,
                 'size' => $num_bytes,
                 'url' => $url_path.$file_name

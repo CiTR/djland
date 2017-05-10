@@ -27,11 +27,11 @@ class CreateShowsTable extends Migration {
 			$table->boolean('cc_30_req')->default(12);
 			$table->boolean('indy_req')->default(0);
 			$table->boolean('fem_req')->default(0);
-			$table->dateTime('last_show')->default('0000-00-00 00:00:00');
-			$table->dateTime('create_date')->default('0000-00-00 00:00:00');
+            //The last_show column appears to be unused and deprecated
+            //default changed from 0000-00-00 00:00:00 to NULL, but probably won't make a difference
+			$table->dateTime('last_show')->default(NULL);
 			$table->text('create_name');
-			$table->timestamp('edit_date')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->text('edit_name')->nullable();
+			$table->text('edit_name');
 			$table->boolean('active')->default(1);
 			$table->integer('crtc_default')->default(20);
 			$table->text('lang_default')->nullable();
@@ -51,9 +51,10 @@ class CreateShowsTable extends Migration {
 			$table->text('podcast_subtitle')->nullable();
 			$table->text('podcast_summary', 65535)->nullable();
 			$table->text('podcast_author')->nullable();
+            $table->dateTime('create_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('edit_date')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
 	}
-
 
 	/**
 	 * Reverse the migrations.

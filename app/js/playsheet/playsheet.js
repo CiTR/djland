@@ -20,7 +20,7 @@
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
         this.info.socan = $('#socan').text() == 'true' ? true : false;
-	console.log("Socan: " + this.info.socan); 
+	console.log("Socan: " + this.info.socan);
     	  this.tags = tags;
     	  this.help = help;
         this.complete = false;
@@ -673,7 +673,7 @@
 				    //this.uploadAudio(this.podcast.id);
 			    //}else{
 					call.makePodcastAudio(this.podcast).then(
-						(function(reponse){
+						(function(response){
 			                this.podcast_status = "Podcast Audio Created Successfully.";
 			            }).bind(this)
 							,(function(error){
@@ -710,7 +710,7 @@
 										//this.uploadAudio(response.podcast.id);
 									//}else{
 										call.makePodcastAudio(this.podcast).then(
-											(function(reponse){
+											(function(response){
 					                            this.podcast_status = "Podcast Audio Created Successfully.";
 					                        }).bind(this)
 										,(function(error){
@@ -739,7 +739,7 @@
 									//this.uploadAudio(response.podcast.id);
 								//}else{
 									call.makePodcastAudio(this.podcast).then(
-										(function(reponse){
+										(function(response){
 				                            this.podcast_status = "Podcast Audio Created Successfully.";
 				                        }).bind(this)
 										,(function(error){
