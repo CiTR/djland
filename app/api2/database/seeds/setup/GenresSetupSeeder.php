@@ -49,7 +49,7 @@ class GenresSetupSeeder extends Seeder
             $i++;
         }
 
-        $admin_id = User::where('username', '=', 'Admin')->get()['member_id'];
+        $admin_id = User::select('member_id')->where('username', '=', 'Admin')->get();
         foreach ($genres as $key => $genre) {
             Genre::create(array(
                 'genre' => $genre['genre'],

@@ -29,9 +29,9 @@ class CreateLoglevelTable extends Migration
      */
     public function down()
     {
-        Schema::drop('loglevel');
         Schema::table('log', function (Blueprint $table) {
             $table->dropForeign('fk_log_1');
         });
+        Schema::drop('loglevel');
     }
 }

@@ -13,11 +13,11 @@ class CreateLibraryEdits extends Migration
     public function up()
     {
         Schema::create('library_edits', function (Blueprint $table) {
-            $table->increments('id')->primary();
+            $table->increments('id');
             $table->tinyInteger('format_id')->nullable();
             $table->tinyInteger('old_format_id')->nullable();
-            $able->text('catalog')->nullable();
-            $able->text('old_catalog')->nullable();
+            $table->text('catalog')->nullable();
+            $table->text('old_catalog')->nullable();
             $table->boolean('cancon')->nullable();
             $table->boolean('old_cancon')->nullable();
             $table->boolean('femcon')->nullable();

@@ -5,7 +5,8 @@ use Illuminate\Database\Seeder;
 use App\Member;
 use App\MembershipYear;
 use App\User;
-use app\Permission;
+use App\Permission;
+use Carbon\Carbon;
 
 class AdminUserSetupSeeder extends Seeder
 {
@@ -27,14 +28,14 @@ class AdminUserSetupSeeder extends Seeder
             'member_type' => 'Staff',
             'is_new' => 0,
             'alumni' => 0,
-            'since' => "{Carbon::now()->year - 1}/{Carbon::now()->year}",
+            'since' => Carbon::now()->year - 1 . '/' . Carbon::now()->year,
             'faculty' => '',
             'primary_phone' => '',
             'email' => ''
         ));
         MembershipYear::create(array(
             'member_id' => $member['id'],
-            'membership_year' => "{Carbon::now()->year - 1}/{Carbon::now()->year}",
+            'membership_year' => Carbon::now()->year - 1 . '/' . Carbon::now()->year,
             'paid' => 1,
             //leave the rest to default values
         ));

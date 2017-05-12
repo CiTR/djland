@@ -15,7 +15,7 @@ class CreateLogTable extends Migration
     {
         Schema::create('log', function (Blueprint $table) {
             $table->increments('log_id');
-            $table->unsigned('log_level');
+            $table->integer('log_level')->unsigned();
             $table->text('message');
             $table->text('data');
             $table->string('user', 40);

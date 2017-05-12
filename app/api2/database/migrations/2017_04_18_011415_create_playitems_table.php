@@ -33,10 +33,10 @@ class CreatePlayitemsTable extends Migration {
 			$table->integer('is_part')->default(0);
 			$table->integer('is_inst')->default(0);
 			$table->integer('is_hit')->default(0);
-			$table->tinyint('insert_song_start_hour')->nullable()->default(0);
-			$table->tinyint('insert_song_start_minute')->nullable()->default(0);
-			$table->tinyint('insert_song_length_minute')->nullable()->default(0);
-			$table->tinyint('insert_song_length_second')->nullable()->default(0);
+			$table->tinyInteger('insert_song_start_hour')->nullable()->default(0);
+			$table->tinyInteger('insert_song_start_minute')->nullable()->default(0);
+			$table->tinyInteger('insert_song_length_minute')->nullable()->default(0);
+			$table->tinyInteger('insert_song_length_second')->nullable()->default(0);
 			$table->string('artist', 80)->nullable();
 			$table->string('song', 80)->nullable();
 			$table->string('album', 80)->nullable();

@@ -68,7 +68,7 @@ function is_paid()
 {
     global $db;
     //Session contains member id.
-    $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT value FROM djland_options WHERE djland_option='membership_cutoff' order by index desc LIMIT 1) AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
+    $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT value FROM djland_options WHERE djland_option='membership_cutoff' LIMIT 1) AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
     $statement = $db['pdo_link']->prepare($query);
     $statement->bindValue(':member_id', $_SESSION['sv_id']);
     try {
