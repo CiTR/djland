@@ -49,6 +49,9 @@ class CreatePlaysheetsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('playsheets');
+		if(Schema::hasTable('playsheets'))
+		{
+			Schema::drop('playsheets');
+		}
     }
 }

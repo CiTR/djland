@@ -36,7 +36,10 @@ class CreateUploadsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('uploads');
+		if(Schema::hasTable('uploads'))
+		{
+			Schema::drop('uploads');
+		}
 	}
 
 }

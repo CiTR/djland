@@ -30,6 +30,9 @@ class CreateSocanTable extends Migration
      */
     public function down()
     {
-        Schema::drop('socan');
+		if(Schema::hasTable('socan'))
+        {
+			Schema::drop('socan');
+		}
     }
 }

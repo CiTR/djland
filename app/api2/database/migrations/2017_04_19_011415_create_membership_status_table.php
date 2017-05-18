@@ -30,7 +30,9 @@ class CreateMembershipStatusTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('membership_status');
+		if(Schema::hasTable('membership_status')){
+			Schema::drop('membership_status');
+		}
 	}
 
 }

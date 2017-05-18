@@ -53,7 +53,10 @@ class CreatePlayitemsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('playitems');
+		if(Schema::hasTable('playitems'))
+		{
+			Schema::drop('playitems');
+		}
 	}
 
 }

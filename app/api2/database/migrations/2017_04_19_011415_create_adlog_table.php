@@ -39,7 +39,10 @@ class CreateAdlogTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('adlog');
+		if(Schema::hasTable('adlog'))
+		{
+			Schema::drop('adlog');
+		}
 	}
 
 }

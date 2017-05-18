@@ -26,7 +26,10 @@ class CreateLoginStatusTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('login_status');
+		if(Schema::hasTable('login_status'))
+		{
+			Schema::drop('login_status');
+		}
 	}
 
 }

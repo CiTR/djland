@@ -35,6 +35,9 @@ class CreateShowTimesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('show_times');
+		if(Schema::hasTable('show_times'))
+        {
+			Schema::drop('show_times');
+		}
     }
 }

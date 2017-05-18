@@ -44,6 +44,9 @@ class CreateLibrarySongsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('library_songs');
+		if(Schema::hasTable('library_songs'))
+		{
+        	Schema::drop('library_songs');
+		}
     }
 }

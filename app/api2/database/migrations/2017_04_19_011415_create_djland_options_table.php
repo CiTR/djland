@@ -30,7 +30,10 @@ class CreateDjlandOptionsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('djland_options');
+		if(Schema::hasTable('djland_options'))
+		{
+			Schema::drop('djland_options');
+		}
 	}
 
 }

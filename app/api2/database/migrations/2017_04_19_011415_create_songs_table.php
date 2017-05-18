@@ -30,7 +30,10 @@ class CreateSongsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('songs');
+		if(Schema::hasTable('songs'))
+		{
+			Schema::drop('songs');
+		}
 	}
 
 }

@@ -45,7 +45,10 @@ class CreateLibraryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('library');
+		if(Schema::hasTable('library'))
+		{
+			Schema::drop('library');
+		}
 	}
 
 }

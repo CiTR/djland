@@ -58,7 +58,10 @@ class CreateSubmissionsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('submissions');
+		if(Schema::hasTable('submissions'))
+		{
+			Schema::drop('submissions');
+		}
 	}
 
 }

@@ -33,6 +33,9 @@ class CreateSubgenresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('subgenres');
+		if(Schema::hasTable('subgenres'))
+		{
+        	Schema::drop('subgenres');
+		}
     }
 }

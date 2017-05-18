@@ -30,7 +30,10 @@ class CreateSocialTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('social');
+		if(Schema::hasTable('social'))
+		{
+			Schema::drop('social');
+		}
 	}
 
 }

@@ -32,7 +32,10 @@ class CreateMemberResourcesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('member_resources');
+		if(Schema::hasTable('member_resources'))
+		{
+			Schema::drop('member_resources');
+		}
 	}
 
 }

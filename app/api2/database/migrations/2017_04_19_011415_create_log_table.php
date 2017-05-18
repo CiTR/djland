@@ -31,6 +31,9 @@ class CreateLogTable extends Migration
      */
     public function down()
     {
-        Schema::drop('log');
+		if(Schema::hasTable('log'))
+		{
+			Schema::drop('log');
+		}
     }
 }

@@ -56,6 +56,9 @@ class CreateMembershipYearsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('membership_years');
+		if(Schema::hasTable('membership_years'))
+		{
+			Schema::drop('membership_years');
+		}
     }
 }

@@ -28,7 +28,10 @@ class CreateTypesFormatTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('types_format');
+		if(Schema::hasTable('types_format'))
+		{
+			Schema::drop('types_format');
+		}
 	}
 
 }

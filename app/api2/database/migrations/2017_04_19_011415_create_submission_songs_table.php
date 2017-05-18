@@ -44,6 +44,9 @@ class CreateSubmissionSongsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('submission_songs');
+		if(Schema::hasTable('submission_songs'))
+		{
+        	Schema::drop('submission_songs');
+		}
     }
 }

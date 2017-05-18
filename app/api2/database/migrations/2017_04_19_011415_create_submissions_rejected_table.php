@@ -31,7 +31,10 @@ class CreateSubmissionsRejectedTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('submissions_rejected');
+		if(Schema::hasTable('submissions_rejected'))
+		{
+			Schema::drop('submissions_rejected');
+		}
 	}
 
 }

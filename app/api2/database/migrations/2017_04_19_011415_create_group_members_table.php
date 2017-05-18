@@ -34,6 +34,9 @@ class CreateGroupMembersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('group_members');
+		if(Schema::hasTable('group_members'))
+		{
+			Schema::drop('group_members');
+		}
     }
 }

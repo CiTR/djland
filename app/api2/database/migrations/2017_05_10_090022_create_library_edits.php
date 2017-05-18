@@ -52,6 +52,9 @@ class CreateLibraryEdits extends Migration
      */
     public function down()
     {
-        Schema::drop('library_edits');
+		if(Schema::hasTable('library_edits'))
+		{
+        	Schema::drop('library_edits');
+		}
     }
 }

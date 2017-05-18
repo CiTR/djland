@@ -41,7 +41,10 @@ class CreatePodcastEpisodesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('podcast_episodes');
+		if(Schema::hasTable('podcast_episodes'))
+		{
+			Schema::drop('podcast_episodes');
+		}
 	}
 
 }

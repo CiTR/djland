@@ -59,6 +59,9 @@ class CreateMembershipTable extends Migration
      */
     public function down()
     {
-        Schema::drop('membership');
+		if(Schema::hasTable('membership'))
+		{
+		    Schema::drop('membership');
+		}
     }
 }

@@ -42,7 +42,7 @@ class CreateFundriveDonorsTable extends Migration {
 			$table->string('paid', 1)->nullable();
 			$table->string('prize_picked_up', 1)->nullable();
 			$table->dateTime('UPDATED_AT')->nullable();
-			$table->dateTime('CREATED_AT')->nullable();		
+			$table->dateTime('CREATED_AT')->nullable();
 		});
 	}
 
@@ -54,7 +54,10 @@ class CreateFundriveDonorsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('fundrive_donors');
+		if(Schema::hasTable('fundrive_donors'))
+		{
+			Schema::drop('fundrive_donors');
+		}
 	}
 
 }

@@ -28,7 +28,10 @@ class CreateHostsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('hosts');
+		if(Schema::hasTable('hosts'))
+		{
+			Schema::drop('hosts');
+		}
 	}
 
 }

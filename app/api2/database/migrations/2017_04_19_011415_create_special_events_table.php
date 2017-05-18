@@ -35,7 +35,11 @@ class CreateSpecialEventsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('special_events');
+		if(Schema::hasTable('special_events'))
+		{
+			Schema::drop('special_events');
+		}
+
 	}
 
 }

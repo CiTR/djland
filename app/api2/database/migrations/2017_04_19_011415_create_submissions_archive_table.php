@@ -38,7 +38,10 @@ class CreateSubmissionsArchiveTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('submissions_archive');
+		if(Schema::hasTable('submissions_archive'))
+		{
+			Schema::drop('submissions_archive');
+		}
 	}
 
 }

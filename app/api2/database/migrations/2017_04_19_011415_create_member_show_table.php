@@ -29,7 +29,10 @@ class CreateMemberShowTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('member_show');
+		if(Schema::hasTable('member_show'))
+		{
+			Schema::drop('member_show');
+		}
 	}
 
 }
