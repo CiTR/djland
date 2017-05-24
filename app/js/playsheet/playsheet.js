@@ -19,7 +19,7 @@
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.info.socan = $('#socan').text() == 'true' ? true : false;
+        this.info.socan = $('#socan').text().trim() == 'true' ? true : false;
 	console.log("Socan: " + this.info.socan); 
     	  this.tags = tags;
     	  this.help = help;
