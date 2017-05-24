@@ -574,7 +574,8 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-					          this.info.show_name = this.active_show.name;
+					this.info.show_name = this.active_show.name;
+					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
@@ -657,7 +658,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-
+					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(function(response){
 	                        for(var playitem in this.playitems){
