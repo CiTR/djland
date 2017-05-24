@@ -256,6 +256,11 @@
 						);
 					}).bind(this)
 				);
+				call.isSocan(this.start_unix).then(
+					(function(response) {
+						this.info.socan = response.data;
+					}).bind(this)
+				);
 			}
 		}
 
