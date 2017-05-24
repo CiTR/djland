@@ -31,8 +31,9 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 		//?= query string style for LIMIT/OFFSET format
 		Route::get('/', function(){
 			//Return list of shows in LIMIT/OFFSET FORMAT
-			$limit=Input::get('LIMIT');
-			$offset=Input::get('OFFSET');
+			//Input::get allows a second optional argument for the default value
+			$limit=Input::get('LIMIT',250);
+			$offset=Input::get('OFFSET',0);
 			return Show::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 	});
@@ -44,19 +45,19 @@ Route::group(array('prefix'=>'DJLandConnector'),function(){
 		});
 		//?= query string style
 		Route::get('/',function(){
-			$id=Input::get('ID');
+			$id=Input::get('ID','');
 			return playlist($id);
 		});
 	});
 	Route::group(array('prefix'=>'playlists'),function(){
 		Route::get('/{limit}/{offset}',function($limit=limit, $offset=offset){
-			return Playsheet::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
+			return Playsheet::select('id','edit_date')->where('status', '=', 2)->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 		//?= query string style
 		Route::get('/',function(){
 			$limit=Input::get('LIMIT');
 			$offset=Input::get('OFFSET');
-			return Playsheet::select('id','edit_date')->latest('edit_date')->offset($offset)->limit($limit)->get();
+			return Playsheet::select('id','edit_date')->where('status', '=', 2)->latest('edit_date')->offset($offset)->limit($limit)->get();
 		});
 	});
 	Route::group(array('prefix'=>'schedule'),function(){
@@ -101,36 +102,50 @@ function show($id){
 		  'rss',
 		  'show_desc',
 		  'alerts',
-		  'image as show_img',
 		  'host as host_name',
 		  'podcast_title as podcast_title',
 		  'podcast_subtitle AS podcast_subtitle',
 		  'secondary_genre_tags as podcast_keywords',
 		  'image as podcast_image_url',
 		  'podcast_xml')->where('id','=',$id)->get();
-    //And all the social links for that show from the social table
+	//New show path
+	$data[0]['show_img'] = Show::find($id)->images->get('url');
+	// Legacy checker for shows that have not updated their image through the new image uploader
+	if(count($data[0]['show_img']) == 0) $data[0]['show_img'] = Show::select('image as show_img')->where('id','=',$id)->first()['show_img']; 
+    	//And all the social links for that show from the social table
 	$data[0]['social_links'] = Social::select('social_name as type' ,'social_url as url')->where('show_id','=',$id)->get();
 	return Response::json($data[0]);
 }
 //Get playlist given  playlist ID
 function playlist($id){
 	// Check that the id is for a valid playsheet - this return message matches old API behavior
-	if(empty(Playsheet::find($id)))  {
+	if(!is_numeric($id)){
+		return response("[ERROR] please supply a numeric playlist id (/playlist?ID=##)",400);
+	} elseif(empty(Playsheet::find($id)))  {
 		return array(
 	    	'api_message' => '[NO RECORD FOUND]',
 	    	'message'     => 'no playlist found with this ID: '.$id,
 	    );
-	}
-	$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get();
-	$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get();
+	} elseif (Playsheet::find($id)->status != 2) {
+        	//playsheet is a draft
+	        return array(
+        	    'api_message' => '[NO RECORD FOUND]',
+	            'message'     => 'no playlist found with this ID: '.$id,
+        	);
+    	}
+	$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get()->toArray();
+	$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get()->toArray();
 	//For some reason ->merge() didn't work so we did this and it did
-	$ret = array_merge($playsheet[0]->toArray(), $podcast[0]->toArray());
-	$ret['songs'] = Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', 'composer', 'id')->get();
+	$ret = array_merge($playsheet[0], $podcast[0]);
+	$ret = collect($ret);
+	$ret->put('songs', Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', 'composer', 'id')->get());
 	//Playitem episode description should be null if it is ""
-	if($ret['episode_description'] == "") $ret['episode_description'] = null;
+	if(!empty($podcast)) {
+	//	if($ret['episode_description'] == "") $ret['episode_description'] = null;
+	}
     //Playitem songs->composer should be "" instead of null
 	foreach ($ret['songs'] as $key => $value) {
-        if(empty($ret['songs'][$key]['composer'])) $ret['songs'][$key]['composer'] = "";
-    }
+        	if(empty($ret['songs'][$key]['composer'])) $ret['songs'][$key]['composer'] = "";
+    	}
 	return Response::json($ret);
 }

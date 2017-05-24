@@ -167,6 +167,7 @@ class Upload extends Model{
 				//check if file exists already. If so, we overwrite existing file
 				if($podcast->length && $podcast->length > 0 && $podcast->url != null){
 					$target_file_name = preg_replace('/(.+'.$this->add_slashes(str_replace('http://','',$url_base)).'\/)/','',$podcast->url);
+					$target_file_name = basename($target_file_name);
 					//the testing enviroment may mean that even though it has a proper url, it still might not exist in our dev path
 					//so overwrite it anyway (it's dev, we don't really care too much about overwriting in the test audio base directory)
 					if($testing_environment){
@@ -188,7 +189,7 @@ class Upload extends Model{
 			$podcast->url = $target_url;
 			$podcast->length = $file->getClientSize();
 			$podcast->save();
-			$response['audio'] = array('url'=>$podcast->url);
+			$response['audio'] = array('url'=>$podcast->url, 'length'=>$podcast->length);
 			$response['xml'] = $podcast->show->make_show_xml();
 
 		}else{

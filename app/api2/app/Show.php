@@ -230,7 +230,7 @@ class Show extends Model
 	            $episode = $episode->getAttributes();
 				if(strlen($episode['subtitle'] < 10)) $episode['subtitle'] = substr($episode['summary'],0,200);
 
-	            foreach($episode as $index=>$var){
+	            foreach($episode as $index => $var){
 	               $episode[$index] = Show::clean($episode[$index]);
 	            }
 	            $xml[] = "<item>";
