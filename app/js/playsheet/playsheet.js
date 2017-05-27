@@ -263,16 +263,18 @@
 						);
 					}).bind(this)
 				);
-				call.isSocan(this.start_unix).then(
-					(
-						function(response) {
-							if (response.status == '200') {
-								this.info.socan = ((($('#socan').text().trim()=='true'? true : false) || response.data) ? 1 : 0 );
-							}
-						}
-					).bind(this)
-				);
+				
 			}
+			console.log('checkunix');
+			call.isSocan(this.start_unix).then(
+				(
+					function(response) {
+						if (response.status == '200') {
+							this.info.socan = ((($('#socan').text().trim()=='true'? true : false) || response.data) ? 1 : 0 );
+						}
+					}
+				).bind(this)
+			);
 		}
 
         //Initialization of Playsheet
@@ -298,6 +300,17 @@
 	                    this.end_hour =  $filter('pad')(this.end.getHours(),2);
 	                    this.end_minute = $filter('pad')(this.end.getMinutes(),2);
 	                    this.end_second = $filter('pad')(this.end.getSeconds(),2);
+
+	                    call.isSocan(this.start/1000).then(
+							(
+								function(response) {
+									if (response.status == '200') {
+										this.info.socan = ((($('#socan').text().trim()=='true'? true : false) || response.data) ? 1 : 0 );
+									}
+								}
+							).bind(this)
+						);
+
 
 	                    if(this.info.spokenword_duration != null){
 	                        this.spokenword_hours = Math.floor(this.info.spokenword_duration / 60);
@@ -362,7 +375,6 @@
                 	}).bind(this)
 					
 				);
-				this.getNewUnix();
             }else{
 
                 this.podcast = {};
