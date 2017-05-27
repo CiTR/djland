@@ -18,7 +18,9 @@ $(function() {
         }
     });
 
-    $('.deletePeriod').off('click').on('click', function () {
+    $('.deletePeriod').click(function () {
+    	console.log($(this).attr('id'));
+    	var id = $(this).attr('id').replace('socanDelete','');
 		console.log(id);
 		var text = $.ajax({
 			type: "DELETE",
