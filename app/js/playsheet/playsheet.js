@@ -360,8 +360,9 @@
 		                    }).bind(this)
 						);
                 	}).bind(this)
-					this.getNewUnix();
+					
 				);
+				this.getNewUnix();
             }else{
 
                 this.podcast = {};
