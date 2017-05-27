@@ -29,6 +29,7 @@ if( $_POST['enabled']['podcasting'] ){
 	$out[] = "\n";
 	write_post_to_array('url',$out);
 }
+write_to_array(24*60*60,'max_podcast_length',$out);
 
 $out[] = "//Month at which the membership year rolls into the next";
 $out[] = "\$djland_membership_cutoff_month =".$_POST['membership_cutoff_month'].";";

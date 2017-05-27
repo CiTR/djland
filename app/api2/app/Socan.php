@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Socan extends Model
 {
 	protected $table = 'socan';
-
+	protected $fillable = ['socanStart','socanEnd'];
     //
 }

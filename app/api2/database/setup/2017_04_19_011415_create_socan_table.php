@@ -14,7 +14,7 @@ class CreateSocanTable extends Migration {
 	{
 		Schema::create('socan', function(Blueprint $table)
 		{
-			$table->integer('idSocan')->unsigned()->unique('idSocan_UNIQUE');
+			$table->integer('id')->unsigned()->unique('idSocan_UNIQUE');
 			$table->date('socanStart')->nullable();
 			$table->date('socanEnd')->nullable();
 		});

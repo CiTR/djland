@@ -15,7 +15,9 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<link href="css/jquery.dataTables.min.css" rel="stylesheet" />
+		<link rel=stylesheet href='css/bootstrap.min.css' type=text/css>
 		<link rel=stylesheet href='css/style.css' type=text/css>
+
 		<title>Set Socan</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
@@ -81,7 +83,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 							<?php
 								foreach($socanPeriods as $key => $socanPeriod){
-									$id=$socanPeriod->idSocan;
+									$id=$socanPeriod->id;
 									$socanStart=$socanPeriod->socanStart;
 									$socanEnd=$socanPeriod->socanEnd;
 

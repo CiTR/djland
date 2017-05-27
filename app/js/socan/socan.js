@@ -1,10 +1,5 @@
 $(function() {
-	if(!($.fn.dataTable.isDataTable("#socanTable"))){
-		$("#socanTable").DataTable({
-			stateSave:true
-		});
-	}
-	
+
 	$( "#from" ).datepicker({
 		dateFormat: "yy-mm-dd",
 
@@ -31,7 +26,6 @@ $(function() {
 		var text = $.ajax({
 			type: "DELETE",
 			url: "api2/public/socan/"+id, //Where to make Ajax calls
-			data:{idSocan:id},
 			beforeSend: function(data) {
 				$('#loadStatus2').html('<img src="./images/loading.gif" alt="Loading..."/>');
 			},
@@ -55,29 +49,23 @@ $(function() {
 		var text = $.ajax({
 		type: "PUT",
 		url: "api2/public/socan/",
-		data: {"socanStart":$('#from').val(), "socanEnd":$('#to').val()},
-		//	data: 'hello',
-		beforeSend: function() {
-			$('#loadStatus').html('<img src="./images/loading.gif" alt="Loading..."/>');
-		},
-		complete: function() {
-			// when either error or success has occurred
-			$('#loadStatus').html('done');
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Status: " + textStatus); alert("Error: " + errorThrown);
-		},
-		success: function(text){
-			$("#socanTable").DataTable().clear();
-		    $("#socanTable").DataTable().destroy();
-			$('#loadStatus').html('Success!');// ALSO CHECK FOR NUM LOADED
-			$('#socanTable').append( "<tr id='row'"+text.idSocan+"><td>"+text.idSocan+"</td><td>"+text.socanStart+"</td><td>"+text.socanEnd+"</td><td><button id='socanDeletetemplate' class='deletePeriod'>Delete this period</button></td></tr>");
-			if(!($.fn.dataTable.isDataTable("#socanTable"))){
-	            $("#socanTable").DataTable({
-	                stateSave:true
-	            });
-	        }
-			$('#result').html(text);
+		data: {'socan':{"socanStart":$('#from').val(), "socanEnd":$('#to').val()}},
+			//	data: 'hello',
+			beforeSend: function() {
+				$('#loadStatus').html('<img src="./images/loading.gif" alt="Loading..."/>');
+			},
+			complete: function() {
+				// when either error or success has occurred
+				$('#loadStatus').html('done');
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("Status: " + textStatus); alert("Error: " + errorThrown);
+			},
+			success: function(text){
+				$('#loadStatus').html('Success!');// ALSO CHECK FOR NUM LOADED
+				
+				$('#socanTable tbody').prepend( "<tr id='row'"+text.id+"><td>"+text.id+"</td><td>"+text.socanStart+"</td><td>"+text.socanEnd+"</td><td><button id='socanDeletetemplate' class='deletePeriod'>Delete this period</button></td></tr>");
+				$('#result').html(text);
 			}
 		});
 	});

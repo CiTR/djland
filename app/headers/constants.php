@@ -12,8 +12,7 @@
 	$constants->provinces = $djland_provinces;
 	$constants->genres = $djland_primary_genres;
 	$constants->primary_genres = $djland_primary_genres;
-	$constants->subgenres = $djland_subgenres;
 	$constants->cutoff_month = $djland_membership_cutoff_month;
-	$constants->max_podcast_length = $max_podcast_length;
+	$constants->max_podcast_length = $djland_max_podcast_length;
 	echo json_encode($constants);
 ?>

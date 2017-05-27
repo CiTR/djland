@@ -5,7 +5,7 @@ use App\Socan as Socan;
 Route::group(array('prefix'=>'socan'),function(){
 
 	Route::get('/',function(){
-		return Socan::all();
+		return Socan::orderBy('id','desc')->get();
 	});
 	Route::put('/',function(){
 		return Socan::create((array) Input::get()['socan']);

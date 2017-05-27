@@ -12,9 +12,9 @@
     <button ng-click="playsheet.cueTrack(playitem)">CUE</button>
 </td>
 <td ng-show='playsheet.info.socan'>
-	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>:
-    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.update()'></select>
-    <button  ng-click="playsheet.endTrack(playitem)">END</button>
+	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>:
+    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>
+    <button ng-click="playsheet.endTrack(playitem)">END</button>
 </td>
 <td>
 	<button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' 			ng-class="{filled:playitem.is_playlist==true}" 	class="box playlist pad-top"></button>

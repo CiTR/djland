@@ -19,10 +19,8 @@
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.info.socan = $('#socan').text().trim() == 'true' ? true : false;
-	console.log("Socan: " + this.info.socan); 
-    	  this.tags = tags;
-    	  this.help = help;
+    	this.tags = tags;
+    	this.help = help;
         this.complete = false;
 
         this.add = function(id){
@@ -60,13 +58,17 @@
         }
         this.endTrack = function (playitem) {
             if (playitem.start == '0' || playitem.start == null) return;
-            var start_milliseconds = playitem.start.getTime();//1000*60*60*playitem.insert_song_start_hour + 1000*60*playitem.insert_song_start_minute;
+            var start_milliseconds = playitem.start.getTime();
             var now = new Date();
             var end_milliseconds = now.getTime();
             var length = end_milliseconds - start_milliseconds;
-            var length = new Date(length);
-            playitem.insert_song_length_minute = $filter('pad')(length.getMinutes(), 2);
-            playitem.insert_song_length_second = $filter('pad')(length.getSeconds(), 2);
+
+            var dur_min = Math.round(((length / 1000) / 60));
+            var dur_second = Math.round(((length / 1000) % 60));
+
+            playitem.insert_song_length_minute = $filter('pad')(dur_min, 2);
+            playitem.insert_song_length_second = $filter('pad')(dur_second, 2);
+            playitem.duration = dur_min * 60 + dur_second;
         }
 
         //Sync Variables On Change
@@ -76,6 +78,11 @@
             playitem.start.setMinutes(playitem.insert_song_start_minute);
             playitem.start.setSeconds(0);
         };
+
+        this.updateTrackDuration = function (playitem) {
+        	playitem.duration = parseInt(playitem.insert_song_length_minute) * 60 + parseInt(playitem.insert_song_length_second);
+        }
+
         this.updateTime = function(){
             var now = new Date();
             call.getNextShowTime(this.active_show.id,now).then(
@@ -257,9 +264,13 @@
 					}).bind(this)
 				);
 				call.isSocan(this.start_unix).then(
-					(function(response) {
-						this.info.socan = response.data;
-					}).bind(this)
+					(
+						function(response) {
+							if (response.status == '200') {
+								this.info.socan = ((($('#socan').text().trim()=='true'? true : false) || response.data) ? 1 : 0 );
+							}
+						}
+					).bind(this)
 				);
 			}
 		}
@@ -340,7 +351,7 @@
 								);
 		                        //Populate the template row
 		                        var show_date = this.start.getDate();
-		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
+		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":0,"is_theme":0,"is_background":0,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
 		                        this.checkIfComplete();
 		                        if(this.using_sam){
 		                            this.updateSamPlays();
@@ -503,7 +514,6 @@
             $timeout( (function(){this.checkIfComplete();}).bind(this),100);
         }
         this.checkIfComplete = function(){
-	    console.log(this.info.socan);
             var playsheet_okay = 'true';
             this.missing = "You have empty values";
             if(this.info.start > this.info.end){
@@ -580,7 +590,6 @@
                     //New Playsheet
                     this.info.create_name = this.username;
 					this.info.show_name = this.active_show.name;
-					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
@@ -663,7 +672,6 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(function(response){
 	                        for(var playitem in this.playitems){
