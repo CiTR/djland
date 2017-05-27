@@ -8,6 +8,7 @@
 		this.to = $filter('date')(date,'yyyy/MM/dd');
 		this.from = $filter('date')(date.setDate(date.getDate() - 1),'yyyy/MM/dd');
 		this.member_id = $('#member_id').text();
+		console.log(this.member_id);
 		this.show_names = Array();
 		this.type = 'crtc';
 		var this_ = this;
@@ -20,7 +21,6 @@
 				this.shows = response.data.shows;
 				}).bind(this)
 			);
-			call.
 			call.isStaff(this.member_id).then(
 				(function(response){
 					this.is_staff = response.data == true ? true : false;

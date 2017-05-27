@@ -8,5 +8,5 @@ class Socan extends Model
 {
 	protected $table = 'socan';
 	protected $fillable = ['socanStart','socanEnd'];
-    //
 }
+

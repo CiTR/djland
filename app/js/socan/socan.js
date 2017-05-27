@@ -1,27 +1,24 @@
+
 $(function() {
 
-	$( "#from" ).datepicker({
-		dateFormat: "yy-mm-dd",
+    $("#from").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        numberOfMonths: 1,
+        onClose: function (selectedDate) {
+            $("#to").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#to").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        numberOfMonths: 1,
+        onClose: function (selectedDate) {
+            $("#from").datepicker("option", "maxDate", selectedDate);
+        }
+    });
 
-		changeMonth: true,
-		numberOfMonths: 1,
-		onClose: function( selectedDate ) {
-			$( "#to" ).datepicker( "option", "minDate", selectedDate );
-		}
-	});
-	$( "#to" ).datepicker({
-		dateFormat: "yy-mm-dd",
-		changeMonth: true,
-		numberOfMonths: 1,
-		onClose: function( selectedDate ) {
-			$( "#from" ).datepicker( "option", "maxDate", selectedDate );
-		}
-	});
-
-	$('.deletePeriod').click(function (){
-		//strip the string to get numeric ID
-		var id = $(this).attr("id").replace('socanDelete','');
-
+    $('.deletePeriod').off('click').on('click', function () {
 		console.log(id);
 		var text = $.ajax({
 			type: "DELETE",
@@ -70,3 +67,4 @@ $(function() {
 		});
 	});
 });
+
