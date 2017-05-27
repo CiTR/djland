@@ -19,7 +19,7 @@
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
-        this.info.socan = $('#socan').text() == 'true' ? true : false;
+        this.info.socan = $('#socan').text().trim() == 'true' ? true : false;
 	console.log("Socan: " + this.info.socan); 
     	  this.tags = tags;
     	  this.help = help;
@@ -254,6 +254,11 @@
 								this.ads = response.data;
 							}).bind(this)
 						);
+					}).bind(this)
+				);
+				call.isSocan(this.start_unix).then(
+					(function(response) {
+						this.info.socan = response.data;
 					}).bind(this)
 				);
 			}
@@ -574,7 +579,8 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-					          this.info.show_name = this.active_show.name;
+					this.info.show_name = this.active_show.name;
+					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     callback = call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(
 							function(response){
@@ -657,7 +663,7 @@
                 if(this.info.id < 1){
                     //New Playsheet
                     this.info.create_name = this.username;
-
+					this.info.socan = $('#socan').text().trim() == 'true' ? 1 : 0;
                     call.saveNewPlaysheet(this.info,this.playitems,this.podcast,this.ads).then(
 						(function(response){
 	                        for(var playitem in this.playitems){

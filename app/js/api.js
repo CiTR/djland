@@ -159,7 +159,7 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/podcast/'+podcast.id+'/overwrite');
 		},
 		isSocan : function(unixtime){
-			return $http.get(API_URL_BASE+'/socan'+unixtime!=null? unixtime:'');
+			return $http.get(API_URL_BASE+'/socan/check/'+(unixtime||''));
 		},
 		error: function(error){
 			return $http.post(API_URL_BASE+'/error',angular.toJson({'error':error}));
