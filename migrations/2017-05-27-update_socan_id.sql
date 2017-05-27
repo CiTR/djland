@@ -1,0 +1,2 @@
+ALTER TABLE `djland`.`socan` 
+CHANGE COLUMN `idSocan` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
