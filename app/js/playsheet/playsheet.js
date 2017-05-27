@@ -360,6 +360,7 @@
 		                    }).bind(this)
 						);
                 	}).bind(this)
+					this.getNewUnix();
 				);
             }else{
 
