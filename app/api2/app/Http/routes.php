@@ -53,7 +53,7 @@ Route::get('/social',function(){
 });
 
 Route::get('/nowplaying',function(){
-	require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+	require_once($_SERVER['DOCUMENT_ROOT'].'/../config.php');
 	//Since we aren't calling our security header, we need to ensure the timezone is set.
 	date_default_timezone_set($station_info['timezone']);
 	$result = array();
