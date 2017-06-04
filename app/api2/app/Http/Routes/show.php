@@ -36,9 +36,7 @@ Route::group(array('prefix'=>'show'),function(){
 		}
 		return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
 	});
-	Route::get('/',function(){
-		return Show::all('id','name');
-	});
+
 	//Return shows that are active
 	Route::get('/active',function(){
 		return Show::select('id','name')->where('active','=','1')->orderBy('name','ASC')->get();
@@ -48,6 +46,12 @@ Route::group(array('prefix'=>'show'),function(){
 			return Show::select('id','name','edit_date','alerts')
 			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
 			->orderBy('edit_date','DESC')->get();
+	});
+	Route::get('/{offset}/{limit}',function($offset=offset, $limit=limit){
+		return Show::orderBy('edit_date','desc')->offset($offset)->limit($limit)->get();
+	});
+	Route::get('/',function(){
+		return Show::all('id','name');
 	});
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
