@@ -16,9 +16,7 @@ use App\Historylist as Historylist;
 
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
-	Route::get('/{offset}/{limit}', function($offset=offset, $limit=limit) {
-		return Playsheet::select('id','edit_date')->orderBy('edit_date','desc')->offset($offset)->limit($limit)->get();
-	});
+
 	//Get: Return List of Playsheets descending by date updated.
 	Route::get('/',function(){
 		return Playsheet::orderBy('EDITED_AT','desc')->select('id','EDITED_AT');
@@ -331,5 +329,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		}
 		return Response::json($list);
 	});
-
+	Route::get('/{offset}/{limit}', function($offset=offset, $limit=limit) {
+		return Playsheet::select('id','edit_date')->orderBy('edit_date','desc')->offset($offset)->limit($limit)->get();
+	});
 });

@@ -47,14 +47,11 @@ Route::group(array('prefix'=>'show'),function(){
 			->where('alerts','!=','')->where('alerts','!=','NULL')->where('active','=','1')
 			->orderBy('edit_date','DESC')->get();
 	});
-	Route::get('/{offset}/{limit}',function($offset=offset, $limit=limit){
-		return Show::orderBy('edit_date','desc')->offset($offset)->limit($limit)->get();
-	});
-	Route::get('/',function(){
-		return Show::all('id','name');
-	});
+
 	//Searching by Show ID
 	Route::group(array('prefix'=>'{id}'),function($id=id){
+
+
 		//Returns show object including social, showtimes
 		Route::get('/',function($id){
 			if(!$show = Show::find($id)) return null;
@@ -62,6 +59,10 @@ Route::group(array('prefix'=>'show'),function(){
 			$show->social = Show::find($id)->social;
 			$show->show_times = Show::find($id)->showtimes;
 			return Response::json($show);
+		});
+		Route::get('times',function($id){
+			//return Showtimes::where('show_id','=',$show_id)->get();
+			return Show::find($id)->showtimes;
 		});
 		Route::post('/',function($id){
 			return Response::json(Show::find($id)->update((array) Input::get()['show']));
@@ -108,41 +109,7 @@ Route::group(array('prefix'=>'show'),function(){
 				});
 			});
 		});
-		//Requires staff permission level to access
-		Route::group(array('middleware'=>'staff'),function($id){
-			Route::group(array('prefix'=>'owner'),function($id){
-				//Get list of show owners
-				Route::get('/',function($id){
-					return Response::json(Show::find($id)->members()->select('membership.id','firstname','lastname')->get());
-				});
-				//Add a new owner to the show
-				Route::put('/',function($id){
-					return Response::json(Show::find($id)->members->attach(Input::get()['member_id']));
-				});
-				Route::group(array('prefix'=>'{member_id}'),function($id,$member_id=null){
-					Route::delete('/',function($id,$member_id){
-						return Response::json(Show::find($id)->members()->detach($member_id));
-					});
-				});
-			});
-		});
-
-
-		// //Requires active session
-		// Route::group(['middleware' => 'auth'], function(){
-		// 	Route::get('/owners',function($id=id){
-		// 		$members = Show::find($id)->members;
-		// 		$owners = new stdClass();
-		// 		$owners->owners = [];
-		// 		foreach ($members as $member) {
-		// 			$owners->owners[] = ['id'=>$member->id,'firstname'=>$member->firstname,'lastname'=>$member->lastname];
-		// 		}
-		// 		if(Member::find($_SESSION['sv_id'])->isStaff() ) return Response::json($owners);
-		// 		return "Nope";
-		// 	});
-		// });
-
-
+		
 		Route::post('/',function($id){
 			$show = Input::get()['show'];
 			$social = Input::get()['social'];
@@ -251,15 +218,38 @@ Route::group(array('prefix'=>'show'),function(){
 			return Show::find($id)->social;
 		});
 
-		Route::get('times',function($id){
-			//return Showtimes::where('show_id','=',$show_id)->get();
-			return Show::find($id)->showtimes;
-		});
+		
 		Route::get('nextshow/{current_time}',function($id,$time = current_time){
 			return Response::json(Show::find($id)->nextShowTime($time));
 		});
 		Route::get('xml',function($id){
 			return Show::find($id)->make_show_xml();
 		});
+
+		//Requires staff permission level to access
+		Route::group(array('middleware'=>'staff'),function($id){
+			Route::group(array('prefix'=>'owner'),function($id){
+				//Get list of show owners
+				Route::get('/',function($id){
+					return Response::json(Show::find($id)->members()->select('membership.id','firstname','lastname')->get());
+				});
+				//Add a new owner to the show
+				Route::put('/',function($id){
+					return Response::json(Show::find($id)->members->attach(Input::get()['member_id']));
+				});
+				Route::group(array('prefix'=>'{member_id}'),function($id,$member_id=null){
+					Route::delete('/',function($id,$member_id){
+						return Response::json(Show::find($id)->members()->detach($member_id));
+					});
+				});
+			});
+		});
+	});
+
+	Route::get('/{offset}/{limit}',function($offset=offset, $limit=limit){
+		return Show::orderBy('edit_date','desc')->offset($offset)->limit($limit)->get();
+	});
+	Route::get('/',function(){
+		return Show::all('id','name');
 	});
 });
