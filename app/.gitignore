@@ -32,7 +32,6 @@ org.eclipse.wst.common.project.facet.core.xml
 
 #Ignore Web Configuration Files
 web.config
-.htaccess
 .htpasswd
 awstats*
 disabled_by_virtualmin.html
