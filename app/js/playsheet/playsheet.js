@@ -324,7 +324,7 @@
 
 	                    this.playitems = playsheet.playitems;
 	                    this.podcast = playsheet.podcast == null ? {'id':-1,'playsheet_id':this.info.id, 'show_id':playsheet.show_id} : playsheet.podcast;
-	                    this.ads = playsheet.ads;
+	                    this.promotions = playsheet.promotions;
 	                    //If no playitems, change "Add Five Rows" button to say "Add Row" instead
 	                    if(this.playitems < 1){
 	                        $('#addRows').text("Add Row");
@@ -456,13 +456,13 @@
 			                            }
 			                            call.getAds(start_unix, end_unix-start_unix,this.active_show.id).then(
 											(function(response){
-				                                this.ads = response.data;
+				                                this.promotions = response.data;
 				                            }).bind(this)
 											,(function(error){
 				                            this.log_error(error);
 				                                call.getAds(start_unix,end_unix-start_unix,this.active_show.id).then(
 													(function(response){
-				                                    this.ads = response.data;
+				                                    this.promotions = response.data;
 												}).bind(this));
 				                            }).bind(this)
 										);

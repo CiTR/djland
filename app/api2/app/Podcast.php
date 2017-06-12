@@ -48,11 +48,11 @@ class Podcast extends Model
 	    $year = date('Y',$start);
 
 	    //Mon, 12 Jan 2015 18:00:00 -0800
-	    $iso_date = date('D, d M Y H:i:s O',$start);
+	    $iso_date = date('D, d M Y H:i:s O', $start);
 
 	    //Archiver URL to download from
 
-	    $archive_url = $url['archive_request']."&startTime=".$start_date."&endTime=".$end_date;
+	    $archive_url = $url['archiver_tool'].$url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
     	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
@@ -134,12 +134,12 @@ class Podcast extends Model
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);
 		$end = $start + $this->duration;
+
 	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
 	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
 
 		//Archiver URL to download from
-		$archive_access_url = "http://archive.citr.ca/py-test/archbrad/download?archive=%2Fmnt%2Faudio_stor%2Flog";
-	    $archive_url = $archive_access_url."&startTime=".$start_date."&endTime=".$end_date;
+	    $archive_url = $url['archiver_tool'].$url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';
@@ -200,7 +200,7 @@ class Podcast extends Model
 
 
 	    return $response;
-	    }
+    }
 
 
 	private function write_tags($tags,$file){
