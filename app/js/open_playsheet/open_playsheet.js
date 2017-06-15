@@ -85,13 +85,17 @@
 			}
 		};
 		this.delete = function(id){
-			var i = this.playsheets.indexOf(this.playsheets.filter((function(object){if(object.id == id) return this.playsheets.indexOf(object);}).bind(this))[0]);
-			call.deletePlaysheet(this.playsheets[i].id).then(
-				(function(response){
-					this.playsheets.splice(i,1);
-				}).bind(this)
-
-			);
+			var index;
+			this.playsheets.some(function(object,i){if(object.id == id) index = i;});
+			var confirmation_text = "Are you sure you want to delete this playsheet:\n"
+									+ this.playsheets[index].show_name + " from " + this.playsheets[index].start_time + "?";
+			if(confirm(confirmation_text)) {
+				call.deletePlaysheet(this.playsheets[index].id).then(
+				 	(function(response){
+				 		this.playsheets.splice(index,1);
+				 	}).bind(this)
+				);
+			}
 		}
 	});
 	app.directive('scrolly', function () {
