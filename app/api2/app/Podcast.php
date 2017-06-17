@@ -82,9 +82,9 @@ class Podcast extends Model
     	//$target_dir = 'audio/'.$year.'/';
     	$target_file_name = $target_dir.$file_name;
 
-    	$target_url = $url['audio_base'].$year.'/'.$file_name;
+    	$target_url = $url['audio_base'] . '/' . $year.'/'.$file_name;
     	if($testing_environment) {
-    		$target_url = $url['test_audio_base'] . $year.'/'.$file_name;
+    		$target_url = $url['test_audio_base'] . '/' . $year.'/'.$file_name;
     	}
     	//Get Audio from Archiver
     	$file_from_archive = fopen($archive_url,'r');
