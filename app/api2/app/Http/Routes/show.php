@@ -12,7 +12,7 @@ use App\Socan as Socan;
 
 Route::group(array('prefix'=>'show'),function(){
 	//Creating new Show
-	Route::put('/',function(){
+	Route::post('/',function(){
 		$show = Show::create((array) Input::get()['show']);
 		$owners = Input::get()['owners'];
 		$social = Input::get()['social'];

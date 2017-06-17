@@ -90,7 +90,7 @@
     }
     this.newShow = function(){
       this.show_value = 0;
-      this.info = {'id':0,'lang_default':'English','crtc_default':'20','pl_req':'60','cc_req':'35','indy_req':'25','fem_req':'35','create_name':username};
+      this.info = {'id':0,'lang_default':'English','crtc_default':'20','pl_req':'60','cc_20_req':'35','cc_30_req':'12','indy_req':'25','fem_req':'35','create_name':username};
       this.socials = new Array();
       this.show_times = new Array();
       this.show_owners = new Array();
