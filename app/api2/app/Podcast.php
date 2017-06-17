@@ -42,8 +42,8 @@ class Podcast extends Model
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);
 		$end = $start + $this->duration;
-	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
-	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
+	    $start_date =  date('d-m-Y%20G%3\Ai%3\As', $start);
+	    $end_date =  date('d-m-Y%20G%3\Ai%3\As', $end);
 	    $file_date = date('F-d-H-i-s',$start);
 	    $year = date('Y',$start);
 
