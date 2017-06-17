@@ -36,7 +36,7 @@ class Podcast extends Model
 		date_default_timezone_set('America/Vancouver');
 		//Use the max_podcast_length Configuration Constant
 		//Computes with hours * minutes * seconds
-		if(($this->duration > $max_podcast_length) || $this->duration < 0){
+		if(($this->duration > $djland_max_podcast_length) || $this->duration < 0){
 			return "Duration Wrong";
 		}
 		//Date Initialization
@@ -76,7 +76,7 @@ class Podcast extends Model
     		$target_dir = '/home/podcast/audio/'.$year.'/';
     	}else{
     		$target_dir = $path['test_audio_base'].'/'.$year.'/';
-			if(!file_exists($target_dir)) mkdir($target_dir,0774);
+			if(!file_exists($target_dir)) mkdir($target_dir,0775);
     	}
 
     	//$target_dir = 'audio/'.$year.'/';
@@ -84,7 +84,7 @@ class Podcast extends Model
 
     	$target_url = $url['audio_base'].$year.'/'.$file_name;
     	if($testing_environment) {
-    		$target_url = $url['test_audio_base'].'/audio/' . $year.'/'.$file_name;
+    		$target_url = $url['test_audio_base'] . $year.'/'.$file_name;
     	}
     	//Get Audio from Archiver
     	$file_from_archive = fopen($archive_url,'r');
