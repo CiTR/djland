@@ -708,6 +708,7 @@
 			    			call.makePodcastAudio(this.podcast).then(
 								(function(reponse){
 				                	this.podcast_status = "Podcast Audio Created Successfully.";
+				                	this.time_changed = false;
 				           		}).bind(this)
 								,(function(error){
 					                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
@@ -746,6 +747,7 @@
 					    			call.makePodcastAudio(this.podcast).then(
 										(function(reponse){
 						                	this.podcast_status = "Podcast Audio Created Successfully.";
+						                	this.time_changed = false;
 						           		}).bind(this)
 										,(function(error){
 							                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
@@ -778,6 +780,7 @@
 									call.makePodcastAudio(this.podcast).then(
 										(function(reponse){
 				                            this.podcast_status = "Podcast Audio Created Successfully.";
+				                            this.time_changed = false;
 				                        }).bind(this)
 										,(function(error){
 					                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";

@@ -169,9 +169,7 @@
                     this.editing.start_second = $filter('pad')(this.start.getSeconds(),2);
                     this.editing.podcast.date =  this.editing.playsheet.start_time;
                     this.editing.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this_.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
-
                     if(this.start && this.end) this.editing.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-                    this.time_changed = true;
                 }
             }).bind(this)
         );
@@ -184,7 +182,6 @@
                     this.editing.end_minute = $filter('pad')(this.end.getMinutes(),2);
                     this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
                     if(this.start && this.end) this.editing.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-                    this.time_changed = true;
                 }
             }).bind(this)
         );
@@ -223,7 +220,8 @@
                     if(response.data = "true"){
                         if(this.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this.editing.podcast.url.length != 0){
                             call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
-                            alert("Successfully saved, audio generated from on-air recording!");
+                                alert("Successfully saved, audio generated from on-air recording!");
+                                this.time_changed = false;
                             },function(error){
                                 console.log(error);
                                 alert("Failed to save podcast: Could not overwrite audio.");
@@ -236,6 +234,7 @@
                             if (this_.editing.playsheet.status == '2'){
                                 call.makePodcastAudio(this_.editing.podcast).then(function(response){
                                     alert("Successfully saved, audio generated from on-air recording!");
+                                    this.time_changed = false;
                                 },function(error){
                                     console.log(error);
                                     alert("Failed to save podcast: Could not write audio to directory" );

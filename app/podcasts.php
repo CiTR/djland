@@ -83,7 +83,6 @@ if(!isset($_GET['id'])){
     </script>
 
     <div ng-app="djland.podcasts" id="mainleft" ng-cloak >
-
         <div ng-controller="episodeList as list">
             <!-- <div class='text-center'>{{list.status}}</div> -->
             <div class='text-center loading' ><img ng-show='list.loading' class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
@@ -129,7 +128,7 @@ if(!isset($_GET['id'])){
                             <input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                                ng-model="list.editing.playsheet.start_time"  is-open="date.opened"
                                ng-required="true" close-text="Close" ng-hide="true"
-                               ng-change="date.date_change();" />
+                               ng-change="list.date_change();" />
 
                             <button ng-click="date.open($event)"  >Change Date</button>
                             h:<select ng-model="list.editing.start_hour" ng-options="n for n in [] | range:0:24"
@@ -147,7 +146,7 @@ if(!isset($_GET['id'])){
                             <input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss"
                                ng-model="list.editing.playsheet.end_time"  is-open="date.opened"
                                ng-required="true" close-text="Close" ng-hide="true"
-                               ng-change="date.date_change();" />
+                               ng-change="list.date_change();" />
                             <button ng-click="date.open($event)" >Change Date</button>
                             h:<select ng-model="list.editing.end_hour" ng-options="n for n in [] | range:0:24 "
                                       ng-change="list.updateEnd()"></select>
@@ -197,8 +196,6 @@ if(!isset($_GET['id'])){
 					<br/>
 					<br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-
-
                     <button ng-show="list.time_changed" ng-click="recreate_audio(editing.podcast);" > Recreate Podcast Audio </button>
                 </div>
             </div>
