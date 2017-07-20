@@ -199,7 +199,7 @@ if(!isset($_GET['id'])){
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
 
 
-                    <!--      <button class='large-button' ng-click="recreate_audio(editing.podcast);" > recreate audio </button> -->
+                    <button ng-show="list.time_changed" ng-click="recreate_audio(editing.podcast);" > Recreate Podcast Audio </button>
                 </div>
             </div>
         </div>

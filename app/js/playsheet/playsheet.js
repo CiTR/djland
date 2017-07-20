@@ -22,6 +22,7 @@
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
+        this.time_changed = false;
 
         this.add = function(id){
             var row = angular.copy(this.row_template);
@@ -114,7 +115,6 @@
 								(
 									function(response){
 			                            this.ads = response.data;
-			                            console.log(this.ads);
 			                        }
 								).bind(this)
 								,(
@@ -155,6 +155,12 @@
                 //DISPLAY OLD PLAYSHEETS
                 this.existing_playsheets = response.data.sort(function(a, b) {
 					var re = new RegExp('-','g');
+					if ( ! b.start_time) {
+						return -1;
+					}
+					if ( ! a.start_time) {
+						return 1;
+					}
 					return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
 				});
             });
@@ -170,7 +176,6 @@
             this.info.start_time = $filter('date')(this.start,'yyyy/MM/dd HH:mm:ss');
             this.updatePodcastDate();
             this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-
         }
         this.updateEnd = function(){
             this.end.setHours(this.end_hour);
@@ -265,7 +270,6 @@
 				);
 				
 			}
-			console.log('checkunix');
 			call.isSocan(this.start_unix).then(
 				(
 					function(response) {
@@ -275,6 +279,7 @@
 					}
 				).bind(this)
 			);
+			this.time_changed = true;
 		}
 
         //Initialization of Playsheet
@@ -370,6 +375,7 @@
 		                            this.updateSamPlays();
 		                        }
 		                        this.loading = false;
+		                        this.time_changed = false;
 		                    }).bind(this)
 						);
                 	}).bind(this)
@@ -454,6 +460,7 @@
 			                            for(var i = 0; i<4; i++) {
 			                                this.add(this.playitems.length-1);
 			                            }
+		                            	this.time_changed = false;
 			                            call.getAds(start_unix, end_unix-start_unix,this.active_show.id).then(
 											(function(response){
 				                                this.promotions = response.data;
@@ -480,6 +487,7 @@
 	                }).bind(this)
 				);
             }
+
         }
         this.updatePodcastDate = function(){
             this.podcast.date = this.info.start_time;
@@ -516,7 +524,6 @@
 		            this.end_second = $filter('pad')(this.end.getSeconds(),2);
 		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
 		            if(this.using_sam) this.updateSamPlays();
-		            console.log("End Time " + this.info.end_time+" End var ="+  this.end);
 					this.getNewUnix();
 		        }
 			).bind(this)
@@ -612,7 +619,6 @@
 		                            this.playitems[playitem].playsheet_id = this.info.id;
 		                        }
 								this.ads = response.data.ads;
-								console.log(this.ads);
 		                        var show_date = this.start.getDate();
 		                        this.row_template = {"show_id":this.active_show.id,"playsheet_id":this.info.id,"format_id":null,"is_playlist":0,"is_canadian":0,"is_yourown":0,"is_indy":0,"is_fem":0,"show_date":show_date,"duration":null,"is_theme":null,"is_background":null,"crtc_category":this.info.crtc,"lang":this.info.lang,"is_part":0,"is_inst":0,"is_hit":0,"insert_song_start_hour":"00","insert_song_start_minute":"00","insert_song_length_minute":"00","insert_song_length_second":"00","artist":null,"title":null,"song":null,"composer":null};
 		                        this.podcast.id = response.data.podcast_id;
@@ -662,8 +668,6 @@
             this.podcast.subtitle = this.info.summary;
             this.podcast.summary = this.info.summary;
 			this.info.show_name = this.active_show.name;
-            console.log("Start time:" + this.info.start_time + " End Time:" + this.info.end_time);
-            console.log(this.start.getTime() / 1000);
             //Ensuring start and end times work for podcast generation
             if(new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()){
                 alert("Cannot create a podcast in the future, please save as a draft.");
@@ -700,17 +704,18 @@
                 //if($('#audio_file')[0].files){
 				    //this.uploadAudio(this.podcast.id);
 			    //}else{
-					call.makePodcastAudio(this.podcast).then(
-						(function(reponse){
-			                this.podcast_status = "Podcast Audio Created Successfully.";
-			            }).bind(this)
-							,(function(error){
-				                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-				                this.error = true;
-                                console.log(error);
-				                    this.log_error(error);
-			                }).bind(this)
-						);
+				    		
+			    			call.makePodcastAudio(this.podcast).then(
+								(function(reponse){
+				                	this.podcast_status = "Podcast Audio Created Successfully.";
+				           		}).bind(this)
+								,(function(error){
+					                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+					                this.error = true;
+					                this.log_error(error);
+				                }).bind(this)
+							);
+			    			
 				//}
 	                    }).bind(this)
 						,(function(error){
@@ -737,16 +742,19 @@
 									//if($('#audio_file')[0].files.length > 0){
 										//this.uploadAudio(response.podcast.id);
 									//}else{
-										call.makePodcastAudio(this.podcast).then(
-											(function(reponse){
-					                            this.podcast_status = "Podcast Audio Created Successfully.";
-					                        }).bind(this)
+									
+					    			call.makePodcastAudio(this.podcast).then(
+										(function(reponse){
+						                	this.podcast_status = "Podcast Audio Created Successfully.";
+						           		}).bind(this)
 										,(function(error){
-						                        this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
-						                        this.error = true;
-						                        this.log_error(error);
-					                        }).bind(this)
-										);
+							                this.podcast_status = "Could not generate podcast. Playsheet was saved successfully.";
+							                this.error = true;
+
+							                this.log_error(error);
+						                }).bind(this)
+									);
+
 									//}
 								}).bind(this)
 							);
@@ -766,6 +774,7 @@
 								//if($('#audio_file')[0].files.length > 0){
 									//this.uploadAudio(response.podcast.id);
 								//}else{
+								if ( (this.podcast.url.length == 0) || this.time_changed) {
 									call.makePodcastAudio(this.podcast).then(
 										(function(reponse){
 				                            this.podcast_status = "Podcast Audio Created Successfully.";
@@ -776,6 +785,10 @@
 					                        this.log_error(error);
 				                        }).bind(this)
 									);
+								}
+								else {
+									this.podcast_status = 'Using Existing Podcast Audio.';
+								}
 								//}
                     		}).bind(this)
 							,(function(error){
@@ -791,12 +804,11 @@
         }
         this.log_error = function(error){
             this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
-            console.log(error);
             var error = error.data.split('body>')[1].substring(0,error.data.split('body>')[1].length-2 );
             call.error( error).then(function(response){
-                $('#playsheet_error').append("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
+                $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
             },function(error){
-                $('#playsheet_error').append("Please contact your station technical services at " + this.tech_email + ". Your error could not be logged :(");
+                $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error could not be logged :(");
             });
         }
     //TODO: need to implement feature for only some shows to upload their own audio
@@ -822,7 +834,6 @@
 		//}
         this.addSamPlay = function (sam_playitem) {
             this.playitems.splice(this.playitems.length,0,sam_playitem);
-            console.log(sam_playitem);
         };
         this.formatSamPlay = function (sam_play) {
             var djland_entry = angular.copy(this.row_template);

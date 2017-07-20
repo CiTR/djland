@@ -68,8 +68,8 @@
 				          	<option value="Rebroadcast">Rebroadcast</option>
 				          	<option value="Simulcast">Simulcast</option>
 				    	</select>
-			        	<span ng-show="playsheet.info.type == 'Rebroadcast'">
-			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time for ps in playsheet.existing_playsheets "></select>
+			        	<span class='col1' ng-show="playsheet.info.type == 'Rebroadcast'">
+			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time + ' ' + ps.title | limitTo: 60 for ps in playsheet.existing_playsheets "></select>
 						<button ng-click="playsheet.loadRebroadcast()">Load Rebroadcast</button>
 						</span>
 

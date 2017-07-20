@@ -15,6 +15,7 @@
         this.member_id = member_id;
         this.offset = 0;
         var this_ = this;
+        this.time_changed = false;
         this.init = function(){
             var this_ = this;
             //Get Episode list for show/channel
@@ -64,7 +65,6 @@
         }
 
         this.edit_episode = function (episode){
-            console.log(episode);
             this.editing = angular.copy(episode);
 
             var re = new RegExp('-','g');
@@ -81,6 +81,7 @@
             this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
 
 			this.episode_image = call.getEpisodeImage(this.editing.podcast.id);
+            this.time_changed = false;
         }
 		this.uploadAudio = function(podcast_id){
 			var form = new FormData();
@@ -141,6 +142,7 @@
             this.editing.podcast.date =  this_.editing.playsheet.start_time;
             this.editing.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
+            this.time_changed = true;
         }
         this.updateEnd = function(){
             this.end.setSeconds(this.editing.end_second);
@@ -148,39 +150,44 @@
             this.end.setHours(this.editing.end_hour);
             this.editing.playsheet.end_time = $filter('date')(this.end,'yyyy/MM/dd HH:mm:ss');
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
+            this.time_changed = true;
         }
 
         this.date_change = function(){
             this.start = new Date(this.editing.playsheet.start_time);
             this.end = new Date(this.editing.playsheet.end_time);
             this.editing.podcast.duration = (this.end.getTime() - this.start.getTime())/1000;
+            this.time_changed = true;
         }
-        $scope.$watch('list.editing.playsheet.start_time', function () {
-            if(this_.editing.playsheet != null){
-                this_.editing.playsheet.start_time = $filter('date')(this_.editing.playsheet.start_time,'yyyy/MM/dd HH:mm:ss');
-                this_.start = new Date(this_.editing.playsheet.start_time);
-                this_.editing.start_hour =  $filter('pad')(this_.start.getHours(),2);
-                this_.editing.start_minute = $filter('pad')(this_.start.getMinutes(),2);
-                this_.editing.start_second = $filter('pad')(this_.start.getSeconds(),2);
-                this_.editing.podcast.date =  this_.editing.playsheet.start_time;
-                this_.editing.podcast.iso_date = this_.days_of_week[this_.start.getDay()] + ", " + this_.start.getDate() + " " + this_.months_of_year[this_.start.getMonth()] + " " + this_.start.getFullYear() + " " + $filter('date')(this_.start,'HH:mm:ss') + " -0700" ;
+        $scope.$watch('list.editing.playsheet.start_time', 
+            (function () {
+                if(this.editing.playsheet != null){
+                    this.editing.playsheet.start_time = $filter('date')(this.editing.playsheet.start_time,'yyyy/MM/dd HH:mm:ss');
+                    this.start = new Date(this.editing.playsheet.start_time);
+                    this.editing.start_hour =  $filter('pad')(this.start.getHours(),2);
+                    this.editing.start_minute = $filter('pad')(this.start.getMinutes(),2);
+                    this.editing.start_second = $filter('pad')(this.start.getSeconds(),2);
+                    this.editing.podcast.date =  this.editing.playsheet.start_time;
+                    this.editing.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this_.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start,'HH:mm:ss') + " -0700" ;
 
-                if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-               console.log("Start Time "+this_.editing.playsheet.start_time + " Start var =" +this_.start);
-            }
-
-        });
-        $scope.$watch('list.editing.playsheet.end_time', function () {
-            if(this_.editing.playsheet != null){
-                this_.editing.playsheet.end_time = $filter('date')(this_.editing.playsheet.end_time,'yyyy/MM/dd HH:mm:ss');
-                this_.end = new Date(this_.editing.playsheet.end_time);
-                this_.editing.end_hour =  $filter('pad')(this_.end.getHours(),2);
-                this_.editing.end_minute = $filter('pad')(this_.end.getMinutes(),2);
-                this_.editing.end_second = $filter('pad')(this_.end.getSeconds(),2);
-                if(this_.start && this_.end) this_.editing.podcast.duration = (this_.end.getTime() - this_.start.getTime()) /1000;
-                console.log("End Time " + this_.editing.playsheet.end_time+" End var ="+  this_.end);
-            }
-        });
+                    if(this.start && this.end) this.editing.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+                    this.time_changed = true;
+                }
+            }).bind(this)
+        );
+        $scope.$watch('list.editing.playsheet.end_time', 
+            (function () {
+                if(this.editing.playsheet != null){
+                    this.editing.playsheet.end_time = $filter('date')(this.editing.playsheet.end_time,'yyyy/MM/dd HH:mm:ss');
+                    this.end = new Date(this.editing.playsheet.end_time);
+                    this.editing.end_hour =  $filter('pad')(this.end.getHours(),2);
+                    this.editing.end_minute = $filter('pad')(this.end.getMinutes(),2);
+                    this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
+                    if(this.start && this.end) this.editing.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
+                    this.time_changed = true;
+                }
+            }).bind(this)
+        );
 
         this.save = function(){
             var this_ = this;
@@ -210,31 +217,39 @@
             this.editing.podcast.subtitle = this.editing.playsheet.summary;
             this.editing.podcast.summary = this.editing.playsheet.summary;
             this.message = 'saving...';
-            call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(function(response){
-                if(response.data = "true"){
-                    if(this_.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this_.editing.podcast.url != '' && this_.editing.podcast.url){
-                        call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
-                        alert("Successfully saved, audio generated from on-air recording!");
-                        },function(error){
-                            console.log(error);
-                            alert("Failed to save podcast: Could not overwrite audio.");
-                        });
-                    }else if(this_.editing.podcast.url == '' || !this_.editing.podcast.url){
-                        if(this_.editing.playsheet.status == '2'){
-                            call.makePodcastAudio(this_.editing.podcast).then(function(response){
-                                alert("Successfully saved, audio generated from on-air recording!");
+            
+            call.saveEpisode(this.editing.playsheet,this.editing.podcast).then(
+                (function(response){
+                    if(response.data = "true"){
+                        if(this.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this.editing.podcast.url.length != 0){
+                            call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
+                            alert("Successfully saved, audio generated from on-air recording!");
                             },function(error){
                                 console.log(error);
-                                alert("Failed to save podcast: Could not write audio to directory" );
+                                alert("Failed to save podcast: Could not overwrite audio.");
                             });
-                        }else{
-                            alert('Successfully saved, please submit this playsheet!');
                         }
-                    }else{
-                        alert("Saved podcast, did not re-generate audio as it is too far back");
+                        else if (this_.start.getTime() < new Date("2016/02/02 00:00:00")) {
+                            alert('Successfully saved. Could not regenerate audio, as it is too far back');
+                        }
+                        else if(this_.editing.podcast.url.length == 0 || this.time_changed){
+                            if (this_.editing.playsheet.status == '2'){
+                                call.makePodcastAudio(this_.editing.podcast).then(function(response){
+                                    alert("Successfully saved, audio generated from on-air recording!");
+                                },function(error){
+                                    console.log(error);
+                                    alert("Failed to save podcast: Could not write audio to directory" );
+                                });
+                            }
+                            else {
+                                alert('Successfully saved, please submit this playsheet!');
+                            }
+                        }else{
+                            alert("Successfully saved. Audio did not need updating");
+                        }
                     }
-                }
-            });
+                }).bind(this)
+            );
         };
 
         this.formatError = function(error){
