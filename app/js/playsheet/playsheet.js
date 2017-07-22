@@ -776,7 +776,7 @@
 								//if($('#audio_file')[0].files.length > 0){
 									//this.uploadAudio(response.podcast.id);
 								//}else{
-								if ( (this.podcast.url.length == 0) || this.time_changed) {
+								if ( (this.podcast.url) || this.time_changed) {
 									call.makePodcastAudio(this.podcast).then(
 										(function(reponse){
 				                            this.podcast_status = "Podcast Audio Created Successfully.";
