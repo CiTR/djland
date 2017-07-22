@@ -169,8 +169,8 @@ if(!isset($_GET['id'])){
 
 					<div class='col1 double-padded-top'>
 						<h4 class='text-left'>Episode Image</h4>
-						<div class='image-container'>
-							<img class='thumb' src='{{list.editing.podcast.image}}'/>
+						<div ng-if="listing.editing.podcast.image" class='image-container'>
+							<img  class='thumb' src='{{list.editing.podcast.image}}'/>
 							<button type='button' class='image-delete' ng-click='list.deleteImage(image.id)'>X</button>
 						</div>
 
@@ -196,7 +196,7 @@ if(!isset($_GET['id'])){
 					<br/>
 					<br/>
                     <button ng-click="list.save(list.editing.podcast);" >Save Episode</button>
-                    <button ng-show="list.time_changed" ng-click="recreate_audio(editing.podcast);" > Recreate Podcast Audio </button>
+                    <button ng-show="list.time_changed" ng-click="list.recreate_audio(editing.podcast);" > Recreate Podcast Audio </button>
                 </div>
             </div>
         </div>

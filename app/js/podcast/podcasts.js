@@ -38,7 +38,7 @@
             this.load();
         }
         this.load = function() {
-            if(!this.done){
+            if( ! this.done){
                 this.loading = true;
                 var this_ = this;
                 if(this.show_id){
@@ -208,7 +208,7 @@
                 alert("Failed to save podcast. Your error has been logged");
             });
         };
-        this.recreateAudio = function(){
+        this.recreate_audio = function(){
             var this_ = this;
             this.editing.podcast.title = this.editing.playsheet.title;
             this.editing.podcast.subtitle = this.editing.playsheet.summary;
