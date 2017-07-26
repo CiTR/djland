@@ -304,10 +304,24 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
                             // 30s mp3 @ 320kbps is 1.200MB
                             // So we set the file to look through 1300000KB (account for headers etc)
                             file_put_contents($file, file_get_contents($library_folder.mysqli_result_dep($songs, $i, "file_location"), null, null, 0, 1600000));
-                            //Ffmpeg slice 'er up. 30 second length. Save to known location.
-                            //MAKE SURE YOU HAVE FFMPEG INSTALLED
+
+                            //MAKE SURE YOU HAVE FFMPEG INSTALLED if you want to transcode to mp3
                             $dest = $_SERVER['DOCUMENT_ROOT'] . "/uploads/previews";
-                            exec("ffmpeg -t 30 -i " . $file . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs, $i, "song_id") . ".mp3");
+                            //Check what file type the source is to determine if we need to transcode or not
+                            $file_info = new finfo(FILEINFO_MIME);    // object oriented approach!
+                            $mime_type = $file_info->buffer(file_get_contents($file));  // e.g. gives "image/jpeg"
+
+                            switch ($mime_type) {
+                                case "audio/mp3":
+                                    //Save to known location.
+                                    rename($file, $dest . "/previewLibrary-" . mysqli_result_dep($songs, $i, "song_id") . ".mp3");
+                                    break;
+                                default:
+                                    //Ffmpeg slice 'er up. 30 second length. Save to known location.
+                                    exec("ffmpeg -t 30 -i " . $file . " -acodec copy " . $dest . "/previewLibrary-" . mysqli_result_dep($songs, $i, "song_id") . ".mp3");
+                                    break;
+                            }
+
                             ///Delete the full length file from the temporary directory:
                             //have to unlink both the file and the empty file created
                             //by tempnam
