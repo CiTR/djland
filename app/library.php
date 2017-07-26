@@ -325,7 +325,7 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
                             ///Delete the full length file from the temporary directory:
                             //have to unlink both the file and the empty file created
                             //by tempnam
-                            //unlink($file);
+                            unlink($file);
                             //TODO:Find a better spot than just uploads/ for these files
                         }
             $src = "http://" . $_SERVER['SERVER_NAME'] . "/uploads/previews" . "/previewLibrary-" . mysqli_result_dep($songs, $i, "song_id") . ".mp3";
