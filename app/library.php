@@ -12,6 +12,15 @@ require_once("headers/menu_header.php");
 <script src="js/library-js.js"></script>
 <script type='text/javascript' src="js/lightbox.min.js"></script>
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 
 <?php
 //<script src="js/jquery.form.js"></script>
@@ -273,6 +282,79 @@ else if(permission_level() >= $djland_permission_levels['member']['level'] && is
 printf("</div>");
 	printf("<div id='wrapper' style='width:500px;float:right'>");
 		printf("<br /><h2>Preview Songs</h2><br />");
+
+    ?>
+
+<!-- Song upload modal button -->
+<button type="button" class="btn" data-toggle="modal" data-target="#myModal">Add music files</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style="color:black;">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add songs to this album</h4>
+      </div>
+
+      <div class="modal-body">
+        <p>Items with a &#9733; are required.</p>
+        <div>
+          <label for="default-composer">Default composer(s):</label>
+          <input type="text" id="default-composer" name="default-composer">
+        </div>
+        <div>
+          <label for="default-performer">Default performer(s):</label>
+          <input type="text" id="default-performer" name="default-performer">
+        </div>
+
+        <div id="submit-field"></div>
+
+    		<input type="file" id="new-track-button-input" style="display:none"  name="songlist" accept=".m4a,audio/*" multiple/>
+    		<button type="button" id="new-track-button" class="submission-button">
+    			Add files
+    		</button>
+
+        <script type="text/javascript">
+    			$('#new-track-button').click(function(event){
+            event.preventDefault();
+            $('#new-track-button-input').trigger('click');
+          });
+    		</script>
+
+      	<div id="submit-button-div">
+      		<button id="submit-button" class="submission-button" type="submit">
+      			SUBMIT
+      		</button>
+
+          <script type="text/javascript">
+            $('#submit-button').click(function(event) {
+              event.preventDefault();
+              // submitForm();
+            });
+          </script>
+
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+    <?php
+
+// TODO: call createTrackSubmission() from app/js/musicsubmissions/functions.js
+
 		printf("<hr width=80%%><br />");
 			if(mysqli_num_rows($songs)) {
                     $tn_flag = 0;
