@@ -329,6 +329,7 @@ printf("</div>");
       		<button id="submit-button" class="submission-button" type="submit">
       			SUBMIT
       		</button>
+          <p id="success-message" style="display:none;">Success!</p>
 
           <script type="text/javascript">
             $('#submit-button').click(function(event) {

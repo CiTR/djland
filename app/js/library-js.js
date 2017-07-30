@@ -262,16 +262,31 @@ function submitForm() {
 
     if (success) {
 
-      /*
 
-      var data = new FormData();
+      var tracks = $("#submit-field").children();
+      var songSuccess = true;
 
-      if (cover) data.append('art_url', cover);
+      for (var i = 0; i < tracks.length; i++) {
+        var trackFile = songFiles[i];
+        var x = $(tracks.get(i));
+        if (x.find(".include-track").is(":checked")) {
+          var a = new FormData();
+          a.append('number', x.find('.track-number-field').val());
+          a.append('name', x.find('.input-track-field-name').val());
+          a.append('composer', x.find('.input-track-field-composer').val());
+          a.append('performer', x.find('.input-track-field-performer').val());
+          a.append('file', trackFile);
+          a.append('filename', trackFile.name);
 
-      var arturl = createSubmission(data, songFiles);
+          var libraryId; // need to figure out how to find this
 
-      */
-
+          songSuccess = songSuccess && addSongToLibraryEntry(a, libraryId, trackFile.name);
+        }
+      }
+      if (songSuccess) {
+        $("#submit-button").hide();
+        $("#success-message").show();
+      }
     } else {
       alert(alertString);
       $("#submit-button").text("Submit");
@@ -279,6 +294,24 @@ function submitForm() {
     }
   }
 
-  $("#submit-button").text("Success!");
+}
 
+function addSongToLibraryEntry(data, libraryId, filename) {
+
+  $.ajax({
+    url: "something" + libraryId,
+    data: data,
+    type: "POST",
+    cache: false,
+    contentType: false,
+    processData: false,
+  })
+  .done(function(data) {
+    console.log("File '" + filename +"' sent.");
+    return true;
+  })
+  .fail(function(data) {
+    alert("Failed to send file: " + filename);
+    return false;
+  })
 }
