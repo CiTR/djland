@@ -12,18 +12,18 @@ require_once("headers/menu_header.php");
 <script src="js/library-js.js"></script>
 <script type='text/javascript' src="js/lightbox.min.js"></script>
 
+<!-- <script src="js/jquery.form.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script> -->
+
+
+</head><body class='wallpaper'>
+
+<?php print_menu(); ?>
+
+<div class='library'>
 
 <?php
-//<script src="js/jquery.form.js"></script>
-//<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-//  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-
-
-echo "</head><body class='wallpaper'>";
-
-print_menu();
-
-echo "<div class=library>";
 
 // *** SEARCH MODE ***
 // *** If action=search, get search terms from URL and query database ***
