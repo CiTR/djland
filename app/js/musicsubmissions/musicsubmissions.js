@@ -1841,7 +1841,7 @@ function addTrackForm(fileName, trackNo) {
     childNode.appendChild(document.createTextNode("★ Track number:"));
     divNode.appendChild(childNode);
 
-    childNode = document.createt.eatet.createElement("input");
+    childNode = document.createElement("input");
     childNode.setAttribute("class", "track-number-field");
     childNode.setAttribute("value", trackNo);
     divNode.appendChild(childNode);
