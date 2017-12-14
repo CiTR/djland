@@ -15,10 +15,9 @@ before_install:
   - cp .env.sample .env
   - cp phpunit.xml.sample phpunit.xml
   - composer self-update
-  - ls
-  - ls vendor/
 
 install:
+  - composer install --no-scripts --no-interaction
   - composer install --no-interaction
   - php artisan key:generate
 
