@@ -9,7 +9,8 @@ before_install:
   #setup database
   - mysql -e 'CREATE DATABASE djland;'
   - cat setup/database_structures/*.sql > setup.sql
-  - cat setup/database_structures/setup.sql
+  # added for troubleshooting ERROR 1215 (HY000) at line 284: Cannot add foreign key constraint
+  - cat setup.sql
   - mysql -u root djland < setup.sql
   #setup laravel api
   - cd app/api2
