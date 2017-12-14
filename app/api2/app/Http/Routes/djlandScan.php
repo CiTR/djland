@@ -80,7 +80,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
                     if ($sqlStatus) {
                         try {
                             //Step two: move file if a sql entry is made
-                            makedirs(dirname($action['destFilename']));
+                            makedirsCustom(dirname($action['destFilename']));
                             $fileStatus = rename($action['sourceFilename'], $action['destFilename']);
                         } catch (Exception $e) {
                             $filestatus=false;
@@ -102,7 +102,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 //});
 
 //Could be impoved by checking if the parent directory is writable
-function makedirs($dirpath, $mode=0777)
+function makedirsCustom($dirpath, $mode=0777)
 {
     return is_dir($dirpath) || mkdir($dirpath, $mode, true);
 }
