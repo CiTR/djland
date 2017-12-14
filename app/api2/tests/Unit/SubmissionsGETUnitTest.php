@@ -83,7 +83,7 @@ class SubmissionsGETUnitTest extends TestCase
                 //Test that the key is as expected
                 assertEquals(keyOf($response[$item][$key]) == $key);
                 //Assert that the value of that key is of the expected data type
-                assertEquals(typeOf($response[$item[$key]) == typeOf($expectedKeyValue[$key]));
+                assertEquals(typeOf($response[$item][$key]) == typeOf($expectedKeyValue[$key]));
             }
         }
     }
