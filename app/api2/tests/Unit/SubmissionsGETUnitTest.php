@@ -73,7 +73,7 @@ class SubmissionsGETUnitTest extends TestCase
      */
     public function testSubmissionsGETRoutesKeyValueAllSubmissions(){
         //TODO: fill database with something so that it's not empty
-        $response = $this->call('GET', 'submissions/')
+        $response = $this->call('GET', 'submissions/');
         $expectedKeyValue = array(
             'id' => integer,
             ''
