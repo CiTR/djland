@@ -73,7 +73,7 @@ class SubmissionsGETUnitTest extends TestCase
      */
     public function testSubmissionsGETRoutesKeyValueAllSubmissions(){
         //TODO: fill database with something so that it's not empty
-        $response = $this->call('GET', 'submissions/')
+        $response = $this->call('GET', 'submissions/');
         $expectedKeyValue = array(
             'id' => integer,
             ''
@@ -83,7 +83,7 @@ class SubmissionsGETUnitTest extends TestCase
                 //Test that the key is as expected
                 assertEquals(keyOf($response[$item][$key]) == $key);
                 //Assert that the value of that key is of the expected data type
-                assertEquals(typeOf($response[$item[$key]) == typeOf($expectedKeyValue[$key]));
+                assertEquals(typeOf($response[$item][$key]) == typeOf($expectedKeyValue[$key]));
             }
         }
     }

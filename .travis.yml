@@ -17,6 +17,7 @@ before_install:
   - composer self-update
 
 install:
+  - composer install --no-scripts --no-interaction
   - composer install --no-interaction
   - php artisan key:generate
 
