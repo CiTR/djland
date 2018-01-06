@@ -220,10 +220,6 @@ Route::group(array('prefix'=>'show'),function(){
             return Show::find($id)->social;
         });
 
-			}
-			return Response::json($episodes);
-
-		});
 		Route::get('playsheets/{offset}',function($id,$offset = offset){
 			if($offset) return Show::find($id)->playsheets()->orderBy('start_time','desc')->offset($offset)->limit('200')->get();
 			else return Show::find($id)->playsheets()->orderBy('start_time','desc')->get();
