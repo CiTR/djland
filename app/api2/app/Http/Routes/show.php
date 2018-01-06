@@ -109,7 +109,7 @@ Route::group(array('prefix'=>'show'),function(){
 				});
 			});
 		});
-		
+
 		Route::post('/',function($id){
 			$show = Input::get()['show'];
 			$social = Input::get()['social'];
@@ -118,89 +118,107 @@ Route::group(array('prefix'=>'show'),function(){
 			$s = Show::find($id);
 			$s->update($show);
 
-			$socials = array();
-			$show_times = array();
-
-			if($owners){
-				//Detach current owners
-				foreach(Show::find($id)->members as $current_owner){
-					$s->members()->detach($current_owner->id);
-				}
-				//Attach new owners
-				foreach($owners as $owner){
-					Show::find($id)->members()->attach($owner['id']);
-				}
-			}
+            if ($owners) {
+                //Detach current owners
+                foreach (Show::find($id)->members as $current_owner) {
+                    $s->members()->detach($current_owner->id);
+                }
+                //Attach new owners
+                foreach ($owners as $owner) {
+                    Show::find($id)->members()->attach($owner['id']);
+                }
+            }
 
 
-			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
-			$existing_to_delete =  Show::find($id)->social;
-			foreach($existing_to_delete as $key=>$e){
-				$still_exists = false;
-				foreach($social as $item){
-					if(isset($item['id']) && $e['id'] == $item['id']){
-						$still_exists = true;
-					}
-				}
-				if(!$still_exists) Social::find($e['id'])->delete();
-			}
-			//Create or update social entries
-			foreach($social as $item){
-				if(isset($item['id'])){
-					$s = Social::find($item['id']);
-					unset($item['id']);
-					$socials[] = $s->update($item);
-				}else{
-					$socials[] = Social::create($item);
-				}
-			}
-			//Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
-			$existing_to_delete =  Show::find($id)->showtimes;
-			foreach($existing_to_delete as $key=>$e){
-				$still_exists = false;
-				foreach($showtimes as $item){
-					if(isset($item['id']) && $e['id'] == $item['id']){
-						$still_exists = true;
-					}
-				}
-				if(!$still_exists) Showtime::find($e['id'])->delete();
-			}
-			//Create or update social entries
-			foreach($showtimes as $item){
-				if(isset($item['id'])){
-					$s = Showtime::find($item['id']);
-					unset($item['id']);
-					$show_times[] = $s->update($item);
-				}else{
-					$show_times[] = Showtime::create($item);
-				}
-			}
-			return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
-		});
-		Route::get('episodes/{offset}',function($id,$offset = offset){
-			$podcasts = Show::find($id)->podcasts()->orderBy('id','desc')->limit(50)->offset($offset)->get();
-			$episodes = array();
-			$socan = Socan::all();
-			foreach($podcasts as $podcast){
-				$playsheet = $podcast->playsheet;
+            //Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+            $existing_to_delete =  Show::find($id)->social;
+            foreach ($existing_to_delete as $key=>$e) {
+                $still_exists = false;
+                foreach ($social as $item) {
+                    if (isset($item['id']) && $e['id'] == $item['id']) {
+                        $still_exists = true;
+                    }
+                }
+                if (!$still_exists) {
+                    Social::find($e['id'])->delete();
+                }
+            }
+            //Create or update social entries
+            foreach ($social as $item) {
+                if (isset($item['id'])) {
+                    $s = Social::find($item['id']);
+                    unset($item['id']);
+                    $socials[] = $s->update($item);
+                } else {
+                    $socials[] = Social::create($item);
+                }
+            }
+            //Find out which entries no longer exist. (This is because entries aren't deleted when the button is pressed in UI, ie. not RESTful)
+            $existing_to_delete =  Show::find($id)->showtimes;
+            foreach ($existing_to_delete as $key=>$e) {
+                $still_exists = false;
+                foreach ($showtimes as $item) {
+                    if (isset($item['id']) && $e['id'] == $item['id']) {
+                        $still_exists = true;
+                    }
+                }
+                if (!$still_exists) {
+                    Showtime::find($e['id'])->delete();
+                }
+            }
+            //Create or update social entries
+            foreach ($showtimes as $item) {
+                if (isset($item['id'])) {
+                    $s = Showtime::find($item['id']);
+                    unset($item['id']);
+                    $show_times[] = $s->update($item);
+                } else {
+                    $show_times[] = Showtime::create($item);
+                }
+            }
+            return Response::json(array('show'=>$show,'social'=>$socials,'owners'=>$owners,'showtimes'=>$show_times));
+        });
+        Route::get('episodes/{offset}', function ($id, $offset = offset) {
+            $podcasts = Show::find($id)->podcasts()->orderBy('id', 'desc')->limit(50)->offset($offset)->get();
+            $episodes = array();
+            $socan = Socan::all();
+            foreach ($podcasts as $podcast) {
+                $playsheet = $podcast->playsheet;
 
-				if($playsheet != null){
-					$playsheet->socan = false;
-					foreach($socan as $period){
-						if( strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)){
-							$playsheet->socan = true;
-						}
-					}
-					if($podcast -> duration == 0){
-						$podcast -> duration_from_playsheet();
-					}
-					unset($podcast->playsheet);
-					$episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
-					$episodes[] = $episode;
-				}else{
-					$episode = ['podcast'=>$podcast];
-					$episodes[] = $episode;
-				}
+                if ($playsheet != null) {
+                    $playsheet->socan = false;
+                    foreach ($socan as $period) {
+                        if (strtotime($period['socanStart']) <= strtotime($playsheet->start_time) && strtotime($period['socanEnd']) >= strtotime($playsheet->end_time)) {
+                            $playsheet->socan = true;
+                        }
+                    }
+                    if ($podcast -> duration == 0) {
+                        $podcast -> duration_from_playsheet();
+                    }
+                    unset($podcast->playsheet);
+                    $episode = ['playsheet'=>$playsheet,'podcast'=>$podcast];
+                    $episodes[] = $episode;
+                } else {
+                    $episode = ['podcast'=>$podcast];
+                    $episodes[] = $episode;
+                }
+            }
+            return Response::json($episodes);
+        });
+        Route::get('playsheets/{offset}', function ($id, $offset = offset) {
+            if ($offset) {
+                return Show::find($id)->playsheets()->orderBy('start_time', 'desc')->offset($offset)->limit('200')->get();
+            } else {
+                return Show::find($id)->playsheets()->orderBy('start_time', 'desc')->get();
+            }
+        });
+        Route::get('playsheets', function ($id) {
+            return Show::find($id)->playsheets()->orderBy('start_time', 'desc')->get();
+        });
+
+        Route::get('social', function ($id) {
+            return Show::find($id)->social;
+        });
 
 			}
 			return Response::json($episodes);
@@ -218,7 +236,7 @@ Route::group(array('prefix'=>'show'),function(){
 			return Show::find($id)->social;
 		});
 
-		
+
 		Route::get('nextshow/{current_time}',function($id,$time = current_time){
 			return Response::json(Show::find($id)->nextShowTime($time));
 		});

@@ -62,11 +62,10 @@ $(function() {
 			},
 			success: function(text){
 				$('#loadStatus').html('Success!');// ALSO CHECK FOR NUM LOADED
-				
+
 				$('#socanTable tbody').prepend( "<tr id='row'"+text.id+"><td>"+text.id+"</td><td>"+text.socanStart+"</td><td>"+text.socanEnd+"</td><td><button id='socanDeletetemplate' class='deletePeriod'>Delete this period</button></td></tr>");
 				$('#result').html(text);
 			}
 		});
 	});
 });
-

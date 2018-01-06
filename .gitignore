@@ -17,3 +17,5 @@ Thumbs.db
 .project
 org.eclipse.php.core.prefs
 org.eclipse.wst.common.project.facet.core.xml
+
+composer.lock

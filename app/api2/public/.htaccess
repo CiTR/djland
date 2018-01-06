@@ -2,14 +2,20 @@
     Order allow,deny
     Deny from all
  </Files>
-Allow from all
+
+<FilesMatch "log.html">
+    AuthName "Private"
+    AuthType Basic
+    AuthUserFile /path/to/file/.htpasswd
+    require valid-user
+</FilesMatch>
 
 #Rewrite Rules For when we move to Angular.
 <IfModule mod_rewrite.c>
-Options +FollowSymLinks
-RewriteEngine On
+    Options +FollowSymLinks
+    RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>

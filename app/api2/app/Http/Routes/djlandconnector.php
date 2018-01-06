@@ -111,7 +111,7 @@ function show($id){
 	//New show path
 	$data[0]['show_img'] = Show::find($id)->images->get('url');
 	// Legacy checker for shows that have not updated their image through the new image uploader
-	if(count($data[0]['show_img']) == 0) $data[0]['show_img'] = Show::select('image as show_img')->where('id','=',$id)->first()['show_img']; 
+	if(count($data[0]['show_img']) == 0) $data[0]['show_img'] = Show::select('image as show_img')->where('id','=',$id)->first()['show_img'];
     	//And all the social links for that show from the social table
 	$data[0]['social_links'] = Social::select('social_name as type' ,'social_url as url')->where('show_id','=',$id)->get();
 	return Response::json($data[0]);

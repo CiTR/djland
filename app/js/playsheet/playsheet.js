@@ -270,7 +270,7 @@
 						);
 					}).bind(this)
 				);
-				
+
 			}
 			call.isSocan(this.start_unix).then(
 				(
@@ -381,7 +381,7 @@
 		                    }).bind(this)
 						);
                 	}).bind(this)
-					
+
 				);
             }else{
 
@@ -706,7 +706,7 @@
                 //if($('#audio_file')[0].files){
 				    //this.uploadAudio(this.podcast.id);
 			    //}else{
-				    		
+
 			    			call.makePodcastAudio(this.podcast).then(
 								(function(reponse){
 				                	this.podcast_status = "Podcast Audio Created Successfully.";
@@ -718,7 +718,7 @@
 					                this.log_error(error);
 				                }).bind(this)
 							);
-			    			
+
 				//}
 	                    }).bind(this)
 						,(function(error){
@@ -745,7 +745,7 @@
 									//if($('#audio_file')[0].files.length > 0){
 										//this.uploadAudio(response.podcast.id);
 									//}else{
-									
+
 					    			call.makePodcastAudio(this.podcast).then(
 										(function(reponse){
 						                	this.podcast_status = "Podcast Audio Created Successfully.";
@@ -780,7 +780,7 @@
 								//}else{
 								if ( ! this.podcast.url || this.time_changed) {
 									call.makePodcastAudio(this.podcast).then(
-										(function(reponse){
+										(function(response){
 				                            this.podcast_status = "Podcast Audio Created Successfully.";
 				                            this.time_changed = false;
 				                        }).bind(this)

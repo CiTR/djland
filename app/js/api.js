@@ -1,7 +1,6 @@
+angular.module('djland.api', []).factory('call', function ($http, $location) {
 
-angular.module('djland.api',[]).factory('call', function ($http, $location) {
-
-	var API_URL_BASE = 'api2/public'; // api.citr.ca when live
+    var API_URL_BASE = 'api2/public'; // api.citr.ca when live
 
 	return {
 		getConstants: function(){
@@ -167,26 +166,26 @@ angular.module('djland.api',[]).factory('call', function ($http, $location) {
 	};
 });
 
-angular.module('sam.api',[]).factory('sam', function ($http, $location) {
-	var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
-	return{
-		getAdList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'PRIORITY ADs');
-		},
-		getUBCPSAList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
-		},
-		getCommunityPSAList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'community');
-		},
-		getTimelyPSAList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'New Timely PSAs');
-		},
-		getStationIDList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
-		},
-		getPromosList: function(){
-			return $http.get(API_URL_BASE + '/categorylist/' + 'SHOW PROMOS');
-		},
-	};
+angular.module('sam.api', []).factory('sam', function ($http, $location) {
+    var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
+    return {
+        getAdList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'PRIORITY ADs');
+        },
+        getUBCPSAList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
+        },
+        getCommunityPSAList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'community');
+        },
+        getTimelyPSAList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'New Timely PSAs');
+        },
+        getStationIDList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
+        },
+        getPromosList: function () {
+            return $http.get(API_URL_BASE + '/categorylist/' + 'SHOW PROMOS');
+        },
+    };
 });

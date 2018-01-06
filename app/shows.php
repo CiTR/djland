@@ -156,7 +156,7 @@ if (permission_level() < $djland_permission_levels['dj']['level']) {
                     <table >
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
-			<tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
+			            <tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
                         <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>

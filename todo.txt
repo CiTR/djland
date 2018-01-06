@@ -15,29 +15,49 @@ CAPSTONE
 =====================================
 
 If you aren't logged in, return "please log in" for most submissions routes
+(DONE) format not showing up on tag
+(DONE) audio keeps playing when you close
 album art big on review after submitting review
 submit to library actually moves files from submissions upload
 editing lib moves files
 upload mp3 and images for library pages
+(DONE) submit to library moves to Archive table
+(DONE) deletion after 1month job from deleted status
+(DONE) 1 month old deletes move to rejected table
+(DONE) rejected button deletes so that you can undo
 samscan
 djland scan
+(DONE) select2 on db
 testing
 delete button on submit online instead of checkbox
+(DONE) Datatables for search past submissions & deleted submissions
 Generate new digital submissons - Generate email format & handle null case
 Generate new digital submissons - remove double title bar
 Submit online needs better email - use proper laravel template
-Manual submission should not require email? Maybe
+	Manual submission should not require email? Maybe
 shift select for bulk editing
 check that navigating away while shit is uploading is warned and how well it still works
+(DONE) submissions admin tools need to show if it was trashed or not
+(DONE) trashed submissions cleanup goes by submission date now, need to go by last updated
 Searching past submissions shouldn't require date?
+(DONE) STAFF COMMENTS DON'T SAVE
+(DONE) ASSIGNEES DON'T SAVE
+(DONE) assignee needs to load from member data - sellect2 that up
+(DONE) Sort by assignee
+(DONE) Member id to name in deleted submissions
 Singles tables
 Tagging:alter song name, credit, track number, performer?
 Keep genres and subgenres as id number throughout lib and submissions.
     Setup trigger for deletion: warning when you delete a genre/subgenre for how many
     tracks will go untagged.
 Library search by subgenre. Display subgenre. Make sure the subgenre gets written to lib
-The deleted table generally looks bad
 
+(DONE) When you close a row in datatables, make it completely dissapear - call draw() on the table or something
+(DONE) Dropdowns - prevent bubble up on datatables when you click to select something
+(DONE) All names on assignee/tagger - make a select2
+(DONE) Green background on restore in deleted table
+The deleted table generally looks bad
+(DONE) stop bubble up of esc on select2
 
 ===========
 

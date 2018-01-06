@@ -4,10 +4,10 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 require_once("headers/menu_header.php");
 require_once("headers/socan_header.php");
 
-if( permission_level() < $djland_permission_levels['staff']['level']){
-	header("Location: main.php");
+if (permission_level() < $djland_permission_levels['staff']['level']) {
+    header("Location: main.php");
 }
-$now = date("m/d/Y",strtotime('now'));
+$now = date("m/d/Y", strtotime('now'));
 $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
 
 ?>
@@ -51,18 +51,17 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 					</form>
 
-				<button id="createPeriod">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
+				    <button id="createPeriod">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
+                    <div id="result" class='padded-top'>&nbsp;</div>
 				</center>
-				<div id="result">&nbsp;</div>
 				<hr><br><center>These are the current SOCAN periods that are set:</center><br>
 
 				<?php
 
-				$api_base = 'http://'.$_SERVER['HTTP_HOST'];
-				$socanPeriods = CallAPI('GET',$api_base.'/api2/public/socan');
-				if(count($socanPeriods) != 0)
-				{
-					?>
+                $api_base = 'http://'.$_SERVER['HTTP_HOST'];
+                $socanPeriods = CallAPI('GET', $api_base.'/api2/public/socan');
+                if (count($socanPeriods) != 0) {
+                    ?>
 					<div class='center'>
 						<table id='socanTable' class='table'>
 							<thead>
@@ -100,13 +99,15 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 					<br>
 					Note that in order to end on midnight, you must select the next day at 00:00 as it only selects day, and not time!
-					
+
 					</div>
 
 					<div id='result2'>&nbsp;</div><span id='loadStatus2'>&nbsp;</span>
 				<?php
-				}
-				else{ echo "Retreiving Socan Periods Failed or you have no Socan Periods Scheduled."; } ?>
+
+                } else {
+                    echo "Retreiving Socan Periods Failed or you have no Socan Periods Scheduled.";
+                } ?>
 			</div>
 		</div>
 	</body>
