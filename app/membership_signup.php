@@ -20,7 +20,7 @@
 	</head>
 	<body class='wallpaper'>
 		<div id='membership' class='wrapper' >
-			<h1> CiTR Member Signup </h1>
+			<h1> CiTR &amp; Discorder Member Signup </h1>
 			<hr>
 
 			<div class = 'container'>
@@ -138,7 +138,7 @@
 
 				</div>
 				<div class='containerrow'>
-					<div class='col5'>Do you have a show?*:</div>
+					<div class='col5'>Do you have a radio show at CiTR?*:</div>
 					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
@@ -160,12 +160,13 @@
 					<input class='hidden' id='membership_year' value='<?php echo idate('m') >= 5 ? idate('Y')."/".(idate('Y')+1) : (idate('Y')-1)."/".idate('Y'); ?>'/>
 					<div class='span3col4'>
 						<?php foreach($djland_interests as $key=>$interest): ?>
-						<div class='col3 text-right'>
-							<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
+						<div class='col2 text-left' style="margin-left:50%;">
 							<?php if($interest == 'other'): ?>
-							<input id='<?php echo $interest ?>' placeholder='Enter interest' maxlength='40'/>
+								<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
+								<input id='<?php echo $interest ?>' placeholder='Enter interest' maxlength='40'/>
 							<?php else: ?>
-							<input type='checkbox' id='<?php echo $interest; ?>'>
+								<input type='checkbox' id='<?php echo $interest; ?>'>
+								<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
 							<?php endif; ?>
 						</div>
 						<?php endforeach; ?>

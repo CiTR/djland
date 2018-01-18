@@ -259,17 +259,17 @@
 					<div class='col2'>
 						<div class='col4'>Interests for: </div><div class='side-padded'><select class='left' id ='membership_year'></select></div>
 					</div>
-					<div class='col2'><div class='left'>Paid<input type='checkbox' id='paid'></div> </div>
+					<div class='col2'><div class='left'><input type='checkbox' id='paid'>Paid</div> </div>
 
 					<div class='col1'>
 						<?php foreach($djland_interests as $key=>$interest): ?>
-						<div class='col3 text-right'>
+						<div class='col2 text-left' style="margin-left: 50%;">
 							<?php
-							echo $key;
-							if($interest == 'other'): ?>
-							<input id='<?php echo $interest ?>' placeholder='Enter interest'/>
+							if($interest == 'other'):
+								echo $key; ?>
+								<input id='<?php echo $interest ?>' placeholder='Enter interest'/>
 							<?php else: ?>
-							<input type='checkbox' id='<?php echo $interest; ?>'>
+								<input type='checkbox' id='<?php echo $interest; ?>'><?php echo $key; ?>
 							<?php endif; ?>
 						</div>
 						<?php endforeach; ?>

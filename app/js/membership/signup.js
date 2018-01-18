@@ -149,7 +149,7 @@ $(document).ready ( function() {
 			$('#can1').removeAttr("checked");
 		}
 	});
-		$('.show_select').unbind().click( function(){
+	$('.show_select').unbind().click( function(){
 		if( this.id =='show1'){
 			$('#show2').removeAttr("checked");
 		}
