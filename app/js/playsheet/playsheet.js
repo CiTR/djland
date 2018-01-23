@@ -866,6 +866,7 @@
 			);
         };
         this.samRange = function () {
+            console.log(this.start, " ",  this.end);
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
 				(function(data){
                     if( data && data !== 'null' && data !== 'undefined'){
@@ -878,6 +879,7 @@
             this.sam_visible= false;
         };
         this.updateSamPlays = function(){
+            console.log(this.start, " ",  this.end);
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
 				(function(data){
                     if( data && data !== 'null' && data !== 'undefined'){
