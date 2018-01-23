@@ -7,528 +7,291 @@
             templateUrl: 'templates/showtime.html'
         };
     });
-
     app.directive('social', function () {
         return {
             restrict: 'A',
             templateUrl: 'templates/social.html'
         };
     });
+    app.controller('editShow', function($scope,$rootScope, $filter, call, $location, shared, tools){
+        this.loading = true;
+        this.init = function(){
+            this.admin = false;
+            this.member_id = member_id;
+            this.username = username;
+            this.shared = shared;
+            //Get List of all members
+            this.getMemberList();
+            //Get List of primary genres
+            call.getConstants().then(
+              (
+                function(response){
+                  this.genres = response.data.genres;
+                }
+              ).bind(this)
+            );
+            //Get Shows Member can see
+            call.getMemberShows(this.member_id).then(
+              (
+                function(response){
+                  this.member_shows = response.data.shows;
+                  for(var show in this.member_shows){
+                    if(this.member_shows[show].show.name != null) this.member_shows[show].show.name = tools.decodeHTML(this.member_shows[show].show.name);
+                    if(this.member_shows[show].show.host != null) this.member_shows[show].show.host = tools.decodeHTML(this.member_shows[show].show.host);
+                  }
 
-            //Need to make the id a string
-            this.show_value = ""+this.active_show.id;
-            this.loadShow();
-          }
-        ).bind(this)
-        ,(
-          function(error){
-            this.loading = false;
-          }
-        ).bind(this)
-      );
-      //Calculating "current week" this math is really old. Returns 1 or 2
-      //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
+                  //Get First show in member_shows
+                  for(var show in this.member_shows){
+                    this.active_show = this.member_shows[show];
+                    break;
+                  }
 
-      //New Method for getting current week
-      var d = new Date();
-      //Get most recent sunday at 12:00:00am
-      d.setHours(0,0,0);
-      d.setDate(d.getDate()-(d.getDay()||7));
-      //Get Days since epoch start. Then divide by 7 for weeks. Then round down.
-      var week_no = Math.floor(((d/8.64e7))/7);
-      //divide by 2, and then add one so we have 1||2 instead of 0||1
-      this.current_week = ((week_no % 2) +1);
-      //Check if user is an administrator or staff
-      this.isStaff();
-    }
-    this.isStaff = function(){
-      //Call API to obtain permissions
-      call.isStaff(this.member_id).then(
-        (
-          function(response){
-            this.is_admin = response.data;
-          }
-        ).bind(this)
-        ,function(error){
-          console.log(error.data);
+                  //Need to make the id a string
+                  this.show_value = ""+this.active_show.id;
+                  this.loadShow();
+                }
+              ).bind(this)
+              ,(
+                function(error){
+                  this.loading = false;
+                }
+              ).bind(this)
+            );
+            //Calculating "current week" this math is really old. Returns 1 or 2
+            //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
+
+            //New Method for getting current week
+            var d = new Date();
+            //Get most recent sunday at 12:00:00am
+            d.setHours(0,0,0);
+            d.setDate(d.getDate()-(d.getDay()||7));
+            //Get Days since epoch start. Then divide by 7 for weeks. Then round down.
+            var week_no = Math.floor(((d/8.64e7))/7);
+            //divide by 2, and then add one so we have 1||2 instead of 0||1
+            this.current_week = ((week_no % 2) +1);
+            //Check if user is an administrator or staff
+            this.isStaff();
         }
-      );
-    }
-    this.newShow = function(){
-      this.show_value = 0;
-      this.info = {'id':0,'lang_default':'English','crtc_default':'20','pl_req':'60','cc_20_req':'35','cc_30_req':'12','indy_req':'25','fem_req':'35','create_name':username};
-      this.socials = new Array();
-      this.show_times = new Array();
-      this.show_owners = new Array();
-      this.primary_genres = new Array();
-      this.secondary_genres = new Array();
-      this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
-      this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-	}
-    this.loadShow = function(){
-		call.getShow(this.active_show.id).then(
-		(
-		  function(response){
-		    this.info = response.data;
-
-		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
-		    this.info.name = tools.decodeHTML(this.info.name);
-		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
-		    this.shared.setShowName(this.info.name);
-			this.shared.setShowID(this.info.id);
-		    //Split genres on comma to allow user management
-
-		    this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
-		    this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
-
-		    //Remove Social array from the show object.
-		    this.socials = response.data.social;
-		    delete this.info.social;
-		    this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
-		    this.loading = false;
-		  }
-		).bind(this)
-		,(
-		  function(error){
-		    this.loading = false;
-		  }
-		).bind(this)
-		);
-		//Call API to get show owners
-		call.getShowOwners(this.active_show.id).then(
-			(function(response)
-				{
-			    //If no response make an empty object
-			    if(response.data != null){
-			      this.show_owners = response.data;
-			    }else{
-			      this.show_owners = Array();
-			    }
-			    console.log(this.show_owners);
-			    console.log(response.data);
-			}).bind(this)
-			,function(error){
-				console.log('Could not get show owners for the active show.')
-			}
-		);
-		//Call API to get show times
-		call.getShowTimes(this.active_show.id).then(
-			(function(response){
-			    this.show_times = response.data;
-			    this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-			    //Allowing show times to be displayed in UI by splitting on colon
-			    for(var showtime in this.show_times){
-			      this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
-			      this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
-			      this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
-			      this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
-			    }
-			}).bind(this)
-			,(function(error){
-				this.loading = false;
-			}).bind(this)
-		);
-		call.getShowImages(this.active_show.id).then(
-			(function(response){
-				this.images = response.data;
-				console.log(this.images);
-			}).bind(this)
-
-		);
-    }
-    this.getMemberList = function(){
-      call.getMemberList().then(
-        (
-          function(response){
-            this.member_list = response.data;
-          }
-        ).bind(this)
-      );
-    }
-	this.uploadImage = function(){
-		console.log("Test");
-		var form = new FormData($('#upload_image'));
-		var file = $('#image_file')[0].files[0];
-		console.log(file);
-		form.append('image',file);
-
-		var request = $.ajax({
-			url: 'api2/public/show/'+shared.getShowID()+'/image',
-			method: 'POST',
-			dataType: 'json',
-			processData: false,
-			contentType: false,
-			data: form
-		});
-		$.when(request).then((function(response){
-			this.info.image = response.url;
-			this.images.push(response);
-			$scope.$apply();
-		}).bind(this),function(error){
-			alert(error.responseText);
-		});
-	}
-	this.deleteImage = function(image_id){
-		call.deleteImage(image_id).then((function(){
-			var id = this.images.indexOf(this.images.filter(function(object){if(object.id == image_id) return object;})[0]);
-			console.log(id);
-			this.images.splice(id,1);
-		}).bind(this));
-	}
-    this.addFirstSocial = function(){
-      //Add template row for social
-      this.socials.push(angular.copy(this.social_template));
-    }
-    this.addFirstShowTime = function(){
-      this.show_times.push(angular.copy(this.showtime_template));
-
-    }
-    this.addSocial = function(id){
-      this.socials.splice(id+1,0,angular.copy(this.social_template));
-    }
-    this.addOwner = function(){
-      //No need to check for duplicates, as there is only one id per member
-      var id = $('#member_access_select').val();
-	console.log(id);
-      /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
-      Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */
-      var exists = false;
-      console.log(this.show_owners);
-      for(var owner_index in this.show_owners){
-        if(this.show_owners[owner_index].id == id) exists = true;
-      }
-      if(!exists){
-        this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
-      }
-    }
-    this.addShowTime = function($index){
-      this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
-      console.log(this.owners);
-    }
-    this.addPrimaryGenre = function(){
-      var genre = this.genres[this.primary_genre_select];
-      if( !(this.primary_genres[0] == genre || this.primary_genres[1] == genre)){
-        this.primary_genres.splice(this.primary_genres.length,0,genre);
-      }
-      this.updatePrimaryGenres();
-    }
-    this.addSecondaryGenre = function(){
-      var genre = this.secondary_genre_input;
-      var exists = false;
-      for(var g in this.secondary_genres){
-        if(g == genre) exists = true;
-      }
-      if(!exists){
-        this.secondary_genres.splice(this.secondary_genres.length,0,genre);
-        this.secondary_genre_input = '';
-      }
-      this.updateSecondaryGenres();
-    }
-    this.removeSocial = function(id){
-      this.socials.splice(id,1);
-    }
-    this.removeOwner = function($index){
-      this.show_owners.splice($index,1);
-    }
-    this.removeShowTime = function($index){
-      this.show_times.splice($index,1);
-    }
-    this.removePrimaryGenre= function($index){
-      this.primary_genres.splice($index,1);
-      this.updatePrimaryGenres();
-    }
-    this.removeSecondaryGenre= function($index){
-      this.secondary_genres.splice($index,1);
-      this.updateSecondaryGenres();
-    }
-    this.updateShow = function(){
-      this.active_show=this.member_shows.filter(
-        (
-          function(object){
-            if(object.id == this.show_value) return object;
-          }
-        ).bind(this)
-      )[0];
-      this.loadShow();
-    }
-    this.updateShowtime = function(showtime){
-      showtime.start_time = showtime.start_hour + ":" + showtime.start_minute + ":00";
-      showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
-    }
-    this.updatePrimaryGenres = function(){
-      this.info.primary_genre_tags = this.primary_genres.join(',')
-      ;        }
-      this.updateSecondaryGenres = function(){
-        this.info.secondary_genre_tags = this.secondary_genres.join(',');
-      }
-
-      this.save = function(){
-        this.info.edit_name = this.username;
-        //this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
-        console.log(this);
-        this.message = 'saving...';
-
-        if(this.info.id == 0){
-          call.saveNewShow(this.info,this.socials,this.show_owners,this.show_times).then(
+        this.isStaff = function(){
+          //Call API to obtain permissions
+          call.isStaff(this.member_id).then(
             (
               function(response){
-                var show = response.data['show'];
-                alert("Successfully Create New Show: "+this.info.name);
-                this.info.id = show['id'];
-                for(var sh in this.show_times){
-                  this.show_times[sh].show_id = show['id'];
-                }
-            );
-        }
-        this.newShow = function () {
-            this.show_value = 0;
-            this.info = {
-                'id': 0,
-                'lang_default': 'English',
-                'crtc_default': '20',
-                'pl_req': '60',
-                'cc_20_req': '35',
-                'cc_30_req': '12',
-                'indy_req': '25',
-                'fem_req': '35',
-                'create_name': username
-            };
-            this.socials = new Array();
-            this.show_times = new Array();
-            this.show_owners = new Array();
-            this.primary_genres = new Array();
-            this.secondary_genres = new Array();
-            this.social_template = {
-                show_id: this.info.id,
-                social_name: "",
-                social_url: ""
-            };
-            this.showtime_template = {
-                show_id: this.info.id,
-                start_day: "0",
-                end_day: "0",
-                start_time: "00:00:00",
-                end_time: "00:00:00",
-                start_hour: "00",
-                start_minute: "00",
-                end_hour: "00",
-                end_minute: "00",
-                alternating: '0'
-            };
-        }
-        this.loadShow = function () {
-            call.getShow(this.active_show.id).then(
-                (
-                    function (response) {
-                        this.info = response.data;
-
-                        //If either of these have HTML chars strip them so it will save without, the user being none the wiser
-                        this.info.name = tools.decodeHTML(this.info.name);
-                        this.info.show_desc = tools.decodeHTML(this.info.show_desc);
-                        this.shared.setShowName(this.info.name);
-                        this.shared.setShowID(this.info.id);
-                        //Split genres on comma to allow user management
-
-                        this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
-                        this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
-
-                        //Remove Social array from the show object.
-                        this.socials = response.data.social;
-                        delete this.info.social;
-                        this.social_template = {
-                            show_id: this.info.id,
-                            social_name: "",
-                            social_url: ""
-                        };
-                        this.loading = false;
-                    }
-                ).bind(this), (
-                    function (error) {
-                        this.loading = false;
-                    }
-                ).bind(this)
-            );
-            //Call API to get show owners
-            call.getShowOwners(this.active_show.id).then(
-                (function (response) {
-                    //If no response make an empty object
-                    if (response.data != null) {
-                        this.show_owners = response.data;
-                    } else {
-                        this.show_owners = Array();
-                    }
-                    console.log(this.show_owners);
-                    console.log(response.data);
-                }).bind(this),
-                function (error) {
-                    console.log('Could not get show owners for the active show.')
-                }
-            );
-            //Call API to get show times
-            call.getShowTimes(this.active_show.id).then(
-                (function (response) {
-                    this.show_times = response.data;
-                    this.showtime_template = {
-                        show_id: this.active_show.id,
-                        start_day: "0",
-                        end_day: "0",
-                        start_time: "00:00:00",
-                        end_time: "00:00:00",
-                        start_hour: "00",
-                        start_minute: "00",
-                        end_hour: "00",
-                        end_minute: "00",
-                        alternating: '0'
-                    };
-                    //Allowing show times to be displayed in UI by splitting on colon
-                    for (var showtime in this.show_times) {
-                        this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0], 2);
-                        this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1], 2);
-                        this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0], 2);
-                        this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1], 2);
-                    }
-                }).bind(this), (function (error) {
-                    this.loading = false;
-                }).bind(this)
-            );
-            call.getShowImages(this.active_show.id).then(
-                (function (response) {
-                    this.images = response.data;
-                    console.log(this.images);
-                }).bind(this)
-
-            );
-        }
-        this.getMemberList = function () {
-            call.getMemberList().then(
-                (
-                    function (response) {
-                        this.member_list = response.data;
-                    }
-                ).bind(this)
-            );
-        }
-        this.uploadImage = function () {
-            var form = new FormData($('#upload_image'));
-            var file = $('#image_file')[0].files[0];
-            console.log(file);
-            form.append('image', file);
-
-            //TODO: doesn't work when creating a show
-            var request = $.ajax({
-                url: 'api2/public/show/' + shared.getShowID() + '/image',
-                method: 'POST',
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                data: form
-            });
-            $.when(request).then((function (response) {
-                this.info.image = response.url;
-                this.images.push(response);
-                $scope.$apply();
-            }).bind(this), function (error) {
-                alert(error.responseText);
-            });
-        }
-        this.deleteImage = function (image_id) {
-            call.deleteImage(image_id).then((function () {
-                var id = this.images.indexOf(this.images.filter(function (object) {
-                    if (object.id == image_id) return object;
-                })[0]);
-                console.log(id);
-                this.images.splice(id, 1);
-            }).bind(this));
-        }
-        this.addFirstSocial = function () {
-            //Add template row for social
-            this.socials.push(angular.copy(this.social_template));
-        }
-        this.addFirstShowTime = function () {
-            this.show_times.push(angular.copy(this.showtime_template));
-
-        }
-        this.addSocial = function (id) {
-            this.socials.splice(id + 1, 0, angular.copy(this.social_template));
-        }
-        this.addOwner = function () {
-            //No need to check for duplicates, as there is only one id per member
-            var id = $('#member_access_select').val();
-            console.log(id);
-            /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
-            Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */
-            var exists = false;
-            console.log(this.show_owners);
-            for (var owner_index in this.show_owners) {
-                if (this.show_owners[owner_index].id == id) exists = true;
+                this.is_admin = response.data;
+              }
+            ).bind(this)
+            ,function(error){
+              console.log(error.data);
             }
-            if (!exists) {
-                this.show_owners.push(this.member_list.filter(function (object) {
-                    if (object.id == id) return object;
-                })[0]);
-            }
+          );
         }
-        this.addShowTime = function ($index) {
-            this.show_times.splice($index + 1, 0, angular.copy(this.showtime_template));
-            console.log(this.owners);
+        this.newShow = function(){
+          this.show_value = 0;
+          this.info = {'id':0,'lang_default':'English','crtc_default':'20','pl_req':'60','cc_20_req':'35','cc_30_req':'12','indy_req':'25','fem_req':'35','create_name':username};
+          this.socials = new Array();
+          this.show_times = new Array();
+          this.show_owners = new Array();
+          this.primary_genres = new Array();
+          this.secondary_genres = new Array();
+          this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
+          this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+    	}
+        this.loadShow = function(){
+    		call.getShow(this.active_show.id).then(
+    		(
+    		  function(response){
+    		    this.info = response.data;
+
+    		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
+    		    this.info.name = tools.decodeHTML(this.info.name);
+    		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
+    		    this.shared.setShowName(this.info.name);
+    			this.shared.setShowID(this.info.id);
+    		    //Split genres on comma to allow user management
+
+    		    this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
+    		    this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
+
+    		    //Remove Social array from the show object.
+    		    this.socials = response.data.social;
+    		    delete this.info.social;
+    		    this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
+    		    this.loading = false;
+    		  }
+    		).bind(this)
+    		,(
+    		  function(error){
+    		    this.loading = false;
+    		  }
+    		).bind(this)
+    		);
+    		//Call API to get show owners
+    		call.getShowOwners(this.active_show.id).then(
+    			(function(response)
+    				{
+    			    //If no response make an empty object
+    			    if(response.data != null){
+    			      this.show_owners = response.data;
+    			    }else{
+    			      this.show_owners = Array();
+    			    }
+    			    console.log(this.show_owners);
+    			    console.log(response.data);
+    			}).bind(this)
+    			,function(error){
+    				console.log('Could not get show owners for the active show.')
+    			}
+    		);
+    		//Call API to get show times
+    		call.getShowTimes(this.active_show.id).then(
+    			(function(response){
+    			    this.show_times = response.data;
+    			    this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
+    			    //Allowing show times to be displayed in UI by splitting on colon
+    			    for(var showtime in this.show_times){
+    			      this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
+    			      this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
+    			      this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
+    			      this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
+    			    }
+    			}).bind(this)
+    			,(function(error){
+    				this.loading = false;
+    			}).bind(this)
+    		);
+    		call.getShowImages(this.active_show.id).then(
+    			(function(response){
+    				this.images = response.data;
+    				console.log(this.images);
+    			}).bind(this)
+
+    		);
         }
-        this.addPrimaryGenre = function () {
-            var genre = this.genres[this.primary_genre_select];
-            if (!(this.primary_genres[0] == genre || this.primary_genres[1] == genre)) {
-                this.primary_genres.splice(this.primary_genres.length, 0, genre);
-            }
-            this.updatePrimaryGenres();
+        this.getMemberList = function(){
+          call.getMemberList().then(
+            (
+              function(response){
+                this.member_list = response.data;
+              }
+            ).bind(this)
+          );
         }
-        this.addSecondaryGenre = function () {
-            var genre = this.secondary_genre_input;
-            var exists = false;
-            for (var g in this.secondary_genres) {
-                if (g == genre) exists = true;
-            }
-            if (!exists) {
-                this.secondary_genres.splice(this.secondary_genres.length, 0, genre);
-                this.secondary_genre_input = '';
-            }
-            this.updateSecondaryGenres();
+    	this.uploadImage = function(){
+    		console.log("Test");
+    		var form = new FormData($('#upload_image'));
+    		var file = $('#image_file')[0].files[0];
+    		console.log(file);
+    		form.append('image',file);
+
+    		var request = $.ajax({
+    			url: 'api2/public/show/'+shared.getShowID()+'/image',
+    			method: 'POST',
+    			dataType: 'json',
+    			processData: false,
+    			contentType: false,
+    			data: form
+    		});
+    		$.when(request).then((function(response){
+    			this.info.image = response.url;
+    			this.images.push(response);
+    			$scope.$apply();
+    		}).bind(this),function(error){
+    			alert(error.responseText);
+    		});
+    	}
+    	this.deleteImage = function(image_id){
+    		call.deleteImage(image_id).then((function(){
+    			var id = this.images.indexOf(this.images.filter(function(object){if(object.id == image_id) return object;})[0]);
+    			console.log(id);
+    			this.images.splice(id,1);
+    		}).bind(this));
+    	}
+        this.addFirstSocial = function(){
+          //Add template row for social
+          this.socials.push(angular.copy(this.social_template));
         }
-        this.removeSocial = function (id) {
-            this.socials.splice(id, 1);
+        this.addFirstShowTime = function(){
+          this.show_times.push(angular.copy(this.showtime_template));
+
         }
-        this.removeOwner = function ($index) {
-            this.show_owners.splice($index, 1);
+        this.addSocial = function(id){
+          this.socials.splice(id+1,0,angular.copy(this.social_template));
         }
-        this.removeShowTime = function ($index) {
-            this.show_times.splice($index, 1);
+        this.addOwner = function(){
+          //No need to check for duplicates, as there is only one id per member
+          var id = $('#member_access_select').val();
+    	  console.log(id);
+          /*Find objects with id = selected id and return them. As id's are unique we take the first one we get then add it to show owners list
+          Found at http://stackoverflow.com/questions/13964155/get-javascript-object-from-array-of-objects-by-value-or-property */
+          var exists = false;
+          console.log(this.show_owners);
+          for(var owner_index in this.show_owners){
+            if(this.show_owners[owner_index].id == id) exists = true;
+          }
+          if(!exists){
+            this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
+          }
         }
-        this.removePrimaryGenre = function ($index) {
-            this.primary_genres.splice($index, 1);
-            this.updatePrimaryGenres();
+        this.addShowTime = function($index){
+          this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
+          console.log(this.owners);
         }
-        this.removeSecondaryGenre = function ($index) {
-            this.secondary_genres.splice($index, 1);
-            this.updateSecondaryGenres();
+        this.addPrimaryGenre = function(){
+          var genre = this.genres[this.primary_genre_select];
+          if( !(this.primary_genres[0] == genre || this.primary_genres[1] == genre)){
+            this.primary_genres.splice(this.primary_genres.length,0,genre);
+          }
+          this.updatePrimaryGenres();
         }
-        this.updateShow = function () {
-            this.active_show = this.member_shows.filter(
-                (
-                    function (object) {
-                        if (object.id == this.show_value) return object;
-                    }
-                ).bind(this)
-            )[0];
-            this.loadShow();
+        this.addSecondaryGenre = function(){
+          var genre = this.secondary_genre_input;
+          var exists = false;
+          for(var g in this.secondary_genres){
+            if(g == genre) exists = true;
+          }
+          if(!exists){
+            this.secondary_genres.splice(this.secondary_genres.length,0,genre);
+            this.secondary_genre_input = '';
+          }
+          this.updateSecondaryGenres();
         }
-        this.updateShowtime = function (showtime) {
-            showtime.start_time = showtime.start_hour + ":" + showtime.start_minute + ":00";
-            showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
+        this.removeSocial = function(id){
+          this.socials.splice(id,1);
         }
-        this.updatePrimaryGenres = function () {
-            this.info.primary_genre_tags = this.primary_genres.join(',');
+        this.removeOwner = function($index){
+          this.show_owners.splice($index,1);
         }
-        this.updateSecondaryGenres = function () {
+        this.removeShowTime = function($index){
+          this.show_times.splice($index,1);
+        }
+        this.removePrimaryGenre= function($index){
+          this.primary_genres.splice($index,1);
+          this.updatePrimaryGenres();
+        }
+        this.removeSecondaryGenre= function($index){
+          this.secondary_genres.splice($index,1);
+          this.updateSecondaryGenres();
+        }
+        this.updateShow = function(){
+          this.active_show=this.member_shows.filter(
+            (
+              function(object){
+                if(object.id == this.show_value) return object;
+              }
+            ).bind(this)
+          )[0];
+          this.loadShow();
+        }
+        this.updateShowtime = function(showtime){
+          showtime.start_time = showtime.start_hour + ":" + showtime.start_minute + ":00";
+          showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
+        }
+        this.updatePrimaryGenres = function(){
+          this.info.primary_genre_tags = this.primary_genres.join(',');
+        }
+        this.updateSecondaryGenres = function(){
             this.info.secondary_genre_tags = this.secondary_genres.join(',');
-        }
-
+          }
         this.save = function () {
             this.info.edit_name = this.username;
             //this.info.edit_date = $filter('date')(new Date(),'yyyy/MM/dd HH:mm:ss');
@@ -575,23 +338,20 @@
 
         }
         this.log = function (element) {
-            console.log(element.files);
-            console.log('here');
-        }
+                console.log(element.files);
+                console.log('here');
+            }
         $scope.$on('image_upload', function () {
-            $scope.$apply(
-                (
-                    function () {
-                        this.info.show_img = shared.getShowImg();
-                    }
-                ).bind(this)
-            );
+                $scope.$apply(
+                    (
+                        function () {
+                            this.info.show_img = shared.getShowImg();
+                        }
+                    ).bind(this)
+                );
         });
-
-
         this.init();
     });
-
     //FILE UPLOAD CONTROLLER
     app.controller('FileUploadCtrl', function ($scope, $rootScope, shared) {
 
