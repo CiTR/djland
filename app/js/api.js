@@ -73,7 +73,7 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
                 return $http.get(API_URL_BASE+"/SAM/range?from="+from+"&to="+to);
             }
             else{
-                console.log("Invalid ranges fro getSamRange!");
+                console.log("Invalid ranges for getSamRange! from : ", from, " to : ", to);
                 return null;
             }
 		},

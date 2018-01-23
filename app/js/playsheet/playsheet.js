@@ -868,9 +868,11 @@
         this.samRange = function () {
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
 				(function(data){
-		            for (var samplay in data.data) {
-		                this.addSamPlay(this.formatSamPlay(data.data[samplay]));
-		            }
+                    if( data && data !== 'null' && data !== 'undefined'){
+		                for (var samplay in data.data) {
+                            this.addSamPlay(this.formatSamPlay(data.data[samplay]));
+		                }
+                    }
 		        }).bind(this)
 			);
             this.sam_visible= false;
@@ -878,10 +880,12 @@
         this.updateSamPlays = function(){
             call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
 				(function(data){
-		            this.samRecentPlays = [];
-		            for (var samplay in data.data) {
-		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
-		            }
+                    if( data && data !== 'null' && data !== 'undefined'){
+		                      this.samRecentPlays = [];
+		                      for (var samplay in data.data) {
+                                  this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
+		                      }
+                    }
 		        }).bind(this)
 			);
         }
