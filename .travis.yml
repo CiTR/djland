@@ -48,7 +48,7 @@ before_script:
 
 script:
     #TODO: add coverage and QUnit to travis CI tests
-  - vendor/bin/phpunit
+  - app/api2/vendor/bin/phpunit
 
 notifications:
   email:
