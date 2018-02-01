@@ -44,11 +44,12 @@ before_script:
   - cd ../../
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/000-default.conf
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
-  - sudo service apache2 restart
+  - sudo service apache2
+  - cd app/api2
 
 script:
     #TODO: add coverage and QUnit to travis CI tests
-  - ./app/api2/vendor/bin/phpunit
+  - vendor/bin/phpunit
 
 notifications:
   email:
