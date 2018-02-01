@@ -44,7 +44,7 @@ before_script:
   - cd ../../
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/000-default.conf
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
-  - sudo service apache2
+  - sudo service apache2 restart
   - cd app/api2
 
 script:
