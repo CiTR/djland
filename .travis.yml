@@ -14,6 +14,7 @@ before_install:
   - cd app/api2
   - cp .env.sample .env
   - cp phpunit.xml.sample phpunit.xml
+  - cd ../../
   - composer self-update
 
 install:
