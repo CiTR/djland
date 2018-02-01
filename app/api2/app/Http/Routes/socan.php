@@ -1,7 +1,7 @@
 <?php
 
 use App\Socan as Socan;
-use Validator\Validator;
+use Validator as Validator;
 
 Route::group(array('prefix'=>'socan'), function () {
     Route::get('/', function () {
@@ -9,17 +9,17 @@ Route::group(array('prefix'=>'socan'), function () {
     });
     Route::put('/', function () {
         $rules = array(
-            'socanStart' => 'required',
-            'socanEnd' => 'required'
+            'socan.socanStart' => 'required',
+            'socan.socanEnd' => 'required'
         );
         $messages = array(
-            'socanStart.required' => 'Please enter a start date',
-            'socanEnd.required' => 'Please enter an end date'
+            'socan.socanStart.required' => 'Please enter a start date',
+            'socan.socanEnd.required' => 'Please enter an end date'
         );
         $validator = Validator::make(Input::get(), $rules, $messages);
         if (!($validator->fails())) {
             try {
-                return Socan::create((array) Input::get());
+                return Socan::create((array) Input::get()['socan']);
             } catch (PDOException $e) {
                 return $e->getMessage();
             }
