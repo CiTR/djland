@@ -29,12 +29,12 @@ cache:
 
 before_script:
   - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - sudo apt-get --yes install apache2 libapache2-mod-fastcgi
   # enable php-fpm
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo ls -la ~/.phpenv/versions/$(phpenv version-name)/etc/
   - sudo ls -la ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d
-  - sudi ls -la ~/
+  - sudo ls -la ~/
   - sudo ls -la ~/.phpenv/versions/$(phpenv version-name)/
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
   - sudo a2enmod rewrite actions fastcgi alias
