@@ -101,8 +101,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
     });
 //});
 
-//Could be impoved by checking if the parent directory is writable
-function makedirs($dirpath, $mode=0777)
-{
-    return is_dir($dirpath) || mkdir($dirpath, $mode, true);
+if(!function_exists('makedirs')){
+    //Could be impoved by checking if the parent directory is writable
+    function makedirs($dirpath, $mode=0777)
+    {
+        return is_dir($dirpath) || mkdir($dirpath, $mode, true);
+    }
 }
