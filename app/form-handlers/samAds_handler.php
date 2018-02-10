@@ -1,5 +1,6 @@
 <?php
 require_once("../headers/db_header.php");
+require_once("../headers/sam_db_header.php");
 
 error_reporting(E_ALL);
 $today = date('Y-m-d');
