@@ -3,6 +3,7 @@
 
 include_once("headers/session_header.php");
 require_once("headers/security_header.php");
+require_once("headers/sam_db_header.php");
 require_once("headers/menu_header.php");
 require_once("adLib.php");
 
@@ -14,13 +15,13 @@ if( permission_level() >= $djland_permission_levels['staff']){ ?>
 
 <title>Ad Report</title>
 
- 
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="js/jquery.form.js"></script> 
+<script src="js/jquery.form.js"></script>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-  
+
   <script>
   $(function() {
     $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
@@ -42,21 +43,21 @@ echo '<h1>Ad Report</h1>';;
 	echo '<form id="adreport">
 			<label for="from">Start Date: </label>
 			<input type="text" id="from" name="from" value="'.$today.'"/>
-			
+
 			<label for="to">End Date: </label>
 			<input type="text" id="to" name="to" value="'.$today.'"/>
 			<br/>
 			(optional) Filter by Ad: '.
-			
+
 			$adLib->generateAdSelector()
 			.'</form>
-			
+
 			<button id="submitDates">Get Ad Report</button><span id="loadStatus">&nbsp;</span>
-			
+
 			<br/><br/>
 			<div id="result">&nbsp;</div>';
 
-	
+
 ?>
 <script>
  $(function() {
@@ -78,13 +79,13 @@ echo '<h1>Ad Report</h1>';;
     });
 
     $('#submitDates').click(function(){
-    	
+
 		filteredAd = $('.selectanad').val();
 		console.log(filteredAd);
     	var datefrom = $('#from').val();
     	var dateto = $('#to').val();
-    	
-    	
+
+
 	var text = $.ajax({
     	type: "POST",
    		url: "./form-handlers/adreport-handler.php",
@@ -97,24 +98,21 @@ echo '<h1>Ad Report</h1>';;
    			// when either error or success has occurred
 			$('#loadStatus').html('done');
    		},
-    	error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        	alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    	error: function(XMLHttpRequest, textStatus, errorThrown) {
+        	alert("Status: " + textStatus); alert("Error: " + errorThrown);
 
-    	},   
+    	},
     	success: function(text){
     		$('#loadStatus').html('Success!');// ALSO CHECK FOR NUM LOADED
-		
+
     		$('#result').html(text);
 
- 			 }  
-		});	
+ 			 }
+		});
     });
   });
-</script>  
+</script>
 
 <?php }else{
     header("Location: main.php");
 }?>
-
-
-

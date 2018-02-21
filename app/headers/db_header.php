@@ -37,16 +37,6 @@ try{
 // watch this space for a list of those table names in case you want to use a
 // different digital media player
 
-if($enabled['sam_integration']){
-    global $sam_db;
-    $sam_db['link'] = $mysqli_sam = new mysqli($sam_db['address'], $sam_db['username'], $sam_db['password'], $sam_db['database']);
-
-    if (mysqli_connect_error()) {
-        echo 'there is a connection error';
-        die('Connect Error for sam db (' . mysqli_connect_errno() . ') '
-                . mysqli_connect_error());
-    }
-}
 function mysqli_result_dep($res, $row, $field=0) {
 	if(is_object($res))
 		$res->data_seek($row);
