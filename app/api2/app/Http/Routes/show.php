@@ -118,6 +118,9 @@ Route::group(array('prefix'=>'show'),function(){
 			$s = Show::find($id);
 			$s->update($show);
 
+            $socials = array();
+            $show_times = array();
+
             if ($owners) {
                 //Detach current owners
                 foreach (Show::find($id)->members as $current_owner) {
