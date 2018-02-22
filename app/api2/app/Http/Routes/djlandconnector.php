@@ -143,11 +143,11 @@ if(!function_exists('playlist')){
 
         if(empty($podcast)){
             return array(
-                'api_message'   => '[NO PODCAST INFO]',
+                'api_message'   => '[NO RECORD FOUND]',
                 'message'       => 'no podcast found with this ID: '.$id,
             );
         }
-        
+
 		$ret = array_merge($playsheet[0], $podcast[0]);
 		$ret = collect($ret);
 		$ret->put('songs', Playitem::where('playsheet_id', '=', $id)->select('artist', 'album as title', 'song', 'composer', 'id')->get());
