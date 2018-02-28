@@ -338,7 +338,7 @@
                         alert("Successfully Saved");
                         console.log(response);
 
-                        call.makeXml(show['id']).then(
+                        call.makeXml(this.info.id).then(
                             function(response){
                                 console.log(response);
                             },
