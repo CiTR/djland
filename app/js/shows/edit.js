@@ -333,7 +333,7 @@
                 );
             } else {
                 call.saveShow(this.info, this.socials, this.show_owners, this.show_times).then(
-                    function (response) {
+                    (function (response) {
                         //                    console.log(response.data.message);
                         alert("Successfully Saved");
                         console.log(response);
@@ -347,7 +347,7 @@
                                 console.error(response);
                             }
                         );
-                    },
+                    }).bind(this),
                     function (error) {
                         alert("Failed to save");
                         console.error(response);
