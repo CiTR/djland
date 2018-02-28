@@ -320,7 +320,7 @@
                                 },
                                 function(error){
                                     alert('Failed to create xml.');
-                                    console.error(response);
+                                    console.error(error);
                                 }
                             );
                             this.refreshMemberShows();
@@ -328,7 +328,7 @@
                     ).bind(this),
                     function (error) {
                         alert("Failed to save");
-                        console.error(response);
+                        console.error(error);
                     }
                 );
             } else {
@@ -344,13 +344,13 @@
                             },
                             function(error){
                                 alert('Failed to create xml.');
-                                console.error(response);
+                                console.error(error);
                             }
                         );
                     }).bind(this),
                     function (error) {
                         alert("Failed to save");
-                        console.error(response);
+                        console.error(error);
 
                     });
             }

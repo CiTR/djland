@@ -171,7 +171,7 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 			return $http.get(API_URL_BASE+'/socan/check/'+(unixtime||''));
 		},
         makeXml : function(show_id){
-            return $http.post(API_URL_BASE+'/show/'+show_id+'/xml');
+            return $http.get(API_URL_BASE+'/show/'+show_id+'/xml');
         },
 		error: function(error){
 			return $http.post(API_URL_BASE+'/error',angular.toJson({'error':error}));
