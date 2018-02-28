@@ -314,6 +314,15 @@
 
                             //Refresh show list up top but don't load new show
                             this.show_value = "" + show['id']; //has to be a string
+                            call.makeXml(show['id']).then(
+                                function(response){
+                                    console.log(response);
+                                },
+                                function(error){
+                                    alert('Failed to create xml.');
+                                    console.error(response);
+                                }
+                            );
                             this.refreshMemberShows();
                         }
                     ).bind(this),
@@ -328,6 +337,16 @@
                         //                    console.log(response.data.message);
                         alert("Successfully Saved");
                         console.log(response);
+
+                        call.makeXml(show['id']).then(
+                            function(response){
+                                console.log(response);
+                            },
+                            function(error){
+                                alert('Failed to create xml.');
+                                console.error(response);
+                            }
+                        );
                     },
                     function (error) {
                         alert("Failed to save");
