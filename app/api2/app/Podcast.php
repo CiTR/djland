@@ -52,7 +52,7 @@ class Podcast extends Model
 
 	    //Archiver URL to download from
 
-	    $archive_url = $url['archiver_tool'].$url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
+	    $archive_url = $url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Strip Chars
     	$strip = array('(',')',"'",'"','.',"\\",'/',',',':',';','@','#','$','%','&','?','!');
@@ -73,7 +73,7 @@ class Podcast extends Model
 	        'comment'       => array('This podcast was created in part by CiTR Radio')
     	);
     	if(!$testing_environment){
-    		$target_dir = '/home/podcast/audio/'.$year.'/';
+    		$target_dir = $path['audio_base'].'/'.$year.'/';
     	}else{
     		$target_dir = $path['test_audio_base'].'/'.$year.'/';
 			if(!file_exists($target_dir)) mkdir($target_dir,0775);
@@ -141,7 +141,7 @@ class Podcast extends Model
 	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
 
 		//Archiver URL to download from
-	    $archive_url = $url['archiver_tool'].$url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
+	    $archive_url = $url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
 	    $target_dir = '/home/podcast/audio/';

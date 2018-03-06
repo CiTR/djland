@@ -135,7 +135,7 @@ class Upload extends Model{
     }
 	public function uploadAudio($file){
 		require(dirname($_SERVER['DOCUMENT_ROOT'])."/config.php");
-		if(!$file){
+		if(! is_object($file) ){
 			$response->text = "Valid file not given.";
 			$response->success = false;
 			return $response;
