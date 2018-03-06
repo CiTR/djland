@@ -314,24 +314,43 @@
 
                             //Refresh show list up top but don't load new show
                             this.show_value = "" + show['id']; //has to be a string
+                            call.makeXml(show['id']).then(
+                                function(response){
+                                    console.log(response);
+                                },
+                                function(error){
+                                    alert('Failed to create xml.');
+                                    console.error(error);
+                                }
+                            );
                             this.refreshMemberShows();
                         }
                     ).bind(this),
                     function (error) {
                         alert("Failed to save");
-                        console.error(response);
+                        console.error(error);
                     }
                 );
             } else {
                 call.saveShow(this.info, this.socials, this.show_owners, this.show_times).then(
-                    function (response) {
+                    (function (response) {
                         //                    console.log(response.data.message);
                         alert("Successfully Saved");
                         console.log(response);
-                    },
+
+                        call.makeXml(this.info.id).then(
+                            function(response){
+                                console.log(response);
+                            },
+                            function(error){
+                                alert('Failed to create xml.');
+                                console.error(error);
+                            }
+                        );
+                    }).bind(this),
                     function (error) {
                         alert("Failed to save");
-                        console.error(response);
+                        console.error(error);
 
                     });
             }
