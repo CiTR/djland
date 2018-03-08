@@ -2010,6 +2010,10 @@ div.floating {
   border-top: black 1px solid;
 }
 
+.playsheet-save {
+    margin: 1em;
+}
+
 .blocker {
   position: relative;
   bottom: 66px;

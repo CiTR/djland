@@ -76,8 +76,9 @@ class Podcast extends Model
     		$target_dir = $path['audio_base'].'/'.$year.'/';
     	}else{
     		$target_dir = $path['test_audio_base'].'/'.$year.'/';
-			if(!file_exists($target_dir)) mkdir($target_dir,0775);
     	}
+
+        if(!file_exists($target_dir)) mkdir($target_dir,0775);
 
     	//$target_dir = 'audio/'.$year.'/';
     	$target_file_name = $target_dir.$file_name;
@@ -133,10 +134,14 @@ class Podcast extends Model
 	private function overwrite_audio(){
 		require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 		date_default_timezone_set('America/Vancouver');
+
+        if(($this->duration > $djland_max_podcast_length) || $this->duration < 0){
+            return "Duration Wrong";
+        }
 		//Date Initialization
 		$start = strtotime($this->playsheet->start_time);
 		$end = $start + $this->duration;
-
+        $year = date('Y',$start);
 	    $start_date =  date('d-m-Y+G%3\Ai%3\As', $start);
 	    $end_date =  date('d-m-Y+G%3\Ai%3\As', $end);
 
@@ -144,11 +149,14 @@ class Podcast extends Model
 	    $archive_url = $url['archiver_request']."&startTime=".$start_date."&endTime=".$end_date;
 
 	    //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
-	    $target_dir = '/home/podcast/audio/';
-		if($testing_environment){
-			$target_dir = $path['test_audio_base'].'/';
-			if(!file_exists($target_dir)) mkdir($target_dir,0774);
-		}
+        if(!$testing_environment){
+    		$target_dir = $path['audio_base'].'/'.$year.'/';
+    	}else{
+    		$target_dir = $path['test_audio_base'].'/'.$year.'/';
+    	}
+
+        if(!file_exists($target_dir)) mkdir($target_dir,0775);
+
 
 	    if($this->url != null){
 	    	 $file_name = explode('/',$this->url,6)[5];
@@ -164,7 +172,7 @@ class Podcast extends Model
     	}
 
 
-	    $target_file_name = $target_dir.$file_name;
+	    $target_file_name = $target_dir . $file_name;
 		if(!file_exists($target_file_name)) fopen($target_file_name,'w');
 
 	    //Get Audio from Archiver

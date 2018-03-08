@@ -8,21 +8,23 @@
 		<link rel='stylesheet' href='css/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 
+        <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+        <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+    	<script type='text/javascript' src='js/constants.js'></script>
+    	<script type='text/javascript' src="js/angular.js"></script>
+    	<script type='text/javascript' src="js/angular/sortable.js"></script>
+    	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
+    	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
+
+    	<script type='text/javascript' src='js/playsheet/constants.js'></script>
+    	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
+    	<script type='text/javascript' src='js/api.js'></script>
+    	<script type='text/javascript' src='js/utils.js'></script>
+
 	</head>
 
 
-	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
-  <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
-	<script type='text/javascript' src='js/constants.js'></script>
-	<script type='text/javascript' src="js/angular.js"></script>
-	<script type='text/javascript' src="js/angular/sortable.js"></script>
-	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
-	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
-	<script type='text/javascript' src='js/playsheet/constants.js'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
-	<script type='text/javascript' src='js/api.js'></script>
-	<script type='text/javascript' src='js/utils.js'></script>
 	<body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 		<script type='text/javascript'>
 		var playsheet_id = "<?php if (isset($_GET['id'])) {
@@ -195,7 +197,12 @@
 			<hr style="side-padded">
 
 			<div class='col1 text-center'>
-				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
+                <div class="playsheet-save" ng-hide="!playsheet.complete">
+                    <div class="playsheet-save">
+                        Would you like to NOT (re)create the podcast? <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
+                    </div>
+				    <button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
+                </div>
 				<div class="blocker" ng-hide="playsheet.complete">
 					{{ playsheet.missing }}
 				</div>
