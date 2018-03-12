@@ -2017,6 +2017,7 @@ div.floating {
 .blocker {
   position: relative;
   bottom: 66px;
+  margin-top: 80px;
   background-color: black;
   color: red;
   height: 70px;
