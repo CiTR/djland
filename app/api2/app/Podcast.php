@@ -159,7 +159,7 @@ class Podcast extends Model
 
 
 	    if($this->url != null){
-	    	 $file_name = explode('/',$this->url,6)[5];
+	    	 $file_name = explode('/',$this->url,7)[6];
     	}else{
 	    	$file_date = date('F-d-H-i-s',$start);
 		    //Strip Chars
