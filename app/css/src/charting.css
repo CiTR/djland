@@ -21,7 +21,7 @@
 	position:relative;
 }
 
-#charting-title, .charting-row{
+#charting-title, .charting-row, .charting-row-sorted{
 	z-index:-1;
 	display:inline-block;
 	position:relative;
@@ -34,15 +34,22 @@
 	-webkit-border-radius: 5px 5px 0px 0px;
 	border-radius: 5px 5px 0px 0px;
 }
-.charting-row{
+.charting-row,
+.charting-row-sorted{
 	background-color: rgba(10,10,10,.30);
 	border: 1px solid black;
 	border-width:1px 0px 0px 0px;
 	font-size: 90%;
 }
 .charting-artist,
+.charting-artist-sorted,
 .charting-song,
+.charting-song-sorted,
 .charting-album,
+.charting-album-sorted,
+.charting-count-sorted,
+.charting-rowid,
+.charting-rowid-sorted,
 .charting-showname,
 .charting-date,
 .charting-cancon,
@@ -55,9 +62,27 @@
 	min-height:25px;
 }
 .charting-artist,
+.charting-artist-sorted,
 .charting-song,
-.charting-album{
+.charting-song-sorted,
+.charting-album,
+.charting-album-sorted{
 	width:175px;
+}
+.charting-artist-sorted,
+.charting-album-sorted,
+.charting-rowid,
+.charting-rowid-sorted,
+{
+    text-align: left;
+    margin-left: 10px;
+}
+.charting-count-sorted{
+    text-align: right;
+    margin-right: 10px;
+}
+#charting-container-sorted{
+    padding-top: 80px;
 }
 .charting-showname{
 	width: 200px;
