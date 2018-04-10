@@ -122,6 +122,9 @@ function sortChart(){
     var index = -1;
 
     for(var i=0; i < $('.charting-row').length; i++) {
+        if($('.charting-row')[i].children[7].innerHTML.trim().toLowerCase() == 'draft') {
+            continue;
+        }
         track = [
             $('.charting-row')[i].children[0].innerHTML.trim().toLowerCase(),
             $('.charting-row')[i].children[2].innerHTML.trim().toLowerCase()
