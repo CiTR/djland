@@ -174,7 +174,6 @@ class Show extends Model
         $episodes = $this->podcasts()->where('active', '=', '1')->orderBy('date', 'desc')->get();
 
         $file_name = $this['podcast_slug'].'.xml';
-        $url_path = 'http://playlist.citr.ca/podcasting/xml/';
         $response['show_name'] = $this->name;
 
 
@@ -265,12 +264,15 @@ class Show extends Model
 
 
         if (!$testing_environment) {
-            $target_dir = $path['xml_base'].'/';
+            $target_dir = $path['xml_base'] . '/';
+            $url_path   =  $url['xml_base'] . '/';
         } else {
-            $target_dir = $path['test_xml_base'].'/';
-            if (!file_exists($target_dir)) {
-                mkdir($target_dir, 0774);
-            }
+            $target_dir = $path['test_xml_base'] . '/';
+            $url_path   =  $url['test_xml_base'] . '/';
+        }
+
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0774);
         }
 
         //$target_dir = 'audio/'.$year.'/';
@@ -293,12 +295,14 @@ class Show extends Model
                 'size' => $num_bytes,
                 'url' => $url_path.$file_name
                 );
+            $this->podcast_xml = $response['response']['url'];
         }
 
         while (is_resource($target_file)) {
             //Handle still open
            fclose($target_file);
         }
+        $this->save();
         return $response;
     }
     public static function clean($string)
