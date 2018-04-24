@@ -25,6 +25,10 @@ $(document).ready ( function() {
     	loadCharts($('#from').val(), $('#to').val());
     });
 
+    $('#sort_charts').click(function(){
+        sortChart();
+    });
+
 
 });
 
@@ -108,4 +112,68 @@ function loadCharts(from,to){
 			console.log(error);
 			$('.loading').hide();
 		});
+}
+
+function sortChart(){
+
+    $('#charting-body-sorted').html('');
+
+    var chart = [];
+    var index = -1;
+
+    for(var i=0; i < $('.charting-row').length; i++) {
+        if($('.charting-row')[i].children[7].innerHTML.trim().toLowerCase() == 'draft') {
+            continue;
+        }
+        track = [
+            $('.charting-row')[i].children[0].innerHTML.trim().toLowerCase(),
+            $('.charting-row')[i].children[2].innerHTML.trim().toLowerCase()
+        ];
+
+        index = findTrackInChart(track, chart);
+        if( index < 0 ) {
+            chart.push([
+                track[0],
+                track[1],
+                1
+            ]);
+        }
+        else {
+            chart[index][2] ++ ; // track counter in chart
+        }
+    }
+
+    chart.sort(
+        function(a,b) {
+            if( a[2] == b[2] ){
+                if( a[0].localeCompare(b[0]) == 0 ){
+                    return a[1].localeCompare(b[1]);
+                }
+
+                return a[0].localeCompare(b[0]);
+            }
+
+            return b[2] - a[2];
+        }
+    );
+
+    for( var i = 0; i < chart.length; i++ ){
+        $('#charting-body-sorted').append('<div id="charting-row-sorted'    + i + '" class="charting-row-sorted"> </div>');
+        $('#charting-row-sorted'+i).append('<div id=charting-rowid-sorted'  + i + ' class=charting-rowid-sorted> '  + (i+1)       + '</div>');
+        $('#charting-row-sorted'+i).append('<div id=charting-artist-sorted' + i + ' class=charting-artist-sorted> ' + chart[i][0] + '</div>');
+        $('#charting-row-sorted'+i).append('<div id=charting-album-sorted'  + i + ' class=charting-album-sorted> '  + chart[i][1] + '</div>');
+        $('#charting-row-sorted'+i).append('<div id=charting-count-sorted'  + i + ' class=charting-count-sorted> '  + chart[i][2] + '</div>');
+    }
+
+    $('body').scrollTop($('#charting-body-sorted').offset().top - 100 );
+}
+
+function findTrackInChart(track, chart){
+    for(var i=0; i < chart.length; i++) {
+        if( track[0]==chart[i][0] && track[1]==chart[i][1]) {
+            return i;
+        }
+    }
+
+    return -1;
 }

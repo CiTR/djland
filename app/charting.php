@@ -32,6 +32,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){
             <label for="to">End Date: </label>
             <input type="text" id="to" name="to" />
             <button id='load_charts'>Load Charts</button>
+            <button id='sort_charts'>Sort Charts</button>
         <div id='charting-container'>
             <div id='charting-title'>
                 <div class='charting-artist'>Artist</div>
@@ -44,6 +45,16 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){
                 <div class='charting-status'>Status</div>
             </div>
             <div id='charting-body'>
+            </div>
+        </div>
+        <div id='charting-container-sorted'>
+            <div id='charting-title'>
+                <div class='charting-rowid'>#</div>
+                <div class='charting-artist'>Artist</div>
+                <div class='charting-album'>Album</div>
+                <div class='charting-count'>Count</div>
+            </div>
+            <div id='charting-body-sorted'>
             </div>
         </div>
     </center>

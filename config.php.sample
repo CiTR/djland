@@ -78,7 +78,8 @@ if($enabled['podcast_tools']){
 	//The maximum allowed podcast length in hours*minutes*seconds
 	//ie. set to 8*60*60 for 8 hour maximum limit
 	//set to -1 if you want podcasts to have no maximum length (WARNING: NOT RECOMMENDED IN PRODUCTION ENVIRONMENTS)
-	$max_podcast_length=8*60*60;
+	$max_podcast_length = 8*60*60;
+    $djland_max_podcast_length = 8*60*60;
 	//Unlimited length - comment above and uncomment below:
 	//$max_podcast_length = -1;
 
@@ -111,33 +112,7 @@ if($enabled['podcast_tools']){
 
 $djland_membership_rollover_month = 5;
 
-$library_folder = /home/library //no trailing slash
-
-//Podcasting tools support
-if($enabled['podcast_tools']){
-	//Local paths & Remote URLs for use with podcasting
-	$path = array();
-	$url = array();
-
-	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
-	//TODO: Update to OS independent paths
-	$path['audio_base'] = '/home/podcast/audio';
-	$url['audio_base'] = 'http://podcast.hostname.com/audio';
-	$path['xml_base'] = '/home/podcast/xml';
-	$url['xml_base']= 'http://podcast.hostname.com/xml';
-
-	//Archiver Access - do not use trailing slashes (ie. we want /audio vs. /audio/)
-	$url['archiver_tool'] = 'http://archive.citr.ca';
-	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
-
-	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
-	if($testing_environment==true){
-		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-		$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
-		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
-	}
-}
+$library_folder = '/home/library' //no trailing slash
 
 //The date at which your membership will roll into the next membership year.
 $djland_membership_cutoff_month=5;

@@ -191,14 +191,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			if(isset($ad['id'])){
 				$a = Ad::find($ad['id']);
 				unset($ad['id']);
-				$a->update((array) $ad);
+				$response['ads'][] = $a->update((array) $ad);
 			}else{
-				$a = Ad::create((array) $ad);
+				$response['ads'][] = Ad::create((array) $ad);
 			}
 		}
-		$response = new stdClass();
-		$response->id = $ps->id;
-		$response->podcast_id = $podcast->id;
+
+		$response['id'] = $ps->id;
+		$response['podcast_id'] = $podcast->id;
 		return Response::json($response);
 	});
 
@@ -247,8 +247,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			}
 			if(isset(Input::get()['ads'])){
 				foreach(Input::get()['ads'] as $ad){
+                    $ad['playsheet_id'] = $ps->id;
 					if(isset($ad['id'])){
-						$ad['playsheet_id'] = $ps->id;
 						$a = Ad::find($ad['id']);
 						unset($ad['id']);
 						$response['ads'][] = $a->update((array) $ad);

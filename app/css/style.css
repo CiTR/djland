@@ -54,86 +54,102 @@ table.ads > tbody > tr > td > input.name {
 /*--------CHARTING------------*/
 
 /*----------------------------*/
-
-.charting-container {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  -moz-border-radius: 5px 5px 0px 0px;
-  -webkit-border-radius: 5px 5px 0px 0px;
-  border-radius: 5px 5px 0px 0px;
+.charting-container{
+	width:80%;
+	margin-left: auto;
+	margin-right: auto;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
+}
+.charting-body
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:100%;
+	height:auto;
+	min-height:30px;
+	overflow:visible;
+	position:relative;
 }
 
-.charting-body {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: auto;
-  min-height: 30px;
-  overflow: visible;
-  position: relative;
+#charting-title, .charting-row, .charting-row-sorted{
+	z-index:-1;
+	display:inline-block;
+	position:relative;
+	width:960px;
+	padding-top:5px;
 }
-
-#charting-title,
-.charting-row {
-  z-index: -1;
-  display: inline-block;
-  position: relative;
-  width: 960px;
-  padding-top: 5px;
+#charting-title{
+	background-color: #1030BE;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
 }
-
-#charting-title {
-  background-color: #1030BE;
-  -moz-border-radius: 5px 5px 0px 0px;
-  -webkit-border-radius: 5px 5px 0px 0px;
-  border-radius: 5px 5px 0px 0px;
+.charting-row,
+.charting-row-sorted{
+	background-color: rgba(10,10,10,.30);
+	border: 1px solid black;
+	border-width:1px 0px 0px 0px;
+	font-size: 90%;
 }
-
-.charting-row {
-  background-color: rgba(10,10,10,.30);
-  border: 1px solid black;
-  border-width: 1px 0px 0px 0px;
-  font-size: 90%;
-}
-
 .charting-artist,
+.charting-artist-sorted,
 .charting-song,
+.charting-song-sorted,
 .charting-album,
+.charting-album-sorted,
+.charting-count-sorted,
+.charting-rowid,
+.charting-rowid-sorted,
 .charting-showname,
 .charting-date,
 .charting-cancon,
 .charting-playlist,
-.charting-status {
-  position: relative;
-  float: left;
-  display: inline-block;
-  min-width: 25px;
-  min-height: 25px;
+.charting-status{
+	position:relative;
+	float:left;
+	display:inline-block;
+	min-width:25px;
+	min-height:25px;
 }
-
 .charting-artist,
+.charting-artist-sorted,
 .charting-song,
-.charting-album {
-  width: 175px;
+.charting-song-sorted,
+.charting-album,
+.charting-album-sorted{
+	width:175px;
 }
-
-.charting-showname {
-  width: 200px;
+.charting-artist-sorted,
+.charting-album-sorted,
+.charting-rowid,
+.charting-rowid-sorted,
+{
+    text-align: left;
+    margin-left: 10px;
 }
-
+.charting-count-sorted{
+    text-align: right;
+    margin-right: 10px;
+}
+#charting-container-sorted{
+    padding-top: 80px;
+}
+.charting-showname{
+	width: 200px;
+}
 .charting-cancon,
-.charting-playlist {
-  width: 25px;
+.charting-playlist{
+	width:25px;
+}
+.charting-date{
+	width:110px;
+}
+.charting-status{
+	width:30px;
 }
 
-.charting-date {
-  width: 110px;
-}
-
-.charting-status {
-  width: 30px;
-}
 /*----------------------------*/
 
 /*----------CRTC Report ------*/
@@ -2010,9 +2026,14 @@ div.floating {
   border-top: black 1px solid;
 }
 
+.playsheet-save {
+    margin: 1em;
+}
+
 .blocker {
   position: relative;
   bottom: 66px;
+  margin-top: 80px;
   background-color: black;
   color: red;
   height: 70px;
