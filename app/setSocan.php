@@ -50,8 +50,14 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 						<input type="text" id="to" name="to" />
 
 					</form>
-
+                    <div>
+                        Note that in order to end on midnight,
+                        you must select the next day at 00:00 as it only selects day, and not time!
+                    </div>
+                    <br>
 				    <button id="createPeriod">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
+
+
                     <div id="result" class='padded-top'>&nbsp;</div>
 				</center>
 				<hr><br><center>These are the current SOCAN periods that are set:</center><br>
@@ -96,9 +102,6 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 						?>
 							</tbody>
 					</table>
-
-					<br>
-					Note that in order to end on midnight, you must select the next day at 00:00 as it only selects day, and not time!
 
 					</div>
 
