@@ -6,7 +6,7 @@ require_once('security_header.php');
 function admin_menu()
 {
     global $djland_permission_levels;
-    if (permission_level() >= $djland_permission_levels['administrator']) : ?>
+    if (permission_level() >= $djland_permission_levels['administrator']['level']) : ?>
         <ul id="admin-nav" class="nav mini">
             <li class="nodrop"><a href="../admin.php">Membership Admin</a></li>
             <li class="nodrop"><a href="data_structures.php">Data Structures</a></li>
@@ -160,4 +160,3 @@ function print_menu()
 // useful when testing time-related things while faking time
 //echo date('l jS \of F Y h:i:s A', get_time());
 //echo " (".get_time().")";
-?>

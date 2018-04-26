@@ -119,14 +119,14 @@ $djland_membership_cutoff_month=5;
 
 //Permission levels, their value, and the tooltip shown when you hover over it.
 $djland_permission_levels = array(
-    'operator'=>array('level'=>'99','name'=>'Operator','tooltip'=>'Power Overwhelming.'),
-    'administrator'=> array('level'=>'98','name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
-    'staff'=>array('level'=>'6','name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
-    'workstudy'=>array('level'=>'5','name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
-	'volunteer_leader'=>array('level'=>'4','name'=>'Volunteer Leader','tooltip'=>'Volunteer Leader: Access to library, email lists, and schedule overrides.'),
-    'volunteer'=>array('level'=>'3','name'=>'Volunteer','tooltip'=>'Volunteer: Access to charts, edit library, ad history.'),
-    'dj'=>array('level'=>'2','name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
-    'member'=>array('level'=>'1','name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
+    'operator'=>array('level'=>99,'name'=>'Operator','tooltip'=>'Power Overwhelming.'),
+    'administrator'=> array('level'=>98,'name'=>'Administrator','tooltip'=>'Administrator: Has all permissions, can create administrators.'),
+    'staff'=>array('level'=>6,'name'=>'Staff','tooltip'=>'Staff: Has all permissions, but rollover.'),
+    'workstudy'=>array('level'=>5,'name'=>'Workstudy','tooltip'=>'Workstudy: All access, but only email lists in membership.'),
+	'volunteer_leader'=>array('level'=>4,'name'=>'Volunteer Leader','tooltip'=>'Volunteer Leader: Access to library, email lists, and schedule overrides.'),
+    'volunteer'=>array('level'=>3,'name'=>'Volunteer','tooltip'=>'Volunteer: Access to charts, edit library, ad history.'),
+    'dj'=>array('level'=>2,'name'=>'DJ','tooltip'=>'DJ: Access to playsheets, and personalized CRTC report.'),
+    'member'=>array('level'=>1,'name'=>'Member','tooltip'=>'Member: Access to my Profile, resources, and help.')
 	);
 //Possible trainings for members
 $djland_training = array(
@@ -229,6 +229,9 @@ $djland_primary_genres = array(
 	"Roots / Blues / Folk",
 	"Talk"
 	);
+
+$djland_subgenres = array();
+
 //Upload categories, and their accepted formats.
 $djland_upload_categories = array(
 	"show_image"=>array('jpg','jpeg','gif','png'),
