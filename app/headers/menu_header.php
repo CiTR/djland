@@ -28,7 +28,7 @@ function print_menu()
 		<li class=nodrop><a href="membership.php">Membership</a></li>
 		<?php
             endif;
-    if (permission_level() > $djland_permission_levels['member']['level']): ?>
+    if (permission_level() >= $djland_permission_levels['member']['level']): ?>
 		<li class=drop><a href="library.php">Library</a>
 			<div class="dropdown small">
 				<div class=small>
