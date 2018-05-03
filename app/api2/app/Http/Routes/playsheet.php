@@ -182,6 +182,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$podcast_in['subtitle'] = $ps->summary;
 		$podcast = Podcast::create($podcast_in);
 
+		$show = $ps->show()->first();
+		$show->last_show = $ps->create_date;
+		$show->save();
+
 		foreach(Input::get()['playitems'] as $playitem){
 			$playitem['playsheet_id'] = $ps->id;
 			Playitem::create($playitem);
