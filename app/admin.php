@@ -9,7 +9,7 @@ include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['administrator']){ ?>
+if( permission_level() >= $djland_permission_levels['administrator']['level']){ ?>
     <html>
     <head>
         <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
@@ -35,7 +35,7 @@ if( permission_level() >= $djland_permission_levels['administrator']){ ?>
     ?>
     <div class="wrapper">
         <h1>Administrator Tools</h1>
-        
+
     </div>
 
     </body>

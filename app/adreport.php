@@ -10,7 +10,7 @@ require_once("adLib.php");
 printf("<html><head><meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">");
 printf("<link rel=stylesheet href=css/style.css type=text/css>");
 //printf("<title>CiTR 101.9</title></head><body class='wallpaper'>");
-if( permission_level() >= $djland_permission_levels['staff']){ ?>
+if( permission_level() >= $djland_permission_levels['staff']['level']){ ?>
 
 
 <title>Ad Report</title>

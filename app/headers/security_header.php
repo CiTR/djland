@@ -111,7 +111,7 @@ function has_show_access($show_id)
 {
     global $db,$djland_permission_levels;
 
-    if (permission_level() >= $djland_permission_levels['staff']) {
+    if (permission_level() >= $djland_permission_levels['staff']['level']) {
         return true;
     }
 
@@ -132,7 +132,7 @@ function has_show_access($show_id)
 function users_show()
 {
     global $db,$djland_permission_levels;
-    if (permission_level() >= $djland_permission_levels['staff']) {
+    if (permission_level() >= $djland_permission_levels['staff']['level']) {
         $query = "SELECT show_id FROM shows WHERE active ='1'";
     } else {
         $query = 'SELECT show_id FROM member_show WHERE member_id = '.$_SESSION['sv_id'];

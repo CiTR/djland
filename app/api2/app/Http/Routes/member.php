@@ -185,7 +185,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 			Route::get('shows', function($member_id = id){
 				$shows = new StdClass();
-				if(Member::find($member_id)->member_type == 'Staff'){
+				if(Member::find($member_id)->isStaff()){
 					$all_shows = Show::orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];

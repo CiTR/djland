@@ -39,7 +39,7 @@ class Member extends Model
     }
     public function isStaff()
     {
-        return ($this->member_type == 'Staff' || $this->user->permission['workstudy'] == 1 || $this->user->permission['staff'] ==1 || $this->user->permission['administrator']==1 || $this->user->permission['operator'] ==1) ? true : false;
+        return ($this->member_type == 'Staff' || $this->user->permission['staff'] ==1 || $this->user->permission['administrator']==1 || $this->user->permission['operator'] ==1) ? true : false;
     }
     public function isAdmin()
     {
