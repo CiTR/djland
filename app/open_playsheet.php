@@ -19,7 +19,7 @@
 		<div class='text-center'>Filter by show name
 			<select ng-model='open_playsheet.show_select'>
 				<option value='all'>All Shows</option>
-				<option ng-repeat = 'show in open_playsheet.shows | orderBy:show.name' value='{{show.id}}'>{{show.name}}</option>
+				<option ng-repeat = "show in open_playsheet.shows | orderBy:'name'" value='{{show.id}}'>{{show.name}}</option>
 			</select>
 			<button ng-click='open_playsheet.more(true)'>Load</button>
 		</div>
