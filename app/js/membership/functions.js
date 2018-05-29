@@ -279,6 +279,7 @@ function displayMemberList(search_by, value, paid, year, search_has_show, order_
         var member_result_table = $('#membership_table[name="search"]');
         var member_result_header = $('#headerrow');
         member_result_header.show();
+        console.log(data);
         for (var member in data) {
             var m = data[member];
             member_result_table.append("<tr id=row" + m.id + " class='member_row' name='" + m.id + "'></tr>");

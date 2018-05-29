@@ -172,7 +172,7 @@ class Member extends Model
                 $query->orderBy('m.id', 'DESC');
                 break;
         }
-        $result = $query->get();
+        $result = $query->distinct()->get();
         $permissions = Member::find($_SESSION['sv_id'])->user->permission;
 
         if ($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1) {
@@ -183,7 +183,10 @@ class Member extends Model
     }
     public static function email_list($from, $to, $type, $value, $year)
     {
-        $query = Member::select('membership.email')->join('membership_years', 'membership_years.member_id', '=', 'membership.id')->where('email', '!=', 'null')->orderBy('email', 'desc');
+        $query = Member::select('membership.email')
+            ->join('membership_years', 'membership_years.member_id', '=', 'membership.id')
+            ->where('email', '!=', 'null')
+            ->orderBy('email', 'desc');
 
         if ($type == 'member_type') {
             if ($value != 'all') {
@@ -221,7 +224,7 @@ class Member extends Model
         if($year != 'all'){
             $query->where('membership_years.membership_year','=',$year);
         }
-        return $query->get();
+        return $query->distinct('membership.email')->get();
     }
     public static function report($start, $end)
     {
