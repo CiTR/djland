@@ -128,6 +128,10 @@
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
 				</div>
+				<div class='containerrow'>
+					<div class='col5'>Have you contributed to Discorder?</div>
+					<div class='col5'><input type='checkbox' id='discorder_contributor'></div>
+				</div>
 				<hr>
 				<div id='row8' class='containerrow'>
 					<div class='col7'>Email Address*: </div>

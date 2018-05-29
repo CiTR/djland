@@ -62,6 +62,7 @@
 							<option value='name'>Name</option>
 							<option value='interest'>Interest</option>
 							<option value='member_type'>Member Type</option>
+							<option value='member_activity'>Member Activity</option>
 						</select>
 						<input class='search_value' name='name' placeholder='Enter a name'/>
 						<select class='search_value hidden' name='interest'>
@@ -74,6 +75,13 @@
 						<select class='search_value hidden' name='member_type'>
 							<?php
 								foreach($djland_member_types as $key=>$value){
+									echo "<option value='{$value}'>{$key}</option>";
+								}
+							?>
+						</select>
+						<select class='search_value hidden' name='member_activity'>
+							<?php
+								foreach($djland_member_activities as $key=>$value){
 									echo "<option value='{$value}'>{$key}</option>";
 								}
 							?>
@@ -235,10 +243,14 @@
 					</div>
 				</div>
 				<div class='containerrow'>
-					<div class='col5'>Do you have a show?*:</div>
+					<div class='col5'>Do you have a show at CiTR?*:</div>
 					<div class='col5'><input id='has_show' type='checkbox' ></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
+				</div>
+				<div class='containerrow'>
+					<div class='col5'>Have you contributed to Discorder?</div>
+					<div class='col5'><input type='checkbox' id='discorder_contributor'></div>
 				</div>
 				<hr>
 				<div id='row8' class='containerrow'>

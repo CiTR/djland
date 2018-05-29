@@ -11,7 +11,7 @@ class Member extends Model
     protected $table = 'membership';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array( 'lastname', 'firstname', 'canadian_citizen', 'address', 'city', 'province', 'postalcode', 'member_type', 'is_new', 'alumni', 'since', 'faculty', 'schoolyear', 'student_no', 'integrate', 'has_show', 'show_name', 'primary_phone', 'secondary_phone', 'email', 'joined', 'comments', 'about', 'skills', 'status', 'exposure', 'station_tour', 'technical_training', 'programming_training', 'production_training', 'spoken_word_training');
+    protected $fillable = array( 'lastname', 'firstname', 'canadian_citizen', 'address', 'city', 'province', 'postalcode', 'member_type', 'is_new', 'alumni', 'since', 'faculty', 'schoolyear', 'student_no', 'integrate', 'has_show', 'show_name', 'primary_phone', 'secondary_phone', 'email', 'joined', 'comments', 'about', 'skills', 'status', 'exposure', 'station_tour', 'technical_training', 'programming_training', 'production_training', 'spoken_word_training', 'discorder_contributor');
 
     public function shows()
     {
@@ -105,6 +105,21 @@ class Member extends Model
             case 'member_type':
                 $query->where('m.member_type', '=', $value);
                 break;
+            case 'member_activity':
+                switch ($value) {
+                    case 'Programmers':
+                        $query->where('m.has_show', '=', '1');
+                        break;
+                    case 'Contributor':
+                        $query->where('m.discorder_contributor', '=', '1');
+                        break;
+                    case 'All':
+                        break;
+                    case 'General':
+                        break;
+                    default:
+                        break;
+                }
             default:
                 print_r('Default');
                 break;
