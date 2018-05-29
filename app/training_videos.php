@@ -40,7 +40,7 @@ error_reporting(E_ALL);
                     <li><a href="#Installment3">Installment 3: Audacity Tools Basics</a></li>
                     <li><a href="#Installment4">Installment 4: Saving in Audacity</a></li>
                     <li><a href="#Installment5">Installment 5: Using the Mics in the Studio</a></li>
-                    <li><a href="#Installmenl6">Installment 6: Boards and Previewing</a></li>
+                    <li><a href="#Installment6">Installment 6: Boards and Previewing</a></li>
                     <li><a href="#Installment7">Installment 7: Recording an On-Air Call</a></li>
                     <li><a href="#Installment8">Installment 8: Cues in SAM</a></li>
                 </ul>
@@ -48,42 +48,66 @@ error_reporting(E_ALL);
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment1"><h1>Installment 1: Using DJLAND</h1></a>
+                <a id="Installment1">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/NkNHMlP-W1Q"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment2"><h1>Installment 2: Recording Audio in Audacity</h1></a>
+                <a id="Installment2">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/tCNmdPuZPVQ"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment3"><h1>Installment 3: Audacity Tools Basics</h1></a>
+                <a id="Installment3">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/EJr25VoorEQ"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment4"><h1>Installment 4: Saving in Audacity</h1></a>
+                <a id="Installment4">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/cjPlLPvlP2Y"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment5"><h1>Installment 5: Using the Mics in the Studio</h1></a>
+                <a id="Installment5">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/hJPouZsjbPU"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment6"><h1>Installment 6: Boards and Previewing</h1></a>
+                <a id="Installment6">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/FzOL4_GUGeQ"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment7"><h1>Installment 7: Recording an On-Air Call</h1></a>
+                <a id="Installment7">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/Fb7iDpnvbQE"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
             <br />
             <br />
             <div class="center" style="max-width:830px">
-                <a name="#Installment8"><h1>Installment 8: Cues in SAM</h1></a>
+                <a id="Installment8">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/40U5eCa0m7s"
+					frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</a>
             </div>
 		</div>
 	</body>
