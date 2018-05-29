@@ -60,11 +60,15 @@
 					<li id='search'>Search By:
 						<select id='search_by'>
 							<option value='name'>Name</option>
+							<option value='email'>Email</option>
+							<option value='phone'>Phone</option>
 							<option value='interest'>Interest</option>
 							<option value='member_type'>Member Type</option>
 							<option value='member_activity'>Member Activity</option>
 						</select>
 						<input class='search_value' name='name' placeholder='Enter a name'/>
+						<input class='search_value hidden' name='email' placeholder='Enter an e-mail'/>
+						<input class='search_value hidden' name='phone' placeholder='Enter a phone #'/>
 						<select class='search_value hidden' name='interest'>
 							<?php
 								foreach($djland_interests as $key=>$value){
@@ -433,6 +437,7 @@
    					<select id='email_select'>
    						<option value='interest'>that are interested in</option>
    						<option value='member_type'>of type</option>
+						<option value='member_activity'>of activity</option>
    					</select>
 				</li>
    				<li>
@@ -448,6 +453,13 @@
    						<option value='all'>All</option>
    						<?php
    							foreach($djland_member_types as $key=>$value){
+   								echo "<option value='{$value}'>{$key}</option>";
+   							}
+   						?>
+   					</select>
+					<select name='member_activity' class='email_select_value hidden'>
+   						<?php
+   							foreach($djland_member_activities as $key=>$value){
    								echo "<option value='{$value}'>{$key}</option>";
    							}
    						?>

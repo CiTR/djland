@@ -84,7 +84,7 @@ class Member extends Model
 
         //Handle Search Type
         switch ($parameter) {
-            case 'name':
+            case 'name': {
                 $search_terms = explode(' ', $value);
                 $search_term_count = sizeof($search_terms);
                 if ($search_term_count == 2) {
@@ -99,13 +99,28 @@ class Member extends Model
                     });
                 }
                 break;
-            case 'interest':
+            }
+            case 'email': {
+                $query->where(function ($subquery) use ($value) {
+                    $subquery->where('m.email', 'LIKE', '%'.$value.'%');
+                });
+                break;
+            }
+            case 'phone': {
+                $query->where(function ($subquery) use ($value) {
+                    $subquery->where('m.primary_phone', 'LIKE', '%'.$value.'%')->orWhere('m.secondary_phone', 'LIKE', '%'.$value.'%');
+                });
+                break;
+            }
+            case 'interest': {
                 $query->where('my.'.$value, '=', '1');
                 break;
-            case 'member_type':
+            }
+            case 'member_type': {
                 $query->where('m.member_type', '=', $value);
                 break;
-            case 'member_activity':
+            }
+            case 'member_activity': {
                 switch ($value) {
                     case 'Programmers':
                         $query->where('m.has_show', '=', '1');
@@ -120,9 +135,12 @@ class Member extends Model
                     default:
                         break;
                 }
-            default:
+                break;
+            }
+            default: {
                 print_r('Default');
                 break;
+            }
         }
         //Paid Status
         if ($paid != 'both') {
@@ -170,6 +188,21 @@ class Member extends Model
         if ($type == 'member_type') {
             if ($value != 'all') {
                 $query->where('member_type', '=', $value);
+            }
+        } elseif ($type == 'member_activity') {
+            switch ($value) {
+                case 'Programmers':
+                    $query->where('has_show', '=', '1');
+                    break;
+                case 'Contributor':
+                    $query->where('discorder_contributor', '=', '1');
+                    break;
+                case 'All':
+                    break;
+                case 'General':
+                    break;
+                default:
+                    break;
             }
         } elseif ($type == 'interest') {
             if ($value != 'all') {
