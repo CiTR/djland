@@ -130,7 +130,9 @@ class Member extends Model
                         break;
                     case 'All':
                         break;
-                    case 'General':
+                    case 'Other':
+                        $query->where('m.has_show', '=', '0');
+                        $query->where('m.discorder_contributor', '=', '0');
                         break;
                     default:
                         break;
@@ -202,7 +204,9 @@ class Member extends Model
                     break;
                 case 'All':
                     break;
-                case 'General':
+                case 'Other':
+                    $query->where('has_show', '=', '0');
+                    $query->where('discorder_contributor', '=', '0');
                     break;
                 default:
                     break;
