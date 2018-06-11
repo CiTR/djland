@@ -37,7 +37,6 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\"/>
 		<link rel=stylesheet href=css/style.css type=text/css />
-		<link rel=stylesheet href=css/bootstrap.css type=text/css />
 		<title><?php echo $station_info['name']; ?></title>
 	</head>
 	<body class='wallpaper'>
