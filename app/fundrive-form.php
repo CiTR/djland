@@ -70,7 +70,7 @@ if( !(permission_level() >= $djland_permission_levels['staff']['level'] || $_SES
 	header("Location: main.php");
 }
 $shows = array();
-$api_base = 'http://'.$_SERVER['HTTP_HOST'];
+$api_base = 'https://'.$_SERVER['HTTP_HOST'];
 $shows = CallAPI('GET',$api_base.'/api2/public/show/active');
 ?>
 

@@ -21,8 +21,8 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 		<title>Set Socan</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="js/jquery.form.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-	  	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	  	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	  	<script src='js/socan/socan.js'></script>
 		<script src="js/jquery.dataTables.min.js"></script>
 
@@ -64,7 +64,7 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 
 				<?php
 
-                $api_base = 'http://'.$_SERVER['HTTP_HOST'];
+                $api_base = 'https://'.$_SERVER['HTTP_HOST'];
                 $socanPeriods = CallAPI('GET', $api_base.'/api2/public/socan');
                 if (count($socanPeriods) != 0) {
                     ?>

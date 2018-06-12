@@ -656,7 +656,7 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     $scope.hitHelp =			"Has the song ever been a hit in Canada?  By law, the maximum is 10% Hits played, but we aim for 0% - you really shouldn't play hits!";
     $scope.themeHelp =			"Is the song your themesong?";
     $scope.backgroundHelp =	"Is the song playing in the background? Talking over the intro to a song does not count as background";
-    $scope.crtcHelp =			"Category 2: Rock, Pop, Dance, Country, Acoustic, Easy Listening.  Category 3: Concert, Folk, World Beat, Jazz, Blues, Religious, Experimental. <a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'>Click for more info</a>";
+    $scope.crtcHelp =			"Category 2: Rock, Pop, Dance, Country, Acoustic, Easy Listening.  Category 3: Concert, Folk, World Beat, Jazz, Blues, Religious, Experimental. <a href='https://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'>Click for more info</a>";
     $scope.songHelp =			"Enter the name of the song";
     $scope.langHelp =			"The language of the song";
     $scope.adsHelp =			"Station IDs must be played or spoken in the first ten minutes of every hour";

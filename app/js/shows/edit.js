@@ -101,7 +101,7 @@
     		(
     		  function(response){
     		    this.info = response.data;
-
+                this.info.image = this.info.image.replace(/^http:/gi, 'https:');
     		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
     		    this.info.name = tools.decodeHTML(this.info.name);
     		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
@@ -161,7 +161,10 @@
     		);
     		call.getShowImages(this.active_show.id).then(
     			(function(response){
-    				this.images = response.data;
+                    this.images = response.data;
+                    for(image in this.images) {
+                        this.images[image].url = this.images[image].url.replace(/^http:/gi, 'https:');
+                    }
     				console.log(this.images);
     			}).bind(this)
 

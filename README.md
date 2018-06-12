@@ -1,10 +1,10 @@
 # DJLAND
 
-![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=capstone)
+![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)
 
 A free and open source web application built for community radio.
 
-Optionally, DJLAND can also integrate with SAM Broadcaster (http://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
+Optionally, DJLAND can also integrate with SAM Broadcaster (https://spacial.com/sam-broadcaster) for additional features, such as AD Scheduling and SAM play history access.
 
 The installation process is very similar to Wordpress - just specify your server's database credentials and everything else is built automatically.
 

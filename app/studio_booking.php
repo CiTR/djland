@@ -31,13 +31,13 @@ error_reporting(E_ALL);
 				<iframe src="https://citrstudiob.youcanbook.me" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
 			</div>
 			<div class="center" style="max-width:830px">
-				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_alhprjo077j16o3tp2r468mucg%40group.calendar.google.com&amp;ctz=America/Vancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="http://www.google.com/calendar/embed?src=citr.ca_alhprjo077j16o3tp2r468mucg%40group.calendar.google.com&amp;ctz=America/Vancouver" target="_blank">See the Studio B bookings here</a></p>			
+				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_alhprjo077j16o3tp2r468mucg%40group.calendar.google.com&amp;ctz=America/Vancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="https://www.google.com/calendar/embed?src=citr.ca_alhprjo077j16o3tp2r468mucg%40group.calendar.google.com&amp;ctz=America/Vancouver" target="_blank">See the Studio B bookings here</a></p>			
 			</div>
 			<div class="youCanBookMe_Container">
 				<iframe src="https://citrstudioc.youcanbook.me" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
 			</div>
 			<div class="center" style="max-width:830px">
-				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_enon4vvn43udfr5p8d6p4bb4pg%40group.calendar.google.com&#038;ctz=America/Vancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="http://www.google.com/calendar/embed?src=citr.ca_enon4vvn43udfr5p8d6p4bb4pg%40group.calendar.google.com&#038;ctz=America/Vancouver" target="_blank">See the Studio C bookings here</a><br />
+				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_enon4vvn43udfr5p8d6p4bb4pg%40group.calendar.google.com&#038;ctz=America/Vancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="https://www.google.com/calendar/embed?src=citr.ca_enon4vvn43udfr5p8d6p4bb4pg%40group.calendar.google.com&#038;ctz=America/Vancouver" target="_blank">See the Studio C bookings here</a><br />
 			</div>
 			<div class="center" style="max-width:830px">
 				</br>		

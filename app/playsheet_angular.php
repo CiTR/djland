@@ -159,7 +159,7 @@
 						<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
 						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
 						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
-						<th><a href='http://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
+						<th><a href='https://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"/></th>
 						<th><th><th></th>
 					</tr>

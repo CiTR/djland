@@ -138,12 +138,12 @@
 					<h4>Audio Paths</h4>
 					<div>
 						Local Path to Audio<input name='path[audio_base]' class='form-control' placeholder='/path/to/audio/base' />
-						Web Path to Audio<input name='url[audio_base]' class='form-control' placeholder='http://path/to/hosted/audio/base' />
+						Web Path to Audio<input name='url[audio_base]' class='form-control' placeholder='https://path/to/hosted/audio/base' />
 					</div>
 					<h4>Show XML Paths</h4>
 					<div>
 						Local Path to XMLs<input name='path[xml_base]' class='form-control' placeholder='/path/to/xml/base' />
-						Web Path to XMLs<input name='url[xml_base]' class='form-control' placeholder='http://path/to/hosted/xml/base' />
+						Web Path to XMLs<input name='url[xml_base]' class='form-control' placeholder='https://path/to/hosted/xml/base' />
 					</div>
 					<h4>Podcast Audio Generator</h4>
 					<div>

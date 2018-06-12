@@ -15,8 +15,8 @@
 		<script type='text/javascript' src='js/membership/signup.js'></script>
 
 
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+		<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	</head>
 	<body class='wallpaper'>
 		<div id='membership' class='wrapper' >

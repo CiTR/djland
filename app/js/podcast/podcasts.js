@@ -362,6 +362,7 @@
             link: function (scope) {
                 scope.$watch('source', function (newVal, oldVal) {
                    if (newVal !== undefined) {
+                       newVal = newVal.replace(/^http:/gi, 'https:');
                        scope.url = $sce.trustAsResourceUrl(newVal);
                    }
                 });

@@ -20,8 +20,8 @@ if( permission_level() >= $djland_permission_levels['administrator']['level']){ 
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="js/jquery.form.js"></script>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+        <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
         <script type="text/javascript" src="js/admin.js"></script>
         <script>
             $(function() {
