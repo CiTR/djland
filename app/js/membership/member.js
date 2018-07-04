@@ -48,6 +48,7 @@ function Member(id){
 			faculty: null,
 			firstname: null,
 			has_show: null,
+			discorder_contributor: null,
 			integrate: null,
 			is_new: null,
 			joined: null,

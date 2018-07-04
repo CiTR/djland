@@ -15,8 +15,8 @@
 		<script type='text/javascript' src='js/membership/signup.js'></script>
 
 
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+		<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	</head>
 	<body class='wallpaper'>
 		<div id='membership' class='wrapper' >
@@ -142,6 +142,10 @@
 					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
+				</div>
+				<div class='containerrow'>
+					<div class='col5'>Have you contributed to Discorder?</div>
+					<div class='col5'><input type='checkbox' id='discorder_contributor'></div>
 				</div>
 
 				<hr>

@@ -17,8 +17,8 @@ require_once("headers/menu_header.php");
 
 <?php
 //<script src="js/jquery.form.js"></script>
-//<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-//  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+//<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+//  <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 
 echo "</head><body class='wallpaper'>";

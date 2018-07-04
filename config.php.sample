@@ -26,7 +26,7 @@ $station_info['password_recovery_name'] = 'Person'; //Used on the login screen, 
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 $station_info['timezone'] = 'America/Vancouver';
 
-// For timezone reference http://ca1.php.net/manual/en/timezones.php
+// For timezone reference https://ca1.php.net/manual/en/timezones.php
 
 //*******************************************
 //* 2) DJLand Enabled Features
@@ -45,7 +45,7 @@ $enabled['charts'] = true; // Chart week display for the music director - pulls 
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = true; // show podcast manager
-$enabled['sam_integration'] = false; // If you use SAM -  http://spacial.com/sam-broadcaster-pro/
+$enabled['sam_integration'] = false; // If you use SAM -  https://spacial.com/sam-broadcaster-pro/
 
 
 
@@ -89,12 +89,12 @@ if($enabled['podcast_tools']){
 
 	//Podcast paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	$path['audio_base'] = '/home/podcast/audio';
-	$url['audio_base'] = 'http://podcast.hostname.com/audio';
+	$url['audio_base'] = 'https://podcast.hostname.com/audio';
 	$path['xml_base'] = '/home/podcast/xml';
-	$url['xml_base']= 'http://podcast.hostname.com/xml';
+	$url['xml_base']= 'https://podcast.hostname.com/xml';
 
 	//Archiver Access
-	$url['archiver_tool'] = 'http://archive.citr.ca';
+	$url['archiver_tool'] = 'https://archive.citr.ca';
 	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
 
 	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)

@@ -11,7 +11,7 @@ class Member extends Model
     protected $table = 'membership';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array( 'lastname', 'firstname', 'canadian_citizen', 'address', 'city', 'province', 'postalcode', 'member_type', 'is_new', 'alumni', 'since', 'faculty', 'schoolyear', 'student_no', 'integrate', 'has_show', 'show_name', 'primary_phone', 'secondary_phone', 'email', 'joined', 'comments', 'about', 'skills', 'status', 'exposure', 'station_tour', 'technical_training', 'programming_training', 'production_training', 'spoken_word_training');
+    protected $fillable = array( 'lastname', 'firstname', 'canadian_citizen', 'address', 'city', 'province', 'postalcode', 'member_type', 'is_new', 'alumni', 'since', 'faculty', 'schoolyear', 'student_no', 'integrate', 'has_show', 'show_name', 'primary_phone', 'secondary_phone', 'email', 'joined', 'comments', 'about', 'skills', 'status', 'exposure', 'station_tour', 'technical_training', 'programming_training', 'production_training', 'spoken_word_training', 'discorder_contributor');
 
     public function shows()
     {
@@ -84,7 +84,7 @@ class Member extends Model
 
         //Handle Search Type
         switch ($parameter) {
-            case 'name':
+            case 'name': {
                 $search_terms = explode(' ', $value);
                 $search_term_count = sizeof($search_terms);
                 if ($search_term_count == 2) {
@@ -99,15 +99,50 @@ class Member extends Model
                     });
                 }
                 break;
-            case 'interest':
+            }
+            case 'email': {
+                $query->where(function ($subquery) use ($value) {
+                    $subquery->where('m.email', 'LIKE', '%'.$value.'%');
+                });
+                break;
+            }
+            case 'phone': {
+                $query->where(function ($subquery) use ($value) {
+                    $subquery->where('m.primary_phone', 'LIKE', '%'.$value.'%')->orWhere('m.secondary_phone', 'LIKE', '%'.$value.'%');
+                });
+                break;
+            }
+            case 'interest': {
                 $query->where('my.'.$value, '=', '1');
                 break;
-            case 'member_type':
+            }
+            case 'member_type': {
                 $query->where('m.member_type', '=', $value);
                 break;
-            default:
+            }
+            case 'member_activity': {
+                switch ($value) {
+                    case 'Programmers':
+                        $query->where('m.has_show', '=', '1');
+                        break;
+                    case 'Contributor':
+                        $query->where('m.discorder_contributor', '=', '1');
+                        break;
+                    case 'All':
+                        break;
+                    case 'Other':
+                        $query->where('m.has_show', '=', '0');
+                        $query->where('m.discorder_contributor', '=', '0');
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+            default: {
                 print_r('Default');
                 break;
+            }
         }
         //Paid Status
         if ($paid != 'both') {
@@ -139,7 +174,7 @@ class Member extends Model
                 $query->orderBy('m.id', 'DESC');
                 break;
         }
-        $result = $query->get();
+        $result = $query->distinct()->get();
         $permissions = Member::find($_SESSION['sv_id'])->user->permission;
 
         if ($permissions['operator'] == 1 || $permissions['administrator']==1 || $permissions['staff'] == 1) {
@@ -150,11 +185,31 @@ class Member extends Model
     }
     public static function email_list($from, $to, $type, $value, $year)
     {
-        $query = Member::select('membership.email')->join('membership_years', 'membership_years.member_id', '=', 'membership.id')->where('email', '!=', 'null')->orderBy('email', 'desc');
+        $query = Member::select('membership.email')
+            ->join('membership_years', 'membership_years.member_id', '=', 'membership.id')
+            ->where('email', '!=', 'null')
+            ->orderBy('email', 'desc');
 
         if ($type == 'member_type') {
             if ($value != 'all') {
                 $query->where('member_type', '=', $value);
+            }
+        } elseif ($type == 'member_activity') {
+            switch ($value) {
+                case 'Programmers':
+                    $query->where('has_show', '=', '1');
+                    break;
+                case 'Contributor':
+                    $query->where('discorder_contributor', '=', '1');
+                    break;
+                case 'All':
+                    break;
+                case 'Other':
+                    $query->where('has_show', '=', '0');
+                    $query->where('discorder_contributor', '=', '0');
+                    break;
+                default:
+                    break;
             }
         } elseif ($type == 'interest') {
             if ($value != 'all') {
@@ -173,7 +228,7 @@ class Member extends Model
         if($year != 'all'){
             $query->where('membership_years.membership_year','=',$year);
         }
-        return $query->get();
+        return $query->distinct('membership.email')->get();
     }
     public static function report($start, $end)
     {

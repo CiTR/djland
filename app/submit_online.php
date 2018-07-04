@@ -4,30 +4,30 @@
 	<title>Submit Online | CiTR</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700|PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
 
 	<script type='text/javascript' src='./js/jquery-ui/external/jquery/jquery.js'></script>
 
-	<link rel="stylesheet" media="all" href="http://www.citr.ca/wp-content/themes/citr/style.css" />
+	<link rel="stylesheet" media="all" href="https://www.citr.ca/wp-content/themes/citr/style.css" />
 	<link rel="stylesheet" href="./station-js/trackform.css" />
 
 	<!--[if lt IE 9]>
-	<script src="http://www.citr.ca/wp-content/themes/citr/assets/bower_components/respond/dest/respond.min.js"></script>
+	<script src="https://www.citr.ca/wp-content/themes/citr/assets/bower_components/respond/dest/respond.min.js"></script>
 	<![endif]-->
 
-	<script type='text/javascript' src='http://www.citr.ca/wp-content/themes/citr/assets/bower_components/modernizr/modernizr-custom.js'></script>
-	<link rel="shortcut icon" href="http://www.citr.ca/citr.ico" />
-	<link rel="shortcut icon" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-48.png" />
-	<link rel="shortcut icon" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-48@2x.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-76.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-60@2x.png">
-	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-76@2x.png">
-	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="http://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-60@3x.png">
+	<script type='text/javascript' src='https://www.citr.ca/wp-content/themes/citr/assets/bower_components/modernizr/modernizr-custom.js'></script>
+	<link rel="shortcut icon" href="https://www.citr.ca/citr.ico" />
+	<link rel="shortcut icon" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-48.png" />
+	<link rel="shortcut icon" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-48@2x.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-76.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-60@2x.png">
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-76@2x.png">
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://citr.ca/wp-content/themes/citr/assets/img/icons/favicon-60@3x.png">
 	<script type = 'text/javascript' src='./station-js/online-submission.js'></script>
   <script type='text/javascript' src='./js/musicsubmissions/functions.js'></script>
 
 			<script type="text/javascript">
-			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.4"}};
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.4"}};
 			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
 		</script>
 		<style type="text/css">
@@ -44,12 +44,12 @@ img.emoji {
 	padding: 0 !important;
 }
 </style>
-<link rel="stylesheet" href="http://citr.ca/wp-content/plugins/tablepress/css/default.min.css?ver=1.6.1">
-<script type='text/javascript' src='http://citr.ca/wp-includes/js/jquery/jquery.js?ver=1.11.2'></script>
-<script type='text/javascript' src='http://citr.ca/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<link rel="stylesheet" href="https://citr.ca/wp-content/plugins/tablepress/css/default.min.css?ver=1.6.1">
+<script type='text/javascript' src='https://citr.ca/wp-includes/js/jquery/jquery.js?ver=1.11.2'></script>
+<script type='text/javascript' src='https://citr.ca/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
 		<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
 <script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="httpss://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 
 <!-- set the datepicker date format -->
 <script>
@@ -59,7 +59,7 @@ img.emoji {
 </script>
 
 
-	<link rel="canonical" href="http://www.citr.ca/submissions/">
+	<link rel="canonical" href="https://www.citr.ca/submissions/">
 </head>
 <div class="wrap nav-target" role="document">
     <main class="main" role="main">
@@ -243,16 +243,16 @@ img.emoji {
 
 <script type='text/javascript'>
 /* <![CDATA[ */
-var impression_object = {"ajax_url":"http:\/\/www.citr.ca\/wp-admin\/admin-ajax.php"};
+var impression_object = {"ajax_url":"https:\/\/www.citr.ca\/wp-admin\/admin-ajax.php"};
 /* ]]> */
 </script>
-<script type='text/javascript' src='http://citr.ca/wp-content/plugins/adrotate/library/jquery.adrotate.dyngroup.js'></script>
+<script type='text/javascript' src='https://citr.ca/wp-content/plugins/adrotate/library/jquery.adrotate.dyngroup.js'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
-var click_object = {"ajax_url":"http:\/\/www.citr.ca\/wp-admin\/admin-ajax.php"};
+var click_object = {"ajax_url":"https:\/\/www.citr.ca\/wp-admin\/admin-ajax.php"};
 /* ]]> */
 </script>
-<script type='text/javascript' src='http://citr.ca/wp-content/plugins/adrotate/library/jquery.adrotate.clicktracker.js'></script>
+<script type='text/javascript' src='https://citr.ca/wp-content/plugins/adrotate/library/jquery.adrotate.clicktracker.js'></script>
 <!-- AdRotate JS -->
 <script type="text/javascript">
 jQuery(document).ready(function(){

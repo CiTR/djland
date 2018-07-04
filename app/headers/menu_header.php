@@ -136,6 +136,7 @@ function print_menu()
 					<ul>
 
 						<li><a href="member_resources.php">Resources</a></li>
+                        <li><a href="training_videos.php">Training Videos</a></li>
 						<?php
                         //if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()):
                         if (permission_level() >= $djland_permission_levels['member']['level'] && is_trained()|| permission_level() >= $djland_permission_levels['workstudy']['level']):

@@ -26,7 +26,7 @@
 				<tbody>
 				<?php
 					$alerts = array();
-					$api_base = 'http://'.$_SERVER['HTTP_HOST'];
+					$api_base = 'https://'.$_SERVER['HTTP_HOST'];
 					$alerts = CallAPI('GET',$api_base.'/api2/public/show/alert');
 					foreach($alerts as $alert){
 						echo "<tr>";

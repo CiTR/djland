@@ -23,7 +23,7 @@
 		print_menu();
 		?>
 		<div class='membership grey clearfix'>
-			<h1 id="title"> CiTR Member Settings </h1>
+			<h1 id="title"> CiTR &amp; Discorder Member Settings </h1>
             <h4 id="subtitle"></h4>
 			<div class="col1"><button id="renew">Renew Membership Form</button></div>
    			<div id='member_loading' name='view' class='col1'>Loading...</div>
@@ -123,10 +123,14 @@
 					<input id='integrate'  name='integrate' type='checkbox' /></div>
 				</div>
 				<div class='containerrow'>
-					<div class='col5'>Do you have a show?*:</div>
+					<div class='col5'>Do you have a radio show at CiTR?*:</div>
 					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
+				</div>
+				<div class='containerrow'>
+					<div class='col5'>Have you contributed to Discorder?</div>
+					<div class='col5'><input type='checkbox' id='discorder_contributor'></div>
 				</div>
 				<hr>
 				<div id='row8' class='containerrow'>
@@ -144,15 +148,15 @@
 					<div class='col6'>Interests:</div><select id ='membership_year' class='hidden'></select>
 					<div class='span3col4'>
 						<?php foreach($djland_interests as $key=>$interest): ?>
-						<div class='col3 text-right'>
-							<?php
-							echo $key;
-							if($interest == 'other'): ?>
-							<input id='<?php echo $interest ?>' placeholder='Enter interest'/>
-							<?php else: ?>
-							<input type='checkbox' id='<?php echo $interest; ?>'>
-							<?php endif; ?>
-						</div>
+							<div class='col2 text-left' style="margin-left:50%;">
+								<?php if($interest == 'other'): ?>
+									<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
+									<input id='<?php echo $interest ?>' placeholder='Enter interest' maxlength='40'/>
+								<?php else: ?>
+									<input type='checkbox' id='<?php echo $interest; ?>'>
+									<label for='<?php echo $interest ?>'><?php echo $key; ?></label>
+								<?php endif; ?>
+							</div>
 						<?php endforeach; ?>
 					</div>
 				</div>

@@ -13,7 +13,7 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){
 
 <link rel=stylesheet href=css/style.css type=text/css>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script type='text/javascript' src='js/charting.js'></script>
 <script>
     $(function() {
