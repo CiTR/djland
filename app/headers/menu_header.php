@@ -142,6 +142,7 @@ function print_menu()
                         if (permission_level() >= $djland_permission_levels['member']['level'] && is_trained()|| permission_level() >= $djland_permission_levels['workstudy']['level']):
                         ?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
+						<li><a href="fillin_booking.php">Book a Fill In</a></li>
 						<?php endif; ?>
 
 						<?php if (permission_level() >= $djland_permission_levels['dj']['level']) : ?>
