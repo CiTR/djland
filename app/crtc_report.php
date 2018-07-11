@@ -55,6 +55,7 @@
 						<option value='crtc'>CRTC Report</option>
 						<option value='socan'>Socan Report</option>
 						<option value='both'>Combined Report</option>
+						<option value='compliance'>Compliance Report</option>
 					</select>
 				</li>
 				<li>
