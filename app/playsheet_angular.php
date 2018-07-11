@@ -248,10 +248,10 @@
 		<div class="crtc_totals">
 				<table class='col1 table-condensed'>
 					<tr>
-						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>35</span>%</td>
-						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>12</span>%</td>
-						<td> Femcon: </td><td><span id='fem_total'></span>/<span id='fem_required'>35</span>%</td>
-						<td> New: </td><td><span id='playlist_total'></span>/<span id='playlist_required'>60</span>%</td>
+						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>{{playsheet.show.cc_20_req}}</span>%</td>
+						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>{{playsheet.show.cc_30_req}}</span>%</td>
+						<td> Femcon: </td><td><span id='fem_total'></span>/<span id='fem_required'>{{playsheet.show.fem_req}}</span>%</td>
+						<td> New: </td><td><span id='playlist_total'></span>/<span id='playlist_required'>{{playsheet.show.pl_req}}</span>%</td>
 						<td> Hit: </td><td><span id='hit_total'></span>/<span id='hit_max'>10</span>% Max</td>
 					</tr>
 				</table>

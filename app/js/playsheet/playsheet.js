@@ -376,7 +376,7 @@
 		                        this.checkIfComplete();
 		                        if(this.using_sam){
 		                            this.updateSamPlays();
-		                        }
+								}
 		                        this.loading = false;
 		                        this.time_changed = false;
 		                    }).bind(this)
@@ -928,13 +928,6 @@
 })();
 
 $(document).ready(function(){
-
-    var can_2_required = $('#can_2_required').text();
-    var can_3_required = $('#can_3_required').text();
-    var fem_required = $('#fem_required').text();
-    var playlist_required = $('#playlist_required').text();
-    var hit_max = $('#hit_max').text();
-
     var can_2_element = $('#can_2_total');
     var can_3_element = $('#can_3_total');
     var fem_element = $('#fem_total');
@@ -946,6 +939,12 @@ $(document).ready(function(){
     },3000);
 
     function crtc_totals(){
+		var can_2_required = parseInt($('#can_2_required').text(), 10);
+		var can_3_required = parseInt($('#can_3_required').text(), 10);
+		var fem_required = parseInt($('#fem_required').text(), 10);
+		var playlist_required = parseInt($('#playlist_required').text(), 10);
+		var hit_max = parseInt($('#hit_max').text(), 10);
+
         var playitems_count = 0;
         var can_2_count = 0;
         var can_3_count = 0;
