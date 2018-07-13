@@ -163,6 +163,7 @@ class Upload extends Model{
 
 				//Create the file directory,name, and url
 				$target_dir = $path_base . "/".date('Y',strtotime($podcast->playsheet->start_time));
+				if(!file_exists($target_dir)) mkdir($target_dir,0775);
 
 				//check if file exists already. If so, we overwrite existing file
 				if($podcast->length && $podcast->length > 0 && $podcast->url != null){
@@ -183,6 +184,9 @@ class Upload extends Model{
 				break;
 			default:
 				//we only accepting audio files for episode audio right now.
+				$response->text = "Valid audio category was not given.";
+				$response->success = false;
+				return $response;
 				break;
 		}
 

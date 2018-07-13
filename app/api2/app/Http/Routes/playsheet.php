@@ -270,7 +270,11 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		Route::post('episode',function($id){
 			$playsheet = Playsheet::find($id);
 			$podcast = $playsheet->podcast;
-			return Response::json( $playsheet -> update((array) Input::get()['playsheet']) && $podcast -> update((array) Input::get()['podcast']) ? "true" : "false");
+			$response = $playsheet -> update((array) Input::get()['playsheet']) && $podcast -> update((array) Input::get()['podcast']);
+			if($response) {
+				$podcast -> show -> make_show_xml();
+			}
+			return Response::json( $response ? "true" : "false");
 		});
 	});
 	Route::get('member/{member_id}/{offset}',function($member_id = member_id,$offset = offset){
