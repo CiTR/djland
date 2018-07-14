@@ -3,6 +3,7 @@
 	<head>
 		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link rel="stylesheet" href="css/src/crtcreport.css" type="text/css">
 	</head>
 	<body class='wallpaper' ng-app='djland.report'>
 		<?php print_menu(); ?>
@@ -150,7 +151,39 @@
 					</table>
 			</div>
 			<div id='report_list' ng-if='report.is_staff'>
-				<div ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
+				<div ng-if="report.type=='crtc' || report.type=='both'" ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
+				<div ng-if="report.type=='compliance'">
+					<table class="compliance">
+						<tr>
+							<th rowspan="2">Time</th>
+							<th rowspan="2">Show Name</th>
+							<th colspan="3" class="can_20_header">Cancon Category 20</th>
+							<th colspan="3" class="can_30_header">Cancon Category 30</th>
+							<th colspan="3" class="femcon_header">Femcon</th>
+							<th colspan="3" class="hit_header">Hit</th>
+						</tr>
+						<tr class="subheader">
+							<td class="can_20_subheader">Play #</td>
+							<td class="can_20_subheader">%</td>
+							<td class="can_20_subheader">Req %</td>
+							
+							<td class="can_30_subheader">Play #</td>
+							<td class="can_30_subheader">%</td>
+							<td class="can_30_subheader">Req %</td>
+							
+							<td class="femcon_subheader">Play #</td>
+							<td class="femcon_subheader">%</td>
+							<td class="femcon_subheader">Req %</td>
+							
+							<td class="hit_subheader">Play #</td>
+							<td class="hit_subheader">%</td>
+							<td class="hit_subheader">Req %</td>
+						</tr>
+						
+						<tr ng-repeat='playsheet in report.playsheets' class='data report_item' compliancereportitem ></tr>
+
+					</table>
+				</div>
 			</div>
 		</div>
 		<script type='text/javascript' src='js/angular.js'></script>

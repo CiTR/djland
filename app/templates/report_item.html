@@ -1,7 +1,7 @@
 <h3 class='double-padded-top'>{{playsheet.show.name}}</h3>
 <div class='text-center' ng-if='playsheet.status != 2'>(Draft)</div>
 <h4>{{playsheet.start_time}} - {{playsheet.end_time}}</h4>
-<table ng-hide="report.type=='compliance'" class='table-condensed crtc_report'>
+<table class='table-condensed crtc_report'>
 	<tr class='double-padded-bottom'>
 		<th>Artist</th>
 		<th>Song</th>
@@ -62,11 +62,11 @@
 		</div>
 	</div>
 <?php endif; ?>
-	<h3 ng-hide="report.type=='compliance'">Spoken Word Duration</h3>
-	<div ng-hide="report.type=='compliance'" class='text-center'>
+	<h3>Spoken Word Duration</h3>
+	<div class='text-center'>
 		{{playsheet.spokenword_duration}} minutes
 	</div>
-<div ng-show="report.type=='crtc' || report.type=='both' || report.type=='compliance'">
+<div ng-show="report.type=='crtc' || report.type=='both'">
 	<h3>Percentage Totals</h3>
 	<table class='table-condensed report_table'>
 		<tr><th><th>Play Count<th>Percentage<th>Requirement</th>

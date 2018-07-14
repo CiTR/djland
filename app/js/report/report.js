@@ -12,7 +12,7 @@
 		this.show_names = Array();
 		this.type = 'crtc';
 		var this_ = this;
-		this.loading = true;
+		this.loading = false;
 		this.show_count = 0;
 		this.init = function(){
 			//Initial loading requests
@@ -29,7 +29,9 @@
 
                 }
             );
-            this.report();
+            $('#report_summary').addClass('invisible');
+            $('#report_list').addClass('invisible');
+            //this.report();
         }
         this.report = function () {
             this_ = this;
@@ -96,6 +98,12 @@
         return {
             restrict: 'A',
             templateUrl: 'templates/report_item.html'
+        }
+    });
+    app.directive('compliancereportitem', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'templates/compliance_report_item.html'
         }
     });
     app.filter('pad', function () {
