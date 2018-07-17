@@ -488,5 +488,15 @@
 			</div>
    		</div>
 		<?php endif; ?>
+
+		<?php if(isset($_GET['member_id'])): ?>
+			<div id="member_search_id"><?php echo $_GET['member_id']; ?></div>
+			<script type="text/javascript">
+				$('.member_action').attr('class','nodrop inactive-tab member_action');
+				$(".member_action[name='view']").attr('class','nodrop active-tab member_action');
+				$('.membership').hide();
+				$('.membership#view').show();
+			</script>
+		<?php endif; ?>
 	</body>
 </html>

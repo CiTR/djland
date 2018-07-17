@@ -9,13 +9,7 @@ $(document).ready ( function() {
 
 			var year_callback = loadYearSelect();
 
-			$.when(year_callback).then(
-				function(){
-					displayMemberList("name","","both",get(undefined,'year_select','search'),'both','created');
-				},function(){
-
-				});
-			loadMember($('#member_id').text());
+			loadMember($('#member_search_id').text());
 			add_handlers();
 			yearlyReport(year_callback);
 
