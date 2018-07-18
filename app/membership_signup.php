@@ -39,6 +39,11 @@
 					<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
 				</div>
 
+				<div id='row2.5' class='containerrow'>
+					<div class='col5'>Preferred Name: </div>
+					<div class='col5'><input id='preferred_name' class='required' placeholder='Preferred Name' maxlength='50'/></div>
+				</div>
+
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
 					<div class='col5'><input id='address' class='required' placeholder='Address' maxlength='50'></input></div>

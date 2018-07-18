@@ -11,7 +11,40 @@ class Member extends Model
     protected $table = 'membership';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $fillable = array( 'lastname', 'firstname', 'canadian_citizen', 'address', 'city', 'province', 'postalcode', 'member_type', 'is_new', 'alumni', 'since', 'faculty', 'schoolyear', 'student_no', 'integrate', 'has_show', 'show_name', 'primary_phone', 'secondary_phone', 'email', 'joined', 'comments', 'about', 'skills', 'status', 'exposure', 'station_tour', 'technical_training', 'programming_training', 'production_training', 'spoken_word_training', 'discorder_contributor');
+    protected $fillable = array(    'lastname', 
+                                    'firstname', 
+                                    'canadian_citizen', 
+                                    'address', 
+                                    'city', 
+                                    'province', 
+                                    'postalcode', 
+                                    'member_type', 
+                                    'is_new', 
+                                    'alumni', 
+                                    'since', 
+                                    'faculty', 
+                                    'schoolyear', 
+                                    'student_no', 
+                                    'integrate', 
+                                    'has_show', 
+                                    'show_name', 
+                                    'primary_phone', 
+                                    'secondary_phone', 
+                                    'email', 
+                                    'joined', 
+                                    'comments', 
+                                    'about', 
+                                    'skills', 
+                                    'status', 
+                                    'exposure', 
+                                    'station_tour', 
+                                    'technical_training', 
+                                    'programming_training', 
+                                    'production_training', 
+                                    'spoken_word_training', 
+                                    'discorder_contributor',
+                                    'preferred_name'
+                                );
 
     public function shows()
     {
@@ -80,7 +113,7 @@ class Member extends Model
                 ), 'm.id', '=', 'my.member_id');
         }
 
-        $query->selectRaw('m.id, CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.email', 'm.primary_phone', 'm.member_type', 'm.comments', 'my.membership_year');
+        $query->selectRaw('m.id, CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.email', 'm.primary_phone', 'm.member_type', 'm.comments', 'my.membership_year', 'm.preferred_name');
 
         //Handle Search Type
         switch ($parameter) {
@@ -95,7 +128,9 @@ class Member extends Model
                 } else {
                     //Assume general search
                     $query->where(function ($subquery) use ($value) {
-                        $subquery->where('m.firstname', 'LIKE', '%'.$value.'%')->orWhere('lastname', 'LIKE', '%'.$value.'%');
+                        $subquery   ->where('m.firstname', 'LIKE', '%'.$value.'%')
+                                    ->orWhere('m.lastname', 'LIKE', '%'.$value.'%')
+                                    ->orWhere('m.preferred_name', 'LIKE', '%'.$value.'%');
                     });
                 }
                 break;
