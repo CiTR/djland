@@ -174,6 +174,10 @@ class Member extends Model
                 }
                 break;
             }
+            case 'preferred_name': {
+                //$query->join(DB::raw('() as s'), );
+                break;
+            }
             default: {
                 print_r('Default');
                 break;

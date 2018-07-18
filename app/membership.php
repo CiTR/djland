@@ -65,10 +65,12 @@
 							<option value='interest'>Interest</option>
 							<option value='member_type'>Member Type</option>
 							<option value='member_activity'>Member Activity</option>
+							<option value='show_name'>Show Name</option>
 						</select>
 						<input class='search_value' name='name' placeholder='Enter a name'/>
 						<input class='search_value hidden' name='email' placeholder='Enter an e-mail'/>
 						<input class='search_value hidden' name='phone' placeholder='Enter a phone #'/>
+						<input class='show_name hidden' name='show_name' placeholder='Enter a show name'/>
 						<select class='search_value hidden' name='interest'>
 							<?php
 								foreach($djland_interests as $key=>$value){
@@ -169,7 +171,7 @@
 				</div>
 				<div id='row2.5' class='containerrow'>
 					<div class='col5'>Preferred Name: </div>
-					<div class='col5'><input id='preferred_name' class='required' placeholder='Preferred Name' maxlength='50'/></div>
+					<div class='col5'><input id='preferred_name' placeholder='Preferred Name' maxlength='50'/></div>
 				</div>
 				<div id='row3 'class='containerrow'>
 					<div class='col5'>Address*: </div>
