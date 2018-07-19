@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use DB;
 use Response;
 
@@ -101,19 +102,20 @@ class Member extends Model
             $query->join(
                 DB::raw(
                     '(SELECT my.*
-					FROM membership_years my
+					FROM membership_years as my
 					INNER JOIN (
 						SELECT member_id,MAX(membership_year) AS max_my
 						FROM membership_years
 						GROUP BY member_id
-					) my2
+					) as my2
 					ON my.member_id = my2.member_id
 					AND my.membership_year = my2.max_my
-					) my'
+					) as my'
                 ), 'm.id', '=', 'my.member_id');
         }
 
-        $query->selectRaw('m.id, CONCAT(m.firstname," ",m.lastname) AS name')->addSelect('m.email', 'm.primary_phone', 'm.member_type', 'm.comments', 'my.membership_year', 'm.preferred_name');
+        $query  ->selectRaw('m.id, CONCAT(m.firstname," ",m.lastname) AS name')
+                ->addSelect('m.email', 'm.primary_phone', 'm.member_type', 'm.comments', 'my.membership_year', 'm.preferred_name');
 
         //Handle Search Type
         switch ($parameter) {
@@ -123,7 +125,8 @@ class Member extends Model
                 if ($search_term_count == 2) {
                     //Assume we are searching "firstname lastname" or "lastname firstname"
                     $query->where(function ($subquery) use ($search_terms) {
-                        $subquery->whereRaw('(m.firstname LIKE "%'.$search_terms[0].'%" AND m.lastname LIKE "%'.$search_terms[1].'%")')->orWhereRaw('(m.firstname LIKE "%'.$search_terms[1].'%" and m.lastname LIKE "%'.$search_terms[0].'%")');
+                        $subquery   ->whereRaw('(m.firstname LIKE "%'.$search_terms[0].'%" AND m.lastname LIKE "%'.$search_terms[1].'%")')
+                                    ->orWhereRaw('(m.firstname LIKE "%'.$search_terms[1].'%" and m.lastname LIKE "%'.$search_terms[0].'%")');
                     });
                 } else {
                     //Assume general search
@@ -174,8 +177,9 @@ class Member extends Model
                 }
                 break;
             }
-            case 'preferred_name': {
-                //$query->join(DB::raw('() as s'), );
+            case 'show_name': {
+                $query->join('member_show as ms', 'ms.member_id', '=', 'm.id');
+                $query->join('shows as s', 's.id', '=', 'ms.show_id')->where('s.name', 'LIKE', '%'.$value.'%');
                 break;
             }
             default: {
@@ -213,6 +217,7 @@ class Member extends Model
                 $query->orderBy('m.id', 'DESC');
                 break;
         }
+
         $result = $query->distinct()->get();
         $permissions = Member::find($_SESSION['sv_id'])->user->permission;
 

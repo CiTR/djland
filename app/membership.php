@@ -70,7 +70,7 @@
 						<input class='search_value' name='name' placeholder='Enter a name'/>
 						<input class='search_value hidden' name='email' placeholder='Enter an e-mail'/>
 						<input class='search_value hidden' name='phone' placeholder='Enter a phone #'/>
-						<input class='show_name hidden' name='show_name' placeholder='Enter a show name'/>
+						<input class='search_value hidden' name='show_name' placeholder='Enter a show name'/>
 						<select class='search_value hidden' name='interest'>
 							<?php
 								foreach($djland_interests as $key=>$value){
