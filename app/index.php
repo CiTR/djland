@@ -40,6 +40,35 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 		<title><?php echo $station_info['name']; ?></title>
 	</head>
 	<body class='wallpaper'>
+		<div id='temp'>
+			<div id="temp-background" style="
+								position: fixed;
+								background-color: #eb1b5d;
+								width: 100%;
+								height: 100%;
+								top: 0;
+								left: 0;
+								z-index: -2;
+			">
+			</div>
+			<div id="temp-img" style="
+										bottom: 0px;
+										right: 0;
+										display: block;
+										position: fixed;
+										width: 400px;
+										overflow: hidden;
+									">
+				<img src="https://www.citr.ca/wp-content/uploads/2018/07/401-issue-party-1024x577.jpg" 
+				style="left: -300px;bottom: -50px;position: relative;" />
+				<style>
+					#temp-link:hover {
+						background-color: rgba(0,0,0,0);
+					}
+				</style>
+				<a id='temp-link' href="https://www.facebook.com/events/1985941044751665/" target="_blank" style="display: block;position: absolute;width: 100%;height: 100%;top: 0px;"></a>
+			</div>
+		</div>
 		<div id = 'login'>
 			<form METHOD=POST ACTION=<?php echo "'".$_SERVER['SCRIPT_NAME']."'"; ?> name='site_login' >
 				<h3>Welcome to DJ Land</h3>
