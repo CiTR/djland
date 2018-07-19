@@ -65,8 +65,12 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 					#temp-link:hover {
 						background-color: rgba(0,0,0,0);
 					}
+					#login {
+						position: relative;
+						z-index: 2;
+					}
 				</style>
-				<a id='temp-link' href="https://www.facebook.com/events/1985941044751665/" target="_blank" style="display: block;position: absolute;width: 100%;height: 100%;top: 0px;"></a>
+				<a id='temp-link' href="https://www.facebook.com/events/1985941044751665/" target="_blank" style="display: block;position: absolute;width: 100%;height: 100%;top: 0px;z-index:5;"></a>
 			</div>
 		</div>
 		<div id = 'login'>
