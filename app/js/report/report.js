@@ -16,7 +16,7 @@
 		this.show_count = 0;
 		this.init = function(){
 			//Initial loading requests
-			call.getMemberShows( this.member_id ).then(
+			call.getMemberShows( this.member_id, 'active' ).then(
 				(function(response){
 				this.shows = response.data.shows;
 				}).bind(this)

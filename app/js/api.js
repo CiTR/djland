@@ -22,8 +22,8 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getAds: function (time,duration,show_id){
 			return $http.get(API_URL_BASE+ '/ads/' + time + '-' + duration + '/' + show_id);
 		},
-		getMemberShows: function(member_id){
-			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows');
+		getMemberShows: function(member_id, show_status){
+			return $http.get(API_URL_BASE+ '/member/'+member_id+'/shows/'+show_status);
 		},
 		getActiveMemberShows: function(member_id){
 			return $http.get(API_URL_BASE+ '/member/'+member_id+'/active_shows');

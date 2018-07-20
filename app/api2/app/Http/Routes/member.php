@@ -183,15 +183,26 @@ Route::group(['middleware' => 'auth'], function(){
 				else return "Nope";
 			});
 
-			Route::get('shows', function($member_id = id){
+			Route::get('shows/{status?}', function($member_id = id, $status = ''){
 				$shows = new StdClass();
+				switch( $status ) {
+					case 'active':
+						$status_code = 1;
+						break;
+					case 'inactive':
+						$status_code = 0;
+						break;
+					default:
+						$status_code = 1;
+						break;
+				}
 				if(Member::find($member_id)->isStaff()){
-					$all_shows = Show::orderBy('name','asc')->get();
+					$all_shows = Show::where('active', '=', $status_code)->orderBy('name','asc')->get();
 					foreach($all_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}
 				}else{
-					$member_shows = Member::find($member_id)->shows;
+					$member_shows = Member::find($member_id)->where('active', '=', $status_code)->shows;
 					foreach($member_shows as $show){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}

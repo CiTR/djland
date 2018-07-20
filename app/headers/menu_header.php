@@ -83,7 +83,16 @@ function print_menu()
         endif;
     if ($enabled['shows'] && permission_level() >= $djland_permission_levels['dj']['level']) :
         ?>
-		<li class=nodrop><a href="shows.php?action=list">Shows</a></li>
+		<li class=drop><a href="shows.php?action=list">Shows</a>
+					<div class="dropdown small">
+						<div class=small>
+							<ul>
+								<li><a href="shows.php?action=list&show_status=active">Active Shows</a></li>
+								<li><a href="shows.php?action=list&show_status=inactive">Inactive Shows</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
 		<?php
         endif;
     if (permission_level() >= $djland_permission_levels['dj']['level']):

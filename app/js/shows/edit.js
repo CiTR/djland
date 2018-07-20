@@ -19,6 +19,7 @@
             this.admin = false;
             this.member_id = member_id;
             this.username = username;
+            this.show_status = show_status;
             this.shared = shared;
             //Get List of all members
             this.getMemberList();
@@ -31,7 +32,7 @@
               ).bind(this)
             );
             //Get Shows Member can see
-            call.getMemberShows(this.member_id).then(
+            call.getMemberShows(this.member_id, this.show_status).then(
               (
                 function(response){
                   this.member_shows = response.data.shows;

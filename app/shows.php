@@ -4,6 +4,22 @@ require_once("headers/menu_header.php");
 if (permission_level() < $djland_permission_levels['dj']['level']) {
     header("Location: main.php");
 }
+
+if(isset($_GET['show_status'])){
+    switch($_GET['show_status']) {
+        case 'active':
+            $show_status = 'active';
+            break;
+        case 'inactive':
+            $show_status = 'inactive';
+            break;
+        default:
+            $show_status = '';
+            break;
+    }
+} else {
+    $show_status = '';
+}
 ?>
     <html>
     <head>
@@ -16,6 +32,12 @@ if (permission_level() < $djland_permission_levels['dj']['level']) {
         ?>
         <body class='wallpaper' ng-app="djland.editShow" >
         <div ng-controller="editShow as show">
+            <script>
+                var member_id = "<?php echo $_SESSION['sv_id']; ?>";
+                var username = "<?php echo $_SESSION['sv_username']; ?>";
+                var show_status = "<?php echo $show_status; ?>";
+                console.log('show status: ' + show_status);
+            </script>
             <script src='js/jquery-1.11.3.min.js'></script>
             <script src='js/constants.js'></script>
             <script src="js/angular.js"></script>
@@ -23,10 +45,6 @@ if (permission_level() < $djland_permission_levels['dj']['level']) {
             <script src="js/shows/edit.js"></script>
             <script src="js/api.js"></script>
             <script src="js/utils.js"></script>
-            <script>
-                var member_id = "<?php echo $_SESSION['sv_id']; ?>";
-                var username = "<?php echo $_SESSION['sv_username']; ?>";
-            </script>
             <div class='text-center' ng-show='show.loading == true'><img class='rounded' width ='300' height='20' src='images/loading.gif'/></div>
             <div ng-hide="show.member_shows || show.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
 			<button type='button' ng-show='show.is_admin' ng-click='show.newShow()'>Create a New Show</button>
