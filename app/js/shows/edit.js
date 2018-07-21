@@ -21,6 +21,9 @@
             this.username = username;
             this.show_status = show_status;
             this.shared = shared;
+
+            //Check if user is an administrator or staff
+            this.isStaff();
             //Get List of all members
             this.getMemberList();
             //Get List of primary genres
@@ -35,22 +38,27 @@
             call.getMemberShows(this.member_id, this.show_status).then(
               (
                 function(response){
-                  this.member_shows = response.data.shows;
-                  for(var show in this.member_shows){
-                    if(this.member_shows[show].show.name != null) this.member_shows[show].show.name = tools.decodeHTML(this.member_shows[show].show.name);
-                    if(this.member_shows[show].show.host != null) this.member_shows[show].show.host = tools.decodeHTML(this.member_shows[show].show.host);
-                  }
+                    this.member_shows = response.data.shows;
+                    for(var show in this.member_shows){
+                        if(this.member_shows[show].show.name != null) this.member_shows[show].show.name = tools.decodeHTML(this.member_shows[show].show.name);
+                        if(this.member_shows[show].show.host != null) this.member_shows[show].show.host = tools.decodeHTML(this.member_shows[show].show.host);
+                    }
+                
+                    if(this.member_shows !== undefined && this.member_shows.length != 0) {
+                        //Get First show in member_shows
+                        for(var show in this.member_shows){
+                            this.active_show = this.member_shows[show];
+                            break;
+                        }
 
-                  //Get First show in member_shows
-                  for(var show in this.member_shows){
-                    this.active_show = this.member_shows[show];
-                    break;
-                  }
-
-                  //Need to make the id a string
-                  this.show_value = ""+this.active_show.id;
-                  this.loadShow();
+                        //Need to make the id a string
+                        this.show_value = ""+this.active_show.id;
+                        this.loadShow();
+                    } else {
+                        this.loading = false;
+                    }
                 }
+
               ).bind(this)
               ,(
                 function(error){
@@ -70,8 +78,6 @@
             var week_no = Math.floor(((d/8.64e7))/7);
             //divide by 2, and then add one so we have 1||2 instead of 0||1
             this.current_week = ((week_no % 2) +1);
-            //Check if user is an administrator or staff
-            this.isStaff();
         }
         this.isStaff = function(){
           //Call API to obtain permissions
@@ -102,7 +108,9 @@
     		(
     		  function(response){
     		    this.info = response.data;
-                this.info.image = this.info.image.replace(/^http:/gi, 'https:');
+                if(this.info.image != null) {
+                    this.info.image = this.info.image.replace(/^http:/gi, 'https:');
+                }
     		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
     		    this.info.name = tools.decodeHTML(this.info.name);
     		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
@@ -126,23 +134,25 @@
     		  }
     		).bind(this)
     		);
-    		//Call API to get show owners
-    		call.getShowOwners(this.active_show.id).then(
-    			(function(response)
-    				{
-    			    //If no response make an empty object
-    			    if(response.data != null){
-    			      this.show_owners = response.data;
-    			    }else{
-    			      this.show_owners = Array();
-    			    }
-    			    console.log(this.show_owners);
-    			    console.log(response.data);
-    			}).bind(this)
-    			,function(error){
-    				console.log('Could not get show owners for the active show.')
-    			}
-    		);
+            //Call API to get show owners
+            if(this.is_admin == true) {
+                call.getShowOwners(this.active_show.id).then(
+                    (function(response)
+                        {
+                        //If no response make an empty object
+                        if(response.data != null){
+                          this.show_owners = response.data;
+                        }else{
+                          this.show_owners = Array();
+                        }
+                        console.log(this.show_owners);
+                        console.log(response.data);
+                    }).bind(this)
+                    ,function(error){
+                        console.log('Could not get show owners for the active show.')
+                    }
+                );
+            }
     		//Call API to get show times
     		call.getShowTimes(this.active_show.id).then(
     			(function(response){

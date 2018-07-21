@@ -202,9 +202,11 @@ Route::group(['middleware' => 'auth'], function(){
 						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
 					}
 				}else{
-					$member_shows = Member::find($member_id)->where('active', '=', $status_code)->shows;
+					$member_shows = Member::find($member_id)->shows;
 					foreach($member_shows as $show){
-						$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+						if( $show->active == $status_code) {
+							$shows->shows[] = ['id'=>$show->id,'show'=>$show,'name'=>$show->name];
+						}
 					}
 				}
 				return  Response::json($shows);
