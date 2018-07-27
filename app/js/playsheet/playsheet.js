@@ -6,16 +6,17 @@
         this.playitems = {};
         this.podcast = {};
         this.info.id = playsheet_id;
-        this.member_id = member_id;
+		this.member_id = member_id;
+		this.isAdmin = false;
         this.username = username;
         this.loading = true;
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         this.months_of_year = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         this.tracklist_overlay_header = "Thanks for submitting your playsheet";
-        this.podcast_status = "Your podcast is being created";
-        //TODO: Set this from the config constant
-        this.max_podcast_length = 8*60*60;
-        this.tech_email = "technicalservices@citr.ca";
+		this.podcast_status = "Your podcast is being created";
+		this.info.web_exclusive = false;
+        this.max_podcast_length = (max_podcast_length != undefined ) ? max_podcast_length : 8*60*60;
+        this.tech_email = "technicalmanager@citr.ca";
         //Helper Variables
         this.using_sam = $('#using_sam').text()=='1' ? true : false;
         this.sam_visible = false;
@@ -287,6 +288,13 @@
 
         //Initialization of Playsheet
         this.init = function(){
+			call.isAdmin(this.member_id).then((function(response) {
+					this.isAdmin = response.data;
+				}).bind(this), 
+				(function(error) {
+					this.log_error(error);
+				}).bind(this)
+			);
             //If playsheet exists, load it.
             if(this.info.id > 0){
                 call.getPlaysheetData(this.info.id).then(

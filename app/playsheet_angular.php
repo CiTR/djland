@@ -200,6 +200,9 @@
                 <div class="playsheet-save" ng-hide="!playsheet.complete">
                     <div class="playsheet-save">
                         Would you like to NOT (re)create the podcast? <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
+						<div ng-show="playsheet.isAdmin">
+							Web Exclusive Podcast <input type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
+						</div>
                     </div>
 				    <button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
                 </div>

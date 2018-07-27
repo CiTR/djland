@@ -26,7 +26,7 @@ class AddPreferredNameColumnToMembershipTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('membership') && Schema::hasColumn('membership', 'discorder_contributor')) {
+        if (Schema::hasTable('membership') && Schema::hasColumn('membership', 'preferred_name')) {
             Schema::table('membership', function (Blueprint $table) {
                 $table->dropColumn('preferred_name');
             });

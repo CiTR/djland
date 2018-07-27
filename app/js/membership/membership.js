@@ -9,7 +9,16 @@ $(document).ready ( function() {
 
 			var year_callback = loadYearSelect();
 
-			loadMember($('#member_search_id').text());
+			var member_search_id = $('#member_search_id').text();
+			if(member_search_id != "") {
+				loadMember(member_search_id);
+			} else {
+				$.when(year_callback).then(function() {	
+					displayMemberList("name","","both",get(undefined,'year_select','search'),'both','created');	
+				}, function(){});
+				loadMember($('#member_id').text());
+			}
+			
 			add_handlers();
 			yearlyReport(year_callback);
 
