@@ -230,7 +230,8 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				}
 				$playsheet -> promotions = $promotions;
 				//convert 1 and 0 to true/false values expected by javascript
-				$playsheet -> playsheet -> socan = $playsheet -> playsheet -> socan == 1 ? true : false;
+				$playsheet -> playsheet -> socan 			= $playsheet -> playsheet -> socan 			== 1 ? true : false;
+				$playsheet -> playsheet -> web_exclusive 	= $playsheet -> playsheet -> web_exclusive 	== 1 ? true : false;
 			}
 			return Response::json($playsheet);
 		});

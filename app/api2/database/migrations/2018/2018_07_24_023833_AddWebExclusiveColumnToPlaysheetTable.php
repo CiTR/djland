@@ -14,7 +14,7 @@ class AddWebExclusiveColumnToPlaysheetTable extends Migration
     {
         if (Schema::hasTable('playsheets') && !Schema::hasColumn('playsheets', 'web_exclusive')) {
             Schema::table('playsheets', function (Blueprint $table) {
-                $table->string('web_exclusive',1)->nullable()->default('0');
+                $table->boolean('web_exclusive');
             });
         }
     }
