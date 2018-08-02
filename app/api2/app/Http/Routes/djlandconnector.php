@@ -137,10 +137,10 @@ if(!function_exists('playlist')){
 		            'message'     => 'no playlist found with this ID: '.$id,
 	        	);
 	    	}
-		$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name')->where('id','=',$id)->get()->toArray();
+		$playsheet = Playsheet::select('id as playlist_id', 'show_id', 'start_time', 'end_time', 'edit_date', 'type as playlist_type', 'host as host_name', 'web_exclusive')->where('id','=',$id)->get()->toArray();
 		$podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id','=',$id)->get()->toArray();
 		//For some reason ->merge() didn't work so we did this and it did
-
+		
         if(empty($podcast)){
             return array(
                 'api_message'   => '[NO RECORD FOUND]',
