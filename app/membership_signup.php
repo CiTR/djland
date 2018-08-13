@@ -88,7 +88,7 @@
 					</div>
 				</div>
 				<div id='row5' class='containerrow'>
-					<div class='col5'>Canadian Citizen*:</div>
+					<div class='col5'>Canadian Citizen:</div>
 					<div class='col5'><input id='canadian_citizen' type='checkbox'/></div>
 					<div class='col5'>Member Type*:</div>
 
@@ -143,7 +143,7 @@
 
 				</div>
 				<div class='containerrow'>
-					<div class='col5'>Do you have a radio show at CiTR?*:</div>
+					<div class='col5'>Do you have a radio show at CiTR?:</div>
 					<div class='col5'><input type='checkbox' id='has_show'></div>
 					<div class='col5'>Name of show:</div>
 					<div class='col5'><input id='show_name' type='text' placeholder='Show name(s)'/></div>
