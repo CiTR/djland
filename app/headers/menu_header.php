@@ -152,6 +152,7 @@ function print_menu()
                         ?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
 						<li><a href="fillin_booking.php">Book a Fill In</a></li>
+						<li><a href="medialab_booking.php">Book a Media Lab iMAC</a></li>
 						<?php endif; ?>
 
 						<?php if (permission_level() >= $djland_permission_levels['dj']['level']) : ?>
