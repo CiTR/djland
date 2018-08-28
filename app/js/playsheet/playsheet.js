@@ -686,7 +686,8 @@
                 );
             }
             else {
-                this.podcast_status = "Podcast was not (re)created as requested by the user.";
+				call.makeXml(this.podcast.show_id);
+				this.podcast_status = "Podcast was not (re)created as requested by the user.";
             }
         }
         this.submit = function () {
@@ -794,6 +795,7 @@
 									this.makePodcastAudio();
 								}
 								else {
+									call.makeXml(this.podcast.show_id);
 									this.podcast_status = 'Using Existing Podcast Audio.';
 								}
 								//}
