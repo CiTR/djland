@@ -140,7 +140,7 @@
 			);
         }
         this.updateShowValues = function(element){
-            //When a new show is selected, updat all the information.
+            //When a new show is selected, update all the information.
             this.active_show = this.member_shows.filter( (function(object){if(object.id == this.show_value) return object;}).bind(this))[0];
             this.show = this.active_show.show;
             this.info.show_id = parseInt(this.active_show.id);
@@ -154,7 +154,8 @@
                 this.playitems[playitem].show_id = this.info.show_id;
                 this.playitems[playitem].crtc_category = this.info.crtc;
                 this.playitems[playitem].lang = this.info.lang;
-            }
+			}
+			this.updateTime();
             call.getShowPlaysheets(this.active_show.id).then(function(response){
                 //DISPLAY OLD PLAYSHEETS
                 this.existing_playsheets = response.data.sort(function(a, b) {
@@ -168,7 +169,6 @@
 					return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
 				});
             });
-            this.updateTime();
         }
         this.updateSpokenword = function(){
             this.info.spokenword_duration = this.spokenword_hours * 60 + this.spokenword_minutes;
@@ -223,7 +223,23 @@
                     this.promotions = response.data.ads;
                 }).bind(this)
 			);
-        }
+		}
+		this.loadIfRebroadcast = function () {
+			if (this.info.type == 'Rebroadcast') {
+				call.getShowPlaysheets(this.active_show.id).then(
+					(function(response){
+						//DISPLAY OLD PLAYSHEETS
+						this.existing_playsheets = response.data.sort(
+							function(a, b) {
+							var re = new RegExp('-','g');
+							return new Date(b.start_time.replace(re,'/')) - new Date(a.start_time.replace(re,'/'));
+							}
+						);
+					}).bind(this)
+				);
+			}
+	  
+		}
 		this.getNewUnix = function(){
 			if(this.loading == true) return;
 			//convert to seconds from javascripts milliseconds

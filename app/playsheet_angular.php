@@ -64,15 +64,15 @@
 					</div>
 					<div class='col1 double-padded-top'>
 						Type:
-				        <select ng-model="playsheet.info.type" ng-change="loadIfRebroadcast()">
+				        <select ng-model="playsheet.info.type" ng-change="playsheet.loadIfRebroadcast()">
 				          	<option value="Syndicated">Syndicated</option>
 				          	<option value="Live">Live</option>
 				          	<option value="Rebroadcast">Rebroadcast</option>
 				          	<option value="Simulcast">Simulcast</option>
 				    	</select>
 			        	<span class='col1' ng-show="playsheet.info.type == 'Rebroadcast'">
-			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time + ' ' + ps.title | limitTo: 60 for ps in playsheet.existing_playsheets "></select>
-						<button ng-click="playsheet.loadRebroadcast()">Load Rebroadcast</button>
+			          		<select ng-model="playsheet.existing_playsheet" ng-options="ps.id as ps.start_time + ' ' + ps.title | limitTo: 60 for ps in playsheet.existing_playsheets"></select>
+							<button ng-click="playsheet.loadRebroadcast()">Load Rebroadcast</button>
 						</span>
 
 					</div>
