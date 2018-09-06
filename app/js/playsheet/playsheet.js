@@ -220,7 +220,7 @@
                         this_.spokenword_hours = 0;
                         this_.spokenword_minutes = null;
                     }
-                    this.promotions = response.data.ads;
+                    this.promotions = response.data.promotions;
                 }).bind(this)
 			);
 		}
