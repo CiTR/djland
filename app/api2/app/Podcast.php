@@ -61,7 +61,7 @@ class Podcast extends Model
 	    //Replace Chars
 	    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
 	    $file_name = str_replace('&','and',$file_name);
-	    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$this>-id.'-'.$this->playsheet->id.'-'.$file_date.'.mp3';
+	    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$this->id.'-'.$this->playsheet->id.'-'.$file_date.'.mp3';
 
 		//Set ID3 Tags
     	$tags = array(
@@ -168,7 +168,7 @@ class Podcast extends Model
 		    $file_name = str_replace(array('\\','/',"'", '"',' '),'-',$file_name);
 		    //Replace ampersand
 		    $file_name = str_replace('&','and',$file_name);
-		    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$this>-id.'-'.$this->playsheet->id.'-'.$file_date.'.mp3';
+		    $file_name = html_entity_decode($file_name,ENT_QUOTES).'-'.$this->id.'-'.$this->playsheet->id.'-'.$file_date.'.mp3';
     	}
 
 
