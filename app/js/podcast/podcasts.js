@@ -89,8 +89,9 @@
 			form.append('audio',file);
 			var request = $.ajax({
 				url: 'api2/public/podcast/'+podcast_id+'/audio',
-				method: 'POST',
-				dataType: 'json',
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
 				processData: false,
 				contentType: false,
 				data: form
