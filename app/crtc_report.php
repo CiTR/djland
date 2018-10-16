@@ -151,7 +151,7 @@
 					</table>
 			</div>
 			<div id='report_list' ng-if='report.is_staff'>
-				<div ng-if="report.type=='crtc' || report.type=='both'" ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
+				<div ng-if="report.type=='crtc' || report.type=='both' || report.type=='socan'" ng-repeat='playsheet in report.playsheets' class='report_item' reportitem ></div>
 				<div ng-if="report.type=='compliance'">
 					<table class="compliance">
 						<tr>
