@@ -2,14 +2,17 @@
 use App\Friends as Friends;
 
 Route::group(array('prefix'=>'friends'),function(){
+	// FriendsController@index
 	Route::get('/',function(){
 		return Friends::all();
 	});
+	// FriendsController@store
 	Route::put('/',function(){
 		$friend = new Friends;
 		$friend->save();
 		return $friend;
 	});
+	// FriendsController@update
 	Route::post('/',function(){
 		$friends = Input::get()['friends'];
 		foreach($friends as $friend){
@@ -20,12 +23,15 @@ Route::group(array('prefix'=>'friends'),function(){
 		Friends::write_static();
 		return Response::json($friends);
 	});
+	// FriendsController@destroy
 	Route::delete('/{id}',function($id = id){
 		return Response::json(Friends::find($id)->delete());
 	});
+	// Don't add to a controller?
 	Route::get('/static',function(){
 		return Friends::write_static();
 	});
+	// FriendsImageController
 	Route::group(array('prefix'=>'image'),function($id){
 		//Gets friend images
 		Route::get('/',function($id){
