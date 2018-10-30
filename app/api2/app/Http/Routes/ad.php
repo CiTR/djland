@@ -10,7 +10,7 @@ use App\Songlist as Songlist;
 use App\Categorylist as Categorylist;
 use App\Historylist as Historylist;
 
-
+// AdScheduleController@store
 Route::post('/adschedule',function(){
 	$post = array();
 	parse_str(Input::get('ads'),$post);
@@ -28,6 +28,7 @@ Route::post('/adschedule',function(){
 	return Response::json($ads);
 });
 
+// AdScheduleController@index
 Route::get('/adschedule',function(){
 
 	date_default_timezone_set('America/Los_Angeles');
