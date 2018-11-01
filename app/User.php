@@ -27,4 +27,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the member record associated with the user.
+     */
+    public function member()
+    {
+        return $this->hasOne('App\Member');
+    }
 }
