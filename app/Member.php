@@ -52,6 +52,14 @@ class Member extends Model
     }
 
     /**
+     * Get the membership type record associated with the member.
+     */
+    public function membership_type()
+    {
+        return $this->belongsTo('App\MembershipType');
+    }
+
+    /**
      * Format postal codes properly
      * 	
      * @param [string] $value The incoming postal code

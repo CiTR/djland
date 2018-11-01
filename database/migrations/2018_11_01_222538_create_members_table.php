@@ -49,6 +49,10 @@ class CreateMembersTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->foreign('membership_type_id')->references('id')->on('membership_types');
+
+            
         });
     }
 
