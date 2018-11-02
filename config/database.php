@@ -56,6 +56,22 @@ return [
             'engine' => null,
         ],
 
+        'samdb' => [
+            'driver' => 'mysql',
+            'host' => env('SAM_DB_HOST', '127.0.0.1'),
+            'port' => env('SAM_DB_PORT', '3306'),
+            'database' => env('SAM_DB_DATABASE', 'forge'),
+            'username' => env('SAM_DB_USERNAME', 'forge'),
+            'password' => env('SAM_DB_PASSWORD', ''),
+            'unix_socket' => env('SAM_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
