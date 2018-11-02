@@ -29,7 +29,7 @@ class CreateMembersTable extends Migration
             $table->boolean('is_alumni')->default(0); // Formerly alumni
             $table->boolean('is_approved')->default(0); // Formerly status
             $table->boolean('is_discorder_contributor')->default(0); // Formerly discorder_contributor
-            $table->unsignedInteger('member_year_id'); // Foreign key to member_years. Formerly since
+            $table->year('member_since'); // Formerly since
             $table->string('faculty')->nullable();
             $table->unsignedTinyInteger('school_year')->default(0); // Formerly schoolyear
             $table->string('student_no', 100)->nullable();
@@ -52,7 +52,7 @@ class CreateMembersTable extends Migration
 
             $table->foreign('membership_type_id')->references('id')->on('membership_types');
 
-            
+
         });
     }
 

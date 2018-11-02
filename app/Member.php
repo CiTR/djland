@@ -25,7 +25,7 @@ class Member extends Model
         'is_alumni',
         'is_approved',
         'is_discorder_contributor',
-        'member_year_id',
+        'member_since',
         'faculty',
         'school_year',
         'student_no',
@@ -66,9 +66,27 @@ class Member extends Model
      */
     public function setPostalCodeAttribute($value)
     {
-    	$value = preg_replace('/\s+/', '', $value);
-    	$value = strtoupper($value);
+        $value = preg_replace('/\s+/', '', $value);
+        $value = strtoupper($value);
 
-    	$this->attributes['postal_code'] = $value;
+        $this->attributes['postal_code'] = $value;
+    }
+
+    /**
+     * Format member since property. If using school years 
+     * (eg 2017/2018) then the smaller of the 2 years will be used.
+     * 
+     * 	
+     * @param [string|int] $value The year the member started in
+     */
+    public function setMemberSinceAttribute($value)
+    {
+        if (preg_match('/^(\d{4})/', $value, $matches)) {
+            $value = $matches[1];
+        } elseif (preg_match('/(\d{4})$/', $value, $matches)) {
+            $value = $matches[1];
+        }
+
+        $this->attributes['member_since'] = $value;
     }
 }
