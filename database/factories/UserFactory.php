@@ -14,10 +14,14 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+    // Fields that we need more than once
     $first_name = $faker->firstName;
     $last_name = $faker->lastName;
+
+    // Password field was too long to fit on a line in the return array
     $password = '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm'; // secret
 
+    // List of sample faculties to choose from
     $faculties = array(
         null,
         'Applied Science',
@@ -30,6 +34,8 @@ $factory->define(App\User::class, function (Faker $faker) {
         'Journalism',
     );
 
+    // Get all the membership type IDs from the db. 
+    // MembershipTypeSeeder should be run first.
     $membership_types = App\MembershipType::all()->pluck('id');
 
     return [
