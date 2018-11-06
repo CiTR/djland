@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('address', 55)->nullable();
             $table->string('city', 45)->nullable();
             $table->string('province', 4)->nullable();
-            $table->string('postal_code', 6)->nullable(); // Formerly postalcode
+            $table->string('postal_code', 7)->nullable(); // Formerly postalcode
             $table->unsignedInteger('membership_type_id')->default(1); // Foreign key to member_types. Formerly member_type
             $table->boolean('is_new')->default(0);
             $table->boolean('is_alumni')->default(0); // Formerly alumni
@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_discorder_contributor')->default(0); // Formerly discorder_contributor
             $table->year('member_since'); // Formerly since
             $table->string('faculty')->nullable();
-            $table->unsignedTinyInteger('school_year')->default(0); // Formerly schoolyear
+            $table->unsignedTinyInteger('school_year')->nullable(); // Formerly schoolyear
             $table->string('student_no', 100)->nullable();
             $table->boolean('course_integrate')->default(0); // Formerly integrate. Signifies intent to include in school course
             $table->string('primary_phone')->nullable();

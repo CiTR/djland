@@ -73,7 +73,7 @@ class User extends Authenticatable
      */
     public function setPostalCodeAttribute($value)
     {
-        $value = preg_replace('/\s+/', '', $value);
+        $value = preg_replace('/[^a-zA-Z0-9]+/', '', $value);
         $value = strtoupper($value);
 
         $this->attributes['postal_code'] = $value;
