@@ -26,7 +26,6 @@ class CreateUsersTable extends Migration
             $table->string('city', 45)->nullable();
             $table->string('province', 4)->nullable();
             $table->string('postal_code', 7)->nullable(); // Formerly postalcode
-            $table->unsignedInteger('membership_type_id')->default(1); // Foreign key to member_types. Formerly member_type
             $table->boolean('is_new')->default(0);
             $table->boolean('is_alumni')->default(0); // Formerly alumni
             $table->boolean('is_approved')->default(0); // Formerly status

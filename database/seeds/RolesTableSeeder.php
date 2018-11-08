@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
-class MembershipTypesTableSeeder extends Seeder
+class RolesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,17 +12,15 @@ class MembershipTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $default_types = array(
+        $roles = array(
             'Staff',
             'Community',
             'Student',
             'Lifetime',
         );
 
-        foreach ($default_types as $type) {
-            App\MembershipType::firstOrCreate([
-                'name' => $type,
-            ]);
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role]);
         }
     }
 }

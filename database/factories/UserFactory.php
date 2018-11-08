@@ -34,10 +34,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'Journalism',
     );
 
-    // Get all the membership type IDs from the db. 
-    // MembershipTypeSeeder should be run first.
-    $membership_types = App\MembershipType::all()->pluck('id');
-
     return [
         'first_name'               => $first_name,
         'last_name'                => $last_name,
@@ -50,7 +46,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'city'                     => $faker->city,
         'province'                 => $faker->provinceAbbr,
         'postal_code'              => $faker->postcode,
-        'membership_type_id'       => $faker->numberBetween(1,4),
         'is_new'                   => $faker->boolean,
         'is_alumni'                => $faker->boolean,
         'is_approved'              => $faker->boolean(80),

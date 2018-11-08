@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\MembershipType;
 use Illuminate\Http\Request;
 
-class MembershipTypeController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +40,10 @@ class MembershipTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\MembershipType  $membershipType
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(MembershipType $membershipType)
+    public function show($id)
     {
         //
     }
@@ -52,22 +51,22 @@ class MembershipTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\MembershipType  $membershipType
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(MembershipType $membershipType)
+    public function edit($id)
     {
-        //
+        return view('members.settings');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\MembershipType  $membershipType
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MembershipType $membershipType)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +74,10 @@ class MembershipTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\MembershipType  $membershipType
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MembershipType $membershipType)
+    public function destroy($id)
     {
         //
     }

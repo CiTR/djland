@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use Spatie\Permission\Models\Role;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -11,13 +13,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create()->each(function ($user) {
-            // Do stuff
+        $roles = Role::all();
+
+        factory(App\User::class, 50)->create()->each(function ($user) use ($roles) {
+            $user->assignRole($roles->random());
         });
 
         $first = App\User::first();
         $first->email = 'technicalmanager@citr.ca'; // Hey, that's my email!
-        $first->membership_type_id = 1;
+        $first->syncRoles($roles);
         $first->save();
     }
 }
