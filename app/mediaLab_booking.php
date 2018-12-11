@@ -28,13 +28,15 @@ error_reporting(E_ALL);
 				<p><i>*If you book an iMAC time, you have a fifteen minute grace period to show up on time. If not, the Media Lab iMAC will be claimed on a first-come, first-serve basis for interested members.</i><br/>
 			</div>
 			<div class="youCanBookMe_Container">
-				<iframe src="https://citr-medialab-imac1.youcanbook.me/" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
+				<!-- Media Lab iMac 1 -->
+				<iframe src="https://appointments.citr.ca/?select-service=3&select-provider=7" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
 			</div>
 			<div class="center" style="max-width:830px">
 				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_5ivtqqair5qvhme16aiq7bqr9k%40group.calendar.google.com&#038;ctz=America%2FVancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="https://www.google.com/calendar/embed?src=citr.ca_5ivtqqair5qvhme16aiq7bqr9k%40group.calendar.google.com&amp;ctz=America/Vancouver" target="_blank">See the iMAC-1 bookings here</a></p>			
 			</div>
 			<div class="youCanBookMe_Container">
-				<iframe src="https://citr-medialab-imac2.youcanbook.me" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
+				<!-- Media Lab iMac 2 -->
+				<iframe src="https://appointments.citr.ca/?select-service=3&select-provider=8" style="border:0px;background:transparent;" frameborder="0" allowtransparency="true"></iframe></p>
 			</div>
 			<div class="center" style="max-width:830px">
 				<p><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.google.com/calendar/embed?src=citr.ca_4uf55vpjd64dl1o50ntslb3uig%40group.calendar.google.com&#038;ctz=America/Vancouver');" style="border: 0px; background: transparent;" title="See the Studio B bookings here"  href="https://www.google.com/calendar/embed?src=citr.ca_4uf55vpjd64dl1o50ntslb3uig%40group.calendar.google.com&#038;ctz=America/Vancouver" target="_blank">See the iMAC-2 bookings here</a><br />
