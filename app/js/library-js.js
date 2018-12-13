@@ -9,9 +9,13 @@ $(document).ready(function() {
 
   form        = document.getElementById("submit-field");
   var trackButton = document.getElementById("new-track-button-input");
-  trackButton.addEventListener('change', handleTracks, false);
+  if (trackButton !== null) {
+    trackButton.addEventListener('change', handleTracks, false);
+  }
   var submitButton   = document.getElementById("submit-button");
-  submitButton.addEventListener('click', submitForm);
+  if (submitButton !== null) {
+    submitButton.addEventListener('click', submitForm);
+  }
 
 	dopeysecurityval = 'something';
 
