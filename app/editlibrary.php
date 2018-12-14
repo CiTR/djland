@@ -14,6 +14,13 @@ require_once("headers/menu_header.php");
 <script type="text/javascript" src="js/membership/admin.js"></script>
 <script type="text/javascript" src="js/test.js"></script>
 <script type='text/javascript' src='./js/libraryedit/libraryedit.js'></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("select.select2").select2();
+	});
+</script>
 
 <?php
 //<script src="js/jquery.form.js"></script>
@@ -21,7 +28,7 @@ require_once("headers/menu_header.php");
 //  <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 
-echo "</head><body class='wallpaper'>";
+echo "</head><body class='wallpaper edit-library'>";
 
 print_menu();
 
@@ -63,18 +70,25 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 						</tr>
 						<tr>
 							<td align=left style='padding-left:10px'>Genre: </td>
-							<td align=left style='padding-left:5px'>
-								<script type="text/javascript">
-									$(document).ready(function() {
-									$(".js-example-basic-single").select2();
-									});
-								</script>
-									<select class="js-example-basic-single vueselect" style="width:70%;" id='asgenre'><option value=0>
-										<?php foreach($djland_primary_genres as $genre){
-											printf("<option value=\"$genre\">$genre</option>");
-										} ?>
-									</select>
+							<td align=left style='padding-left:5px' colspan="5">
+								<INPUT TYPE=text id='asgenre'>
 							</td>
+						</tr>
+						<tr>
+							<td align=left style='padding-left:10px'>CanCon: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="ascancon" id="ascancon" /></td>
+							<td align=left style='padding-left:10px'>FemCon: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="asfemcon" id="asfemcon" /></td>
+							<td align=left style='padding-left:10px'>Playlist: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="asplaylist" id="asplaylist" /></td>
+						</tr>
+						<tr>
+							<td align=left style='padding-left:10px'>Local: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="aslocal" id="aslocal" /></td>
+							<td align=left style='padding-left:10px'>Compilation: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="ascompilation" id="ascompilation" /></td>
+							<td align=left style='padding-left:10px'>In SAM: </td>
+							<td align=left style='padding-left:5px'><input type="checkbox" name="asdigitized" id="asdigitized" /></td>
 						</tr>
 					</table>
 				</td>
@@ -122,7 +136,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 
 		<table border=0 align=center>
 			<tr>
-				<td align=right nowrap>Select All <input type=checkbox onClick="toggle(this)"></td>
+				<td align=right nowrap>Select All <input id="albumEntry-select-all" type=checkbox onClick="toggleSelectAll(this)"></td>
 		</table>
 		<br />
 	<?php
@@ -185,11 +199,11 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 	foreach($dbarray as $i => $row) {
 
 		$entry_catalog = $row["catalog"];
-		$entry_format = $row["format"];
+		$entry_format = addslashes($row["format"]);
 		$entry_status = $row["status"];
-		$entry_artist = $row["artist"];
-		$entry_title = $row["title"];
-		$entry_label = $row["label"];
+		$entry_artist = addslashes($row["artist"]);
+		$entry_title = addslashes($row["title"]);
+		$entry_label = addslashes($row["label"]);
 		$entry_genre = $row["genre"];
 		$entry_cancon = $row["cancon"];
 		$entry_femcon = $row["femcon"];
@@ -204,7 +218,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 			$genreVals .= "*" . $var_genre;
 		}
 
-		printf("<tr id='albumEntry'><td onClick='editLine(this, \"$entry_id\", \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_format\", \"$entry_status\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\", \"$genreVals\")' class='editButton'>edit</td>");
+		printf("<tr class='albumEntry'><td onClick='editLine(this, \"$entry_id\", \"$entry_artist\", \"$entry_title\", \"$entry_label\", \"$entry_genre\", \"$entry_catalog\", \"$entry_format\", \"$entry_status\", \"$entry_cancon\", \"$entry_femcon\", \"$entry_local\", \"$entry_playlist\", \"$entry_compilation\", \"$entry_digitized\", \"$genreVals\")' class='editButton'>edit</td>");
 		printf("<td><input type=checkbox name='entry' id='\"$entry_id\"'></td>");
 		printf("<td align=right>[%s]</td><td>", $row["catalog"]);
 

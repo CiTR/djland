@@ -2392,6 +2392,10 @@ img.thumb {
   width: 150px !important;
 }
 
+body.edit-library .select2-container--default {
+  width: 100% !important;
+}
+
 .submissioncontainer {
   width: 1040px;
   margin-left: auto;

@@ -77,20 +77,21 @@ function saveChanges() {
   var checkedIDs = getCheckedEntries("entry");
 
   // get values updated in boxes
-  var title   = $("#astitle").val();
-  var artist  = $("#asartist").val();
-  var label   = $("#aslabel").val();
-  var genre   = $("#asgenre").val();
-  var catalog = $("#ascatalog").val();
-  var format_id  = $("#asformat").val();
+  var title       = $("#astitle").val();
+  var artist      = $("#asartist").val();
+  var label       = $("#aslabel").val();
+  var genre       = $("#asgenre").val();
+  var catalog     = $("#ascatalog").val();
+  var format_id   = $("#asformat").val();
+  var status      = $("#asstatus").val();
+  var cancon      = $("#ascancon").prop('checked') ? 1 : 0;
+  var femcon      = $("#asfemcon").prop('checked') ? 1 : 0;
+  var playlist    = $("#asplaylist").prop('checked') ? 1 : 0;
+  var local       = $("#aslocal").prop('checked') ? 1 : 0;
+  var compilation = $("#ascompilation").prop('checked') ? 1 : 0;
+  var digitized   = $("#asdigitized").prop('checked') ? 1 : 0;
+
   if(format_id == 0) format_id = null;
-  var status  = $("#asstatus").val();
-  var cancon  = null;
-  var femcon  = null;
-  var playlist = null;
-  var local   = null;
-  var compilation = null;
-  var digitized = null;
 
   // call update function for each entry
   for(var number in checkedIDs){
@@ -255,3 +256,84 @@ function populateLibraryEditsTable(){
   		}
   	}
   }
+
+function editLine(thisObj, entryId, artist, title, label, genre, catalog, format, status, cancon, femcon, local, playlist, compilation, digitized, genres) {
+  var populateObj = {
+    artist: artist,
+    title: title,
+    label: label,
+    genre: genre,
+    catalog: catalog,
+    format: format,
+    status: status,
+    cancon: cancon,
+    femcon: femcon,
+    local: local,
+    playlist: playlist,
+    compilation: compilation,
+    digitized: digitized
+  };
+
+  var inputObj, val, morphedVal, objKeys, key;
+
+  objKeys = Object.keys(populateObj);
+
+  for (var i in objKeys) {
+    key = objKeys[i];
+    inputObj = $('#as'+key);
+    val = populateObj[key];
+    morphedVal = null;
+
+    if ($(inputObj).length === 0) {
+      // console.log({
+      //   inputObj: inputObj,
+      //   val: val
+      // });
+      // console.log('continue');
+      continue;
+    }
+
+    if ($(inputObj).is(':checkbox')) {
+      morphedVal = Boolean($.parseJSON(val));
+
+      if ($(inputObj).prop('checked') != morphedVal) {
+        $(inputObj).prop('checked', morphedVal).trigger('change');
+      }
+    } else if ($(inputObj).is('select:not([multiple])')) {
+      if ($(inputObj).has('option[value="'+val+'"]').length) {
+        // console.log("select has option with val");
+        $(inputObj).val(val).trigger('change');
+      } else if ($(inputObj).has("option:contains('"+val+"')").length) {
+        // console.log("select has option containing text");
+        $(inputObj).val($(inputObj).find("option:contains('"+val+"')").val()).trigger('change');
+      } else {
+        // console.log("select has no option found");
+      }
+    } else if ($(inputObj).is(':input:not(select)')) {
+      $(inputObj).val(val).trigger('change');
+    }
+    // console.log({
+    //   inputObj: inputObj,
+    //   val: val,
+    //   morphedVal: morphedVal,
+    //   inputObjVal: $(inputObj).val()
+    // });
+  }
+
+  if ($("#albumEntry-select-all").prop('checked')) {
+    $("#albumEntry-select-all").prop('checked', false).trigger('change');
+  }
+
+  $('tr.albumEntry').find(':checkbox[name="entry"]:checked').prop('checked', false).trigger('change');
+
+  $(thisObj).siblings(':has(:checkbox[name="entry"])')
+            .find(':checkbox[name="entry"]')
+            .prop('checked', true)
+            .trigger('change');
+}
+
+function toggleSelectAll(thisObj) {
+  if ($(thisObj).is(':checkbox')) {
+    $('.albumEntry :checkbox').prop('checked', $(thisObj).prop("checked"));
+  }
+}
