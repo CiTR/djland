@@ -43,7 +43,7 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 	printf("<br /><hr width=800px><br />");
 
 	?>
-		<table border=0 align=center>
+		<table border=0 align=center id="edit-form-table">
 			<tr>
 				<td align=left nowrap>
 					<INPUT TYPE=hidden NAME=action VALUE=search>
@@ -90,16 +90,22 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 							<td align=left style='padding-left:10px'>In SAM: </td>
 							<td align=left style='padding-left:5px'><input type="checkbox" name="asdigitized" id="asdigitized" /></td>
 						</tr>
+						<tr>
+							<td style='padding-top:20px' colspan="6">
+								<button onclick="$('#edit-form-table :input').val(null)">Empty Form</button>
+							</td>
+						</tr>
 					</table>
 				</td>
 			</tr>
 		</table>
-	<?php
-
-	printf("<br /><hr width=800px>");
-	printf("<center><br /><input type=submit VALUE='Apply Changes to Selected' onClick='saveChanges()'></center><br />");
-
-	?>
+		<br />
+		<hr width=800px>
+		<center>
+			<br />
+			<input type=submit VALUE='Apply Changes to Selected' onClick='saveChanges()'>
+		</center>
+		<br />
 	<!--JAVASCRIPT HELPER CALLS-->
 	<script language=JavaScript>
 		<!--
