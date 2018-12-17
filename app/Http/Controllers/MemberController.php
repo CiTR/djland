@@ -54,9 +54,11 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id = null)
     {
-        return view('members.settings');
+        $user = auth()->user(); // Change this to allow different users for admins
+
+        return view('members.settings')->withUser($user);
     }
 
     /**
