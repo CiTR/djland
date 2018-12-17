@@ -19,6 +19,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            @include('members.settings-field', [
+                                'name' => 'first_name',
+                                'ignore_input' => true,
+                            ])
+                            @include('members.settings-field', [
+                                'name' => 'last_name',
+                                'ignore_input' => true,
+                            ])
+                            @include('members.settings-field', [
+                                'name' => 'preferred_name',
+                            ])
+                        </div>
                     </form>
                 </div>
             </div>
