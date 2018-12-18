@@ -24,3 +24,5 @@ Route::resource('members', 'UserController');
 Route::resource('albums', 'AlbumController');
 
 Route::resource('songs', 'SongController');
+
+Route::resource('albums/{album_id}/songs', 'AlbumSongsController');
