@@ -28,7 +28,7 @@ class SongController extends Controller
      */
     public function create()
     {
-        //
+        return response("Coming Soon", 404);
     }
 
     /**
@@ -57,10 +57,10 @@ class SongController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Song  $song
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Song $song)
+    public function show($id)
     {
         $song = Song::findOrFail($id);
 
@@ -75,7 +75,7 @@ class SongController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Song $song)
+    public function edit($id)
     {
         $song = Song::findOrFail($id);
 
@@ -86,10 +86,10 @@ class SongController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Song  $song
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Song $song)
+    public function update(Request $request, $id)
     {
         $song = Song::findOrFail($id);
 
@@ -109,10 +109,10 @@ class SongController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Song  $song
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Song $song)
+    public function destroy($id)
     {
         $success = Song::destroy($id);
 
