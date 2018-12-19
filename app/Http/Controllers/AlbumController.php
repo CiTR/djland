@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Kris\LaravelFormBuilder\FormBuilder;
+use App\Forms\AlbumForm;
+
 use App\Album;
 
 class AlbumController extends Controller
@@ -27,9 +30,14 @@ class AlbumController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(FormBuilder $formBuilder)
     {
-        //
+        $form = $formBuilder->create(AlbumForm::class, [
+            'method' => 'POST',
+            'url' => route('albums.store'),
+        ]);
+
+        return view('forms.basic', compact('form'));
     }
 
     /**
@@ -38,9 +46,15 @@ class AlbumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, FormBuilder $formBuilder)
     {
-        $album = Album::firstOrNew($request->all());
+        $form = $formBuilder->create(AlbumForm::class);
+
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
+
+        $album = Album::firstOrNew($request->except('_token'));
 
         if ($album->exists) {
             return response()->json($album, 409);
@@ -76,11 +90,17 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, FormBuilder $formBuilder)
     {
         $album = Album::findOrFail($id);
 
-        return response()->json($album);
+        $form = $formBuilder->create(AlbumForm::class, [
+            'method' => 'PUT',
+            'url' => route('albums.update', ['id' => $id]),
+            'model' => $album,
+        ]);
+
+        return view('forms.basic', compact('form'));
     }
 
     /**
@@ -90,11 +110,17 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, FormBuilder $formBuilder)
     {
+        $form = $formBuilder->create(AlbumForm::class);
+
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
+
         $album = Album::findOrFail($id);
 
-        $album->fill($request->all());
+        $album->fill($request->except('_token'));
 
         if ($album->isDirty()) {
             if ($album->save()) {
