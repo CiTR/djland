@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Kris\LaravelFormBuilder\FormBuilder;
+use App\Forms\UserEditForm;
+
 class UserController extends Controller
 {
     /**
@@ -55,11 +58,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id = null)
+    public function edit($id = null, FormBuilder $formBuilder)
     {
-        $user = auth()->user(); // Change this to allow different users for admins
+//        $user = auth()->user(); // Change this to allow different users for admins
+//
+//        return view('members.settings')->withUser($user);
 
-        return view('members.settings')->withUser($user);
+        $form = $formBuilder->create('App\Forms\UserEditForm', [
+            'method' => 'PUT',
+            'url' => route('members.update', Auth::user()->id),
+            'model' => Auth::user()
+        ]);
+
+        return view('forms.basic', compact('form'));
     }
 
     /**
@@ -74,7 +85,8 @@ class UserController extends Controller
         $user = Auth::user();
         $user->fill($request->all());
         $user->save();
-        dd($user);
+        dd($request->all());
+
 
     }
 
