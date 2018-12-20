@@ -37,6 +37,14 @@ class Song extends Model
 
             return true;
         });
+
+        static::saving(function ($song) {
+            if (preg_match('/^([0-9]*)[:]([0-9]*)$/', $song->length, $matches)) {
+                $song->length = $matches[1]*60+$matches[2];
+            }
+
+            return true;
+        });
     }
 
     /**
