@@ -37,14 +37,6 @@ class Song extends Model
 
             return true;
         });
-
-        static::saving(function ($song) {
-            if (preg_match('/^([0-9]*)[:]([0-9]*)$/', $song->length, $matches)) {
-                $song->length = $matches[1]*60+$matches[2];
-            }
-
-            return true;
-        });
     }
 
     /**
@@ -55,5 +47,21 @@ class Song extends Model
     public function album()
     {
         return $this->belongsTo(Album::class);
+    }
+
+
+    /**
+     * Mutate the length from m:ss to integer seconds
+     * 
+     * @param mixed $value The length attribute
+     * @return int The length in seconds
+     */
+    public function setLengthAttribute($value)
+    {
+        if (preg_match('/^([0-9]*)[:]([0-9]*)$/', $value, $matches)) {
+            $value = $matches[1]*60+$matches[2];
+        }
+
+        $this->attributes['length'] = $value;
     }
 }
