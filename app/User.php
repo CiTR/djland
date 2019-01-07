@@ -31,7 +31,7 @@ class User extends Authenticatable
         'postal_code',
         'is_new',
         'is_alumni',
-        'is_approved',
+        'is_approved',  ////////TODO: whatt??
         'is_discorder_contributor',
         'member_since',
         'faculty',

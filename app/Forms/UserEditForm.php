@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Kris\LaravelFormBuilder\Form;
 
+
 class UserEditForm extends Form
 {
     public function buildForm()
@@ -15,17 +16,16 @@ class UserEditForm extends Form
             ->add('address', 'textarea')
             ->add('city', 'text')
             ->add('province',
-                'select', ['choices' =>
-                ["AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba",
-                "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories",
-                "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario",
-                "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan",
-                "YT" => "Yukon",],])
+                'select', ['choices' => \Config::get('provinces')])
             ->add('postal_code', 'text')
-            ->add('is_canadian_citizen', 'select', ['choices' => [true => "Yes", false => "No",],])
+            ->add('is_canadian_citizen', 'checkbox')
             ->add('email', 'email')
             ->add('primary_phone', 'tel')
             ->add('secondary_phone', 'tel')
+            ->add('about', 'textarea')
+            ->add('skills', 'textarea')
+            ->add('exposure', 'textarea')
             ->add('submit', 'submit');
     }
+
 }
