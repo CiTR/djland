@@ -18,7 +18,7 @@ class UserCreateForm extends Form
             ->add('address', 'textarea')
             ->add('city', 'text')
             ->add('province',
-                'select', ['choices' => \Config::get('provinces')])
+                'select', ['choices' => \CountryState::getStates(config('app.country'))])
             ->add('postal_code', 'text')
             ->add('is_canadian_citizen', 'checkbox')
             ->add('is_new', 'checkbox')

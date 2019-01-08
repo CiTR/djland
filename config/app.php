@@ -82,6 +82,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Country Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The application country determines the default country code that will be
+    | used by the location service provider. You are free to set this value
+    | to any ISO-3166 two-letter country code.
+    |
+    */
+
+    'country' => env('APP_COUNTRY', 'CA'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Fallback Locale
     |--------------------------------------------------------------------------
     |

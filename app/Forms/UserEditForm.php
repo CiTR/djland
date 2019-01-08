@@ -16,7 +16,7 @@ class UserEditForm extends Form
             ->add('address', 'textarea')
             ->add('city', 'text')
             ->add('province',
-                'select', ['choices' => config('provinces')])
+                'select', ['choices' => \CountryState::getStates(config('app.country'))])
             ->add('postal_code', 'text')
             ->add('is_canadian_citizen', 'checkbox')
             ->add('email', 'email')
