@@ -42,7 +42,7 @@ return [
     // Remove the laravel-form-builder:: prefix above when using template_prefix
     'template_prefix'   => '',
 
-    'default_namespace' => '',
+    'default_namespace' => 'App\\Forms',
 
     'custom_fields' => [
 //        'datetime' => App\Forms\Fields\Datetime::class
