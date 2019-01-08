@@ -48,4 +48,20 @@ class Song extends Model
     {
         return $this->belongsTo(Album::class);
     }
+
+
+    /**
+     * Mutate the length from m:ss to integer seconds
+     * 
+     * @param mixed $value The length attribute
+     * @return int The length in seconds
+     */
+    public function setLengthAttribute($value)
+    {
+        if (preg_match('/^([0-9]*)[:]([0-9]*)$/', $value, $matches)) {
+            $value = $matches[1]*60+$matches[2];
+        }
+
+        $this->attributes['length'] = $value;
+    }
 }
