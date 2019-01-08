@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 use Kris\LaravelFormBuilder\FormBuilder;
-use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -74,7 +73,7 @@ class RegisterController extends Controller
         $form = $formBuilder->create('App\Forms\UserCreateForm', [
             'method' => 'POST',
             'url' => route('register'),
-            'model' => Auth::user()
+            'model' => auth()->user()
         ]);
 
         return view('forms.basic', compact('form'));

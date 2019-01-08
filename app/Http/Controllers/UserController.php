@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 use Kris\LaravelFormBuilder\FormBuilder;
 use App\User;
@@ -30,7 +29,7 @@ class UserController extends Controller
         $form = $formBuilder->create('App\Forms\UserCreateForm', [
             'method' => 'POST',
             'url' => route('members.store'),
-            'model' => Auth::user()
+            'model' => auth()->user()
         ]);
 
         return view('forms.basic', compact('form'));
@@ -45,7 +44,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = User::create($request->all());
-        Auth::login($user, true);
+        auth()->login($user, true);
     }
 
     /**
@@ -73,8 +72,8 @@ class UserController extends Controller
 
         $form = $formBuilder->create('App\Forms\UserEditForm', [
             'method' => 'PUT',
-            'url' => route('members.update', Auth::user()->id),
-            'model' => Auth::user()
+            'url' => route('members.update', auth()->user()->id),
+            'model' => auth()->user()
         ]);
 
         return view('forms.basic', compact('form'));
@@ -89,7 +88,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $user->fill($request->all());
         $user->save();
         dd($request->all());
