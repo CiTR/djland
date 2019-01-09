@@ -26,7 +26,4 @@ class TestCreateUser extends TestCase
         $response->assertRedirect('home');
     }
 
-    public function testNoUserAllFields() {
-        $user = factory(User::class)->create();
-    }
 }
