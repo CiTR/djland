@@ -33,7 +33,7 @@ class AlbumController extends Controller
      */
     public function create(FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(AlbumForm::class, [
+        $form = $formBuilder->create(class_basename(AlbumForm::class), [
             'method' => 'POST',
             'url' => route('albums.store'),
         ]);
@@ -43,7 +43,7 @@ class AlbumController extends Controller
             'property' => 'id',
             'options' => [
                 'label' => false,
-                'class' => $formBuilder->create(SongForm::class),
+                'class' => $formBuilder->create(class_basename(SongForm::class)),
             ],
         ]);
 
@@ -58,7 +58,7 @@ class AlbumController extends Controller
      */
     public function store(Request $request, FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(AlbumForm::class);
+        $form = $formBuilder->create(class_basename(AlbumForm::class));
 
         if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
@@ -134,14 +134,14 @@ class AlbumController extends Controller
     {
         $album = Album::with('songs')->findOrFail($id);
 
-        $form = $formBuilder->create(AlbumForm::class, [
+        $form = $formBuilder->create(class_basename(AlbumForm::class), [
             'method' => 'PUT',
             'url' => route('albums.update', ['id' => $id]),
             'model' => $album,
         ]);
 
         // @see https://github.com/kristijanhusak/laravel-form-builder/issues/162#issuecomment-144645617
-        $songForm = $formBuilder->create(SongForm::class, [], ['includeHiddenId' => true]);
+        $songForm = $formBuilder->create(class_basename(SongForm::class), [], ['includeHiddenId' => true]);
 
         $form->addBefore('submit', 'songs', 'collection', [
             'type' => 'form',
@@ -163,7 +163,7 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id, FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(AlbumForm::class);
+        $form = $formBuilder->create(class_basename(AlbumForm::class));
 
         if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
