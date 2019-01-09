@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Spatie\Permission\Traits\HasRoles;
+use App\Show;
 
 class User extends Authenticatable
 {
@@ -62,10 +63,22 @@ class User extends Authenticatable
 
     /**
      * Get the membership type record associated with the member.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function membership_type()
     {
         return $this->belongsTo('App\MembershipType');
+    }
+
+    /**
+     * Users have shows
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function shows()
+    {
+        return $this->belongsToMany(Show::class);
     }
 
     /**
@@ -97,5 +110,13 @@ class User extends Authenticatable
         }
 
         $this->attributes['member_since'] = $value;
+    }
+
+    /**
+     * Get first_name." ".last_name
+     */
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

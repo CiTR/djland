@@ -25,4 +25,6 @@ Route::resource('albums', 'AlbumController');
 
 Route::resource('songs', 'SongController');
 
+Route::resource('shows', 'ShowController');
+
 Route::resource('albums/{album_id}/songs', 'AlbumSongsController');
