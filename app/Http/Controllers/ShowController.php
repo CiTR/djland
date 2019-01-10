@@ -181,11 +181,7 @@ class ShowController extends Controller
             $show->users()->sync($request->input('users'));
         }
 
-        $saved = null;
-
-        if ($show->isDirty()) {
-            $saved = $show->save();
-        }
+        $saved = ($show->isDirty()) ? $show->save() : null;
 
         if ($saved === false) {
             return response('Error updating show', 500);
