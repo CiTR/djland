@@ -11,24 +11,16 @@ use App\User;
 class RegisterTest extends DuskTestCase
 {
 
-//    public function setUp()
-//    {
-//        parent::setUp();
-//        $this->user = factory(User::class)->create(['email' => 'example@example.com']);
-//    }
-
-//    public function tearDown()
-//    {
-//        $this->user->delete();
-//    }
-
     public function testRegisterNewUserValid() {
+        $user = factory(User::class)->create();
+        $user->delete();
+        $array = json_decode( $user, true );
+        print($array['is_canadian_citizen']);
+
         //TODO: Implement email verified at
-        $this->browse(function ($browser) {
-            $user = factory(User::class)->create();
-            $user->delete();
+        $this->browse(function ($browser) use ($user, &$array) {
             $curr = $browser->visit('/register');
-            $array = json_decode( $user, true );
+
 
             $uneditableFields = ['email_verified_at', 'is_approved', 'taken_station_tour',
                                  'taken_tech_training', 'taken_prog_training', 'taken_prod_training',
@@ -51,5 +43,10 @@ class RegisterTest extends DuskTestCase
             $curr->press('Submit');
             $curr->assertPathIs('/home');
         });
+
+        foreach($array as $key=>$val) {
+            $this->assertDatabaseHas('users',[$key=>$val]);
+        }
     }
+
 }
