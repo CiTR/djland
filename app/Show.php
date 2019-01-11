@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\User;
+use App\Episode;
 
 class Show extends Model
 {
@@ -35,6 +36,16 @@ class Show extends Model
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Show has many episodes
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class);
     }
 
     /**

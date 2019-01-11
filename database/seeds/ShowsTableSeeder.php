@@ -15,6 +15,11 @@ class ShowsTableSeeder extends Seeder
             $users = App\User::all()->random(rand(1,3));
 
             $show->users()->sync($users->pluck('id'));
+
+            $episode = rand(5,50);
+            for ($i=0; $i<$episode; $i++) {
+                $show->episodes()->save(factory(App\Episode::class)->make());
+            }
         });
     }
 }
