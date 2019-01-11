@@ -23,36 +23,27 @@ class RegisterTest extends DuskTestCase
 //    }
 
     public function testRegisterNewUserValid() {
+        //TODO: Implement email verified at
         $this->browse(function ($browser) {
             $user = factory(User::class)->create();
             $user->delete();
-
             $curr = $browser->visit('/register');
             $array = json_decode( $user, true );
-            unset($array['email_verified_at']);
-            unset($array['is_approved']);
-            unset($array['taken_station_tour']);
-            unset($array['taken_tech_training']);
-            unset($array['taken_prog_training']);
-            unset($array['taken_prod_training']);
-            unset($array['taken_spoken_training']);
-            unset($array['updated_at']);
-            unset($array['created_at']);
-            unset($array['id']);
-            unset($array['comments']);
+
+            $uneditableFields = ['email_verified_at', 'is_approved', 'taken_station_tour',
+                                 'taken_tech_training', 'taken_prog_training', 'taken_prod_training',
+                                 'taken_spoken_training', 'updated_at', 'created_at', 'id', 'comments'];
 
             //TODO: doesn't work on checkbox and drop-downs
-            unset($array['is_canadian_citizen']);
-            unset($array['province']);
-            unset($array['is_new']);
-            unset($array['is_alumni']);
-            unset($array['is_approved']);
-            unset($array['is_discorder_contributor']);
-            unset($array['school_year']);
-            unset($array['course_integrate']);
+            $untackledFields = ['is_canadian_citizen', 'province', 'is_new', 'is_alumni', 'is_approved',
+                                'is_discorder_contributor', 'school_year', 'course_integrate'];
+
+            foreach(array_merge($uneditableFields, $untackledFields) as $field) {
+                unset($array[$field]);
+            }
 
             foreach($array as $key=>$val) {
-                print($key. "\xA");
+                //print($key. "\xA");
                 $curr->type($key, $val);
             }
             $curr->type('password', 'secret')
