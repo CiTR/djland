@@ -16,8 +16,9 @@ class CreateEpisodesTable extends Migration
         Schema::create('episodes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('show_id')->unsigned();
-            $table->datetime('start_time')->nullable();
-            $table->datetime('end_time')->nullable();
+            $table->datetime('start_datetime')->nullable();
+            $table->datetime('end_datetime')->nullable();
+            $table->string('host')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->integer('spokenword_duration')->unsigned()->default(0);
@@ -27,6 +28,11 @@ class CreateEpisodesTable extends Migration
             $table->boolean('is_web_exclusive')->default(0);
 
             $table->timestamps();
+
+            $table->foreign('show_id')
+                    ->references('id')
+                    ->on('shows')
+                    ->onDelete('cascade');
         });
     }
 

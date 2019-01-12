@@ -3,7 +3,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Episode::class, function (Faker $faker) {
-    $start_time = $faker->dateTimeBetween('-1 year');
+    $start_datetime = $faker->dateTimeBetween('-1 year');
 
     $broadcast_types = [
         'Live',
@@ -13,8 +13,8 @@ $factory->define(App\Episode::class, function (Faker $faker) {
     ];
 
     return [
-        'start_time'          => $start_time,
-        'end_time'            => $start_time->modify(rand(1,2).' hour'),
+        'start_datetime'      => $start_datetime,
+        'end_datetime'        => $start_datetime->modify(rand(1,2).' hour'),
         'title'               => implode(' ', $faker->words(rand(3,8))),
         'description'         => $faker->paragraph,
         'spokenword_duration' => $faker->numberBetween(0,60),
