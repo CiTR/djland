@@ -11,33 +11,50 @@ use App\User;
 class RegisterTest extends DuskTestCase
 {
 
+    public function setUp()
+    {
+        //TODO: BUG - course_integrate should be renamed to is_course_integrate
+        parent::setUp();
+        $this->uneditableFields = ['email_verified_at', 'is_approved', 'taken_station_tour',
+            'taken_tech_training', 'taken_prog_training', 'taken_prod_training',
+            'taken_spoken_training', 'updated_at', 'created_at', 'id', 'comments', 'course_integrate'];
+        //TODO: Better method for Drop Down?
+        $this->dropDownFields = ['province', 'school_year'];
+    }
+
+    public function tearDown()
+    {
+        session()->flush();
+        parent::tearDown();
+    }
+
     public function testRegisterNewUserValid() {
         $user = factory(User::class)->create();
         $user->delete();
         $array = json_decode( $user, true );
-        print($array['is_canadian_citizen']);
 
         //TODO: Implement email verified at
         $this->browse(function ($browser) use ($user, &$array) {
             $curr = $browser->visit('/register');
 
-
-            $uneditableFields = ['email_verified_at', 'is_approved', 'taken_station_tour',
-                                 'taken_tech_training', 'taken_prog_training', 'taken_prod_training',
-                                 'taken_spoken_training', 'updated_at', 'created_at', 'id', 'comments'];
-
-            //TODO: doesn't work on checkbox and drop-downs
-            $untackledFields = ['is_canadian_citizen', 'province', 'is_new', 'is_alumni', 'is_approved',
-                                'is_discorder_contributor', 'school_year', 'course_integrate'];
-
-            foreach(array_merge($uneditableFields, $untackledFields) as $field) {
+            foreach($this->uneditableFields as $field) {
                 unset($array[$field]);
             }
 
             foreach($array as $key=>$val) {
-                //print($key. "\xA");
+                if (in_array($key, $this->dropDownFields)) {
+                    $curr->select($key, $val);
+                }
+                else if (starts_with($key, 'is_')){
+                    if ($val) {
+                        $curr->check($key);
+                    }
+                }
+                else {
                 $curr->type($key, $val);
+                }
             }
+
             $curr->type('password', 'secret')
                  ->type('password_confirmation', 'secret');
             $curr->press('Submit');
