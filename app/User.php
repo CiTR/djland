@@ -7,12 +7,20 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Spatie\Permission\Traits\HasRoles;
+use Kyslik\ColumnSortable\Sortable;
 use App\Show;
 
 class User extends Authenticatable
 {
+    use Sortable;
     use Notifiable;
     use HasRoles;
+
+    public $sortable = [
+        'id',
+        'first_name',
+        'email',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +40,7 @@ class User extends Authenticatable
         'postal_code',
         'is_new',
         'is_alumni',
-        'is_approved',  ////////TODO: whatt??
+        'is_approved',
         'is_discorder_contributor',
         'member_since',
         'faculty',
