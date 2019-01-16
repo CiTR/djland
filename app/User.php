@@ -91,7 +91,7 @@ class User extends Authenticatable
 
     /**
      * Format postal codes properly
-     *  
+     *
      * @param [string] $value The incoming postal code
      */
     public function setPostalCodeAttribute($value)
@@ -103,10 +103,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Format member since property. If using school years 
+     * Format member since property. If using school years
      * (eg 2017/2018) then the smaller of the 2 years will be used.
-     * 
-     *  
+     *
+     *
      * @param [string|int] $value The year the member started in
      */
     public function setMemberSinceAttribute($value)

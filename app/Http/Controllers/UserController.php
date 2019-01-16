@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index(User $user)
     {
-        try{
+        try {
             // Default sorting col
             $users = $user->sortable('first_name')->paginate(20);
             return view('indexes.basic')->withModels($users);
@@ -100,7 +100,6 @@ class UserController extends Controller
         $user->fill($request->all());
         $user->save();
         dd($request->all());
-
     }
 
     /**
