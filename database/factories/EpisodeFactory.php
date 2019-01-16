@@ -5,12 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Episode::class, function (Faker $faker) {
     $start_datetime = $faker->dateTimeBetween('-1 year');
 
-    $broadcast_types = [
-        'Live',
-        'Syndicated',
-        'Rebroadcast',
-        'Simulcast',
-    ];
+    $broadcast_types = config('djland.broadcast_types');
 
     return [
         'start_datetime'      => $start_datetime,
@@ -19,7 +14,7 @@ $factory->define(App\Episode::class, function (Faker $faker) {
         'description'         => $faker->paragraph,
         'spokenword_duration' => $faker->numberBetween(0,60),
         'language'            => ($faker->boolean(95)) ? 'en' : $faker->languageCode,
-        'broadcast_type'      => ($faker->boolean(75)) ? $broadcast_types[0] : $broadcast_types[array_rand($broadcast_types)],
+        'broadcast_type'      => ($faker->boolean(75)) ? array_keys($broadcast_types)[0] : array_rand($broadcast_types),
         'is_published'        => $faker->boolean(90),
         'is_web_exclusive'    => $faker->boolean(5),
     ];
