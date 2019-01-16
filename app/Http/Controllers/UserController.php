@@ -19,7 +19,7 @@ class UserController extends Controller
         try{
             // Default sorting col
             $users = $user->sortable('first_name')->paginate(20);
-            return view('indexes.userIndex')->withUsers($users);
+            return view('indexes.basic')->withModels($users);
         }
         //TODO: improve exception handling.
         catch (\Kyslik\ColumnSortable\Exceptions\ColumnSortableException $e) {
