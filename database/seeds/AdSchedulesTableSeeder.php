@@ -49,12 +49,12 @@ class AdSchedulesTableSeeder extends Seeder
         ]);
 
         AdSchedule::firstOrCreate([
-            'name'                  => 'Announce next show',
-            'type'                  => 'announcement',
-            'description'           => 'Please announce the upcoming program',
-            'minutes_into_show'     => -5,
-            'time_start'            => '08:00:00',
-            'time_end'              => '23:59:59',
+            'name'              => 'Announce next show',
+            'type'              => 'announcement',
+            'description'       => 'Please announce the upcoming program',
+            'minutes_into_show' => -5,
+            'time_start'        => '08:00:00',
+            'time_end'          => '23:59:59',
         ]);
     }
 }
