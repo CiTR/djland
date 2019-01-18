@@ -256,4 +256,57 @@ class AdSchedule extends Model
 
         return $query;
     }
+
+    public function getAdsForRange($start, $end)
+    {
+        if (!$start instanceof Carbon) {
+            $start = new Carbon($start);
+        }
+        if (!$end instanceof Carbon) {
+            $end = new Carbon($end);
+        }
+
+        if ($start < $this->active_datetime_start) {
+            $start = $this->active_datetime_start->copy();
+        }
+
+        if (!is_null($this->active_datetime_end) && $end > $this->active_datetime_end) {
+            $end = $this->active_datetime_end->copy();
+        }
+
+        $ads = array();
+
+        // Minutes into show
+        if (!is_null($this->minutes_into_show)) {
+            $ad_time = ($this->minutes_into_show >= 0) ? $start->copy() : $end->copy();
+            $ad_time->addMinutes($this->minutes_into_show);
+            $ads[] = array(
+                'name' => $this->name,
+                'time' => $ad_time,
+                'type' => $this->type,
+            );
+
+            return $ads;
+        }
+
+        // Minutes past the hour
+        if (!is_null($this->attributes['minutes_past_hour'])) {
+            $ad_time = $start;
+            while ($ad_time <= $end) {
+                if ($ad_time->minute === $this->minutes_past_hour) {
+                    $ads[] = array(
+                        'name' => $this->name,
+                        'time' => $ad_time->copy(),
+                        'type' => $this->type,
+                    );
+
+                    $ad_time->addHours(1);
+                } else {
+                    $ad_time->addMinutes(1);
+                }
+            }
+
+            return $ads;
+        }
+    }
 }
