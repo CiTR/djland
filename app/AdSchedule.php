@@ -197,4 +197,63 @@ class AdSchedule extends Model
 
         return true;
     }
+
+    /**
+     * Scope a query to only include ad schedules in the given range
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Carbon\Carbon $start
+     * @param  \Carbon\Carbon $end
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInDateTimeRange($query, $start, $end)
+    {
+        if (!$start instanceof Carbon) {
+            $start = new Carbon($start);
+        }
+        if (!$end instanceof Carbon) {
+            $end = new Carbon($end);
+        }
+
+        // Between Active Datetime 
+        $query = $query->whereNested(function ($q) use ($start, $end) {
+            // Where start is between active_datetime_start and active_datetime_end
+            $q->where(function ($q2) use ($start) {
+                $q2->where('active_datetime_start', '<=', $start)
+                    ->whereNested(function ($q3) use ($start) {
+                        $q3->where('active_datetime_end', '>=', $start)
+                            ->orWhereNull('active_datetime_end');
+                    });
+            // Where end is between active_datetime_start and active_datetime_end
+            })->orWhere(function ($q2) use ($end) {
+                $q2->where('active_datetime_start', '<=', $end)
+                    ->whereNested(function ($q3) use ($end) {
+                        $q3->where('active_datetime_end', '>=', $end)
+                            ->orWhereNull('active_datetime_end');
+                    });
+            // Where active_datetime range is between start and end
+            })->orWhere(function ($q2) use ($start, $end) {
+                $q2->where('active_datetime_start', '>=', $start)
+                    ->where('active_datetime_end', '<=', $end);
+            });
+        });
+
+        // In Time Range
+        // @todo Make it work for ranges starting before midnight and ending after
+        if ($start->diffInHours($end) < 24) {
+            $query = $query->whereNested(function ($q) use ($start, $end) {
+                $q->where(function ($q2) use ($start) {
+                    $q2->whereTime('time_start', '<=', $start)
+                        ->whereTime('time_end', '>=', $start);
+                })->orWhere(function ($q2) use ($end) {
+                    $q2->whereTime('time_start', '>=', $end)
+                        ->whereTime('time_end', '<=', $end);
+                });
+            });
+        }
+
+        // @todo Add functionality for specific shows
+
+        return $query;
+    }
 }
