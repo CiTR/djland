@@ -30,3 +30,17 @@ Route::resource('shows', 'ShowController');
 Route::resource('episodes', 'EpisodeController');
 
 Route::resource('albums/{album_id}/songs', 'AlbumSongsController');
+
+Route::get('/ad-schedules/get-from-datetime-range', function (Illuminate\Http\Request $request) {
+    $start = $request->input('start');
+    $end = $request->input('end');
+    $schedules = App\AdSchedule::inDateTimeRange($start, $end)->get();
+
+    $ads = $schedules->reduce(function ($carry, $sched) use ($start, $end) {
+        return $carry->concat($sched->getAdsForRange($start, $end));
+    }, collect([]));
+
+    $ads = $ads->sortBy('time')->values();
+
+    return response()->json($ads);
+});

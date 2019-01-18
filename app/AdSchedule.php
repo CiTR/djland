@@ -308,5 +308,7 @@ class AdSchedule extends Model
 
             return $ads;
         }
+
+        return $ads;
     }
 }
