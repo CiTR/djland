@@ -30,6 +30,7 @@ return [
         'psa'          => 'PSA',
         'promo'        => 'Promo',
         'announcement' => 'Announcement',
+        'station_id'   => 'Station ID',
     ],
 
     /*
