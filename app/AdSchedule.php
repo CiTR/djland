@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Carbon\Carbon;
+
+use App\Traits\DatetimeManipulator;
 
 class AdSchedule extends Model
 {
+    use DatetimeManipulator;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,18 @@ class AdSchedule extends Model
         'time_end',
         'active_datetime_start',
         'active_datetime_end',
+    ];
+
+    /**
+     * The accessor attributes to be added to the model at instantiation
+     *
+     * @var array
+     */
+    protected $appends = [
+        'start_date',
+        'end_date',
+        'start_time',
+        'end_time',
     ];
 
     /**
@@ -166,39 +181,6 @@ class AdSchedule extends Model
     }
 
     /**
-     * Check if the ad schedule is active during a given datetime
-     * 
-     * @param string|DateTime|Carbon|null $datetime The datetime to check against
-     * @return boolean
-     */
-    public function isActive($datetime = null)
-    {
-        if (is_null($datetime)) {
-            $datetime = Carbon::now();
-        } elseif (is_string($datetime) || $datetime instanceof DateTime) {
-            $datetime = new Carbon($datetime);
-        }
-
-        if ($datetime->lessThan($this->active_datetime_start)) {
-            return false;
-        }
-
-        if (!is_null($this->attributes['active_datetime_end']) && $datetime->greaterThan($this->active_datetime_end)) {
-            return false;
-        }
-
-        if ($datetime->toTimeString() < $this->time_start) {
-            return false;
-        }
-
-        if ($datetime->toTimeString() > $this->time_end) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Scope a query to only include ad schedules in the given range
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -257,6 +239,46 @@ class AdSchedule extends Model
         return $query;
     }
 
+    /**
+     * Check if the ad schedule is active during a given datetime
+     * 
+     * @param string|DateTime|Carbon|null $datetime The datetime to check against
+     * @return boolean
+     */
+    public function isActive($datetime = null)
+    {
+        if (is_null($datetime)) {
+            $datetime = Carbon::now();
+        } elseif (is_string($datetime) || $datetime instanceof DateTime) {
+            $datetime = new Carbon($datetime);
+        }
+
+        if ($datetime->lessThan($this->active_datetime_start)) {
+            return false;
+        }
+
+        if (!is_null($this->attributes['active_datetime_end']) && $datetime->greaterThan($this->active_datetime_end)) {
+            return false;
+        }
+
+        if ($datetime->toTimeString() < $this->time_start) {
+            return false;
+        }
+
+        if ($datetime->toTimeString() > $this->time_end) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if the ad schedule is active during a given datetime
+     * 
+     * @param string|DateTime|Carbon $start
+     * @param string|DateTime|Carbon $end
+     * @return array
+     */
     public function getAdsForRange($start, $end)
     {
         if (!$start instanceof Carbon) {
