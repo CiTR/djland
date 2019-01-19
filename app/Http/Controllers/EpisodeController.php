@@ -153,10 +153,10 @@ class EpisodeController extends Controller
         $attributes = $request->only($fillable);
 
         // Build start/end datetimes
-        if ($request->has('start_date') && $request->has('start_time')) {
+        if ($request->input('start_date', false) && $request->input('start_time', false)) {
             $attributes['start_datetime'] = new Carbon($request->input('start_date').' '.$request->input('start_time'));
         }
-        if ($request->has('end_date') && $request->has('end_time')) {
+        if ($request->input('end_date', false) && $request->input('end_time', false)) {
             $attributes['end_datetime'] = new Carbon($request->input('end_date').' '.$request->input('end_time'));
         }
 
