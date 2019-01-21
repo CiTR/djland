@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 use App\Episode;
 use App\Forms\EpisodeForm;
+use App\Forms\EpisodeItemForm;
 
 class EpisodeController extends Controller
 {
@@ -35,24 +36,18 @@ class EpisodeController extends Controller
             'url' => route('episodes.store'),
         ]);
 
-        // $form->addBefore('submit', 'playitems', 'collection', [
-        //     'type' => 'form',
-        //     'property' => 'id',
-        //     'options' => [
-        //         'label' => false,
-        //         'class' => $formBuilder->create(class_basename(PlayitemForm::class)),
-        //     ],
-        // ]);
+        $form->addBefore('submit', 'episode_items', 'collection', [
+            'type' => 'form',
+            'property' => 'id',
+            'options' => [
+                'label' => false,
+                'class' => $formBuilder->create(class_basename(EpisodeItemForm::class)),
+            ],
+        ]);
 
         return view('forms.basic', compact('form'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     /**
      * Store a newly created resource in storage.
      *
@@ -84,7 +79,30 @@ class EpisodeController extends Controller
 
         $saved = ($episode->isDirty()) ? $episode->save() : false;
 
-        if (!$episode->wasRecentlyCreated) {
+        // New instance for episodeItem models
+        $episodeItems = collect([]);
+
+        if ($request->has('episode_items')) {
+            foreach ($request->input('episode_items') as $episodeItem) {
+                // Do what the episodeItem model's observers and mutators normally would
+                if (preg_match('/^([0-9]*)[:]([0-9]*)$/', $episodeItem['duration'], $matches)) {
+                    $episodeItem['duration'] = $matches[1]*60+$matches[2];
+                }
+
+                // Push the new or fetched episodeItem object into the collection
+                $episodeItems->push($episode->episodeItems()->firstOrCreate($episodeItem));
+            }
+        }
+
+        // Count how many episodeItems were recently created
+        $new_episode_items = $episodeItems->reject(function ($episodeItem, $key) {
+            return !$episodeItem->wasRecentlyCreated;
+        })->count();
+
+        // Fetch the episode's episodeItems because I wanna see that in the JSON
+        $episode->load('episodeItems');
+
+        if (!$episode->wasRecentlyCreated && !$new_episode_items) {
             return response()->json($episode, 409);
         }
 
@@ -120,14 +138,14 @@ class EpisodeController extends Controller
             'url' => route('episodes.update', ['id' => $episode->id]),
         ]);
 
-        // $form->addBefore('submit', 'playitems', 'collection', [
-        //     'type' => 'form',
-        //     'property' => 'id',
-        //     'options' => [
-        //         'label' => false,
-        //         'class' => $formBuilder->create(class_basename(PlayitemForm::class)),
-        //     ],
-        // ]);
+        $form->addBefore('submit', 'episodeitems', 'collection', [
+            'type' => 'form',
+            'property' => 'id',
+            'options' => [
+                'label' => false,
+                'class' => $formBuilder->create(class_basename(EpisodeItemForm::class)),
+            ],
+        ]);
 
         return view('forms.basic', compact('form'));
     }
