@@ -38,6 +38,7 @@ return [
     | Language array
     |--------------------------------------------------------------------------
     |
+    | Put default languages on top of the array
     | Array of languages and ISO 639-1 codes 
     | Source: https://gist.github.com/DimazzzZ/4e2a5a6c8c6f67900091
     |
