@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 use App\Show;
+use App\EpisodeItem;
 use App\Traits\DatetimeManipulator;
 
 class Episode extends Model
@@ -80,6 +81,16 @@ class Episode extends Model
     public function show()
     {
         return $this->belongsTo(Show::class);
+    }
+
+    /**
+     * Episode has many Episode Items
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function episodeItems()
+    {
+        return $this->hasMany(EpisodeItem::class);
     }
 
     /**

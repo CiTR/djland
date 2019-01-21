@@ -18,7 +18,16 @@ class ShowsTableSeeder extends Seeder
 
             $episode_count = rand(5,50);
             for ($i=0; $i<$episode_count; $i++) {
-                $show->episodes()->save(factory(App\Episode::class)->make());
+                $episode = factory(App\Episode::class)->make();
+                $show->episodes()->save($episode);
+
+                // Episode Items
+                $episode_item_count = rand(5,15);
+                for ($j=0; $j<$episode_item_count; $j++) {
+                    $state = (rand(0,1)) ? 'without_song' : 'random_song';
+                    $episode_item = factory(App\EpisodeItem::class)->states($state)->make();
+                    $episode->episodeItems()->save($episode_item);
+                }
             }
         });
     }
