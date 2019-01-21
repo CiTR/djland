@@ -18,6 +18,7 @@ class Song extends Model
         'title',
         'artist',
         'length',
+        'language',
         'lyrics',
     ];
 
@@ -33,6 +34,10 @@ class Song extends Model
         static::creating(function ($song) {
             if (empty($song->artist) && !empty($song->album)) {
                 $song->artist = $song->album->artist;
+            }
+
+            if (empty($song->language)) {
+                $song->language = array_keys(config('djland.languages', ['en'=>'en']))[0];
             }
 
             return true;
