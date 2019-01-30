@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Album;
+use App\EpisodeItem;
 
 class Song extends Model
 {
@@ -18,6 +19,7 @@ class Song extends Model
         'title',
         'artist',
         'length',
+        'language',
         'lyrics',
     ];
 
@@ -35,6 +37,10 @@ class Song extends Model
                 $song->artist = $song->album->artist;
             }
 
+            if (empty($song->language)) {
+                $song->language = array_keys(config('djland.languages', ['en'=>'en']))[0];
+            }
+
             return true;
         });
     }
@@ -47,6 +53,16 @@ class Song extends Model
     public function album()
     {
         return $this->belongsTo(Album::class);
+    }
+
+    /**
+     * Song has many episode items
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function episodeItems()
+    {
+        return $this->belongsTo(EpisodeItem::class);
     }
 
 
