@@ -13,7 +13,8 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
         "spatie/laravel-permission": "^2.25",
-        "kyslik/column-sortable": "5.7.*"
+        "kyslik/column-sortable": "5.7.*",
+        "spatie/laravel-tags": "^2.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

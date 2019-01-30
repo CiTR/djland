@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Forms\UserCreateForm;
+use App\Forms\UserInterestsForm;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +67,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create($data);
+        $user = User::create(array_except($data, ['interests']));
+        auth()->user();
+        if (array_has($data,'interests')) {
+            $interests = array_keys($data['interests'][0]);
+            $user->attachTags($interests);
+        }
+
         return $user;
     }
 
@@ -75,6 +82,13 @@ class RegisterController extends Controller
             'method' => 'POST',
             'url' => route('register'),
             'model' => auth()->user()
+        ]);
+
+        $form->addBefore('submit', 'interests', 'collection', [
+            'type' => 'form',
+            'options' => [
+                'label' => false,
+                'class' => $formBuilder->create(class_basename(UserInterestsForm::class)),]
         ]);
 
         return view('forms.basic', compact('form'));

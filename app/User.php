@@ -15,6 +15,7 @@ class User extends Authenticatable
     use Sortable;
     use Notifiable;
     use HasRoles;
+    use \Spatie\Tags\HasTags;
 
     public $sortable = [
         'id',
