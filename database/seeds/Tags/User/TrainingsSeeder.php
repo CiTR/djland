@@ -16,7 +16,7 @@ class TrainingsSeeder extends Seeder
             "Technical",
             "Production",
             "Programming",
-            "Spoken Word",], 'User');
+            "Spoken Word",]);
     }
 }
 

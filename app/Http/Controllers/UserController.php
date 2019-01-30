@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Forms\UserCreateForm;
+use App\Forms\UserInterestsForm;
+use App\Forms\UserEditForm;
 use Illuminate\Http\Request;
 
 use Kris\LaravelFormBuilder\FormBuilder;
 use App\User;
+use Spatie\Tags\Tag;
 
 class UserController extends Controller
 {
@@ -77,6 +80,13 @@ class UserController extends Controller
             'model' => auth()->user()
         ]);
 
+        $form->addBefore('submit', 'interests', 'collection', [
+            'type' => 'form',
+            'options' => [
+                'label' => false,
+                'class' => $formBuilder->create(class_basename(UserInterestsForm::class)),]
+        ]);
+
         return view('forms.basic', compact('form'));
     }
 
@@ -90,8 +100,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = auth()->user();
-        $user->fill($request->all());
+        $user->fill(array_except($request->all(), ['interests']));
         $user->save();
+
+        if ($request->has('interests')) {
+            $interests = array_keys($request['interests'][0]);
+            $user->attachTags($interests);
+        }
         dd($request->all());
 
     }

@@ -34,7 +34,7 @@ class InterestsSeeder extends Seeder
             "Photography for CiTR 101.9 & Discorder",
             "Writing for Discorder",
             "Art for Discorder",
-            "Other",], 'User');
+            "Other",]);
     }
 }
 
