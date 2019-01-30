@@ -11,8 +11,10 @@ use App\Show;
 
 class User extends Authenticatable
 {
+
     use Notifiable;
     use HasRoles;
+    use \Spatie\Tags\HasTags;
 
     /**
      * The attributes that are mass assignable.
