@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\UserCreateForm;
 use Illuminate\Http\Request;
 
 use Kris\LaravelFormBuilder\FormBuilder;
@@ -26,7 +27,7 @@ class UserController extends Controller
      */
     public function create(FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create('App\Forms\UserCreateForm', [
+        $form = $formBuilder->create(class_basename(UserCreateForm::class), [
             'method' => 'POST',
             'url' => route('members.store'),
             'model' => auth()->user()
@@ -38,7 +39,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,7 +51,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -61,7 +62,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id = null, FormBuilder $formBuilder)
@@ -70,7 +71,7 @@ class UserController extends Controller
 //
 //        return view('members.settings')->withUser($user);
 
-        $form = $formBuilder->create('App\Forms\UserEditForm', [
+        $form = $formBuilder->create(class_basename(UserEditForm::class), [
             'method' => 'PUT',
             'url' => route('members.update', auth()->user()->id),
             'model' => auth()->user()
@@ -82,8 +83,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -98,7 +99,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

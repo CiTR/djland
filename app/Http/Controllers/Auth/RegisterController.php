@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Forms\UserCreateForm;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -70,7 +71,7 @@ class RegisterController extends Controller
     }
 
     public function showRegistrationForm(FormBuilder $formBuilder) {
-        $form = $formBuilder->create('App\Forms\UserCreateForm', [
+        $form = $formBuilder->create(class_basename(UserCreateForm::class), [
             'method' => 'POST',
             'url' => route('register'),
             'model' => auth()->user()
