@@ -7,12 +7,20 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Spatie\Permission\Traits\HasRoles;
+use Kyslik\ColumnSortable\Sortable;
 use App\Show;
 
 class User extends Authenticatable
 {
+    use Sortable;
     use Notifiable;
     use HasRoles;
+
+    public $sortable = [
+        'id',
+        'first_name',
+        'email',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +40,7 @@ class User extends Authenticatable
         'postal_code',
         'is_new',
         'is_alumni',
-        'is_approved',  ////////TODO: whatt??
+        'is_approved',
         'is_discorder_contributor',
         'member_since',
         'faculty',
@@ -83,7 +91,7 @@ class User extends Authenticatable
 
     /**
      * Format postal codes properly
-     *  
+     *
      * @param [string] $value The incoming postal code
      */
     public function setPostalCodeAttribute($value)
@@ -95,10 +103,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Format member since property. If using school years 
+     * Format member since property. If using school years
      * (eg 2017/2018) then the smaller of the 2 years will be used.
-     * 
-     *  
+     *
+     *
      * @param [string|int] $value The year the member started in
      */
     public function setMemberSinceAttribute($value)

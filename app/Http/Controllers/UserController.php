@@ -15,9 +15,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
+        try {
+            // Default sorting col
+            $users = $user->sortable('first_name')->paginate(20);
+            return view('indexes.basic')->withModels($users);
+        }
+        //TODO: improve exception handling.
+        catch (\Kyslik\ColumnSortable\Exceptions\ColumnSortableException $e) {
+            dd($e);
+        }
     }
 
     /**
@@ -93,7 +101,6 @@ class UserController extends Controller
         $user->fill($request->all());
         $user->save();
         dd($request->all());
-
     }
 
     /**
