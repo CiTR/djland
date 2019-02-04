@@ -44,7 +44,8 @@ class Member extends Model
                                     'production_training', 
                                     'spoken_word_training', 
                                     'discorder_contributor',
-                                    'preferred_name'
+                                    'preferred_name',
+                                    'pronouns',
                                 );
 
     public function shows()

@@ -59,6 +59,7 @@ function Member(id){
 			primary_phone: null,
 			production_training: null,
 			programming_training: null,
+			pronouns: null,
 			province: null,
 			schoolyear: null,
 			secondary_phone: null,
