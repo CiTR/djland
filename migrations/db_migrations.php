@@ -1,11 +1,7 @@
 
 <html>
     <head>
-<<<<<<< HEAD:tools/db_migrations.php
-        <link rel='stylesheet' href='../../../css/bootstrap.min.css'></script>
-=======
         <link rel='stylesheet' href='../../css/bootstrap.min.css'></script>
->>>>>>> setup:app/tools/db_migrations.php
     </head>
     <body>
         <table class='table'>
