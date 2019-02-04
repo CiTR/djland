@@ -1,10 +1,6 @@
 <html>
     <head>
-<<<<<<< HEAD:tools/foreign_key_add.php
-        <link rel='stylesheet' href='../../../css/bootstrap.min.css'></script>
-=======
         <link rel='stylesheet' href='css/bootstrap.min.css'></script>
->>>>>>> setup:app/tools/foreign_key_add.php
     </head>
     <body>
     	<table class='table'>
