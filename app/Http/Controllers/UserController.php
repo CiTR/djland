@@ -113,7 +113,7 @@ class UserController extends Controller
 
         if ($request->has('interests')) {
             $interests = array_keys($request['interests'][0]);
-            $user->attachTags($interests);
+            $user->syncTagsWithType($interests, 'interest');
         }
         dd($request->all());
     }
