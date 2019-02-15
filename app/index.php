@@ -32,6 +32,8 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 		header("Location: main.php");
 	}
 }
+
+$is_fundrive = (new DateTime('March 20, 2019')) >= (new DateTime());
 ?>
 <html>
 	<head>
@@ -39,7 +41,14 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 		<link rel=stylesheet href=css/style.css type=text/css />
 		<title><?php echo $station_info['name']; ?></title>
 	</head>
+	<?php if ($is_fundrive) : ?>
+	<body class='fundrive-wallpaper'>
+		<a href="https://citr.ca/donate">
+			<img src="./images/fundrive2019-header.svg" alt="Fundrive 2019 is here!" class="fundrive-header">
+		</a>
+	<?php else : ?>
 	<body class='wallpaper'>
+	<?php endif; ?>
 		<div id = 'login'>
 			<form METHOD=POST ACTION=<?php echo "'".$_SERVER['SCRIPT_NAME']."'"; ?> name='site_login' >
 				<h3>Welcome to DJ Land</h3>

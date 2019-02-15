@@ -284,6 +284,17 @@ body {
   color: white;
 }
 
+.fundrive-wallpaper{
+  background: #8E0047;
+  color: white;
+}
+
+img.fundrive-header{
+  position: absolute;
+  max-height: 190px;
+  top: 0;
+}
+
 .invisible {
   display: none;
 }
