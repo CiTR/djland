@@ -38,7 +38,7 @@ $is_fundrive = (new DateTime('March 20, 2019')) >= (new DateTime());
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\"/>
-		<link rel=stylesheet href=css/style.css type=text/css />
+		<link rel=stylesheet href="css/style.css?02152019" type=text/css />
 		<title><?php echo $station_info['name']; ?></title>
 	</head>
 	<?php if ($is_fundrive) : ?>
