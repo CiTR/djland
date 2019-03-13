@@ -77,7 +77,9 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 	Route::group(array('prefix'=>'categorylist'),function(){
 		Route::get('{cat_id}',function($cat_id = cat_id){
 			if(is_numeric($cat_id)){
-				$categorylist = Categorylist::where('categoryID','=',$cat_id)->get();
+				$categorylist = Categorylist::join('category','category.id','=','categorylist.categoryID')->where(function ($q) use ($cat_id) {
+					$q->where('category.ID', '=', $cat_id)->orWhere('category.parentID', '=', $cat_id);
+				})->get();
 			}else{
 				$categorylist = Categorylist::join('category','category.id','=','categorylist.categoryID')->where('category.name','LIKE',$cat_id)->get();
 			}
