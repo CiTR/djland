@@ -15,14 +15,15 @@ body {
 	background-image: url('../images/wallpaper.jpg');
 	color:white;
 }
-.fundrive-wallpaper{
-	background: #8E0047;
-	color:white;
-}
-img.fundrive-header{
+img.special-header{
 	position: absolute;
-	max-height: 190px;
+	max-height: 300px;
 	top: 0;
+	left: 50%;
+    transform: translateX(-50%);
+}
+body.special-wallpaper #login{
+	margin-top: 330px;
 }
 .invisible{
 	display:none;

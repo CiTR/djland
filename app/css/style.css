@@ -284,15 +284,16 @@ body {
   color: white;
 }
 
-.fundrive-wallpaper{
-  background: #8E0047;
-  color: white;
+img.special-header{
+  position: absolute;
+  max-height: 300px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-img.fundrive-header{
-  position: absolute;
-  max-height: 190px;
-  top: 0;
+body.special-wallpaper #login{
+  margin-top: 330px;
 }
 
 .invisible {

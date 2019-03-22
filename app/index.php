@@ -33,18 +33,18 @@ else if(isset($_POST['action']) && $_POST['action'] == "login") {
 	}
 }
 
-$is_fundrive = (new DateTime('March 20, 2019')) >= (new DateTime());
+$is_special_wallpaper = (new DateTime('March 28, 2019')) >= (new DateTime());
 ?>
 <html>
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\"/>
-		<link rel=stylesheet href="css/style.css?02152019" type=text/css />
+		<link rel=stylesheet href="css/style.css?03222019" type=text/css />
 		<title><?php echo $station_info['name']; ?></title>
 	</head>
-	<?php if ($is_fundrive) : ?>
-	<body class='fundrive-wallpaper'>
-		<a href="https://citr.ca/donate">
-			<img src="./images/fundrive2019-header.svg" alt="Fundrive 2019 is here!" class="fundrive-header">
+	<?php if ($is_special_wallpaper) : ?>
+	<body class='wallpaper special-wallpaper'>
+		<a href="https://www.citr.ca/2019/03/11/citr-discorders-annual-general-meeting-volunteer-appreciation-dinner-90353/" target="blank">
+			<img src="https://www.citr.ca/wp-content/uploads/2019/03/FACEBOOK_2019AGM-1-1536x866.jpg" alt="2019 AGM is on March 27th from 6pm to 9pm" class="special-header">
 		</a>
 	<?php else : ?>
 	<body class='wallpaper'>
