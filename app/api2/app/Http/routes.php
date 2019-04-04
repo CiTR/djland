@@ -131,13 +131,12 @@ Route::group(array('prefix'=>'tools'),function(){
 	//re-writes all the show xmls.
 	Route::get('/write_show_xmls',function(){
 		$shows = Show::orderBy('id')->get();
+		$shows = $shows->random($shows->count());
 		echo "<pre>";
-		$index = 0;
 		foreach($shows as $show){
-			$index++;
 			if($show->podcast_slug){
 				$result = $show->make_show_xml();
-				$result['index'] = $index;
+				$result['index'] = $show->id;
 				print_r($result);
 				$results[] = $result;
 			}
