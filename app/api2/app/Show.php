@@ -185,6 +185,11 @@ class Show extends Model
             $show[$k] = Show::clean($show[$k]);
         }
 
+        //Ensure HTTPS isn't used for the itunes image
+        if (strpos($show['image'], 'https://djland.') === 0) {
+            $show['image'] = str_replace('https://djland', 'http://djland', $show['image']);
+        }
+
         $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';
         $xml[] = '<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="../xsl/podcast.xsl"?>';
         $xml[] = '<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xml:lang="en-US" >';
