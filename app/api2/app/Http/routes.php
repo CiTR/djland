@@ -130,9 +130,17 @@ Route::get('/nowplaying',function(){
 Route::group(array('prefix'=>'tools'),function(){
 	//re-writes all the show xmls.
 	Route::get('/write_show_xmls',function(){
-		$shows = Show::orderBy('id')->get();
-		$shows = $shows->random($shows->count());
+
+		if (request()->has('id')) {
+			$shows = Show::where('id', '=', request()->input('id'))->findOrFail();
+			$shows = collect([$shows]);
+		} else {
+			$shows = Show::all();
+			$shows = $shows->random($shows->count());
+		}
+
 		echo "<pre>";
+
 		foreach($shows as $show){
 			if($show->podcast_slug){
 				$result = $show->make_show_xml();
