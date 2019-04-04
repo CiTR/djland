@@ -132,7 +132,7 @@ Route::group(array('prefix'=>'tools'),function(){
 	Route::get('/write_show_xmls',function(){
 
 		if (request()->has('id')) {
-			$shows = Show::where('id', '=', request()->input('id'))->findOrFail();
+			$shows = Show::findOrFail(request()->input('id'));
 			$shows = collect([$shows]);
 		} else {
 			$shows = Show::all();
