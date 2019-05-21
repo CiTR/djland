@@ -7,6 +7,7 @@ require_once("headers/menu_header.php");
 	<head>
 		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
 		<link rel=stylesheet href=css/style.css type=text/css>
+		<link rel=stylesheet href=css/bootstrap.min.css type=text/css>
 		<script src='js/jquery-1.11.3.min.js'></script>
 
 		<title>DJ Land</title>

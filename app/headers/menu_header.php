@@ -17,7 +17,14 @@ function admin_menu()
 
 function print_menu()
 {
-    global $enabled,$djland_permission_levels; ?>
+    global $enabled,$djland_permission_levels; 
+    if (!is_paid()) : ?>
+        <div class="container">
+            <div class="row">
+                <div class="alert alert-danger">Your membership is currently unpaid. Please pay your membership fees.</div>
+            </div>
+        </div>
+    <?php endif; ?>
 	<ul id="nav">
 		<?php
             echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
