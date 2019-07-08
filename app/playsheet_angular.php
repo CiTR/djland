@@ -215,7 +215,7 @@
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2" >Save Draft</button><br/><br/>
 				<div ng-show='playsheet.using_sam'>
-					<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
+					<!-- <button type="button" ng-click="samVisible = !samVisible;" >SAM</button> -->
 				</div>
 
 			</div>
