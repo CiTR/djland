@@ -215,7 +215,9 @@
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2" >Save Draft</button><br/><br/>
 				<div ng-show='playsheet.using_sam'>
-					<!-- <button type="button" ng-click="samVisible = !samVisible;" >SAM</button> -->
+					<?php if (intval($_SESSION['sv_id']) < 10) : ?>
+						<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
+					<?php endif; ?>
 				</div>
 
 			</div>
