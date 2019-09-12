@@ -108,7 +108,7 @@ if(isset($_GET['show_status'])){
                 <h4 class='text-left double-padded-top'>Website</h4>
                 <input class='wideinput' ng-model='show.info.website'>
                 <h4 class='text-left double-padded-top'>Show Image</h4>
-                <input readonly class='fullinput' id='upload_image' ng-model='show.info.image'>
+                <input class='fullinput' id='upload_image' ng-model='show.info.image'>
 				Select an existing image, or upload a new one.
 				<div class='col1'>
 					<div class='image-container' ng-repeat='image in show.images | orderBy:image.id'>
