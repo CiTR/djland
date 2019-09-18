@@ -12,7 +12,38 @@ class MembershipYear extends Model
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
     protected $primaryKey = 'member_id';
-    protected $fillable = array('member_id', 'membership_year', 'paid', 'sports', 'news', 'arts', 'music', 'podcasting', 'show_hosting', 'live_broadcast', 'tech', 'programming_committee', 'ads_psa', 'promotions_outreach', 'discorder_illustrate', 'discorder_write', 'digital_library', 'photography', 'tabling', 'dj', 'other', 'womens_collective', 'indigenous_collective', 'accessibility_collective', 'music_affairs_collective', 'ubc_affairs_collective',  'create_date', 'edit_date');
+    protected $fillable = array(
+        'member_id',
+        'membership_year',
+        'paid',
+        'sports',
+        'news',
+        'arts',
+        'music',
+        'podcasting',
+        'show_hosting',
+        'live_broadcast',
+        'tech',
+        'programming_committee',
+        'ads_psa',
+        'promotions_outreach',
+        'discorder_illustrate',
+        'discorder_write',
+        'digital_library',
+        'photography',
+        'tabling',
+        'dj',
+        'other',
+        'womens_collective',
+        'indigenous_collective',
+        'accessibility_collective',
+        'music_affairs_collective',
+        'ubc_affairs_collective',
+        'poc_collective',
+        'lgbt_collective',
+        'create_date',
+        'edit_date',
+    );
 
     public function member()
     {
