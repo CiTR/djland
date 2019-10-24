@@ -192,7 +192,11 @@
         }
     	this.uploadImage = function(){
     		console.log("Test");
-    		var form = new FormData($('#upload_image'));
+            if ($('form#upload_image').length) {
+                var form = new FormData($('#upload_image'));
+            } else {
+                var form = new FormData();
+            }
     		var file = $('#image_file')[0].files[0];
     		console.log(file);
     		form.append('image',file);
