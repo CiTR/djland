@@ -15,7 +15,7 @@
         this.member_id = member_id;
         this.offset = 0;
         var this_ = this;
-        this.time_changed = false;
+        this.time_changed = true;
         this.init = function(){
             var this_ = this;
             //Get Episode list for show/channel
@@ -81,7 +81,7 @@
             this.editing.end_second = $filter('pad')(this.end.getSeconds(),2);
 
 			this.episode_image = call.getEpisodeImage(this.editing.podcast.id);
-            this.time_changed = false;
+            this.time_changed = true;
         }
 		this.uploadAudio = function(podcast_id){
 			var form = new FormData();
@@ -222,7 +222,7 @@
                         if(this.start.getTime() > new Date("2016/02/02 00:00:00").getTime() && this.editing.podcast.url.length != 0){
                             call.overwritePodcastAudio(this_.editing.podcast).then(function(response){
                                 alert("Successfully saved, audio generated from on-air recording!");
-                                this.time_changed = false;
+                                this.time_changed = true;
                             },function(error){
                                 console.log(error);
                                 alert("Failed to save podcast: Could not overwrite audio.");
@@ -235,7 +235,7 @@
                             if (this_.editing.playsheet.status == '2'){
                                 call.makePodcastAudio(this_.editing.podcast).then(function(response){
                                     alert("Successfully saved, audio generated from on-air recording!");
-                                    this.time_changed = false;
+                                    this.time_changed = true;
                                 },function(error){
                                     console.log(error);
                                     alert("Failed to save podcast: Could not write audio to directory" );
