@@ -68,6 +68,17 @@ return [
             'prefix'    => '',
             'strict'    => false,
         ],
+        'radiodjdb' => [
+            'driver'    => 'mysql',
+            'host'      => env('RADIODJDB_HOST'),
+            'database'  => env('RADIODJDB_DATABASE'),
+            'username'  => env('RADIODJDB_USERNAME'),
+            'password'  => env('RADIODJDB_PASSWORD'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
         'mysql_testing' => [
            'driver'    => 'mysql',
            'host'      => env('TESTING_DB_HOST', 'localhost'),
