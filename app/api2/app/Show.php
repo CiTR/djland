@@ -237,7 +237,7 @@ class Show extends Model
         $num = count($key);
         $count = 0;
         foreach ($episodes as $episode) {
-            if ($count >= $num || $count >= 300) {
+            if ($count >= $num || $count >= 600) {
                 break;
                 //TODO:: Implement archive XML once greater than 300.
             } else {
