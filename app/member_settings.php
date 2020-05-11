@@ -15,8 +15,8 @@
         <script type='text/javascript' src='js/test.js'></script>
  		<script type='text/javascript' src='js/constants.js'/></script>
         <script type='text/javascript' src='js/membership/member.js'></script>
-        <script type='text/javascript' src='js/membership/functions.js'></script>
-		<script type='text/javascript' src="js/membership/settings.js"></script>
+        <script type='text/javascript' src='js/membership/functions.js?20200511'></script>
+		<script type='text/javascript' src="js/membership/settings.js?20200511"></script>
 	</head>
 	<body class='wallpaper'>
 		<?php
