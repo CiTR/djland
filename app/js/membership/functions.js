@@ -438,3 +438,37 @@ function emailList() {
 
     console.log(email_value);
 }
+
+/**
+ * Get the URL parameters
+ * source: https://css-tricks.com/snippets/javascript/get-url-variables/
+ * @param  {String} url The URL
+ * @return {Object}     The URL parameters
+ */
+function getParams(url) {
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return params;
+};
+
+/**
+ * Convert a string to boolean, unless the arg isn't a string and 
+ * then it'll just vanilla JS Boolean compare
+ * source: https://stackoverflow.com/a/1414175
+ * @param  {String} string The string
+ * @return {Boolean}       The parsed string turned to Boolean
+ */
+function stringToBoolean(string){
+    switch(string.toLowerCase().trim()){
+        case "true": case "yes": case "1": return true;
+        case "false": case "no": case "0": case null: return false;
+        default: return Boolean(string);
+    }
+}

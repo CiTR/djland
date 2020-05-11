@@ -8,6 +8,10 @@ $(document).ready ( function() {
 	addListeners();
 	//periodically check if the user has filled out all fields
 	window.setInterval(checkBlocking,1000);
+
+    if (isRenewPageRedirect()) {
+        renew_membership_form();
+    }
 });
 
 function addListeners() {
@@ -199,4 +203,13 @@ function renew_membership_form(){
     } 
 
 }
-	
+
+function isRenewPageRedirect() {
+    var params = getParams(window.location.href);
+
+    if (params.hasOwnProperty('renew') && stringToBoolean(params.renew)) {
+        return true;
+    }
+
+    return false;
+}
