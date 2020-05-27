@@ -58,9 +58,9 @@ function permission_level()
         echo "Database Error:".mysqli_error($db['link']);
     }
 
-    if (!is_paid() && ($level < $djland_permission_levels['staff']['level'])) {
-        $level = 0;
-    }
+    //if (!is_paid() && ($level < $djland_permission_levels['staff']['level'])) {
+    //    $level = 0;
+    //}
     return $level;
 }
 
