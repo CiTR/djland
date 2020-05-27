@@ -21,7 +21,7 @@ function print_menu()
     if (!is_paid()) : ?>
         <div class="container">
             <div class="row">
-                <div class="alert alert-danger">Your membership needs to be renewed. <a href="/member_settings.php?renew=1">Renew it here.</a></div>
+                <div class="alert alert-danger">Your membership is currently unpaid for the year. You may also need to renew your acount. <a href="/member_settings.php?renew=1">Renew it here.</a></div>
             </div>
         </div>
     <?php endif; ?>
