@@ -212,12 +212,12 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		Route::get('/',function($id){
 			require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
 			$playsheet = new stdClass();
-			$playsheet -> playsheet = Playsheet::find($id);
-			if($playsheet -> playsheet != null){
-				$playsheet -> playitems = Playsheet::find($id)->playitems;
+			$playsheet->playsheet = Playsheet::find($id);
+			if($playsheet->playsheet != null){
+				$playsheet->playitems = Playsheet::find($id)->playitems;
 				$show = Playsheet::find($id)->show;
-				$playsheet -> show = $show;
-				$playsheet -> podcast = Playsheet::find($id)->podcast;
+				$playsheet->show = $show;
+				$playsheet->podcast = Playsheet::find($id)->podcast;
 				$promotions = Playsheet::find($id)->ads;
 				foreach($promotions as $key => $value){
 					//Get Ad Names From SAM
@@ -228,10 +228,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 						$promotions[$key]['name'] = html_entity_decode($promotions[$key]['name'],ENT_QUOTES);
 					}
 				}
-				$playsheet -> promotions = $promotions;
+				$playsheet->promotions = $promotions;
 				//convert 1 and 0 to true/false values expected by javascript
-				$playsheet -> playsheet -> socan 			= $playsheet -> playsheet -> socan 			== 1 ? true : false;
-				$playsheet -> playsheet -> web_exclusive 	= $playsheet -> playsheet -> web_exclusive 	== 1 ? true : false;
+				$playsheet->playsheet->socan 			= $playsheet->playsheet->socan 			== 1 ? true : false;
+				$playsheet->playsheet->web_exclusive 	= $playsheet->playsheet->web_exclusive 	== 1 ? true : false;
 			}
 			return Response::json($playsheet);
 		});
@@ -271,9 +271,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		Route::post('episode',function($id){
 			$playsheet = Playsheet::find($id);
 			$podcast = $playsheet->podcast;
-			$response = $playsheet -> update((array) Input::get()['playsheet']) && $podcast -> update((array) Input::get()['podcast']);
+			$response = $playsheet->update((array) Input::get()['playsheet']) && $podcast->update((array) Input::get()['podcast']);
 			if($response) {
-				$podcast -> show -> make_show_xml();
+				$podcast->show->make_show_xml();
 			}
 			return Response::json( $response ? "true" : "false");
 		});
@@ -290,7 +290,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->offset($offset)->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
-			//$playsheet -> show_info = Show::find($ps->show_id);
+			//$playsheet->show_info = Show::find($ps->show_id);
 			$playsheet->socan = $playsheet->is_socan();
 			$playsheets[] = $playsheet;
 		}
@@ -301,7 +301,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		if($permissions->staff ==1 || $permissions->administrator==1){
 			$shows = Show::all();
 		}else{
-			$shows =  Member::find($member_id)->shows;
+			$shows = Member::find($member_id)->shows;
 		}
 		foreach($shows as $show){
 			$show_ids[] = $show->id;
@@ -310,7 +310,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach(Playsheet::orderBy('start_time','desc')->whereIn('show_id',$show_ids)->limit('200')->get() as $ps){
 			$playsheet = new stdClass();
 			$playsheet = $ps;
-			$playsheet -> show_info = Show::find($ps->show_id);
+			$playsheet->show_info = Show::find($ps->show_id);
 			$playsheet->socan = $playsheet->is_socan();
 			$playsheets[] = $playsheet;
 		}
@@ -330,9 +330,9 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		foreach($playsheets as $playsheet){
 			if($playsheet != null){
 				$ps = new stdClass();
-				$ps -> id = $playsheet -> id;
-				$ps -> start_time = $playsheet->start_time;
-				$ps -> show = Show::find($playsheet->show_id);
+				$ps->id = $playsheet->id;
+				$ps->start_time = $playsheet->start_time;
+				$ps->show = Show::find($playsheet->show_id);
 				$list[] = $ps;
 			}
 		}
