@@ -137,6 +137,7 @@ Route::group(array('prefix'=>'tools'),function(){
 		} else {
 			$shows = Show::all();
 			$shows = $shows->random($shows->count());
+			$shows = $shows->sortByDesc('active');
 		}
 
 		echo "<pre>";
