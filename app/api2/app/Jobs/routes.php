@@ -119,7 +119,7 @@ Route::get('/nowplaying',function(){
 Route::group(array('prefix'=>'tools'),function(){
 	//re-writes all the show xmls.
 	Route::get('/write_show_xmls',function(){
-		$shows = Show::orderByDesc('edit_date')->get();
+		$shows = Show::orderByDesc('edit_date')->get()->sortByDesc('active');
 		echo "<pre>";
 		$index = 0;
 		foreach($shows as $show){
