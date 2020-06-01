@@ -221,7 +221,7 @@
 				</div>
 
 			</div>
-
+				<?php if (intval($_SESSION['sv_id']) < 10) : ?>
 				<div id="sam_picker" ng-show="samVisible">
 					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
 						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'y-MM-dd HH:mm:ss'}} to {{playsheet.end | date:'HH:mm:ss'}}	</button>
@@ -230,6 +230,7 @@
 						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}} ({{ sam_playitem.insert_song_start_hour}}:{{sam_playitem.insert_song_start_minute}})</span>
 					</div>
 				</div>
+				<?php endif; ?>
 
 
 			<!-- Popup Overlay during submission -->
