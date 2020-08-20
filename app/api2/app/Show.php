@@ -312,6 +312,7 @@ class Show extends Model
     }
     public static function clean($string)
     {
+        $string = htmlentities($string, ENT_QUOTES, 'UTF-8');
         $string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
         #iconv ( string $in_charset , string $out_charset , string $str )
         #//IGNORE silently discards characters that can't be represented in the target charset
