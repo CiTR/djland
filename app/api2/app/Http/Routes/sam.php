@@ -87,7 +87,7 @@ Route::group(array('prefix'=>'SAM'),function($id = id){
 			if($categorylist->isEmpty()) return Response::json();
 			foreach($categorylist as $item){
 				$song = Songlist::find($item->songID);
-				if(count($song)){
+				if(is_countable($song) && count($song)){
 					if($song['title'] == "" || $song['title'] == null){
 						$song['title'] = $song['artist'];
 					}

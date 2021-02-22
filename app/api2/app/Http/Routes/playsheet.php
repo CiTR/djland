@@ -223,7 +223,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 					//Get Ad Names From SAM
 					if($enabled['sam_integration'] && is_numeric($value['name'])){
 						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-						if(count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
+						if(is_countable($ad_info) && count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
 					}else{
 						$promotions[$key]['name'] = html_entity_decode($promotions[$key]['name'],ENT_QUOTES);
 					}

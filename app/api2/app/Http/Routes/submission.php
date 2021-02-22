@@ -217,7 +217,7 @@ Route::group(['middleware' => 'auth'], function () {
         //if( $submission->isEmpty() ) return Response::json();
         else {
             $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-            if (count($name) != 0) {
+            if (is_countable($name) && count($name) != 0) {
                 $name = $name[0];
                 $submission->reviewed = $name['firstname'] . " " . $name['lastname'];
             } else {
@@ -284,7 +284,7 @@ Route::group(['middleware' => 'auth'], function () {
             $submissions = Submissions::where('status', '=', $status)->where('format_id', '=', 1)->where('is_trashed', '=', 0)->get();
             foreach ($submissions as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -303,7 +303,7 @@ Route::group(['middleware' => 'auth'], function () {
             $submissions = Submissions::where('status', '=', $status)->where('format_id', '=', 6)->where('is_trashed', '=', 0)->get();
             foreach ($submissions as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -322,7 +322,7 @@ Route::group(['middleware' => 'auth'], function () {
             $submissions = Submissions::where('status', '=', $status)->where('format_id', '!=', 1)->where('format_id', '!=', 6)->where('is_trashed', '=', 0)->get();
             foreach ($submissions as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -351,7 +351,7 @@ Route::group(['middleware' => 'auth'], function () {
             $result = Submissions::where('status', '=', $status)->where('format_id', '=', 1)->where('is_trashed', '=', 0)->get();
             foreach ($result as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -370,7 +370,7 @@ Route::group(['middleware' => 'auth'], function () {
             $result = Submissions::where('status', '=', $status)->where('format_id', '=', 6)->where('is_trashed', '=', 0)->get();
             foreach ($result as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -389,7 +389,7 @@ Route::group(['middleware' => 'auth'], function () {
             $result = Submissions::where('status', '=', $status)->where('format_id', '!=', 1)->where('format_id', '!=', 6)->where('is_trashed', '=', 0)->get();
             foreach ($result as $submission) {
                 $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                if (count($name) != 0) {
+                if (is_countable($name) && count($name) != 0) {
                     $name = $name[0];
                     $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                 } else {
@@ -447,7 +447,7 @@ Route::group(['middleware' => 'auth'], function () {
             if (!$submissions->isEmpty()) {
                 foreach ($submissions as $submission) {
                     $name = Member::select('firstname', 'lastname')->where('id', '=', $submission->reviewed)->get()->toArray();
-                    if (count($name) != 0) {
+                    if (is_countable($name) && count($name) != 0) {
                         $name = $name[0];
                         $submission -> reviewed = $name['firstname'] . " " . $name['lastname'];
                     } else {
@@ -468,7 +468,7 @@ Route::group(['middleware' => 'auth'], function () {
             $date1 = Carbon::createFromFormat('Y-m-d', Input::get('date1'));
             $date2 = Carbon::createFromFormat('Y-m-d', Input::get('date2'));
             $result = Archive::where('updated_at', '>=', $date1)->where('updated_at', '<=', $date2)->get();
-            if (count($result) == 0) {
+            if (!is_countable($result) || count($result) == 0) {
                 return Response::json();
             } elseif ($result->isEmpty()) {
                 return Response::json();
@@ -521,7 +521,7 @@ Route::group(['middleware' => 'auth'], function () {
                 $result = Archive::all();
             }
 
-            if (count($result) == 0) {
+            if (!is_countable($result) || count($result) == 0) {
                 return Response::json();
             } elseif ($result->isEmpty()) {
                 return Response::json();
@@ -571,7 +571,7 @@ Route::group(['middleware' => 'auth'], function () {
                 $result = Rejected::all();
             }
 
-            if (count($result) == 0) {
+            if (!is_countable($result) || count($result) == 0) {
                 return Response::json();
             }
             if ($result->isEmpty()) {

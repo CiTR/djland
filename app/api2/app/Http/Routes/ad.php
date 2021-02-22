@@ -90,7 +90,7 @@ Route::get('/adschedule',function(){
 
 			$ads = Ad::where('time_block','=',$show_time->start_unix)->get();
 			$show_time->generated = false;
-			if(count($ads) == 0){
+			if(!is_countable($ads) || count($ads) == 0){
 				$show_time->generated = true;
 				$show_time->ads = Ad::generateAds($show_time->start_unix,$show_time->duration,$show_time->id);
 			}else{
