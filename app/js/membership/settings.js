@@ -12,6 +12,12 @@ $(document).ready ( function() {
     if (isRenewPageRedirect()) {
         renew_membership_form();
     }
+
+    // Move the TOS agreement down
+    $('div.containerrow:has(#tos)').after(
+        $('div.col2:has(#ubc_affairs_collective)')
+    );
+    $('div.col2:has(#ubc_affairs_collective)').attr('style', 'margin:0 auto; width: 100%; text-align:center;');
 });
 
 function addListeners() {

@@ -48,6 +48,12 @@ function getCheckbox2($id){
 
 $(document).ready ( function() {
 
+        // Move the TOS agreement down
+        $('div.containerrow:has(#tos)').after(
+            $('div.col2:has(#ubc_affairs_collective)')
+        );
+        $('div.col2:has(#ubc_affairs_collective)').attr('style', 'margin:0 auto; width: 100%; text-align: center;');
+
 	$('#submit_user').click( function() {
 		// TODO:
 		//* check if all fields are filled out correctly, then highlight incorrectly entered fields.

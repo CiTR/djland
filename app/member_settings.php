@@ -16,12 +16,13 @@
  		<script type='text/javascript' src='js/constants.js'/></script>
         <script type='text/javascript' src='js/membership/member.js'></script>
         <script type='text/javascript' src='js/membership/functions.js?20200511'></script>
-		<script type='text/javascript' src="js/membership/settings.js?20200511"></script>
+		<script type='text/javascript' src="js/membership/settings.js?20210521"></script>
 	</head>
 	<body class='wallpaper'>
 		<?php
 		print_menu();
 		?>
+<div class="membership clearfix"><a href="https://airtable.com/shroc8ZbfhgK38tBb" target="_blank">Be sure to fill out the COVID Proof of Vaccination form</a></div>
 		<div class='membership grey clearfix'>
 			<h1 id="title"> CiTR &amp; Discorder Member Settings </h1>
             <h4 id="subtitle"></h4>
@@ -179,7 +180,11 @@
 					<div class='col6'>How did you hear about us?:</div>
 					<textarea id='exposure' placeholder='Was it a friend?' class='largeinput' rows='3'></textarea>
 				</div>
-
+				<div class="containerrow" style="text-align:center">
+					<div class="col1" id="tos">
+						Read CiTR & Discorder's Membership Agreement and Volunteer Codes of Conduct <a href="https://www.citr.ca/wp-content/uploads/2021/05/Membership-Agreement-for-DJLand-MAY2021.pdf" target="blank">here</a>. Please read all items fully and carefully before continuing.
+					</div>
+				</div>
 				<div class='contanerrow'>
 					<center>
 						<button id='submit_user' class='red' disabled='true'>Form Not Complete</button>
