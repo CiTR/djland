@@ -27,7 +27,8 @@ function print_menu()
     <?php endif; ?>
 	<ul id="nav">
 		<?php
-            echo "<div id='member_id' class='hidden' value={$_SESSION['sv_id']}>{$_SESSION['sv_id']}</div>";
+			$sv_id = (isset($_SESSION['sv_id'])) ? $_SESSION['sv_id'] : null;
+            echo "<div id='member_id' class='hidden' value={$sv_id}>{$sv_id}</div>";
     echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
     echo "<div id='using_sam' class='hidden'>".($enabled['sam_integration'] ?'1':'0')."</div>";
     if ((permission_level() >= $djland_permission_levels['volunteer_leader']['level']) && $enabled['membership']):
@@ -139,7 +140,7 @@ function print_menu()
          </div>
        </li>
      <?php endif; ?>
-	 <?php if ($_SESSION['sv_username'] == 'fundrive'): ?>
+	 <?php if (isset($_SESSION['sv_username']) && $_SESSION['sv_username'] == 'fundrive'): ?>
 		 <li class="nodrop"><a href="fundrive-form.php">New Fundrive Form</a></li>
 	 <?php
     endif; ?>
