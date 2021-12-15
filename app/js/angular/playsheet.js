@@ -645,9 +645,9 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     +"If you are confused about what to enter here, please contact music@citr.ca This will help the artist chart "
     +"and help provide listeners with information about the release.";
     $scope.artistHelp =		"Enter the name of the artist";
-    $scope.compHelp = 			"Enter the name of the composer or author";
+    $scope.compHelp = 			"OPTIONAL: Enter the name of the composer or author";
     $scope.timeHelp1 =			"Hit the CUE button when the song starts playing . Or enter the start time. Time Format is HOUR:MIN";
-    $scope.timeHelp2 =			"Hit the END button when the song stops playing. Enter the duration of the song.Time Format is MIN:SECOND";
+    $scope.timeHelp2 =			"Enter the duration of the song. Time Format is MIN:SECOND";
     $scope.plHelp =			"Playlist (New) Content: Was the song released in the last 6 months? ";
     $scope.ccHelp =			"Cancon: two of the following must apply: Music written by a Canadian, Artist performing it is Canadian, Performance takes place in Canada, Lyrics Are written by a Canadian";
     $scope.feHelp =			"Femcon: two of the following must apply: Music is written by a female, Performers (at least one) are female, Words are written by a female, Recording is made by a female engineer.";

@@ -149,7 +149,6 @@
 						<th><input value="Song" ng-class="{socan: playsheet.info.socan}" readonly tooltip="{{playsheet.help.song}}" ng-class="{socan: playsheet.info.socan }"></input></th>
 						<th><input value="Album" readonly  tooltip-side:'bottom' tooltip="{{playsheet.help.album}}" ng-class="{socan: playsheet.info.socan }"></input></th>
 						<th ng-show="playsheet.info.socan"><input ng-class="{socan: playsheet.info.socan}" value="Composer" readonly tooltip="{{compHelp}}" ng-class="{socan: playsheet.info.socan }"></input></th>
-						<th ng-show="playsheet.info.socan"><input value="Time Start(H:M)" tooltip-placement:'bottom' tooltip="{{playsheet.help.timeHelp1}}" class='socantiming'></input></th>
 						<th ng-show="playsheet.info.socan"><input value ="Duration(M:S)" tooltip="{{timeHelp2}}" class='socantiming'></input></th>
 						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['cancon']}}" class="box cancon filled pad-top"></button>
