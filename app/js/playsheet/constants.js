@@ -3,14 +3,15 @@
  var tags = ['playlist','cancon','femcon','instrumental','partial','hit','background','theme'];
 	var help = {
 	album:			"Enter the title of the album, EP, or single that the track is released on."
-    +"If playing an mp3 or streaming from youtube, soundcloud etc, please take a moment to find the title of the album,"
+    +"If playing an mp3 or streaming from youtube, soundcloud, etc, please take a moment to find the title of the album,"
     +"EP, or single that the track is released on. If it is unreleased, enter 'unreleased'. "
     +"If you are confused about what to enter here, please contact music@citr.ca This will help the artist chart "
     +"and help provide listeners with information about the release."
+    ,song:          "Enter the name of the track"
     ,artist:		"Enter the name of the artist"
-    ,comp: 			"Enter the name of the composer or author"
+    ,comp: 			"OPTIONAL: Enter the name of the composer or author"
     ,timeHelp1:			"Hit the CUE button when the song starts playing . Or enter the start time. Time Format is HOUR:MIN"
-    ,timeHelp2:			"Hit the END button when the song stops playing. Enter the duration of the song.Time Format is MIN:SECOND"
+    ,timeHelp2:			"Enter the duration of the song. Time Format is MIN:SECOND"
     ,playlist:			"Playlist (New) Content: Was the song released in the last 6 months? "
     ,cancon:			"Cancon: two of the following must apply: Music written by a Canadian, Artist performing it is Canadian, Performance takes place in Canada, Lyrics Are written by a Canadian"
     ,femcon:			"Femcon: two of the following must apply: Music is written by a female, Performers (at least one) are female, Words are written by a female, Recording is made by a female engineer."
@@ -24,6 +25,6 @@
     ,lang:			"The language of the song"
     ,adsHelp:			"Station IDs must be played or spoken in the first ten minutes of every hour"
     ,guestsHelp:		"Any non-music features on your show.  This helps us to reach our 15% local spoken word minimum"
-    ,toolsHelp:			"Tools: [-] Delete the row  [+]Add a new row below"
+    ,toolsHelp:			"Tools: [-]Delete the row  [+]Add a new row below"
 
 	}
