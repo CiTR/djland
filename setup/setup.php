@@ -59,7 +59,7 @@
 						<input name='db[address]' placeholder='Address' />
 						<input name='db[username]' placeholder='Username' />
 						<input name='db[password]' placeholder='Password' />
-						<input name='db[database]' placeholder='Database' />
+						database name: <input name='db[database]' placeholder='Database' readonly value="djland"/>
 					</div>
 					<h4>SAM Database (optional)</h4>
 					<div>
