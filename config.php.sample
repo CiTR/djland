@@ -112,7 +112,7 @@ if($enabled['podcast_tools']){
 
 $djland_membership_rollover_month = 5;
 
-$library_folder = '/home/library' //no trailing slash
+$library_folder = '/home/library'; //no trailing slash
 
 //The date at which your membership will roll into the next membership year.
 $djland_membership_cutoff_month=5;
