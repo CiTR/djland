@@ -11,7 +11,7 @@ class MembershipYear extends Model
     protected $table = 'membership_years';
     const CREATED_AT = 'create_date';
     const UPDATED_AT = 'edit_date';
-    protected $primaryKey = 'member_id';
+    protected $primaryKey = 'id';
     protected $fillable = array(
         'member_id',
         'membership_year',

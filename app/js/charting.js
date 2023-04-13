@@ -97,10 +97,10 @@ function loadCharts(from,to){
 				$('#charting-row'+$j).append('<div id=charting-playlist'+$j+' class=charting-playlist> </div>');
 				$('#charting-row'+$j).append('<div id=charting-status'+$j+' class=charting-status> </div>');
 				if(data[$j].is_canadian=='1'){
-					$('#charting-cancon'+$j).append('<img src=./images/tags/can.png>');
+					$('#charting-cancon'+$j).append('<img src="./images/tags/canconsolo.png" style="max-width:100%">');
 				}
 				if(data[$j].is_playlist=='1'){
-					$('#charting-playlist'+$j).append('<img src=./images/tags/playlist.png>');
+					$('#charting-playlist'+$j).append('<img src="./images/tags/newsolo.png" style="max-width:100%">');
 				}
 				if(data[$j].status=='1'){
 					$('#charting-status'+$j).append('Draft')

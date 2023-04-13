@@ -175,7 +175,7 @@ if(isset($_GET['show_status'])){
                         <tr><td>Playlist<td><input class='smallinput' name='playist' ng-model='show.info.pl_req'>%</tr>
                         <tr><td>Cancon (20)<td><input class='smallinput' name='cancon_20' ng-model='show.info.cc_20_req'>%</tr>
 			            <tr><td>Cancon (30)<td><input class='smallinput' name='cancon_30' ng-model='show.info.cc_30_req'>%</tr>
-                        <tr><td>Female<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
+                        <tr><td>Fairplay<td><input class='smallinput' name='femcon' ng-model='show.info.fem_req'>%</tr>
                         <tr><td>Indie<td><input class='smallinput' name='indy' ng-model='show.info.indy_req'>%</tr>
                     </table>
                     <h4 class='text-left double-padded-top'>Staff Notes</h4>

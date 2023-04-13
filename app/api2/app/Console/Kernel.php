@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\ClearRejectedSubmissions::class,
+        \App\Console\Commands\FixMembershipYear2022::class,
     ];
 
     /**

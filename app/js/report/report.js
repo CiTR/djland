@@ -41,6 +41,7 @@
             call.getReport(this.show_filter, $filter('date')(this.from, 'yyyy/MM/dd'), $filter('date')(this.to, 'yyyy/MM/dd'), this.type).then(
                 function (response) {
                     this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
+                    this_.show_totals = response.data.show_totals;
                     this_.totals = response.data.totals;
                     this_.loading = false;
                     //delay displaying so to reduce lag from object creation.

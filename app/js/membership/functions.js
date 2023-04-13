@@ -362,7 +362,7 @@ function yearlyReport(year_callback) {
             console.log(ins);
             //insert the values into DOM
             var report_total = $('#report_total');
-            report_total.html(ins.count);
+            report_total.html(ins.distinct_count);
             var report_paid = $('#report_paid');
             report_paid.html(ins.paid);
             var report_unpaid = $('#report_unpaid');

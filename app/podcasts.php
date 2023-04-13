@@ -53,7 +53,7 @@ if(!isset($_GET['id'])){
     </script>
     <div id='wrapper'>
             <?php
-            $shows = getPodcasts($_SESSION['sv_id']);
+            $shows = (array_key_exists('sv_id', $_SESSION)) ? getPodcasts($_SESSION['sv_id']) : array();
             if(count($shows) > 0){
                 echo "<table class='table-condensed table-hover'><th>Show Name</th><th>Number of Episodes</th>";
                 foreach($shows as $show){
@@ -79,7 +79,7 @@ if(!isset($_GET['id'])){
 
     <script type="text/javascript">
         var show_id = <?php echo $_GET['id']; ?>;
-        var member_id = <?php echo $_SESSION['sv_id']; ?>;
+        var member_id = <?php echo (array_key_exists('sv_id', $_SESSION)) ? $_SESSION['sv_id'] : "null"; ?>;
     </script>
 
     <div ng-app="djland.podcasts" id="mainleft" ng-cloak >

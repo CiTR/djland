@@ -26,5 +26,10 @@
     ,adsHelp:			"Station IDs must be played or spoken in the first ten minutes of every hour"
     ,guestsHelp:		"Any non-music features on your show.  This helps us to reach our 15% local spoken word minimum"
     ,toolsHelp:			"Tools: [-]Delete the row  [+]Add a new row below"
-
+    ,accessCon: "AccessCon: Applies to artists who are D/deaf, visibly, and/or invisibly disabled"
+    ,afroCon: "AfroCon: Applies to artists who are Black and may be assigned to an artist who is visibly Black in visuals provided by the artist and/or representation. Any album logged as AfroCon qualifies as POC’Con as well"
+    ,indigiCon: "IndigiCon: Applies to artists who are Indigenous, Métis, and/or Inuit. Includes all Indigenous peoples who have been displaced and/or affected by colonial occupation on Turtle Island"
+    ,pocCon: "POCcon: Applies to artists of color and may be assigned to an artist who is racialized and/or visibly non-white in visuals provided by the artist and/or representatives"
+    ,queerCon: "QueerCon: Applies to artists who are lesbian, gay, bisexual/pansexual, trans, two spirit, queer/questioning, intersex, asexual, and/or any other non-heterosexual, non-cisgender identity"
+    ,is_local: "Local: Applies to artists from the lower mainland"
 	}

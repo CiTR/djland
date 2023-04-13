@@ -12,6 +12,11 @@ table.open_playsheet > tbody > tr > td.host{
 }
 
 /* Playsheet Angular CSS */
+#wrapper[ng-show="playsheet.member_shows"]{
+	width: auto;
+    margin: 0 10%;
+    min-width: 1150px;
+}
 
 .host{
 	max-width:400px;
@@ -167,84 +172,284 @@ button.box {
 	margin-bottom: 2px;
 }
 
-button.box.playlist:hover {
-	background-image: url('../images/tags/playlist.png');
-	opacity: 0.5;
+.music_row_heading button.box.playlist:hover {
+  background-image: url('../images/tags/new.png');
+  opacity: 0.5;
 }
 
-button.box.cancon:hover {
-	background-image: url('../images/tags/can.png');
-	opacity: 0.5;
+.music_row_heading button.box.cancon:hover {
+  background-image: url('../images/tags/cancon.png');
+  opacity: 0.5;
 }
 
-button.box.femcon:hover {
-	background-image: url('../images/tags/fe.png');
-	opacity: 0.5;
+.music_row_heading button.box.accesscon:hover {
+  background-image: url('../images/tags/access.png');
+  opacity: 0.5;
 }
 
-button.box.instrumental:hover {
-	background-image: url('../images/tags/inst.png');
-	opacity: 0.5;
+.music_row_heading button.box.afrocon:hover {
+  background-image: url('../images/tags/afro.png');
+  opacity: 0.5;
 }
 
-button.box.hit:hover {
-	background-image: url('../images/tags/hit.png');
-	opacity: 0.5;
+.music_row_heading button.box.femcon:hover {
+  background-image: url('../images/tags/fem.png');
+  opacity: 0.5;
 }
 
-button.box.partial:hover {
-	background-image: url('../images/tags/part.png');
-	opacity: 0.5;
+.music_row_heading button.box.indigicon:hover {
+  background-image: url('../images/tags/indigi.png');
+  opacity: 0.5;
 }
 
-button.box.background:hover {
-	background-image: url('../images/tags/background.png');
-	opacity: 0.5;
+.music_row_heading button.box.poccon:hover {
+  background-image: url('../images/tags/poc.png');
+  opacity: 0.5;
 }
 
-button.box.theme:hover {
-	background-image: url('../images/tags/theme.png');
-	opacity: 0.5;
+.music_row_heading button.box.queercon:hover {
+  background-image: url('../images/tags/queer.png');
+  opacity: 0.5;
 }
 
-button.box.playlist.filled {
-	background-image: url('../images/tags/playlist.png');
-	opacity: 1;
+.music_row_heading button.box.is_local:hover {
+  background-image: url('../images/tags/local.png');
+  opacity: 0.5;
 }
 
-button.box.cancon.filled {
-	background-image: url('../images/tags/can.png');
-	opacity: 1;
+.music_row_heading button.box.instrumental:hover {
+  background-image: url('../images/tags/instrumental.png');
+  opacity: 0.5;
 }
 
-button.box.femcon.filled {
-	background-image: url('../images/tags/fe.png');
-	opacity: 1;
+.music_row_heading button.box.hit:hover {
+  background-image: url('../images/tags/hit.png');
+  opacity: 0.5;
 }
 
-button.box.instrumental.filled {
-	background-image: url('../images/tags/inst.png');
-	opacity: 1;
+.music_row_heading button.box.partial:hover {
+  background-image: url('../images/tags/partial.png');
+  opacity: 0.5;
 }
 
-button.box.hit.filled {
-	background-image: url('../images/tags/hit.png');
-	opacity: 1;
+.music_row_heading button.box.background:hover {
+  background-image: url('../images/tags/background.png');
+  opacity: 0.5;
 }
 
-button.box.partial.filled {
-	background-image: url('../images/tags/part.png');
-	opacity: 1;
+.music_row_heading button.box.theme:hover {
+  background-image: url('../images/tags/theme.png');
+  opacity: 0.5;
 }
 
-button.box.background.filled {
-	background-image: url('../images/tags/background.png');
-	opacity: 1;
+.music_row_heading button.box.playlist.filled {
+  background-image: url('../images/tags/new.png');
+  opacity: 1;
 }
 
-button.box.theme.filled {
-	background-image: url('../images/tags/theme.png');
-	opacity: 1;
+.music_row_heading button.box.cancon.filled {
+  background-image: url('../images/tags/cancon.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.accesscon.filled {
+  background-image: url('../images/tags/access.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.afrocon.filled {
+  background-image: url('../images/tags/afro.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.femcon.filled {
+  background-image: url('../images/tags/fem.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.indigicon.filled {
+  background-image: url('../images/tags/indigi.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.poccon.filled {
+  background-image: url('../images/tags/poc.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.queercon.filled {
+  background-image: url('../images/tags/queer.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.is_local.filled {
+  background-image: url('../images/tags/local.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.instrumental.filled {
+  background-image: url('../images/tags/instrumental.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.hit.filled {
+  background-image: url('../images/tags/hit.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.partial.filled {
+  background-image: url('../images/tags/partial.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.background.filled {
+  background-image: url('../images/tags/background.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.theme.filled {
+  background-image: url('../images/tags/theme.png');
+  opacity: 1;
+}
+
+#playitems button.box.playlist:hover {
+  background-image: url('../images/tags/newsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.cancon:hover {
+  background-image: url('../images/tags/canconsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.accesscon:hover {
+  background-image: url('../images/tags/accesssolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.afrocon:hover {
+  background-image: url('../images/tags/afrosolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.femcon:hover {
+  background-image: url('../images/tags/femsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.indigicon:hover {
+  background-image: url('../images/tags/indigisolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.poccon:hover {
+  background-image: url('../images/tags/pocsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.queercon:hover {
+  background-image: url('../images/tags/queersolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.is_local:hover {
+  background-image: url('../images/tags/localsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.instrumental:hover {
+  background-image: url('../images/tags/instrumentalsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.hit:hover {
+  background-image: url('../images/tags/hitsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.partial:hover {
+  background-image: url('../images/tags/partialsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.background:hover {
+  background-image: url('../images/tags/background.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.theme:hover {
+  background-image: url('../images/tags/theme.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.playlist.filled {
+  background-image: url('../images/tags/newsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.cancon.filled {
+  background-image: url('../images/tags/canconsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.accesscon.filled {
+  background-image: url('../images/tags/accesssolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.afrocon.filled {
+  background-image: url('../images/tags/afrosolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.femcon.filled {
+  background-image: url('../images/tags/femsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.indigicon.filled {
+  background-image: url('../images/tags/indigisolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.poccon.filled {
+  background-image: url('../images/tags/pocsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.queercon.filled {
+  background-image: url('../images/tags/queersolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.is_local.filled {
+  background-image: url('../images/tags/localsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.instrumental.filled {
+  background-image: url('../images/tags/instrumentalsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.hit.filled {
+  background-image: url('../images/tags/hitsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.partial.filled {
+  background-image: url('../images/tags/partialsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.background.filled {
+  background-image: url('../images/tags/background.png');
+  opacity: 1;
+}
+
+#playitems button.box.theme.filled {
+  background-image: url('../images/tags/theme.png');
+  opacity: 1;
 }
 
 button.box {

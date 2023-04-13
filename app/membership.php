@@ -19,7 +19,7 @@
 		<script type='text/javascript' src='js/jquery-ui-1.11.3.min.js'></script>
         <script type='text/javascript' src='js/constants.js'/></script>
         <script type='text/javascript' src='js/membership/member.js'></script>
-        <script type='text/javascript' src='js/membership/functions.js'></script>
+        <script type='text/javascript' src='js/membership/functions.js?20220512'></script>
 		<script type='text/javascript' src='js/membership/membership.js'></script>
 		<script type="text/javascript" src="js/membership/admin.js"></script>
 		<script type="text/javascript" src="js/test.js"></script>
@@ -372,7 +372,7 @@
 	   				<h4>Members Registered this year</h4>
 	   				<ul class='clean-list'>
 	   					<li class='report_row total'>
-	   						<div class='col2'>Total:</div>
+	   						<div class='col2'>Total**:</div>
 	   						<div id='report_total' class='col2'></div>
 	   					</li>
 	   					<li class='report_row paid'>

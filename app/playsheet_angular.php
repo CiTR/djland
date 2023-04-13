@@ -6,7 +6,7 @@
     ?>
 	<head>
 		<link rel='stylesheet' href='css/bootstrap.min.css'>
-		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link rel="stylesheet" href="css/style.css?v=20220627" type="text/css">
 
         <script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
         <script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
@@ -16,11 +16,10 @@
     	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
     	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
-    	<script type='text/javascript' src='js/playsheet/constants.js'></script>
-    	<script type='text/javascript' src='js/playsheet/playsheet.js'></script>
+    	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
+		<script type='text/javascript' src='js/playsheet/playsheet.js?v=20220627'></script>
     	<script type='text/javascript' src='js/api.js'></script>
     	<script type='text/javascript' src='js/utils.js'></script>
-
 	</head>
 
 
@@ -152,7 +151,13 @@
 						<th ng-show="playsheet.info.socan"><input value ="Duration(M:S)" tooltip="{{playsheet.help['timeHelp2']}}" class='socantiming'></input></th>
 						<th><button tooltip="{{playsheet.help['playlist']}}" class="box playlist filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['cancon']}}" class="box cancon filled pad-top"></button>
+						<th class="fairplay"><button tooltip="{{playsheet.help['accessCon']}}" class="box accesscon fairplay filled pad-top"></button></th>
+						<th class="fairplay"><button tooltip="{{playsheet.help['afroCon']}}" class="box afrocon fairplay filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['femcon']}}" class="box femcon filled pad-top"></button></th>
+						<th class="fairplay"><button tooltip="{{playsheet.help['indigiCon']}}" class="box indigicon fairplay filled pad-top"></button></th>
+						<th class="fairplay"><button tooltip="{{playsheet.help['pocCon']}}" class="box poccon fairplay filled pad-top"></button></th>
+						<th class="fairplay"><button tooltip="{{playsheet.help['queerCon']}}" class="box queercon fairplay filled pad-top"></button></th>
+						<th><button tooltip="{{playsheet.help['is_local']}}" class="box is_local filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['instrumental']}}" class="box instrumental filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['partial']}}" class="box partial filled pad-top"></button></th>
 						<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
@@ -160,7 +165,8 @@
 						<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
 						<th><a href='https://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
 						<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language"/></th>
-						<th><th><th></th>
+						<th></th>
+						<th></th>
 					</tr>
 					<tbody ui-sortable id='playitems' ng-change='playsheet.checkIfComplete()' ng-update='playsheet.checkIfComplete()' ng-model='playsheet.playitems'>
 						<tr class='playitem border' ng-class="{socan: playsheet.info.socan }" playitem ng-repeat="playitem in playsheet.playitems track by $index"></tr>
@@ -213,22 +219,22 @@
 			</div>
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2" >Save Draft</button><br/><br/>
-				<div ng-show='playsheet.using_sam'>
-					<?php if (intval($_SESSION['sv_id']) < 10) : ?>
+<!-- 				<div ng-show='playsheet.using_sam'>
+					<?php if (intval($_SESSION['sv_id']) === 1) : ?>
 						<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
 					<?php endif; ?>
-				</div>
+				</div> -->
 
 			</div>
-				<?php if (intval($_SESSION['sv_id']) < 10) : ?>
-				<div id="sam_picker" ng-show="samVisible">
+				<?php if (intval($_SESSION['sv_id']) === 1) : ?>
+<!-- 				<div id="sam_picker" ng-show="samVisible">
 					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
 						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'y-MM-dd HH:mm:ss'}} to {{playsheet.end | date:'HH:mm:ss'}}	</button>
 					<div ng-repeat="sam_playitem in playsheet.samRecentPlays" class="sam_row">
 						<button class='side-padded' ng-click="playsheet.addSamPlay(sam_playitem);">+</button>
 						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}} ({{ sam_playitem.insert_song_start_hour}}:{{sam_playitem.insert_song_start_minute}})</span>
 					</div>
-				</div>
+				</div> -->
 				<?php endif; ?>
 
 
@@ -255,7 +261,7 @@
 					<tr>
 						<td> Category 2: </td><td><span id='can_2_total'></span>/ <span id='can_2_required'>{{playsheet.show.cc_20_req}}</span>%</td>
 						<td> Category 3: </td><td><span id='can_3_total'></span>/ <span id='can_3_required'>{{playsheet.show.cc_30_req}}</span>%</td>
-						<td> Femcon: </td><td><span id='fem_total'></span>/<span id='fem_required'>{{playsheet.show.fem_req}}</span>%</td>
+						<td> Fairplay Total: </td><td><span id='fairplay_total'></span>/<span id='fem_required'>{{playsheet.show.fem_req}}</span>%</td>
 						<td> New: </td><td><span id='playlist_total'></span>/<span id='playlist_required'>{{playsheet.show.pl_req}}</span>%</td>
 						<td> Hit: </td><td><span id='hit_total'></span>/<span id='hit_max'>10</span>% Max</td>
 					</tr>

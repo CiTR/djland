@@ -71,7 +71,7 @@ function is_paid()
     $query = "SELECT my.paid FROM membership_years as my INNER JOIN membership as m ON my.member_id = m.id WHERE my.member_id=:member_id AND ((my.membership_year >= (SELECT value FROM djland_options WHERE djland_option='membership_cutoff' LIMIT 1) AND my.paid='1') OR m.member_type='Lifetime' OR m.member_type='Staff') ORDER BY membership_year DESC";
     $statement = $db['pdo_link']->prepare($query);
     $sv_id = (isset($_SESSION['sv_id'])) ? $_SESSION['sv_id'] : null;
-    $statement->bindValue(':member_id', $_SESSION['sv_id']);
+    $statement->bindValue(':member_id', $sv_id);
     try {
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -90,7 +90,8 @@ function is_trained()
     //Session contains member id.
     $query = "SELECT station_tour,programming_training,technical_training,production_training FROM membership WHERE id=:member_id";
     $statement = $pdo_db->prepare($query);
-    $statement->bindValue(':member_id', $_SESSION['sv_id']);
+    $sv_id = (isset($_SESSION['sv_id'])) ? $_SESSION['sv_id'] : null;
+    $statement->bindValue(':member_id', $sv_id);
     try {
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);

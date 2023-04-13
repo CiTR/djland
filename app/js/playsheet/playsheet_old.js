@@ -158,10 +158,10 @@
                 // fairplay
                 this.playitems[playitem].fairplay = null;
                 this.playitems[playitem].accessCon = null;
-                this.playitems[playitem].afrocon = null;
-                this.playitems[playitem].indigicon = null;
-                this.playitems[playitem].poccon = null;
-                this.playitems[playitem].queercon = null;
+                this.playitems[playitem].afroCon = null;
+                this.playitems[playitem].indigiCon = null;
+                this.playitems[playitem].pocCon = null;
+                this.playitems[playitem].queerCon = null;
 			}
 			this.updateTime();
             call.getShowPlaysheets(this.active_show.id).then(function(response){
@@ -414,12 +414,11 @@
 		                        	"is_indy":0,
 		                        	"is_fem":0,
 		                        	"is_fairplay":0,
-		                        	"is_accesscon":0,
-		                        	"is_afrocon":0,
-		                        	"is_indigicon":0,
-		                        	"is_poccon":0,
-		                        	"is_queercon":0,
-                                    "is_local":0,
+		                        	"is_accessCon":0,
+		                        	"is_afroCon":0,
+		                        	"is_indigiCon":0,
+		                        	"is_pocCon":0,
+		                        	"is_queerCon":0,
 		                        	"show_date":show_date,
 		                        	"duration":0,
 		                        	"is_theme":0,
@@ -533,12 +532,11 @@
 			                            	"is_indy":0,
 			                            	"is_fem":0,
 				                        	"is_fairplay":0,
-				                        	"is_accesscon":0,
-				                        	"is_afrocon":0,
-				                        	"is_indigicon":0,
-				                        	"is_poccon":0,
-				                        	"is_queercon":0,
-                                            "is_local":0,
+				                        	"is_accessCon":0,
+				                        	"is_afroCon":0,
+				                        	"is_indigiCon":0,
+				                        	"is_pocCon":0,
+				                        	"is_queerCon":0,
 			                            	"show_date":show_date,
 			                            	"duration":null,
 			                            	"is_theme":null,
@@ -1005,7 +1003,7 @@
     app.directive('playitem',function(){
     	return{
     		restrict: 'A',
-    		templateUrl: 'templates/playitem.html?v=20220627'
+    		templateUrl: 'templates/playitem.html'
     	};
     });
     //Declares ad attribute
@@ -1030,13 +1028,14 @@
 $(document).ready(function(){
     var can_2_element = $('#can_2_total');
     var can_3_element = $('#can_3_total');
-    var fairplay_element = $('#fairplay_total'); // "Fem" was replaced with Fairplay
+    var fem_element = $('#fem_total');
     var playlist_element = $('#playlist_total');
     var hit_element = $('#hit_total');
 
     setInterval(function(){
         crtc_totals();
     },3000);
+
 
 
     function crtc_totals(){
@@ -1046,58 +1045,53 @@ $(document).ready(function(){
 		var playlist_required = parseInt($('#playlist_required').text(), 10);
 		var hit_max = parseInt($('#hit_max').text(), 10);
 
-        var playitems_count = $('.playitem').length;
-        var totals_divide = ($('.playitem').length) ? $('.playitem').length : 1;
+        var playitems_count = 0;
         var can_2_count = 0;
         var can_3_count = 0;
 
         var can_2_total = 0;
         var can_3_total = 0;
-        var fairplay_total = $('.playitem').has('button.fairplay.filled').length;
-        var playlist_total = $('.playitem').has('button.playlist.filled').length;
-        var hit_total = $('.playitem').has('button.hit.filled').length;
+        var fem_total = 0;
+        var playlist_total = 0;
+        var hit_total = 0;
 
         $('.playitem').each(function(element){
-            if ($(this).find('select.crtc_category').val() == '20') {
+            playitems_count ++;
+            if($(this).find('button.femcon').hasClass('filled')) fem_total ++;
+            if($(this).find('button.playlist').hasClass('filled')) playlist_total ++;
+            if($(this).find('button.hit').hasClass('filled')) hit_total ++;
+
+            if($(this).find('select.crtc_category').val() == '20'){
                 can_2_count ++;
-
-                if ($(this).find('button.cancon').hasClass('filled')) {
-                    can_2_total ++;
-                }
-            } else {
+                if($(this).find('button.cancon').hasClass('filled')) can_2_total ++;
+            }else{
                 can_3_count ++;
-
-                if ($(this).find('button.cancon').hasClass('filled')) {
-                    can_3_total ++;
-                }
+                if($(this).find('button.cancon').hasClass('filled')) can_3_total ++;
             }
         });
-
-        // This whole section needs to be cleaned up
-
-        can_2_element.text((can_2_total / (can_2_count ? can_2_count : 1) * 100).toFixed(0) + "%");
-        if (can_2_total / (can_2_count != 0 ? can_2_count : 1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
+        can_2_element.text((can_2_total / (can_2_count!=0?can_2_count:1) * 100).toFixed(0) + "%");
+        if(can_2_total/(can_2_count!=0?can_2_count:1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
         else can_2_element.removeClass('red');
 
-        can_3_element.text((can_3_total / (can_3_count ? can_3_count : 1) * 100).toFixed(0) + "%");
-        if (can_3_total / (can_3_count != 0 ? can_3_count : 1) * 100 < can_3_required && can_3_count > 0) can_3_element.addClass('red');
+        can_3_element.text((can_3_total / (can_3_count!=0?can_3_count:1) * 100).toFixed(0) + "%");
+         if(can_3_total/(can_3_count!=0?can_3_count:1) * 100 < can_3_required && can_3_count > 0) can_3_element.addClass('red');
         else can_3_element.removeClass('red');
 
-        playlist_element.text((playlist_total / totals_divide * 100).toFixed(0) + "%");
-        if (playlist_total / totals_divide * 100 < playlist_required && playitems_count > 0) playlist_element.addClass('red');
+        fem_element.text((fem_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
+         if(fem_total/(playitems_count!=0?playitems_count:1) * 100 < fem_required && playitems_count > 0) fem_element.addClass('red');
+        else fem_element.removeClass('red');
+
+        playlist_element.text((playlist_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
+        if(playlist_total/(playitems_count!=0?playitems_count:1) * 100 < playlist_required && playitems_count > 0) playlist_element.addClass('red');
         else playlist_element.removeClass('red');
 
-        hit_element.text((hit_total / totals_divide * 100).toFixed(0) + "%");
-        if (hit_total / totals_divide * 100 > hit_max && playitems_count > 0) hit_element.addClass('red');
+        hit_element.text((hit_total / (playitems_count!=0?playitems_count:1) * 100).toFixed(0) + "%");
+        if(hit_total/(playitems_count!=0?playitems_count:1) * 100 > hit_max && playitems_count > 0) hit_element.addClass('red');
         else hit_element.removeClass('red');
 
+    }
 
-        // Added Fairplay stuff
-        var fairplay_element_text = fairplay_total / totals_divide * 100;
-
-        fairplay_element.text(fairplay_element_text.toFixed(0) + "%");
-        
-        if (fairplay_total / totals_divide * 100 < fem_required && playitems_count > 0) fairplay_element.addClass('blue');
-        else fairplay_element.removeClass('blue');
+    function fairplay_totals(){
+		return;
     }
 });

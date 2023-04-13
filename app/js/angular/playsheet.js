@@ -662,6 +662,11 @@ djland.controller('playsheetCtrl', function ($scope, $filter, $http, $location, 
     $scope.adsHelp =			"Station IDs must be played or spoken in the first ten minutes of every hour";
     $scope.guestsHelp =		"Any non-music features on your show.  This helps us to reach our 15% local spoken word minimum";
     $scope.toolsHelp=			"Tools: [-] Delete the row  [+]Add a new row below";
+    $scope.accessConHelp = "AccessCon: Applies to artists who are D/deaf, visibly, and/or invisibly disabled";
+    $scope.afroConHelp = "AfroCon: Applies to artists who are Black and may be assigned to an artist who is visibly Black in visuals provided by the artist and/or representation. Any album logged as AfroCon qualifies as POC’Con as well";
+    $scope.indigiConHelp = "IndigiCon: Applies to artists who are Indigenous, Métis, and/or Inuit. Includes all Indigenous peoples who have been displaced and/or affected by colonial occupation on Turtle Island";
+    $scope.pocConHelp = "POCcon: Applies to artists of color and may be assigned to an artist who is racialized and/or visibly non-white in visuals provided by the artist and/or representatives";
+    $scope.queerConHelp = "QueerCon: Applies to artists who are lesbian, gay, bisexual/pansexual, trans, two spirit, queer/questioning, intersex, asexual, and/or any other non-heterosexual, non-cisgender identity";
 
 
   };

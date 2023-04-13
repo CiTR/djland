@@ -407,6 +407,10 @@ option {
   background-color: green;
 }
 
+.blue {
+  background-color: blue;
+}
+
 .lightgrey {
   background-color: #AEAEAE;
 }
@@ -1690,186 +1694,167 @@ table.dataTable.cell-border {
   height: 400px;
 }
 /*
-*	Open Playsheet CSS
+* Open Playsheet CSS
 */
-
-table.open_playsheet > tbody > tr > td,
-table.open_playsheet > tbody > tr > th {
-  padding-left: 15px;
+table.open_playsheet > tbody > tr > td,table.open_playsheet > tbody > tr > th{
+  padding-left:15px;
 }
-
-table.open_playsheet > tbody > tr > td.edit_date {
-  font-size: .8em;
+table.open_playsheet > tbody > tr > td.edit_date{
+  font-size:.8em;
 }
-
-table.open_playsheet > tbody > tr > td.host {
-  max-width: 200px;
+table.open_playsheet > tbody > tr > td.host{
+  max-width:200px;
 }
 
 /* Playsheet Angular CSS */
-
-.host {
-  max-width: 400px;
+#wrapper[ng-show="playsheet.member_shows"]{
+  width: auto;
+    margin: 0 10%;
+    min-width: 1150px;
 }
 
+.host{
+  max-width:400px;
+}
 .promotions > td {
-  font-size: .8em;
+  font-size:.8em;
 }
-
-.promotion_name {
-  max-width: 300px;
+.promotion_name{
+  max-width:300px;
 }
-
-.hand:hover {
-  cursor: pointer;
-  cursor: hand;
+.hand:hover{
+  cursor: pointer; cursor: hand;
 }
-
 .lang {
   width: 65px;
   font-size: 0.8em;
 }
-
-.playitem {
-  width: 100%;
+.playitem{
+  width:100%;
 }
-
-tr.playitem.socan > td > input,
-tr.playitem.socan > td > button,
-tr.music_row_heading.socan > th > input {
-  max-width: 105px;
-  font-size: 0.75em;
+tr.playitem.socan > td > input,tr.playitem.socan > td > button,tr.music_row_heading.socan > th > input{
+  max-width:105px;
+  font-size:0.75em;
 }
-
-tr.playitems.socan > td > input.lang {
-  width: 60px;
+tr.playitems.socan > td > input.lang{
+  width:60px;
 }
-
-.socantiming {
-  max-width: 140px;
+.socantiming{
+  max-width:140px;
 }
-
 .music_row_heading {
-  height: 30px;
+  height:30px;
   background-color: none;
 }
 
-.music_row_heading input {
-  margin-left: 5px;
+.music_row_heading input{
+  margin-left:5px;
   background: none;
   border-width: 0;
 }
-
-.tooltip-inner {
-  max-width: 350px;
+.tooltip-inner{
+  max-width:350px;
 }
-
 .dragzone {
   cursor: default;
 }
-
-.socan select {
-  font-size: 0.75em;
+.socan select{
+  font-size:0.75em;
 }
 
-.socan_cue select {
-  width: 46px;
+.socan_cue select{
+  width:46px;
+
 }
 
-table#ads {
-  width: 450px;
-  display: inline;
-  margin-right: 50px;
+table#ads{
+  width:450px;
+  display:inline;
+  margin-right:50px;
   table-layout: auto;
-  position: relative;
-  top: 0px;
-  cellspacing: 0;
+  position:relative;
+  top:0px;
+  cellspacing:0;
   padding: 0;
 }
 
-#submitMsg {
-  position: relative;
-  top: 50px;
+
+#submitMsg{
+  position:relative;
+  top:50px;
   background-color: rgba(10,10,10,0.85);
   text-align: left;
   margin-right: auto;
   margin-left: auto;
-  width: 400px;
+  width:400px;
 }
 
-#submit {
-  height: 60px;
-  width: 300px;
+#submit{
+  height:60px;
+  width:300px;
+}
+#autosave{
+  position:absolute;
+  top:0px;
+  left:0px;
+  z-index:10;
+  /*  display:none;*/
 }
 
-#autosave {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 10;
-  /*	display:none;*/
-}
-
-.crtc_totals {
-  text-align: left;
-  background-color: black;
+.crtc_totals{
+  text-align:left;
+  background-color:black;
   color: white;
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  width:100%;
 }
-
 .crtc_totals > table.col1 > tbody {
-  width: 100%;
-  display: table;
+  width:100%;
+  display:table;
 }
 
 /*
  * Playsheet tracklist_overlay
  */
-
-.tracklist_overlay {
-  position: fixed;
-  overflow: auto;
-  top: 40px;
-  left: 10%;
-  width: 80%;
-  background-color: lightsteelblue;
-  z-index: 21;
-  padding: 20px;
-  color: darkblue;
-  border-size: 1px;
-  border-color: white;
+.tracklist_overlay{
+  position:fixed;
+  overflow:auto;
+  top:40px;
+  left:10%;
+  width:80%;
+  background-color:lightsteelblue;
+  z-index:21;
+  padding:20px;
+  color:darkblue;
+  border-size:1px;
+  border-color:white;
 }
-
-.tracklist_overlay span {
-  margin-left: 40px;
+.tracklist_overlay span{
+  margin-left:40px;
 }
-
-.tracklist_overlay a.logout {
-  background-color: steelblue;
-  padding: 2px;
+.tracklist_overlay a.logout{
+  background-color:steelblue;
+  padding:2px;
 }
-
-.tracklist_overlay a.logout:hover {
-  color: greenyellow;
+.tracklist_overlay a.logout:hover{
+  color:greenyellow;
 }
-
-.dark {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+.dark{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
   opacity: 0.7;
-  background-color: black;
+  background-color:black;
 }
+
 
 /*
  * Playitem category buttons
  */
-
 button.box {
   display: inline-block;
   height: 27px;
@@ -1882,82 +1867,282 @@ button.box {
   margin-bottom: 2px;
 }
 
-button.box.playlist:hover {
-  background-image: url('../images/tags/playlist.png');
+.music_row_heading button.box.playlist:hover {
+  background-image: url('../images/tags/new.png');
   opacity: 0.5;
 }
 
-button.box.cancon:hover {
-  background-image: url('../images/tags/can.png');
+.music_row_heading button.box.cancon:hover {
+  background-image: url('../images/tags/cancon.png');
   opacity: 0.5;
 }
 
-button.box.femcon:hover {
-  background-image: url('../images/tags/fe.png');
+.music_row_heading button.box.accesscon:hover {
+  background-image: url('../images/tags/access.png');
   opacity: 0.5;
 }
 
-button.box.instrumental:hover {
-  background-image: url('../images/tags/inst.png');
+.music_row_heading button.box.afrocon:hover {
+  background-image: url('../images/tags/afro.png');
   opacity: 0.5;
 }
 
-button.box.hit:hover {
+.music_row_heading button.box.femcon:hover {
+  background-image: url('../images/tags/fem.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.indigicon:hover {
+  background-image: url('../images/tags/indigi.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.poccon:hover {
+  background-image: url('../images/tags/poc.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.queercon:hover {
+  background-image: url('../images/tags/queer.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.is_local:hover {
+  background-image: url('../images/tags/local.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.instrumental:hover {
+  background-image: url('../images/tags/instrumental.png');
+  opacity: 0.5;
+}
+
+.music_row_heading button.box.hit:hover {
   background-image: url('../images/tags/hit.png');
   opacity: 0.5;
 }
 
-button.box.partial:hover {
-  background-image: url('../images/tags/part.png');
+.music_row_heading button.box.partial:hover {
+  background-image: url('../images/tags/partial.png');
   opacity: 0.5;
 }
 
-button.box.background:hover {
+.music_row_heading button.box.background:hover {
   background-image: url('../images/tags/background.png');
   opacity: 0.5;
 }
 
-button.box.theme:hover {
+.music_row_heading button.box.theme:hover {
   background-image: url('../images/tags/theme.png');
   opacity: 0.5;
 }
 
-button.box.playlist.filled {
-  background-image: url('../images/tags/playlist.png');
+.music_row_heading button.box.playlist.filled {
+  background-image: url('../images/tags/new.png');
   opacity: 1;
 }
 
-button.box.cancon.filled {
-  background-image: url('../images/tags/can.png');
+.music_row_heading button.box.cancon.filled {
+  background-image: url('../images/tags/cancon.png');
   opacity: 1;
 }
 
-button.box.femcon.filled {
-  background-image: url('../images/tags/fe.png');
+.music_row_heading button.box.accesscon.filled {
+  background-image: url('../images/tags/access.png');
   opacity: 1;
 }
 
-button.box.instrumental.filled {
-  background-image: url('../images/tags/inst.png');
+.music_row_heading button.box.afrocon.filled {
+  background-image: url('../images/tags/afro.png');
   opacity: 1;
 }
 
-button.box.hit.filled {
+.music_row_heading button.box.femcon.filled {
+  background-image: url('../images/tags/fem.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.indigicon.filled {
+  background-image: url('../images/tags/indigi.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.poccon.filled {
+  background-image: url('../images/tags/poc.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.queercon.filled {
+  background-image: url('../images/tags/queer.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.is_local.filled {
+  background-image: url('../images/tags/local.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.instrumental.filled {
+  background-image: url('../images/tags/instrumental.png');
+  opacity: 1;
+}
+
+.music_row_heading button.box.hit.filled {
   background-image: url('../images/tags/hit.png');
   opacity: 1;
 }
 
-button.box.partial.filled {
-  background-image: url('../images/tags/part.png');
+.music_row_heading button.box.partial.filled {
+  background-image: url('../images/tags/partial.png');
   opacity: 1;
 }
 
-button.box.background.filled {
+.music_row_heading button.box.background.filled {
   background-image: url('../images/tags/background.png');
   opacity: 1;
 }
 
-button.box.theme.filled {
+.music_row_heading button.box.theme.filled {
+  background-image: url('../images/tags/theme.png');
+  opacity: 1;
+}
+
+#playitems button.box.playlist:hover {
+  background-image: url('../images/tags/newsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.cancon:hover {
+  background-image: url('../images/tags/canconsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.accesscon:hover {
+  background-image: url('../images/tags/accesssolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.afrocon:hover {
+  background-image: url('../images/tags/afrosolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.femcon:hover {
+  background-image: url('../images/tags/femsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.indigicon:hover {
+  background-image: url('../images/tags/indigisolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.poccon:hover {
+  background-image: url('../images/tags/pocsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.queercon:hover {
+  background-image: url('../images/tags/queersolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.is_local:hover {
+  background-image: url('../images/tags/localsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.instrumental:hover {
+  background-image: url('../images/tags/instrumentalsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.hit:hover {
+  background-image: url('../images/tags/hitsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.partial:hover {
+  background-image: url('../images/tags/partialsolo.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.background:hover {
+  background-image: url('../images/tags/background.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.theme:hover {
+  background-image: url('../images/tags/theme.png');
+  opacity: 0.75;
+}
+
+#playitems button.box.playlist.filled {
+  background-image: url('../images/tags/newsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.cancon.filled {
+  background-image: url('../images/tags/canconsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.accesscon.filled {
+  background-image: url('../images/tags/accesssolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.afrocon.filled {
+  background-image: url('../images/tags/afrosolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.femcon.filled {
+  background-image: url('../images/tags/femsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.indigicon.filled {
+  background-image: url('../images/tags/indigisolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.poccon.filled {
+  background-image: url('../images/tags/pocsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.queercon.filled {
+  background-image: url('../images/tags/queersolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.is_local.filled {
+  background-image: url('../images/tags/localsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.instrumental.filled {
+  background-image: url('../images/tags/instrumentalsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.hit.filled {
+  background-image: url('../images/tags/hitsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.partial.filled {
+  background-image: url('../images/tags/partialsolo.png');
+  opacity: 1;
+}
+
+#playitems button.box.background.filled {
+  background-image: url('../images/tags/background.png');
+  opacity: 1;
+}
+
+#playitems button.box.theme.filled {
   background-image: url('../images/tags/theme.png');
   opacity: 1;
 }
@@ -1966,30 +2151,26 @@ button.box {
   background-color: transparent;
   background-image: none;
 }
-
-button.socan,
-,
-.music_row_socan input,
-.music_row_socan button {
-  font-size: 0.75em;
-  max-width: 90px;
+button.socan, , .music_row_socan input, .music_row_socan button{
+  font-size:0.75em;
+  max-width:90px;
 }
 
 /*
  * Playsheet SAM styling
  */
 
-#sam_picker {
-  width: 200px;
-}
 
+#sam_picker{
+  width:200px;
+}
 #sam_title {
   color: black;
   font-size: 1.2em;
   position: fixed;
   padding: 5px;
   height: 40px;
-  background-color: beige;
+  background-color:beige;
 }
 
 #sam_title span {
@@ -2023,6 +2204,7 @@ div#sam_picker {
 span.one_sam {
   overflow: hidden;
   display: inline-block;
+
 }
 
 div.floating {
@@ -2030,7 +2212,7 @@ div.floating {
   right: 0;
   top: 150px;
   width: auto;
-  z-index: 20;
+  z-index:20;
 }
 
 .sam_row {
@@ -2038,79 +2220,70 @@ div.floating {
   border-top: black 1px solid;
 }
 
-.playsheet-save {
-    margin: 1em;
+.blocker{
+  position:relative;
+  bottom:66px;
+  background-color:black;
+  color:red;
+  height:70px;
 }
-
-.blocker {
-  position: relative;
-  bottom: 66px;
-  margin-top: 80px;
-  background-color: black;
-  color: red;
-  height: 70px;
-}
-
 .sam_row button {
+
   vertical-align: top;
   cursor: default;
 }
-
-.current {
+.current{
   border-width: 3px;
   border-style: solid;
 }
 
-#SamListouter,
-div#loadtimes {
-  color: black;
-  /*	display:block;*/
-  display: none;
-  background-color: beige;
-  border-width: medium;
-  border-style: solid;
-  border-color: #BBB;
-  height: 80%;
-  width: 400px;
-  position: fixed;
-  right: 8%;
-  top: 0;
-  overflow: auto;
-  z-index: 20;
-}
 
-div#loadtimes * {
+#SamListouter, div#loadtimes{
+  color:black;
+  /*  display:block;*/
+  display:none;
+  background-color:beige;
+  border-width: medium;
+  border-style:solid;
+  border-color:#BBB;
+  height:80%;
+  width:400px;
+  position:fixed;
+  right:8%;
+  top:0;
+  overflow: auto;
+  z-index:20;
+}
+div#loadtimes *{
   cursor: default;
   text-align: left;
 }
-
-div.closeButton {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  z-index: 40;
+div.closeButton{
+  position:absolute;
+  top:0;
+  right:25px;
+  z-index:40;
 }
-
-button.closeButton {
-  position: fixed;
+button.closeButton{
+  position:fixed;
   background-color: white;
-  color: red;
+  color:red;
+}
+#SamListouter *{
+  color:black;
+  cursor:default;
+
+}
+div#loadtimes{
+  top:auto;
+  height:200px;
+  bottom:30px;
+}
+#sam-box{
+  display:none;
 }
 
-#SamListouter * {
-  color: black;
-  cursor: default;
-}
 
-div#loadtimes {
-  top: auto;
-  height: 200px;
-  bottom: 30px;
-}
-
-#sam-box {
-  display: none;
-}
 /*
  * Podcasts Page CSS
  */

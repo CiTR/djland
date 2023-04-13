@@ -158,10 +158,10 @@
                 // fairplay
                 this.playitems[playitem].fairplay = null;
                 this.playitems[playitem].accessCon = null;
-                this.playitems[playitem].afrocon = null;
-                this.playitems[playitem].indigicon = null;
-                this.playitems[playitem].poccon = null;
-                this.playitems[playitem].queercon = null;
+                this.playitems[playitem].afroCon = null;
+                this.playitems[playitem].indigiCon = null;
+                this.playitems[playitem].pocCon = null;
+                this.playitems[playitem].queerCon = null;
 			}
 			this.updateTime();
             call.getShowPlaysheets(this.active_show.id).then(function(response){
@@ -414,12 +414,11 @@
 		                        	"is_indy":0,
 		                        	"is_fem":0,
 		                        	"is_fairplay":0,
-		                        	"is_accesscon":0,
-		                        	"is_afrocon":0,
-		                        	"is_indigicon":0,
-		                        	"is_poccon":0,
-		                        	"is_queercon":0,
-                                    "is_local":0,
+		                        	"is_accessCon":0,
+		                        	"is_afroCon":0,
+		                        	"is_indigiCon":0,
+		                        	"is_pocCon":0,
+		                        	"is_queerCon":0,
 		                        	"show_date":show_date,
 		                        	"duration":0,
 		                        	"is_theme":0,
@@ -533,12 +532,11 @@
 			                            	"is_indy":0,
 			                            	"is_fem":0,
 				                        	"is_fairplay":0,
-				                        	"is_accesscon":0,
-				                        	"is_afrocon":0,
-				                        	"is_indigicon":0,
-				                        	"is_poccon":0,
-				                        	"is_queercon":0,
-                                            "is_local":0,
+				                        	"is_accessCon":0,
+				                        	"is_afroCon":0,
+				                        	"is_indigiCon":0,
+				                        	"is_pocCon":0,
+				                        	"is_queerCon":0,
 			                            	"show_date":show_date,
 			                            	"duration":null,
 			                            	"is_theme":null,
@@ -1005,7 +1003,7 @@
     app.directive('playitem',function(){
     	return{
     		restrict: 'A',
-    		templateUrl: 'templates/playitem.html?v=20220627'
+    		templateUrl: 'templates/playitem.html'
     	};
     });
     //Declares ad attribute

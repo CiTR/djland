@@ -285,7 +285,7 @@ class Member extends Model
         $query = DB::table('membership as m')->join('membership_years as my', 'my.member_id', '=', 'm.id')->where('my.membership_year', '=', $membership_year);
         $query->select('m.id', 'm.member_type');
         //total members, and paid members
-        $query->selectRaw('count(m.id) as count, sum(my.paid) as paid');
+        $query->selectRaw('count(m.id) as count, count(distinct my.member_id) as distinct_count, sum(my.paid) as paid');
         //Count member types
         foreach ($djland_member_types as $key=>$value) {
             $query->selectRaw('sum(CASE WHEN m.member_type = "'.$value.'" THEN 1 ELSE 0 END) as '.$value);

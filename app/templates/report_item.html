@@ -10,7 +10,14 @@
 		<th ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">Duration</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Playlist (New)</th>
 		<th>Cancon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Fairplay</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Accesscon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Afrocon</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Femcon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Indigicon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Poccon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Queercon</th>
+		<th ng-show="report.type=='crtc' || report.type=='both'">Local</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Instrumental</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Partial</th>
 		<th ng-show="report.type=='crtc' || report.type=='both'">Hit</th>
@@ -27,7 +34,14 @@
 		<td ng-show="playsheet.socan && (report.type=='socan' || report.type=='both')">{{playitem.insert_song_length_minute | pad:2}}:{{playitem.insert_song_length_second | pad:2}}</td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_playlist==true">&#9745;</div><div ng-if="playitem.is_playlist!=true">&#9744;</div></td>
 		<td><div ng-if="playitem.is_canadian==true">&#9745;</div><div ng-if="playitem.is_canadian!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_fairplay==true">&#9745;</div><div ng-if="playitem.is_fairplay!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_accesscon==true">&#9745;</div><div ng-if="playitem.is_accesscon!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_afrocon==true">&#9745;</div><div ng-if="playitem.is_afrocon!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_fem==true">&#9745;</div><div ng-if="playitem.is_fem!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_indigicon==true">&#9745;</div><div ng-if="playitem.is_indigicon!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_poccon==true">&#9745;</div><div ng-if="playitem.is_poccon!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_queercon==true">&#9745;</div><div ng-if="playitem.is_queercon!=true">&#9744;</div></td>
+		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_local==true">&#9745;</div><div ng-if="playitem.is_local!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_inst==true">&#9745;</div><div ng-if="playitem.is_inst!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_part==true">&#9745;</div><div ng-if="playitem.is_part!=true">&#9744;</div></td>
 		<td ng-show="report.type=='crtc' || report.type=='both'"><div ng-if="playitem.is_hit==true">&#9745;</div><div ng-if="playitem.is_hit!=true">&#9744;</div></td>
@@ -87,12 +101,68 @@
 			<td>{{playsheet.show.cc_30_req}}%</td>
 		</tr>
 		<tr>
-			<th>Femcon</th>
-			<td>{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}} </td>
-			<td ng-class='(playsheet.totals.femcon_count/playsheet.totals.total*100) >= playsheet.show.fem_req || playsheet.totals.total == 0 ? "" : "red"'>
-				({{playsheet.totals.femcon_count/playsheet.totals.total > 0 ? playsheet.totals.femcon_count/playsheet.totals.total : 0 | percentage:2}})
+			<th>Fairplay</th>
+			<td>{{playsheet.totals.fairplay_count}} / {{playsheet.totals.total}} </td>
+			<td ng-class='(playsheet.totals.fairplay_count/playsheet.totals.total*100) >= playsheet.show.fem_req || playsheet.totals.total == 0 ? "" : "red"'>
+				({{playsheet.totals.fairplay_count/playsheet.totals.total > 0 ? playsheet.totals.fairplay_count/playsheet.totals.total : 0 | percentage:2}})
 			</td>
 			<td>{{playsheet.show.fem_req}}%</td>
+		</tr>
+		<tr>
+			<th>AccessCon</th>
+			<td>{{playsheet.totals.accesscon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.accesscon_count/playsheet.totals.total > 0 ? playsheet.totals.accesscon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>AfroCon</th>
+			<td>{{playsheet.totals.afrocon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.afrocon_count/playsheet.totals.total > 0 ? playsheet.totals.afrocon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>FemCon</th>
+			<td>{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.femcon_count/playsheet.totals.total > 0 ? playsheet.totals.femcon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>IndigiCon</th>
+			<td>{{playsheet.totals.indigicon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.indigicon_count/playsheet.totals.total > 0 ? playsheet.totals.indigicon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>PocCon</th>
+			<td>{{playsheet.totals.poccon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.poccon_count/playsheet.totals.total > 0 ? playsheet.totals.poccon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>QueerCon</th>
+			<td>{{playsheet.totals.queercon_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.queercon_count/playsheet.totals.total > 0 ? playsheet.totals.queercon_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>Local</th>
+			<td>{{playsheet.totals.is_local_count}} / {{playsheet.totals.total}} </td>
+			<td>
+				({{playsheet.totals.is_local_count/playsheet.totals.total > 0 ? playsheet.totals.is_local_count/playsheet.totals.total : 0 | percentage:2}})
+			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<th>Hit</th>

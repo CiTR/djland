@@ -42,6 +42,178 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$report_type = isset(Input::get()['report_type']) ? Input::get()['report_type'] : null;
 		if($report_type == null) return Response::json("No report type specified");
 
+
+
+		/*
+		 * Start code cleanup section for what we are killing with fire. Delete this comment once complete. 
+		 * Example output
+		 *
+		 * {
+		 * 		playsheets: [
+		 * 			// Just raw playsheets in here with playitems and show model
+		 * 		],
+		 * 		show_totals: {
+		 * 			Show Name: {
+		 * 				ads:
+		 * 				cc_20_count:
+		 * 				cc_20_total:
+		 * 				cc_30_count:
+		 * 				cc_30_total:
+		 * 				fairplay_count:
+		 * 				accesscon_count:
+		 * 				afrocon_count:
+		 * 				femcon_count:
+		 * 				indigicon_count:
+		 * 				poccon_count:
+		 * 				queercon_count:
+		 * 				hit_count:
+		 * 				new_count:
+		 * 				show: {} // This is the show model just kinda raw
+		 * 				spokenword:
+		 * 				total:
+		 * 			}
+		 * 		},
+		 * 		totals: {
+		 * 			ads:
+		 * 			cc_20_count:
+		 * 			cc_20_total:
+		 * 			cc_30_count:
+		 * 			cc_30_total:
+		 * 			fairplay_count:
+		 * 			accesscon_count:
+		 * 			afrocon_count:
+		 * 			femcon_count:
+		 * 			indigicon_count:
+		 * 			poccon_count:
+		 * 			queercon_count:
+		 * 			hit_count:
+		 * 			new_count:
+		 * 			spokenword:
+		 * 			total:
+		 * 		}
+		 * }
+		 */
+		
+		// // Defaults to build off of
+		// $output = collect([
+		// 	'playsheets' => [],
+		// 	'show_totals' => [],
+		// 	'totals' => [
+		// 		'ads' => 0,
+		// 		'cc_20_count' => 0,
+		// 		'cc_20_total' => 0,
+		// 		'cc_30_count' => 0,
+		// 		'cc_30_total' => 0,
+		// 		'fairplay_count' => 0,
+		// 		'accesscon_count' => 0,
+		// 		'afrocon_count' => 0,
+		// 		'femcon_count' => 0,
+		// 		'indigicon_count' => 0,
+		// 		'poccon_count' => 0,
+		// 		'queercon_count' => 0,
+		// 		'hit_count' => 0,
+		// 		'new_count' => 0,
+		// 		'spokenword' => 0,
+		// 		'total' => 0,
+		// 	]
+		// ]);
+
+		// // Load the member with user model and permission
+		// $member = App\Member::with('user.permission')->find($member_id);
+
+		// // Query for the shows that have playsheets within this time frame
+		// $shows_query = App\Show::whereHas('playsheets', function ($query) use ($from, $to, $report_type) {
+		// 	$from_dt_string = $from.($report_type=='crtc'? " 06:00:00":" 00:00:00");
+
+		// 	$query->where('start_time','>=',$from_dt_string)
+		// 			->where('start_time','<=',$to." 23:59:59");
+		// });
+
+		// // Grab all the shows possible if the user is a staff or administrator
+		// if ($member->user->permission->staff || $member->user->permission->administrator) {
+		// 	$shows = $shows_query->get();
+
+		// // Else grab all the shows that belong to the user
+		// } else {
+		// 	$shows = $shows_query->whereHas('members', function ($query) use ($member) {
+		// 		$query->where('member_id', '=', $member->id);
+		// 	})->get();
+		// }
+
+		// if (!$shows->count()) {
+		// 	return Response::json("No shows with playsheets in the report timeframe");
+		// }
+
+		// // Load the playsheets for the time specified. Not sure how this will affect memory
+		// $shows->load(['playsheets' => function ($query) use ($from, $to, $report_type) {
+		// 	$from_dt_string = $from.($report_type=='crtc'? " 06:00:00":" 00:00:00");
+
+		// 	$query->orderBy('start_time', 'asc')
+		// 			->where('start_time','>=',$from_dt_string)
+		// 			->where('start_time','<=',$to." 23:59:59");
+		// }]);
+
+		// // Go through the shows one by one and grab playsheets. This is to reduce memory usage.
+		// while ($shows->count()) {
+		// 	// Grab the last show of the collection
+		// 	$show = $shows->pop();
+
+		// 	$show_output = [
+		// 		"cc_20_count" => 0, // Only for cancon
+		// 		"cc_20_total" => 0,
+		// 		"cc_30_count" => 0, // Only for cancon
+		// 		"cc_30_total" => 0,
+		// 		"fairplay_count" => 0,
+		// 		"accesscon_count" => 0,
+		// 		"afrocon_count" => 0,
+		// 		"femcon_count" => 0,
+		// 		"indigicon_count" => 0,
+		// 		"poccon_count" => 0,
+		// 		"queercon_count" => 0,
+		// 		"hit_count" => 0,
+		// 		"new_count" => 0,
+		// 		"show" => $show,
+		// 		"spokenword" => $show->playsheets->sum('spokenword_duration'),
+		// 		"total" => 0,
+		// 	];
+
+		// 	$output['playsheets']
+
+		// 	// Lazy load the playitems
+		// 	$show->playsheets->load('playitems');
+
+		// 	// Go through each playsheet and add stuff up
+		// 	foreach ($show->playsheets as $playsheet) {
+		// 		$show_output['total'] += $playsheet->playitems->count();
+
+		// 		foreach ($playsheet->playitems as $playitem) {
+		// 			$show_output["cc_20_count"] += ($playitem->crtc_category == '20' && $playitem->is_canadian) ? 1 : 0;
+		// 			$show_output["cc_20_total"] += ($playitem->crtc_category == '20') ? 1 : 0;
+		// 			$show_output["cc_30_count"] += ($playitem->crtc_category == '20' && $playitem->is_canadian) ? 1 : 0;
+		// 			$show_output["cc_30_total"] += ($playitem->crtc_category == '20') ? 1 : 0;
+		// 			$show_output["fairplay_count"] += ($playitem->is_fairplay) ? 1 : 0;
+		// 			$show_output["accesscon_count"] += ($playitem->is_accesscon) ? 1 : 0;
+		// 			$show_output["afrocon_count"] += ($playitem->is_afrocon) ? 1 : 0;
+		// 			$show_output["femcon_count"] += ($playitem->is_fem) ? 1 : 0;
+		// 			$show_output["indigicon_count"] += ($playitem->is_indigicon) ? 1 : 0;
+		// 			$show_output["poccon_count"] += ($playitem->is_poccon) ? 1 : 0;
+		// 			$show_output["queercon_count"] += ($playitem->is_queercon) ? 1 : 0;
+		// 			$show_output["hit_count"] += ($playitem->is_hit) ? 1 : 0;
+		// 			$show_output["new_count"] += ($playitem->is_new) ? 1 : 0;
+		// 		}
+		// 	}
+
+		// 	$output['show_totals'][$show->name] = $show_output;
+		// }
+
+
+
+
+
+		/*
+		 * Kill this section with fire
+		 */
+
 		//Initialize array for playsheets
 		$playsheets = array();
 		$playsheet_totals=array();
@@ -54,9 +226,19 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$shows =  Member::find($member_id)->shows;
 		}
 		//For each show available to the request user, get the playsheets for the period that match the specified show ID, or return all.
+		$shows->load(['playsheets' => function ($query) use ($from, $to, $report_type) {
+			$from_dt_string = $from.($report_type=='crtc'? " 06:00:00":" 00:00:00");
+
+			$query->orderBy('start_time', 'asc')
+					->where('start_time','>=',$from_dt_string)
+					->where('start_time','<=',$to." 23:59:59");
+		}]);
+
 		foreach($shows as $show){
 			if( $show_id=="all" || $show_id==$show['id']){
-				$ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();
+				// $ps = Show::find($show['id'])->playsheets()->orderBy('start_time','asc')->where('start_time','>=',$from.($report_type=='crtc'? " 06:00:00":" 00:00:00"))->where('start_time','<=',$to." 23:59:59")->get();
+				$ps = $show->playsheets;
+				$show->playsheets->load('ads');
 				foreach($ps as $sheet){
 					$playsheets[] = $sheet;
 				}
@@ -69,7 +251,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		$totals->cc_20_count=0;
 		$totals->cc_30_total=0;
 		$totals->cc_30_count=0;
+		$totals->fairplay_count=0;
+		$totals->accesscon_count=0;
+		$totals->afrocon_count=0;
 		$totals->femcon_count=0;
+		$totals->indigicon_count=0;
+		$totals->poccon_count=0;
+		$totals->queercon_count=0;
+		$totals->is_local_count=0;
 		$totals->hit_count=0;
 		$totals->new_count=0;
 		$totals->spokenword=0;
@@ -80,10 +269,10 @@ Route::group(array('prefix'=>'playsheet'),function(){
 		//get totals for each playsheet
 		foreach($playsheets as $p){
 			$playsheet = $p;
-			$playsheet->playitems = Playsheet::find($playsheet['id'])->playitems;
+			$playsheet->playitems = $p->playitems;
 			$playsheet->show = $p->show;
 			$playsheet->socan = $p->is_socan();
-			$playsheet->ads = Ad::where('playsheet_id','=',$p->id)->get();
+			$playsheet->ads = $p->ads;
 
 			//initialize this playsheet's totals
 			$playsheet->totals = new stdClass();
@@ -92,7 +281,14 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->cc_20_count=0;
 			$playsheet->totals->cc_30_total=0;
 			$playsheet->totals->cc_30_count=0;
+			$playsheet->totals->fairplay_count=0;
+			$playsheet->totals->accesscon_count=0;
+			$playsheet->totals->afrocon_count=0;
 			$playsheet->totals->femcon_count=0;
+			$playsheet->totals->indigicon_count=0;
+			$playsheet->totals->poccon_count=0;
+			$playsheet->totals->queercon_count=0;
+			$playsheet->totals->is_local_count=0;
 			$playsheet->totals->hit_count=0;
 			$playsheet->totals->new_count=0;
 			$playsheet->totals->spokenword=0;
@@ -113,9 +309,19 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show_totals[$playsheet->show['name']]->total=0;
 				$show_totals[$playsheet->show['name']]->cc_20_total = 0;
 				$show_totals[$playsheet->show['name']]->cc_20_count=0;
+				$show_totals[$playsheet->show['name']]->cc_20_req=$playsheet->show->cc_20_req;
 				$show_totals[$playsheet->show['name']]->cc_30_total=0;
 				$show_totals[$playsheet->show['name']]->cc_30_count=0;
+				$show_totals[$playsheet->show['name']]->cc_30_req=$playsheet->show->cc_30_req;
+				$show_totals[$playsheet->show['name']]->fem_req=$playsheet->show->fem_req;
+				$show_totals[$playsheet->show['name']]->fairplay_count=0;
+				$show_totals[$playsheet->show['name']]->accesscon_count=0;
+				$show_totals[$playsheet->show['name']]->afrocon_count=0;
 				$show_totals[$playsheet->show['name']]->femcon_count=0;
+				$show_totals[$playsheet->show['name']]->indigicon_count=0;
+				$show_totals[$playsheet->show['name']]->poccon_count=0;
+				$show_totals[$playsheet->show['name']]->queercon_count=0;
+				$show_totals[$playsheet->show['name']]->is_local_count=0;
 				$show_totals[$playsheet->show['name']]->hit_count=0;
 				$show_totals[$playsheet->show['name']]->new_count=0;
 				$show_totals[$playsheet->show['name']]->spokenword=0;
@@ -133,8 +339,25 @@ Route::group(array('prefix'=>'playsheet'),function(){
 					$playsheet->totals->cc_30_total ++;
 					if($playitem['is_canadian'] == '1') $playsheet->totals->cc_30_count ++;
 				}
+				//Fairplay
+				if($playitem->is_fairplay == '1') {
+					$playsheet->totals->fairplay_count ++;
+					$playitem['is_fairplay'] = 1;
+				}
+				//Accesscon
+				if($playitem['is_accesscon'] == '1') $playsheet->totals->accesscon_count ++;
+				//Afrocon
+				if($playitem['is_afrocon'] == '1') $playsheet->totals->afrocon_count ++;
 				//Femcon
 				if($playitem['is_fem'] == '1') $playsheet->totals->femcon_count ++;
+				//Indigicon
+				if($playitem['is_indigicon'] == '1') $playsheet->totals->indigicon_count ++;
+				//Poccon
+				if($playitem['is_poccon'] == '1') $playsheet->totals->poccon_count ++;
+				//Queercon
+				if($playitem['is_queercon'] == '1') $playsheet->totals->queercon_count ++;
+				//Local
+				if($playitem['is_local'] == '1') $playsheet->totals->is_local_count ++;
 				//Hit
 				if($playitem['is_hit'] == '1') $playsheet->totals->hit_count ++;
 				//New
@@ -156,7 +379,17 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			return $s1-$s2;
 		});
 		return Response::json(array('playsheets'=>$playsheet_totals,'totals'=>$totals,'show_totals'=>$show_totals));
+
+
+		/*
+		 * End killing with fire
+		 */
 	});
+
+
+
+
+
 	Route::group(array('prefix'=>'{id}'),function($id = id){
 		//Update Playsheet Information
 		Route::post('/',function($id){
