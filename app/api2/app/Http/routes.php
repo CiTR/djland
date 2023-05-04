@@ -13,12 +13,6 @@ use App\Member as Member;
 use App\Permission as Permission;
 use App\SpecialBroadcast as SpecialBroadcast;
 
-
-//SAM CLASSES
-use App\Songlist as Songlist;
-use App\Categorylist as Categorylist;
-use App\Historylist as Historylist;
-
 Route::get('/APIinfo',function(){
     return "Welcome to DJLand API V2.0";
 });

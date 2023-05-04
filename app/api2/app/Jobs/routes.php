@@ -13,15 +13,6 @@ use App\Member as Member;
 use App\Permission as Permission;
 use App\SpecialBroadcasts as SpecialBroadcasts;
 
-
-//SAM CLASSES
-use App\Songlist as Songlist;
-use App\Categorylist as Categorylist;
-use App\Historylist as Historylist;
-
-
-
-
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
 	//Member Resource Routes

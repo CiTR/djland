@@ -10,8 +10,6 @@ use App\Podcast as Podcast;
 use App\Member as Member;
 
 //SAM CLASSES
-use App\Songlist as Songlist;
-use App\Categorylist as Categorylist;
 use App\Historylist as Historylist;
 
 /* Playsheet Routes */

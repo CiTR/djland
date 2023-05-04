@@ -80,9 +80,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
             //     return [];
             // }
 		},
-		getAdSchedule: function(){
-			return $http.get(API_URL_BASE+'/adschedule');
-		},
 		getReport: function(show_id,from,to,report_type){
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},
@@ -124,9 +121,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		saveBroadcasts: function(specialbroadcasts){
 			return $http.post(API_URL_BASE + '/specialbroadcasts', angular.toJson({'specialbroadcasts':specialbroadcasts}));
-		},
-		saveAds: function(showtimes){
-			return $http.post(API_URL_BASE+'/adschedule',angular.toJson({'showtimes':showtimes}));
 		},
 		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
@@ -177,28 +171,4 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/error',angular.toJson({'error':error}));
 		},
 	};
-});
-
-angular.module('sam.api', []).factory('sam', function ($http, $location) {
-    var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
-    return {
-        getAdList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'PRIORITY ADs');
-        },
-        getUBCPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
-        },
-        getCommunityPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'community');
-        },
-        getTimelyPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'New Timely PSAs');
-        },
-        getStationIDList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
-        },
-        getPromosList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'SHOW PROMOS');
-        },
-    };
 });
