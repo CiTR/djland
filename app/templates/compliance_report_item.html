@@ -1,0 +1,26 @@
+<td>{{playsheet.start_time}} - {{playsheet.end_time}}</td>
+<td>{{playsheet.show.name}}</td>
+
+<td class="can_20">{{playsheet.totals.cc_20_count}} / {{playsheet.totals.cc_20_total}}</td>
+<td ng-class='(playsheet.totals.cc_20_count/playsheet.totals.cc_20_total*100) >= playsheet.show.cc_20_req || playsheet.totals.cc_20_total == 0 ? "can_20":"can_20_highlight"'>
+    {{playsheet.totals.cc_20_count/playsheet.totals.cc_20_total > 0 ? playsheet.totals.cc_20_count/playsheet.totals.cc_20_total * 100 : 0 | number:0}}
+</td>
+<td class="can_20">{{playsheet.show.cc_20_req}}</td>
+
+<td class="can_30">{{playsheet.totals.cc_30_count}} / {{playsheet.totals.cc_30_total}}</td>
+<td ng-class='(playsheet.totals.cc_30_count/playsheet.totals.cc_30_total*100) >= playsheet.show.cc_30_req || playsheet.totals.cc_30_total == 0 ? "can_30":"can_30_highlight"'>
+    {{playsheet.totals.cc_30_count/playsheet.totals.cc_30_total > 0 ? playsheet.totals.cc_30_count/playsheet.totals.cc_30_total * 100 : 0 | number:0}}
+</td>
+<td class="can_30">{{playsheet.show.cc_30_req}}</td>
+
+<td class="femcon">{{playsheet.totals.femcon_count}} / {{playsheet.totals.total}}</td>
+<td ng-class='(playsheet.totals.femcon_count/playsheet.totals.total*100) >= playsheet.show.fem_req || playsheet.totals.total == 0 ? "femcon" : "femcon_highlight"'>
+    {{playsheet.totals.femcon_count/playsheet.totals.total > 0 ? playsheet.totals.femcon_count/playsheet.totals.total * 100 : 0 | number:0}}
+</td>
+<td class="femcon">{{playsheet.show.fem_req}}</td>
+
+<td class="hit">{{playsheet.totals.hit_count}} / {{playsheet.totals.total}}</td>
+<td ng-class='(playsheet.totals.hit_count/playsheet.totals.total*100) <= 10 || playsheet.totals.total == 0 ? "hit" : "hit_highlight"'>
+    {{playsheet.totals.hit_count  / playsheet.totals.total > 0 ? playsheet.totals.hit_count  / playsheet.totals.total * 100 : 0 | number:0}}
+</td>
+<td class="hit">10</td>

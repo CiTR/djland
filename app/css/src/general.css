@@ -1,0 +1,260 @@
+body {
+	background-repeat: repeat;
+	font-family: Helvetica,Arial;
+}
+.lightblue{
+	background-color: #3434A4;
+}
+.grey{
+	background-color: grey;
+}
+.white{
+	background-color: white;
+}
+.wallpaper{
+	background-image: url('../images/wallpaper.jpg');
+	color:white;
+}
+img.special-header{
+	position: absolute;
+	max-height: 300px;
+	top: 0;
+	left: 50%;
+    transform: translateX(-50%);
+}
+body.special-wallpaper #login{
+	margin-top: 330px;
+}
+.invisible{
+	display:none;
+}
+
+ul, li {
+	padding-left: 0
+}
+ul{
+	list-style-type: disc;
+	padding:0px;
+	margin: 0px;
+}
+li{
+	margin:0px;
+}
+ol{
+	list-style-type: decimal;
+	padding: 0px;
+	margin: 0px;
+}
+
+h1,h2,h3,h4{
+	text-align: center;
+	padding:0px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+h1{
+	font-size:2.2em;
+}
+td.menu a:link{ color: #000000; text-decoration: underline; }
+td.menu a:visited { color: #000000; text-decoration: underline;}
+td.menu a:hover { color: #000000; text-decoration: underline; background-color: #CCCCFF; }
+a:active { color: #660000; }
+a:link { color: #FFFFFF;  }
+a:visited { color: #FFFFFF; }
+a:hover { color: #000000; background-color: #BEBEBE; }
+a:active { color: #660000; }
+.table-hover > tbody > tr:hover {
+	background-color: #222299;
+}
+.header-left{
+	text-align:left;
+}
+input, select, textarea, option{
+	background-color: #000977;
+	background-color: rgba(1,1,2,.4);
+	color:white;
+	border-style: solid;
+	border-width: 0;
+}
+
+.ie select, .ie input, .ie textarea {
+	background-color: #000977;
+}
+
+/* Background Colouring */
+.red{
+	background-color:red;
+}
+.green{
+	background-color:green;
+}
+.blue{
+	background-color:blue;
+}
+.lightgrey{
+	background-color:#AEAEAE;
+}
+#wrapper {
+	background-color: rgba(0,0,0,.2);
+	width: 1024px;
+	height:auto;
+	overflow:hidden;
+	margin-right: auto;
+	margin-left: auto;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: #FFFFFF;
+	border-left-color: #FFFFFF;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-bottom-width:1px;
+	border-bottom-style: solid;
+	padding:10 10 10 10;
+}
+
+#wrapper.socan{
+	width:1200px;
+}
+.wrapper{
+	position: relative;
+	width:1024px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: grey;
+	color: white;
+	overflow: visible;
+}
+.wrapper:after{
+	background-color: grey;
+}
+.inner{
+	display:inline-block;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: grey;
+	width:90%;
+}
+.inner > li{
+	min-height:20px;
+}
+
+/*
+ * Loading Bar
+ */
+
+.loading{
+	min-height:20px;
+	display:block;
+}
+.loadingbar_container{
+	padding-top:15px;
+	min-height:30px;
+	width:1024px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+/*
+ * Popups
+ */
+#wrapper > textarea.alert{
+	width:600px;
+	height:2em;
+}
+#wrapper > textarea.description{
+	width:600px;
+	height:10em;
+}
+.custom_tooltip{
+	display:inline;
+	position:relative;
+}
+.custom_tooltip:hover:after{
+	background: #000;
+	border-radius: 5px;
+	bottom: 26px;
+	color: #fff;
+	content: attr(title);
+	left: 20%;
+	padding: 5px 15px;
+	position: absolute;
+	z-index: 98;
+	width: 220px;
+}
+.custom_tooltip:hover:before{
+	border: solid;
+	border-color: #333 transparent;
+	border-width: 6px 6px 0 6px;
+	bottom: 20px;
+	content: "";
+	left: 50%;
+	position: absolute;
+	z-index: 99;
+}
+
+/*
+ * Input/Button/textarea styling
+ */
+.smalltext{
+	top:3px;
+	font-size:70%;
+}
+.bigish_text{
+	font-size:92%;
+}
+.big_text{
+	font-size:110%;
+}
+.small-input{
+	width:80px;
+}
+.smallinput{
+	width:30px;
+	margin-left:10px;
+}
+.wideinput{
+	width:300px;
+}
+.largeinput{
+	width:750px;
+	max-width:83%;
+	height:50px;
+	max-height:75px;
+}
+.fullinput{
+	width:100%;
+}
+.text-left{
+	text-align:left;
+}
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}
+.large-button{
+	font-size:3em;
+}
+
+
+
+/*
+ * Table Styling
+ */
+.table {
+	display:table;
+	margin-bottom: 5px;
+}
+.table p, .table div {
+	display: table-row;
+}
+.table select, .table span, .table textarea {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}

@@ -1,0 +1,60 @@
+
+#Ignore Config Files
+config.php
+
+#Ignore Logs
+log.html
+
+#Ignore Windows Crap
+Thumbs.db
+#and OSX crap
+.DS_Store
+
+#Ignore Project Files from Various IDE's
+*.sublime-project
+*.sublime-workspace
+*.idea
+.buildpath
+.project
+org.eclipse.php.core.prefs
+org.eclipse.wst.common.project.facet.core.xml
+
+composer.lock
+
+#from /app
+
+#Ignore Test directories
+test-audio
+test-xml
+audio
+xml
+
+#Ignore Any generated static pages.
+JSONDATA
+JSONDATA/*
+static
+logs/log.html
+php_errors.log
+
+#Ignore Media Uploads
+images/shows
+images/friends
+images/specialbroadcasts
+images/podcast_photos
+
+#Ignore Web Configuration Files
+web.config
+.htpasswd
+awstats*
+disabled_by_virtualmin.html
+icon
+
+#Ignore phpmyadmin
+phpmyadmin/
+
+#Ignore Python Development ENV
+PY
+
+#Ignore Generated XML Content
+*.xml
+
