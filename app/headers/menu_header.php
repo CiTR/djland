@@ -63,15 +63,9 @@ function print_menu()
 			<div class="dropdown small">
 				<div class=small>
 					<ul>
-
-						<li><a href="schedule_override.php">Schedule Override</a></li>
-						<li><a href="friends.php">Friends of CiTR</a></li>
-						<li><a href="scheduler.php">Ad Scheduler</a></li>
-						<li><a href="sam_ad_history.php">Sam Ad History</a></li>
-						<li><a href="show_alerts.php">Show Alert Listing</a></li>
 						<?php if (permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
-                            <li><a href="genremanager.php">Genre Manager</a></li>
+              <li><a href="genremanager.php">Genre Manager</a></li>
 						<?php endif; ?>
 					</ul>
 				</div>
