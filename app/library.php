@@ -354,8 +354,6 @@ printf("</div>");
 
     <?php
 
-// TODO: call createTrackSubmission() from app/js/musicsubmissions/functions.js
-
 		printf("<hr width=80%%><br />");
 			if(mysqli_num_rows($songs)) {
                     $tn_flag = 0;

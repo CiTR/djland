@@ -50,12 +50,6 @@ function print_menu()
                         <?php if (permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
 						<li><a href="editlibrary.php">Edit Library Entries</a></li>
 						<?php endif; ?>
-						<?php if (permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
-						<li><a href="musicsubmissions.php">New Submissions</a></li>
-						<?php endif; ?>
-                        <?php if (permission_level() >= $djland_permission_levels['staff']['level'] && $enabled['library']) : ?>
-						<li><a href="djland_scan.php">DJLand Scan</a></li>
-						<?php endif; ?>
 					</ul>
 				</div>
 			</div>
