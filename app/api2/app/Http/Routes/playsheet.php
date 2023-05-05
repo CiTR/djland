@@ -9,9 +9,6 @@ use App\Podcast as Podcast;
 //Assisting Classes
 use App\Member as Member;
 
-//SAM CLASSES
-use App\Historylist as Historylist;
-
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
 
@@ -291,15 +288,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->new_count=0;
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
-
-			if($enabled['sam_integration']){
-				if( $playsheet->start_time && $playsheet->end_time){
-					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
-				}
-				foreach($playsheet->ads_played as $ad){
-					$playsheet->totals->ads += floor($ad['duration']/1000);
-				}
-			}
+      $playsheet->ads_played=[];
 
 			//If this show hasn't been seen before, initialize it
 			if(!isset($show_totals[$playsheet->show_name])){

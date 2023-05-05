@@ -37,23 +37,7 @@ Route::get('/nowplaying',function(){
 	//Since we aren't calling our security header, we need to ensure the timezone is set.
 	date_default_timezone_set($station_info['timezone']);
 	$result = array();
-	if($enabled['sam_integration']){
-		$last_track = DB::connection('samdb')->table('historylist')->selectRaw('artist,title,album,date_played,songtype,duration')
-			->where('songtype','=','S')->orderBy('date_played','DESC')->limit('1')->get();
-		$now = strtotime('now');
-		if(count($last_track) > 0){
-			$last_track = $last_track[0];
-			if( (strtotime($last_track->date_played) + floor(($last_track->duration)/1000) ) >= $now ){
-				$result['music'] = $last_track;
-			}else{
-				$result['music'] = null;
-			}
-		}else{
-			$result['music'] = null;
-		}
-	}else{
-		$result['music'] = null;
-	}
+	$result['music'] = null;
 
 	//CiTR uses week alternation, need to find out what week it is currently.
 	$day_of_week = date('w');

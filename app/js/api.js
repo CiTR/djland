@@ -64,22 +64,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getMemberList: function(){
 			return $http.get(API_URL_BASE+"/member/list");
 		},
-		getSamRecent: function(offset){
-			return $http.get(API_URL_BASE+"/SAM/recent/"+offset || 0);
-		},
-		getSamRange: function(from,to){
-            // var re = /^\d{4}-\d{2}-\d{2}.*/;
-            // if(re.test(from) && re.test(to)){
-                return $http.get(API_URL_BASE+"/SAM/range?from="+from+"&to="+to);
-            // }
-            // else{
-            //     console.log("Invalid ranges for getSamRange!");
-            //     console.log(from);
-            //     console.log(to);
-            //     console.log("-------");
-            //     return [];
-            // }
-		},
 		getReport: function(show_id,from,to,report_type){
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},

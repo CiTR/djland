@@ -199,7 +199,7 @@
 					<input type="file" name='audio_file' id='audio_file'/> -->
 			</div>
 
-			<hr style="side-padded">
+			<hr class="side-padded">
 
 			<div class='col1 text-center'>
                 <div class="playsheet-save" ng-hide="!playsheet.complete">
@@ -219,23 +219,7 @@
 			</div>
 			<div class="floating">
 				<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2" >Save Draft</button><br/><br/>
-<!-- 				<div ng-show='playsheet.using_sam'>
-					<?php if (intval($_SESSION['sv_id']) === 1) : ?>
-						<button type="button" ng-click="samVisible = !samVisible;" >SAM</button>
-					<?php endif; ?>
-				</div> -->
-
 			</div>
-				<?php if (intval($_SESSION['sv_id']) === 1) : ?>
-<!-- 				<div id="sam_picker" ng-show="samVisible">
-					<div id="sam_title"><span ng-click="samVisible = false;">X</span>Sam Plays</div><br/><br/>
-						<button ng-click="playsheet.samRange()">add all plays from {{playsheet.start | date:'y-MM-dd HH:mm:ss'}} to {{playsheet.end | date:'HH:mm:ss'}}	</button>
-					<div ng-repeat="sam_playitem in playsheet.samRecentPlays" class="sam_row">
-						<button class='side-padded' ng-click="playsheet.addSamPlay(sam_playitem);">+</button>
-						<span class="one_sam">{{sam_playitem.artist}} - {{sam_playitem.song}} ({{ sam_playitem.insert_song_start_hour}}:{{sam_playitem.insert_song_start_minute}})</span>
-					</div>
-				</div> -->
-				<?php endif; ?>
 
 
 			<!-- Popup Overlay during submission -->
