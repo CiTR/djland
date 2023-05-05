@@ -69,9 +69,7 @@
 			<h3>Summary</h3>
 			<div class='col1 text-center'>
 			<div class='col1'> Total Spokenword: {{report.totals.spokenword}} minutes</div>
-			<?php if($enabled['sam_integration']): ?>
 			<div class='col1'>Total Ads: {{report.totals.ads / 60 | number:0}} minutes</div>
-			<?php endif; ?>
 			<div class='col1'>
 				Total Category 2: {{report.totals.cc_20_count}} / {{report.totals.cc_20_total}}
 				({{report.totals.cc_20_count/report.totals.cc_20_total > 0 ? report.totals.cc_20_count/report.totals.cc_20_total : 0 | percentage:0}}/35%)

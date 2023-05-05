@@ -438,17 +438,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show = Playsheet::find($id)->show;
 				$playsheet->show = $show;
 				$playsheet->podcast = Playsheet::find($id)->podcast;
-				$promotions = Playsheet::find($id)->ads;
-				foreach($promotions as $key => $value){
-					//Get Ad Names From SAM
-					if($enabled['sam_integration'] && is_numeric($value['name'])){
-						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-						if(is_countable($ad_info) && count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
-					}else{
-						$promotions[$key]['name'] = html_entity_decode($promotions[$key]['name'],ENT_QUOTES);
-					}
-				}
-				$playsheet->promotions = $promotions;
+				$playsheet->promotions = Playsheet::find($id)->ads;
 				//convert 1 and 0 to true/false values expected by javascript
 				$playsheet->playsheet->socan 			= $playsheet->playsheet->socan 			== 1 ? true : false;
 				$playsheet->playsheet->web_exclusive 	= $playsheet->playsheet->web_exclusive 	== 1 ? true : false;

@@ -126,13 +126,6 @@
 								<option value='false'>No</option>
 							</select>
 						</dd>
-						<dt>Sam Integration</dt>
-						<dd>
-							<select name='enabled[sam_integration]'/>
-								<option value='true' selected>Yes</option>
-								<option value='false'>No</option>
-							</select>
-						</dd>
 					</dl>
 					<h2>Podcasting Variables (optional)</h2>
 					<h4>Audio Paths</h4>
