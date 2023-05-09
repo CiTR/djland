@@ -248,10 +248,10 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 				"?action=view&id=".$row['id']." title='".$title."'>(".$row["artist"].") - ".$row["title"].
 				"</a> ";
 
-		if ($row['cancon']==1) echo '<img src="images/tags/cc.png" title="Canadian Content"  height="15"/>';
-		if ($row['femcon']==1) echo '<img src="images/tags/fe.png" title="Female Content" height="15"/>';
+		if ($row['cancon']==1) echo '<img src="images/tags/cancon.png" title="Canadian Content"  height="15"/>';
+		if ($row['femcon']==1) echo '<img src="images/tags/fem.png" title="Female Content" height="15"/>';
 		if ($row['local']==1) echo '<img src="images/tags/local.png" title="Local Content" height="15"/>';
-		if ($row['digitized']==1) echo '<img src="images/tags/sam.png" title="Available to play in SAM" height="15"/>';
+		if ($row['digitized']==1) echo '<img src="images/tags/sam.png" title="Digitized" height="15"/>';
 
 		echo "</td></tr>";
 		$scount++;
