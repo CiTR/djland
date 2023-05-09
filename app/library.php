@@ -88,9 +88,7 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
         ?>
 		<!--JAVASCRIPT HELPER CALLS-->
 		<script language=JavaScript>
-			<!--
 			var isConfirmed = false;
-			//window.onbeforeunload = ConfirmExit;
 			function ExitOkay(setTo) {
 				isConfirmed = setTo;
 				return setTo;
@@ -117,11 +115,11 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
 					}
 				}
 			}
-			-->
 		</script>
 <?php
 // *** EDIT MODE ***
-        printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return ExitOkay(confirm('Are you sure you want to make these changes?'))\" ACTION=\"%s?action=bulkedit\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); ?>
+        printf("<FORM METHOD=\"POST\" ONSUBMIT=\"return ExitOkay(confirm('Are you sure you want to make these changes?'))\" ACTION=\"%s?action=bulkedit\" name=\"the_form\">\n", $_SERVER['SCRIPT_NAME']); 
+?>
 		<tr>
 			<td align=right>New Catalog #</td>
 			<td></td>
@@ -140,7 +138,7 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
 
     foreach ($dbarray as $i => $row) {
         if (permission_level() >= $djland_permission_levels['volunteer']['level']) {
-            //			printf("<tr><td align=right>[<a href=%s?action=edit&id=%s title=\"Click to Edit\">%s</a>]%s</td><td>", $_SERVER['SCRIPT_NAME'], $row["id"], $row["catalog"] ? $row["catalog"] : "N/A",  isset($_GET['bulkedit']) ? "<input type=hidden value=\"".$row["id"]."\" name=id".$scount."><input type=hidden value=\"".$row["catalog"]."\" name=oldcat".$scount."><input type=text size=5 name=newcat".$scount." tabindex=".($scount+1)." onkeydown=\"EnterPressed(event)\">" : "");
+
 
         echo "<tr><td align=right>[<a href=".$_SERVER['SCRIPT_NAME'].
             "?action=edit&id=".$row["id"].
@@ -212,9 +210,27 @@ if (permission_level() >= $djland_permission_levels['member']['level'] && isset(
         ?><tr><td align=right><input type=submit VALUE="Update" tabindex=32767></td><td></td></tr><?php
 
     }
-    $prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace("(.*)&start=[0-9]*", "\\1", $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
-    $next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace("(.*)&start=[0-9]*", "\\1", $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
-    printf("</table><center>%s %s</center>", $prev_url, $next_url); ?></td></tr></table><?php
+    echo "</table>";
+    $prev_url = $_SERVER['SCRIPT_NAME'] . "?" . preg_replace("/(.*)&start=[0-9]*/", "$1", $_SERVER['QUERY_STRING']) . "&start=" . $record_prev;
+    $next_url = $_SERVER['SCRIPT_NAME'] . "?" . preg_replace("/(.*)&start=[0-9]*/", "$1", $_SERVER['QUERY_STRING']) . "&start=" . $record_next;
+    //(($scount >= $record_limit) ? ("<a href=\"" .  . "\">Next >></a>") : "no next");
+    $prev_link = "<a href=\"".$prev_url."\">⬅️ Prev </a> | ";
+    $next_link = "<a href=\"".$next_url."\">Next ➡️</a>";
+    
+    echo ("<center><br/><br/>");
+    if ($record_prev >= 0){
+      echo ($prev_link);
+    }
+
+    if ($scount >= $record_limit){
+      echo ($next_link);
+    }
+
+    echo "</center><br/><br/><br/>";
+?>
+</td></tr></table>
+
+<?php
     if (is_member("editlibrary") &&isset($_GET['bulkedit'])) {
         printf("</FORM>");
     }
