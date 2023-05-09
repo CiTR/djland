@@ -114,7 +114,7 @@
 				<div id='row6' class='containerrow student'>
 					<div class='col5'>Faculty*: </div>
 					<div class='col5'>
-						<select id='faculty' style='z-position=10;'>
+						<select id='faculty'>
 							<?php
 							foreach($djland_faculties as $value){
 								echo "<option value='{$value}'>{$value}</option>";

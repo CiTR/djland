@@ -1,9 +1,9 @@
-<html ng-app='djland.editPlaysheet'>
-	<?php
+<?php
     include_once("headers/session_header.php");
     require_once("headers/security_header.php");
     require_once("headers/menu_header.php");
     ?>
+<html ng-app='djland.editPlaysheet'>
 	<head>
 		<link rel='stylesheet' href='css/bootstrap.min.css'>
 		<link rel="stylesheet" href="css/style.css?v=20220627" type="text/css">
