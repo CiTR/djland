@@ -67,9 +67,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getReport: function(show_id,from,to,report_type){
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},
-		getFriends: function(){
-			return $http.get(API_URL_BASE+'/friends');
-		},
 		getResources: function(){
 			return $http.get(API_URL_BASE + '/resource');
 		},
@@ -78,12 +75,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		isAdmin: function(member_id){
 			return $http.get(API_URL_BASE + '/member/' + member_id + '/admin');
-		},
-		addFriend: function(){
-			return $http.put(API_URL_BASE+'/friends');
-		},
-		saveFriends: function(friends){
-			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
 		},
 		saveResources: function(resources){
 			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
@@ -120,9 +111,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		saveNewPodcast: function(podcast){
 			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
-		},
-		deleteFriend: function(id){
-			return $http.delete(API_URL_BASE+'/friends/'+id);
 		},
 		deletePlaysheet:function(id){
 			return $http.delete(API_URL_BASE+'/playsheet/' + id);

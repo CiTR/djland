@@ -1,13 +1,6 @@
 <?php
 	use App\Upload as Upload;
 
-	//Helper Classes
-	use App\Friends as Friends;
-	use App\Shows as Shows;
-	use App\SpecialBroadcasts as SpecialBroadcasts;
-	use App\Podcast as Podcast;
-	use App\Member as Member;
-
 	Route::group(array('prefix'=>'/upload'),function(){
 		Route::get('/',function(){
 			return Upload::all();
