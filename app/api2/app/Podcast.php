@@ -98,11 +98,6 @@ class Podcast extends Model
 
 			//If we open local file
 			if($target_file){
-				//Attempt to add ID3 Tags
-				//if($tags && $error == '') {
-		        //    rewind($target_file);
-		        //    write_tags($tags,$info['uri']);
-		        //    rewind($target_file);
 
 				//User a buffer so we don't hit the max memory alloc limit
 				while (!feof($file_from_archive)) {
@@ -212,41 +207,5 @@ class Podcast extends Model
 	    return $response;
     }
 
-
-	private function write_tags($tags,$file){
-	    global $error;
-	    $TextEncoding = 'UTF-8';
-	    //require_once($_SERVER['CONTEXT_DOCUMENT_ROOT'].'/headers/getid3/getid3/getid3.php');
-	    // Initialize getID3 engine
-
-
-	    $getID3 = new getID3;
-	    $getID3->setOption(array('encoding'=>$TextEncoding));
-
-	    //require_once($_SERVER['CONTEXT_DOCUMENT_ROOT'].'/headers/getid3/getid3/write.php');
-	    // Initialize getID3 tag-writing module
-	    $tagwriter = new getid3_writetags;
-	    $tagwriter->filename = $file;
-	    $tagwriter->tagformats = array('id3v2.4');
-
-	    // set various options (optional)
-	    $tagwriter->overwrite_tags = true;
-	    $tagwriter->tag_encoding = $TextEncoding;
-	    $tagwriter->remove_other_tags = true;
-
-	    // populate data array
-	    $TagData = $tags;
-	    $tagwriter->tag_data = $TagData;
-
-	    // write tags
-	    if ($tagwriter->WriteTags()) {
-
-	        if (!empty($tagwriter->warnings)) {
-	            $error .= 'There were some warnings:<br>'.implode('<br><br>', $tagwriter->warnings);
-	        }
-	    } else {
-	        $error .= 'Failed to write tags!<br>'.implode('<br><br>', $tagwriter->errors);
-	    }
-	}
 
 }
