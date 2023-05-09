@@ -257,10 +257,10 @@ if(permission_level() >= $djland_permission_levels['volunteer']['level'] && isse
 		$scount++;
 	}
 
-	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\"><< Prev</a> | ") : "");
-	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . ereg_replace( "(.*)&start=[0-9]*", "\\1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next >></a>") : "");
+	$prev_url = (($record_prev >= 0) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . preg_replace("/(.*)&start=[0-9]*/", "$1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_prev . "\">⬅️ Prev</a> | ") : "");
+	$next_url = (($scount >= $record_limit) ? ("<a href=\"" . $_SERVER['SCRIPT_NAME'] . "?" . preg_replace("/(.*)&start=[0-9]*/", "$1" , $_SERVER['QUERY_STRING']) . "&start=" . $record_next . "\">Next ➡️</a>") : "");
 
-	printf("</table><center>%s %s</center>", $prev_url, $next_url);
+	printf("</table><center><br/><br/>%s %s<br/><br/><br/></center>", $prev_url, $next_url);
 
 	?></td></tr></table><?php
 }
