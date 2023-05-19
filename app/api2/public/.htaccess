@@ -1,0 +1,24 @@
+Allow from all
+
+
+<Files "xmlrpc.php">
+    Order allow,deny
+    Deny from all
+ </Files>
+
+<FilesMatch "log.html">
+    AuthName "Private"
+    AuthType Basic
+    AuthUserFile /path/to/file/.htpasswd
+    require valid-user
+</FilesMatch>
+
+#Rewrite Rules For when we move to Angular.
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
