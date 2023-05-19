@@ -63,9 +63,8 @@
 		</tr>
 	</table>
 </div>
-<?php if($enabled['sam_integration']): ?>
 	<div ng-show="report.type=='crtc' || report.type=='both'">
-		<h3>Ads Played in SAM</h3>
+		<h3>Ads Played</h3>
 		<div ng-show="playsheet.ads_played.length > 0">
 			<table class='table-condensed report_table'>
 				<tr ng-repeat='ad in playsheet.ads_played'><td>{{ad.title ? ad.title : ad.artist}}</td><td>{{ad.date_played | date:HH:mm:ss}}</td></tr>
@@ -75,7 +74,6 @@
 			No Ads Played.
 		</div>
 	</div>
-<?php endif; ?>
 	<h3>Spoken Word Duration</h3>
 	<div class='text-center'>
 		{{playsheet.spokenword_duration}} minutes

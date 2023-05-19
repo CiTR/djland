@@ -9,11 +9,6 @@ use App\Podcast as Podcast;
 //Assisting Classes
 use App\Member as Member;
 
-//SAM CLASSES
-use App\Songlist as Songlist;
-use App\Categorylist as Categorylist;
-use App\Historylist as Historylist;
-
 /* Playsheet Routes */
 Route::group(array('prefix'=>'playsheet'),function(){
 
@@ -293,15 +288,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 			$playsheet->totals->new_count=0;
 			$playsheet->totals->spokenword=0;
 			$playsheet->totals->ads=0;
-
-			if($enabled['sam_integration']){
-				if( $playsheet->start_time && $playsheet->end_time){
-					$playsheet->ads_played = Historylist::where('date_played','<=',$playsheet->end_time)->where('date_played','>=',$playsheet->start_time)->where('songtype','=','A')->get();
-				}
-				foreach($playsheet->ads_played as $ad){
-					$playsheet->totals->ads += floor($ad['duration']/1000);
-				}
-			}
+      $playsheet->ads_played=[];
 
 			//If this show hasn't been seen before, initialize it
 			if(!isset($show_totals[$playsheet->show_name])){
@@ -451,17 +438,7 @@ Route::group(array('prefix'=>'playsheet'),function(){
 				$show = Playsheet::find($id)->show;
 				$playsheet->show = $show;
 				$playsheet->podcast = Playsheet::find($id)->podcast;
-				$promotions = Playsheet::find($id)->ads;
-				foreach($promotions as $key => $value){
-					//Get Ad Names From SAM
-					if($enabled['sam_integration'] && is_numeric($value['name'])){
-						$ad_info =  DB::connection('samdb')->table('songlist')->select('*')->where('id','=',$value['name'])->get();
-						if(is_countable($ad_info) && count($ad_info) == 1) $promotions[$key]['name'] = $ad_info[0]->title;
-					}else{
-						$promotions[$key]['name'] = html_entity_decode($promotions[$key]['name'],ENT_QUOTES);
-					}
-				}
-				$playsheet->promotions = $promotions;
+				$playsheet->promotions = Playsheet::find($id)->ads;
 				//convert 1 and 0 to true/false values expected by javascript
 				$playsheet->playsheet->socan 			= $playsheet->playsheet->socan 			== 1 ? true : false;
 				$playsheet->playsheet->web_exclusive 	= $playsheet->playsheet->web_exclusive 	== 1 ? true : false;

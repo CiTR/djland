@@ -47,24 +47,6 @@ $playsheet = array(
 "Play your scheduled ads around the time it suggests, and once you have played it check it off. <strong>We log the ads that are played, so this is important.</strong><br><img src='images/help/CheckAds.png'>",
 "Yes, you can add SAM plays one at a time by clicking the SAM plays button in the top right, the '+' beside the track you want. You can also import all the songs from a period of time with the SAM period button. ")
 );
-$SAM  = array(
-"title" =>array("SAM"),
-"question"=>array(
-"I've just sat down and SAM looks different, things are missing!",
-"Why is there no sound going on air?",
-"How do I play a track?",
-"Everything I play sounds really weird, what is wrong?",
-"After a song finishes, nothing happens. It won't play the next song automatically.",
-"I've loaded all of my songs into the queue, and it keeps playing a random song instead, what do I do?" ) ,
-"answer"=>array(
-"Click on layout (found in the top menu bar), then hover over load, and click 'load default'. It should now go back to normal.<br> <img src='images/help/LAYOUT.png'>",
-"Check the faders on the board for SAM A and SAM B are up and turned on, also make sure that 'Air' is lighter on Deck A, and 'Cue' is lighter on Deck B. If there's still no sound, check the volume faders within SAM.<br><img src='images/help/AIRandCUE.png'>",
-"Drag it to the queue first, then to a deck and hit play, to play songs from the queue. In the Auto DJ mode, once a song from the queue is playing and comes to an end, the next song from the queue will load automatically. Once the queue is empty, it will continue playing songs from our library in a special sequence ensuring we have no dead air. <br><img src='images/help/ADDtoPLAYLIST.png'><br><img src='images/help/PLAYLISTtoDECK.png'>",
-"Most likely someone has changed the 'pitch' and 'tempo' settings. This can be found to the right of the decks. Ensure they look like the image below (click on P to change pitch, T to change tempo).<br> <img src='images/help/PITCHandTEMPO.png'>",
-"Click on the triangle in the top menu, and select 'AutoDJ'. <br><img src='images/help/AutoDJ.png'>",
-"Drag the first song of your queue to the deck that isn't playing anything, and it will then play from your queue from now on!"
-)
-);
 $editLibrary = array(
 "title" =>array("Editing the Library"),
 "question"=>array("How do I add an album?","How do I edit an album?","There are lots of duplicates, how do I remove them?" ) ,
@@ -93,7 +75,7 @@ $socan = array(
 "answer"=>array("You can either play the song in SAM, and the use the SAM tool in the playsheet to add your songs (it will pull the time played and duration for you!) or use the CUE and END buttons to cue the start of your song, and end of your song (it will calculate the duration for you)","CUE and END buttons are in case you did not play a track through SAM, it helps you estimate both the start time (when you hit cue) and the duration (calculated for you when you hit end)","You have to check the extra fields 'background' and 'theme' if you played a song as either of these.")
 );
 
-$data = array($playsheet, $SAM, $report);
+$data = array($playsheet, $report);
 
 array_push( $data, $socan);
 

@@ -213,6 +213,10 @@
     		console.log(file);
     		form.append('image',file);
 
+        if (!shared.getShowID()) {
+          alert("the show does not have an id, so we cannot yet upload an image. Please save the show first, then come back to this page to upload the image.")
+          return;
+        }
     		var request = $.ajax({
     			url: 'api2/public/show/'+shared.getShowID()+'/image',
     			method: 'POST',

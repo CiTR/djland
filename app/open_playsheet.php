@@ -1,8 +1,8 @@
-<html ng-app='openPlaysheet'>
-	<?php
+<?php
 	require_once("headers/security_header.php");
 	require_once("headers/menu_header.php");
 	?>
+<html ng-app='openPlaysheet'>
 	<head>
 		<link rel='stylesheet' href='css/bootstrap.min.css'></script>
 		<link rel="stylesheet" href="css/style.css" type="text/css">

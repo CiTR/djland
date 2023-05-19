@@ -31,7 +31,7 @@ CREATE TABLE `membership` (
   `production_training` varchar(1) DEFAULT '0',
   `spoken_word_training` varchar(1) DEFAULT '0',
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `edit_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `edit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `student_no_UNIQUE` (`student_no`)

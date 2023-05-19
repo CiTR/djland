@@ -1,4 +1,3 @@
-
 <?php
 //SOCAN_HEADER
 function socanCheck($db) {

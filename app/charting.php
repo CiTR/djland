@@ -40,8 +40,9 @@ if( permission_level() >= $djland_permission_levels['volunteer']['level'] ){
                 <div class='charting-album'>Album</div>
                 <div class='charting-showname'>Show Name</div>
                 <div class='charting-date'>Date</div>
-                <div class='charting-cancon'>CC</div>
-                <div class='charting-playlist'>PL</div>
+                <div class='charting-icon'>CC</div>
+                <div class='charting-icon'>PL</div>
+                <div class='charting-icon'>L</div>
                 <div class='charting-status'>Status</div>
             </div>
             <div id='charting-body'>

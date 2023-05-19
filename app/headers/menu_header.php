@@ -30,7 +30,6 @@ function print_menu()
 			$sv_id = (isset($_SESSION['sv_id'])) ? $_SESSION['sv_id'] : null;
             echo "<div id='member_id' class='hidden' value={$sv_id}>{$sv_id}</div>";
     echo "<div id='permission_level' class='hidden'>".permission_level()."</div>";
-    echo "<div id='using_sam' class='hidden'>".($enabled['sam_integration'] ?'1':'0')."</div>";
     if ((permission_level() >= $djland_permission_levels['volunteer_leader']['level']) && $enabled['membership']):
         ?>
 		<li class=nodrop><a href="membership.php">Membership</a></li>
@@ -50,12 +49,6 @@ function print_menu()
                         <?php if (permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
 						<li><a href="editlibrary.php">Edit Library Entries</a></li>
 						<?php endif; ?>
-						<?php if (permission_level() >= $djland_permission_levels['volunteer']['level'] && $enabled['library']) : ?>
-						<li><a href="musicsubmissions.php">New Submissions</a></li>
-						<?php endif; ?>
-                        <?php if (permission_level() >= $djland_permission_levels['staff']['level'] && $enabled['library']) : ?>
-						<li><a href="djland_scan.php">DJLand Scan</a></li>
-						<?php endif; ?>
 					</ul>
 				</div>
 			</div>
@@ -69,15 +62,9 @@ function print_menu()
 			<div class="dropdown small">
 				<div class=small>
 					<ul>
-
-						<li><a href="schedule_override.php">Schedule Override</a></li>
-						<li><a href="friends.php">Friends of CiTR</a></li>
-						<li><a href="scheduler.php">Ad Scheduler</a></li>
-						<li><a href="sam_ad_history.php">Sam Ad History</a></li>
-						<li><a href="show_alerts.php">Show Alert Listing</a></li>
 						<?php if (permission_level() >=  $djland_permission_levels['staff']['level']) : ?>
 							<li><a href="setSocan.php"> Socan Periods </a></li>
-                            <li><a href="genremanager.php">Genre Manager</a></li>
+              <li><a href="genremanager.php">Genre Manager</a></li>
 						<?php endif; ?>
 					</ul>
 				</div>
@@ -123,27 +110,6 @@ function print_menu()
 				</li>
 	   <?php endif; ?>
 
-     <?php if (permission_level() >= $djland_permission_levels['staff']['level']): ?>
-       <li class=drop><a href="fundrive-form.php">Fundrive</a>
-         <div class="dropdown small">
-             <ul>
-               <?php if (permission_level() >= $djland_permission_levels['staff']['level']): ?>
-                 <li><a href="fundrive-form.php">New Fundrive Form</a></li>
-			 <?php endif; ?>
-               <?php if (permission_level() >= $djland_permission_levels['staff']['level']): ?>
-                 <li><a href="fundrive-open-form.php">Open a Fundrive Form</a></li>
-			 <?php endif; ?>
-               <?php if (permission_level() >= $djland_permission_levels['staff']['level']): ?>
-                 <li><a href="fundrive-dump-stats.php">Download Fundrive Data (.csv)</a></li>
-			 <?php endif; ?>
-             </ul>
-         </div>
-       </li>
-     <?php endif; ?>
-	 <?php if (isset($_SESSION['sv_username']) && $_SESSION['sv_username'] == 'fundrive'): ?>
-		 <li class="nodrop"><a href="fundrive-form.php">New Fundrive Form</a></li>
-	 <?php
-    endif; ?>
 	 	<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 	 	<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
 		<?php if (permission_level() >=  $djland_permission_levels['member']['level']) : ?>
@@ -160,7 +126,6 @@ function print_menu()
                         ?>
 						<li><a href="studio_booking.php">Book a Studio</a></li>
 						<li><a href="fillin_booking.php">Book a Fill In</a></li>
-						<li><a href="mediaLab_booking.php">Book a Media Lab iMAC</a></li>
 						<?php endif; ?>
 
 						<?php if (permission_level() >= $djland_permission_levels['dj']['level']) : ?>

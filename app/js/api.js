@@ -64,36 +64,8 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getMemberList: function(){
 			return $http.get(API_URL_BASE+"/member/list");
 		},
-		getSamRecent: function(offset){
-			return $http.get(API_URL_BASE+"/SAM/recent/"+offset || 0);
-		},
-		getSamRange: function(from,to){
-            // var re = /^\d{4}-\d{2}-\d{2}.*/;
-            // if(re.test(from) && re.test(to)){
-                return $http.get(API_URL_BASE+"/SAM/range?from="+from+"&to="+to);
-            // }
-            // else{
-            //     console.log("Invalid ranges for getSamRange!");
-            //     console.log(from);
-            //     console.log(to);
-            //     console.log("-------");
-            //     return [];
-            // }
-		},
-		getAdSchedule: function(){
-			return $http.get(API_URL_BASE+'/adschedule');
-		},
 		getReport: function(show_id,from,to,report_type){
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
-		},
-		getFriends: function(){
-			return $http.get(API_URL_BASE+'/friends');
-		},
-		getForms: function(){
-			return $http.get(API_URL_BASE + '/fundrive/donor');
-		},
-		getFundriveTotals: function(){
-			return $http.get(API_URL_BASE + '/fundrive/total');
 		},
 		getResources: function(){
 			return $http.get(API_URL_BASE + '/resource');
@@ -103,12 +75,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		isAdmin: function(member_id){
 			return $http.get(API_URL_BASE + '/member/' + member_id + '/admin');
-		},
-		addFriend: function(){
-			return $http.put(API_URL_BASE+'/friends');
-		},
-		saveFriends: function(friends){
-			return $http.post(API_URL_BASE + '/friends', angular.toJson({'friends':friends}));
 		},
 		saveResources: function(resources){
 			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
@@ -124,9 +90,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		saveBroadcasts: function(specialbroadcasts){
 			return $http.post(API_URL_BASE + '/specialbroadcasts', angular.toJson({'specialbroadcasts':specialbroadcasts}));
-		},
-		saveAds: function(showtimes){
-			return $http.post(API_URL_BASE+'/adschedule',angular.toJson({'showtimes':showtimes}));
 		},
 		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
 			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
@@ -148,9 +111,6 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		},
 		saveNewPodcast: function(podcast){
 			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
-		},
-		deleteFriend: function(id){
-			return $http.delete(API_URL_BASE+'/friends/'+id);
 		},
 		deletePlaysheet:function(id){
 			return $http.delete(API_URL_BASE+'/playsheet/' + id);
@@ -177,28 +137,4 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/error',angular.toJson({'error':error}));
 		},
 	};
-});
-
-angular.module('sam.api', []).factory('sam', function ($http, $location) {
-    var API_URL_BASE = 'api2/public/SAM'; // api.citr.ca when live
-    return {
-        getAdList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'PRIORITY ADs');
-        },
-        getUBCPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'ubc')
-        },
-        getCommunityPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'community');
-        },
-        getTimelyPSAList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'New Timely PSAs');
-        },
-        getStationIDList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'station IDz');
-        },
-        getPromosList: function () {
-            return $http.get(API_URL_BASE + '/categorylist/' + 'SHOW PROMOS');
-        },
-    };
 });

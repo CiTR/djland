@@ -17,7 +17,7 @@
 	echo "<td>".$create_schema."</td>";
 	echo "<td>".($schema_result ? $db_connection->error : '')."</td></tr>";
 
-	$db_connection = new mysqli($db['address'], $db['username'], $db['password'],$db['database']);
+	$db_connection = new mysqli($db['address'], $db['username'], $db['password'],"djland");
 
 	//foreach on the data_structures folder.
 	$data_structure_path = dirname($_SERVER['DOCUMENT_ROOT']).'/setup/database_structures';

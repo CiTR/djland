@@ -104,8 +104,7 @@ table.ads > tbody > tr > td > input.name {
 .charting-rowid-sorted,
 .charting-showname,
 .charting-date,
-.charting-cancon,
-.charting-playlist,
+.charting-icon,
 .charting-status{
 	position:relative;
 	float:left;
@@ -124,7 +123,7 @@ table.ads > tbody > tr > td > input.name {
 .charting-artist-sorted,
 .charting-album-sorted,
 .charting-rowid,
-.charting-rowid-sorted,
+.charting-rowid-sorted
 {
     text-align: left;
     margin-left: 10px;
@@ -139,8 +138,7 @@ table.ads > tbody > tr > td > input.name {
 .charting-showname{
 	width: 200px;
 }
-.charting-cancon,
-.charting-playlist{
+.charting-icon{
 	width:25px;
 }
 .charting-date{
@@ -191,39 +189,7 @@ table.ads > tbody > tr > td > input.name {
 .report_table > tbody > tr > td {
   padding: 0px 0px 0px 10px;
 }
-/*----------------------*/
 
-/* Friends of CiTR Page */
-
-/*----------------------*/
-
-#friends {
-  padding-left: 10px;
-  margin: 0px;
-  max-width: 1024px;
-  width: 1024px;
-  overflow: hidden;
-}
-
-#friends > li {
-  height: 200px;
-}
-
-.friend_info {
-  width: 550px;
-  float: left;
-  position: relative;
-}
-
-.friend_image {
-  margin-top: 20px;
-}
-
-.friend_image > img {
-  max-height: 100px;
-  width: auto;
-  max-width: 220px;
-}
 /*
  * Donor Form CSS
  */
@@ -2151,7 +2117,7 @@ button.box {
   background-color: transparent;
   background-image: none;
 }
-button.socan, , .music_row_socan input, .music_row_socan button{
+button.socan, .music_row_socan input, .music_row_socan button{
   font-size:0.75em;
   max-width:90px;
 }

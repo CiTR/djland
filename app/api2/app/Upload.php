@@ -66,10 +66,6 @@ class Upload extends Model{
 				$resource = Resource::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$resource->name);
 				break;
-			case 'friend_image':
-				$friend = Friend::find($this->relation_id);
-				$stripped_name = str_replace($strip,'',$friend->name);
-				break;
 			case 'special_broadcast_image':
 				$special_broadcast = SpecialBroadcast::find($this->relation_id);
 				$stripped_name = str_replace($strip,'',$special_broadcast->name);

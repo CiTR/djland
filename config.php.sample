@@ -38,14 +38,11 @@ $station_info['timezone'] = 'America/Vancouver';
 $enabled['membership'] = true; // Membership info management
 $enabled['library'] = true; // searchable music catalog (for physical recordings)
 $enabled['library_management']; // manage a music catalog's songs in djland
-$enabled['music_submissions']; // manage music submissions and submissions workflow to djland
 $enabled['shows'] = true; // show information database - used to pre-fill playsheets
-$enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
 $enabled['podcast_tools'] = true; // show podcast manager
-$enabled['sam_integration'] = false; // If you use SAM -  https://spacial.com/sam-broadcaster-pro/
 
 
 
@@ -112,7 +109,7 @@ if($enabled['podcast_tools']){
 
 $djland_membership_rollover_month = 5;
 
-$library_folder = '/home/library' //no trailing slash
+$library_folder = '/home/library'; //no trailing slash
 
 //The date at which your membership will roll into the next membership year.
 $djland_membership_cutoff_month=5;

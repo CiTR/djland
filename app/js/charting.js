@@ -93,8 +93,9 @@ function loadCharts(from,to){
 				$('#charting-row'+$j).append('<div id=charting-album'+$j+' class=charting-album> '+data[$j].album+'</div>');
 				$('#charting-row'+$j).append('<div id=charting-showname'+$j+' class=charting-showname> '+data[$j].show_name+'</div>');
 				$('#charting-row'+$j).append('<div id=charting-date'+$j+' class=charting-date> '+data[$j].date+'</div>');
-				$('#charting-row'+$j).append('<div id=charting-cancon'+$j+' class=charting-cancon> </div>');
-				$('#charting-row'+$j).append('<div id=charting-playlist'+$j+' class=charting-playlist> </div>');
+        $('#charting-row'+$j).append('<div id=charting-cancon'+$j+' class=charting-icon> </div>');
+        $('#charting-row'+$j).append('<div id=charting-playlist'+$j+' class=charting-icon> </div>');
+        $('#charting-row'+$j).append('<div id=charting-local'+$j+' class=charting-icon> </div>');
 				$('#charting-row'+$j).append('<div id=charting-status'+$j+' class=charting-status> </div>');
 				if(data[$j].is_canadian=='1'){
 					$('#charting-cancon'+$j).append('<img src="./images/tags/canconsolo.png" style="max-width:100%">');
@@ -102,6 +103,9 @@ function loadCharts(from,to){
 				if(data[$j].is_playlist=='1'){
 					$('#charting-playlist'+$j).append('<img src="./images/tags/newsolo.png" style="max-width:100%">');
 				}
+        if (data[$j].is_local=='1'){
+          $('#charting-local'+$j).append('<img src="./images/tags/localsolo.png" style="max-width:100%">');
+        }
 				if(data[$j].status=='1'){
 					$('#charting-status'+$j).append('Draft')
 				}

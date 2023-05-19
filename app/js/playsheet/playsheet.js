@@ -18,8 +18,6 @@
         this.max_podcast_length = (max_podcast_length != undefined ) ? max_podcast_length : 8*60*60;
         this.tech_email = "technicalmanager@citr.ca";
         //Helper Variables
-        this.using_sam = $('#using_sam').text()=='1' ? true : false;
-        this.sam_visible = false;
     	this.tags = tags;
     	this.help = help;
         this.complete = false;
@@ -439,9 +437,6 @@
 		                        	"composer":null
 		                        };
 		                        this.checkIfComplete();
-		                        if(this.using_sam){
-		                            this.updateSamPlays();
-								}
 		                        this.loading = false;
 		                        this.time_changed = false;
 		                    }).bind(this)
@@ -575,9 +570,6 @@
 				                            }).bind(this)
 										);
 			                            this.update();
-			                            if(this.using_sam){
-			                                this.updateSamPlays();
-			                            }
 			                            this.loading = false;
 			                        }
 								).bind(this)
@@ -610,7 +602,6 @@
 		            this.start_second = $filter('pad')(this.start.getSeconds(),2);
 
 		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-		            if(this.using_sam) this.updateSamPlays();
 					this.getNewUnix();
         		}
 			).bind(this)
@@ -624,7 +615,6 @@
 		            this.end_minute = $filter('pad')(this.end.getMinutes(),2);
 		            this.end_second = $filter('pad')(this.end.getSeconds(),2);
 		            if(this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) /1000;
-		            if(this.using_sam) this.updateSamPlays();
 					this.getNewUnix();
 		        }
 			).bind(this)
@@ -909,79 +899,6 @@
             },function(error){
                 $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error could not be logged :(");
             });
-        }
-        //TODO: need to implement feature for only some shows to upload their own audio
-		//this.uploadAudio = function(podcast_id){
-		//	var form = new FormData();
-		//	var file = $('#audio_file')[0].files[0];
-		//	form.append('audio',file);
-		//	var request = $.ajax({
-		//		url: 'api2/public/podcast/'+podcast_id+'/audio',
-		//		method: 'POST',
-		//		dataType: 'json',
-		//		processData: false,
-		//		contentType: false,
-		//		data: form
-		//	});
-		//	$.when(request).then((function(response){
-		//		console.log(response);
-		//		this.list.filter(function(object){if(object.id == podcast_id) return object;})[0].url = response.url;
-		//		$scope.$apply();
-		//	}).bind(this),function(error){
-		//		alert(error.responseText);
-		//	});
-		//}
-        this.addSamPlay = function (sam_playitem) {
-            this.playitems.splice(this.playitems.length,0,sam_playitem);
-        };
-        this.formatSamPlay = function (sam_play) {
-            var djland_entry = angular.copy(this.row_template);
-            djland_entry.artist = sam_play.artist;
-            djland_entry.album = sam_play.album;
-            djland_entry.song = sam_play.title;
-            djland_entry.composer = sam_play.composer;
-            djland_entry.insert_song_start_hour = $filter('pad')( new Date(sam_play.date_played).getHours(), 2);
-            djland_entry.insert_song_start_minute = $filter('pad')( new Date(sam_play.date_played).getMinutes(), 2);
-            djland_entry.insert_song_length_minute = $filter('pad')((sam_play.duration / 60000), 2);
-            djland_entry.insert_song_length_second = $filter('pad')( (sam_play.duration/1000)%60 , 2);
-            djland_entry.is_canadian = sam_play.mood.toLowerCase().indexOf('cancon') > -1 ? '1':'0';
-            djland_entry.is_fem = sam_play.mood.toLowerCase().indexOf('femcon') > -1 ? '1':'0';
-            djland_entry.lang = this.info.lang;
-            return djland_entry;
-        };
-        this.loadSamPlays = function () {
-            call.getSamRecent(0).then(
-				(function (data) {
-		            this.samRecentPlays = [];
-		            for (var samplay in data.data) {
-		                this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
-		            }
-		        }).bind(this)
-			);
-        };
-        this.samRange = function () {
-            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
-				(function(data){
-                    if( data && data !== 'null' && data !== 'undefined'){
-		                for (var samplay in data.data) {
-                            this.addSamPlay(this.formatSamPlay(data.data[samplay]));
-		                }
-                    }
-		        }).bind(this)
-			);
-            this.sam_visible= false;
-        };
-        this.updateSamPlays = function(){
-            call.getSamRange($filter('date')(this.start,'yyyy-MM-dd HH:mm:ss'),$filter('date')(this.end,'yyyy-MM-dd HH:mm:ss')).then(
-				(function(data){
-                    if( data && data !== 'null' && data !== 'undefined'){
-		                      this.samRecentPlays = [];
-		                      for (var samplay in data.data) {
-                                  this.samRecentPlays.push(this.formatSamPlay(data.data[samplay]));
-		                      }
-                    }
-		        }).bind(this)
-			);
         }
         this.init();
     });

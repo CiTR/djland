@@ -119,6 +119,6 @@ return [
     |
     */
 
-    'pretend' => env('APP_DEBUG', false),
+    'pretend' => env('APP_DEBUG', true),
 
 ];
