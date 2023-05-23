@@ -1,4 +1,5 @@
 (function () {
+	
 	var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
 	app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
 		this.info = {};
@@ -109,30 +110,6 @@
 
 						this.updateEnd();
 						this.updateStart();
-
-						if (this.info.id < 1) {
-							call.getAds(start_unix, end_unix - start_unix, this.active_show.id).then(
-								(
-									function (response) {
-										this.promotions = response.data;
-										console.log("Ads called on updateTime()");
-										console.log(response.data);
-									}
-								).bind(this)
-								, (
-									function (error) {
-										this.log_error(error);
-										call.getAds(start_unix, end_unix - start_unix, this.active_show.id).then(
-											(
-												function (response) {
-													this.promotions = response.data;
-												}
-											).bind(this)
-										);
-									}
-								).bind(this)
-							);
-						}
 					}
 				).bind(this)
 			);
@@ -280,6 +257,9 @@
 			this.start_unix = start_unix;
 			this.end_unix = end_unix;
 			var duration = start_unix - end_unix;
+
+			//
+			//TODO - replace with static ad template
 			if (this.info.id < 1) {
 				call.getAds(start_unix, end_unix - start_unix, this.active_show.id).then(
 					(function (response) {
@@ -294,8 +274,15 @@
 						);
 					}).bind(this)
 				);
-
 			}
+			// replace above
+
+
+
+
+
+
+
 			call.isSocan(this.start_unix).then(
 				(
 					function (response) {
@@ -557,18 +544,6 @@
 											this.add(this.playitems.length - 1);
 										}
 										this.time_changed = false;
-										call.getAds(start_unix, end_unix - start_unix, this.active_show.id).then(
-											(function (response) {
-												this.promotions = response.data;
-											}).bind(this)
-											, (function (error) {
-												this.log_error(error);
-												call.getAds(start_unix, end_unix - start_unix, this.active_show.id).then(
-													(function (response) {
-														this.promotions = response.data;
-													}).bind(this));
-											}).bind(this)
-										);
 										this.update();
 										this.loading = false;
 									}
@@ -929,7 +904,7 @@
 	app.directive('promotion', function () {
 		return {
 			restrict: 'A',
-			templateUrl: 'templates/promotion.html'
+			templateUrl: 'templates/promotion.html?v=20230523'
 		}
 	});
 	app.directive('datepickerPopup', function () {

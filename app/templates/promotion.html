@@ -1,9 +1,6 @@
-
-	<td class='hidden'>{{promotion.id}}</td>
-	<td>{{$index +1 }}</td>
-	<td>{{promotion.time}}</td>
-	<td>{{promotion.type}}</td>
-	<td class='promotion_name'>{{promotion.name}}</td>
-	<td>
-		<input type='checkbox' ng-model='promotion.played'  ng-true-value="1" ng-false-value="0"></input>
-	</td>
+<td class='hidden'>{{promotion.id}}</td>
+<td>{{$index +1 }}</td>
+<td>{{promotion.type}}</td>
+<td class='promotion_name'>
+	<input style="width:600px" ng-model='promotion.name' />
+</td>

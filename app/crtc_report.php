@@ -187,6 +187,6 @@
 		<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 		<script type='text/javascript' src='js/api.js'></script>
 		<script type='text/javascript' src='js/utils.js'></script>
-		<script type='text/javascript' src='js/report/report.js'></script>
+		<script type='text/javascript' src='js/report/report.js?v=20230523'></script>
 	</body>
 </html>

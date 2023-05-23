@@ -98,13 +98,13 @@
     app.directive('reportitem', function () {
         return {
             restrict: 'A',
-            templateUrl: 'templates/report_item.html'
+            templateUrl: 'templates/report_item.html?v=20230523'
         }
     });
     app.directive('compliancereportitem', function () {
         return {
             restrict: 'A',
-            templateUrl: 'templates/compliance_report_item.html'
+            templateUrl: 'templates/compliance_report_item.html?v=20230523'
         }
     });
     app.filter('pad', function () {

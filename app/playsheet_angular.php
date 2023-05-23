@@ -18,7 +18,7 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
 	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20220627'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20230523'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
@@ -175,10 +175,8 @@ require_once("headers/menu_header.php");
 				<h4> Ads, PSAs, Station IDs </h4>
 				<table class='table table-responsive border'>
 					<th>#</th>
-					<th>Time</th>
 					<th>Type</th>
 					<th>Name</th>
-					<th>Played</th>
 					<tr promotion class='promotions' ng-model='playsheet.promotions' ng-repeat="promotion in playsheet.promotions"></tr>
 				</table>
 			</div>

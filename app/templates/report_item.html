@@ -101,19 +101,12 @@
 	<h3>Ads / Promos</h3>
 	<table class='table-condensed report_table'>
 		<tr>
-			<th>Name
 			<th>Type
-			<th>Time
-			<th>Played
+			<th>Name
 		</tr>
 		<tr ng-repeat='ad in playsheet.ads'>
-			<td>{{ad.name}}</td>
 			<td>{{ad.type}}</td>
-			<td>{{ad.time}}</td>
-			<td>
-				<div ng-if="ad.played==1">&#9745;</div>
-				<div ng-if="ad.played==0">&#9744;</div>
-			</td>
+			<td>{{ad.name}}</td>
 		</tr>
 	</table>
 </div>
