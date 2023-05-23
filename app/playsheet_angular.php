@@ -7,7 +7,7 @@ require_once("headers/menu_header.php");
 
 <head>
 	<link rel='stylesheet' href='css/bootstrap.min.css'>
-	<link rel="stylesheet" href="css/style.css?v=20220627" type="text/css">
+	<link rel="stylesheet" href="css/style.css?v=20230523" type="text/css">
 
 	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
 	<script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
