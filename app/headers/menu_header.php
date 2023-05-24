@@ -90,8 +90,18 @@ function print_menu()
 			</li>
 		<?php
 		endif;
-		if (permission_level() >= $djland_permission_levels['dj']['level']) :
-		?>
+		if (permission_level() >= $djland_permission_levels['staff']['level']) :
+			?>
+			<li class=drop><a href="crtc_report.php">Reporting</a>
+				<div class="dropdown small">
+					<div class="small">
+						<ul>
+							<li><a href="ad_report.php">Ad Report</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<?php elseif (permission_level() >= $djland_permission_levels['dj']['level']) :	?>
 			<li class=nodrop><a href="crtc_report.php">Reporting</a></li>
 		<?php
 		endif;
