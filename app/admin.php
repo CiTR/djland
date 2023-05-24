@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Evan
@@ -9,8 +10,9 @@ include_once("headers/session_header.php");
 require_once("headers/security_header.php");
 require_once("headers/menu_header.php");
 
-if( permission_level() >= $djland_permission_levels['administrator']['level']){ ?>
+if (permission_level() >= $djland_permission_levels['administrator']['level']) { ?>
     <html>
+
     <head>
         <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <meta charset="utf-8">
@@ -25,21 +27,25 @@ if( permission_level() >= $djland_permission_levels['administrator']['level']){ 
         <script type="text/javascript" src="js/admin.js"></script>
         <script>
             $(function() {
-                $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+                $(".datepicker").datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
             });
         </script>
     </head>
-    <body class='wallpaper'>
-    <?php
-    print_menu();
-    ?>
-    <div class="wrapper">
-        <h1>Administrator Tools</h1>
 
-    </div>
+    <body class='wallpaper'>
+        <?php
+        print_menu();
+        ?>
+        <div class="wrapper">
+            <h1>Administrator Tools</h1>
+
+        </div>
 
     </body>
+
     </html>
-<?php }else{
+<?php } else {
     header("Location: main.php");
-}?>
+} ?>

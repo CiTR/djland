@@ -1,84 +1,89 @@
 <?php
 require_once("headers/security_header.php");
-require_once(dirname($_SERVER['DOCUMENT_ROOT']).'/config.php');
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/config.php');
 require_once("headers/menu_header.php");
 require_once("headers/socan_header.php");
 
 if (permission_level() < $djland_permission_levels['staff']['level']) {
-    header("Location: main.php");
+	header("Location: main.php");
 }
 $now = date("m/d/Y", strtotime('now'));
-$twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+$twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d") + 2, date("Y")));
 
 ?>
 <html>
-	<head>
-		<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
-		<link href="css/jquery.dataTables.min.css" rel="stylesheet" />
-		<link rel=stylesheet href='css/bootstrap.min.css' type=text/css>
-		<link rel=stylesheet href='css/style.css' type=text/css>
 
-		<title>Set Socan</title>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="js/jquery.form.js"></script>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-	  	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-	  	<script src='js/socan/socan.js'></script>
-		<script src="js/jquery.dataTables.min.js"></script>
+<head>
+	<meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
+	<link href="css/jquery.dataTables.min.css" rel="stylesheet" />
+	<link rel=stylesheet href='css/bootstrap.min.css' type=text/css>
+	<link rel=stylesheet href='css/style.css' type=text/css>
+
+	<title>Set Socan</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/jquery.form.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<script src='js/socan/socan.js'></script>
+	<script src="js/jquery.dataTables.min.js"></script>
 
 
-	</head>
-	<body class='wallpaper'>
-		<script>
-			$(function() {
-				$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+</head>
+
+<body class='wallpaper'>
+	<script>
+		$(function() {
+			$(".datepicker").datepicker({
+				dateFormat: "yy-mm-dd"
 			});
-	  	</script>
+		});
+	</script>
 
 
-		<?php print_menu(); ?>
+	<?php print_menu(); ?>
 
-		<div id='wrapper'>
-			<div style='margin-left:15px;'>
-				<h1>Set Socan</h1>
-				<center>First select a date range:
-					<form>
-						<label for="from">Start Date: </label>
-						<input type="text" id="from" name="from" />
+	<div id='wrapper'>
+		<div style='margin-left:15px;'>
+			<h1>Set Socan</h1>
+			<center>First select a date range:
+				<form>
+					<label for="from">Start Date: </label>
+					<input type="text" id="from" name="from" />
 
-						<label for="to">End Date: </label>
-						<input type="text" id="to" name="to" />
+					<label for="to">End Date: </label>
+					<input type="text" id="to" name="to" />
 
-					</form>
-                    <div>
-                        Note that in order to end on midnight,
-                        you must select the next day at 00:00 as it only selects day, and not time!
-                    </div>
-                    <br>
-				    <button id="createPeriod">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
+				</form>
+				<div>
+					Note that in order to end on midnight,
+					you must select the next day at 00:00 as it only selects day, and not time!
+				</div>
+				<br>
+				<button id="createPeriod">Create this SOCAN period</button><span id="loadStatus">&nbsp;</span>
 
 
-                    <div id="result" class='padded-top'>&nbsp;</div>
-				</center>
-				<hr><br><center>These are the current SOCAN periods that are set:</center><br>
+				<div id="result" class='padded-top'>&nbsp;</div>
+			</center>
+			<hr><br>
+			<center>These are the current SOCAN periods that are set:</center><br>
 
-				<?php
+			<?php
 
-                $api_base = 'https://'.$_SERVER['HTTP_HOST'];
-                $socanPeriods = CallAPI('GET', $api_base.'/api2/public/socan');
-                if (count($socanPeriods) != 0) {
-                    ?>
-					<div class='center'>
-						<table id='socanTable' class='table'>
-							<thead>
+			$api_base = 'https://' . $_SERVER['HTTP_HOST'];
+			$socanPeriods = CallAPI('GET', $api_base . '/api2/public/socan');
+			if (count($socanPeriods) != 0) {
+			?>
+				<div class='center'>
+					<table id='socanTable' class='table'>
+						<thead>
 							<tr>
 								<th>Socan ID</th>
 								<th>Start Time</th>
 								<th>End Time</th>
 								<th>Delete</th>
 							</tr>
-							</thead>
-							<tbody>
+						</thead>
+						<tbody>
 							<tr id='rowtemplate' class='invisible'>
 								<td id='template_id'>id</td>
 								<td id='template_start'>start</td>
@@ -87,31 +92,32 @@ $twodaysfromnow  = date("m/d/Y", mktime(0, 0, 0, date("m"), date("d")+2, date("Y
 							</tr>
 
 							<?php
-								foreach($socanPeriods as $key => $socanPeriod){
-									$id=$socanPeriod->id;
-									$socanStart=$socanPeriod->socanStart;
-									$socanEnd=$socanPeriod->socanEnd;
+							foreach ($socanPeriods as $key => $socanPeriod) {
+								$id = $socanPeriod->id;
+								$socanStart = $socanPeriod->socanStart;
+								$socanEnd = $socanPeriod->socanEnd;
 
-									echo("<tr id='row".$id."'>");
-									echo("<td>".$id."</td>");
-									echo("<td>".$socanStart."</td>");
-									echo("<td>".$socanEnd."</td>");
-									echo("<td><button id='socanDelete".$id."' class='deletePeriod'>Delete this period</button></td>");
-									echo("</tr>");
-								}
-						?>
-							</tbody>
+								echo ("<tr id='row" . $id . "'>");
+								echo ("<td>" . $id . "</td>");
+								echo ("<td>" . $socanStart . "</td>");
+								echo ("<td>" . $socanEnd . "</td>");
+								echo ("<td><button id='socanDelete" . $id . "' class='deletePeriod'>Delete this period</button></td>");
+								echo ("</tr>");
+							}
+							?>
+						</tbody>
 					</table>
 
-					</div>
+				</div>
 
-					<div id='result2'>&nbsp;</div><span id='loadStatus2'>&nbsp;</span>
-				<?php
+				<div id='result2'>&nbsp;</div><span id='loadStatus2'>&nbsp;</span>
+			<?php
 
-                } else {
-                    echo "Retreiving Socan Periods Failed or you have no Socan Periods Scheduled.";
-                } ?>
-			</div>
+			} else {
+				echo "Retreiving Socan Periods Failed or you have no Socan Periods Scheduled.";
+			} ?>
 		</div>
-	</body>
+	</div>
+</body>
+
 </html>
