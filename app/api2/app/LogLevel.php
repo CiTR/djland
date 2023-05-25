@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class LogLevel extends Model
 {
-    protected $table = 'loglevel';
-    protected $primaryKey = 'loglevel_id';
-    protected $fillable = array('level');
-    public $timestamps = false;
+  protected $table = 'loglevel';
+  protected $primaryKey = 'loglevel_id';
+  protected $fillable = array('level');
+  public $timestamps = false;
 
-    public function log()
-    {
-        $this->belongsTo('App\Log');
-    }
+  public function log()
+  {
+    $this->belongsTo('App\Log');
+  }
 }
