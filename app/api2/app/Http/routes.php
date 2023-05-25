@@ -20,26 +20,7 @@ Route::get('/APIinfo',function(){
 
 //Anything inside the auth middleware requires an active session (user to be logged in)
 Route::group(['middleware' => 'auth'], function(){
-	//Member Resource Routes
-	Route::group(array('prefix'=>'resource'),function(){
-		Route::get('/',function(){
-			return Option::where('djland_option','=','member_resources')->get();
-		});
-		Route::post('/',function(){
-			$resource = Option::where('djland_option','=','member_resources')->first();
-			//If there is no resources entry, make one
-			if (!$resource) {
-             		   $resource = Option::create(array(
-			           'djland_option' => 'member_resources',
-			           'value' => Input::get()['resources']
-                		));
-		           return $resource;
-            		} else {
-		                $resource -> value = Input::get()['resources'];
-                		return Response::json($resource->save());
-            		}
-		});
-	});
+
 });
 
 Route::get('/social',function(){

@@ -67,17 +67,11 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getReport: function(show_id,from,to,report_type){
 			return $http.post(API_URL_BASE+'/playsheet/report',angular.toJson({'show_id':show_id,'from':from,'to':to,'report_type':report_type}));
 		},
-		getResources: function(){
-			return $http.get(API_URL_BASE + '/resource');
-		},
 		isStaff: function(member_id){
 			return $http.get(API_URL_BASE + '/member/'+ member_id + '/staff');
 		},
 		isAdmin: function(member_id){
 			return $http.get(API_URL_BASE + '/member/' + member_id + '/admin');
-		},
-		saveResources: function(resources){
-			return $http.post(API_URL_BASE + '/resource',angular.toJson({'resources':resources}));
 		},
 		getBroadcasts: function(){
 			return $http.get(API_URL_BASE+'/specialbroadcasts');

@@ -127,17 +127,7 @@ function print_menu()
 				<div class="dropdown small">
 					<div class="small">
 						<ul>
-
-							<li><a href="member_resources.php">Resources</a></li>
-							<li><a href="training_videos.php">Training Videos</a></li>
-							<?php
-							//if( permission_level() >= $djland_permission_levels['workstudy'] || is_trained()):
-							if (permission_level() >= $djland_permission_levels['member']['level'] && is_trained() || permission_level() >= $djland_permission_levels['workstudy']['level']) :
-							?>
-								<li><a href="studio_booking.php">Book a Studio</a></li>
-								<li><a href="fillin_booking.php">Book a Fill In</a></li>
-							<?php endif; ?>
-
+							<li><a href="https://linktr.ee/citrprogramming" target="_blank">Link Tree</a></li>
 							<?php if (permission_level() >= $djland_permission_levels['dj']['level']) : ?>
 								<li><a href="help.php" target="_blank"> Help </a></li>
 							<?php endif; ?>
