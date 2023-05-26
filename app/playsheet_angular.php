@@ -18,7 +18,7 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
 	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20230523'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20230525'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
@@ -201,12 +201,12 @@ require_once("headers/menu_header.php");
 		<div class='col1 text-center'>
 			<div class="playsheet-save" ng-hide="!playsheet.complete">
 				<div class="playsheet-save">
-					Would you like to NOT (re)create the podcast? <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
+					Do not generate a podcast <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
 					<div ng-show="playsheet.isAdmin">
 						Web Exclusive Podcast <input type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
 					</div>
 				</div>
-				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Save Show</button>
+				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Submit</button>
 			</div>
 			<div class="blocker" ng-hide="playsheet.complete">
 				{{ playsheet.missing }}
