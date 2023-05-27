@@ -1,58 +1,75 @@
-
-<td class='text-center'><input ng-model='playitem.id' class='hidden' >{{$index + 1}} </input></td>
-<td><input ng-change='playsheet.update()'  ng-model='playitem.artist' class='required'></input></td>
-<td><input ng-change='playsheet.update()'  ng-model='playitem.song' class='required'></input></td>
-<td><input ng-change='playsheet.update()'  ng-model='playitem.album' class='required'></input></td>
+<td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.artist' class='required'></input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
+<td><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.info.socan'>
 	<input ng-change='playsheet.update()' ng-model='playitem.composer' ng-class='{required: false}'></input>
 </td>
 <td ng-show='playsheet.info.socan'>
-	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>:
-    <select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.info.socan}' ng-options="n for n in [] | range:0:60 "  ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>
+	<select ng-model="playitem.insert_song_length_minute" ng-class='{required: playsheet.info.socan}'
+		ng-options="n for n in [] | range:0:60 "
+		ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>:
+	<select ng-model="playitem.insert_song_length_second" ng-class='{required: playsheet.info.socan}'
+		ng-options="n for n in [] | range:0:60 "
+		ng-change='playsheet.updateTrackDuration(playitem); playsheet.update();'></select>
 </td>
 <td>
-	<button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist' 			ng-class="{filled:playitem.is_playlist==true}" 	class="box playlist pad-top"></button>
+	<button ng-model="playitem.is_playlist" ng-click='playitem.is_playlist=!playitem.is_playlist'
+		ng-class="{filled:playitem.is_playlist==true}" class="box playlist pad-top"></button>
 </td>
 <td>
-	<button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian' ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button>
+	<button ng-model="playitem.is_canadian" ng-click='this.playitem.is_canadian=!this.playitem.is_canadian'
+		ng-class="{filled: playitem.is_canadian==true}" class="box cancon pad-top"></button>
 </td>
 <td class="fairplay">
-	<button ng-model="playitem.is_accesscon" 		ng-click='playitem.is_accesscon=!playitem.is_accesscon' 					ng-class="{filled:playitem.is_accesscon==true}" 		class="box fairplay accesscon pad-top"></button>
+	<button ng-model="playitem.is_accesscon" ng-click='playitem.is_accesscon=!playitem.is_accesscon'
+		ng-class="{filled:playitem.is_accesscon==true}" class="box fairplay accesscon pad-top"></button>
 </td>
 <td class="fairplay">
-	<button ng-model="playitem.is_afrocon" 		ng-click='playitem.is_afrocon=!playitem.is_afrocon' 					ng-class="{filled:playitem.is_afrocon==true}" 		class="box fairplay afrocon pad-top"></button>
+	<button ng-model="playitem.is_afrocon" ng-click='playitem.is_afrocon=!playitem.is_afrocon'
+		ng-class="{filled:playitem.is_afrocon==true}" class="box fairplay afrocon pad-top"></button>
 </td>
 <td class="fairplay femcon_td">
-	<button ng-model="playitem.is_fem" 		ng-click='playitem.is_fem=!playitem.is_fem' 					ng-class="{filled:playitem.is_fem==true}" 		class="box fairplay femcon pad-top"></button>
+	<button ng-model="playitem.is_fem" ng-click='playitem.is_fem=!playitem.is_fem'
+		ng-class="{filled:playitem.is_fem==true}" class="box fairplay femcon pad-top"></button>
 </td>
 <td class="fairplay">
-	<button ng-model="playitem.is_indigicon" 		ng-click='playitem.is_indigicon=!playitem.is_indigicon' 					ng-class="{filled:playitem.is_indigicon==true}" 		class="box fairplay indigicon pad-top"></button>
+	<button ng-model="playitem.is_indigicon" ng-click='playitem.is_indigicon=!playitem.is_indigicon'
+		ng-class="{filled:playitem.is_indigicon==true}" class="box fairplay indigicon pad-top"></button>
 </td>
 <td class="fairplay">
-	<button ng-model="playitem.is_poccon" 		ng-click='playitem.is_poccon=!playitem.is_poccon' 					ng-class="{filled:playitem.is_poccon==true}" 		class="box fairplay poccon pad-top"></button>
+	<button ng-model="playitem.is_poccon" ng-click='playitem.is_poccon=!playitem.is_poccon'
+		ng-class="{filled:playitem.is_poccon==true}" class="box fairplay poccon pad-top"></button>
 </td>
 <td class="fairplay">
-	<button ng-model="playitem.is_queercon" 		ng-click='playitem.is_queercon=!playitem.is_queercon' 					ng-class="{filled:playitem.is_queercon==true}" 		class="box fairplay queercon pad-top"></button>
+	<button ng-model="playitem.is_queercon" ng-click='playitem.is_queercon=!playitem.is_queercon'
+		ng-class="{filled:playitem.is_queercon==true}" class="box fairplay queercon pad-top"></button>
 </td>
 <td>
-	<button ng-model="playitem.is_local" 		ng-click='playitem.is_local=!playitem.is_local' 					ng-class="{filled:playitem.is_local==true}" 		class="box is_local pad-top"></button>
+	<button ng-model="playitem.is_local" ng-click='playitem.is_local=!playitem.is_local'
+		ng-class="{filled:playitem.is_local==true}" class="box is_local pad-top"></button>
 </td>
 <td>
-	<button ng-model="playitem.is_inst" 	ng-click='playitem.is_inst=!playitem.is_inst' 					ng-class="{filled:playitem.is_inst==true}" 		class="box instrumental pad-top"></button>
+	<button ng-model="playitem.is_inst" ng-click='playitem.is_inst=!playitem.is_inst'
+		ng-class="{filled:playitem.is_inst==true}" class="box instrumental pad-top"></button>
 </td>
 <td>
-	<button ng-model="playitem.is_part" 	ng-click='playitem.is_part=!playitem.is_part' 					ng-class="{filled:playitem.is_part==true}" 		class="box partial pad-top"></button>
+	<button ng-model="playitem.is_part" ng-click='playitem.is_part=!playitem.is_part'
+		ng-class="{filled:playitem.is_part==true}" class="box partial pad-top"></button>
 </td>
 <td>
-	<button ng-model="playitem.is_hit" 		ng-click='playitem.is_hit=!playitem.is_hit' 					ng-class="{filled:playitem.is_hit==true}" 		class="box hit pad-top"></button>
+	<button ng-model="playitem.is_hit" ng-click='playitem.is_hit=!playitem.is_hit'
+		ng-class="{filled:playitem.is_hit==true}" class="box hit pad-top"></button>
 </td>
 
 
 <td ng-show="playsheet.info.socan">
-	<button ng-model="playitem.is_background" 		ng-click='playitem.is_background=!playitem.is_background' 					ng-class="{filled:playitem.is_background==true}" 		class="box background pad-top"></button>
+	<button ng-model="playitem.is_background" ng-click='playitem.is_background=!playitem.is_background'
+		ng-class="{filled:playitem.is_background==true}" class="box background pad-top"></button>
 </td>
 <td ng-show="playsheet.info.socan">
-	<button ng-model="playitem.is_theme" 		ng-click='playitem.is_theme=!playitem.is_theme' 					ng-class="{filled:playitem.is_theme==true}" 		class="box theme pad-top"></button>
+	<button ng-model="playitem.is_theme" ng-click='playitem.is_theme=!playitem.is_theme'
+		ng-class="{filled:playitem.is_theme==true}" class="box theme pad-top"></button>
 </td>
 <td>
 	<select ng-model='playitem.crtc_category' class='crtc_category'>
