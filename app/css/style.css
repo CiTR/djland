@@ -1680,9 +1680,6 @@ table.open_playsheet > tbody > tr > td.host{
 .host{
   max-width:400px;
 }
-.promotions > td {
-  font-size:.8em;
-}
 .promotion_name{
   max-width:300px;
 }

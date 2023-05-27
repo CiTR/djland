@@ -3,7 +3,7 @@
   var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
   app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
     this.info = {};
-    this.promotions = {};
+    this.promotions = [];
     this.playitems = {};
     this.podcast = {};
     this.info.id = playsheet_id;
@@ -35,6 +35,20 @@
       if (this.playitems.length < 1) {
         $('#addRows').text("Add Row");
       }
+      this.update();
+    }
+    this.addPromotion = function () {
+      this.promotions.push(
+        {
+          "type": "ad",
+          "name": "",
+          "played": 0,
+          num: this.promotions.length
+        });
+      this.update();
+    }
+    this.removePromotion = function (id) {
+      this.promotions.splice(id, 1);
       this.update();
     }
     this.addFiveRows = function () {
@@ -259,8 +273,8 @@
       var duration = end_unix - start_unix;
 
       if (this.info.id < 1) {
-        var hours = Math.floor(duration/(60*60));
-        if (hours === 0){
+        var hours = Math.floor(duration / (60 * 60));
+        if (hours === 0) {
           hours = 1;
         }
         var index = 0;
@@ -268,55 +282,55 @@
 
           return [
             {
-            "type": "id",
-            "name": "You are listening to CiTR Radio 101.9FM, broadcasting from unceded Musqueam territory in Vancouver",
-            "played": 0,
-            num:index++
-          },
-          {
-            "type": "ad",
-            "name": "",
-            "played": 0,
-            num:index++
-          },
-          {
-            "type": "ad",
-            "name": "",
-            "played": 0,
-            num:index++
-          },
-          {
-            "type": "promo",
-            "name": "",
-            "played": 0,
-            num:index++
-          },
-          {
-            "type": "psa",
-            "name": "",
-            "played": 0,
-            num:index++
-          },
-        ];
-      }
+              "type": "id",
+              "name": "",
+              "played": 0,
+              num: index++
+            },
+            {
+              "type": "ad",
+              "name": "",
+              "played": 0,
+              num: index++
+            },
+            {
+              "type": "ad",
+              "name": "",
+              "played": 0,
+              num: index++
+            },
+            {
+              "type": "promo",
+              "name": "",
+              "played": 0,
+              num: index++
+            },
+            {
+              "type": "psa",
+              "name": "",
+              "played": 0,
+              num: index++
+            },
+          ];
+        }
         var newPromotions = [];
-        for(var i = 0; i < hours; i ++){
+        for (var i = 0; i < hours; i++) {
           newPromotions = [...newPromotions, ...hourPromos()];
         }
 
-        if (this.promotions.length !== newPromotions.length){
+        if (this.promotions.length <= newPromotions.length) {
+          this.promotions.map((promotion, index) => {
+            if (promotion.name.length > 0) {
+              newPromotions[index].name = promotion.name;
+              newPromotions[index].type = promotion.type;
+              newPromotions[index].played = promotion.played;
+            }
+          });
           this.promotions = newPromotions;
         }
 
-
       }
       // replace above
-
-
-
-
-
-
 
       call.isSocan(this.start_unix).then(
         (
@@ -612,7 +626,15 @@
           this.start_second = $filter('pad')(this.start.getSeconds(), 2);
 
           if (this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) / 1000;
-          this.getNewUnix();
+
+          var days = Math.floor((this.end - this.start) / (60 * 60 * 1000 * 24));
+          if (days !== 0) {    
+            this.end.setDate(this.end.getDate() - days);
+            this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
+          }
+          else {
+            this.getNewUnix();
+          }
         }
       ).bind(this)
     );
@@ -636,43 +658,44 @@
       $timeout((function () { this.checkIfComplete(); }).bind(this), 100);
     }
     this.checkIfComplete = function () {
-      var playsheet_okay = 'true';
+      var playsheet_okay = true;
       this.missing = "You have empty values";
       if (this.info.start > this.info.end) {
         playsheet_okay = false;
       }
-      var m = { 'artist': 0, 'song': 0, 'album': 0, 'composer': 0, 'spokenword': 0, 'episode_title': 0, 'episode_summary': 0 };
+      var problems = [];
       $('.required').each(
         (function (index, element) {
-          $e = element;
 
-          var model = $e.getAttribute('ng-model');
+          var model = element.getAttribute('ng-model');
+          // check for land acknowledgement??
+
           if ($(element).val() == "" || $(element).val() == null) {
-            playsheet_okay = 'false';
+            playsheet_okay = false;
             switch (model) {
               case "playitem.artist":
-                if (this.playitems.length > 0) m.artist = 1;
+                if (this.playitems.length > 0) problems.push("an artist");
                 break;
               case 'playitem.album':
-                if (this.playitems.length > 0) m.album = 1;
+                if (this.playitems.length > 0) problems.push("an album");
                 break;
               case 'playitem.song':
-                if (this.playitems.length > 0) m.song = 1;
+                if (this.playitems.length > 0) problems.push("a song title");
                 break;
               case 'playitem.composer':
-                if (this.playitems.length > 0) m.composer = 1;
-                break;
-              case 'playsheet.spokenword_hours':
-                m.spokenword = 1;
+                if (this.playitems.length > 0) problems.push("a composer");
                 break;
               case 'playsheet.spokenword_minutes':
-                m.spokenword = 1;
+                problems.push("spoken word duration");
                 break;
               case 'playsheet.info.title':
-                m.episode_title = 1;
+                problems.push("episode title");
                 break;
               case 'playsheet.info.summary':
-                m.episode_summary = 1;
+                problems.push("episode description");
+                break;
+              case 'promotion.name':
+                problems.push("an ad name");
                 break;
               default:
                 break;
@@ -680,18 +703,15 @@
           }
         }).bind(this)
       );
-      if (playsheet_okay == 'true') {
+      if (playsheet_okay) {
         this.complete = true;
       } else {
-        this.missing = "You have empty values for these fields:"
-          + (m.artist == 1 ? " an artist," : "")
-          + (m.song == 1 ? " a song title," : "")
-          + (m.album == 1 ? " an album," : "")
-          + (m.composer == 1 ? " a composer," : '')
-          + (m.spokenword == 1 ? " your spoken word duration," : "")
-          + (m.episode_title == 1 ? " your episode title," : "")
-          + (m.episode_summary == 1 ? " your episode description" : "")
-          + '.';
+        //deduplicate problems
+        problems = problems.filter(function (item, pos) {
+          return problems.indexOf(item) == pos;
+        });
+
+        this.missing = "You are missing " + problems.join(', ') + ".";
         this.complete = false;
       }
     }
@@ -915,7 +935,7 @@
 
   app.controller('datepicker', function ($filter) {
     this.today = function () {
-      this.dt = $filter('date')(new Date(), 'yyyy/MM/dd HH:mm:ss');
+      this.dt = $filter('date')(new Date(), 'yy/MM/dd HH:mm:ss');
     };
     this.clear = function () {
       this.dt = null;
@@ -932,14 +952,14 @@
   app.directive('playitem', function () {
     return {
       restrict: 'A',
-      templateUrl: 'templates/playitem.html?v=20220627'
+      templateUrl: 'templates/playitem.html?v=20230526'
     };
   });
   //Declares ad attribute
   app.directive('promotion', function () {
     return {
       restrict: 'A',
-      templateUrl: 'templates/promotion.html?v=20230523'
+      templateUrl: 'templates/promotion.html?v=20230526'
     }
   });
   app.directive('datepickerPopup', function () {
@@ -1000,8 +1020,6 @@ $(document).ready(function () {
       }
     });
 
-    // This whole section needs to be cleaned up
-
     can_2_element.text((can_2_total / (can_2_count ? can_2_count : 1) * 100).toFixed(0) + "%");
     if (can_2_total / (can_2_count != 0 ? can_2_count : 1) * 100 < can_2_required && can_2_count > 0) can_2_element.addClass('red');
     else can_2_element.removeClass('red');
@@ -1018,8 +1036,6 @@ $(document).ready(function () {
     if (hit_total / totals_divide * 100 > hit_max && playitems_count > 0) hit_element.addClass('red');
     else hit_element.removeClass('red');
 
-
-    // Added Fairplay stuff
     var fairplay_element_text = fairplay_total / totals_divide * 100;
 
     fairplay_element.text(fairplay_element_text.toFixed(0) + "%");

@@ -6,15 +6,19 @@ require_once("headers/menu_header.php");
 <html ng-app='djland.editPlaysheet'>
 
 <head>
-	<link rel='stylesheet' href='css/bootstrap.min.css'>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+
 	<link rel="stylesheet" href="css/style.css?v=20230523" type="text/css">
 
-	<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
-	<script type='text/javascript' src="js/jquery-ui-1.11.3.min.js"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type='text/javascript' src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+
 	<script type='text/javascript' src='js/constants.js'></script>
-	<script type='text/javascript' src="js/angular.js"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+
+
 	<script type='text/javascript' src="js/angular/sortable.js"></script>
-	<script type='text/javascript' src='js/bootstrap/bootstrap.js'></script>
+	<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
 	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
@@ -22,8 +26,6 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
-
-
 
 <body class='wallpaper' ng-controller="PlaysheetController as playsheet">
 	<script type='text/javascript'>
@@ -94,14 +96,14 @@ require_once("headers/menu_header.php");
 						</div>
 						<div class='col1 padded' ng-controller="datepicker as date">
 							<button ng-click="date.open($event)">Change Start Day</button>
-							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.start_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true" ng-change="date.date_change();" />
+							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.start_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true"  />
 						</div>
 						<div class="col1">
 							End: {{playsheet.info.end_time | date:'yyyy/MM/dd HH:mm:ss'}}
 						</div>
 						<div class='col1 padded' ng-controller="datepicker as date">
 							<button ng-click="date.open($event)">Change End Day</button>
-							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.end_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true" ng-change="date.date_change();" />
+							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.end_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true"  />
 						</div>
 					</div>
 					<div class='col2'>
@@ -174,11 +176,12 @@ require_once("headers/menu_header.php");
 			<div class='span4col5 side-padded double-padded-top'>
 				<h4> Ads, PSAs, Station IDs </h4>
 				<table class='table table-responsive border'>
-					<th>#</th>
-					<th>Type</th>
+					<th style="width:10px;">#</th>
+					<th style="width:185px;">Type</th>
 					<th>Name</th>
 					<tr promotion class='promotions' ng-model='playsheet.promotions' ng-repeat="promotion in playsheet.promotions"></tr>
 				</table>
+				<button ng-click='playsheet.addPromotion()' style="float:right;"> + </button>
 			</div>
 			<div class='col5 side-padded right double-padded-top'>
 				<h4>Spoken Word Duration</h4>
