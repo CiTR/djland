@@ -628,11 +628,11 @@
           if (this.start && this.end) this.podcast.duration = (this.end.getTime() - this.start.getTime()) / 1000;
 
           var days = Math.floor((this.end - this.start) / (60 * 60 * 1000 * 24));
-          if (days !== 0) {    
+
+          if (days !== 0 && this.end) {
             this.end.setDate(this.end.getDate() - days);
             this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
-          }
-          else {
+          } else {
             this.getNewUnix();
           }
         }
@@ -664,13 +664,22 @@
         playsheet_okay = false;
       }
       var problems = [];
+
       $('.required').each(
         (function (index, element) {
 
           var model = element.getAttribute('ng-model');
           // check for land acknowledgement??
+          var val = this[model];
+          //get value from checkbox element
+          if (element.type == "checkbox") {
+            val = element.checked;
+          } else {
+            val = $(element).val();
+          }
+          console.log('val', val);
 
-          if ($(element).val() == "" || $(element).val() == null) {
+          if (val == "" || !val) {
             playsheet_okay = false;
             switch (model) {
               case "playitem.artist":
@@ -697,6 +706,8 @@
               case 'promotion.name':
                 problems.push("an ad name");
                 break;
+              case 'promotion.played':
+                problems.push("a station ID")
               default:
                 break;
             }

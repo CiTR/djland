@@ -1,7 +1,7 @@
 <td class='hidden'>{{promotion.id}}</td>
-<td>{{$index +1 }})</td>
+<td style="font-size:14px;">{{$index +1 }}</td>
 <td>
-	<form style="margin:0;">
+	<form style="margin:0; font-size:12px;">
 
 		<label>
 			<input type="radio" name="promotion_type" ng-model="promotion.type" value="id"
@@ -26,14 +26,14 @@
 	</form>
 </td>
 <td class='promotion_name' ng-if="promotion.type === 'id'">
-	<label for="{{'land_acknowledgement_'+$index}}">You are listening to CiTR Radio 101.9FM, broadcasting from unceded
+	<label for="{{'land_acknowledgement_'+$index}}" style="font-size:14px; font-weight:normal;">You are listening to CiTR Radio 101.9FM, broadcasting from unceded
 		Musqueam territory in Vancouver
 		<input id="{{'land_acknowledgement_'+$index}}" class="required" type="checkbox" ng-model="promotion.played"
-			ng-true-value="1" ng-false-value="''" ng-change='playsheet.update()' />
+			ng-change='playsheet.update()' />
 	</label>
 </td>
 <td class='promotion_name' ng-if="promotion.type != 'id'">
-	<input class="required" style="width:400px" ng-model='promotion.name' ng-change='playsheet.update()' />
+	<input class="required" style="width:700px" ng-model='promotion.name' ng-change='playsheet.update()' />
 </td>
 
 

@@ -94,16 +94,16 @@ require_once("headers/menu_header.php");
 						<div class="col1">
 							Start: {{playsheet.info.start_time | date:'yyyy/MM/dd HH:mm:ss'}}
 						</div>
-						<div class='col1 padded' ng-controller="datepicker as date">
-							<button ng-click="date.open($event)">Change Start Day</button>
-							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.start_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true"  />
+						<div class='col1' ng-controller="datepicker as date">
+							<button ng-click="date.open($event)">Change Day</button>
+							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.start_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true" />
 						</div>
 						<div class="col1">
 							End: {{playsheet.info.end_time | date:'yyyy/MM/dd HH:mm:ss'}}
-						</div>
-						<div class='col1 padded' ng-controller="datepicker as date">
-							<button ng-click="date.open($event)">Change End Day</button>
-							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.end_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true"  />
+						</div><br /><br />
+						<div class='col1' ng-controller="datepicker as date">
+							<button ng-click="date.open($event)" style="font-size:smaller">Change End Day</button>
+							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.end_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true" />
 						</div>
 					</div>
 					<div class='col2'>
@@ -173,7 +173,7 @@ require_once("headers/menu_header.php");
 			<br />
 		</div>
 		<div class='col1 double-padded-top'>
-			<div class='span4col5 side-padded double-padded-top'>
+			<div class='span5col5 side-padded double-padded-top'>
 				<h4> Ads, PSAs, Station IDs </h4>
 				<table class='table table-responsive border'>
 					<th style="width:10px;">#</th>
@@ -181,18 +181,20 @@ require_once("headers/menu_header.php");
 					<th>Name</th>
 					<tr promotion class='promotions' ng-model='playsheet.promotions' ng-repeat="promotion in playsheet.promotions"></tr>
 				</table>
+				<button class="left">reset ads</button>
 				<button ng-click='playsheet.addPromotion()' style="float:right;"> + </button>
-			</div>
-			<div class='col5 side-padded right double-padded-top'>
-				<h4>Spoken Word Duration</h4>
-				<div class='col2 text-center'>Hours<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select></div>
-				<div class='col2 text-center'>Minutes<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select></div>
 			</div>
 		</div>
 		<div class='col1 side-padded double-padded-top'>
-			<h4>Episode Title</h4>
+			<h4 class="text-left">Spoken Word Duration</h4>
+			<div class='col1'>
+				Hours<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_hours" ng-options="n for n in [] | rangeNoPad:0:24"></select>
+				&nbsp;&nbsp; Minutes<select class='required' ng-change='playsheet.checkIfComplete(); playsheet.updateSpokenword()' ng-model="playsheet.spokenword_minutes" ng-options="n for n in [] | rangeNoPad:0:60"></select>
+			</div><br/>
+
+			<h4 class="text-left padded">Episode Title</h4>
 			<input class='wideinput required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.title' />
-			<h4>Episode Description</h4>
+			<h4 class="text-left padded">Episode Description</h4>
 			<textarea class='fill required' ng-change='playsheet.checkIfComplete()' ng-model='playsheet.info.summary'></textarea>
 			<!-- commented out for now - need to implement feature for only some shows to upload their own audio
 					<h4>Upload Episode Audio</h4>
