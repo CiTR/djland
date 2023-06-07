@@ -10,34 +10,48 @@
 	<title>DJLAND | Sign Up</title>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="js/jquery.form.js"></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 	<script type='text/javascript' src='js/constants.js'></script>
 	<script type='text/javascript' src='js/membership/functions.js'></script>
 	<script type='text/javascript' src='js/membership/member.js'></script>
 	<script type='text/javascript' src='js/membership/signup.js?20210520'></script>
 
 
+
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 	<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 </head>
 
-<body class='wallpaper'>
+<body class='wallpaper' ng-app="membership-signup">
 	<div id='membership' class='wrapper'>
 		<h1> CiTR &amp; Discorder Member Signup </h1>
 		<hr>
 
-		<div class='container'>
+		<form class='container' name="Form" ng-controller="FormController">
 			<div id='row1' class='containerrow'>
-				<div class='col5'>Username*: </div>
-				<div id="username_check" class='col5'><input onKeyPress="return alphaOnly(this, event)" id='username' class='required' name='username' placeholder='Enter a username' maxlength='15' tabindex=1></input></div>
-				<div class='col5'>Password*: </div>
-				<div class='col5'><input id='password' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();" tabindex=2></input></div>
-				<div id="password_check" class='col5'><input id='password2' type="password" class='required' placeholder='Enter again' onkeyup="passwordCheck();" tabindex=3></input></div>
+				<label class='col5' for='username'>Username*: </label>
+				<div id="username_check" class='col5'>
+					<input onKeyPress="return alphaOnly(this, event)" id='username' class='required' name='username' placeholder='Enter a username' maxlength='15'>
+					</input>
+				</div>
+				<label class='col5' for='password'>Password*: </label>
+				<div class='col5'>
+					<input id='password' class='required' type="password" placeholder='Enter a password' onkeyup="passwordCheck();">
+					</input>
+				</div>
+			</div>
+			<div class='containerrow' style="width:50%; float:right; text-align:left;">
+				<label class='col5' for='password_check' style="width:28%">Password Again*: </label>
+				<div id="password2" class='col5'>
+					<input id='password2' class='required' type="password" onkeyup="passwordCheck();">
+					</input>
+				</div>
 			</div>
 
 			<div id='row2' class='containerrow'>
-				<div class='col5'>First Name*: </div>
+				<label class='col5' for='firstname'>First Name*: </label>
 				<div class='col5'><input id='firstname' class='required' placeholder='First name' maxlength='30'></input></div>
-				<div class='col5'>Last Name*: </div>
+				<label class='col5' for='lastnamee'>Last Name*: </label>
 				<div class='col5'><input id='lastname' class='required' placeholder='Last name' maxlength='30'></input></div>
 			</div>
 
@@ -113,7 +127,7 @@
 
 				</div>
 			</div>
-			<div id='row6' class='containerrow student'>
+			<div class='containerrow student'>
 				<div class='col5'>Faculty*: </div>
 				<div class='col5'>
 					<select id='faculty'>
@@ -126,7 +140,7 @@
 					<input id='faculty2' style='display:none' placeholder='Enter your Faculty' />
 				</div>
 
-				<div id='student_no_container'>
+				<div>
 					<div class='col5'>Student Number*:</div>
 					<div class='col5' id='student_no_check'>
 						<input id='student_no' name='student_no' placeholder='Enter a student number' maxlength='8' onKeyPress="return numbersonly(this, event)"></input>
@@ -135,7 +149,7 @@
 
 			</div>
 
-			<div id='row7' class='containerrow student'>
+			<div class='containerrow student'>
 				<div class='col5'>Year*:</div>
 				<div class='col5'><select id='schoolyear'>
 						<?php foreach ($djland_program_years as $key => $value) {
@@ -218,7 +232,13 @@
 			<div class='contanerrow'>
 				<br />
 			</div>
-		</div>
+			<span class="error" ng-show="Form.input.$error.required">Required!</span><br>
+			<code>userType = {{userType}}</code><br>
+			<code>Form.input.$valid = {{Form.input.$valid}}</code><br>
+			<code>Form.input.$error = {{Form.input.$error}}</code><br>
+			<code>Form.$valid = {{Form.$valid}}</code><br>
+			<code>Form.$error.required = {{!!Form.$error.required}}</code><br>
+		</form>
 
 	</div>
 </body>

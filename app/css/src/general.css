@@ -6,7 +6,7 @@ body {
 	background-color: #3434A4;
 }
 .grey{
-	background-color: grey;
+	background-color: #393939;
 }
 .white{
 	background-color: white;
@@ -122,19 +122,19 @@ input, select, textarea, option{
 	width:1024px;
 	margin-left: auto;
 	margin-right: auto;
-	background-color: grey;
+	background-color: #393939;
 	color: white;
 	overflow: visible;
 }
 .wrapper:after{
-	background-color: grey;
+	background-color: #393939;
 }
 .inner{
 	display:inline-block;
 	position: relative;
 	margin-left: auto;
 	margin-right: auto;
-	background-color: grey;
+	background-color: #393939;
 	width:90%;
 }
 .inner > li{

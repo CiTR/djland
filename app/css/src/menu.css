@@ -217,7 +217,7 @@
 }
 .active-tab{
 	background: #A4A4A4;
-	background: -moz-linear-gradient(top, #A4A4A4, grey);
+	background: -moz-linear-gradient(top, #A4A4A4, #393939);
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#A4A4A4), to(grey));
 	border-width: 0px 0px 0px 0px;
 }

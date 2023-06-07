@@ -118,16 +118,11 @@ $(document).ready ( function() {
 	$('#member_type').change(function (){
 
 		if($('#member_type').val() == "Student"){
-			$('#row6').show();
-			$('#row6').children().show();
-			$('#row7').show();
-			$('#row7').children().show();
-			$('#student_no_container').show();
-			$('#student_no_container').children().show();
+			$('.student').show();
+			$('.student').children().show();
 		}else{
-			$('#row6').hide();
-			$('#row7').hide();
-			$('#student_no_container').hide();
+			$('.student').hide();
+			//$('#row-student-year').hide();
 		}
 	});
 	$('#faculty').change(function (){
@@ -417,3 +412,9 @@ $(document).ready ( function() {
 		var result = ((key >= 65 && key <= 90 ) || key >=97 && key <=122) ? true : false;
 		return result;
 	};
+
+	
+  angular.module('membership-signup', [])
+    .controller('FormController', ['$scope', function($scope) {
+      $scope.userType = 'guest';
+    }]);

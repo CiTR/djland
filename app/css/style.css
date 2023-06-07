@@ -238,7 +238,7 @@ body {
 }
 
 .grey {
-  background-color: grey;
+  background-color: #393939;
 }
 
 .white {
@@ -410,13 +410,13 @@ option {
   width: 1024px;
   margin-left: auto;
   margin-right: auto;
-  background-color: grey;
+  background-color: #393939;
   color: white;
   overflow: visible;
 }
 
 .wrapper:after {
-  background-color: grey;
+  background-color: #393939;
 }
 
 .inner {
@@ -424,7 +424,7 @@ option {
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  background-color: grey;
+  background-color: #393939;
   width: 90%;
 }
 
@@ -1445,7 +1445,7 @@ button#submit_user.red {
 
 .active-tab {
   background: #A4A4A4;
-  background: -moz-linear-gradient(top, #A4A4A4, grey);
+  background: -moz-linear-gradient(top, #A4A4A4, #393939);
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#A4A4A4), to(grey));
   border-width: 0px 0px 0px 0px;
 }
@@ -1490,7 +1490,7 @@ div#ui-datepicker-div {
 
 div.ui-datepicker {
   width: 100%;
-  background: grey;
+  background: #393939;
 }
 
 .ui-datepicker-header {
@@ -1619,7 +1619,7 @@ input[type="search"]::-webkit-search-cancel-button {
 /*----------------------------*/
 
 table.dataTable tbody tr {
-  background-color: grey;
+  background-color: #393939;
 }
 
 .dataTables_wrapper .dataTables_length,
