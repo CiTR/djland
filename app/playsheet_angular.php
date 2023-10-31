@@ -18,7 +18,7 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
 	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20220627'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20231031'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
