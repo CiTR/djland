@@ -300,8 +300,9 @@
 				(
 					function (response) {
 						if (response.status == '200') {
-							this.info.socan = ((($('#socan').text().trim() == 'true' ? true : false) || response.data) ? 1 : 0);
-						}
+              var socanText = $('#socan').text().trim();
+              this.info.socan = (((socanText == 'true' || socanText == '1' ? true : false) || response.data) ? 1 : 0);
+            }
 					}
 				).bind(this)
 			);
@@ -343,8 +344,9 @@
 							(
 								function (response) {
 									if (response.status == '200') {
-										this.info.socan = ((($('#socan').text().trim() == 'true' ? true : false) || response.data) ? 1 : 0);
-									}
+                    var socanText = $('#socan').text().trim();
+                    this.info.socan = (((socanText == 'true' || socanText == '1' ? true : false) || response.data) ? 1 : 0);
+                  }
 								}
 							).bind(this)
 						);
