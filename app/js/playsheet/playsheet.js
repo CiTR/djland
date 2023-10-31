@@ -187,6 +187,8 @@
     }
 
     //Setting Show Times
+    // flag for removal TODO FIXME after we know for sure
+    // no one wants it
     this.startShow = function () {
       this.start = new Date();
       this.start_hour = $filter('pad')(this.start.getHours(), 2);
@@ -276,6 +278,8 @@
         var hours = Math.floor(duration / (60 * 60));
         if (hours === 0) {
           hours = 1;
+        } if (hours > 3){
+          hours = 3;
         }
         var index = 0;
         var hourPromos = () => {
@@ -318,16 +322,14 @@
           newPromotions = [...newPromotions, ...hourPromos()];
         }
 
-        if (this.promotions.length <= newPromotions.length) {
-          this.promotions.map((promotion, index) => {
-            if (promotion.name.length > 0) {
-              newPromotions[index].name = promotion.name;
-              newPromotions[index].type = promotion.type;
-              newPromotions[index].played = promotion.played;
-            }
-          });
-          this.promotions = newPromotions;
-        }
+        this.promotions.map((promotion, index) => {
+          if (promotion.name.length > 0 && index < newPromotions.length) {
+            newPromotions[index].name = promotion.name;
+            newPromotions[index].type = promotion.type;
+            newPromotions[index].played = promotion.played;
+          }
+        });
+        this.promotions = newPromotions;
 
       }
       // replace above

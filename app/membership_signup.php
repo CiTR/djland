@@ -233,11 +233,13 @@
 				<br />
 			</div>
 			<span class="error" ng-show="Form.input.$error.required">Required!</span><br>
+			<!-- (2023 note - use these angular variables to refactor to nicer form validation)
 			<code>userType = {{userType}}</code><br>
 			<code>Form.input.$valid = {{Form.input.$valid}}</code><br>
 			<code>Form.input.$error = {{Form.input.$error}}</code><br>
 			<code>Form.$valid = {{Form.$valid}}</code><br>
 			<code>Form.$error.required = {{!!Form.$error.required}}</code><br>
+							-->
 		</form>
 
 	</div>

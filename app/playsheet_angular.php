@@ -122,6 +122,7 @@ require_once("headers/menu_header.php");
 						</div>
 					</div>
 					<div class='col1 double-padded-top'>
+						<!-- removed, make room for moving podcast tools here
 						<div>
 							Podcast Timing
 							<button ng-click="playsheet.startShow()">
@@ -130,7 +131,7 @@ require_once("headers/menu_header.php");
 							<button ng-click="playsheet.endShow()">
 								End Show Now
 							</button>
-						</div>
+						</div>-->
 
 					</div>
 				</div>
@@ -181,7 +182,6 @@ require_once("headers/menu_header.php");
 					<th>Name</th>
 					<tr promotion class='promotions' ng-model='playsheet.promotions' ng-repeat="promotion in playsheet.promotions"></tr>
 				</table>
-				<button class="left">reset ads</button>
 				<button ng-click='playsheet.addPromotion()' style="float:right;"> + </button>
 			</div>
 		</div>
