@@ -1,3 +1,39 @@
+# DJLAND 2023 notes
+
+The main repo is now in bitbucket.
+
+## deployment (pre-fullhost migration)
+### setup:
+Add your machine's public SSH key to the moongrok server ~/djland/.ssh/authorized_keys directory.
+In Bitbucket, set yourself up with read/write access to the repo there ( `git@bitbucket.org:CiTRRadio/djland.git` )
+
+Then set up the remotes as such:
+`git remote add origin git@bitbucket.org:CiTRRadio/djland.git`
+`git remote add live djland@djland.citr.ca:~/djland`
+
+Use the branch `dev` to work from Bitbucket
+`git checkout dev; git pull origin`
+
+To deploy, push like so: `git push live`
+
+Then ssh onto the djland server:
+`ssh djland@djland.citr.ca`
+`cd djland`
+`git branch -v` (ensure the branch `master-live`) is checked out, verify the checked out commit is included in dev's commit history
+`git merge dev`
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DJLAND
 
 ![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)
