@@ -44,11 +44,11 @@ require_once("headers/menu_header.php");
 				<tbody when-scrolled='more()'>
 					<tr ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 						<td ng-hide="true">{{item.id}}</td>
-						<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}'>{{item.show_name}}</td>
-						<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
-						<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}'>{{item.start_time}}</td>
-						<td onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}'>{{item.status != 2 ? "(Draft)" : "" }}</td>
-						<td ng-if='open_playsheet.staff' onclick='go(this)' data-href='playsheet_angular.php?id={{item.id}}&socan={{item.socan}}' class='edit_date'>{{item.edit_date}}</td>
+						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.show_name}}</td>
+						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
+						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.start_time}}</td>
+						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.status != 2 ? "(Draft)" : "" }}</td>
+						<td ng-if='open_playsheet.staff' onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}' class='edit_date'>{{item.edit_date}}</td>
 						<td ng-if='open_playsheet.staff'><button ng-click='open_playsheet.delete(item.id)' type='button' class='delete'>Delete</button></td>
 					</tr>
 				</tbody>
