@@ -388,6 +388,7 @@ option {
   overflow: hidden;
   margin-right: auto;
   margin-left: auto;
+  margin-bottom:3em;
   border-right-width: 1px;
   border-left-width: 1px;
   border-right-style: solid;
@@ -1720,9 +1721,6 @@ tr.playitems.socan > td > input.lang{
 .dragzone {
   cursor: default;
 }
-.socan select{
-  font-size:0.75em;
-}
 
 .socan_cue select{
   width:46px;
@@ -2118,57 +2116,6 @@ button.socan, .music_row_socan input, .music_row_socan button{
   max-width:90px;
 }
 
-/*
- * Playsheet SAM styling
- */
-
-
-#sam_picker{
-  width:200px;
-}
-#sam_title {
-  color: black;
-  font-size: 1.2em;
-  position: fixed;
-  padding: 5px;
-  height: 40px;
-  background-color:beige;
-}
-
-#sam_title span {
-  border: black 1px solid;
-  cursor: default;
-  padding: 6px;
-  background-color: white;
-}
-
-#sam_title span:hover {
-  border: red 1px solid;
-  color: red;
-  background-color: lightred;
-}
-
-div#sam_picker {
-  position: fixed;
-  top: 60px;
-  right: 40px;
-  height: 80%;
-  overflow: scroll;
-  width: 400px;
-  background-color: beige;
-}
-
-#sam_range {
-  color: black;
-  text-align: right;
-}
-
-span.one_sam {
-  overflow: hidden;
-  display: inline-block;
-
-}
-
 div.floating {
   position: fixed;
   right: 0;
@@ -2177,44 +2124,20 @@ div.floating {
   z-index:20;
 }
 
-.sam_row {
-  color: black;
-  border-top: black 1px solid;
-}
-
 .blocker{
-  position:relative;
-  bottom:66px;
   background-color:black;
   color:red;
   height:70px;
-}
-.sam_row button {
-
-  vertical-align: top;
-  cursor: default;
+  font-size:1.3em;
+  padding:0.25em;
 }
 .current{
   border-width: 3px;
   border-style: solid;
 }
-
-
-#SamListouter, div#loadtimes{
-  color:black;
-  /*  display:block;*/
-  display:none;
-  background-color:beige;
-  border-width: medium;
-  border-style:solid;
-  border-color:#BBB;
-  height:80%;
-  width:400px;
-  position:fixed;
-  right:8%;
-  top:0;
-  overflow: auto;
-  z-index:20;
+input.large-checkbox[type=checkbox]{
+  width:20px;
+  height:20px;
 }
 div#loadtimes *{
   cursor: default;

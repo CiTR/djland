@@ -1,35 +1,35 @@
 <td class='hidden'>{{promotion.id}}</td>
 <td style="font-size:14px;">{{$index +1 }}</td>
 <td>
-	<form style="margin:0; font-size:12px;">
+	<form style="margin:0; font-size:12px; text-align:center;">
 
-		<label>
+		<label style="margin:0.25em; line-height:0.3em;" ng-style="{'color':promotion.type === 'id'?'cyan':'white'}">
+			ID<br/>
 			<input type="radio" name="promotion_type" ng-model="promotion.type" value="id"
 				ng-checked="promotion.type === 'id'">
-			ID
 		</label>
-		<label>
+		<label style="margin:0.25em; line-height:0.3em;" ng-style="{'color':promotion.type === 'ad'?'cyan':'white'}">
+			Ad<br/>
 			<input type="radio" name="promotion_type" ng-model="promotion.type" value="ad"
 				ng-checked="promotion.type === 'ad'">
-			Ad
 		</label>
-		<label>
+		<label style="margin:0.25em; line-height:0.3em;" ng-style="{'color':promotion.type === 'promo'?'cyan':'white'}">
+			Promo<br/>
 			<input type="radio" name="promotion_type" ng-model="promotion.type" value="promo"
 				ng-checked="promotion.type === 'promo'">
-			Promo
 		</label>
-		<label>
+		<label style="margin:0.25em; line-height:0.3em;" ng-style="{'color':promotion.type === 'psa'?'cyan':'white'}">
+			PSA<br/>
 			<input type="radio" name="promotion_type" ng-model="promotion.type" value="psa"
 				ng-checked="promotion.type === 'psa'">
-			PSA
 		</label>
 	</form>
 </td>
 <td class='promotion_name' ng-if="promotion.type === 'id'">
 	<label for="{{'land_acknowledgement_'+$index}}" style="font-size:14px; font-weight:normal;">You are listening to CiTR Radio 101.9FM, broadcasting from unceded
 		Musqueam territory in Vancouver
-		<input id="{{'land_acknowledgement_'+$index}}" class="required" type="checkbox" ng-model="promotion.played"
-			ng-change='playsheet.update()' />
+		<input id="{{'land_acknowledgement_'+$index}}" class="required large-checkbox" type="checkbox" ng-model="promotion.played"
+			ng-change='playsheet.update()'/>
 	</label>
 </td>
 <td class='promotion_name' ng-if="promotion.type != 'id'">

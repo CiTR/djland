@@ -161,7 +161,7 @@ require_once("headers/menu_header.php");
 					<th><button tooltip="{{playsheet.help['hit']}}" class="box hit filled pad-top"></button></th>
 					<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['background']}}" class="box background filled pad-top"></button></th>
 					<th ng-show="playsheet.info.socan"><button tooltip="{{playsheet.help['theme']}}" class="box theme filled pad-top"></button></th>
-					<th><a href='https://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input class="lang" readonly tooltip='{{playsheet.help.crtc}}' value="Category"></a></th>
+					<th><a href='https://www.crtc.gc.ca/eng/archive/2010/2010-819.HTM' target='_blank'><input style="width:30px; font-size:0.75em;" readonly tooltip='{{playsheet.help.crtc}}' value="Cat."></a></th>
 					<th><input class="lang" tooltip='{{playsheet.help.lang}}' readonly value="Language" /></th>
 					<th></th>
 					<th></th>
@@ -204,25 +204,24 @@ require_once("headers/menu_header.php");
 		<hr class="side-padded">
 
 		<div class='col1 text-center'>
-			<div class="playsheet-save" ng-hide="!playsheet.complete">
-				<div class="playsheet-save">
+			<div class="blocker" ng-hide="playsheet.complete">
+				{{ playsheet.missing }}
+			</div>
+			<div style="display:inline-block;" >
+				<div style="display:inline-block;" ng-hide="!playsheet.complete">
 					Do not generate a podcast <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
 					<div ng-show="playsheet.isAdmin">
 						Web Exclusive Podcast <input type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
 					</div>
 				</div>
-				<button class="large-button" ng-click="playsheet.submit()" ng-hide="submitting">Submit</button>
+				<button class="large-button" ng-click="playsheet.submit()" ng-hide="!playsheet.complete || submitting">Submit</button>
+		
 			</div>
-			<div class="blocker" ng-hide="playsheet.complete">
-				{{ playsheet.missing }}
-			</div>
+			<button class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
+		
 			<br />
 			<div id="message" ng-show="message.text != '' && message.age < 6 ">{{message.text}}</div>
 		</div>
-		<div class="floating">
-			<button type="button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button><br /><br />
-		</div>
-
 
 		<!-- Popup Overlay during submission -->
 		<div class="tracklist_overlay" ng-show="playsheet.tracklist_overlay">

@@ -1,7 +1,7 @@
 <td class='text-center'><input ng-model='playitem.id' class='hidden'>{{$index + 1}} </input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.artist' class='required'></input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
-<td><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
+<td style="padding:1px;"><input ng-change='playsheet.update()' ng-model='playitem.artist' class='required'></input></td>
+<td style="padding:1px;"><input ng-change='playsheet.update()' ng-model='playitem.song' class='required'></input></td>
+<td style="padding:1px;"><input ng-change='playsheet.update()' ng-model='playitem.album' class='required'></input></td>
 <td ng-show='playsheet.info.socan'>
 	<input ng-change='playsheet.update()' ng-model='playitem.composer' ng-class='{required: false}'></input>
 </td>
@@ -71,7 +71,7 @@
 	<button ng-model="playitem.is_theme" ng-click='playitem.is_theme=!playitem.is_theme'
 		ng-class="{filled:playitem.is_theme==true}" class="box theme pad-top"></button>
 </td>
-<td>
+<td style="font-size:0.75em;">
 	<select ng-model='playitem.crtc_category' class='crtc_category'>
 		<option value='20'>20</option>
 		<option value='30'>30</option>

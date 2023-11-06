@@ -726,7 +726,7 @@
           return problems.indexOf(item) == pos;
         });
 
-        this.missing = "You are missing " + problems.join(', ') + ".";
+        this.missing = "Playsheet is missing: " + problems.join(', ') + ".";
         this.complete = false;
       }
     }
