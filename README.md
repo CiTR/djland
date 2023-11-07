@@ -1,14 +1,14 @@
 # DJLAND 2023 notes
 
-The main repo is now in bitbucket.
+The main repo is now in bitbucket. `git@bitbucket.org:CiTR/djland.git`
 
 ## deployment (pre-fullhost migration)
 ### setup:
 Add your machine's public SSH key to the moongrok server ~/djland/.ssh/authorized_keys directory.
-In Bitbucket, set yourself up with read/write access to the repo there ( `git@bitbucket.org:CiTRRadio/djland.git` )
+In Bitbucket, set yourself up with read/write access to the repo there ( `git@bitbucket.org:CiTR/djland.git` )
 
 Then set up the remotes as such:
-`git remote add origin git@bitbucket.org:CiTRRadio/djland.git`
+`git remote add origin git@bitbucket.org:CiTR/djland.git`
 `git remote add live djland@djland.citr.ca:~/djland`
 
 Use the branch `dev` to work from Bitbucket

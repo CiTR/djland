@@ -12,7 +12,7 @@ if (permission_level() >= $djland_permission_levels['volunteer']['level']) {
         <meta name=ROBOTS content=\"NOINDEX, NOFOLLOW\">
         <title>DJLAND | Charting</title>
 
-        <link rel=stylesheet href="css/style.css?v=20230523" type=text/css>
+        <link rel=stylesheet href="css/style.css?v=20231107" type=text/css>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
         <script type='text/javascript' src='js/charting.js?v=20230523'></script>

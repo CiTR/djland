@@ -8,7 +8,7 @@ require_once("headers/menu_header.php");
 <head>
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
 
-	<link rel="stylesheet" href="css/style.css?v=20230523" type="text/css">
+	<link rel="stylesheet" href="css/style.css?v=20231107" type="text/css">
 
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type='text/javascript' src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
@@ -21,8 +21,8 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
-	<script type='text/javascript' src='js/playsheet/constants.js?v=20220627'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20231031'></script>
+	<script type='text/javascript' src='js/playsheet/constants.js?v=20231107'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20231107'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
