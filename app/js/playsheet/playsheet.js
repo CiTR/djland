@@ -240,10 +240,16 @@
 
     }
     this.getNewUnix = function () {
+    //  console.log("get new unix");
       if (this.loading == true) return;
       //convert to seconds from javascripts milliseconds
       var start_unix = this.start / 1000;
       var end_unix = this.end / 1000;
+
+      if (end_unix < start_unix){
+        this.update();
+        return;
+      }
 
       //get minutes for start, and push unix to 0/30 minute mark on closest hour
       var minutes = this.start.getMinutes();
@@ -278,8 +284,8 @@
         var hours = Math.floor(duration / (60 * 60));
         if (hours === 0) {
           hours = 1;
-        } if (hours > 3){
-          hours = 3;
+        } if (hours > 4){
+          hours = 4;
         }
         var index = 0;
         var hourPromos = () => {
@@ -323,13 +329,14 @@
         }
 
         this.promotions.map((promotion, index) => {
-          if (promotion.name.length > 0 && index < newPromotions.length) {
+          if (index < newPromotions.length) {
             newPromotions[index].name = promotion.name;
             newPromotions[index].type = promotion.type;
             newPromotions[index].played = promotion.played;
           }
         });
         this.promotions = newPromotions;
+        this.update();
 
       }
       // replace above
@@ -341,10 +348,12 @@
               var socanText = $('#socan').text().trim();
               this.info.socan = (((socanText == 'true' || socanText == '1' ? true : false) || response.data) ? 1 : 0);
             }
+            this.update();
           }
         ).bind(this)
       );
       this.time_changed = true;
+      
     }
 
     //Initialization of Playsheet
@@ -634,8 +643,9 @@
           var days = Math.floor((this.end - this.start) / (60 * 60 * 1000 * 24));
 
           if (days !== 0 && this.end) {
-            this.end.setDate(this.end.getDate() - days);
-            this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
+            //this.end.setDate(this.end.getDate() - days);
+            //this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
+
           } else {
             this.getNewUnix();
           }
@@ -663,9 +673,10 @@
     }
     this.checkIfComplete = function () {
       var playsheet_okay = true;
-      this.missing = "You have empty values";
-      if (this.info.start > this.info.end) {
+      var timeProblem = '';
+      if (this.start > this.end) {
         playsheet_okay = false;
+        timeProblem = "   The end time is before the start time."
       }
       var problems = [];
 
@@ -681,7 +692,7 @@
           } else {
             val = $(element).val();
           }
-          console.log('val', val);
+//          console.log(model, val);
 
           if (val == "" || !val) {
             playsheet_okay = false;
@@ -726,7 +737,7 @@
           return problems.indexOf(item) == pos;
         });
 
-        this.missing = "Playsheet is missing: " + problems.join(', ') + ".";
+        this.missing = ( problems.length > 0? "Playsheet is missing: " + problems.join(', '):"") + timeProblem;
         this.complete = false;
       }
     }

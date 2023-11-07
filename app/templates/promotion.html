@@ -29,7 +29,7 @@
 	<label for="{{'land_acknowledgement_'+$index}}" style="font-size:14px; font-weight:normal;">You are listening to CiTR Radio 101.9FM, broadcasting from unceded
 		Musqueam territory in Vancouver
 		<input id="{{'land_acknowledgement_'+$index}}" class="required large-checkbox" type="checkbox" ng-model="promotion.played"
-			ng-change='playsheet.update()'/>
+			ng-change='playsheet.update()' ng-true-value="1" ng-false-value="0"/>
 	</label>
 </td>
 <td class='promotion_name' ng-if="promotion.type != 'id'">
