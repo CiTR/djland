@@ -182,7 +182,7 @@ require_once("headers/menu_header.php");
 					<th>Name</th>
 					<tr promotion class='promotions' ng-model='playsheet.promotions' ng-repeat="promotion in playsheet.promotions"></tr>
 				</table>
-				<button ng-click='playsheet.addPromotion()' style="float:right;"> + </button>
+				<button ng-click='playsheet.addPromotion()' style="float:right; width:3em; height:2em;"> + </button>
 			</div>
 		</div>
 		<div class='col1 side-padded double-padded-top'>
