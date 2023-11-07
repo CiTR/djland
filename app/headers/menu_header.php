@@ -122,21 +122,8 @@ function print_menu()
 
 		<li class="menu_right nodrop"><a href="index.php?action=logout">Log Out</a></li>
 		<li class="menu_right nodrop"><a href="member_settings.php">My Profile</a></li>
-		<?php if (permission_level() >=  $djland_permission_levels['member']['level']) : ?>
-			<li class='menu_right drop'><a href="member_resources.php">Member Resources</a>
-				<div class="dropdown small">
-					<div class="small">
-						<ul>
-							<li><a href="https://linktr.ee/citrprogramming" target="_blank">Link Tree</a></li>
-							<?php if (permission_level() >= $djland_permission_levels['dj']['level']) : ?>
-								<li><a href="help.php" target="_blank"> Help </a></li>
-							<?php endif; ?>
-
-						</ul>
-					</div>
-				</div>
-			</li>
-		<?php endif; ?>
+		<li class="menu_right nodrop"><a href="https://linktr.ee/citrprogramming" target="_blank">Resources</a></li>
+		
 	</ul>
 	<br />
 <?php
