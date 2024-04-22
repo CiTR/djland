@@ -174,7 +174,13 @@ class Show extends Model
     $show = $this;
     $episodes = $this->podcasts()->where('active', '=', '1')->orderBy('date', 'desc')->get();
 
-    $file_name = $this['podcast_slug'] . '.xml';
+    if ($this->podcast_slug == '') {
+      // use today's date and time instead of the slug
+      // include time
+      $file_name = 'podcast-' . date('Y-m-d-H-i-s') . '.xml';
+    } else {
+      $file_name = $this['podcast_slug'] . '.xml';
+    }
     $response['show_name'] = $this->name;
 
 
@@ -269,22 +275,20 @@ class Show extends Model
 
 
 
-    if (!$testing_environment) {
-      $target_dir = $path['xml_base'] . '/';
-      $url_path   =  $url['xml_base'] . '/';
-    } else {
-      $target_dir = $path['test_xml_base'] . '/';
-      $url_path   =  $url['test_xml_base'] . '/';
-    }
-
+    $target_dir = $path['xml_base'] . '/';
+    $url_path   =  $url['xml_base'] . '/';
     if (!file_exists($target_dir)) {
       mkdir($target_dir, 0774);
     }
-
+    //log the dir
     //$target_dir = 'audio/'.$year.'/';
     $target_file_name = $target_dir . $file_name;
-    //Open local file
-    $target_file = fopen($target_file_name, 'wb');
+
+    if (file_exists($target_file_name)) {
+      $target_file = fopen($target_file_name, 'wb');
+    } else {
+      $target_file = fopen($target_file_name, 'w');
+    }
     $num_bytes = 0;
 
     //If we open local file
