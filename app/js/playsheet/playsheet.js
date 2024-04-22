@@ -94,6 +94,9 @@
           this.uploadingAudio = false;
           console.log(response.audio.url);
           this.audioUrl = response.audio.url;
+          this.podcast.url = response.audio.url;
+          this.podcast.length = response.audio.length;
+//          console.log("audio uploaded", response);
 				  $scope.$apply();
           alert("Uploading audio successful!");
 			}).bind(this),function(error){
