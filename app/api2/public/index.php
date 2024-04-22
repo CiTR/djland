@@ -18,6 +18,13 @@
 | loading any of our classes later on. It feels nice to relax.
 |
 */
+// if .env is not found, show error message
+
+$dotenvpath = __DIR__.'/../.env';
+if (!file_exists(__DIR__.'/../.env')) {
+    echo "No .env file found. Please copy .env.sample to .env and edit it to match your environment.";
+    exit(1);
+}
 
 require __DIR__.'/../bootstrap/autoload.php';
 
