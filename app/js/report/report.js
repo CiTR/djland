@@ -40,6 +40,7 @@
             this.loading = true;
             call.getReport(this.show_filter, $filter('date')(this.from, 'yyyy/MM/dd'), $filter('date')(this.to, 'yyyy/MM/dd'), this.type).then(
                 function (response) {
+                    console.log(response.data);
                     this_.playsheets = response.data.playsheets.length > 0 ? angular.copy(response.data.playsheets) : Array();
                     this_.show_totals = response.data.show_totals;
                     this_.totals = response.data.totals;
@@ -52,8 +53,13 @@
                         }
                     }, 1000);
                 },
-                function (error) {
-                    alert("Please try disabling adblock");
+                function (errorResponse) {
+                    this_.loading = false;
+                    var message = "Unknown error. Please try disabling adblock?";
+                    if (errorResponse.data != null && errorResponse.data.error != null) {
+                        message = errorResponse.data.error;
+                    }
+                    alert(message);
                 }
             );
         }

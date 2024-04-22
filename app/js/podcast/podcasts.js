@@ -6,7 +6,6 @@
         this.days_of_week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         this.months_of_year = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-        this.plodcasts = [];
         this.editing  = false;
         this.done = false;
         this.show_id = show_id;

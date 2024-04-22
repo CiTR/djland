@@ -3,6 +3,7 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
     var API_URL_BASE = 'api2/public'; // api.citr.ca when live
 
 	return {
+//		debug:true,
 		getConstants: function(){
 			return $http.get('/headers/constants.php');
 		},
@@ -92,18 +93,18 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
 		},
 		savePlaysheet: function(playsheet,playitems,podcast,ads){
+			//this one could have failed
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id, angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}));
 		},
 		saveEpisode: function(playsheet,podcast){
 			return $http.post(API_URL_BASE+'/playsheet/'+playsheet.id+'/episode', angular.toJson({'playsheet':playsheet,'podcast':podcast}));
 		},
-		savePodcast: function(podcast){
-			return $http.put(API_URL_BASE+'/podcast', angular.toJson({'podcast':podcast}));
-		},
 		saveNewPlaysheet: function(playsheet,playitems,podcast,ads){
+			// this one could have failed
 			return $http.post(API_URL_BASE+'/playsheet', angular.toJson({'playsheet':playsheet,'playitems':playitems,'podcast':podcast,'ads':ads}) );
 		},
 		saveNewPodcast: function(podcast){
+			// this one could have failed
 			return $http.put(API_URL_BASE+'/podcast',angular.toJson({'podcast':podcast}) );
 		},
 		deletePlaysheet:function(id){
