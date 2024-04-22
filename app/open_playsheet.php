@@ -35,6 +35,7 @@ require_once("headers/menu_header.php");
 				<tr>
 					<th ng-hide="true">ID
 					<th>Show
+					<th>Title
 					<th>Host
 					<th>Date
 					<th>Status
@@ -45,6 +46,7 @@ require_once("headers/menu_header.php");
 					<tr ng-model='open_playsheet.playsheets' ng-repeat='item in open_playsheet.playsheets track by $index'>
 						<td ng-hide="true">{{item.id}}</td>
 						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.show_name}}</td>
+						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.title}}</td>
 						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}' class='host'>{{item.host}}</td>
 						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.start_time}}</td>
 						<td onclick='go(this)' data-href='playsheet.php?id={{item.id}}&socan={{item.socan}}'>{{item.status != 2 ? "(Draft)" : "" }}</td>
