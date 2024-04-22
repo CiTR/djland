@@ -1,69 +1,75 @@
 <?php
 
-//Initialize config arrays.
-$enabled = array(); $station_info = array();
+$enabled = array();
+$station_info = array();
 
-//**************************************************************************************
-//* If you are using the testing environment variable, make sure to create a static/ folder in the app/ folder.
-//* Inside that, create a friends.html file - otherwise using the friends feature will not save successfully. This file is .gitignored.
-//* (it's built off writing to a file, and if the testing_environment variable is set to true that's where it writes)
-//**************************************************************************************
-$testing_environment = true;
+$testing_environment = false;
+//PLEASE CONFIGURE - below this line
+// Also please note this username and password: use to log in the first time.
+// Please change this password or create a new admin user and delete 'admin'
+// after installing
+// admin user: 'admin'
+// admin pass: 'pass'
 
 //*******************************************
 //* 1) Radio Station Info (default is CiTR for demo)
 //*******************************************
 
+//Radio station info
+$station_info['name'] = 'CiTR Radio';
 $station_info['call_letters'] = 'CiTR';
 $station_info['frequency'] = '101.9fm';
 $station_info['city'] = 'Vancouver';
 $station_info['province']= 'BC';
 $station_info['country'] = 'Canada';
 $station_info['website'] = 'CiTR.ca';
-$station_info['tech_email'] = 'tech_person@station.ca'; // The contact for the technical support person at the station
-$station_info['password_recovery_email'] = 'person@station.ca'; //Used on the login screen, a person people can email to reset their djland passwords for them
-$station_info['password_recovery_name'] = 'Person'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['tech_email'] = 'tech_person@station.ca';
+$station_info['password_recovery_email'] = 'admin@station.ca'; //Used on the login screen, a person people can email to reset their djland passwords for them
+$station_info['password_recovery_name'] = 'name'; //Used on the login screen, a person people can email to reset their djland passwords for them
 $station_info['station ID message'] ="'CiTR 101.9, from unceded Musqueam territory, in Vancouver'";
 $station_info['timezone'] = 'America/Vancouver';
-
-// For timezone reference https://ca1.php.net/manual/en/timezones.php
+// for a list of valid timezones, visit
+// http://ca1.php.net/manual/en/timezones.php
 
 //*******************************************
 //* 2) DJLand Enabled Features
 //*******************************************
-//
 
+// enabled sections: (write true or false (no quotes) to enable or disable)
+// if you go with something enabled and then disable it later on,
+// you won't lose any data
 
-//Enable or disable features of DJLand - enable using true or false
-$enabled['membership'] = true; // Membership info management
+$enabled['membership'] = true; // membership database
 $enabled['library'] = true; // searchable music catalog (for physical recordings)
-$enabled['library_management']; // manage a music catalog's songs in djland
 $enabled['shows'] = true; // show information database - used to pre-fill playsheets
+$enabled['adscheduler'] = true; // display what ads each programmer should play (only works if using SAM integration)
 $enabled['charts'] = true; // Chart week display for the music director - pulls play data from playsheets
 $enabled['report'] = true; // CRTC formatted printable report view
 $enabled['playsheet'] = true; // DJ's log in to the site from any computer with WWW access to create and edit their playsheets
-$enabled['podcast_tools'] = true; // show podcast manager
-
-
+$enabled['podcast_tools'] = false; // audio logging / show podcast manager.  Not implemented yet
+$enabled['sam_integration'] = false;
 
 //*******************************************
 //* 3) Database info (MySQL)
 //*******************************************
-//
 
 // enter your database credentials here.  If you are using MySQL on the same server
 // these files are on, use '127.0.0.1' - not 'localhost' . (PDO extension doesn't like localhost)
+
+//Database Connections
 $db = array(
-	'address'=>'localhost',
-	'username'=>'username',
-	'password'=>'password',
-	'database'=>'database',
+	"address" => "localhost:3306",
+	"username" => "user",
+	"password" => "pass",
+	"database" => "djland",
 	);
+	
+
 $sam_db = array(
-	'address'=>'sam_host_ip',
-	'username'=>'username',
-	'password'=>'password',
-	'database'=>'database',
+	'address' => '',
+	'username' => '',
+	'password' => '',
+	'database' => ''
 	);
 
 //*******************************************
@@ -73,10 +79,9 @@ $sam_db = array(
 
 if($enabled['podcast_tools']){
 	//The maximum allowed podcast length in hours*minutes*seconds
-	//ie. set to 8*60*60 for 8 hour maximum limit
+	//ie. set to 10*60*60 for 10 hour maximum limit
 	//set to -1 if you want podcasts to have no maximum length (WARNING: NOT RECOMMENDED IN PRODUCTION ENVIRONMENTS)
-	$max_podcast_length = 8*60*60;
-    $djland_max_podcast_length = 8*60*60;
+	$max_podcast_length=10*60*60;
 	//Unlimited length - comment above and uncomment below:
 	//$max_podcast_length = -1;
 
@@ -90,9 +95,10 @@ if($enabled['podcast_tools']){
 	$path['xml_base'] = '/home/podcast/xml';
 	$url['xml_base']= 'https://podcast.hostname.com/xml';
 
-	//Archiver Access
+	//Archiver Access - to retrieve podcast audio (only for citr installation)
+
 	$url['archiver_tool'] = 'https://archive.citr.ca';
-	$url['archive_request'] = $url['archiver_tool'].'/py-test/archbrad/download?archive=%2Fmnt%2Faudio-stor%2Flog';
+	$url['archiver_request'] = $url['archiver_tool'] . '/py-test/arch/download?archive=%2Fmnt%2Faudio_stor%2Flog';
 
 	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	if($testing_environment==true){
@@ -107,12 +113,16 @@ if($enabled['podcast_tools']){
 //* 5) DJLand Configuration Constants / Variables. (Note: you must manually edit your database to support changes here)
 //*******************************************
 
-$djland_membership_rollover_month = 5;
+$library_folder = "/home/library"; //no trailing slash
 
-$library_folder = '/home/library'; //no trailing slash
+// rollover month is never used
+$djland_membership_rollover_month = 4;
 
 //The date at which your membership will roll into the next membership year.
-$djland_membership_cutoff_month=5;
+//new Date() js months start from 0. So May would be 4
+$djland_membership_cutoff_month=4;
+
+$djland_max_podcast_length = 24*60*60;
 
 //Permission levels, their value, and the tooltip shown when you hover over it.
 $djland_permission_levels = array(
@@ -127,41 +137,50 @@ $djland_permission_levels = array(
 	);
 //Possible trainings for members
 $djland_training = array(
-	'Technical' => 'technical_training',
-	'Production'=> 'production_training',
-	'Programming'=> 'programming_training',
-	'Spoken Word'=> 'spoken_word_training'
+    #'Station Tour' => 'station_tour',
+	'Production' => 'technical_training',
+	'Show Host'=> 'production_training',
+	'Technical'=> 'programming_training',
+	'Fairplay'=> 'spoken_word_training'
 	);
 
 //Things people can be interested in/be emailed about around the station
 $djland_interests = array(
-	'Arts'=>'arts',
-	'Ads and PSAs'=>'ads_psa',
-	'Digital Library'=>'digital_library',
-	'DJ101.9'=>'dj',
-	'Illustrate for Discorder'=>'discorder_illustrate',
-	'Writing for Discorder'=>'discorder_write',
-	'Live Broadcasting'=>'live_broadcast',
-	'Music'=>'music',
-	'News'=>'news',
-	'Photography'=>'photography',
-	'Programming Committee'=>'programming_committee',
-	'Promos and Outreach'=>'promotions_outreach',
-	'Show Hosting'=>'show_hosting',
-	'Sports'=>'sports',
-	'Tabling'=>'tabling',
-	'Web and Tech'=>'tech',
-	"Women's Collective"=>'womens_collective',
-	"Indigenous Collective"=>"indigenous_collective",
-	"Accessibility Collective"=>"accessibility_collective",
-	"Other"=>"other");
-//Member types
+	'Table at events & concerts'=>'tabling',
+	'Make on air ads & PSAs'=>'promotions_outreach',
+	'Podcast and audio editing'=>'ads_psa',
+	'Review music'=>'music',
+	'Live Remote Broadcasts'=>'live_broadcast',
+	'Host a radio show'=>'show_hosting',
+	//'Programming Committee'=>'programming_committee',
+	//'DJ Training'=>'dj',
+	'Web and tech suppport'=>'tech',
+	'Accessibility Collective'=>'accessibility_collective',
+	'Arts Collective'=>'arts',
+	'Gender Empowerment Collective'=>'womens_collective',
+	'Indigenous Collective'=>'indigenous_collective',
+	'Queer Collective'=>'lgbt_collective',
+	'Music Affairs Collective'=>'music_affairs_collective',
+	'News Collective'=>'news',
+	'POC Collective'=>'poc_collective',
+	'Sports Collective'=>'sports',
+	'I agree to the Membership Agreement and Volunteer Codes of Conduct'=>'ubc_affairs_collective',
+	'Photograph events and feature artists'=>'photography',
+	'Writing for Discorder Magazine'=>'discorder_write',
+	'Illustration and design'=>'discorder_illustrate',
+	'Other'=>'other');
 $djland_member_types = array(
 	'UBC Student'=>'Student',
 	'Community Member'=>'Community',
 	'Staff'=>'Staff',
 	'Lifetime'=>'Lifetime'
 	);
+$djland_member_activities = array(
+	'All' => 'All',
+	'Programmers' => 'Programmers',
+	'Discorder Contributor' => 'Contributor',
+	'Other' => 'Other'
+);
 //University Year Listing
 $djland_program_years = array(
 	'1'=>'1',
@@ -189,7 +208,8 @@ $djland_faculties = array(
 	"Journalism",
 	"Kinesiology",
 	"Land and Food Systems",
-	"Law","Medicine",
+	"Law",
+	"Medicine",
 	"Music",
 	"Nursing",
 	"Pharmaceutical",
@@ -228,7 +248,6 @@ $djland_primary_genres = array(
 	);
 
 $djland_subgenres = array();
-
 //Upload categories, and their accepted formats.
 $djland_upload_categories = array(
 	"show_image"=>array('jpg','jpeg','gif','png'),
@@ -238,3 +257,12 @@ $djland_upload_categories = array(
 	"episode_image"=>array('jpg','jpeg','gif','png','tiff'),
 	"episode_audio"=>array('mp3'),
 	);
+
+// If you are developing and need to fake the current time
+// for some reason
+
+// in code, do these two things:
+// 1) use get_time() instead of time()
+// 2) always use get_time() as optional last parameter for all date() calls
+// 3) use hidden field to pass time to javascript
+//

@@ -1,4 +1,4 @@
-# DJLAND 2023 notes
+# DJLAND 2024 notes
 
 The main repo is now in bitbucket. `git@bitbucket.org:CiTR/djland.git`
 
@@ -22,6 +22,17 @@ Then ssh onto the djland server:
 `git branch -v` (ensure the branch `master-live`) is checked out, verify the checked out commit is included in dev's commit history
 `git merge dev`
 
+## dev environment setup
+
+- create a db and user in your mysql environment (eg. MAMP)
+- import from seed sql file
+- copy `config.php.sample` to `config.php` and edit db credentials
+- copy `app/api2/.env.sample` to `app/api2/.env` and edit db credentials
+- install and set up Composer (https://getcomposer.org/doc/00-intro.md)
+- run `composer install` in the `app/api2` directory
+- run `php artisan key:generate`
+
+- for additional notes, see https://bitbucket.org/CiTR/technical-transition/src/master/trance.md
 
 
 
@@ -33,8 +44,7 @@ Then ssh onto the djland server:
 
 
 
-
-# DJLAND
+# DJLAND old readme content
 
 ![Build Status](https://travis-ci.org/CiTR/djland.svg?branch=master)
 
