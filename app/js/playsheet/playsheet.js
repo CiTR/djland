@@ -3,6 +3,7 @@
   var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
   app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
     this.info = {};
+//    $scope.debug = true;//true;// call.debug;
     this.promotions = [];
     this.playitems = {};
     this.podcast = {};
@@ -67,33 +68,39 @@
       this.update();
 
     }
-    this.cueTrack = function (playitem) {
-      playitem.start = new Date();
-      playitem.insert_song_start_hour = $filter('pad')(playitem.start.getHours(), 2);
-      playitem.insert_song_start_minute = $filter('pad')(playitem.start.getMinutes(), 2);
-    }
-    this.endTrack = function (playitem) {
-      if (playitem.start == '0' || playitem.start == null) return;
-      var start_milliseconds = playitem.start.getTime();
-      var now = new Date();
-      var end_milliseconds = now.getTime();
-      var length = end_milliseconds - start_milliseconds;
+    this.uploadingAudio = false;
+    this.audioUrl = "";
+    this.audioFile = null;
 
-      var dur_min = Math.round(((length / 1000) / 60));
-      var dur_second = Math.round(((length / 1000) % 60));
-
-      playitem.insert_song_length_minute = $filter('pad')(dur_min, 2);
-      playitem.insert_song_length_second = $filter('pad')(dur_second, 2);
-      playitem.duration = dur_min * 60 + dur_second;
+    this.refreshAudioUploader = function(){
+      console.log('rfsj');
     }
 
-    //Sync Variables On Change
-    this.updateTrackStart = function (playitem) {
-      playitem.start = new Date();
-      playitem.start.setHours(playitem.insert_song_start_hour);
-      playitem.start.setMinutes(playitem.insert_song_start_minute);
-      playitem.start.setSeconds(0);
-    };
+		this.uploadAudio = function(){
+      this.uploadingAudio = true;
+			var form = new FormData();
+			var file = $('#audio_file')[0].files[0];
+			form.append('audio',file);
+			var request = $.ajax({
+				url: 'api2/public/podcast/'+this.info.id+'/audio',
+            method: 'POST',
+            type: 'POST',
+            dataType: 'json',
+				processData: false,
+				contentType: false,
+				data: form
+			});
+			$.when(request).then((function(response){
+          this.uploadingAudio = false;
+          console.log(response.audio.url);
+          this.audioUrl = response.audio.url;
+				  $scope.$apply();
+          alert("Uploading audio successful!");
+			}).bind(this),function(error){
+        this.uploadingAudio = false;
+				alert(error.responseText);
+			});
+		}
 
     this.updateTrackDuration = function (playitem) {
       playitem.duration = parseInt(playitem.insert_song_length_minute) * 60 + parseInt(playitem.insert_song_length_second);
@@ -770,7 +777,8 @@
                 this.row_template = { "show_id": this.active_show.id, "playsheet_id": this.info.id, "format_id": null, "is_playlist": 0, "is_canadian": 0, "is_yourown": 0, "is_indy": 0, "is_fem": 0, "show_date": show_date, "duration": null, "is_theme": null, "is_background": null, "crtc_category": this.info.crtc, "lang": this.info.lang, "is_part": 0, "is_inst": 0, "is_hit": 0, "insert_song_start_hour": "00", "insert_song_start_minute": "00", "insert_song_length_minute": "00", "insert_song_length_second": "00", "artist": null, "title": null, "song": null, "composer": null };
                 this.podcast.id = response.data.podcast_id;
                 this.podcast.playsheet_id = response.data.id;
-                alert("Draft Saved");
+                alert("Draft Saved ");
+                window.location.href = "/playsheet.php?id=" + this.info.id + "&socan=" + (this.info.socan == 1 ? "true" : "false");
 
               }
             ).bind(this),
