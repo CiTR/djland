@@ -3,7 +3,7 @@
   var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
   app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
     this.info = {};
-//    $scope.debug = true;//true;// call.debug;
+    //    $scope.debug = true;//true;// call.debug;
     this.promotions = [];
     this.playitems = {};
     this.podcast = {};
@@ -72,38 +72,71 @@
     this.audioUrl = "";
     this.audioFile = null;
 
-    this.refreshAudioUploader = function(){
+    this.refreshAudioUploader = function () {
       console.log('rfsj');
     }
 
-		this.uploadAudio = function(){
-      this.uploadingAudio = true;
-			var form = new FormData();
-			var file = $('#audio_file')[0].files[0];
-			form.append('audio',file);
-			var request = $.ajax({
-				url: 'api2/public/podcast/'+this.info.id+'/audio',
-            method: 'POST',
-            type: 'POST',
-            dataType: 'json',
-				processData: false,
-				contentType: false,
-				data: form
-			});
-			$.when(request).then((function(response){
-          this.uploadingAudio = false;
-          console.log(response.audio.url);
-          this.audioUrl = response.audio.url;
-          this.podcast.url = response.audio.url;
-          this.podcast.length = response.audio.length;
-//          console.log("audio uploaded", response);
-				  $scope.$apply();
-          alert("Uploading audio successful!");
-			}).bind(this),function(error){
-        this.uploadingAudio = false;
-				alert(error.responseText);
-			});
-		}
+    this.replacingAudio = false;
+    this.beginReplaceAudio = function () {
+      this.replacingAudio = true;
+    }
+    this.cancelReplaceAudio = function () {
+      this.replacingAudio = false;
+    }
+    this.canUploadAudio = function () {
+      return true;
+      var fileElement = $('#audio_file');
+      if (fileElement.length == 0) {
+        return false;
+      }
+      var file = fileElement[0].files[0];
+      if (file == undefined) {
+        return false;
+      }
+      return true;
+    }
+    this.uploadAudio = function () {
+      var Playsheet = this;
+
+      var fileElement = $('#audio_file');
+      if (fileElement.length == 0) {
+        alert("file has 0 length");
+        return;
+      }
+      var file = fileElement[0].files[0];
+      if (file == undefined) {
+        alert("no file was found");
+        return;
+      }
+
+      Playsheet.uploadingAudio = true;
+      var form = new FormData();
+      form.append('audio', file);
+      var request = $.ajax({
+        url: 'api2/public/podcast/' + Playsheet.info.id + '/audio',
+        method: 'POST',
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        data: form
+      });
+      $.when(request).then(function (response) {
+        Playsheet.uploadingAudio = false;
+        Playsheet.replacingAudio = false;
+        console.log(response.audio.url);
+        Playsheet.audioUrl = response.audio.url;
+        Playsheet.podcast.url = response.audio.url;
+        Playsheet.podcast.length = response.audio.length;
+        
+        $scope.$apply();
+        alert("Uploading audio successful!");
+      }, function (error) {
+        Playsheet.uploadingAudio = false;
+        $scope.$apply();
+        alert(error.responseText);
+      });
+    }
 
     this.updateTrackDuration = function (playitem) {
       playitem.duration = parseInt(playitem.insert_song_length_minute) * 60 + parseInt(playitem.insert_song_length_second);
@@ -250,13 +283,13 @@
 
     }
     this.getNewUnix = function () {
-    //  console.log("get new unix");
+      //  console.log("get new unix");
       if (this.loading == true) return;
       //convert to seconds from javascripts milliseconds
       var start_unix = this.start / 1000;
       var end_unix = this.end / 1000;
 
-      if (end_unix < start_unix){
+      if (end_unix < start_unix) {
         this.update();
         return;
       }
@@ -294,7 +327,7 @@
         var hours = Math.floor(duration / (60 * 60));
         if (hours === 0) {
           hours = 1;
-        } if (hours > 4){
+        } if (hours > 4) {
           hours = 4;
         }
         var index = 0;
@@ -363,7 +396,7 @@
         ).bind(this)
       );
       this.time_changed = true;
-      
+
     }
 
     //Initialization of Playsheet
@@ -397,16 +430,16 @@
             this.end_minute = $filter('pad')(this.end.getMinutes(), 2);
             this.end_second = $filter('pad')(this.end.getSeconds(), 2);
 
-						call.isSocan(this.start / 1000).then(
-							(
-								function (response) {
-									if (response.status == '200') {
+            call.isSocan(this.start / 1000).then(
+              (
+                function (response) {
+                  if (response.status == '200') {
                     var socanText = $('#socan').text().trim();
                     this.info.socan = (((socanText == 'true' || socanText == '1' ? true : false) || response.data) ? 1 : 0);
                   }
-								}
-							).bind(this)
-						);
+                }
+              ).bind(this)
+            );
 
 
             if (this.info.spokenword_duration != null) {
@@ -702,7 +735,7 @@
           } else {
             val = $(element).val();
           }
-//          console.log(model, val);
+          //          console.log(model, val);
 
           if (val == "" || !val) {
             playsheet_okay = false;
@@ -747,7 +780,7 @@
           return problems.indexOf(item) == pos;
         });
 
-        this.missing = ( problems.length > 0? "Playsheet is missing: " + problems.join(', '):"") + timeProblem;
+        this.missing = (problems.length > 0 ? "Playsheet is missing: " + problems.join(', ') : "") + timeProblem;
         this.complete = false;
       }
     }

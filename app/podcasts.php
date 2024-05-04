@@ -187,6 +187,10 @@ function getPodcasts($member_id)
                             <br />
                             <button ng-click="list.save(list.editing.podcast);">Save Episode</button>
                             <button ng-show="list.time_changed" ng-click="list.recreate_audio(editing.podcast);"> Recreate Podcast Audio </button>
+                        <!--
+                            <pre style="font-size:0.5em; color: purple;">
+                                {{list | json}}
+                            </pre>-->
                         </div>
                     </div>
                 </div>

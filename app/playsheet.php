@@ -55,7 +55,7 @@ require_once("headers/menu_header.php");
 	<div ng-hide="playsheet.member_shows || playsheet.loading == true" class='text-center'>You have no shows assigned to this account. Please ask a staff member to assign you to your show</div>
 	<div ng-show="playsheet.member_shows" id='wrapper' ng-class="{'socan': playsheet.info.socan }">
 		<div class='col1 side-padded'>
-			<div class='col2 padded'>
+			<div class='col4 padded'>
 
 				<div class='col1'>
 					Show: <select id='show_select' ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'">
@@ -85,11 +85,40 @@ require_once("headers/menu_header.php");
 					CRTC Category:
 					<button class="crtc" ng-model="playsheet.info.crtc" ng-click="playsheet.changeCRTC()">{{playsheet.info.crtc}}</button>
 				</div>
-				<!-- <<h4 class='text-left'>Show Data</h4> -->
+				
+			</div>
 
+			<div class='col4 padded' ng-if="playsheet.info.id > 0">
+
+				<h4 ng-if="playsheet.podcast.url" class='text-left'>
+					<a ng-href="{{playsheet.podcast.url}}" target="blank">Podcast Audio 🔗</a>
+				</h4>
+				<h4 ng-if="!playsheet.podcast.url" class='text-left'>Upload Audio File</h4>
+				<div ng-if="playsheet.replacingAudio">
+					<input type="file" name='audio_file' id='audio_file' />
+					<button ng-if="playsheet.canUploadAudio() && !playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload</button>
+					<button ng-if="playsheet.canUploadAudio() && playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload (Replace)</button>
+					<button ng-click='playsheet.cancelReplaceAudio()'>Cancel</button>
+				</div>
+				<div ng-if="playsheet.uploadingAudio">
+					<img src='images/loading.gif' />
+				</div>
+				<div ng-if="playsheet.podcast.url && !playsheet.replacingAudio" 
+					class='text-left'>
+					<button ng-click='playsheet.beginReplaceAudio()'>Replace Audio</button>
+				</div>
+				<div ng-if="!playsheet.podcast.url && !playsheet.replacingAudio" class='text-left'>
+					<button ng-click='playsheet.beginReplaceAudio()'>Upload Audio</button>
+				</div>
+
+			</div>
+			<div class='col4 padded' ng-if="playsheet.info.id <= 0">
+				<h4>To upload the podcast audio, first Save as a Draft</h4>
+				<button ng-click='playsheet.saveDraft()'>Save Draft</button>
 			</div>
 			<div class='col2 padded'>
 				<div class='col1'>
+					
 					<div class='col2 side-padded'>
 						<div class="col1">
 							Start: {{playsheet.info.start_time | date:'yyyy/MM/dd HH:mm:ss'}}
@@ -105,6 +134,7 @@ require_once("headers/menu_header.php");
 							<button ng-click="date.open($event)" style="font-size:smaller">Change End Day</button>
 							<input class="date_picker" type="text" datepicker-popup="yyyy/MM/dd HH:mm:ss" ng-model="playsheet.info.end_time" is-open="date.opened" ng-required="true" close-text="Close" ng-hide="true" />
 						</div>
+						
 					</div>
 					<div class='col2'>
 						<div>
@@ -138,6 +168,10 @@ require_once("headers/menu_header.php");
 			</div>
 		</div>
 		<div id='container'>
+
+	<pre ng-if="debug" style="font-size:0.8em; color:blue;">
+		{{playsheet.podcast | json}}
+	</pre>
 			<h3 class='double-padded-top'>Music</h3>
 			<table>
 				<tr class='music_row_heading border' ng-class="{socan: playsheet.info.socan }">
