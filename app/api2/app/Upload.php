@@ -19,7 +19,8 @@ class Upload extends Model
     //Check to see if the file type is acceptable. If not, throw an exception.
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/config.php");
     $allowed_file_types = $djland_upload_categories[$attributes['category']];
-    if (!in_array($attributes['file_type'], $allowed_file_types)) throw new InvalidArgumentException('File Type Not Allowed: ' . $attributes['file_type']);
+    if (!in_array($attributes['file_type'], $allowed_file_types))
+      throw new InvalidArgumentException('File Type Not Allowed: ' . $attributes['file_type']);
     return parent::create($attributes);
   }
 
@@ -158,12 +159,20 @@ class Upload extends Model
         //Get the podcast
         $podcast = Podcast::find($this->relation_id);
 
+        // Check if podcast is null
+        if ($podcast === null) {
+          $response->text = "Podcast not found.";
+          $response->success = false;
+          return $response;
+        }
+
         //Strip unwanted chars from the show name and convert & to and
         $stripped_show_name = str_replace(array('&', ' '), array('and', '-'), str_replace($strip, '', $podcast->show->name));
 
         //Create the file directory,name, and url
         $target_dir = $path_base . "/" . date('Y', strtotime($podcast->playsheet->start_time));
-        if (!file_exists($target_dir)) mkdir($target_dir, 0775);
+        if (!file_exists($target_dir))
+          mkdir($target_dir, 0775);
 
         //check if file exists already. If so, we overwrite existing file
         if ($podcast->length && $podcast->length > 0 && $podcast->url != null) {

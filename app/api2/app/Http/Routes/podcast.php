@@ -22,6 +22,7 @@ Route::group(array('prefix' => 'podcast'), function () {
     });
     Route::post('/audio', function ($id) {
       if (Input::hasFile('audio')) {
+        Log::info(' audio file received');
         $file = Input::file('audio');
         try {
           $upload = Upload::create(array('category' => 'episode_audio', 'relation_id' => $id, 'size' => $file->getClientSize(), 'file_type' => $file->getClientOriginalExtension()));
@@ -30,6 +31,7 @@ Route::group(array('prefix' => 'podcast'), function () {
           return Response::json($iae->getMessage(), 500);
         }
       } else {
+        Log::info('audio file not received');
         try {
           $podcast = Podcast::find($id);
           if (!$podcast) {
