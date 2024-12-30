@@ -143,8 +143,7 @@
     }
 
     this.updateTime = function () {
-      var now = new Date();
-      call.getNextShowTime(this.active_show.id, now).then(
+      call.getNextShowTime(this.active_show.id).then(
         (
           function (response) {
             var start_unix = response.data.start;

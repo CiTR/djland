@@ -17,16 +17,12 @@ require_once("headers/menu_header.php");
 <body class='wallpaper'>
 	<?php print_menu(); ?>
 
-	<table width=100%% height=100%%>
-		<tr>
-			<td align=center>
-				<h1>
-					User: <?php echo get_username(); ?>
+	
+	<h1>User: <?php echo get_username(); ?>
 					<br>Logged In
 				</h1>
-			</td>
-		</tr>
-	</table>
+	
+				
 </body>
 
 </html>

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Show extends Model
 {
@@ -37,133 +38,30 @@ class Show extends Model
   }
   public function nextShowTime()
   {
-    date_default_timezone_set('America/Los_Angeles');
 
-    $showtimes = $this->showtimes;
+      # request to "https://new.citr.ca/api/schedule?title="+show_title); using curl
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, "https://new.citr.ca/api/schedule?title=" . urlencode($this->name));
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      $file_contents = curl_exec($ch);
+      curl_close($ch);
 
-    //Get Today
-    $time = strtotime('now');
-    //Get Day of Week (0-6)
-    $day_of_week = date('w', $time);
-    //Get mod 2 of (current unix minus days to last sunday) then divide by 8.64E7 * 7 to get number of weeks elapsed since epoch start.
-    $current_week = floor(($time - intval($day_of_week * 60 * 60 * 24)) / (60 * 60 * 24 * 7));
-    if ((int) $current_week % 2 == 0) {
-      $current_week = 1;
-    } else {
-      $current_week = 2;
-    };
+      $schedule = json_decode($file_contents);
 
-    //Get Current Time (0-23:0-59:0-59)
-    $current_time = date('H:i:s', strtotime('now'));
+      $default_start = strtotime(date('Y-m-d H:00:00'));
+      $default_end = $default_start + 3600;
 
-    //Making sure if today is sunday, it does not get last sunday instead of today.
-    if ($day_of_week == 0) {
-      $week_0_start = strtotime('today');
-      $week_1_start = strtotime('+1 week', $week_0_start);
-      $week_2_start = strtotime('+1 week', $week_1_start);
-    } else {
-      $week_0_start = strtotime('last sunday 00:00:00');
-      $week_1_start = strtotime('+1 week', $week_0_start);
-      $week_2_start = strtotime('+1 week', $week_1_start);
-    }
+      $length = is_array($schedule) ? count($schedule) : 0;
 
-    //Constants (second conversions)
-    $one_day = 24 * 60 * 60;
-    $one_hour = 60 * 60;
-    $one_minute = 60;
-
-    foreach ($showtimes as $show_time) {
-      $show_time_day_offset = ($show_time['start_day']) * $one_day;
-      $show_time_hour_offset = date_parse($show_time['start_time'])['hour'] * $one_hour;
-      $show_time_minute_offset = date_parse($show_time['start_time'])['minute'] * $one_minute;
-      $show_time_unix_offset = $show_time_day_offset + $show_time_hour_offset + $show_time_minute_offset;
-
-      if ($show_time['start_day'] != $show_time['end_day']) {
-        $show_duration = (24 - date_parse($show_time['start_time'])['hour'] + date_parse($show_time['end_time'])['hour']) * $one_hour + (60 - date_parse($show_time['start_time'])['minute'] + date_parse($show_time['end_time'])['minute']) * $one_minute;
+      if ($length > 0){
+        $start = strtotime($schedule[0]->schedule[0]->start);
+        $end = strtotime($schedule[0]->schedule[0]->end);
       } else {
-        $show_end_time_unix_offset = $show_time['end_day'] * $one_day + date_parse($show_time['end_time'])['hour'] * $one_hour + date_parse($show_time['end_time'])['minute'] * $one_minute;
-        $show_duration = abs($show_end_time_unix_offset - $show_time_unix_offset);
+        $start = $default_start;
+        $end = $default_end;
       }
-
-      //Unix timestamp of possible show start times
-      $week_0_show_unix = $week_0_start + $show_time_unix_offset;
-      $week_1_show_unix = $week_1_start + $show_time_unix_offset;
-      $week_2_show_unix = $week_2_start + $show_time_unix_offset;
-
-      //DST Offset
-      if ((date('I', $week_0_start) == '1') && (date('I', $week_0_show_unix) == '0')) {
-        $week_0_show_unix += 3600;
-      }
-      if ((date('I', $week_0_start) == '0') && (date('I', $week_0_show_unix) == '1')) {
-        $week_0_show_unix -= 3600;
-      }
-      if ((date('I', $week_1_start) == '1') && (date('I', $week_1_show_unix) == '0')) {
-        $week_1_show_unix += 3600;
-      }
-      if ((date('I', $week_1_start) == '0') && (date('I', $week_1_show_unix) == '1')) {
-        $week_1_show_unix -= 3600;
-      }
-      if ((date('I', $week_2_start) == '1') && (date('I', $week_2_show_unix) == '0')) {
-        $week_2_show_unix += 3600;
-      }
-      if ((date('I', $week_2_start) == '0') && (date('I', $week_2_show_unix) == '1')) {
-        $week_2_show_unix -= 3600;
-      }
-
-
-      // if a showtime's day has already been passed. If no, add it to week 0, if yes we have to add it to week 2 instead of week 0
-      if ($show_time['start_day'] == $day_of_week || $show_time['start_day'] > $day_of_week) {
-        //Hasn't happened yet, look at weeks 0 and 1
-        if ($show_time['alternating'] == '0') {
-          //Occurs Weekly, add to this week
-          $next_show = $week_0_show_unix;
-        } elseif ($show_time['alternating'] == $current_week) {
-          //Occurs this week, add to remainder of this week
-          $next_show = $week_0_show_unix;
-        } else {
-          //Doesn't occur this week, add to week 1
-          $next_show = $week_1_show_unix;
-        }
-      } else {
-        //Already occured this week
-        if ($show_time['alternating'] == '0') {
-          //Occurs weekly, add to week 1
-          $next_show = $week_1_show_unix;
-        } elseif ($show_time['alternating'] == $current_week) {
-          //Occurs this week, add to week 2
-          $next_show = $week_2_show_unix;
-        } else {
-          //Doesn't occur this week, add to week 1
-          $next_show = $week_1_show_unix;
-        }
-      }
-
-      $end = $next_show + $show_duration;
-      $candidates[] = array('start' => $next_show, 'end' => $end, 'week' => $current_week);
-    }
-    //Find the minimum start time
-    if (isset($candidates)) {
-      $min = $candidates[0];
-      foreach ($candidates as $i => $v) {
-        if ($v['start'] < $min['start']) {
-          $min = $candidates[$i];
-        }
-      }
-    } else {
-      //No showtimes for this show, create one.
-      $seconds_elapsed = strtotime('now') % $one_hour;
-
-      if ($seconds_elapsed <= 15 * $one_minute) {
-        $start = strtotime('now') - $seconds_elapsed;
-      } elseif ($seconds_elapsed > 15 * $one_minute && $seconds_elapsed <= 45 * $one_minute) {
-        $start = strtotime('now') - $seconds_elapsed + 30 * $one_minute;
-      } else {
-        $start = strtotime('now') - $seconds_elapsed + $one_hour;
-      }
-      $end = $start + $one_hour;
-      $min = array('start' => $start, 'end' => $end, 'mins' => $seconds_elapsed / $one_minute);
-    }
-    return $min;
+    
+    return array('start' => $start, 'end' => $end);
   }
   public function make_show_xml()
   {

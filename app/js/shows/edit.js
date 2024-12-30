@@ -1,12 +1,6 @@
 (function () {
     var app = angular.module('djland.editShow', ['djland.api', 'djland.utils']);
 
-    app.directive('showtime', function () {
-        return {
-            restrict: 'A',
-            templateUrl: 'templates/showtime.html'
-        };
-    });
     app.directive('social', function () {
         return {
             restrict: 'A',
@@ -107,13 +101,11 @@
             'create_name':username
           };
           this.socials = new Array();
-          this.show_times = new Array();
           this.show_owners = new Array();
           this.primary_genres = new Array();
           this.secondary_genres = new Array();
           this.images = new Array();
           this.social_template = {show_id: this.info.id, social_name: "" , social_url:""};
-          this.showtime_template = {show_id:this.info.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
     	}
         this.loadShow = function(){
     		call.getShow(this.active_show.id).then(
@@ -166,22 +158,7 @@
                 );
             }
     		//Call API to get show times
-    		call.getShowTimes(this.active_show.id).then(
-    			(function(response){
-    			    this.show_times = response.data;
-    			    this.showtime_template = {show_id:this.active_show.id,start_day:"0",end_day:"0",start_time:"00:00:00",end_time:"00:00:00",start_hour:"00",start_minute:"00",end_hour:"00",end_minute:"00",alternating:'0'};
-    			    //Allowing show times to be displayed in UI by splitting on colon
-    			    for(var showtime in this.show_times){
-    			      this.show_times[showtime].start_hour = $filter('pad')(this.show_times[showtime].start_time.split(':')[0],2);
-    			      this.show_times[showtime].start_minute = $filter('pad')(this.show_times[showtime].start_time.split(':')[1],2);
-    			      this.show_times[showtime].end_hour = $filter('pad')(this.show_times[showtime].end_time.split(':')[0],2);
-    			      this.show_times[showtime].end_minute = $filter('pad')(this.show_times[showtime].end_time.split(':')[1],2);
-    			    }
-    			}).bind(this)
-    			,(function(error){
-    				this.loading = false;
-    			}).bind(this)
-    		);
+
     		call.getShowImages(this.active_show.id).then(
     			(function(response){
                     this.images = response.data;
@@ -244,10 +221,6 @@
           //Add template row for social
           this.socials.push(angular.copy(this.social_template));
         }
-        this.addFirstShowTime = function(){
-          this.show_times.push(angular.copy(this.showtime_template));
-
-        }
         this.addSocial = function(id){
           this.socials.splice(id+1,0,angular.copy(this.social_template));
         }
@@ -265,10 +238,6 @@
           if(!exists){
             this.show_owners.push(this.member_list.filter(function(object){if(object.id == id) return object;})[0]);
           }
-        }
-        this.addShowTime = function($index){
-          this.show_times.splice($index+1,0,angular.copy(this.showtime_template));
-          console.log(this.owners);
         }
         this.addPrimaryGenre = function(){
           var genre = this.genres[this.primary_genre_select];
@@ -295,9 +264,6 @@
         this.removeOwner = function($index){
           this.show_owners.splice($index,1);
         }
-        this.removeShowTime = function($index){
-          this.show_times.splice($index,1);
-        }
         this.removePrimaryGenre= function($index){
           this.primary_genres.splice($index,1);
           this.updatePrimaryGenres();
@@ -316,10 +282,6 @@
           )[0];
           this.loadShow();
         }
-        this.updateShowtime = function(showtime){
-          showtime.start_time = showtime.start_hour + ":" + showtime.start_minute + ":00";
-          showtime.end_time = showtime.end_hour + ":" + showtime.end_minute + ":00";
-        }
         this.updatePrimaryGenres = function(){
           this.info.primary_genre_tags = this.primary_genres.join(',');
         }
@@ -333,15 +295,12 @@
             this.message = 'saving...';
 
             if (this.info.id == 0) {
-                call.saveNewShow(this.info, this.socials, this.show_owners, this.show_times).then(
+                call.saveNewShow(this.info, this.socials, this.show_owners).then(
                     (
                         function (response) {
                             var show = response.data['show'];
                             alert("Successfully Create New Show: " + this.info.name);
                             this.info.id = show['id'];
-                            for (var sh in this.show_times) {
-                                this.show_times[sh].show_id = show['id'];
-                            }
                             for (var s in this.social) {
                                 this.socials[s].show_id = show['id'];
                             }
@@ -357,7 +316,6 @@
                                     console.error(error);
                                 }
                             );
-                            this.refreshMemberShows();
                         }
                     ).bind(this),
                     function (error) {
@@ -366,7 +324,7 @@
                     }
                 );
             } else {
-                call.saveShow(this.info, this.socials, this.show_owners, this.show_times).then(
+                call.saveShow(this.info, this.socials, this.show_owners).then(
                     (function (response) {
                         //                    console.log(response.data.message);
                         alert("Successfully Saved");

@@ -161,21 +161,8 @@ if (isset($_GET['show_status'])) {
                 <h4 class='text-left'>Podcast XML</h4>
                 <input class='wideinput' ng-model='show.info.podcast_slug'>
                 <h4 class='text-left double-padded-top'>Sponsor</h4>
-                <label for 'sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
-                <label for 'sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>
-                <h4 class='text-left double-padded-top'>Show Times (Current week: {{show.current_week}})</h4>
-                <button ng-click='show.addFirstShowTime()' ng-hide='show.show_times.length > 0'>Add Show Time </button>
-                <table class='table'>
-                    <tr>
-                        <th> Start Day
-                        <th>Start Time
-                        <th>End Day
-                        <th>End Time
-                        <th>Alternation Week
-                        <th>+/-
-                    </tr>
-                    <tr showtime ng-repeat='showtime in show.show_times track by $index'></tr>
-                </table>
+                <label for='sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
+                <label for='sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>
                 <h4 class='text-left double-padded-top'>Default Language</h4>
                 <input ng-model='show.info.lang_default'>
                 <h4 class='text-left double-padded-top'>Default CRTC Category</h4>
@@ -215,6 +202,26 @@ if (isset($_GET['show_status'])) {
             <button ng-click="show.save();">Save Show</button>
         </div>
     </div>
+    <?php if (permission_level() >=  $djland_permission_levels['staff']['level']) {
+					echo "<h2>Google Calendar shows status</h2><br/><br/>";
+					# fetch https://new.citr.ca/api/schedule/notfound and show the result
+                    try {
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, "https://new.citr.ca/api/schedule/notfound");
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        $output = curl_exec($ch);
+                        curl_close($ch);
+                        $decoded = json_decode($output, true);
+                        echo $decoded["note"]."<br><p>";
+                        foreach ($decoded["broken"] as $show) {
+                            echo $show."<br>";
+                        }
+                    } catch (Exception $e) {
+                        echo "Error fetching schedule/notfound";
+                    }
+
+				}
+				 ?>
 </body>
 
 </html>

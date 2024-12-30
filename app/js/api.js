@@ -56,8 +56,8 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		getUploads: function(){
 			return $http.get(API_URL_BASE+'/upload');
 		},
-		getNextShowTime: function(show_id,current_time){
-			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow/"+current_time);
+		getNextShowTime: function(show_id){
+			return $http.get(API_URL_BASE+"/show/"+show_id+"/nextshow");
 		},
 		getMemberPermissions: function(member_id){
 			return $http.get(API_URL_BASE+'/member/'+member_id+'/permission');
@@ -86,11 +86,11 @@ angular.module('djland.api', []).factory('call', function ($http, $location) {
 		saveBroadcasts: function(specialbroadcasts){
 			return $http.post(API_URL_BASE + '/specialbroadcasts', angular.toJson({'specialbroadcasts':specialbroadcasts}));
 		},
-		saveShow: function(show_object,social_objects,owner_objects,show_time_objects){
-			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
+		saveShow: function(show_object,social_objects,owner_objects){
+			return $http.post(API_URL_BASE+'/show/'+show_object.id,angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects}) );
 		},
-		saveNewShow: function(show_object,social_objects,owner_objects,show_time_objects){
-			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects,'showtimes':show_time_objects}) );
+		saveNewShow: function(show_object,social_objects,owner_objects){
+			return $http.post(API_URL_BASE+'/show',angular.toJson({'show':show_object,'social':social_objects,'owners':owner_objects}) );
 		},
 		savePlaysheet: function(playsheet,playitems,podcast,ads){
 			//this one could have failed
