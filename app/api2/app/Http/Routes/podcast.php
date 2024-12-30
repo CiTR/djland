@@ -31,7 +31,7 @@ Route::group(array('prefix' => 'podcast'), function () {
           return Response::json($iae->getMessage(), 500);
         }
       } else {
-        Log::info('audio file not received');
+        Log::info('audio file not received. will crop from archive logger');
         try {
           $podcast = Podcast::find($id);
           if (!$podcast) {

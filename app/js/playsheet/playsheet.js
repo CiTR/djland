@@ -867,7 +867,7 @@
       }
       else {
         call.makeXml(this.podcast.show_id);
-        this.podcast_status = "Podcast was not (re)created as requested by the user.";
+        this.podcast_status = "Podcast was not created";
       }
     }
     this.submit = function () {
@@ -903,22 +903,19 @@
         this.updatePodcastDate();
 
         if (this.info.id < 1) {
-          //New Playsheet
+          //New Playsheet and new podcast
           this.info.create_name = this.username;
           call.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
             (function (response) {
+              this.promotions = response.data.ads;
+              this.info.id = response.data.id;
               for (var playitem in this.playitems) {
                 this.playitems[playitem].playsheet_id = this.info.id;
               }
-              this.promotions = response.data.ads;
-              this.info.id = response.data.id;
               this.podcast.id = response.data.podcast_id;
               this.podcast.playsheet_id = response.data.id;
               this.tracklist_overlay = true;
-              //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
-              //if($('#audio_file')[0].files){
-              //this.uploadAudio(this.podcast.id);
-              //}else{
+              
               this.makePodcastAudio();
 
               //}
@@ -932,53 +929,19 @@
             }).bind(this)
           );
         } else {
-          //Existing Playsheet
-          //New Podcast
-          if (this.podcast.id < 1) {
-            this.podcast.playsheet_id = this.info.id;
-            this.podcast.show_id = this.info.show_id;
-
-            call.saveNewPodcast(this.podcast).then(
-              (function (response) {
-                this.podcast.id = response.data['id'];
-                call.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
-                  (function (response) {
-                    this.tracklist_overlay = true;
-                    //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
-                    //if($('#audio_file')[0].files.length > 0){
-                    //this.uploadAudio(response.podcast.id);
-                    //}else{
-
-                    this.makePodcastAudio();
-
-                    //}
-                  }).bind(this)
-                );
-              }).bind(this)
-              , (function (error) {
-                this.podcast_status = "Podcast not created";
-                this.error = true;
-                this.log_error(error);
-                this.tracklist_overlay = true;
-              }).bind(this)
-            );
-          } else {
-            //Existing Platsheet and Podcast
+            //Existing Playsheet and Podcast
             call.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
               (function (response) {
                 this.tracklist_overlay = true;
-                //TODO: commented out for now because audio upload on playsheet to be restricted to certain ppl
-                //if($('#audio_file')[0].files.length > 0){
-                //this.uploadAudio(response.podcast.id);
-                //}else{
-                if (!this.podcast.url || this.time_changed) {
-                  this.makePodcastAudio();
+                
+                if (this.podcast.url) {
+                  call.makeXml(this.podcast.show_id);
+                  this.podcast_status = 'Updated podcast.';
                 }
                 else {
-                  call.makeXml(this.podcast.show_id);
-                  this.podcast_status = 'Using Existing Podcast Audio.';
+                  this.makePodcastAudio();
+                  this.podcast_status = 'Creating new Podcast Audio from archive log.';
                 }
-                //}
               }).bind(this)
               , (function (error) {
                 this.podcast_status = "Podcast not created";
@@ -987,7 +950,7 @@
                 this.tracklist_overlay = true;
               }).bind(this)
             );
-          }
+          
         }
       }
     }

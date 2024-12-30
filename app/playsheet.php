@@ -90,12 +90,13 @@ require_once("headers/menu_header.php");
 
 			<div class='col4 padded' ng-if="playsheet.info.id > 0">
 
-				<h4 ng-if="playsheet.podcast.url" class='text-left'>
-					<a ng-href="{{playsheet.podcast.url}}" target="blank">Podcast Audio 🔗</a>
-				</h4>
-				<h4 ng-if="!playsheet.podcast.url" class='text-left'>Upload Audio File</h4>
+				<div ng-if="playsheet.podcast.url" >
+					<h4 class='text-left'>Podcast Audio 🎶✅</h4>
+					<p><a ng-href="{{playsheet.podcast.url}}" target="blank">{{playsheet.podcast.url}}</a></p>
+				</div>
+				<h4 ng-if="!playsheet.podcast.url" class='text-left'>Podcast Audio</h4>
 				<div ng-if="playsheet.replacingAudio">
-					<input type="file" name='audio_file' id='audio_file' />
+					<input type="file" name='audio_file' id='audio_file' style="max-width:270px"/>
 					<button ng-if="playsheet.canUploadAudio() && !playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload</button>
 					<button ng-if="playsheet.canUploadAudio() && playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload (Replace)</button>
 					<button ng-click='playsheet.cancelReplaceAudio()'>Cancel</button>
@@ -113,8 +114,8 @@ require_once("headers/menu_header.php");
 
 			</div>
 			<div class='col4 padded' ng-if="playsheet.info.id <= 0">
-				<h4 class='text-left'>Upload Audio File</h4>
-				<p>To upload the podcast audio, first Save as a Draft</p>
+				<h4 class='text-left'>Podcast Audio </h4>
+				<p>To upload, first Save as a Draft</p>
 				<button ng-click='playsheet.saveDraft()'>Save Draft</button>
 			</div>
 			<div class='col2 padded'>
@@ -171,6 +172,7 @@ require_once("headers/menu_header.php");
 		<div id='container'>
 
 	<pre ng-if="debug" style="font-size:0.8em; color:blue;">
+		playsheet.podcast:
 		{{playsheet.podcast | json}}
 	</pre>
 			<h3 class='double-padded-top'>Music</h3>
