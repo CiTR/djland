@@ -337,6 +337,7 @@ Route::group(array('prefix' => 'playsheet'), function () {
     foreach ($shows as $show) {
       $show_ids[] = $show->id;
     }
+    $playsheets = array ();
     foreach (Playsheet::orderBy('start_time', 'desc')->whereIn('show_id', $show_ids)->limit('200')->offset($offset)->get() as $ps) {
       $playsheet = new stdClass();
       $playsheet = $ps;
@@ -357,6 +358,7 @@ Route::group(array('prefix' => 'playsheet'), function () {
       $show_ids[] = $show->id;
     }
     $socan = Socan::all();
+    $playsheets = array ();
     foreach (Playsheet::orderBy('start_time', 'desc')->whereIn('show_id', $show_ids)->limit('200')->get() as $ps) {
       $playsheet = new stdClass();
       $playsheet = $ps;
@@ -377,6 +379,7 @@ Route::group(array('prefix' => 'playsheet'), function () {
   });
   Route::get('list/{limit}', function ($limit = limit) {
     $playsheets = Playsheet::orderBy('id', 'desc')->limit($limit)->get();
+    $list = array();
     foreach ($playsheets as $playsheet) {
       if ($playsheet != null) {
         $ps = new stdClass();

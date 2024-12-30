@@ -113,7 +113,7 @@
       var form = new FormData();
       form.append('audio', file);
       var request = $.ajax({
-        url: 'api2/public/podcast/' + Playsheet.info.id + '/audio',
+        url: 'api2/public/podcast/' + Playsheet.podcast.id + '/audio',
         method: 'POST',
         type: 'POST',
         dataType: 'json',
