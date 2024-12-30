@@ -32,6 +32,9 @@ Route::group(array('prefix' => 'podcast'), function () {
       } else {
         try {
           $podcast = Podcast::find($id);
+          if (!$podcast) {
+            return Response::json('No podcast channel found', 500);
+          }
           $result = $podcast->make_podcast();
           return $result;
         } catch (InvalidArgumentException $iae) {

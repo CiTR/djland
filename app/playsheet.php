@@ -21,8 +21,8 @@ require_once("headers/menu_header.php");
 	<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
 
-	<script type='text/javascript' src='js/playsheet/constants.js?v=20231107'></script>
-	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20231107'></script>
+	<script type='text/javascript' src='js/playsheet/constants.js?v=20241107'></script>
+	<script type='text/javascript' src='js/playsheet/playsheet.js?v=20241107'></script>
 	<script type='text/javascript' src='js/api.js'></script>
 	<script type='text/javascript' src='js/utils.js'></script>
 </head>
@@ -113,7 +113,8 @@ require_once("headers/menu_header.php");
 
 			</div>
 			<div class='col4 padded' ng-if="playsheet.info.id <= 0">
-				<h4>To upload the podcast audio, first Save as a Draft</h4>
+				<h4 class='text-left'>Upload Audio File</h4>
+				<p>To upload the podcast audio, first Save as a Draft</p>
 				<button ng-click='playsheet.saveDraft()'>Save Draft</button>
 			</div>
 			<div class='col2 padded'>

@@ -134,7 +134,7 @@
       }, function (error) {
         Playsheet.uploadingAudio = false;
         $scope.$apply();
-        alert(error.responseText);
+        alert(error.statusText+" | "+error.responseText);
       });
     }
 
