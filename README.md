@@ -32,7 +32,9 @@ Then ssh onto the djland server:
 
 - for additional notes, see https://bitbucket.org/CiTR/technical-transition/src/master/trance.md
 
+## logging
 
+- laravel logs appear in app/api2/storage/logs
 
 
 

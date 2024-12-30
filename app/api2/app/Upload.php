@@ -8,6 +8,7 @@ use App\Show;
 use App\Podcast;
 use App\SpecialBroadcast as SpecialBroadcast;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\Log;
 
 class Upload extends Model
 {
@@ -137,11 +138,8 @@ class Upload extends Model
   {
     require(dirname($_SERVER['DOCUMENT_ROOT']) . "/config.php");
 
-    $response = new \StdClass();
     if (!is_object($file)) {
-      $response->text = "Valid file not given.";
-      $response->success = false;
-      return $response;
+      throw new InvalidArgumentException('Valid file not given.');
     }
 
     //chars to strip from names + dirs
@@ -163,9 +161,8 @@ class Upload extends Model
 
         // Check if podcast is null
         if ($podcast === null) {
-          $response->text = "Podcast not found.";
-          $response->success = false;
-          return $response;
+          throw new InvalidArgumentException('Podcast not found');
+
         }
 
         //Strip unwanted chars from the show name and convert & to and
@@ -197,8 +194,7 @@ class Upload extends Model
         //we only accepting audio files for episode audio right now.
         $response->text = "Valid audio category was not given.";
         $response->success = false;
-        return $response;
-        break;
+        throw new InvalidArgumentException('Valid audio category was not given.');
     }
 
     if ($file->move($target_dir, $target_dir . '/' . $target_file_name)) {
@@ -208,11 +204,14 @@ class Upload extends Model
       $response['audio'] = array('url' => $podcast->url, 'length' => $podcast->length);
       $response['xml'] = $podcast->show->make_show_xml();
     } else {
-      $response->success = false;
-      $response->text = "Failed to move file";
+      
+      Log::error( 'Failed to move the audio file to ' . $target_dir . '. File name is ' . $target_file_name);
+
+      throw new InvalidArgumentException('Failed to move the audio file ');
     }
     return $response;
   }
+  
   public function add_slashes($string)
   {
     return str_replace('/', '\/', $string);
