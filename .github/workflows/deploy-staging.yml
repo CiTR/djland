@@ -3,7 +3,7 @@ name: Push DJ Land to Staging
 on:
   push:
     branches:
-      - staging-test
+      - staging
 
 jobs:
   push:
@@ -41,5 +41,5 @@ jobs:
 
       - name: checkout and pull staging in remote
         run: |
-          ssh djland@citr.ca -t 'cd ~/stage.djland.citr.ca; git fetch; git branch -v; git checkout staging-test; git pull origin staging-test; git branch -v'
+          ssh djland@citr.ca -t 'cd ~/stage.djland.citr.ca; git fetch; git branch -v; git checkout staging; git pull origin staging; git branch -v'
 
