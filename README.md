@@ -1,7 +1,5 @@
 # DJLAND 2024 notes
 
-The main repo is now in bitbucket. `git@bitbucket.org:CiTR/djland.git`
-
 ## deployment (pre-fullhost migration)
 ### setup:
 Add your machine's public SSH key to the moongrok server ~/djland/.ssh/authorized_keys directory.

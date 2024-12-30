@@ -9,6 +9,13 @@ if (
 	return;
 }
 
+
+$dotenvpath = __DIR__.'/api2/.env';
+if (!file_exists($dotenvpath)) {
+    echo "No .env file found in app/api2. Please copy .env.sample to .env and edit it to match your environment.";
+    exit(1);
+}
+
 require_once("headers/session_header.php");
 require_once('headers/login_header.php');
 require_once('headers/db_header.php');
