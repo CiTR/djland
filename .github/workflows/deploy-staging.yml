@@ -1,0 +1,45 @@
+name: Push DJ Land to Staging
+
+on:
+  push:
+    branches:
+      - staging-test
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.CPANEL_SSH_KEY_DJLAND }}
+      
+      - name: setup known hosts
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          
+      - name: append to known hosts
+        run: |
+          echo "citr.ca ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDlfGEr5vyxI3pjywlMKtWXlP/8O2roklfib8JhgQp7z" > ~/.ssh/known_hosts
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "webops@citr.ca"
+          git config --global user.name "webops-github-action"
+          
+#      - name: setup Remote Repo
+#        run: |
+#          git config pull.rebase false
+#          git remote add staging citrc@citr.ca:~/stage.citr.ca/citr-discorder-website
+
+      - name: checkout and pull staging in remote
+        run: |
+          ssh citrc@citr.ca -t 'cd ~/stage.djland.citr.ca; git fetch; git branch -v; git checkout staging-test; git pull origin staging-test; git branch -v'
+
