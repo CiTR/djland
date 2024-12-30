@@ -45,6 +45,7 @@ images/podcast_photos
 #Ignore Web Configuration Files
 web.config
 .htpasswd
+/.htaccess
 awstats*
 disabled_by_virtualmin.html
 icon
