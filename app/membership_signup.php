@@ -14,7 +14,7 @@
 	<script type='text/javascript' src='js/constants.js'></script>
 	<script type='text/javascript' src='js/membership/functions.js'></script>
 	<script type='text/javascript' src='js/membership/member.js'></script>
-	<script type='text/javascript' src='js/membership/signup.js?20210520'></script>
+	<script type='text/javascript' src='js/membership/signup.js?20240108'></script>
 
 
 
