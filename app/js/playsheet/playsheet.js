@@ -1,7 +1,7 @@
-(function () {
 
   var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
   app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
+    var api = call;
     this.info = {};
         $scope.debug = true;//true;// call.debug;
     this.promotions = [];
@@ -140,7 +140,7 @@
     }
 
     this.updateTime = function () {
-      call.getNextShowTime(this.active_show.id).then(
+      api.getNextShowTime(this.active_show.id).then(
         (
           function (response) {
             var start_unix = response.data.start;
@@ -192,7 +192,7 @@
         this.playitems[playitem].queercon = null;
       }
       this.updateTime();
-      call.getShowPlaysheets(this.active_show.id).then(function (response) {
+      api.getShowPlaysheets(this.active_show.id).then(function (response) {
         //DISPLAY OLD PLAYSHEETS
         this.existing_playsheets = response.data.sort(function (a, b) {
           var re = new RegExp('-', 'g');
@@ -247,7 +247,7 @@
     }
 
     this.loadRebroadcast = function () {
-      call.getPlaysheetData(this.existing_playsheet).then(
+      api.getPlaysheetData(this.existing_playsheet).then(
         (function (response) {
           this.playitems = response.data.playitems;
           this.info.spokenword_duration = response.data.playsheet.spokenword_duration;
@@ -264,7 +264,7 @@
     }
     this.loadIfRebroadcast = function () {
       if (this.info.type == 'Rebroadcast') {
-        call.getShowPlaysheets(this.active_show.id).then(
+        api.getShowPlaysheets(this.active_show.id).then(
           (function (response) {
             //DISPLAY OLD PLAYSHEETS
             this.existing_playsheets = response.data.sort(
@@ -380,7 +380,7 @@
       }
       // replace above
 
-      call.isSocan(this.start_unix).then(
+      api.isSocan(this.start_unix).then(
         (
           function (response) {
             if (response.status == '200') {
@@ -400,7 +400,7 @@
 
       //If playsheet exists, load it.
       if (this.info.id > 0) {
-        call.getPlaysheetData(this.info.id).then(
+        api.getPlaysheetData(this.info.id).then(
           (function (data) {
             var playsheet = data.data;
             this.info = {};
@@ -420,7 +420,7 @@
             this.end_minute = $filter('pad')(this.end.getMinutes(), 2);
             this.end_second = $filter('pad')(this.end.getSeconds(), 2);
 
-            call.isSocan(this.start / 1000).then(
+            api.isSocan(this.start / 1000).then(
               (
                 function (response) {
                   if (response.status == '200') {
@@ -457,7 +457,7 @@
             }
 
             //Get Member shows, and set active show
-            call.getActiveMemberShows(this.member_id).then(
+            api.getActiveMemberShows(this.member_id).then(
               (function (data) {
                 var shows = data.data.shows;
                 this.member_shows = shows;
@@ -471,7 +471,7 @@
                   }
                 }
 
-                call.getShowPlaysheets(this.active_show.id).then(
+                api.getShowPlaysheets(this.active_show.id).then(
                   (function (response) {
                     //DISPLAY OLD PLAYSHEETS
                     this.existing_playsheets = response.data.sort(
@@ -537,7 +537,7 @@
         this.podcast.active = 0;
 
         //Get Shows Listing
-        call.getActiveMemberShows(this.member_id).then(
+        api.getActiveMemberShows(this.member_id).then(
           (function (data) {
             var shows = data.data.shows;
             this.member_shows = shows;
@@ -563,7 +563,7 @@
               }
               var now = new Date();
 
-              call.getShowPlaysheets(this.show_value).then(
+              api.getShowPlaysheets(this.show_value).then(
                 (
                   function (response) {
                     this.existing_playsheets = response.data.sort(
@@ -576,7 +576,7 @@
                 ).bind(this)
               );
 
-              call.getNextShowTime(this.active_show.id, now).then(
+              api.getNextShowTime(this.active_show.id, now).then(
                 (
                   function (response) {
                     var start_unix = response.data.start;
@@ -652,6 +652,7 @@
       }
 
     }
+
     this.updatePodcastDate = function () {
       this.podcast.date = this.info.start_time;
       this.podcast.iso_date = this.days_of_week[this.start.getDay()] + ", " + this.start.getDate() + " " + this.months_of_year[this.start.getMonth()] + " " + this.start.getFullYear() + " " + $filter('date')(this.start, 'HH:mm:ss') + " -0700";
@@ -791,7 +792,7 @@
           //New Playsheet
           this.info.create_name = this.username;
           this.info.show_name = this.active_show.name;
-          callback = call.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
+          callback = api.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
             (
               function (response) {
                 this.info.id = response.data.id;
@@ -849,7 +850,7 @@
           );
         } else {
           //Existing Playsheet
-          call.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
+          api.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
             (
               function (response) {
                 for (var playitem in this.playitems) {
@@ -877,7 +878,7 @@
     this.makePodcastAudio = function () {
       if (this.createPodcast) {
         this.podcast_status = "Your podcast is being created";
-        call.makePodcastAudio(this.podcast).then(
+        api.makePodcastAudio(this.podcast).then(
           (function (reponse) {
             this.podcast_status = "Podcast Audio Created Successfully.";
             this.time_changed = false;
@@ -890,7 +891,7 @@
         );
       }
       else {
-        call.makeXml(this.podcast.show_id);
+        api.makeXml(this.podcast.show_id);
         this.podcast_status = "Podcast was not created";
       }
     }
@@ -929,7 +930,7 @@
         if (this.info.id < 1) {
           //New Playsheet and new podcast
           this.info.create_name = this.username;
-          call.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
+          api.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
             (function (response) {
               this.promotions = response.data.ads;
               this.info.id = response.data.id;
@@ -954,12 +955,12 @@
           );
         } else {
             //Existing Playsheet and Podcast
-            call.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
+            api.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
               (function (response) {
                 this.tracklist_overlay = true;
                 
                 if (this.podcast.url) {
-                  call.makeXml(this.podcast.show_id);
+                  api.makeXml(this.podcast.show_id);
                   this.podcast_status = 'Updated podcast.';
                 }
                 else {
@@ -1029,7 +1030,7 @@
       }
     }
   });
-})();
+
 
 $(document).ready(function () {
   var can_2_element = $('#can_2_total');
@@ -1101,3 +1102,4 @@ $(document).ready(function () {
     else fairplay_element.removeClass('blue');
   }
 });
+
