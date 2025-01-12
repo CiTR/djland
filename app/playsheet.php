@@ -36,6 +36,7 @@ require_once("headers/menu_header.php");
 												} ?>";
 		var member_id = "<?php echo $_SESSION['sv_id']; ?>";
 		var username = "<?php echo $_SESSION['sv_username']; ?>";
+		var isAdmin = "<?php echo permission_level() >= $djland_permission_levels['administrator']['level'] ? 'true' : 'false'; ?>";
 	</script>
 
 	<?php print_menu(); ?>
@@ -171,8 +172,12 @@ require_once("headers/menu_header.php");
 		</div>
 		<div id='container'>
 	<div ng-if="debug" style="height: 400px; width: 100%; overflow: scroll;">
-		debug
+		<hr/>
+		<p>
 
+			debug view
+			[admin? {{playsheet.isAdmin}}]						
+		</p>
 		<pre ng-if="debug" style="font-size:0.8em; color:blue;">
 			playsheet.podcast:
 			{{playsheet.podcast | json}}

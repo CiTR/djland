@@ -9,7 +9,7 @@
     this.podcast = {};
     this.info.id = playsheet_id;
     this.member_id = member_id;
-    this.isAdmin = false;
+    this.isAdmin = isAdmin;
     this.username = username;
     this.loading = true;
     this.days_of_week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -112,29 +112,26 @@
       Playsheet.uploadingAudio = true;
       var form = new FormData();
       form.append('audio', file);
-      var request = $.ajax({
-        url: 'api2/public/podcast/' + Playsheet.podcast.id + '/audio',
+      fetch('api2/public/podcast/' + Playsheet.podcast.id + '/audio', {
         method: 'POST',
-        type: 'POST',
-        dataType: 'json',
-        processData: false,
-        contentType: false,
-        data: form
-      });
-      $.when(request).then(function (response) {
+        body: form
+      })
+      .then(response => response.json())
+      .then(data => {
         Playsheet.uploadingAudio = false;
         Playsheet.replacingAudio = false;
-        console.log(response.audio.url);
-        Playsheet.audioUrl = response.audio.url;
-        Playsheet.podcast.url = response.audio.url;
-        Playsheet.podcast.length = response.audio.length;
+        console.log(data.audio.url);
+        Playsheet.audioUrl = data.audio.url;
+        Playsheet.podcast.url = data.audio.url;
+        Playsheet.podcast.length = data.audio.length;
         
         $scope.$apply();
         alert("Uploading audio successful!");
-      }, function (error) {
+      })
+      .catch(error => {
         Playsheet.uploadingAudio = false;
         $scope.$apply();
-        alert(error.statusText+" | "+error.responseText);
+        alert(error.statusText + " | " + error.message);
       });
     }
 
@@ -400,13 +397,7 @@
 
     //Initialization of Playsheet
     this.init = function () {
-      call.isAdmin(this.member_id).then((function (response) {
-        this.isAdmin = response.data;
-      }).bind(this),
-        (function (error) {
-          this.log_error(error);
-        }).bind(this)
-      );
+
       //If playsheet exists, load it.
       if (this.info.id > 0) {
         call.getPlaysheetData(this.info.id).then(
