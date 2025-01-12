@@ -23,7 +23,7 @@
     this.tags = tags;
     this.help = help;
     this.complete = false;
-    this.notCreatePodcast = false;
+    this.createPodcast = true;
     this.time_changed = false;
 
     this.add = function (id) {
@@ -522,9 +522,9 @@
                   "insert_song_start_minute": "00",
                   "insert_song_length_minute": "00",
                   "insert_song_length_second": "00",
-                  "artist": null,
-                  "title": null,
-                  "song": null,
+                  "artist": $scope.debug?"test":null,
+                  "title": $scope.debug?"test":null,
+                  "song": $scope.debug?"test":null,
                   "composer": null
                 };
                 this.checkIfComplete();
@@ -884,7 +884,7 @@
     }
     //Submit a Playsheet
     this.makePodcastAudio = function () {
-      if (!this.notCreatePodcast) {
+      if (this.createPodcast) {
         this.podcast_status = "Your podcast is being created";
         call.makePodcastAudio(this.podcast).then(
           (function (reponse) {

@@ -170,11 +170,20 @@ require_once("headers/menu_header.php");
 			</div>
 		</div>
 		<div id='container'>
+	<div ng-if="debug" style="height: 400px; width: 100%; overflow: scroll;">
+		debug
 
-	<pre ng-if="debug" style="font-size:0.8em; color:blue;">
-		playsheet.podcast:
-		{{playsheet.podcast | json}}
-	</pre>
+		<pre ng-if="debug" style="font-size:0.8em; color:blue;">
+			playsheet.podcast:
+			{{playsheet.podcast | json}}
+	
+		</pre>
+		<pre ng-if="debug" style="font-size:0.8em; color:green;">
+			playsheet.info:
+			{{playsheet.info | json}}
+	
+		</pre>
+	</div>
 			<h3 class='double-padded-top'>Music</h3>
 			<table>
 				<tr class='music_row_heading border' ng-class="{socan: playsheet.info.socan }">
@@ -246,7 +255,7 @@ require_once("headers/menu_header.php");
 			</div>
 			<div style="display:inline-block;" >
 				<div style="display:inline-block;" ng-hide="!playsheet.complete">
-					Do not generate a podcast <input type="checkbox" ng-model='playsheet.notCreatePodcast'><br />
+					Generate New Podcast Audio <input type="checkbox" ng-model='playsheet.createPodcast'><br />
 					<div ng-show="playsheet.isAdmin">
 						Web Exclusive Podcast <input type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
 					</div>
