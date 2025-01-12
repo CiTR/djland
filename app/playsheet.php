@@ -173,11 +173,11 @@ require_once("headers/menu_header.php");
 		<div id='container'>
 	<div ng-if="debug" style="height: 400px; width: 100%; overflow: scroll;">
 		<hr/>
-		<p>
+		<pre>
 
-			debug view
-			[admin? {{playsheet.isAdmin}}]						
-		</p>
+			[admin? {{playsheet.isAdmin}}]		
+			[time_changed? {{playsheet.time_changed}}]				
+		</pre>
 		<pre ng-if="debug" style="font-size:0.8em; color:blue;">
 			playsheet.podcast:
 			{{playsheet.podcast | json}}
@@ -259,16 +259,16 @@ require_once("headers/menu_header.php");
 				{{ playsheet.missing }}
 			</div>
 			<div style="display:inline-block;" >
-				<div style="display:inline-block;" ng-hide="!playsheet.complete">
-					Generate New Podcast Audio <input type="checkbox" ng-model='playsheet.createPodcast'><br />
+				<div style="display:inline-block; text-align:right;" ng-hide="!playsheet.complete">
+					<label for="generate-new-podcast-audio">Generate New Podcast Audio</label> <input id="generate-new-podcast-audio" type="checkbox" ng-model='playsheet.createPodcast'><br />
 					<div ng-show="playsheet.isAdmin">
-						Web Exclusive Podcast <input type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
+						<label for="web-exclusive-podcast">Web Exclusive Podcast</label>  <input id="web-exclusive-podcast" type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
 					</div>
 				</div>
-				<button class="large-button" ng-click="playsheet.submit()" ng-hide="!playsheet.complete || submitting">Submit</button>
+				<button style="margin-left:0.2em;" class="large-button" ng-click="playsheet.submit()" ng-hide="!playsheet.complete || submitting">Submit</button>
 		
 			</div>
-			<button class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
+			<button style="margin-left:2em;" class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
 		
 			<br />
 			<div id="message" ng-show="message.text != '' && message.age < 6 ">{{message.text}}</div>
