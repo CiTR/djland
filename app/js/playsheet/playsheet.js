@@ -3,7 +3,7 @@
   var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
   app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
     this.info = {};
-    //    $scope.debug = true;//true;// call.debug;
+        $scope.debug = true;//true;// call.debug;
     this.promotions = [];
     this.playitems = {};
     this.podcast = {};
@@ -638,9 +638,9 @@
                       "insert_song_start_minute": "00",
                       "insert_song_length_minute": "00",
                       "insert_song_length_second": "00",
-                      "artist": null,
-                      "title": null,
-                      "song": null,
+                      "artist": $scope.debug?"test":null,
+                      "title": $scope.debug?"test":null,
+                      "song": $scope.debug?"test":null,
                       "composer": null
                     };
                     this.addStartRow();
@@ -805,21 +805,53 @@
               function (response) {
                 this.info.id = response.data.id;
                 for (var playitem in this.playitems) {
-                  this.playitems[playitem].playsheet_id = this.info.id;
+                    this.playitems[playitem].playsheet_id = this.info.id;
                 }
                 this.promotions = response.data.ads;
                 var show_date = this.start.getDate();
-                this.row_template = { "show_id": this.active_show.id, "playsheet_id": this.info.id, "format_id": null, "is_playlist": 0, "is_canadian": 0, "is_yourown": 0, "is_indy": 0, "is_fem": 0, "show_date": show_date, "duration": null, "is_theme": null, "is_background": null, "crtc_category": this.info.crtc, "lang": this.info.lang, "is_part": 0, "is_inst": 0, "is_hit": 0, "insert_song_start_hour": "00", "insert_song_start_minute": "00", "insert_song_length_minute": "00", "insert_song_length_second": "00", "artist": null, "title": null, "song": null, "composer": null };
+                this.row_template = {
+                    show_id: this.active_show.id,
+                    playsheet_id: this.info.id,
+                    format_id: null,
+                    is_playlist: 0,
+                    is_canadian: 0,
+                    is_yourown: 0,
+                    is_indy: 0,
+                    is_fem: 0,
+                    show_date: show_date,
+                    duration: null,
+                    is_theme: null,
+                    is_background: null,
+                    crtc_category: this.info.crtc,
+                    lang: this.info.lang,
+                    is_part: 0,
+                    is_inst: 0,
+                    is_hit: 0,
+                    insert_song_start_hour: "00",
+                    insert_song_start_minute: "00",
+                    insert_song_length_minute: "00",
+                    insert_song_length_second: "00",
+                    artist: $scope.debug?"test":null,
+                    title: $scope.debug?"test":null,
+                    song: $scope.debug?"test":null,
+                    composer: $scope.debug?"test":null
+                };
                 this.podcast.id = response.data.podcast_id;
                 this.podcast.playsheet_id = response.data.id;
                 alert("Draft Saved ");
-                window.location.href = "/playsheet.php?id=" + this.info.id + "&socan=" + (this.info.socan == 1 ? "true" : "false");
+                window.location.href =
+                    "/playsheet.php?id=" +
+                    this.info.id +
+                    "&socan=" +
+                    (this.info.socan == 1 ? "true" : "false");
 
               }
             ).bind(this),
             (
               function (error) {
-                alert("Draft was not saved. Please contact your station technical services at " + this.tech_email);
+                if (error && error.data && error.data.message){
+                  alert("Draft was not saved (1). "+error.data.message);
+                }
                 this.log_error(error);
               }
             ).bind(this)
@@ -837,7 +869,9 @@
             ).bind(this)
             , (
               function (error) {
-                alert("Draft was not saved. Please contact your station technical services at " + this.tech_email);
+                if (error && error.data && error.data.message){
+                  alert("Draft was not saved (2). "+error.data.message);
+                }
                 this.log_error(error);
               }
             ).bind(this)
@@ -955,12 +989,12 @@
     }
     this.log_error = function (error) {
       this.tracklist_overlay_header = "An error has occurred while saving the playsheet";
-      var error = (error != null && error.data != null) ? error.data.split('body>')[1].substring(0, error.data.split('body>')[1].length - 2) : '';
-      call.error(error).then(function (response) {
-        $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
-      }, function (error) {
-        $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error could not be logged :(");
-      });
+
+      if (error && error.data && error.data.message){
+        this.podcast_status = error.data.message;
+      }
+      $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
+      
     }
     this.init();
   });

@@ -8,8 +8,12 @@ use App\Socan as Socan;
 use App\Podcast as Podcast;
 //Assisting Classes
 use App\Member as Member;
+#use Illluminate\Support\Facades\Log as Log;
+use Illuminate\Support\Facades\Log;
+#Log::info('Playsheet Routes Loaded');
 
 /* Playsheet Routes */
+
 
 Route::group(array('prefix' => 'playsheet'), function () {
 
@@ -225,7 +229,13 @@ Route::group(array('prefix' => 'playsheet'), function () {
     Route::group(array ('prefix' => 'playitem'), function ($id) {
       //Add a playitem to the playsheet
       Route::put('/', function ($id) {
-        return Playitem::create((array) Input::get()['playitem']);
+        try {
+          return Playitem::create((array) Input::get()['playitem']);
+        } catch (Exception $e){
+          $message = $e->getMessage();
+          $error_response = array ('message' => $message, 'playitem' => $id);
+          return Response::json($error_response, 400);
+        }
       });
     });
   });
@@ -246,10 +256,6 @@ Route::group(array('prefix' => 'playsheet'), function () {
     $show->last_show = $ps->create_date;
     $show->save();
 
-    foreach (Input::get()['playitems'] as $playitem) {
-      $playitem['playsheet_id'] = $ps->id;
-      Playitem::create($playitem);
-    }
     foreach (Input::get()['ads'] as $ad) {
       $ad['playsheet_id'] = $ps->id;
       if (isset ($ad['id'])) {
@@ -258,6 +264,17 @@ Route::group(array('prefix' => 'playsheet'), function () {
         $response['ads'][] = $a->update((array) $ad);
       } else {
         $response['ads'][] = Ad::create((array) $ad);
+      }
+    }
+
+    foreach (Input::get()['playitems'] as $playitem) {
+      $playitem['playsheet_id'] = $ps->id;
+      try {
+        Playitem::create($playitem);
+      } catch (Exception $e){
+        $message = $e->getMessage();
+        $error_response = array ('message' => $message, 'playitem' => $playitem);
+        return Response::json($error_response, 400);
       }
     }
 
@@ -298,7 +315,16 @@ Route::group(array('prefix' => 'playsheet'), function () {
         $delete->delete();
       }
       foreach ($playitems as $playitem) {
-        $response['playitems'][] = Playitem::create((array) $playitem);
+        # encoding fail occurs here
+        try {
+          $new_playitem = Playitem::create((array) $playitem);
+        } catch (Exception $e){
+          $message = $e->getMessage();
+          $error_response = array ('message' => $message, 'playitem' => $playitem);
+          return Response::json($error_response, 400);
+        }
+        $response['playitems'][] = $new_playitem;
+        
       }
       if (isset (Input::get()['ads'])) {
         foreach (Input::get()['ads'] as $ad) {
