@@ -188,6 +188,10 @@ require_once("headers/menu_header.php");
 			{{playsheet.info | json}}
 	
 		</pre>
+		<pre>
+			row template:
+			{{playsheet.row_template | json}}
+		</pre>
 	</div>
 			<h3 class='double-padded-top'>Music</h3>
 			<table>

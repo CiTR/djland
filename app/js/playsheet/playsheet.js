@@ -2,21 +2,21 @@
 var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
 app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
   var api = call;
-  this.info = {};
+  this.info = {
+    id: playsheet_id,
+    web_exclusive: false
+  };
   $scope.debug = true;//true;// call.debug;
   this.promotions = [];
   this.playitems = {};
   this.podcast = {};
-  this.info.id = playsheet_id;
   this.member_id = member_id;
   this.isAdmin = isAdmin;
   this.username = username;
   this.loading = true;
   this.days_of_week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   this.months_of_year = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  this.tracklist_overlay_header = "Thanks for submitting your playsheet";
-  this.podcast_status = "Your podcast is being created";
-  this.info.web_exclusive = false;
+  //this.tracklist_overlay_header = "Thanks for submitting your playsheet";
   this.max_podcast_length = (max_podcast_length != undefined) ? max_podcast_length : 8 * 60 * 60;
   this.tech_email = "technicalmanager@citr.ca";
   //Helper Variables
@@ -26,19 +26,54 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   this.createPodcast = true;
   this.time_changed = false;
 
-  this.add = function (id) {
+  var baseRowTemplate = {
+    "show_id": null,//this.active_show.id,
+    "playsheet_id": this.info.id,
+    "format_id": null,
+    "is_playlist": 0,
+    "is_canadian": 0,
+    "is_yourown": 0,
+    "is_indy": 0,
+    "is_fem": 0,
+    "is_fairplay": 0,
+    "is_accesscon": 0,
+    "is_afrocon": 0,
+    "is_indigicon": 0,
+    "is_poccon": 0,
+    "is_queercon": 0,
+    "is_local": 0,
+    "show_date": null,//show_date,
+    "duration": 0,
+    "is_theme": 0,
+    "is_background": 0,
+    "crtc_category": this.info.crtc,
+    "lang": this.info.lang,
+    "is_part": 0,
+    "is_inst": 0,
+    "is_hit": 0,
+    "insert_song_start_hour": "00",
+    "insert_song_start_minute": "00",
+    "insert_song_length_minute": "00",
+    "insert_song_length_second": "00",
+    "artist": $scope.debug ? "test" : null,
+    "title": $scope.debug ? "test" : null,
+    "song": $scope.debug ? "test" : null,
+    "composer": $scope.debug ? "test" : null
+  }
+
+  this.add = (id) => {
     var row = angular.copy(this.row_template);
     this.playitems.splice(id + 1, 0, row);
     this.update();
   }
-  this.remove = function (id) {
+  this.remove = (id) => {
     this.playitems.splice(id, 1);
     if (this.playitems.length < 1) {
       $('#addRows').text("Add Row");
     }
     this.update();
   }
-  this.addPromotion = function () {
+  this.addPromotion = () => {
     this.promotions.push(
       {
         "type": "ad",
@@ -48,11 +83,11 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       });
     this.update();
   }
-  this.removePromotion = function (id) {
+  this.removePromotion = (id) => {
     this.promotions.splice(id, 1);
     this.update();
   }
-  this.addFiveRows = function () {
+  this.addFiveRows = () => {
     if ($('#addRows').text() == "Add Five More Rows") {
       for (var i = 0; i < 5; i++) {
         this.add(this.playitems.length - 1);
@@ -62,7 +97,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       $('#addRows').text("Add Five More Rows");
     }
   }
-  this.addStartRow = function () {
+  this.addStartRow = () => {
     this.playitems = Array();
     this.playitems[0] = angular.copy(this.row_template);
     this.update();
@@ -72,18 +107,15 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   this.audioUrl = "";
   this.audioFile = null;
 
-  this.refreshAudioUploader = function () {
-    console.log('rfsj');
-  }
 
   this.replacingAudio = false;
-  this.beginReplaceAudio = function () {
+  this.beginReplaceAudio = () => {
     this.replacingAudio = true;
   }
-  this.cancelReplaceAudio = function () {
+  this.cancelReplaceAudio = () => {
     this.replacingAudio = false;
   }
-  this.canUploadAudio = function () {
+  this.canUploadAudio = () => {
     return true;
     var fileElement = $('#audio_file');
     if (fileElement.length == 0) {
@@ -139,34 +171,6 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     playitem.duration = parseInt(playitem.insert_song_length_minute) * 60 + parseInt(playitem.insert_song_length_second);
   }
 
-  this.updateTime = function () {
-    api.getNextShowTime(this.active_show.id).then(
-
-      (response) => {
-        var start_unix = response.data.start;
-        var end_unix = response.data.end;
-        this.info.unix_time = response.data.start;
-        this.start = new Date(start_unix * 1000);
-        this.end = new Date(end_unix * 1000);
-
-        this.info.start_time = $filter('date')(this.start, 'yyyy/MM/dd HH:mm:ss');
-        this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
-        this.start_hour = $filter('pad')(this.start.getHours(), 2);
-        this.start_minute = $filter('pad')(this.start.getMinutes(), 2);
-        this.start_second = $filter('pad')(this.start.getSeconds(), 2);
-        this.end_hour = $filter('pad')(this.end.getHours(), 2);
-        this.end_minute = $filter('pad')(this.end.getMinutes(), 2);
-        this.end_second = $filter('pad')(this.end.getSeconds(), 2);
-        //Populate Template Row, then add 5 rows
-        var show_date = this.start.getDate();
-        //Update Podcast information Mon, 26 Oct 2015 07:58:08 -0700
-
-        this.updateEnd();
-        this.updateStart();
-      }
-
-    );
-  }
   this.updateShowValues = (element) => {
     //When a new show is selected, update all the information.
     this.active_show = this.member_shows.filter(
@@ -195,7 +199,30 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       this.playitems[playitem].poccon = null;
       this.playitems[playitem].queercon = null;
     }
-    this.updateTime();
+    
+    api.getNextShowTime(this.active_show.id).then(
+
+      (response) => {
+        var start_unix = response.data.start;
+        var end_unix = response.data.end;
+        this.info.unix_time = response.data.start;
+        this.start = new Date(start_unix * 1000);
+        this.end = new Date(end_unix * 1000);
+
+        this.info.start_time = $filter('date')(this.start, 'yyyy/MM/dd HH:mm:ss');
+        this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
+        this.start_hour = $filter('pad')(this.start.getHours(), 2);
+        this.start_minute = $filter('pad')(this.start.getMinutes(), 2);
+        this.start_second = $filter('pad')(this.start.getSeconds(), 2);
+        this.end_hour = $filter('pad')(this.end.getHours(), 2);
+        this.end_minute = $filter('pad')(this.end.getMinutes(), 2);
+        this.end_second = $filter('pad')(this.end.getSeconds(), 2);
+
+        this.updateEnd();
+        this.updateStart();
+      }
+
+    );
     api.getShowPlaysheets(this.active_show.id).then(function (response) {
       //DISPLAY OLD PLAYSHEETS
       this.existing_playsheets = response.data.sort(function (a, b) {
@@ -490,40 +517,13 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
                 }
               );
               //Populate the template row
-              var show_date = this.start.getDate();
               this.row_template = {
-                "show_id": this.active_show.id,
-                "playsheet_id": this.info.id,
-                "format_id": null,
-                "is_playlist": 0,
-                "is_canadian": 0,
-                "is_yourown": 0,
-                "is_indy": 0,
-                "is_fem": 0,
-                "is_fairplay": 0,
-                "is_accesscon": 0,
-                "is_afrocon": 0,
-                "is_indigicon": 0,
-                "is_poccon": 0,
-                "is_queercon": 0,
-                "is_local": 0,
-                "show_date": show_date,
-                "duration": 0,
-                "is_theme": 0,
-                "is_background": 0,
-                "crtc_category": this.info.crtc,
-                "lang": this.info.lang,
-                "is_part": 0,
-                "is_inst": 0,
-                "is_hit": 0,
-                "insert_song_start_hour": "00",
-                "insert_song_start_minute": "00",
-                "insert_song_length_minute": "00",
-                "insert_song_length_second": "00",
-                "artist": $scope.debug ? "test" : null,
-                "title": $scope.debug ? "test" : null,
-                "song": $scope.debug ? "test" : null,
-                "composer": null
+                ...baseRowTemplate,
+                show_id:this.active_show.id,
+                playsheet_id: this.info.id,
+                show_date: this.start.getDate(),
+                crtc_category: this.info.crtc,
+                lang: this.info.lang,
               };
               this.checkIfComplete();
               this.loading = false;
@@ -606,45 +606,22 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
                 this.end_second = $filter('pad')(this.end.getSeconds(), 2);
 
                 //Populate Template Row, then add 5 rows
-                var show_date = this.start.getDate();
                 //Update Podcast information
                 this.updatePodcastDate();
                 this.updateEnd();
                 this.updateStart();
+
                 this.row_template = {
-                  "show_id": this.active_show.id,
-                  "playsheet_id": this.info.id,
-                  "format_id": null,
-                  "is_playlist": 0,
-                  "is_canadian": 0,
-                  "is_yourown": 0,
-                  "is_indy": 0,
-                  "is_fem": 0,
-                  "is_fairplay": 0,
-                  "is_accesscon": 0,
-                  "is_afrocon": 0,
-                  "is_indigicon": 0,
-                  "is_poccon": 0,
-                  "is_queercon": 0,
-                  "is_local": 0,
-                  "show_date": show_date,
-                  "duration": null,
-                  "is_theme": null,
-                  "is_background": null,
-                  "crtc_category": this.info.crtc,
-                  "lang": this.info.lang,
-                  "is_part": 0,
-                  "is_inst": 0,
-                  "is_hit": 0,
-                  "insert_song_start_hour": "00",
-                  "insert_song_start_minute": "00",
-                  "insert_song_length_minute": "00",
-                  "insert_song_length_second": "00",
-                  "artist": $scope.debug ? "test" : null,
-                  "title": $scope.debug ? "test" : null,
-                  "song": $scope.debug ? "test" : null,
-                  "composer": null
-                };
+                  ...baseRowTemplate,
+                  show_id: this.active_show.id,
+                  playsheet_id: this.info.id,
+                  show_date: this.start.getDate(),
+                  duration: null,
+                  is_theme: null,
+                  is_background: null,
+                  crtc_category: this.info.crtc,
+                  lang: this.info.lang,
+                }
                 this.addStartRow();
                 for (var i = 0; i < 4; i++) {
                   this.add(this.playitems.length - 1);
@@ -686,9 +663,6 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       var days = Math.floor((this.end - this.start) / (60 * 60 * 1000 * 24));
 
       if (days !== 0 && this.end) {
-        //this.end.setDate(this.end.getDate() - days);
-        //this.info.end_time = $filter('date')(this.end, 'yyyy/MM/dd HH:mm:ss');
-
       } else {
         this.getNewUnix();
       }
@@ -708,8 +682,6 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
 
   );
 
-
-
   this.update = function () {
     $timeout(this.checkIfComplete, 100);
   }
@@ -724,17 +696,13 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
 
     $('.required').each(
       (index, element) => {
-
         var model = element.getAttribute('ng-model');
-        // check for land acknowledgement??
         var val = this[model];
-        //get value from checkbox element
         if (element.type == "checkbox") {
           val = element.checked;
         } else {
           val = $(element).val();
         }
-        //          console.log(model, val);
 
         if (val == "" || !val) {
           playsheet_okay = false;
@@ -800,53 +768,18 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
         //New Playsheet
         this.info.create_name = this.username;
         this.info.show_name = this.active_show.name;
-        callback = api.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
-
+        callback = api.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions)
+        .then(
           (response) => {
-            this.info.id = response.data.id;
-            for (var playitem in this.playitems) {
-              this.playitems[playitem].playsheet_id = this.info.id;
-            }
-            this.promotions = response.data.ads;
-            var show_date = this.start.getDate();
-            this.row_template = {
-              show_id: this.active_show.id,
-              playsheet_id: this.info.id,
-              format_id: null,
-              is_playlist: 0,
-              is_canadian: 0,
-              is_yourown: 0,
-              is_indy: 0,
-              is_fem: 0,
-              show_date: show_date,
-              duration: null,
-              is_theme: null,
-              is_background: null,
-              crtc_category: this.info.crtc,
-              lang: this.info.lang,
-              is_part: 0,
-              is_inst: 0,
-              is_hit: 0,
-              insert_song_start_hour: "00",
-              insert_song_start_minute: "00",
-              insert_song_length_minute: "00",
-              insert_song_length_second: "00",
-              artist: $scope.debug ? "test" : null,
-              title: $scope.debug ? "test" : null,
-              song: $scope.debug ? "test" : null,
-              composer: $scope.debug ? "test" : null
-            };
-            this.podcast.id = response.data.podcast_id;
-            this.podcast.playsheet_id = response.data.id;
             alert("Draft Saved ");
             window.location.href =
               "/playsheet.php?id=" +
-              this.info.id +
+              response.data.id +
               "&socan=" +
               (this.info.socan == 1 ? "true" : "false");
 
           },
-          function (error) {
+          (error) => {
             if (error && error.data && error.data.message) {
               alert("Draft was not saved (1). " + error.data.message);
             }
