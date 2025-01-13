@@ -2,33 +2,34 @@
 var app = angular.module('djland.editPlaysheet', ['djland.api', 'djland.utils', 'ui.sortable', 'ui.bootstrap']);
 app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $interval, $timeout, call) {
   var api = call;
-  this.info = {
+  const playsheet = this;
+  playsheet.info = {
     id: playsheet_id,
     web_exclusive: false
   };
-  $scope.debug = true;//true;// call.debug;
-  this.promotions = [];
-  this.playitems = {};
-  this.podcast = {};
-  this.member_id = member_id;
-  this.isAdmin = isAdmin;
-  this.username = username;
-  this.loading = true;
-  this.days_of_week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  this.months_of_year = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+//  $scope.debug = true;
+  playsheet.promotions = [];
+  playsheet.playitems = {};
+  playsheet.podcast = {};
+  playsheet.member_id = member_id;
+  playsheet.isAdmin = isAdmin;
+  playsheet.username = username;
+  playsheet.loading = true;
+  playsheet.days_of_week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  playsheet.months_of_year = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   //this.tracklist_overlay_header = "Thanks for submitting your playsheet";
-  this.max_podcast_length = (max_podcast_length != undefined) ? max_podcast_length : 8 * 60 * 60;
-  this.tech_email = "technicalmanager@citr.ca";
+  playsheet.max_podcast_length = (max_podcast_length != undefined) ? max_podcast_length : 8 * 60 * 60;
+  playsheet.tech_email = "technicalmanager@citr.ca";
   //Helper Variables
-  this.tags = tags;
-  this.help = help;
-  this.complete = false;
-  this.createPodcast = true;
-  this.time_changed = false;
+  playsheet.tags = tags;
+  playsheet.help = help;
+  playsheet.complete = false;
+  playsheet.createPodcast = true;
+  playsheet.time_changed = false;
 
   var baseRowTemplate = {
-    "show_id": null,//this.active_show.id,
-    "playsheet_id": this.info.id,
+    "show_id": null,
+    "playsheet_id": playsheet.info.id,
     "format_id": null,
     "is_playlist": 0,
     "is_canadian": 0,
@@ -46,8 +47,8 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     "duration": 0,
     "is_theme": 0,
     "is_background": 0,
-    "crtc_category": this.info.crtc,
-    "lang": this.info.lang,
+    "crtc_category": playsheet.info.crtc,
+    "lang": playsheet.info.lang,
     "is_part": 0,
     "is_inst": 0,
     "is_hit": 0,
@@ -199,7 +200,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       this.playitems[playitem].poccon = null;
       this.playitems[playitem].queercon = null;
     }
-    
+
     api.getNextShowTime(this.active_show.id).then(
 
       (response) => {
@@ -430,7 +431,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   }
 
   //Initialization of Playsheet
-  this.init = () => {
+  var init = () => {
 
     //If playsheet exists, load it.
     if (this.info.id > 0) {
@@ -519,7 +520,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
               //Populate the template row
               this.row_template = {
                 ...baseRowTemplate,
-                show_id:this.active_show.id,
+                show_id: this.active_show.id,
                 playsheet_id: this.info.id,
                 show_date: this.start.getDate(),
                 crtc_category: this.info.crtc,
@@ -769,23 +770,23 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
         this.info.create_name = this.username;
         this.info.show_name = this.active_show.name;
         callback = api.saveNewPlaysheet(this.info, this.playitems, this.podcast, this.promotions)
-        .then(
-          (response) => {
-            alert("Draft Saved ");
-            window.location.href =
-              "/playsheet.php?id=" +
-              response.data.id +
-              "&socan=" +
-              (this.info.socan == 1 ? "true" : "false");
+          .then(
+            (response) => {
+              alert("Draft Saved ");
+              window.location.href =
+                "/playsheet.php?id=" +
+                response.data.id +
+                "&socan=" +
+                (this.info.socan == 1 ? "true" : "false");
 
-          },
-          (error) => {
-            if (error && error.data && error.data.message) {
-              alert("Draft was not saved (1). " + error.data.message);
+            },
+            (error) => {
+              if (error && error.data && error.data.message) {
+                alert("Draft was not saved (1). " + error.data.message);
+              }
+              this.log_error(error);
             }
-            this.log_error(error);
-          }
-        );
+          );
       } else {
         //Existing Playsheet
         api.savePlaysheet(this.info, this.playitems, this.podcast, this.promotions).then(
@@ -922,7 +923,94 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     $('#playsheet_error').html("Please contact your station technical services at " + this.tech_email + ". Your error has been logged");
 
   }
-  this.init();
+
+  init();
+
+  var basic_sound_options = {
+    debugMode: false,
+    useConsole: false,
+    autoLoad: true,
+    multiShot: false,
+    volume: 70,
+    stream: true
+  };
+
+  sm = new SoundManager();
+  sm.setup({
+    debugMode: false,
+  });
+
+  playsheet.preview_start = () => {
+    var start = new Date(playsheet.info.start_time);
+    var preview_end = new Date(start).setSeconds(start.getSeconds() + 10);
+    var sound_url = playsheet.getPreviewUrl(new Date(start), preview_end);
+    console.log(sound_url);
+    this.load_and_play_sound(sound_url, 'start');
+  };
+
+  playsheet.preview_end = () => {
+    var end = new Date(playsheet.info.end_time);
+    var preview_start = new Date(end).setSeconds(end.getSeconds() - 10);
+    var sound_url = playsheet.getPreviewUrl(preview_start, end);
+    console.log(sound_url);
+    this.load_and_play_sound(sound_url, 'end');
+  };
+
+  playsheet.load_and_play_sound = (url, time) => {
+    var this_ = this;
+    if (typeof (this.sound) != 'undefined') {
+      this.sound.destruct();
+    }
+    this.seconds_elapsed = 0;
+    this.audio_start = new Date();
+    this.playing = true;
+    this.message = 'playing ...';
+    this.sound = sm.createSound(
+      angular.extend(basic_sound_options, {
+        autoPlay: true,
+        url: url,
+        onfinish: function () {
+          this_.message = '';
+          this.playing = false;
+          $interval.cancel(this_.elapsedInterval);
+        },
+
+        whileplaying: function () {
+
+          this_.elapsedInterval = $interval(this_.elapsedTime(time), 1000);
+          this_.message = 'playing ...';
+          if (this.duration == 0) {
+            this_.message = 'sorry, preview not available.';
+          }
+        }
+      })
+    );
+  };
+
+  playsheet.getPreviewUrl = (start, end) => {
+    return 'http://archive.citr.ca/py-test/archbrad/download?' +
+      'archive=%2Fmnt%2Faudio_stor%2Flog' +
+      '&startTime=' + $filter('date')(start, 'dd-MM-yyyy HH:mm:ss') +
+      '&endTime=' + $filter('date')(end, 'dd-MM-yyyy HH:mm:ss');
+  };
+
+  playsheet.stop_sound = () => {
+    sm.stopAll();
+    this.message = '';
+  };
+
+  playsheet.elapsedTime = (time) => {
+    this.seconds_elapsed = (new Date().getTime() / 1000) - (this.audio_start.getTime() / 1000);
+    if (time == 'start') {
+      var elapsed = new Date(this.start);
+      elapsed.setSeconds(elapsed.getSeconds() + this.seconds_elapsed);
+    } else if (time == 'end') {
+      var elapsed = new Date(this.end);
+      elapsed.setSeconds(this.end.getSeconds() - 10 + this.seconds_elapsed);
+    }
+    $('#elapsed').text($filter('date')(elapsed, 'yyyy/MM/dd HH:mm:ss'));
+  };
+
 });
 
 app.controller('datepicker', function ($filter) {

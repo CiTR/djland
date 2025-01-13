@@ -10,6 +10,9 @@ require_once("headers/menu_header.php");
 
 	<link rel="stylesheet" href="css/style.css?v=20231107" type="text/css">
 
+	<script type="module">
+		import SoundManager2 from 'https://cdn.skypack.dev/soundmanager2';
+	</script>
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type='text/javascript' src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 
@@ -142,17 +145,24 @@ require_once("headers/menu_header.php");
 					<div class='col2'>
 						<div>
 							Start Time:
-							[<select ng-options="n for n in [] | range:00:24" ng-change='playsheet.updateStart()' ng-model="playsheet.start_hour"></select> :
+							<select ng-options="n for n in [] | range:00:24" ng-change='playsheet.updateStart()' ng-model="playsheet.start_hour"></select> :
 							<select ng-model="playsheet.start_minute" ng-change='playsheet.updateStart()' ng-update='playsheet.updateStart()' ng-options="n for n in [] | range:0:60 "></select> :
-							<select ng-model="playsheet.start_second" ng-change='playsheet.updateStart()' ng-options="n for n in [] | range:0:60"></select>]
+							<select ng-model="playsheet.start_second" ng-change='playsheet.updateStart()' ng-options="n for n in [] | range:0:60"></select>
 						</div>
 						<div class='padded'>
 							End Time:
-							[<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateEnd()"></select> :
+							<select ng-model="playsheet.end_hour" ng-options="n for n in [] | range:0:24 " ng-change="playsheet.updateEnd()"></select> :
 							<select ng-model="playsheet.end_minute" ng-options="n for n in [] | range:0:60" ng-change="playsheet.updateEnd()"></select> :
-							<select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60" ng-change="playsheet.updateEnd()"></select>]
+							<select ng-model="playsheet.end_second" ng-options="n for n in [] | range:0:60" ng-change="playsheet.updateEnd()"></select>
 
+							
+							<div class='col1 double-padded-top'>
+							<button aria-label="preview audio of the start" ng-click="playsheet.preview_start()">🔊 start</button>
+							<button aria-label="preview audio of the end" ng-click="playsheet.preview_end()">🔊 end</button>
+							<button aria-label="stop sound" ng-click="playsheet.stop_sound()">stop 🔊</button><br/>
+							<span id='elapsed' ng-show='playsheet.playing'></span>
 						</div>
+                    </div>
 					</div>
 					<div class='col1 double-padded-top'>
 						<!-- removed, make room for moving podcast tools here
@@ -262,6 +272,7 @@ require_once("headers/menu_header.php");
 			<div class="blocker" ng-hide="playsheet.complete">
 				{{ playsheet.missing }}
 			</div>
+			<button style="margin-right:2em;" class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
 			<div style="display:inline-block;" >
 				<div style="display:inline-block; text-align:right;" ng-hide="!playsheet.complete">
 					<label for="generate-new-podcast-audio">Generate New Podcast Audio</label> <input id="generate-new-podcast-audio" type="checkbox" ng-model='playsheet.createPodcast'><br />
@@ -272,7 +283,6 @@ require_once("headers/menu_header.php");
 				<button style="margin-left:0.2em;" class="large-button" ng-click="playsheet.submit()" ng-hide="!playsheet.complete || submitting">Submit</button>
 		
 			</div>
-			<button style="margin-left:2em;" class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
 		
 			<br />
 			<div id="message" ng-show="message.text != '' && message.age < 6 ">{{message.text}}</div>
