@@ -32,6 +32,14 @@ if (isset($_GET['show_status'])) {
     print_menu();
     ?>
 
+    <script>
+        var settings = {
+            "xml_base": "<?php echo $url['xml_base']; ?>",
+            "audio_base": "<?php echo $url['audio_base']; ?>"
+        };
+    </script>
+
+
 <body class='wallpaper' ng-app="djland.editShow">
     <div ng-controller="editShow as show">
         <script>
@@ -44,7 +52,7 @@ if (isset($_GET['show_status'])) {
         <script src='js/constants.js'></script>
         <script src="js/angular.js"></script>
         <script type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-0.12.0-withseconds.js'></script>
-        <script src="js/shows/edit.js"></script>
+        <script src="js/shows/edit.js?v=20250529"></script>
         <script src="js/api.js"></script>
         <script src="js/utils.js"></script>
         <div class='text-center' ng-show='show.loading == true'><img class='rounded' width='300' height='20' src='images/loading.gif' /></div>
@@ -153,13 +161,14 @@ if (isset($_GET['show_status'])) {
                 </tr>
                 <tr social ng-repeat='social in show.socials track by $index'></tr>
             </table>
+            <br/><br/>
             <div ng-show='show.is_admin'>
-                <h4 class='text-left double-padded-top'>Podcast Feedburner URL</h4>
-                <input class='wideinput' ng-model='show.info.rss'>
-                <h4 class='text-left'>Podcast Title</h4>
+                <h4 class='text-left'>Podcast Title (optional)</h4>
                 <input class='wideinput' ng-model='show.info.podcast_title'>
-                <h4 class='text-left'>Podcast XML</h4>
+                <h4 class='text-left'>Podcast XML (optional)</h4>
                 <input class='wideinput' ng-model='show.info.podcast_slug'>
+                <h4 class='text-left double-padded-top'>Podcast URL (rss)</h4>
+                <input class='wideinput' style="width:70%; padding:10px;" ng-model='show.info.rss'>
                 <h4 class='text-left double-padded-top'>Sponsor</h4>
                 <label for='sponsor_name'>Name</label><input name='sponsor_name' ng-model='show.info.sponsor_name'>
                 <label for='sponsor_url'>URL</label><input name='sponsor_url' ng-model='show.info.sponsor_url'>

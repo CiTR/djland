@@ -1,6 +1,6 @@
 (function () {
     var app = angular.module('djland.editShow', ['djland.api', 'djland.utils']);
-
+    
     app.directive('social', function () {
         return {
             restrict: 'A',
@@ -60,18 +60,7 @@
                 }
               ).bind(this)
             );
-            //Calculating "current week" this math is really old. Returns 1 or 2
-            //this.current_week = Math.floor( ((Date.now()/1000 - 1341100800)*10 / (7*24*60*60))%2 +1);
 
-            //New Method for getting current week
-            var d = new Date();
-            //Get most recent sunday at 12:00:00am
-            d.setHours(0,0,0);
-            d.setDate(d.getDate()-(d.getDay()||7));
-            //Get Days since epoch start. Then divide by 7 for weeks. Then round down.
-            var week_no = Math.floor(((d/8.64e7))/7);
-            //divide by 2, and then add one so we have 1||2 instead of 0||1
-            this.current_week = ((week_no % 2) +1);
         }
         this.isStaff = function(){
           //Call API to obtain permissions
@@ -117,10 +106,15 @@
                 }
     		    //If either of these have HTML chars strip them so it will save without, the user being none the wiser
     		    this.info.name = tools.decodeHTML(this.info.name);
+            this.info.podcast_title = this.info.podcast_title || this.info.name || "";
     		    this.info.show_desc = tools.decodeHTML(this.info.show_desc);
+            var defaultSlug = this.info.podcast_title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            this.info.podcast_slug =  this.info.podcast_slug || defaultSlug;
+            
     		    this.shared.setShowName(this.info.name);
     			this.shared.setShowID(this.info.id);
     		    //Split genres on comma to allow user management
+            this.info.rss = this.info.rss || settings.xml_base + '/' + this.info.podcast_slug + '.xml';
 
     		    this.primary_genres = this.info.primary_genre_tags != null ? this.info.primary_genre_tags.split(',') : Array();
     		    this.secondary_genres = this.info.secondary_genre_tags != null ? this.info.secondary_genre_tags.split(',') : Array();
