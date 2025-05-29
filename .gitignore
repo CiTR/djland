@@ -60,3 +60,7 @@ PY
 *.xml
 
 .vscode
+error_log
+php.ini
+.user.ini
+.htaccess
