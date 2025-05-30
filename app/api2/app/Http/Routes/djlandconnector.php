@@ -152,11 +152,19 @@ if (!function_exists('playlist')) {
     $podcast = Podcast::select('id as episode_id', 'summary as episode_description', 'title as episode_title', 'url as episode_audio')->where('playsheet_id', '=', $id)->get()->toArray();
     //For some reason ->merge() didn't work so we did this and it did
 
-    if (empty($podcast)) {
+    if (empty($playsheet)) {
       return array(
         'api_message'   => '[NO RECORD FOUND]',
-        'message'       => 'no podcast found with this ID: ' . $id,
+        'message'       => 'no playsheet found with this ID: ' . $id,
       );
+    }
+    if (empty($podcast)) {
+      $podcast = array(array(
+        'episode_id' => null,
+        'episode_description' => null,
+        'episode_title' => null,
+        'episode_audio' => null,
+      ));
     }
 
     $ret = array_merge($playsheet[0], $podcast[0]);
