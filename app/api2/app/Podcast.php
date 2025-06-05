@@ -79,21 +79,15 @@ class Podcast extends Model
       'genre'         => array($this->playsheet->show->primary_genre_tags),
       'comment'       => array('This podcast was created in part by CiTR Radio')
     );
-    if (!$testing_environment) {
-      $target_dir = $path['audio_base'] . '/' . $year . '/';
-    } else {
-      $target_dir = $path['test_audio_base'] . '/' . $year . '/';
-    }
-
+    
+    $target_dir = $path['audio_base'] . '/' . $year . '/';
     if (!file_exists($target_dir)) mkdir($target_dir, 0775);
 
     //$target_dir = 'audio/'.$year.'/';
     $target_file_name = $target_dir . $file_name;
 
     $target_url = $url['audio_base'] . '/' . $year . '/' . $file_name;
-    if ($testing_environment) {
-      $target_url = $url['test_audio_base'] . '/' . $year . '/' . $file_name;
-    }
+    
     //Get Audio from Archiver
     $file_from_archive = fopen($archive_url, 'r');
 
@@ -152,12 +146,8 @@ class Podcast extends Model
     $archive_url = $url['archiver_request'] . "&startTime=" . $start_date . "&endTime=" . $end_date;
 
     //Get File Name from URL. Note that we set target dir to end at audio so that we handle legacy files that are not sorted by year.
-    if (!$testing_environment) {
-      $target_dir = $path['audio_base'] . '/' . $year . '/';
-    } else {
-      $target_dir = $path['test_audio_base'] . '/' . $year . '/';
-    }
 
+    $target_dir = $path['audio_base'] . '/' . $year . '/';
     if (!file_exists($target_dir)) mkdir($target_dir, 0775);
 
 

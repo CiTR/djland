@@ -102,10 +102,10 @@ if($enabled['podcast_tools']){
 
 	//Podcast local_dev paths - do not use trailing slashes (ie. we want /audio vs. /audio/)
 	if($testing_environment==true){
-		$path['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-		$url['test_audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
-		$path['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
-		$url['test_xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+		$path['audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$url['audio_base'] = $_SERVER['DOCUMENT_ROOT']."/audio";
+		$path['xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
+		$url['xml_base'] = $_SERVER['DOCUMENT_ROOT']."/xml";
 	}
 }
 

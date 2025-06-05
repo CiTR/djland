@@ -148,14 +148,8 @@ class Upload extends Model
 
     switch ($this->category) {
       case 'episode_audio':
-        if (!$testing_environment) {
-          $url_base = $url['audio_base'];
-          $path_base = $path['audio_base'];
-        } else {
-          $url_base = $url['test_audio_base'];
-          $path_base = $path['test_audio_base'];
-        }
-
+        $url_base = $url['audio_base'];
+        $path_base = $path['audio_base'];
         //Get the podcast
         $podcast = Podcast::find($this->relation_id);
 
@@ -180,9 +174,6 @@ class Upload extends Model
           $target_file_name = basename($target_file_name);
           //the testing enviroment may mean that even though it has a proper url, it still might not exist in our dev path
           //so overwrite it anyway (it's dev, we don't really care too much about overwriting in the test audio base directory)
-          if ($testing_environment) {
-            $target_file_name = $stripped_show_name . "-" . $podcast->id . "-" . $podcast->playsheet->id . "-" . date('F-d-H-i-s', strtotime($podcast->playsheet->start_time)) . '.mp3';
-          }
         } else {
           $target_file_name = $stripped_show_name . "-" . $podcast->id . "-" . $podcast->playsheet->id . "-" . date('F-d-H-i-s', strtotime($podcast->playsheet->start_time)) . '.mp3';
         }
