@@ -280,6 +280,7 @@ Route::group(array('prefix' => 'playsheet'), function () {
 
     $response['id'] = $ps->id;
     $response['podcast_id'] = $podcast->id;
+    touch("/tmp/djland-sync-wp");
     return Response::json($response);
   });
 
@@ -309,6 +310,8 @@ Route::group(array('prefix' => 'playsheet'), function () {
       $response['playsheet'] = $ps;
       $ps->podcast()->update((array) Input::get()['podcast']);
       $response['podcast'] = $ps->podcast;
+      
+      
 
       $playitems = Input::get()['playitems'];
       foreach ($ps->playitems as $delete) {
@@ -338,7 +341,7 @@ Route::group(array('prefix' => 'playsheet'), function () {
           }
         }
       }
-
+      touch("/tmp/djland-sync-wp");
       return Response::json($response);
     });
     Route::delete('/', function ($id) {
