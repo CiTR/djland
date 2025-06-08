@@ -103,10 +103,9 @@ function getPodcasts($member_id)
                                 </p>
                                 <div audio source='episode.podcast.url'></div>
                                 <br />
-                                <div ng-show='episode.playsheet'><a ng-href="playsheet.php?id={{episode.playsheet.id}}{{episode.playsheet.socan? '&socan=true':''}}" target="_self">go to playsheet</a>
-                                    <span>
-                                        <button ng-click="list.edit_episode(episode);">edit podcast </button>
-                                    </span>
+                                <div ng-show='episode.playsheet'>
+                                    <br/>
+                                    <a ng-href="playsheet.php?id={{episode.playsheet.id}}{{episode.playsheet.socan? '&socan=true':''}}" target="_self">go to playsheet</a>
                                 </div>
                                 <hr />
                             </div>
