@@ -354,7 +354,19 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     this.end_unix = end_unix;
     var duration = end_unix - start_unix;
 
-    if (this.info.id < 1) {
+    function allEmptyPromotions() {
+      return playsheet.promotions.every(
+        (promotion) => {
+          if (promotion.type == "id") {
+            return promotion.played == 0;
+          } else {
+            return promotion.name == "" || promotion.name == null;
+          }
+        }
+      );
+    }
+
+    if (this.info.id < 1 && allEmptyPromotions()) {
       var hours = Math.floor(duration / (60 * 60));
       if (hours === 0) {
         hours = 1;
@@ -896,7 +908,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
 
             if (this.podcast.url) {
               api.makeXml(this.podcast.show_id);
-              this.podcast_status = 'Updated podcast.';
+              this.podcast_status = 'Updated podcast channel.';
             }
             else {
               this.makePodcastAudio();
