@@ -24,7 +24,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   playsheet.tags = tags;
   playsheet.help = help;
   playsheet.complete = false;
-  playsheet.createPodcast = true;
+  playsheet.skipPodcast = false;
   playsheet.time_changed = false;
 
   var baseRowTemplate = {
@@ -113,6 +113,11 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   this.beginReplaceAudio = () => {
     this.replacingAudio = true;
   }
+  this.deleteAudio = () => {
+    if (confirm("Remove the audio? You can re-upload, or Submit playsheet to create it from the archiver.")) {
+      this.podcast.url = null;
+    }
+  }
   this.cancelReplaceAudio = () => {
     this.replacingAudio = false;
   }
@@ -138,7 +143,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     }
     var file = fileElement[0].files[0];
     if (file == undefined) {
-      alert("no file was found");
+      alert("Please click the 'Browse...' button and select an audio file.");
       return;
     }
 
@@ -823,11 +828,11 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
   }
   //Submit a Playsheet
   this.makePodcastAudio = () => {
-    if (this.createPodcast) {
+    if (!this.skipPodcast) {
       this.podcast_status = "Your podcast is being created";
       api.makePodcastAudio(this.podcast).then(
         (reponse) => {
-          this.podcast_status = "Podcast Audio Created Successfully.";
+          this.podcast_status = "Podcast Audio transfer in progress.";
           this.time_changed = false;
         }
         , (error) => {
@@ -857,7 +862,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
     this.info.show_name = this.active_show.name;
     //Ensuring start and end times work for podcast generation
     if (new Date(this.info.start_time) > new Date() || new Date(this.info.end_time) > new Date()) {
-      alert("Cannot create a podcast in the future, please save as a draft.");
+      alert("Playsheet time is in the future. You can save as a draft and submit later.");
     } else if (new Date(this.info.start_time) > new Date(this.info.end_time)) {
       alert("End time is before start time");
     } else if (this.end.getTime() / 1000 - this.start.getTime() / 1000 > this.max_podcast_length) { // Divide by 10000 because milliseconds
@@ -910,7 +915,7 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
               api.makeXml(this.podcast.show_id);
               this.podcast_status = 'Updated podcast channel.';
             }
-            else {
+            else if (!this.skipPodcast){
               this.makePodcastAudio();
               this.podcast_status = 'Creating new Podcast Audio from archive log.';
             }

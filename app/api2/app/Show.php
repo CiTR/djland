@@ -211,8 +211,7 @@ class Show extends Model
       fclose($target_file);
     }
     $this->save();
-
-    touch("/tmp/djland-sync");
+    file_put_contents("/tmp/djland-sync", "");
     
     return $response;
   }

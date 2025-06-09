@@ -62,7 +62,8 @@ require_once("headers/menu_header.php");
 			<div class='col4 padded'>
 
 				<div class='col1'>
-					Show: <select id='show_select' ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'">
+					Show: <select id='show_select' ng-model="playsheet.show_value" ng-change="playsheet.updateShowValues(this)" ng-options="show.id as show.show.name for show in playsheet.member_shows | orderBy:'name'"
+					style="max-width:97%;">
 					</select>
 				</div>
 				<div class='col1'>
@@ -103,7 +104,7 @@ require_once("headers/menu_header.php");
 					<input type="file" name='audio_file' id='audio_file' style="max-width:270px"/>
 					<button ng-if="playsheet.canUploadAudio() && !playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload</button>
 					<button ng-if="playsheet.canUploadAudio() && playsheet.podcast.url" type="button" ng-click='playsheet.uploadAudio()' >Upload (Replace)</button>
-					<button ng-click='playsheet.cancelReplaceAudio()'>Cancel</button>
+					<button ng-hide="playsheet.uploadingAudio" ng-click='playsheet.cancelReplaceAudio()'>Cancel</button>
 				</div>
 				<div ng-if="playsheet.uploadingAudio">
 					<img src='images/loading.gif' />
@@ -111,6 +112,7 @@ require_once("headers/menu_header.php");
 				<div ng-if="playsheet.podcast.url && !playsheet.replacingAudio" 
 					class='text-left'>
 					<button ng-click='playsheet.beginReplaceAudio()'>Replace Audio</button>
+					<button ng-click='playsheet.deleteAudio()'>Delete Audio</button>
 				</div>
 				<div ng-if="!playsheet.podcast.url && !playsheet.replacingAudio" class='text-left'>
 					<button ng-click='playsheet.beginReplaceAudio()'>Upload Audio</button>
@@ -275,7 +277,7 @@ require_once("headers/menu_header.php");
 			<button style="margin-right:2em;" class="large-button" ng-click="playsheet.saveDraft()" ng-hide="playsheet.info.status == 2">Save Draft</button>
 			<div style="display:inline-block;" >
 				<div style="display:inline-block; text-align:right;" ng-hide="!playsheet.complete">
-					<label for="generate-new-podcast-audio">Generate New Podcast Audio</label> <input id="generate-new-podcast-audio" type="checkbox" ng-model='playsheet.createPodcast'><br />
+					<label for="generate-new-podcast-audio" >Skip creating podcast audio</label> <input ng-disabled="playsheet.podcast.url" id="generate-new-podcast-audio" type="checkbox" ng-model='playsheet.skipPodcast'><br />
 					<div ng-show="playsheet.isAdmin">
 						<label for="web-exclusive-podcast">Web Exclusive Podcast</label>  <input id="web-exclusive-podcast" type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
 					</div>
