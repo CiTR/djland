@@ -25,16 +25,21 @@ $out[] = "\n";
 
 $out[] = "//Podcasting Tools";
 if( $_POST['enabled']['podcasting'] ){
+	$out[] = "$djland_max_podcast_length = 24*60*60;";
+	$out[] = "\n";
 	write_post_to_array('path',$out);
 	$out[] = "\n";
 	write_post_to_array('url',$out);
 }
 write_to_array(24*60*60,'max_podcast_length',$out);
 
+if( $_POST['enabled']['membership']) {
+	$out[] = "$djland_subgenres = array();";
+	$out[] = "\n";
+}
 $out[] = "//Month at which the membership year rolls into the next";
 $out[] = "\$djland_membership_cutoff_month =".$_POST['membership_cutoff_month'].";";
 $out[] = "\n";
-
 write_to_array($djland_permission_levels,'djland_permission_levels',$out);
 write_to_array($djland_member_types,'djland_member_types',$out);
 write_to_array($djland_interests,'djland_interests',$out);

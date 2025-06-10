@@ -23,6 +23,7 @@ CREATE TABLE `membership_years` (
   `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `edit_date` timestamp NULL DEFAULT NULL,
   `womens_collective` varchar(16) DEFAULT '0',
+  `lgbt_collective` varchar(1) DEFAULT '0',
   `indigenous_collective` varchar(16) DEFAULT '0',
   `accessibility_collective` varchar(16) DEFAULT '0',
   PRIMARY KEY (`id`,`member_id`,`membership_year`),

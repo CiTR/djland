@@ -2,6 +2,7 @@ CREATE TABLE `membership` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `lastname` varchar(90) NOT NULL,
   `firstname` varchar(90) NOT NULL,
+  `preferred_name` varchar(90),
   `canadian_citizen` varchar(1) NOT NULL COMMENT 'citizen, immigrant, visitor',
   `address` varchar(55) NOT NULL,
   `city` varchar(45) NOT NULL DEFAULT 'Vancouver',

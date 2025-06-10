@@ -92,7 +92,7 @@ class Show extends Model
 
     //Ensure HTTPS isn't used for the itunes image
     if (strpos($show['image'], 'https://djland.') === 0) {
-      $show['image'] = str_replace('https://djland', 'http://djland', $show['image']);
+      $show['image'] = str_replace('https://djland', 'http://djland', $show['image'] ? $show['image'] : "" );
     }
 
     $xml[] = '<?xml version="1.0" encoding="UTF-8" ?>';

@@ -27,6 +27,7 @@
 						<input name='station_info[station_id]' placeholder='Default Station ID' />
 						<input name='station_info[tech_email]' placeholder='Tech Help Email' />
 						<input name='station_info[password_recovery_email]' placeholder='Password Recovery Email'/>
+						<input name='station_info[password_recovery_name ]' placeholder='Password Recovery Name'/>
 					</div>
 					<h4>Station Location</h4>
 					<div>
