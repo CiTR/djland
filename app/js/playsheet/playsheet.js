@@ -146,6 +146,13 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       alert("Please click the 'Browse...' button and select an audio file.");
       return;
     }
+    const allowedExtensions = ['mp3'];//, 'wav', 'aac', 'ogg', 'flac', 'm4a'];
+    const fileName = file.name || '';
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert("Invalid file type. Please select an audio file (mp3).");
+      return;
+    }
 
     Playsheet.uploadingAudio = true;
     var form = new FormData();
@@ -169,7 +176,14 @@ app.controller('PlaysheetController', function ($filter, $rootScope, $scope, $in
       .catch(error => {
         Playsheet.uploadingAudio = false;
         $scope.$apply();
-        alert(error.statusText + " | " + error.message);
+
+        if (error.message.includes("JSON.parse:")){
+          alert("Sorry, the upload request was dropped by the server. Please try again. If this error persists, please contact " + Playsheet.tech_email);
+        } else if (error.statusText){
+          alert(error.statusText + " | " + error.message);
+        } else {
+          alert("An error occurred: " + error.message);
+        }
       });
   }
 

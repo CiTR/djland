@@ -278,9 +278,6 @@ require_once("headers/menu_header.php");
 			<div style="display:inline-block;" >
 				<div style="display:inline-block; text-align:right;" ng-hide="!playsheet.complete">
 					<label for="generate-new-podcast-audio" >Skip creating podcast audio</label> <input ng-disabled="playsheet.podcast.url" id="generate-new-podcast-audio" type="checkbox" ng-model='playsheet.skipPodcast'><br />
-					<div ng-show="playsheet.isAdmin">
-						<label for="web-exclusive-podcast">Web Exclusive Podcast</label>  <input id="web-exclusive-podcast" type="checkbox" ng-model='playsheet.info.web_exclusive'><br />
-					</div>
 				</div>
 				<button style="margin-left:0.2em;" class="large-button" ng-click="playsheet.submit()" ng-hide="!playsheet.complete || submitting">Submit</button>
 		
