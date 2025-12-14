@@ -212,7 +212,7 @@ class Show extends Model
     }
     $this->save();
     file_put_contents("/tmp/djland-sync", "");
-    file_put_contents("/tmp/djland-sync-wp, "");
+    file_put_contents("/tmp/djland-sync-wp", "");
     
     return $response;
   }
