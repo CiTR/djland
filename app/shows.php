@@ -216,7 +216,7 @@ if (isset($_GET['show_status'])) {
 					# fetch https://new.citr.ca/api/schedule/notfound and show the result
                     try {
                         $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_URL, "https://new.citr.ca/api/schedule/notfound");
+                        curl_setopt($ch, CURLOPT_URL, "https://citr.ca/api/schedule/notfound");
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                         $output = curl_exec($ch);
                         curl_close($ch);
